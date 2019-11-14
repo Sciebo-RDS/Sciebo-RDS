@@ -27,7 +27,7 @@ pages:
   script:
   - cd docs
   - hugo
-  - mv public ../public
+  - mv public ../
   artifacts:
     paths:
     - public
