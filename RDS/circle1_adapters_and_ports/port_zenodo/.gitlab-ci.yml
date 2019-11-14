@@ -8,8 +8,8 @@ test:port_zenodo3.6:
 
     script:
     - cd $FOLDER
-    - pip install pytest
     - pip install -r requirements.txt
+    - pip install -r requirements-dev.txt
     - pytest
 
     only:
@@ -25,8 +25,8 @@ test:port_zenodo3.7:
 
     script:
     - cd $FOLDER
-    - pip install pytest
     - pip install -r requirements.txt
+    - pip install -r requirements-dev.txt
     - pytest
 
     only:
@@ -42,6 +42,8 @@ test:port_zenodo3.8:
 
     script:
     - cd $FOLDER
+    - pip install -r requirements.txt
+    - pip install -r requirements-dev.txt
     - pytest
 
     only:
