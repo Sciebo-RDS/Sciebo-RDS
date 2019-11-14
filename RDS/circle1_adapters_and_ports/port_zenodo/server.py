@@ -16,10 +16,9 @@ def load_yaml_file():
 
     if not os.path.exists(openapi_filepath): # yaml file not exists equals first start
         # no openapi file found. Something was wrong in the container building process
-        download_path = os.getenv("GITLAB_REPO_URL", "https://zivgitlab.uni-muenster.de") + "/api/v4/projects/" + os.getenv("GITLAB_REPO_ID", "1") + "/repository/files/" + os.getenv("GITLAB_REPO_FILEPATH", "openapi.yaml") + "/raw?ref=" + os.getenv("GITLAB_REPO_BRANCH", "master")
+        download_path = os.getenv("OPENAPI_FILEPATH_EXTERNAL", "")
         logger.warning("No openapi file found. Filepath: {}. Download File: {}".format(openapi_filepath, download_path))
-        headers = {"PRIVATE-TOKEN": os.getenv("GITLAB_REPO_TOKEN_READ", "")}
-        openapi_file = requests.get(download_path, headers=headers)
+        openapi_file = requests.get(download_path)
         openapi_dict = yaml.full_load(openapi_file.content)
 
         with open(openapi_filepath, "w") as file:
