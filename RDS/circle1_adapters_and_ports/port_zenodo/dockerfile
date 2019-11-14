@@ -1,0 +1,29 @@
+FROM python:3.7-alpine
+EXPOSE 8080
+
+# set the base installation, requirements are not changed often
+RUN apk update && apk add build-base
+
+WORKDIR /app
+ARG CACHEINSTALLBUST=1
+ADD ./requirements.txt ./
+RUN pip install -r requirements.txt
+
+# download yaml file for better usability and reproducable behaviour
+RUN apk add curl bash
+
+ENV GITLAB_REPO_TOKEN_READ  "jk_NtZhK7shiExp8_z_e"
+ENV GITLAB_REPO_URL         "https://zivgitlab.uni-muenster.de"
+ENV GITLAB_REPO_ID          "1756"
+ENV GITLAB_REPO_FILEPATH    "Architecture%2FCircle_4_Entities_and_Services%2Fport-invenio.yaml"
+ENV GITLAB_REPO_BRANCH      "master"
+ENV OPENAPI_DOWNLOAD_PATH   $GITLAB_REPO_URL/api/v4/projects/$GITLAB_REPO_ID/repository/files/$GITLAB_REPO_FILEPATH/raw?ref=$GITLAB_REPO_BRANCH
+ENV OPENAPI_FILEPATH        "openapi.yaml"
+
+ARG CACHEBUST=1
+RUN curl --noproxy "*" -X GET --header "PRIVATE-TOKEN: $GITLAB_REPO_TOKEN_READ" "$OPENAPI_DOWNLOAD_PATH" -o "$OPENAPI_FILEPATH"
+
+# now add everything else, which changes often
+ADD . ./
+
+ENTRYPOINT [ "python", "server.py" ]

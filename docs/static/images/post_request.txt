@@ -1,0 +1,26 @@
+title User requests GET ViewZenodo
+actor User
+participant NGINX
+participant RDPM
+participant Pulsar
+participant Zenodo
+
+
+User->NGINX: Request: POST ViewZenodo\n(Start an upload with formular.)
+
+alt if User is not authorized
+NGINX->NGINX:cancel Request
+NGINX-->User: Redirect: ViewRDPM_NotLoggedIn
+end
+
+NGINX->RDPM:Tunneling Request
+RDPM->Pulsar:Send Event\nabout Zenodo\nwith Listener-Topic\nand partition-key
+NGINX<--RDPM: Response: Success / Failure
+User<--NGINX: Tunneling Response
+
+
+Pulsar->Zenodo:Get an event
+Pulsar<--Zenodo:Request necessary data\n(with GraphQL\nand listener-topic)
+RDPM<--Pulsar:Get Request\non listener-topic
+RDPM-->Pulsar:Response \nto listener-topic\nwith requested data
+Pulsar-->Zenodo:Get requested data

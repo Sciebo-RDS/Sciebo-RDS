@@ -1,0 +1,5 @@
+test:port_owncloud:
+  image: python:3.8
+  stage: test
+  script:
+  - whoami

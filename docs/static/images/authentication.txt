@@ -1,0 +1,38 @@
+title User OAuth2 Authentication
+actor User
+participant NGINX
+participant RDPM
+participant Pulsar
+participant Zenodo
+
+loop Exchange Refresh Tokens
+RDPM->OAuth2 Server:Request: POST all refresh\nTokens with short lifetime
+OAuth2 Server-->NGINX: Request: POST Access and Refresh Tokens
+NGINX-->RDPM: Tunnel Request from\nAuthorization Server
+end
+
+==User Authentication==
+
+NGINX<-User:Request: GET \nViewRDPM_NotLoggedIn
+note over NGINX:If Request not in Cache,\nsee "User Request Get ViewZenodo
+NGINX-->User:Response:\nViewRDPM_NotLoggedIn
+User<--User: Redirect: OAuth2 Redirection URI\nwith Client ID
+
+alt if User authenticates against Authorization Server
+note over RDPM,OAuth2 Server:This was made, while service registration\nprocess to the oauth2-server
+RDPM->OAuth2 Server:Request: POST Authorization Code & \nRedirection URI
+note over NGINX,OAuth2 Server:Access and Refresh Tokens is sent\nfrom OAuth2 Server, if User accepts it.
+OAuth2 Server->NGINX:Response: POST OAuth2 Access\nand Refresh Tokens
+NGINX-->RDPM:Tunneling Request from\nAuthorization Server
+User->NGINX:Request: GET ViewRDPM\nwith Authorization Code
+NGINX-->RDPM:Tunneling Request
+alt if Authorization Code is correct
+NGINX<-RDPM:Response: ViewRDPM
+else 
+RDPM->NGINX:Response:\nViewRDPM_NotLoggedIn
+end
+NGINX-->User:Tunneling Response
+else
+NGINX->User:Response:\nViewRDPM_NotLoggedIn
+
+end 

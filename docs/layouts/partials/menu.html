@@ -1,0 +1,43 @@
+<!-- Side nav -->
+<aside>
+  <div id="sidebar">
+
+    <ul class="sidebar-nav sidebar-menu">
+      <li>
+          <a href="#" id="close-button">
+            <i class="fa fa-close fa-lg"></i>
+          </a>
+        </li>
+      {{ $currentNode := . }}
+      {{ range .Site.Menus.doc.ByWeight }}
+        {{ if .HasChildren }}
+          <li class="sub-menu{{if $currentNode.HasMenuCurrent "doc" . }} active{{end}}"{{ if (not (eq .Post "")) }} {{ printf "style=%q" .Post | safeHTMLAttr }}{{ end }}>
+            <a href="javascript:;">
+              {{ .Pre }}
+              <span>{{ .Name }}</span>
+              <span class="menu-arrow fa {{if $currentNode.HasMenuCurrent "doc" . }}fa-angle-down{{else}}fa-angle-right{{end}}"></span>
+
+            </a>
+            <ul class="sub{{if $currentNode.HasMenuCurrent "doc" . }} open{{end}}">
+              {{ range .Children }}
+                <li {{if $currentNode.IsMenuCurrent "doc" . }} class="active"{{end}}>
+                  <a href="{{.URL}}">{{ .Name }}</a>
+                </li>
+              {{ end }}
+            </ul>
+          </li>
+          {{ else }}
+
+            <li class="{{if (or (eq $currentNode.URL .URL) (eq $currentNode.URL (printf "%s/" .URL))) }} active{{end}}"{{ if (not (eq .Post "")) }} {{ printf "style=%q" .Post | safeHTMLAttr }}{{ end }}>
+              <a class="" href="{{.URL}}">
+                  {{ .Pre }}
+                  <span>{{ .Name }}</span>
+              </a>
+            </li>
+        {{ end }}
+      {{ end }}
+    </ul>
+  </div>
+</aside>
+
+

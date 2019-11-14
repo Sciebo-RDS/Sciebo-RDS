@@ -1,0 +1,198 @@
+baseurl = "https://sciebo-rds.zivgitlabpages.uni-muenster.de/webpage/"
+contentdir    = "content"
+layoutdir     = "layouts"
+publishdir    = "public"
+title = "Sciebo RDS"
+canonifyurls  = true
+
+DefaultContentLanguage = "en"
+theme = "beautifulhugo"
+metaDataFormat = "yaml"
+pygmentsUseClasses = true
+pygmentCodeFences = true
+#disqusShortname = "XXX"
+#googleAnalytics = "XXX"
+
+[languages]
+  [languages.de]
+	languageName = "Deutsch"
+	weight = 2
+	
+[[languages.de.menu.main]]
+    name = "Startseite"
+    url = "/de"
+    weight = 10
+    
+[[languages.de.menu.main]]
+    name = "Projekt"
+    url = "/de/page/about"
+    weight = 20
+
+[[languages.de.menu.main]]
+    name = "Mithelfen"
+    url = "/de/page/contrib/"
+    weight = 25
+    
+[[languages.de.menu.main]]
+    name = "Dokumentation"
+    url = "/de/page/doc"
+    weight = 40
+
+[languages.en]
+    languageName = "English"
+    weight = 1
+
+[Params]
+  subtitle = "Research data services"
+  logo = "img/sciebo.png"
+  favicon = "img/favicon.ico"
+  dateFormat = "2 January 2006"
+  commit = false
+  rss = true
+  comments = true
+  mainSections = ["post"]
+
+#  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
+
+#[[Params.bigimg]]
+#  src = "img/triangle.jpg"
+#  desc = "Triangle"
+#[[Params.bigimg]]
+#  src = "img/sphere.jpg"
+#  desc = "Sphere"
+#[[Params.bigimg]]
+#  src = "img/hexagon.jpg"
+#  desc = "Hexagon"
+
+[Author]
+  name = "Peter Heiss"
+  email = "peter.heiss@uni-muenster.de"
+#  facebook = "username"
+#  googleplus = "+username" # or xxxxxxxxxxxxxxxxxxxxx
+#  gitlab = "username"
+#  github = "username"
+#  twitter = "username"
+#  reddit = "username"
+#  linkedin = "username"
+#  xing = "username"
+#  stackoverflow = "users/XXXXXXX/username"
+#  snapchat = "username"
+#  instagram = "username"
+#  youtube = "user/username" # or channel/channelname
+#  soundcloud = "username"
+#  spotify = "username"
+#  bandcamp = "username"
+#  itchio = "username"
+#  keybase = "username"
+
+[[menu.main]]
+    name = "Home"
+    url = ""
+    weight = 10
+
+[[menu.main]]
+    name = "Project"
+    url = "page/about/"
+    weight = 20
+
+#[[menu.main]]
+#    identifier = "samples"
+#    name = "Samples"
+#    weight = 2
+
+#[[menu.main]]
+#    parent = "samples"
+#    name = "Big Image Sample"
+#    url = "post/2017-03-07-bigimg-sample"
+#    weight = 1
+
+#[[menu.main]]
+#    parent = "samples"
+#    name = "Math Sample"
+#    url = "post/2017-03-05-math-sample"
+#    weight = 2
+
+#[[menu.main]]
+#    parent = "samples"
+#    name = "Code Sample"
+#    url = "post/2016-03-08-code-sample"
+#    weight = 3
+
+#[[menu.main]]
+#    name = "Tags"
+#    url = "tags"
+#    weight = 3
+
+[[menu.main]]
+    name = "Contribute"
+    url = "page/contrib/"
+    weight = 25
+    
+[[menu.main]]
+    name = "Doc"
+    url = "/doc/"
+    weight = 40
+
+
+# Documentation
+[[menu.doc]]
+    name = "Documentation"
+    identifier = "docs home"
+    pre = "<i class='fa fa-home'></i>"
+    url = "/doc/"
+    weight = -999
+
+[[menu.doc]]
+    name = "Getting started"
+    identifier = "installation"
+    pre = "<i class='fa fa-play'></i>"
+    url = "/doc/getting-started/"
+    weight = -900
+
+[[menu.doc]]
+    name = "Source Code"
+    identifier = "sourcecode"
+    pre = "<i class='fa fa-code'></i>"
+    url = "/doc/sourcecode/"
+    weight = 0
+
+[[menu.doc]]
+    name = "Contribute"
+    identifier = "contrib"
+    pre = "<i class='fa fa-code-fork'></i>"
+    url = "/doc/contribute/"
+    weight = -5
+    post = "border-top: 1px dotted #ccc;"
+
+[[menu.doc]]
+    name = "Architecture"
+    identifier = "arch"
+    pre = "<i class='fa fa-university'></i>"
+    weight = -300
+    post = "border-top: 1px dotted #ccc;"
+
+
+[[menu.doc]]
+    name = "Infrastructure"
+    identifier = "infrastructure"
+    pre = "<i class='fa fa-industry'></i>"
+    weight = -290
+
+[[menu.doc]]
+    name = "Adapters & Ports"
+    identifier = "adapter-port"
+    pre = "<i class='fa fa-map-o'></i>"
+    weight = -280
+
+[[menu.doc]]
+    name = "Use Cases"
+    identifier = "use-case"
+    pre = "<i class='fa fa-cogs'></i>"
+    weight = -270
+
+[[menu.doc]]
+    name = "Core"
+    identifier = "core"
+    pre = "<i class='fa fa-archive'></i>"
+    weight = -260
+

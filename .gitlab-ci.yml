@@ -1,0 +1,35 @@
+# All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
+image: python:3.8
+
+stages:
+  - test
+  - build
+  - deploy
+  - documentation
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+hugo:test:
+  image: registry.gitlab.com/pages/hugo:latest
+  stage: test
+  script:
+  - cd docs
+  - hugo
+  except:
+  - master
+
+include:
+  local: '/RDS/.gitlab-ci.yml'
+
+pages:
+  image: registry.gitlab.com/pages/hugo:latest
+  script:
+  - cd docs
+  - hugo
+  - mv public ../
+  artifacts:
+    paths:
+    - public
+  only:
+  - master

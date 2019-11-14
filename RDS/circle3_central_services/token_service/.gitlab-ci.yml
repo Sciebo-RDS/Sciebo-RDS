@@ -1,0 +1,14 @@
+variables:
+    FOLDER: /RDS/circle3_central_services/token_service
+
+test:token_service:
+  image: python:3.8
+  stage: test
+  script:
+  - whoami
+
+  only:
+    changes:
+    - $FOLDER/*
+  except:
+    - master

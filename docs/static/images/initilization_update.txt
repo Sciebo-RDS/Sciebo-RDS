@@ -1,0 +1,10 @@
+title Initialization & Update
+actor User
+participant NGINX
+participant RDPM
+participant Pulsar
+participant Zenodo
+
+Zenodo->Pulsar: Send ViewZenodo
+RDPM<-Pulsar: Get all Views
+NGINX<-RDPM: ByPass Cache for all new Views

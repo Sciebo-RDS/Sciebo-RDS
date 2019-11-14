@@ -1,0 +1,4 @@
+include:
+  local: "/RDS/circle3_central_services/metadata_capture/.gitlab-ci.yml"
+  local: "/RDS/circle3_central_services/project_manager/.gitlab-ci.yml"
+  local: "/RDS/circle3_central_services/token_service/.gitlab-ci.yml"

@@ -1,0 +1,435 @@
+openapi: 3.0.0
+info:
+  title: Port Zenodo
+  version: '1.0'
+  description: This document describes the interface of the port zenodo from the innermost circle of the rds architecture to the second circle.
+  contact:
+    name: Peter Heiss
+    email: peter.heiss@uni-muenster.de
+servers:
+  - url: 'http://port-invenio:3000'
+    description: port-zenodo
+paths:
+  '/deposition/{deposition-id}/creator/{creator-id}':
+    get:
+      tags:
+        - creator
+      description: Get informations about the given creator.
+      requestBody:
+        $ref: '#/components/requestBodies/creator_get'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/creator'
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found or no permission to view.
+      summary: Creator informations
+      parameters: []
+      security:
+        - invenio-token: []
+    put:
+      tags:
+        - creator
+      description: This endpoint updates and returns the informations about the given creator from zenodo.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/creator'
+            examples: {}
+        description: Empty values will not be updated.
+      responses:
+        '200':
+          description: 'This response signals, that the updates succeeded and returns the new values of the given creator.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/creator'
+        '401':
+          description: The given creator cannot be updated.
+        '404':
+          description: The given creator was not found.
+      summary: Get creator informations
+      security:
+        - invenio-token: []
+    parameters:
+      - schema:
+          type: integer
+        name: deposition-id
+        in: path
+        required: true
+      - schema:
+          type: integer
+        name: creator-id
+        in: path
+        required: true
+  '/deposition/{deposition-id}':
+    parameters:
+      - in: path
+        name: deposition-id
+        schema:
+          type: integer
+        description: Numeric ID of the deposit to get.
+        required: true
+    get:
+      summary: Get deposition informations by id
+      tags:
+        - deposit
+      description: Get the specified depositions.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deposit'
+        '401':
+          description: Unauthorized
+        '404':
+          description: "The given deposit doesn't exist."
+      security:
+        - invenio-token: []
+    put:
+      summary: Updates a deposition by id.
+      tags:
+        - deposit
+      description: Updates the specified deposition.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/deposit'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deposit'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      security:
+        - invenio-token: []
+  /deposition:
+    summary: Get all depositions.
+    description: Work with deposits
+    get:
+      tags:
+        - deposit
+      description: Get all depositions or specified one (id) from the given user repository.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/deposit'
+        '401':
+          description: Unauthorized
+        '404':
+          description: No depositions found.
+      summary: Get all deposition informations
+      security:
+        - invenio-token: []
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example: '1'
+              type: object
+              properties:
+                id:
+                  type: integer
+        description: An id (integer) to specify a deposition.
+    post:
+      tags:
+        - deposit
+      description: Add a new deposition to collection of the token user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/archive-invenio'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deposit'
+        '401':
+          description: Unauthorized
+      parameters: []
+      security:
+        - invenio-token: []
+  /:
+    get:
+      tags:
+        - misc
+      description: Shows all endpoints for this microservice.
+      operationId: api.sitemap.index
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples: {}
+      summary: Get sitemap
+    parameters: []
+  '/deposition/{id}/publish':
+    get:
+      summary: Get information about publish status
+      responses:
+        '200':
+          description: OK
+      description: Get the publish-status of the given deposition.
+      tags:
+        - deposit
+    put:
+      summary: Publish deposition
+      responses:
+        '200':
+          description: OK
+      description: Publish the specified invenio project.
+      security:
+        - invenio-token: []
+      tags:
+        - deposit
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+  '/deposition/{id}/export':
+    get:
+      summary: Export to invenio
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/archive-invenio'
+      description: Returns the structure of needed informations for an export to invenio.
+      tags:
+        - deposit
+    post:
+      summary: Export deposit
+      responses:
+        '200':
+          description: OK
+      description: Export the specified file with metadata to invenio.
+      security:
+        - invenio-token: []
+        - storage-token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/archive-invenio'
+      tags:
+        - deposit
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+  '/deposition/{deposition-id}/creator':
+    parameters:
+      - schema:
+          type: integer
+        name: deposition-id
+        in: path
+        required: true
+    get:
+      summary: Get creator list from deposition.
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      security:
+        - invenio-token: []
+      description: Returns information about the creators from the specified deposition.
+      tags:
+        - deposit
+    put:
+      summary: Update the creatorlist from deposition
+      responses:
+        '200':
+          description: OK
+        '304':
+          description: Not Modified
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/creator'
+        description: 'If the array is empty, nothing changed. Otherwise the creators overwrite the previous one. '
+      description: Updates the specified creator (id) to the given values. Empty values are not updated.
+      operationId: ''
+      tags:
+        - deposit
+  /application_token:
+    get:
+      summary: Get application token
+      tags:
+        - token
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationToken'
+            application/xml:
+              schema:
+                $ref: ../../models/applicationtoken.v1.yaml
+      description: |-
+        Returns everything needed for oauth 2.0 support.
+        https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/
+components:
+  schemas:
+    creator:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        affiliation:
+          type: string
+        orcid:
+          type: string
+        gnd:
+          type: string
+      description: 'Represents a creator for a deposition in zenodo. Taken from https://developers.zenodo.org/#representation'
+      x-tags:
+        - creator
+    metadata:
+      type: object
+      description: "The given values will be used to represent zenodos informationfields about depositions / upload. It's taken from the zenodo api: https://developers.zenodo.org/#representation"
+      properties:
+        title:
+          type: string
+        upload_type:
+          type: string
+          description: Controlled vocabulary
+        description:
+          type: string
+        creators:
+          type: array
+          items:
+            $ref: '#/components/schemas/creator'
+      title: ''
+      x-tags:
+        - metadata
+    deposit:
+      type: object
+      properties:
+        id:
+          type: integer
+        metadata:
+          $ref: '#/components/schemas/metadata'
+      x-tags:
+        - deposit
+    archive-invenio:
+      title: archive-zenodo
+      type: object
+      description: This archive represents an file archive for invenio.
+      properties:
+        metadata:
+          $ref: '#/components/schemas/metadata'
+        filepath:
+          type: string
+          description: The service will use this path to pull the archive from the storage port.
+      x-tags:
+        - deposit
+    ApplicationToken:
+      description: |-
+        This model describes the object, which represents all needed informations for oauth2.
+        https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/
+      type: object
+      properties:
+        authorize_url:
+          type: string
+          description: ' Authorize URL (GET)'
+        access_token_url:
+          type: string
+          description: ' Access token URL (POST)'
+        client_id:
+          type: string
+          description: ''
+        client_secret:
+          type: string
+      required:
+        - authorize_url
+        - access_token_url
+        - client_id
+        - client_secret
+      x-tags:
+        - token
+      title: ApplicationToken
+  parameters:
+    deposit_id:
+      name: deposit_id
+      in: query
+      required: true
+      description: The id for a deposition.
+      schema:
+        type: integer
+  requestBodies:
+    deposit:
+      description: 'Deposit, which need to be added or update to zenodo.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/metadata'
+      required: true
+    creator_get:
+      description: Only user-id from creator is needed.
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+      required: true
+  securitySchemes:
+    invenio-token:
+      name: Token for invenio
+      type: apiKey
+      in: header
+      description: An authentication token for zenodo.
+    storage-token:
+      name: Token for storage
+      type: apiKey
+      in: header
+      description: ''
+tags:
+  - name: deposit
+    description: All about depositions
+  - name: creator
+    description: All about user and deposition creators
+  - name: misc
+    description: Everything else.
