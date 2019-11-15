@@ -114,9 +114,9 @@ class Zenodo(object):
             """
 
         _, filename = os.path.split(path_to_file)
-        data = {"filename": filename}
+        data = {"name": filename}
 
-        files = {'file': open(path_to_file.expanduser(), 'rb')}
+        files = {'file': open(os.path.expanduser(path_to_file), 'rb')}
         r = requests.post(
             f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}/files',
             params={'access_token': self.api_key}, data=data,

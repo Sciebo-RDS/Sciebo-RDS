@@ -20,6 +20,9 @@ class TestZenodoMethods(unittest.TestCase):
     def setUp(self):
         self.clean_up()
 
+    def tearDown(self):
+        self.clean_up()
+
     def test_check_token(self):
         expected = True
         result = Zenodo.check_token(api_key)
@@ -75,12 +78,12 @@ class TestZenodoMethods(unittest.TestCase):
 
     def test_create_new_filled_deposit(self):
         import time
-        expected_title = "Test deposition"
+        expected_title = "Python Uploader to Zenodo"
         metadata = {
             'title': expected_title,
             'upload_type': 'poster',
-            'description': 'This is my first upload for RDS with portZenodo',
-            'creators': [{'name': 'Doe, John',
+            'description': 'This is a library for python to enable your app publishising files on zenodo.',
+            'creators': [{'name': 'Heiss, Peter',
                           'affiliation': 'Sciebo RDS'}],
         }
 
@@ -104,10 +107,24 @@ class TestZenodoMethods(unittest.TestCase):
             api_key, id=id, return_response=True)  # should be found
         json = result.json()
 
-        # title should be empty
         self.assertNotEqual(result.json(), [])  # should not be an empty
         self.assertEqual(json["title"], expected_title,
                          msg=f"{result.content}")
+
+        # add a file to deposition
+        filepath = "./lib/upload_zenodo.py"
+        result = Zenodo.upload_new_file_to_deposition(api_key, deposition_id=id, path_to_file=filepath, return_response=True)
+
+        # file was uploaded
+        self.assertEqual(result.status_code, 201, msg=f"{result.content}")
+        
+        json = result.json()
+        from hashlib import md5
+        import os
+        #equal file on zenodo
+        file = open(os.path.expanduser(filepath), 'rb').read()
+        hash = md5(file).hexdigest()
+        self.assertEqual(json["checksum"], hash)
 
         # remove it
         result = Zenodo.remove_deposition(api_key, id=id, return_response=True)
