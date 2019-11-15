@@ -1,5 +1,6 @@
 variables:
     FOLDER: /RDS/circle1_adapters_and_ports/port_zenodo
+    ZENODO_API_KEY: $GITLAB_ZENODO_API_KEY
 
 test:port_zenodo3.6:
     image: python:3.6
@@ -54,13 +55,42 @@ test:port_zenodo3.8:
 
 build:port_zenodo:
     image: python:3.8
+    services:
+    - docker:dind
+
+    tags:
+    -  docker-in-docker
+
+    variables:
+        http_proxy: http://wwwproxy.uni-muenster.de:80
+        HTTP_PROXY: http://wwwproxy.uni-muenster.de:80
+        HTTPS_PROXY: http://wwwproxy.uni-muenster.de:80
+        https_proxy: http://wwwproxy.uni-muenster.de:80
+        no_proxy: "docker,localhost,127.0.0.1,0.0.0.0,.wwu.de,.uni-muenster.de,.wwu.io,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,169.254.0.0/16"
+
+        DOCKER_HOST: tcp://docker:2375
+        DOCKER_DRIVER: overlay2
 
     stage: build
 
-    script:
+    script: # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#using-docker-caching
     - cd $FOLDER
     - pip install -r requirements.txt
-    - docker build .
+
+    - apt update && apt upgrade -y
+    - apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+    - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+    - apt-get update
+    - apt-get install -y docker-ce docker-ce-cli containerd.io
+
+    - docker info
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --tag $CI_REGISTRY_IMAGE:latest ./
+    - docker build ./
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker push $CI_REGISTRY_IMAGE:latest
 
 
     only:
