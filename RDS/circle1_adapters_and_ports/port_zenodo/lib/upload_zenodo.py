@@ -6,7 +6,7 @@ import logging
 
 class Zenodo(object):
     log = logging.getLogger("")
-    zenodo_address = os.getenv("ZENODO_ADDRESS", "http://sandbox.zenodo.org")
+    zenodo_address = os.getenv("ZENODO_ADDRESS", "https://sandbox.zenodo.org")
 
     def __init__(self, api_key):
         self.api_key = api_key
@@ -75,27 +75,33 @@ class Zenodo(object):
     def create_new_deposition_internal(self, metadata=None, return_response=False):
         """ Require: None
             Returns: Boolean, Alternative: json if return_response=True
-            Description: Creates a new deposition. You can get the id with r.json()['id']"""
+            Description: Creates a new deposition. You can get the id with r.json()['id']
+            If metadata is specified, it will changes metadata after creating.
+            """
         self.log.debug("Create new deposition: Starts")
 
         headers = {"Content-Type": "application/json"}
 
-        data = {"metadata": metadata} if metadata is not None else {}
-
         r = requests.post(f'{self.zenodo_address}/api/deposit/depositions',
-                          params={'access_token': self.api_key}, json=data,
+                          params={'access_token': self.api_key}, json={},
                           headers=headers)
 
         self.log.debug(
             "Create new deposition: Status Code: {}".format(r.status_code))
 
-        return r.status_code == 200 if not return_response else r
+        if r.status_code != 201:
+            return False if not return_response else r
+
+        if metadata is not None and isinstance(metadata, dict):
+            return self.change_metadata_in_deposition(r.json()["id"], metadata, return_response=return_response)
+
+        return True if not return_response else r
 
     def remove_deposition_internal(self, id, return_response=False):
         r = requests.delete(f'{self.zenodo_address}/api/deposit/depositions/{id}',
                             params={"access_token": self.api_key})
 
-        return r.status_code == 201 if return_response else r
+        return r.status_code == 201 if not return_response else r
 
     def upload_new_file_to_deposition_internal(self, deposition_id, path_to_file, return_response=False):
         """ Require:
@@ -118,7 +124,7 @@ class Zenodo(object):
 
         return r.status_code == 201 if not return_response else r
 
-    def change_metadata_in_deposition_internal(self, deposition_id, data, return_response=False):
+    def change_metadata_in_deposition_internal(self, deposition_id, metadata, return_response=False):
         """ Require:
                 A deposit id (from get_deposition or create_new_deposition; r.json()['id'])
                 A data-dict json-like object
@@ -136,6 +142,9 @@ class Zenodo(object):
             Returns:
             Description: Set the metadata to the given data or changes the values to the corresponding keys."""
         headers = {"Content-Type": "application/json"}
+
+        data = {}
+        data["metadata"] = metadata
 
         r = requests.put(f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}',
                          params={'access_token': self.api_key}, data=json.dumps(data),
