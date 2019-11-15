@@ -29,11 +29,6 @@ hugo:test:
   tags:
   -  autoscaling
 
-  only:
-    changes:
-      - $FOLDER
-      - $FOLDER/**/*
-
   except:
   - master
 
