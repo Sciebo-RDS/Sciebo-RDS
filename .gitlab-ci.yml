@@ -26,6 +26,9 @@ hugo:test:
   script:
   - echo $FOLDER
 
+  tags:
+  -  autoscaling
+
   except:
   - master
 
@@ -47,12 +50,12 @@ hugo:test:
       DOCKER_DRIVER: overlay2
 
 include:
-  - '/RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml'
-  - '/RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml'
-  - '/RDS/circle2_use_cases/exporter/.gitlab-ci.yml'
-  - '/RDS/circle3_central_services/metadata_capture/.gitlab-ci.yml'
-  - '/RDS/circle3_central_services/project_manager/.gitlab-ci.yml'
-  - '/RDS/circle3_central_services/token_service/.gitlab-ci.yml'
+  - 'RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml'
+  - 'RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml'
+  - 'RDS/circle2_use_cases/exporter/.gitlab-ci.yml'
+  - 'RDS/circle3_central_services/metadata_capture/.gitlab-ci.yml'
+  - 'RDS/circle3_central_services/project_manager/.gitlab-ci.yml'
+  - 'RDS/circle3_central_services/token_service/.gitlab-ci.yml'
 
 pages:
   image: registry.gitlab.com/pages/hugo:latest

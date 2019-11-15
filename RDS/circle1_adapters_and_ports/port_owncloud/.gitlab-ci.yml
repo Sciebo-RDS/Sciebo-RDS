@@ -1,7 +1,7 @@
 .tests_port_owncloud:
   extends: .tests
   variables:
-    FOLDER: /RDS/circle1_adapters_and_ports/exporter
+    FOLDER: RDS/circle1_adapters_and_ports/exporter
 
 test:exporter:
   image: python:3.8

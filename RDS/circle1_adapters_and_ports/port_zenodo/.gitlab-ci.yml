@@ -2,7 +2,7 @@
     extends: .tests
     variables:
         ZENODO_API_KEY: $GITLAB_ZENODO_API_KEY
-        FOLDER: /RDS/circle1_adapters_and_ports/port_zenodo
+        FOLDER: RDS/circle1_adapters_and_ports/port_zenodo
 
     script:
     - cd $FOLDER
