@@ -9,7 +9,7 @@ stages:
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
-  FOLDER: /
+  FOLDER: ./
 
 hugo:test:
   image: registry.gitlab.com/pages/hugo:latest
@@ -24,14 +24,13 @@ hugo:test:
   stage: test
 
   script:
-  - echo nothing here to execute
+  - echo $FOLDER
 
-  only:
-    refs:
-      - merge_requests
-    changes:
-    - $FOLDER
-    - $FOLDER/**/*
+  tags:
+  -  autoscaling
+
+  except:
+  - master
 
 .builds:
   stage: build
@@ -40,14 +39,23 @@ hugo:test:
     refs:
     - master
 
+  services:
+    - docker:dind
+
+  tags:
+  -  docker-in-docker
+
+  variables:
+      DOCKER_HOST: tcp://docker:2375
+      DOCKER_DRIVER: overlay2
 
 include:
-  - '/RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml'
-  - '/RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml'
-  - '/RDS/circle2_use_cases/exporter/.gitlab-ci.yml'
-  - '/RDS/circle3_central_services/metadata_capture/.gitlab-ci.yml'
-  - '/RDS/circle3_central_services/project_manager/.gitlab-ci.yml'
-  - '/RDS/circle3_central_services/token_service/.gitlab-ci.yml'
+  - 'RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml'
+  - 'RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml'
+  - 'RDS/circle2_use_cases/exporter/.gitlab-ci.yml'
+  - 'RDS/circle3_central_services/metadata_capture/.gitlab-ci.yml'
+  - 'RDS/circle3_central_services/project_manager/.gitlab-ci.yml'
+  - 'RDS/circle3_central_services/token_service/.gitlab-ci.yml'
 
 pages:
   image: registry.gitlab.com/pages/hugo:latest

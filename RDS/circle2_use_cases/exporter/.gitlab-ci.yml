@@ -1,7 +1,7 @@
 .tests_exporter:
   extends: .tests
   variables:
-    FOLDER: /RDS/circle2_use_cases/exporter
+    FOLDER: RDS/circle2_use_cases/exporter
 
 test:exporter:
   image: python:3.8
