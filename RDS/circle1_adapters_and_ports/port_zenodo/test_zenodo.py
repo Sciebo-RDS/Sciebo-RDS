@@ -8,6 +8,10 @@ api_key = os.getenv("ZENODO_API_KEY", default="ABC")
 class TestZenodoMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        result = Zenodo.check_token(api_key)
+        if not result:
+            return
+        
         cls().clean_up()
 
     def clean_up(self):
@@ -22,11 +26,6 @@ class TestZenodoMethods(unittest.TestCase):
 
     def tearDown(self):
         self.clean_up()
-
-    def test_check_token(self):
-        expected = True
-        result = Zenodo.check_token(api_key)
-        self.assertEqual(result, expected)
 
     def test_get_deposition(self):
         result = Zenodo.get_deposition(api_key, return_response=True)
