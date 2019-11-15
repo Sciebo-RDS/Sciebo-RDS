@@ -24,13 +24,14 @@ hugo:test:
   stage: test
 
   script:
-  - whoami
+  - echo nothing here to execute
 
   only:
+    refs:
+      - merge_requests
     changes:
+    - $FOLDER
     - $FOLDER/**/*
-  except:
-    - master
 
 .builds:
   stage: build
@@ -38,8 +39,6 @@ hugo:test:
   only:
     refs:
     - master
-    changes:
-    - $FOLDER/**/*
 
 
 include:
