@@ -30,8 +30,12 @@ hugo:test:
   -  autoscaling
 
   only:
-    refs:
-      - merge_requests
+    changes:
+      - $FOLDER
+      - $FOLDER/**/*
+
+  except:
+  - master
 
 .builds:
   stage: build
