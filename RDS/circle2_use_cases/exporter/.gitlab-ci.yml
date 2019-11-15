@@ -1,14 +1,8 @@
-variables:
+.tests_exporter:
+  extends: .tests
+  variables:
     FOLDER: /RDS/circle2_use_cases/exporter
 
 test:exporter:
   image: python:3.8
-  stage: test
-  script:
-  - whoami
-
-  only:
-    changes:
-    - $FOLDER/*
-  except:
-    - master
+  extends: .tests_exporter

@@ -1,5 +1,8 @@
-test:port_owncloud:
+.tests_port_owncloud:
+  extends: .tests
+  variables:
+    FOLDER: /RDS/circle1_adapters_and_ports/exporter
+
+test:exporter:
   image: python:3.8
-  stage: test
-  script:
-  - whoami
+  extends: .tests_port_owncloud
