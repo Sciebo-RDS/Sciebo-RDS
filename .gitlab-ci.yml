@@ -9,7 +9,7 @@ stages:
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
-  FOLDER: /
+  FOLDER: ./
 
 hugo:test:
   image: registry.gitlab.com/pages/hugo:latest
@@ -32,9 +32,6 @@ hugo:test:
   only:
     refs:
       - merge_requests
-    changes:
-      - $FOLDER
-      - $FOLDER/**/*
 
 .builds:
   stage: build
