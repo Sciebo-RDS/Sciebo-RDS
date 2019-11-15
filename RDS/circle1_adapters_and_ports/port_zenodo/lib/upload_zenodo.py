@@ -6,7 +6,42 @@ import logging
 
 class Zenodo(object):
     log = logging.getLogger("")
-    zenodo_address = "http://sandbox.zenodo.org"
+    zenodo_address = os.getenv("ZENODO_ADDRESS", "http://sandbox.zenodo.org")
+
+    def __init__(self, api_key):
+        self.api_key = api_key
+
+        # monkeypatching all functions with internals
+        self.get_deposition = self.get_deposition_internal
+        self.create_new_deposition = self.create_new_deposition_internal
+        self.remove_deposition = self.remove_deposition_internal
+        self.upload_new_file_to_deposition = self.upload_new_file_to_deposition_internal
+        self.change_metadata_in_deposition = self.change_metadata_in_deposition_internal
+        self.publish_deposition = self.publish_deposition_internal
+
+    @classmethod
+    def get_deposition(cls, api_key, *args, **kwargs):
+        return cls(api_key).get_deposition(*args, **kwargs)
+
+    @classmethod
+    def create_new_deposition(cls, api_key, *args, **kwargs):
+        return cls(api_key).create_new_deposition_internal(*args, **kwargs)
+
+    @classmethod
+    def remove_deposition(cls, api_key, *args, **kwargs):
+        return cls(api_key).remove_deposition(*args, **kwargs)
+
+    @classmethod
+    def upload_new_file_to_deposition(cls, api_key, *args, **kwargs):
+        return cls(api_key).upload_new_file_to_deposition(*args, **kwargs)
+
+    @classmethod
+    def change_metadata_in_deposition(cls, api_key, *args, **kwargs):
+        return cls(api_key).change_metadata_in_deposition(*args, **kwargs)
+
+    @classmethod
+    def publish_deposition(cls, api_key, *args, **kwargs):
+        return cls(api_key).publish_deposition(*args, **kwargs)
 
     @classmethod
     def check_token(cls, api_key):
@@ -14,61 +49,60 @@ class Zenodo(object):
 
         Returns `True` if the token is correct and usable, otherwise `False`."""
         cls.log.debug("Check token: Starts")
-        r = cls.get_deposition(api_key, True)
+        r = cls.get_deposition(api_key, return_response=True)
         cls.log.debug(
             "Check Token: Status Code: {}".format(r.status_code))
 
         return r.status_code == 200
 
-    @classmethod
-    def get_deposition(cls, api_key, return_request=False):
+    def get_deposition_internal(self, id=-1, return_response=False):
         """ Require: None
-                Optional return_request: For testing purposes, you can set this to True.
-            Returns: json, Alternative: request if return_request=True 
+                Optional return_response: For testing purposes, you can set this to True.
+            Returns: json, Alternative: request if return_response=True
             Description: Get all depositions for the account, which owns the api-key."""
 
-        r = requests.get("{}/api/deposit/depositions".format(
-            os.getenv("ZENODO_ADDRESS", default=cls.zenodo_address)
-        ),
-            params={"access_token": api_key})
-        cls.log.debug(
-            "Get Depositions: Status Code: {}".format(r.status_code))
-
-        if return_request:
-            return r
+        if id > -1:
+            r = requests.get(f"{self.zenodo_address}/api/deposit/depositions/{id}",
+                             params={"access_token": self.api_key})
         else:
-            return r.json()
+            r = requests.get(f"{self.zenodo_address}/api/deposit/depositions",
+                             params={"access_token": self.api_key})
+            self.log.debug(
+                "Get Depositions: Status Code: {}".format(r.status_code))
 
-    @classmethod
-    def create_new_deposition(cls, api_key, return_request=False):
+        return r.json() if not return_response else r
+
+    def create_new_deposition_internal(self, metadata=None, return_response=False):
         """ Require: None
-            Returns: Boolean, Alternative: json if return_request=True 
+            Returns: Boolean, Alternative: json if return_response=True
             Description: Creates a new deposition. You can get the id with r.json()['id']"""
-        cls.log.debug("Create new deposition: Starts")
+        self.log.debug("Create new deposition: Starts")
 
         headers = {"Content-Type": "application/json"}
 
-        r = requests.post('{}/api/deposit/depositions'.format(
-            os.getenv("ZENODO_ADDRESS", default=cls.zenodo_address)
-        ),
-            params={'access_token': api_key}, json={},
-            headers=headers)
+        data = {"metadata": metadata} if metadata is not None else {}
 
-        cls.log.debug(
+        r = requests.post(f'{self.zenodo_address}/api/deposit/depositions',
+                          params={'access_token': self.api_key}, json=data,
+                          headers=headers)
+
+        self.log.debug(
             "Create new deposition: Status Code: {}".format(r.status_code))
 
-        if return_request:
-            return r.json()
-        else:
-            return r.status_code == 200
+        return r.status_code == 200 if not return_response else r
 
-    @classmethod
-    def upload_new_file_to_deposition(cls, deposition_id, path_to_file, api_key, return_request=False):
+    def remove_deposition_internal(self, id, return_response=False):
+        r = requests.delete(f'{self.zenodo_address}/api/deposit/depositions/{id}',
+                            params={"access_token": self.api_key})
+
+        return r.status_code == 201 if return_response else r
+
+    def upload_new_file_to_deposition_internal(self, deposition_id, path_to_file, return_response=False):
         """ Require:
                 A deposit id (from get_deposition or create_new_deposition; r.json()['id'])
                 A path to a file
                     Example: ~/mydatapackage.csv
-            Returns: Boolean, Alternative: json if return_request=True 
+            Returns: Boolean, Alternative: json if return_response=True
             Description: Upload one(!) file to the deposition_id. This is a restriction from zenodo.
             (More: https://developers.zenodo.org/#deposition-files)
             """
@@ -77,20 +111,14 @@ class Zenodo(object):
         data = {"filename": filename}
 
         files = {'file': open(path_to_file.expanduser(), 'rb')}
-        r = requests.post('{}/api/deposit/depositions/{}/files'.format(
-            os.getenv("ZENODO_ADDRESS",
-                      default=cls.zenodo_address), deposition_id
-        ),
-            params={'access_token': api_key}, data=data,
+        r = requests.post(
+            f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}/files',
+            params={'access_token': self.api_key}, data=data,
             files=files)
 
-        if return_request:
-            return r.json()
-        else:
-            return r.status_code == 201
+        return r.status_code == 201 if not return_response else r
 
-    @classmethod
-    def change_metadata_in_deposition(cls, deposition_id, data, api_key):
+    def change_metadata_in_deposition_internal(self, deposition_id, data, return_response=False):
         """ Require:
                 A deposit id (from get_deposition or create_new_deposition; r.json()['id'])
                 A data-dict json-like object
@@ -109,23 +137,16 @@ class Zenodo(object):
             Description: Set the metadata to the given data or changes the values to the corresponding keys."""
         headers = {"Content-Type": "application/json"}
 
-        r = requests.put('{}/api/deposit/depositions/{}'.format(
-            os.getenv("ZENODO_ADDRESS",
-                      default=cls.zenodo_address), deposition_id
-        ),
-            params={'access_token': api_key}, data=json.dumps(data),
-            headers=headers)
-        return r.status_code == 200
+        r = requests.put(f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}',
+                         params={'access_token': self.api_key}, data=json.dumps(data),
+                         headers=headers)
+        return r.status_code == 200 if not return_response else r
 
-    @classmethod
-    def publish_deposition(cls, deposition_id, api_key):
-        r = requests.post('{}/api/deposit/depositions/{}/actions/publish'.format(
-            os.getenv("ZENODO_ADDRESS",
-                      default=cls.zenodo_address), deposition_id
-        ),
-            params={'access_token': api_key})
+    def publish_deposition_internal(self, deposition_id, return_response=False):
+        r = requests.post(f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}/actions/publish',
+                          params={'access_token': self.api_key})
 
-        return r.status_code == 202
+        return r.status_code == 202 if not return_response else r
 
 
 if __name__ == "__main__":
