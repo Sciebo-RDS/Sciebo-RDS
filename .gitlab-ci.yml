@@ -27,11 +27,11 @@ hugo:test:
   - echo $FOLDER
 
   only:
-    refs:
-      - merge_requests
     changes:
     - $FOLDER
     - $FOLDER/**/*
+  except:
+  - master
 
 .builds:
   stage: build
@@ -49,7 +49,6 @@ hugo:test:
   variables:
       DOCKER_HOST: tcp://docker:2375
       DOCKER_DRIVER: overlay2
-
 
 include:
   - '/RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml'
