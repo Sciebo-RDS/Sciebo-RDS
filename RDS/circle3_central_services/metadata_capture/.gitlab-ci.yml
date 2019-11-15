@@ -1,14 +1,7 @@
-variables:
+ 
+.tests_metadata_capture:
+  variables:
     FOLDER: /RDS/circle3_central_services/metadata_capture
 
 test:metadata_capture:
-  image: python:3.8
-  stage: test
-  script:
-  - whoami
-
-  only:
-    changes:
-    - $FOLDER
-  except:
-    - master
+  extends: .tests_metadata_capture

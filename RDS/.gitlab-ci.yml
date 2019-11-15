@@ -1,4 +1,0 @@
-include:
-  local: '/RDS/circle1_adapters_and_ports/.gitlab-ci.yml'
-  local: '/RDS/circle2_use_cases/.gitlab-ci.yml'
-  local: '/RDS/circle3_central_services/.gitlab-ci.yml'
