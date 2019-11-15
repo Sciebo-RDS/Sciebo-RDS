@@ -1,7 +1,12 @@
-.tests_port_zenodo:
-    extends: .tests
+.port_zenodo:
     variables:
         FOLDER: RDS/circle1_adapters_and_ports/port_zenodo
+        
+.tests_port_zenodo:
+    extends: 
+    - .tests
+    - .port_zenodo
+
 
     script:
     - cd $FOLDER
@@ -23,7 +28,9 @@ test:port_zenodo3.8:
 
 build:port_zenodo:
     image: python:3.8
-    extends: .builds
+    extends: 
+    - .builds
+    - .port_zenodo
 
     script: # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#using-docker-caching
     - cd $FOLDER
