@@ -1,2 +1,0 @@
-include:
-  local: '/RDS/circle2_use_cases/exporter/.gitlab-ci.yml'

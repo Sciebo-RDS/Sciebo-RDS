@@ -1,14 +1,7 @@
-variables:
-    FOLDER: /RDS/circle3_central_services/project_manager
+
+.tests_project_manager:
+  variables:
+      FOLDER: /RDS/circle3_central_services/project_manager
 
 test:project_manager:
-  image: python:3.8
-  stage: test
-  script:
-  - whoami
-
-  only:
-    changes:
-    - $FOLDER
-  except:
-    - master
+  extends: .tests_project_manager
