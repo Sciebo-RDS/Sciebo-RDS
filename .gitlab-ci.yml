@@ -24,7 +24,7 @@ hugo:test:
   stage: test
 
   script:
-  - echo nothing here to execute
+  - echo $FOLDER
 
   only:
     refs:
@@ -39,6 +39,22 @@ hugo:test:
   only:
     refs:
     - master
+
+  services:
+    - docker:dind
+
+  tags:
+  -  docker-in-docker
+
+  variables:
+      http_proxy: http://wwwproxy.uni-muenster.de:80
+      HTTP_PROXY: http://wwwproxy.uni-muenster.de:80
+      HTTPS_PROXY: http://wwwproxy.uni-muenster.de:80
+      https_proxy: http://wwwproxy.uni-muenster.de:80
+      no_proxy: "docker,localhost,127.0.0.1,0.0.0.0,.wwu.de,.uni-muenster.de,.wwu.io,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,169.254.0.0/16"
+
+      DOCKER_HOST: tcp://docker:2375
+      DOCKER_DRIVER: overlay2
 
 
 include:
