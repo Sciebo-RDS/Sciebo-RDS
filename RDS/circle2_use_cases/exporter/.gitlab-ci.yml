@@ -1,4 +1,5 @@
 .tests_exporter:
+  extends: .tests
   variables:
     FOLDER: /RDS/circle2_use_cases/exporter
 

@@ -1,5 +1,6 @@
 
 .tests_project_manager:
+  extends: .tests
   variables:
       FOLDER: /RDS/circle3_central_services/project_manager
 

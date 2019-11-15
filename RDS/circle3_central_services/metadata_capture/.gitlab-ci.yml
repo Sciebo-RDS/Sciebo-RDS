@@ -1,5 +1,6 @@
  
 .tests_metadata_capture:
+  extends: .tests
   variables:
     FOLDER: /RDS/circle3_central_services/metadata_capture
 
