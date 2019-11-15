@@ -47,7 +47,5 @@ build:port_zenodo:
     only:
         refs:
         - master
-        changes:
-        - $FOLDER/*
 
     
