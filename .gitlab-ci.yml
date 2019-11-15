@@ -29,8 +29,12 @@ hugo:test:
   tags:
   -  autoscaling
 
-  except:
-  - master
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - $FOLDER
+      - $FOLDER/**/*
 
 .builds:
   stage: build
