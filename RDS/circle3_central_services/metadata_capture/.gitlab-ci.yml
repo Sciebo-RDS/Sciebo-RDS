@@ -9,6 +9,6 @@ test:metadata_capture:
 
   only:
     changes:
-    - $FOLDER/*
+    - $FOLDER
   except:
     - master

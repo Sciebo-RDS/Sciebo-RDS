@@ -14,7 +14,7 @@ test:port_zenodo3.6:
 
     only:
         changes:
-        - $FOLDER/*
+        - $FOLDER
     except:
     - master
 
@@ -31,7 +31,7 @@ test:port_zenodo3.7:
 
     only:
         changes:
-        - $FOLDER/*
+        - $FOLDER
     except:
     - master
 
@@ -48,7 +48,7 @@ test:port_zenodo3.8:
 
     only:
         changes:
-        - $FOLDER/*
+        - $FOLDER
     except:
     - master
 
@@ -67,5 +67,5 @@ build:port_zenodo:
         refs:
         - master
         changes:
-        - $FOLDER/*
+        - $FOLDER
     

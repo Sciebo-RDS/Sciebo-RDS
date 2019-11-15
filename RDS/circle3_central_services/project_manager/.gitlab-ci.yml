@@ -9,6 +9,6 @@ test:project_manager:
 
   only:
     changes:
-    - $FOLDER/*
+    - $FOLDER
   except:
     - master
