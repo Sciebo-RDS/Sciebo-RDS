@@ -34,7 +34,6 @@ build:port_zenodo:
 
     script: # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#using-docker-caching
     - cd $FOLDER
-    - pip install -r requirements.txt
 
     - apt update && apt upgrade -y
     - apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
