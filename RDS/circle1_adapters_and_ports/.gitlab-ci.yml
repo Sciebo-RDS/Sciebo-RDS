@@ -1,3 +1,0 @@
-include:
-  local: '/RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml'
-  local: '/RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml'

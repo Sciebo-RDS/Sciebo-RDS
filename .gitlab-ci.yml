@@ -9,6 +9,7 @@ stages:
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+  FOLDER: /
 
 hugo:test:
   image: registry.gitlab.com/pages/hugo:latest
@@ -18,9 +19,35 @@ hugo:test:
   - hugo
   except:
   - master
+    
+.tests:
+  stage: test
+
+  script:
+  - echo nothing here to execute
+
+  only:
+    refs:
+      - merge_requests
+    changes:
+    - $FOLDER
+    - $FOLDER/**/*
+
+.builds:
+  stage: build
+
+  only:
+    refs:
+    - master
+
 
 include:
-  local: '/RDS/.gitlab-ci.yml'
+  - '/RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml'
+  - '/RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml'
+  - '/RDS/circle2_use_cases/exporter/.gitlab-ci.yml'
+  - '/RDS/circle3_central_services/metadata_capture/.gitlab-ci.yml'
+  - '/RDS/circle3_central_services/project_manager/.gitlab-ci.yml'
+  - '/RDS/circle3_central_services/token_service/.gitlab-ci.yml'
 
 pages:
   image: registry.gitlab.com/pages/hugo:latest

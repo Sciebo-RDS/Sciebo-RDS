@@ -1,62 +1,32 @@
-variables:
-    FOLDER: /RDS/circle1_adapters_and_ports/port_zenodo
-    ZENODO_API_KEY: $GITLAB_ZENODO_API_KEY
+.tests_port_zenodo:
+    extends: .tests
+    variables:
+        ZENODO_API_KEY: $GITLAB_ZENODO_API_KEY
+        FOLDER: /RDS/circle1_adapters_and_ports/port_zenodo
+
+    script:
+    - cd $FOLDER
+    - pip install -r requirements.txt
+    - pip install -r requirements-dev.txt
+    - pytest
 
 test:port_zenodo3.6:
+    extends: .tests_port_zenodo
     image: python:3.6
 
-    stage: test
-
-    script:
-    - cd $FOLDER
-    - pip install -r requirements.txt
-    - pip install -r requirements-dev.txt
-    - pytest
-
-    only:
-        changes:
-        - $FOLDER/*
-    except:
-    - master
-
 test:port_zenodo3.7:
+    extends: .tests_port_zenodo
     image: python:3.7
 
-    stage: test
-
-    script:
-    - cd $FOLDER
-    - pip install -r requirements.txt
-    - pip install -r requirements-dev.txt
-    - pytest
-
-    only:
-        changes:
-        - $FOLDER/*
-    except:
-    - master
-
 test:port_zenodo3.8:
+    extends: .tests_port_zenodo
     image: python:3.8
-
-    stage: test
-
-    script:
-    - cd $FOLDER
-    - pip install -r requirements.txt
-    - pip install -r requirements-dev.txt
-    - pytest
-
-    only:
-        changes:
-        - $FOLDER/*
-    except:
-    - master
 
 build:port_zenodo:
     image: python:3.8
     services:
     - docker:dind
+    extends: .builds
 
     tags:
     -  docker-in-docker
@@ -70,9 +40,7 @@ build:port_zenodo:
 
         DOCKER_HOST: tcp://docker:2375
         DOCKER_DRIVER: overlay2
-
-    stage: build
-
+    
     script: # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#using-docker-caching
     - cd $FOLDER
     - pip install -r requirements.txt
@@ -98,4 +66,5 @@ build:port_zenodo:
         - master
         changes:
         - $FOLDER/*
+
     

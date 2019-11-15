@@ -9,6 +9,6 @@ test:token_service:
 
   only:
     changes:
-    - $FOLDER/*
+    - $FOLDER
   except:
     - master
