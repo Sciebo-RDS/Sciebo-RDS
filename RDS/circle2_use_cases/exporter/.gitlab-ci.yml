@@ -9,6 +9,6 @@ test:exporter:
 
   only:
     changes:
-    - $FOLDER/*
+    - $FOLDER
   except:
     - master
