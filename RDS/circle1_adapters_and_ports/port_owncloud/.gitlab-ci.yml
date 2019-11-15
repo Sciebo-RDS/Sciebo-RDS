@@ -1,3 +1,8 @@
-test:port_owncloud:
-  image: python:3.8
+.tests_port_owncloud:
   extends: .tests
+  variables:
+    FOLDER: /RDS/circle2_use_cases/exporter
+
+test:exporter:
+  image: python:3.8
+  extends: .tests_port_owncloud

@@ -3,4 +3,5 @@
     FOLDER: /RDS/circle2_use_cases/exporter
 
 test:exporter:
+  image: python:3.8
   extends: .tests_exporter
