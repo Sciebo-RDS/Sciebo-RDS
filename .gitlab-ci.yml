@@ -43,8 +43,8 @@ hugo:test:
 
 
 include:
-  - '/RDS/circle1__adapters_and_ports/port_owncloud/.gitlab-ci.yml'
-  - '/RDS/circle1__adapters_and_ports/port_zenodo/.gitlab-ci.yml'
+  - '/RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml'
+  - '/RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml'
   - '/RDS/circle2_use_cases/exporter/.gitlab-ci.yml'
   - '/RDS/circle3_central_services/metadata_capture/.gitlab-ci.yml'
   - '/RDS/circle3_central_services/project_manager/.gitlab-ci.yml'
