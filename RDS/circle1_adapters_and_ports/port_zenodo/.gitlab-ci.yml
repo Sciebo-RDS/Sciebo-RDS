@@ -7,7 +7,7 @@
     - cd $FOLDER
     - pip install -r requirements.txt
     - pip install -r requirements-dev.txt
-    - pytest
+    - python test_zenodo.py
 
 test:port_zenodo3.6:
     extends: .tests_port_zenodo
