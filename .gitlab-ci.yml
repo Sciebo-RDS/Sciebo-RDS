@@ -26,10 +26,6 @@ hugo:test:
   script:
   - echo $FOLDER
 
-  only:
-    changes:
-    - $FOLDER
-    - $FOLDER/**/*
   except:
   - master
 
