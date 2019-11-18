@@ -50,7 +50,7 @@ def bootstrap(name='MicroService'):
     openapi_dict = load_yaml_file()
 
     app = App(name, use_tracer=config.initialize_tracer(), use_metric=True, use_optimizer=True, use_cors=True)
-    app.add_api(openapi_dict, resolver=MultipleResourceResolver('api'))
+    app.add_api(openapi_dict, resolver=MultipleResourceResolver('api', collection_endpoint_name="index"))
 
     # set the WSGI application callable to allow using uWSGI:
     # uwsgi --http :8080 -w app
