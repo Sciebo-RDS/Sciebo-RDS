@@ -87,6 +87,7 @@ hugo:test:
 
 pages:
   image: registry.gitlab.com/pages/hugo:latest
+  stage: documentation
   script:
   - cd docs
   - hugo
