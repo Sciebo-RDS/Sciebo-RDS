@@ -4,5 +4,10 @@
   variables:
       FOLDER: RDS/circle3_central_services/project_manager
 
+  only:
+      changes:
+      - RDS/circle3_central_services/project_manager/*
+      - RDS/circle3_central_services/project_manager/**/*
+
 test:project_manager:
   extends: .tests_project_manager
