@@ -20,10 +20,10 @@ def load_yaml_file():
         logger.warning("No openapi file found. Filepath: {}. Download File: {}".format(openapi_filepath, download_path))
         openapi_file = requests.get(download_path)
         openapi_dict = yaml.full_load(openapi_file.content)
-
+        
         with open(openapi_filepath, "w") as file:
             logger.info("dump openapi file")
-            file.write(openapi_file.content)
+            file.write(openapi_file.text)
     else:
         logger.info("openapi file found. Filepath: {}".format(openapi_filepath))
         with open(openapi_filepath, 'r') as file:
@@ -55,7 +55,10 @@ def bootstrap(name='MicroService'):
     # set the WSGI application callable to allow using uWSGI:
     # uwsgi --http :8080 -w app
 
-    app.run(port=int(os.getenv("SERVER_PORT", 8080)), server='gevent')
+    split = openapi_dict["servers"][0]["url"].split(":")
+    port = int(split[-1])
+
+    app.run(port=port, server='gevent')
 
 
 if __name__ == "__main__":
