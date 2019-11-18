@@ -14,15 +14,27 @@ variables:
   stage: test
 
   script:
-  - echo $FOLDER
+    - cd $FOLDER
+    - test -f requirements.txt && pip install -r requirements.txt
+    - test -f requirements-dev.txt && pip install -r requirements-dev.txt
+    - pip install pytest # if pytest not installed
+    - pytest
 
   tags:
   -  autoscaling
 
-  only:
-    changes:
-      - $FOLDER/*
-      - $FOLDER/**/*
+  except:
+    refs:
+      - master
+
+  # https://gitlab.com/gitlab-org/gitlab/issues/8177
+  # not supported currently
+  #only:
+  #  refs:
+  #    - branches
+  #  changes:
+  #    - $FOLDER/*
+  #    - $FOLDER/**/*
 
 .builds:
   stage: build
@@ -30,10 +42,6 @@ variables:
   only:
     refs:
     - master
-
-    changes:
-      - $FOLDER/*
-      - $FOLDER/**/*
 
   services:
     - docker:dind
@@ -84,6 +92,11 @@ hugo:test:
   script:
   - cd $FOLDER
   - hugo
+
+  only:
+    changes:
+      - docs/*
+      - docs/**/*
 
 pages:
   image: registry.gitlab.com/pages/hugo:latest
