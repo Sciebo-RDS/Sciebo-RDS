@@ -19,6 +19,6 @@ RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
 ENV OPENAPI_MULTIPLE_FILES      "invenio.yml"
 
 # now add everything else, which changes often
-ADD . ./
+ADD src/* ./
 
 ENTRYPOINT [ "python", "server.py" ]

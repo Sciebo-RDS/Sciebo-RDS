@@ -1,5 +1,5 @@
 import unittest
-from lib.upload_zenodo import Zenodo
+from src.lib.upload_zenodo import Zenodo
 import os
 
 api_key = os.getenv("ZENODO_API_KEY", default="ABC")
@@ -8,8 +8,8 @@ api_key = os.getenv("ZENODO_API_KEY", default="ABC")
 class TestZenodoMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls().clean_up()
-
+        pass
+    
     def clean_up(self):
         # clean up, if an error occurs
         z = Zenodo(api_key)
@@ -112,7 +112,7 @@ class TestZenodoMethods(unittest.TestCase):
                          msg=f"{result.content}")
 
         # add a file to deposition
-        filepath = "./lib/upload_zenodo.py"
+        filepath = "src/lib/upload_zenodo.py"
         result = Zenodo.upload_new_file_to_deposition(api_key, deposition_id=id, path_to_file=filepath, return_response=True)
 
         # file was uploaded
