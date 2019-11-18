@@ -18,6 +18,9 @@ RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
 # comma separated
 ENV OPENAPI_MULTIPLE_FILES      "invenio.yml"
 
+# this has to be set separatley and savely
+ENV ZENODO_API_KEY "ABC"
+
 # now add everything else, which changes often
 ADD src/* ./
 
