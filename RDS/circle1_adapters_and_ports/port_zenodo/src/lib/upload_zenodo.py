@@ -58,7 +58,9 @@ class Zenodo(object):
     def get_deposition_internal(self, id=-1, return_response=False):
         """ Require: None
                 Optional return_response: For testing purposes, you can set this to True.
+
             Returns: json, Alternative: request if return_response=True
+            
             Description: Get all depositions for the account, which owns the api-key."""
 
         if id > -1:
