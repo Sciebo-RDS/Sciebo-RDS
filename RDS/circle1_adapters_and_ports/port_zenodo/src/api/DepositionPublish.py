@@ -1,5 +1,5 @@
 
-def get():
+def index():
     pass
 
 def put():

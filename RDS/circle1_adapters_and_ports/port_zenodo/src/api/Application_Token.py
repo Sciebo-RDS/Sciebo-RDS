@@ -11,7 +11,7 @@ zenodo_oauth_secret = os.getenv("ZENODO_OAUTH_CLIENT_SECRET", "ABC")
 
 
 @FlaskOptimize.set_cache_timeout()
-def search():
+def index():
     return jsonify({
         "authorize_url": zenodo_oauth_authorize,
         "access_token_url": zenodo_oauth_token_url,

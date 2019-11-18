@@ -10,9 +10,11 @@ def get(deposition_id, creator_id = -1):
         return "creator {}".format(creator_id)
     return "Testitest"
 
-def post(deposition_id, creator_id = -1):
-    pass
+def index(deposition_id):
+    obj = z.get_deposition(deposition_id)
+    creators = obj["metadata"]["creators"] if "creators" in obj["metadata"] else {}
 
+    return jsonify(creators)
 def put(deposition_id, creator_id = -1):
     pass
 

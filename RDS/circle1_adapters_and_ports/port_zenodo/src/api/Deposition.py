@@ -4,8 +4,8 @@ import logging
 
 logger = logging.getLogger('')
 
-def search():
-    return "deposition list", 200
+def index():
+    return z.get_deposition()
 
 def get(deposition_id):
     return "deposit {}".format(deposition_id), 200
