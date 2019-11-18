@@ -1,4 +1,3 @@
-# All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 image: python:3.8
 
 stages:
@@ -11,15 +10,6 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   FOLDER: ./
 
-hugo:test:
-  image: registry.gitlab.com/pages/hugo:latest
-  stage: test
-  script:
-  - cd docs
-  - hugo
-  except:
-  - master
-    
 .tests:
   stage: test
 
@@ -29,8 +19,10 @@ hugo:test:
   tags:
   -  autoscaling
 
-  except:
-  - master
+  only:
+    changes:
+      - $FOLDER/*
+      - $FOLDER/**/*
 
 .builds:
   stage: build
@@ -38,6 +30,10 @@ hugo:test:
   only:
     refs:
     - master
+
+    changes:
+      - $FOLDER/*
+      - $FOLDER/**/*
 
   services:
     - docker:dind
@@ -56,6 +52,19 @@ include:
   - 'RDS/circle3_central_services/metadata_capture/.gitlab-ci.yml'
   - 'RDS/circle3_central_services/project_manager/.gitlab-ci.yml'
   - 'RDS/circle3_central_services/token_service/.gitlab-ci.yml'
+
+
+# All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
+hugo:test:
+  extends: .tests
+  image: registry.gitlab.com/pages/hugo:latest
+  
+  variables:
+    FOLDER: docs/
+
+  script:
+  - cd $FOLDER
+  - hugo
 
 pages:
   image: registry.gitlab.com/pages/hugo:latest
