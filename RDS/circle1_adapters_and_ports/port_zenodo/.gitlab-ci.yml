@@ -34,6 +34,6 @@ build:port_zenodo:
     - .port_zenodo
 
     needs:
-    - port_zenodo3.6
-    - port_zenodo3.7
-    - port_zenodo3.8
+    - test:port_zenodo3.6
+    - test:port_zenodo3.7
+    - test:port_zenodo3.8
