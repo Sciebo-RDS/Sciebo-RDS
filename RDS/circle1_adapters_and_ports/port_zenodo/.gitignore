@@ -2,3 +2,4 @@ config.sh
 .cpython
 __pycache__
 .pytest_cache
+openapi.yaml
