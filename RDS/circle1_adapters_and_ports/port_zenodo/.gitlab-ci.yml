@@ -26,6 +26,11 @@ build:port_zenodo:
     image: python:3.8
     extends: .builds
 
+    needs:
+    - port_zenodo3.6
+    - port_zenodo3.7
+    - port_zenodo3.8
+
     script: # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#using-docker-caching
     - cd $FOLDER
     - pip install -r requirements.txt
@@ -44,11 +49,4 @@ build:port_zenodo:
     - docker build ./
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
     - docker push $CI_REGISTRY_IMAGE:latest
-
-    only:
-        refs:
-        - master
-        changes:
-        - $FOLDER/*
-
     
