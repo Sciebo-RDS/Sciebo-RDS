@@ -93,6 +93,11 @@ hugo:test:
   - cd $FOLDER
   - hugo
 
+  only:
+    changes:
+      - docs/*
+      - docs/**/*
+
 pages:
   image: registry.gitlab.com/pages/hugo:latest
   stage: documentation
