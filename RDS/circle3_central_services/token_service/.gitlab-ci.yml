@@ -4,5 +4,10 @@
   variables:
       FOLDER: RDS/circle3_central_services/token_service
 
+  only:
+      changes:
+      - RDS/circle3_central_services/token_service/*
+      - RDS/circle3_central_services/token_service/**/*
+
 test:token_service:
   extends: .tests_token_service
