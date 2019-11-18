@@ -32,8 +32,3 @@ build:port_zenodo:
     extends: 
     - .builds
     - .port_zenodo
-
-    needs:
-    - test:port_zenodo3.6
-    - test:port_zenodo3.7
-    - test:port_zenodo3.8
