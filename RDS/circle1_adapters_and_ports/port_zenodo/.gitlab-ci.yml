@@ -1,10 +1,12 @@
-.tests_port_zenodo:
-    extends: 
-    - .tests
-
+.port_zenodo:
     variables:
         ZENODO_API_KEY: $GITLAB_ZENODO_API_KEY
         FOLDER: RDS/circle1_adapters_and_ports/port_zenodo
+
+.tests_port_zenodo:
+    extends: 
+    - .tests
+    - .port_zenodo
 
     only:
         changes:
