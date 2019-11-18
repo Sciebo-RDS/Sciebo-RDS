@@ -11,7 +11,9 @@ class TestZenodoMethods(unittest.TestCase):
         pass
     
     def clean_up(self):
-        # clean up, if an error occurs
+        """
+        Cleans the deposition list to work with an empty and fresh account
+        """
         z = Zenodo(api_key)
         result = z.get_deposition()
         for dep in result:
@@ -24,11 +26,18 @@ class TestZenodoMethods(unittest.TestCase):
         self.clean_up()
 
     def test_check_token(self):
+        """
+        Checks, if the given token is valid.
+        """
         expected = True
         result = Zenodo.check_token(api_key)
         self.assertEqual(result, expected)
 
     def test_get_deposition(self):
+        """
+        Checks, if the deposition list is empty. 
+        (This is a requirement for all other tests, that the setUp-Class functions as expected.)
+        """
         result = Zenodo.get_deposition(api_key, return_response=True)
 
         self.assertEqual(result.status_code, 200)
@@ -36,6 +45,9 @@ class TestZenodoMethods(unittest.TestCase):
         self.assertEqual(result.json(), expected, msg=f"{result.content}")
 
     def test_create_new_empty_deposit(self):
+        """
+        Create a new deposition and remove it again.
+        """
         # first it should be empty
         result = Zenodo.get_deposition(api_key, return_response=True)
 
@@ -77,6 +89,10 @@ class TestZenodoMethods(unittest.TestCase):
             result.json()["message"], "PID has been deleted.", msg=f"{result.content}")
 
     def test_create_new_filled_deposit(self):
+        """
+        Create a new deposition, uploads file to it, sets some metadata and remove it.
+        """
+
         import time
         expected_title = "Python Uploader to Zenodo"
         metadata = {
