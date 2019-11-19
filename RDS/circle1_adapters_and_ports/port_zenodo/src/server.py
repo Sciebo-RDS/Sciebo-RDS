@@ -16,7 +16,7 @@ def load_yaml_file():
 
     if not os.path.exists(openapi_filepath): # yaml file not exists equals first start
         # no openapi file found. Something was wrong in the container building process
-        download_path = os.getenv("OPENAPI_FILEPATH_EXTERNAL", "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/port_invenio.yml")
+        download_path = os.getenv("OPENAPI_FILEPATH_EXTERNAL", "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/port_zenodo-service/RDS/circle2_use_cases/port_invenio.yml")
         logger.warning("No openapi file found. Filepath: {}. Download File: {}".format(openapi_filepath, download_path))
         openapi_file = requests.get(download_path)
         openapi_dict = yaml.full_load(openapi_file.content)
