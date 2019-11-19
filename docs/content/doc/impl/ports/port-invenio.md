@@ -10,8 +10,10 @@ weight: 1000
 
 # OpenAPI v3
 
-{{< swagger-spec url="doc/impl/ports/port-invenio.yaml"  >}}
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/port_invenio.yml"  >}}
 
 # Implementation
+
+The following classes implements a library to work easier with zenodo in the zenodo service.
 
 {{% code file="doc/impl/ports/port-invenio-docstring.md" %}}
