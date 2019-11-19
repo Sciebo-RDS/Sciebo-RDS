@@ -33,7 +33,7 @@ def put(deposition_id, creator_id = -1):
         else:
             metadata["creators"] = req_creators
 
-        ### the following have to be made, because zenodo wants this.
+        ### the following have to be made, because zenodo require this.
         if not "title" in metadata:
             metadata["title"] = "PLACEHOLDER"
 

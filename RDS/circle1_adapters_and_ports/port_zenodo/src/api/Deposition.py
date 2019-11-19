@@ -18,7 +18,8 @@ def put(deposition_id):
     return "deposit update {}".format(deposition_id), 200
 
 def post():
-    return z.create_new_deposition(return_response=True).json()
+    r = z.create_new_deposition(return_response=True)
+    return r.json(), r.status_code
 
 def delete(deposition_id):
     return z.remove_deposition(deposition_id)
