@@ -15,7 +15,8 @@ def get(deposition_id):
     return z.get_deposition(deposition_id)
 
 def put(deposition_id):
-    return "deposit update {}".format(deposition_id), 200
+    #return "deposit update {}".format(deposition_id), 200
+    pass
 
 def post():
     r = z.create_new_deposition(return_response=True)
