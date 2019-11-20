@@ -285,7 +285,6 @@ paths:
         '200':
           description: OK
       description: Returns all files stored by the specified deposition.
-      requestBody: {}
     delete:
       summary: Remove an uploaded file
       responses:

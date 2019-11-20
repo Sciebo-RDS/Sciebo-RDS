@@ -46,7 +46,7 @@ def load_yaml_file():
     return openapi_dict
 
 
-def bootstrap(name='MicroService'):
+def bootstrap(name='MicroService', executes=True):
     config = jConfig(
         config={  # usually read from some yaml config
             'sampler': {
@@ -75,7 +75,11 @@ def bootstrap(name='MicroService'):
     split = openapi_dict[0]["servers"][0]["url"].split(":")
     port = int(split[-1])
 
-    app.run(port=port, server='gevent')
+    if executes:
+        app.run(port=port, server='gevent')
+    
+    # return app for test or error handling purpose
+    return app
 
 
 if __name__ == "__main__":
