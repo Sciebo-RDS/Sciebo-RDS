@@ -118,6 +118,14 @@ paths:
       description: Publish the specified invenio project.
       tags:
         - deposit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
     parameters:
       - schema:
           type: string
