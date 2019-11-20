@@ -14,6 +14,8 @@
         changes:
         - RDS/circle1_adapters_and_ports/port_zenodo/*
         - RDS/circle1_adapters_and_ports/port_zenodo/**/*
+        - RDS/circle2_use_cases/port_invenio.yml
+        - RDS/circle3_central_services/port_invenio.yml
 
 test:port_zenodo3.6:
     extends: .tests_port_zenodo
