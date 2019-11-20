@@ -251,7 +251,9 @@ paths:
     get:
       summary: Get all files
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
       description: 'Returns all files stored in the deposition. (Same output like /deposition/{id}/files'
     post:
       summary: Upload a file
@@ -352,7 +354,6 @@ components:
           description: The service will use this path to pull the archive from the storage port.
       x-tags:
         - deposit
-    
   parameters:
     deposit_id:
       name: deposit_id
