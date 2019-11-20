@@ -1,6 +1,9 @@
 from connexion_plus import App, MultipleResourceResolver
 
-import logging, os, requests, yaml
+import logging
+import os
+import requests
+import yaml
 from jaeger_client import Config as jConfig
 from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 
@@ -10,24 +13,32 @@ logger = logging.getLogger('')
 logging.getLogger('').handlers = []
 logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
 
+
 def load_yaml_file():
     logger.info("--- Loading OpenAPI file. ---")
     openapi_filepath = os.getenv("OPENAPI_FILEPATH", "openapi.yaml")
 
-    if not os.path.exists(openapi_filepath): # yaml file not exists equals first start
+    # yaml file not exists equals first start
+    if not os.path.exists(openapi_filepath):
         # no openapi file found. Something was wrong in the container building process
-        download_path = os.getenv("OPENAPI_FILEPATH_EXTERNAL", "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/port_zenodo-service/RDS/circle2_use_cases/port_invenio.yml")
-        logger.warning("No openapi file found. Filepath: {}. Download File: {}".format(openapi_filepath, download_path))
+        download_path = os.getenv(
+            "OPENAPI_FILEPATH_EXTERNAL", "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/port_zenodo-service/RDS/circle2_use_cases/port_invenio.yml")
+        logger.warning("No openapi file found. Filepath: {}. Loads webfile: {}".format(
+            openapi_filepath, download_path))
+
         openapi_file = requests.get(download_path)
         openapi_dict = yaml.full_load(openapi_file.content)
     else:
         logger.info("openapi file found. Filepath: {}".format(openapi_filepath))
-        with open(openapi_filepath, 'r') as file:
+
+        with open(openapi_filepath, 'r') as f:
             logger.info("load openapi file")
-            openapi_dict = yaml.full_load(file.read())
+            openapi_dict = yaml.full_load(f.read())
+
     logger.info("--- Loading OpenAPI file finished. ---")
 
     return openapi_dict
+
 
 def bootstrap(name='MicroService'):
     config = jConfig(
@@ -45,8 +56,10 @@ def bootstrap(name='MicroService'):
 
     openapi_dict = load_yaml_file()
 
-    app = App(name, use_tracer=config.initialize_tracer(), use_metric=True, use_optimizer=True, use_cors=True)
-    app.add_api(openapi_dict, resolver=MultipleResourceResolver('api', collection_endpoint_name="index"))
+    app = App(name, use_tracer=config.initialize_tracer(),
+              use_metric=True, use_optimizer=True, use_cors=True)
+    app.add_api(openapi_dict, resolver=MultipleResourceResolver(
+        'api', collection_endpoint_name="index"))
 
     # set the WSGI application callable to allow using uWSGI:
     # uwsgi --http :8080 -w app

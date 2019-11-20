@@ -101,7 +101,7 @@ paths:
               examples: {}
       summary: Get sitemap
     parameters: []
-  '/deposition/{id}/publish':
+  '/deposition/{id}/actions/publish':
     get:
       summary: Get information about publish status
       responses:
@@ -126,38 +126,6 @@ paths:
               properties:
                 id:
                   type: string
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-  '/deposition/{id}/export':
-    get:
-      summary: Export to invenio
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/archive-invenio'
-      description: Returns the structure of needed informations for an export to invenio.
-      tags:
-        - deposit
-    post:
-      summary: Export deposit
-      responses:
-        '200':
-          description: OK
-      description: Export the specified file with metadata to invenio.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/archive-invenio'
-      tags:
-        - deposit
     parameters:
       - schema:
           type: string
@@ -215,21 +183,6 @@ paths:
               properties:
                 creator-id:
                   type: string
-  /application_token:
-    get:
-      summary: Get application token
-      tags:
-        - token
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApplicationToken'
-      description: |-
-        Returns everything needed for oauth 2.0 support.
-        https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/
   '/deposition/{deposition-id}/creator/{creator-id}':
     get:
       tags:
@@ -289,6 +242,59 @@ paths:
       responses:
         '200':
           description: OK
+  '/deposition/{id}/actions/upload':
+    parameters:
+      - type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get all files
+      tags: []
+      responses: {}
+      description: 'Returns all files stored in the deposition. (Same output like /deposition/{id}/files'
+    post:
+      summary: Upload a file
+      responses:
+        '200':
+          description: OK
+      description: Adds the given file from port_storage to the specified deposition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+  '/deposition/{id}/files':
+    parameters:
+      - type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get all files
+      tags: []
+      responses:
+        '200':
+          description: OK
+      description: Returns all files stored by the specified deposition.
+      requestBody: {}
+    delete:
+      summary: Remove an uploaded file
+      responses:
+        '200':
+          description: OK
+      description: Removes the given file.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: ''
+        description: ''
 components:
   schemas:
     creator:
@@ -346,31 +352,7 @@ components:
           description: The service will use this path to pull the archive from the storage port.
       x-tags:
         - deposit
-    ApplicationToken:
-      description: |-
-        This model describes the object, which represents all needed informations for oauth2.
-        https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/
-      type: object
-      properties:
-        authorize_url:
-          type: string
-          description: ' Authorize URL (GET)'
-        access_token_url:
-          type: string
-          description: ' Access token URL (POST)'
-        client_id:
-          type: string
-          description: ''
-        client_secret:
-          type: string
-      required:
-        - authorize_url
-        - access_token_url
-        - client_id
-        - client_secret
-      x-tags:
-        - token
-      title: ApplicationToken
+    
   parameters:
     deposit_id:
       name: deposit_id
