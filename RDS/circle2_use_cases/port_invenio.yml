@@ -101,7 +101,7 @@ paths:
               examples: {}
       summary: Get sitemap
     parameters: []
-  '/deposition/{id}/actions/publish':
+  '/deposition/{deposition-id}/actions/publish':
     get:
       summary: Get information about publish status
       responses:
@@ -129,7 +129,7 @@ paths:
     parameters:
       - schema:
           type: string
-        name: id
+        name: deposition-id
         in: path
         required: true
   '/deposition/{deposition-id}/creator':
@@ -242,10 +242,11 @@ paths:
       responses:
         '200':
           description: OK
-  '/deposition/{id}/actions/upload':
+  '/deposition/{deposition-id}/actions/upload':
     parameters:
-      - type: string
-        name: id
+      - schema:
+          type: string
+        name: deposition-id
         in: path
         required: true
     get:
@@ -266,11 +267,15 @@ paths:
           application/json:
             schema:
               type: object
-              properties: {}
-  '/deposition/{id}/files':
+              properties:
+                filepath:
+                  type: string
+        description: 'The filepath needs to be valid in port_storage context, so for example it needs a valid path in an ownCloud installation for given user.'
+  '/deposition/{deposition-id}/files':
     parameters:
-      - type: string
-        name: id
+      - schema:
+          type: string
+        name: deposition-id
         in: path
         required: true
     get:
