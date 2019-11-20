@@ -129,6 +129,7 @@ class Zenodo(object):
     def change_metadata_in_deposition_internal(self, deposition_id, metadata, return_response=False):
         """ Require:
                 A deposit id (from get_deposition or create_new_deposition; r.json()['id'])
+                
                 A data-dict json-like object
                     ```python
                     Example: data = {

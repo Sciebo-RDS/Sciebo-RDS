@@ -20,7 +20,7 @@ def get(deposition_id, creator_id):
     return metadata["creators"][creator_id]
 
 
-def put(deposition_id, creator_id = -1):
+def put(deposition_id, creator_id=-1):
     try:
         req_creators = request.json
         metadata = z.get_deposition(deposition_id)["metadata"]
@@ -33,7 +33,7 @@ def put(deposition_id, creator_id = -1):
         else:
             metadata["creators"] = req_creators
 
-        ### the following have to be made, because zenodo require this.
+        # the following have to be made, because zenodo require this.
         if not "title" in metadata:
             metadata["title"] = "PLACEHOLDER"
 
@@ -45,11 +45,13 @@ def put(deposition_id, creator_id = -1):
         ###
 
         logger.debug(f"Metadata: {metadata}")
-        
-        r = z.change_metadata_in_deposition(deposition_id=deposition_id, metadata=metadata, return_response=True)
+
+        r = z.change_metadata_in_deposition(
+            deposition_id=deposition_id, metadata=metadata, return_response=True)
         return True, r.status_code
     except Exception as e:
-        logger.error(f"Error: \nDeposition-ID: {deposition_id}, creator-id: {creator_id} \nmessage: {e}")
+        logger.error(
+            f"Error: \nDeposition-ID: {deposition_id}, creator-id: {creator_id} \nmessage: {e}")
         return False, 304
 
 

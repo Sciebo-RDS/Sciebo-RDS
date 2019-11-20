@@ -6,9 +6,9 @@ info:
   contact:
     name: Peter Heiss
     email: peter.heiss@uni-muenster.de
+    url: 'https://www.research-data-services.org'
 servers:
   - url: 'http://port-invenio:3000'
-    description: port-zenodo
 paths:
   '/deposition/{deposition-id}':
     parameters:
@@ -406,4 +406,3 @@ tags:
     description: All about user and deposition creators
   - name: misc
     description: Everything else.
-
