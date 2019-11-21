@@ -50,4 +50,5 @@ class TestPortZenodo(unittest.TestCase):
         
         self.assertEqual(result.json, expected)
 
-
+if __name__ == '__main__':
+    unittest.main()

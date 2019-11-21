@@ -63,7 +63,7 @@ def bootstrap(name='MicroService', executes=True):
     openapi_dict = load_yaml_file()
 
     app = App(name, use_tracer=config.initialize_tracer(),
-              use_metric=True, use_optimizer=True, use_cors=True)
+              use_metric=True, use_optimizer={"compress": False, "minify": False}, use_cors=True)
 
     for oai in openapi_dict:
         app.add_api(oai, resolver=MultipleResourceResolver(
