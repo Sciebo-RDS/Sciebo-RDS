@@ -72,12 +72,9 @@ def bootstrap(name='MicroService', executes=True):
     # set the WSGI application callable to allow using uWSGI:
     # uwsgi --http :8080 -w app
 
-    split = openapi_dict[0]["servers"][0]["url"].split(":")
-    port = int(split[-1])
-
     if executes:
-        app.run(port=port, server='gevent')
-    
+        app.run(port=8080, server='gevent')
+
     # return app for test or error handling purpose
     return app
 
