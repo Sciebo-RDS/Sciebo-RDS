@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Port Zenodo
+  title: Port Invenio
   version: '1.0'
   description: This document describes the interface of the port zenodo from the innermost circle of the rds architecture to the second circle.
   contact:
@@ -8,7 +8,7 @@ info:
     email: peter.heiss@uni-muenster.de
     url: 'https://www.research-data-services.org'
 servers:
-  - url: 'http://port-invenio:3000'
+  - url: 'http://port-invenio:3000/c2'
 paths:
   '/deposition/{deposition-id}':
     parameters:

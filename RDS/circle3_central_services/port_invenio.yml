@@ -50,5 +50,5 @@ components:
         This model describes the object, which represents all needed informations for oauth2.
         https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/
 servers:
-  - url: 'http://port-invenio:3000'
+  - url: 'http://port-invenio:3000/c3'
     description: ''
