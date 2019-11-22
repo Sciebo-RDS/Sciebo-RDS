@@ -1,14 +1,12 @@
 
 import unittest, sys, os
 from pactman import Consumer, Provider
-sys.path.append(f"{sys.path[0]}/src")
+from src.server import bootstrap
 
-from server import bootstrap
 
-# set var for mock service
 def create_app():
+    # set var for mock service
     os.environ["ZENODO_ADDRESS"] = "http://localhost:5000"
-
     # creates a test client
     app = bootstrap(executes=False).app
     # propagate the exceptions to the test client
