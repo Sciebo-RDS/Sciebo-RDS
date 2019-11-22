@@ -9,6 +9,8 @@ weight: 900
 mermaid: true
 ---
 
+Input FSM
+
 {{<mermaid>}}
 graph TD;
   A-->B;
