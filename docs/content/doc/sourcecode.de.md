@@ -1,6 +1,6 @@
 ---
 title: Open Source Software
-subtitle: Where to find the sourcecode.
+subtitle: Wo findet man den Quelltext
 weight: 10001
 ---
 

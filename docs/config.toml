@@ -35,8 +35,69 @@ pygmentCodeFences = true
     
 [[languages.de.menu.main]]
     name = "Dokumentation"
-    url = "/de/page/doc"
+    url = "/de/doc"
     weight = 40
+
+[[languages.de.menu.doc]]
+    name = "Dokumentation"
+    identifier = "docs home"
+    pre = "<i class='fa fa-home'></i>"
+    url = "/doc/"
+    weight = -999
+
+[[languages.de.menu.doc]]
+    name = "Wo beginnen"
+    identifier = "installation"
+    pre = "<i class='fa fa-play'></i>"
+    url = "/doc/getting-started/"
+    weight = -900
+
+[[languages.de.menu.doc]]
+    name = "Quelltext"
+    identifier = "sourcecode"
+    pre = "<i class='fa fa-code'></i>"
+    url = "/doc/sourcecode/"
+    weight = 0
+
+[[languages.de.menu.doc]]
+    name = "Beitragen"
+    identifier = "contrib"
+    pre = "<i class='fa fa-code-fork'></i>"
+    url = "/doc/contribute/"
+    weight = -5
+    post = "border-top: 1px dotted #ccc;"
+
+[[languages.de.menu.doc]]
+    name = "Architektur"
+    identifier = "arch"
+    pre = "<i class='fa fa-university'></i>"
+    weight = -300
+    post = "border-top: 1px dotted #ccc;"
+
+
+[[languages.de.menu.doc]]
+    name = "Infrastruktur"
+    identifier = "infrastructure"
+    pre = "<i class='fa fa-industry'></i>"
+    weight = -290
+
+[[languages.de.menu.doc]]
+    name = "Adapters & Ports"
+    identifier = "adapter-port"
+    pre = "<i class='fa fa-map-o'></i>"
+    weight = -280
+
+[[languages.de.menu.doc]]
+    name = "Nutzfälle"
+    identifier = "use-case"
+    pre = "<i class='fa fa-cogs'></i>"
+    weight = -270
+
+[[languages.de.menu.doc]]
+    name = "Zentrale Dienste"
+    identifier = "core"
+    pre = "<i class='fa fa-archive'></i>"
+    weight = -260
 
 [languages.en]
     languageName = "English"
@@ -191,8 +252,9 @@ pygmentCodeFences = true
     weight = -270
 
 [[menu.doc]]
-    name = "Core"
+    name = "Central Services"
     identifier = "core"
     pre = "<i class='fa fa-archive'></i>"
     weight = -260
+
 

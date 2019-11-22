@@ -1,1 +1,9 @@
-<center><p>Documentation was built with <a href="https://github.com/jimmyjames/hugo-just-docs-theme/"><i class="fa fa-heart"></i></a> from <a href="https://github.com/jimmyjames/">JimmyJames</a>.</center>
+    
+{{ if (.Params.mermaid) }}
+    <script src="{{ .Site.BaseURL }}js/mermaid.min.js"></script>
+    <script>
+        window.onload = function() {
+            mermaid.init(undefined, ".language-mermaid");
+        };
+    </script>
+{{ end }}
