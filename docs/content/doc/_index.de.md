@@ -1,7 +1,7 @@
 ---
 title: Dokumentation
 subtitle: Alles was du wissen musst über die *Dokumentation*
-weight: 0
+weight: -999
 ---
 
 In molestie tincidunt posuere. Phasellus lacus purus, elementum luctus lobortis sit amet, suscipit in felis.

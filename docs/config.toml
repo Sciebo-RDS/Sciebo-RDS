@@ -46,6 +46,12 @@ pygmentCodeFences = true
     weight = -999
 
 [[languages.de.menu.doc]]
+    name = "Nutzerhandbuch"
+    identifier = "manual"
+    pre = "<i class='fa fa-book'></i>"
+    weight = -1000
+
+[[languages.de.menu.doc]]
     name = "Wo beginnen"
     identifier = "installation"
     pre = "<i class='fa fa-play'></i>"
@@ -97,6 +103,12 @@ pygmentCodeFences = true
     identifier = "core"
     pre = "<i class='fa fa-archive'></i>"
     weight = -260
+
+[[languages.de.menu.doc]]
+    name = "Plugins"
+    identifier = "plugins"
+    pre = "<i class='fa fa-plug'></i>"
+    weight = -250
 
 [languages.en]
     languageName = "English"
@@ -209,6 +221,12 @@ pygmentCodeFences = true
     weight = -900
 
 [[menu.doc]]
+    name = "User Manual"
+    identifier = "manual"
+    pre = "<i class='fa fa-book'></i>"
+    weight = -1000
+
+[[menu.doc]]
     name = "Source Code"
     identifier = "sourcecode"
     pre = "<i class='fa fa-code'></i>"
@@ -255,4 +273,9 @@ pygmentCodeFences = true
     pre = "<i class='fa fa-archive'></i>"
     weight = -260
 
+[[menu.doc]]
+    name = "Plugins"
+    identifier = "plugins"
+    pre = "<i class='fa fa-plug'></i>"
+    weight = -250
 

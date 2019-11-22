@@ -29,7 +29,10 @@ Der Ablauf der Eingabemasken des Adapters für den Zenodo Services werden durch 
 stateDiagram
   [*] --> A
   A --> B: nicht valide
+  A --> C: valide
+  B --> A: Zurücksetzen
   B --> C: valide
+  C --> A: Zurücksetzen
   C --> D: bestätigen
   D --> E: Dateien ausgewählt
   E --> F: bei Erfolg
@@ -38,10 +41,8 @@ stateDiagram
   F --> H: NEIN
   G --> [*]
   H --> [*]
-  B --> A: Zurücksetzen
-  C --> A: Zurücksetzen
+
   D --> F: Keine Daten ausgewählt
-  A --> C: valide
 
   A: Datensatz abfragen
   B: Fehlende Informationen einfordern
