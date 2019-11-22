@@ -8,6 +8,9 @@ menu:
 weight: 900
 mermaid: true
 ---
+
+## Minimaler Datensatz
+
 Erstes Inkrement unterstützt nur minimaler Datensatz.
 Der minimale Datensatz besteht aus den folgenden Informationen, welche der Entität [Deposit Metadata](https://developers.zenodo.org/#representation) entspricht:
 
@@ -18,7 +21,9 @@ Der minimale Datensatz besteht aus den folgenden Informationen, welche der Entit
 | publication_date |    Date    | Ein Datumsobjekt, welches den Veröffentlichungszeitpunkt angibt. |
 |   upload_type    | Enumerator |      Die Art der Deposition (Vortrag, Paper, Poster, etc.)       |
 
-Die Eingabemaske DEA des Adapters für den Zenodo Services
+## DEA der Eingabemasken
+
+Der Ablauf der Eingabemasken des Adapters für den Zenodo Services werden durch den folgenden DEA dargestellt.
 
 ```mermaid
 stateDiagram
