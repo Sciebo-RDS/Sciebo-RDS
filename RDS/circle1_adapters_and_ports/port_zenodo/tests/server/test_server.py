@@ -1,12 +1,13 @@
 
 import unittest, sys, os
-from src.server import bootstrap
 from pactman import Consumer, Provider
 sys.path.append(f"{sys.path[0]}/src")
 
+from server import bootstrap
+
 # set var for mock service
-os.environ["ZENODO_ADDRESS"] = "http://localhost:5000"
 def create_app():
+    os.environ["ZENODO_ADDRESS"] = "http://localhost:5000"
 
     # creates a test client
     app = bootstrap(executes=False).app

@@ -1,9 +1,9 @@
-import unittest
-from src.lib.upload_zenodo import Zenodo
-import os
+import unittest, sys, os
+sys.path.append(f"{sys.path[0]}/src")
+
+from lib.upload_zenodo import Zenodo
 
 api_key = os.getenv("ZENODO_API_KEY", default="ABC")
-
 
 class TestZenodoMethods(unittest.TestCase):
     @classmethod
@@ -14,6 +14,8 @@ class TestZenodoMethods(unittest.TestCase):
         """
         Cleans the deposition list to work with an empty and fresh account
         """
+        os.environ["ZENODO_ADDRESS"] = "https://sandbox.zenodo.org"
+        
         z = Zenodo(api_key)
         result = z.get_deposition()
         for dep in result:
