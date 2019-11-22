@@ -12,7 +12,7 @@
     <script src="{{ .Site.BaseURL }}js/mermaid.min.js"></script>
     <script>
         window.onload = function() {
-            mermaid.init(undefined, ".language-mermaid");
+            mermaid.init({ logLevel:0, startOnLoad: true, themeCSS:'.label { font-family: Source Sans Pro,Helvetica Neue,Arial,sans-serif; }' }, ".language-mermaid");
         };
     </script>
 {{ end }}

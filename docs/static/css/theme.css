@@ -16,6 +16,10 @@ body {
     padding-top: 40px;
 }
 
+.mermaid {
+  overflow-x: scroll;
+}
+
 .header {
     border-bottom: 1px solid darkgray;
     right: 0;
