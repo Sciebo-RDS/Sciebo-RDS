@@ -1,5 +1,14 @@
     
 {{ if (.Params.mermaid) }}
+    <script>
+    // disable code block for mermaid
+    jQuery(document).ready(function() {
+        $('code.language-mermaid').each(function(index, element) {
+        var content = $(element).html().replace(/&amp;/g, '&');
+        $(element).parent().replaceWith('<div class="mermaid" align="center">' + content + '</div>');
+        });
+    });
+    </script>
     <script src="{{ .Site.BaseURL }}js/mermaid.min.js"></script>
     <script>
         window.onload = function() {
