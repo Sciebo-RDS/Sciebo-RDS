@@ -1,6 +1,6 @@
 ---
-title: Documentation
-subtitle: All what you have to **know** about the <i>doc</i>
+title: Dokumentation
+subtitle: Alles was du wissen musst über die *Dokumentation*
 weight: -999
 ---
 

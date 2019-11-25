@@ -1,1 +1,18 @@
-<center><p>Documentation was built with <a href="https://github.com/jimmyjames/hugo-just-docs-theme/"><i class="fa fa-heart"></i></a> from <a href="https://github.com/jimmyjames/">JimmyJames</a>.</center>
+    
+{{ if (.Params.mermaid) }}
+    <script>
+    // disable code block for mermaid
+    jQuery(document).ready(function() {
+        $('code.language-mermaid').each(function(index, element) {
+        var content = $(element).html().replace(/&amp;/g, '&');
+        $(element).parent().replaceWith('<div class="mermaid" align="center">' + content + '</div>');
+        });
+    });
+    </script>
+    <script src="{{ .Site.BaseURL }}js/mermaid.min.js"></script>
+    <script>
+        window.onload = function() {
+            mermaid.init({ logLevel:0, startOnLoad: true, themeCSS:'.label { font-family: Source Sans Pro,Helvetica Neue,Arial,sans-serif; }' }, ".language-mermaid");
+        };
+    </script>
+{{ end }}

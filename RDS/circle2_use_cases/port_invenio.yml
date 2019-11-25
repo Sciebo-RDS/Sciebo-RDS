@@ -1,14 +1,14 @@
 openapi: 3.0.0
 info:
-  title: Port Zenodo
+  title: Port Invenio
   version: '1.0'
   description: This document describes the interface of the port zenodo from the innermost circle of the rds architecture to the second circle.
   contact:
     name: Peter Heiss
     email: peter.heiss@uni-muenster.de
+    url: 'https://www.research-data-services.org'
 servers:
-  - url: 'http://port-invenio:3000'
-    description: port-zenodo
+  - url: 'http://port-invenio:3000/c2'
 paths:
   '/deposition/{deposition-id}':
     parameters:
@@ -101,7 +101,7 @@ paths:
               examples: {}
       summary: Get sitemap
     parameters: []
-  '/deposition/{id}/publish':
+  '/deposition/{deposition-id}/actions/publish':
     get:
       summary: Get information about publish status
       responses:
@@ -118,42 +118,18 @@ paths:
       description: Publish the specified invenio project.
       tags:
         - deposit
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-  '/deposition/{id}/export':
-    get:
-      summary: Export to invenio
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/archive-invenio'
-      description: Returns the structure of needed informations for an export to invenio.
-      tags:
-        - deposit
-    post:
-      summary: Export deposit
-      responses:
-        '200':
-          description: OK
-      description: Export the specified file with metadata to invenio.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/archive-invenio'
-      tags:
-        - deposit
+              type: object
+              properties:
+                id:
+                  type: string
     parameters:
       - schema:
           type: string
-        name: id
+        name: deposition-id
         in: path
         required: true
   '/deposition/{deposition-id}/creator':
@@ -207,21 +183,6 @@ paths:
               properties:
                 creator-id:
                   type: string
-  /application_token:
-    get:
-      summary: Get application token
-      tags:
-        - token
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApplicationToken'
-      description: |-
-        Returns everything needed for oauth 2.0 support.
-        https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/
   '/deposition/{deposition-id}/creator/{creator-id}':
     get:
       tags:
@@ -281,6 +242,65 @@ paths:
       responses:
         '200':
           description: OK
+  '/deposition/{deposition-id}/actions/upload':
+    parameters:
+      - schema:
+          type: string
+        name: deposition-id
+        in: path
+        required: true
+    get:
+      summary: Get all files
+      tags: []
+      responses:
+        '200':
+          description: OK
+      description: 'Returns all files stored in the deposition. (Same output like /deposition/{id}/files'
+    post:
+      summary: Upload a file
+      responses:
+        '200':
+          description: OK
+      description: Adds the given file from port_storage to the specified deposition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filepath:
+                  type: string
+        description: 'The filepath needs to be valid in port_storage context, so for example it needs a valid path in an ownCloud installation for given user.'
+  '/deposition/{deposition-id}/files':
+    parameters:
+      - schema:
+          type: string
+        name: deposition-id
+        in: path
+        required: true
+    get:
+      summary: Get all files
+      tags: []
+      responses:
+        '200':
+          description: OK
+      description: Returns all files stored by the specified deposition.
+    delete:
+      summary: Remove an uploaded file
+      responses:
+        '200':
+          description: OK
+      description: Removes the given file.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: ''
+        description: ''
 components:
   schemas:
     creator:
@@ -338,31 +358,6 @@ components:
           description: The service will use this path to pull the archive from the storage port.
       x-tags:
         - deposit
-    ApplicationToken:
-      description: |-
-        This model describes the object, which represents all needed informations for oauth2.
-        https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/
-      type: object
-      properties:
-        authorize_url:
-          type: string
-          description: ' Authorize URL (GET)'
-        access_token_url:
-          type: string
-          description: ' Access token URL (POST)'
-        client_id:
-          type: string
-          description: ''
-        client_secret:
-          type: string
-      required:
-        - authorize_url
-        - access_token_url
-        - client_id
-        - client_secret
-      x-tags:
-        - token
-      title: ApplicationToken
   parameters:
     deposit_id:
       name: deposit_id
@@ -406,4 +401,3 @@ tags:
     description: All about user and deposition creators
   - name: misc
     description: Everything else.
-

@@ -11,15 +11,19 @@ RUN pip install -r requirements.txt
 # download yaml file for better usability and reproducable behaviour
 RUN apk add curl
 
-ENV OPENAPI_FILEPATH_EXTERNAL   "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/invenio_openapi.yml"
+ENV OPENAPI_FILEPATH_EXTERNAL   "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/port_invenio.yml"
 ENV OPENAPI_FILEPATH            "invenio.yml"
 RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
 
 # comma separated
 ENV OPENAPI_MULTIPLE_FILES      "invenio.yml"
 
-# this has to be set separatley and savely
+# this has to be set separatley and safely
 ENV ZENODO_API_KEY "ABC"
+ENV ZENODO_OAUTH_AUTHORIZE_URL "https://sandbox.zenodo.org/oauth/authorize"
+ENV ZENODO_OAUTH_ACCESS_TOKEN_URL "https://sandbox.zenodo.org/oauth/token"
+ENV ZENODO_OAUTH_CLIEND_ID "XY"
+ENV ZENODO_OAUTH_CLIENT_SECRET "ABC"
 
 # now add everything else, which changes often
 ADD src/* ./

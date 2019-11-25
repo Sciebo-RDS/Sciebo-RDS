@@ -1,5 +1,5 @@
 ---
-title: Context Boundary
+title: Kontextabgrenzung
 subtitle: Architecture documentation with Arc42
 
 menu:

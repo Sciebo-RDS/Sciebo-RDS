@@ -1,6 +1,6 @@
 ---
-title: Constraints
-subtitle: Architecture documentation with Arc42
+title: Randbedingungen
+subtitle: Architekturdokumentation mit Arc42
 
 menu:
   doc:

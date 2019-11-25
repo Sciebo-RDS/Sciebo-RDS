@@ -41,6 +41,9 @@
           {{ i18n "poweredBy" . | safeHTML }}
           {{ with .Site.Params.commit }}&nbsp;&bull;&nbsp;[<a href="{{.}}{{ getenv "GIT_COMMIT_SHA" }}">{{ getenv "GIT_COMMIT_SHA_SHORT" }}</a>]{{ end }}
         </p>
+        
+        <center><p>Documentation was built with <a href="https://github.com/jimmyjames/hugo-just-docs-theme/"><i class="fa fa-heart"></i></a> from <a href="https://github.com/jimmyjames/">JimmyJames</a>.</center>
+
       </div>
     </div>
   </div>

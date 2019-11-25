@@ -1,0 +1,22 @@
+openapi: 3
+info:
+  version: '1.0'
+  title: Adapter Exporter
+paths:
+  /:
+    get:
+      summary: Get index page
+      tags: []
+      responses: {}
+      description: Returns the single page app for the exporter adapter.
+  '/{api}':
+    parameters:
+      - type: string
+        name: api
+        in: path
+        required: true
+    get:
+      summary: API endpoint
+      tags: []
+      responses: {}
+      description: Provides a pipeline to the inner circle. Returns the results from inner services.
