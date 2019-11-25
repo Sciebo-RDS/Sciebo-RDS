@@ -1,4 +1,4 @@
-baseurl = "https://sciebo-rds.zivgitlabpages.uni-muenster.de/sciebo-rds"
+baseurl = "https://sciebo-rds.zivgitlabpages.uni-muenster.de/sciebo-rds/"
 contentdir    = "content"
 layoutdir     = "layouts"
 publishdir    = "public"
