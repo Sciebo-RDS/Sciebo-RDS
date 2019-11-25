@@ -17,6 +17,9 @@ pygmentCodeFences = true
   [languages.de]
 	languageName = "Deutsch"
 	weight = 2
+
+  [languages.de.params]
+    dateFormat = "2 January 2006"
 	
 [[languages.de.menu.main]]
     name = "Startseite"
@@ -118,7 +121,7 @@ pygmentCodeFences = true
   subtitle = "Research data services"
   logo = "img/sciebo.png"
   favicon = "img/favicon.ico"
-  dateFormat = "2 January 2006"
+  dateFormat = "January 2, 2006"
   commit = false
   rss = true
   comments = true
