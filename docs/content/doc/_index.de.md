@@ -4,39 +4,44 @@ subtitle: Alles was du wissen musst über die *Dokumentation*
 weight: -999
 ---
 
-In molestie tincidunt posuere. Phasellus lacus purus, elementum luctus lobortis sit amet, suscipit in felis.
+## Arbeitsablauf
 
-# Lorem ipsum
-dolor sit amet, consectetur adipiscing elit. Quisque accumsan, leo at tincidunt fringilla, diam metus cursus ipsum, sed imperdiet nunc enim sed nisl. Nulla scelerisque tempus odio, in pretium risus blandit sit amet. Nullam pellentesque velit eget mi elementum porta. Donec id justo ante. Nulla dictum lacus at nulla commodo, in sagittis leo faucibus. Nunc rutrum suscipit nisl, nec iaculis nunc porta egestas. Maecenas iaculis, sem tincidunt rutrum porta, quam magna faucibus erat, ut dapibus metus lectus sit amet ligula. In molestie tincidunt posuere. Phasellus lacus purus, elementum luctus lobortis sit amet, suscipit in felis.
+`#TODO:` Alles über den Arbeitsablauf von Github, zu Gitlab über das Deployment auf Kubernetes in Sciebo.
 
-```python
-import logging
-logger = logging.getLogger("")
-```
+## Definition of Done
 
-Aliquam iaculis massa quis risus rhoncus, nec ornare risus condimentum. Vivamus nec nisi est. Vivamus faucibus dignissim dictum. Maecenas efficitur pulvinar sapien ac facilisis. Aenean porttitor mauris feugiat, aliquam nunc nec, tincidunt tortor. Aliquam vitae metus eget nulla molestie maximus sit amet a ligula. Mauris porttitor mauris turpis, sed gravida elit vehicula vel. Etiam condimentum sollicitudin condimentum. Maecenas metus augue, vehicula et ligula eget, molestie convallis arcu. Suspendisse sit amet semper erat. Donec venenatis egestas turpis, a iaculis orci porttitor non. Vestibulum dignissim luctus dolor a accumsan. Aenean lacus neque, ultrices nec lorem at, ullamcorper luctus lectus. Donec ultricies blandit metus, sed facilisis nisl facilisis accumsan. Duis vel imperdiet lectus, vitae fermentum turpis.
+`#TODO:` Aktualisieren
 
-## Mauris id congue massa.
-Maecenas ac ipsum eu erat maximus eleifend at nec odio. Sed ornare augue et auctor blandit. Suspendisse interdum molestie lobortis. Sed elit odio, mollis eget efficitur eget, dignissim sit amet nisl. Praesent consectetur, diam eu suscipit tincidunt, felis orci porttitor dolor, id hendrerit risus risus at nunc. Curabitur maximus massa vel mi condimentum, tempor luctus lorem gravida. Integer et sagittis est. Sed vehicula eget purus sit amet dignissim. Aenean cursus gravida feugiat. Ut pulvinar bibendum purus quis viverra. Mauris sodales, leo et feugiat laoreet, elit lacus dignissim sem, accumsan blandit odio nisi in nulla. Phasellus auctor ante sollicitudin lectus sollicitudin, in euismod odio aliquam. Pellentesque eget vulputate tellus. Aenean dolor lorem, dapibus non lectus eget, suscipit hendrerit nibh. Aenean cursus sit amet magna at molestie.
+### Für einen Microservice existiert
 
-Suspendisse potenti. Donec tincidunt sapien ac nunc suscipit, sodales consequat ex elementum. Donec semper ultricies egestas. Morbi semper pretium pulvinar. Sed eu luctus nulla. Aliquam in congue enim. Praesent vestibulum enim rutrum justo tristique commodo. Nullam eu tellus ut justo dictum facilisis ac et magna. Quisque ornare purus quam, et laoreet quam efficitur eu. Sed sed sem laoreet, tincidunt metus at, consequat purus. Suspendisse bibendum non lacus lobortis lacinia. Mauris volutpat pulvinar libero at tempor. Nulla sit amet ullamcorper lectus. Maecenas sollicitudin nisl vel lacus efficitur, eu porta metus tincidunt.
+- einen eigenen Ordner im (Mono-)Repo
+- eine gitlab-ci-Datei, welche ein
+    - Testen der nachfolgenden Anforderungen,
+    - erfolgreiches Kompilieren und
+    - Bauen eines Docker-Images ermöglicht.
+        - Das Docker-Image wird in der Gitlab-Registry abgelegt
+        - Das Docker-Image wird anhand des jeweiligen JobID anhand eines Tags markiert
+        - Das Docker-Image wird im Master bei einem Merge zusätzlich anhand eines Tags als latest markiert
+- eine funktionierende Kubernetes-Konfiguration in Form von Helm-Charts zum Deployen des Microservices in desselbigen
+    - mit einer Ingress-,
+    - einer Deployment- (mit einer Liveness- und/oder Readiness-Probe) und
+    - einer Service-Konfiguration
 
-Aliquam nec lacinia lectus, non ultricies orci. Sed augue ante, efficitur vitae mattis eu, egestas a ipsum. Praesent et enim a turpis faucibus vulputate ut commodo sapien. Quisque mollis tristique ultrices. Morbi quis urna eget magna tincidunt porttitor ut et turpis. Praesent a ex tempor, lobortis orci id, ultrices ipsum. Nunc et dignissim ligula, et malesuada elit. Cras vel pharetra turpis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque dictum varius orci, sit amet facilisis turpis iaculis in. In erat augue, pharetra ut semper sed, pellentesque ut augue. Etiam sit amet orci luctus, pulvinar enim sed, sodales diam. Nunc sit amet fringilla elit, eget facilisis dolor. 
+### Für das Testen existiert
 
-# Lorem ipsum2
-dolor sit amet, consectetur adipiscing elit. Quisque accumsan, leo at tincidunt fringilla, diam metus cursus ipsum, sed imperdiet nunc enim sed nisl. Nulla scelerisque tempus odio, in pretium risus blandit sit amet. Nullam pellentesque velit eget mi elementum porta. Donec id justo ante. Nulla dictum lacus at nulla commodo, in sagittis leo faucibus. Nunc rutrum suscipit nisl, nec iaculis nunc porta egestas. Maecenas iaculis, sem tincidunt rutrum porta, quam magna faucibus erat, ut dapibus metus lectus sit amet ligula. In molestie tincidunt posuere. Phasellus lacus purus, elementum luctus lobortis sit amet, suscipit in felis.
+- für jede komplexere Funktion mindestens ein Unit-Test mit einem sprachenspezifischen Testframework (PHPUnit, JUnit, PyTest, Jest etc), welcher folgende Fälle beinhaltet
+    - eine Standardeingabe mit erwarteten Parametern
+    - eine Null-Eingabe bei einem Parameter oder Null-Eingaben bei allen Parametern
+    - für sämtliche Randfälle, welche beim Sprint Planning identifiziert und in der Implementation geprüft werden
+- für jede extern anzubindende Funktion (meist fremde API-Endpunkte) ein Contract-Unit-Test mittels Pact
+    - die dabei entstehende Pact-Datei wird im dafür entsprechenden Gitlab-Projekt automatisch abgelegt
 
-```python
-import logging
-logger = logging.getLogger("")
-```
+### Für den Betrieb werden folgende Aspekte berücksichtigt:
 
-Aliquam iaculis massa quis risus rhoncus, nec ornare risus condimentum. Vivamus nec nisi est. Vivamus faucibus dignissim dictum. Maecenas efficitur pulvinar sapien ac facilisis. Aenean porttitor mauris feugiat, aliquam nunc nec, tincidunt tortor. Aliquam vitae metus eget nulla molestie maximus sit amet a ligula. Mauris porttitor mauris turpis, sed gravida elit vehicula vel. Etiam condimentum sollicitudin condimentum. Maecenas metus augue, vehicula et ligula eget, molestie convallis arcu. Suspendisse sit amet semper erat. Donec venenatis egestas turpis, a iaculis orci porttitor non. Vestibulum dignissim luctus dolor a accumsan. Aenean lacus neque, ultrices nec lorem at, ullamcorper luctus lectus. Donec ultricies blandit metus, sed facilisis nisl facilisis accumsan. Duis vel imperdiet lectus, vitae fermentum turpis.
-
-## Mauris id congue massa.2
-Maecenas ac ipsum eu erat maximus eleifend at nec odio. Sed ornare augue et auctor blandit. Suspendisse interdum molestie lobortis. Sed elit odio, mollis eget efficitur eget, dignissim sit amet nisl. Praesent consectetur, diam eu suscipit tincidunt, felis orci porttitor dolor, id hendrerit risus risus at nunc. Curabitur maximus massa vel mi condimentum, tempor luctus lorem gravida. Integer et sagittis est. Sed vehicula eget purus sit amet dignissim. Aenean cursus gravida feugiat. Ut pulvinar bibendum purus quis viverra. Mauris sodales, leo et feugiat laoreet, elit lacus dignissim sem, accumsan blandit odio nisi in nulla. Phasellus auctor ante sollicitudin lectus sollicitudin, in euismod odio aliquam. Pellentesque eget vulputate tellus. Aenean dolor lorem, dapibus non lectus eget, suscipit hendrerit nibh. Aenean cursus sit amet magna at molestie.
-
-### Suspendisse potenti.3
-Donec tincidunt sapien ac nunc suscipit, sodales consequat ex elementum. Donec semper ultricies egestas. Morbi semper pretium pulvinar. Sed eu luctus nulla. Aliquam in congue enim. Praesent vestibulum enim rutrum justo tristique commodo. Nullam eu tellus ut justo dictum facilisis ac et magna. Quisque ornare purus quam, et laoreet quam efficitur eu. Sed sed sem laoreet, tincidunt metus at, consequat purus. Suspendisse bibendum non lacus lobortis lacinia. Mauris volutpat pulvinar libero at tempor. Nulla sit amet ullamcorper lectus. Maecenas sollicitudin nisl vel lacus efficitur, eu porta metus tincidunt.
-
-Aliquam nec lacinia lectus, non ultricies orci. Sed augue ante, efficitur vitae mattis eu, egestas a ipsum. Praesent et enim a turpis faucibus vulputate ut commodo sapien. Quisque mollis tristique ultrices. Morbi quis urna eget magna tincidunt porttitor ut et turpis. Praesent a ex tempor, lobortis orci id, ultrices ipsum. Nunc et dignissim ligula, et malesuada elit. Cras vel pharetra turpis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque dictum varius orci, sit amet facilisis turpis iaculis in. In erat augue, pharetra ut semper sed, pellentesque ut augue. Etiam sit amet orci luctus, pulvinar enim sed, sodales diam. Nunc sit amet fringilla elit, eget facilisis dolor. 
+- Der Microservice bietet Prometheus-typische Metriken über ein API-Endpunkt an
+    - Zusätzliche Metriken wurden beim Sprint Planning entschieden und in einem entsprechenden Sprint Backlog festgehalten
+- Die Dokumentation der Software ist mindestens für extern verfügbaren Funktionen (sind als public deklariert oder API-Endpunkte) vorhanden und beinhaltet
+    - die API-Endpunkte sind durch OpenAPI v3 dokumentiert
+    - Funktionen sind mittels DocString-Kommentare dokumentiert
+        - eine Webseiten-Dokumentation nach etablierten Standard wird generiert und entsprechend der Projektstandards abgelegt
+- Der Microservice nutzt die Tracing-Technologie von Jaeger und greift entsprechende IDs auf und erstellt selbst eigene Spans und liefert diese zurück
