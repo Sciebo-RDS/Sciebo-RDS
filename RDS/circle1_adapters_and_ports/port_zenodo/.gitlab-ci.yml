@@ -30,7 +30,6 @@ test:port_zenodo3.8:
     image: python:3.8
 
 build:port_zenodo:
-    image: python:3.8
     extends: 
     - .builds
     - .port_zenodo
