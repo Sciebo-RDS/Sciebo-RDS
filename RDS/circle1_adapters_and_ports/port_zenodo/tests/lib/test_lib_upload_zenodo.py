@@ -34,7 +34,7 @@ class TestZenodoMethods(unittest.TestCase):
         result = Zenodo.check_token(api_key)
         self.assertEqual(result, expected)
 
-    """
+    """ Remove this test, because it interrupts the concurrently running jobs.
     def test_get_deposition(self):
         \"""
         Checks, if the deposition list is empty. 
@@ -52,7 +52,7 @@ class TestZenodoMethods(unittest.TestCase):
         Create a new deposition and remove it again.
         """
         
-        """
+        """ this interrupts the concurrently running jobs
         # first it should be empty
         result = Zenodo.get_deposition(api_key, return_response=True)
 
