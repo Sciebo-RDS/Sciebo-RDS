@@ -1,5 +1,5 @@
 ---
-title: Port Zenodo
+title: Port Invenio
 subtitle: Export your package to an invenio repository.
 
 menu:
@@ -14,6 +14,6 @@ weight: 1000
 
 ## Implementierung
 
-The following classes implements a library to work easier with zenodo in the zenodo service.
+Die folgende Klasse implementiert eine Bibliothek, um die Invenio-Installation "Zenodo" verwenden zu können.
 
 {{% code file="doc/impl/ports/port-invenio-docstring.md" %}}
