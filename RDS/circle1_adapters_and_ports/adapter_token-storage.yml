@@ -1,12 +1,13 @@
 openapi: 3.0.0
 info:
+  title: Adapter OAuth2
   version: '1.0'
-  title: SPA Exporter
-  description: This service represents the web frontend of the exporter.
+  description: This service implements the oauth2 frontend.
   contact:
     name: Peter Heiss
-    email: peter.heiss@uni-muenster.de
-paths:
+servers:
+  - url: 'http://spa-token-storage:3000/web'
+paths: 
   /:
     get:
       summary: Returns all needed web assets
@@ -39,6 +40,5 @@ paths:
           description: OK
       description: ''
     parameters: []
-servers:
-  - url: 'http://spa-exporter:3000/web'
-    description: ''
+components:
+  schemas: {}

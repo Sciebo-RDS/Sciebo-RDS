@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: use-case_token-storage
+  version: '1.0'
+  contact:
+    name: Peter Heiss
+    email: peter.heiss@uni-muenster.de
+servers:
+  - url: 'http://use-case_token-storage:3000/'
+paths:
+  /redirect:
+    get:
+      summary: Redirect the user to the specified uri
+      tags: []
+      responses:
+        '200':
+          description: OK
+      description: ''
+      parameters: []
+  '/svc/{service}':
+    parameters:
+      - schema:
+          type: string
+        name: service
+        in: path
+        required: true
+    get:
+      summary: Returns informations about given service.
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/oauth'
+      description: ''
+  /authorization-successful:
+    get:
+      summary: Returns success page
+      tags: []
+      responses: {}
+      description: 'Like ownclouds: index.php/apps/oauth2/authorization-successful'
+    parameters: []
+  /authorization-cancel:
+    get:
+      summary: Returns cancel page
+      tags: []
+      responses: {}
+    parameters: []
+components:
+  schemas:
+    oauth:
+      title: OAuth2 URL
+      type: object
+      properties:
+        redirect_uri_with_client_id:
+          type: string
+          description: 'A complete uri with client id, type and redirect_uri.'
+        redirect_uri:
+          type: string
+        client_id:
+          type: string
+        response_type:
+          type: string
+      description: ''
