@@ -1,12 +1,13 @@
 openapi: 3.0.0
 info:
-  title: use-case_token-storage
+  title: Token Storage
   version: '1.0'
   contact:
     name: Peter Heiss
     email: peter.heiss@uni-muenster.de
+  description: 'This file describes a service, which takes tokens and refresh oauth2-tokens automatically.'
 servers:
-  - url: 'http://use-case_token-storage:3000/'
+  - url: 'http://central-service_token-storage:3000'
 paths:
   /redirect:
     get:
@@ -39,14 +40,18 @@ paths:
     get:
       summary: Returns success page
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
       description: 'Like ownclouds: index.php/apps/oauth2/authorization-successful'
     parameters: []
   /authorization-cancel:
     get:
       summary: Returns cancel page
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
     parameters: []
 components:
   schemas:
