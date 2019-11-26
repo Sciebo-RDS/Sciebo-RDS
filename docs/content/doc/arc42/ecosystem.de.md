@@ -30,6 +30,7 @@ graph TD;
 
       subgraph Use Cases
         UCEx[Exporter]
+        UCTS[Token Storage]
 
         subgraph Central Services
           CSTS[Token Storage]
@@ -48,19 +49,22 @@ graph TD;
   click UCEx "/sciebo-rds/de/doc/impl/use-cases/exporter"
   click CSTS "/sciebo-rds/de/doc/impl/central/token-storage"
   click CSPM "/sciebo-rds/de/doc/impl/central/project-manager"
-  click PInvenio "/sciebo-rds/de/doc/impl/adapters/port-invenio"
-  click PStorage "/sciebo-rds/de/doc/impl/adapters/port-storage"
+  click PInvenio "/sciebo-rds/de/doc/impl/ports/port-invenio"
+  click PStorage "/sciebo-rds/de/doc/impl/ports/port-storage"
 
   %% define connections
   WWWI --> Ingress
 
   Ingress --> SPAEx --> UCEx
+  Ingress --> UCEx
   %% Ingress --> SPATS --> CSTS
-  Ingress --> CSTS
+  Ingress --> UCTS
 
   UCEx --> CSTS
   UCEx --> CSPM
   UCEx --> PInvenio
+
+  UCTS --> CSTS
   
   CSTS --> PInvenio
   CSTS --> PStorage
