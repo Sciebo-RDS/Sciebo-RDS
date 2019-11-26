@@ -5,9 +5,9 @@ info:
   contact:
     name: Peter Heiss
     email: peter.heiss@uni-muenster.de
-  description: 'This file describes a service, which takes tokens and refresh oauth2-tokens automatically.'
+  description: 'This file describes a service, which takes oauth2 flow for rds. This is a extra layer for the central service.'
 servers:
-  - url: 'http://central-service_token-storage:3000'
+  - url: 'http://use-case_token-storage:3000'
 paths:
   /redirect:
     get:
@@ -16,8 +16,13 @@ paths:
       responses:
         '200':
           description: OK
-      description: ''
+      description: 'This endpoint takes all tokens to send it to the central-service to save them there and redirects user to `/authorization-success` or `/authorization-cancel`, if anything is wrong with the given data.'
       parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/oauth'
   '/svc/{service}':
     parameters:
       - schema:
@@ -35,8 +40,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/oauth'
-      description: ''
-  /authorization-successful:
+      description: This is the normally known `/authorize` URL for oauth2 providers. Redirects to the `/authorize` pages for the oauth2-providers with all needed service relevant informations like client_id.
+  /authorization-success:
     get:
       summary: Returns success page
       tags: []
@@ -52,12 +57,14 @@ paths:
       responses:
         '200':
           description: OK
+      description: This endpoint represents an invalid oauth2 process.
     parameters: []
 components:
   schemas:
-    oauth:
+    oauth_uri:
       title: OAuth2 URL
       type: object
+      description: ''
       properties:
         redirect_uri_with_client_id:
           type: string
@@ -68,4 +75,17 @@ components:
           type: string
         response_type:
           type: string
-      description: ''
+    oauth:
+      title: oauth
+      type: object
+      properties:
+        id:
+          type: string
+        service:
+          type: string
+        username:
+          type: string
+        refresh_token:
+          type: string
+        access_token:
+          type: string
