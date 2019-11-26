@@ -1,0 +1,13 @@
+ 
+.tests_token_service:
+  extends: .tests
+  variables:
+      FOLDER: RDS/circle2_use_cases/token_service
+
+  only:
+      changes:
+      - RDS/circle2_use_cases/token_service/*
+      - RDS/circle2_use_cases/token_service/**/*
+
+test:token_service:
+  extends: .tests_token_service
