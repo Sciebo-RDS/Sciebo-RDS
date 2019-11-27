@@ -4,7 +4,129 @@ info:
   version: '1.0'
 servers:
   - url: 'http://central-service_token-storage:3000'
-paths: {}
+paths:
+  /token:
+    get:
+      summary: Returns all tokens
+      tags: []
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Add a token
+      responses:
+        '200':
+          description: OK
+      description: Adds a token to repository.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/token'
+  '/token/{token-id}/status':
+    parameters:
+      - schema:
+          type: string
+        name: token-id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+  /user:
+    get:
+      summary: Returns user informations
+      tags: []
+      responses:
+        '200':
+          description: OK
+      description: Returns informations from main oauth2-provider
+    parameters: []
+  '/user/{user-id}':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+    get:
+      summary: Get user with id
+      tags: []
+      responses:
+        '200':
+          description: OK
+      description: ''
+    post:
+      summary: Add a token
+      responses:
+        '200':
+          description: OK
+      description: Adds token to the repository.
+  '/token/{token-id}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+      operationId: get-token-
+    parameters:
+      - schema:
+          type: string
+        name: token-id
+        in: path
+        required: true
+    put:
+      summary: Update token
+      responses:
+        '200':
+          description: OK
+      description: Updates a token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/token'
+  '/user/{user-id}/token':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+    get:
+      summary: Get tokens from specified user
+      tags: []
+      responses:
+        '200':
+          description: OK
+  '/service/{servicename}':
+    get:
+      summary: Get specified service
+      tags: []
+      responses:
+        '200':
+          description: OK
+    parameters:
+      - schema:
+          type: string
+        name: servicename
+        in: path
+        required: true
+  '/service/{servicename}/redirect_uri_full':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses: {}
+    parameters:
+      - schema:
+          type: string
+        name: servicename
+        in: path
+        required: true
 components:
   schemas:
     token:
@@ -13,6 +135,7 @@ components:
       properties:
         id:
           type: string
+          description: Set by service automatically
         service:
           type: string
         access_token:
