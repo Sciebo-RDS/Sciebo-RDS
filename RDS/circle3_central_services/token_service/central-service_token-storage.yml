@@ -116,17 +116,6 @@ paths:
         name: servicename
         in: path
         required: true
-  '/service/{servicename}/redirect_uri_full':
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses: {}
-    parameters:
-      - schema:
-          type: string
-        name: servicename
-        in: path
-        required: true
 components:
   schemas:
     token:
