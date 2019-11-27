@@ -4,8 +4,15 @@ class Token():
     _servicename = None
 
     def __init__(self, servicename: str, access_token: str):
+        self.check_string(servicename, "servicename")
+        self.check_string(access_token, "access_token")        
+
         self._servicename = servicename
         self._access_token = access_token
+
+    def check_string(self, obj: str, string: str):
+        if not obj:
+            raise ValueError(f"{string} cannot be an empty string.")
 
     @property
     def servicename(self):
@@ -35,6 +42,9 @@ class Oauth2Token(Token):
 
     def __init__(self, servicename: str, access_token: str, refresh_token: str):
         super(Oauth2Token, self).__init__(servicename, access_token)
+
+        self.check_string(refresh_token, "refresh_token")
+
         self._refresh_token = refresh_token
         self._exiration_date = ""
 

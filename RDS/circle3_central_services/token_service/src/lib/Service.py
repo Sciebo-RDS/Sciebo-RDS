@@ -10,11 +10,17 @@ class Service():
     _servicename = None
 
     def __init__(self, servicename: str):
+        self.check_string(servicename, "servicename")
+
         self._servicename = servicename
 
     @property
     def servicename(self):
         return self._servicename
+
+    def check_string(self, obj: str, string: str):
+        if not obj:
+            raise ValueError(f"{string} cannot be an empty string.")
 
 
 class OAuth2Service(Service):
@@ -29,6 +35,12 @@ class OAuth2Service(Service):
 
     def __init__(self, servicename: str, refresh_url: str, authorize_url: str, client_id: str, client_secret: str):
         super(OAuth2Service, self).__init__(servicename)
+
+        self.check_string(refresh_url, "refresh_url")
+        self.check_string(authorize_url, "authorize_url")
+        self.check_string(client_id, "client_id")
+        self.check_string(client_secret, "client_secret")
+
         self._refresh_url = refresh_url
         self._authorize_url = authorize_url
         self._client_id = client_id

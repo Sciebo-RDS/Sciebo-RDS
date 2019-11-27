@@ -26,6 +26,41 @@ class Test_TokenStorage(unittest.TestCase):
         self.oauthtoken_like_token1 = Oauth2Token.from_token(self.token_like_token1, "X_DEF")
         self.oauthtoken2 = Oauth2Token.from_token(self.token2, "X_XYZ")
 
+    def test_tokenstorage_empty_string(self):
+        with self.assertRaises(ValueError, msg=f"Storage {self.empty_storage}"):
+            Token("", "")
+
+        with self.assertRaises(ValueError, msg=f"Storage {self.empty_storage}"):
+            Token("MusterService", "")
+
+        with self.assertRaises(ValueError, msg=f"Storage {self.empty_storage}"):
+            Token("", "ABC")
+
+        with self.assertRaises(ValueError, msg=f"Storage {self.empty_storage}"):
+            Oauth2Token("", "", "")
+
+        with self.assertRaises(ValueError, msg=f"Storage {self.empty_storage}"):
+            Oauth2Token("MusterService", "", "")
+
+        with self.assertRaises(ValueError, msg=f"Storage {self.empty_storage}"):
+            Oauth2Token("", "ABC", "")
+
+        with self.assertRaises(ValueError, msg=f"Storage {self.empty_storage}"):
+            Oauth2Token("", "", "X_ABC")
+
+        with self.assertRaises(ValueError, msg=f"Storage {self.empty_storage}"):
+            Oauth2Token("MusterService", "", "X_ABC")
+
+        with self.assertRaises(ValueError, msg=f"Storage {self.empty_storage}"):
+            Oauth2Token("", "ABC", "X_ABC")
+
+    def test_tokenstorage_service(self):
+        pass
+
+        
+
+        
+
     def test_tokenstorage_add_user(self):
         # empty storage
         self.assertEqual(self.empty_storage._storage, {})

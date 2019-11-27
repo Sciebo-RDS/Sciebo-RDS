@@ -1,6 +1,5 @@
 from json import JSONEncoder
 
-
 class User(JSONEncoder):
     """
     Represents a user, which can access services via tokens.
@@ -9,12 +8,10 @@ class User(JSONEncoder):
     _username = None
 
     def __init__(self, username: str):
-        self._username = username
+        if not username:
+            raise ValueError("Username cannot be an empty string.")
 
-        obj = {
-            "username": self.username
-        }
-        __dict__ = obj
+        self._username = username
 
     @property
     def username(self):
