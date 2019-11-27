@@ -3,7 +3,7 @@ info:
   title: central-service_token-storage
   version: '1.0'
 servers:
-  - url: 'http://localhost:3000'
+  - url: 'http://central-service_token-storage:3000'
 paths: {}
 components:
   schemas:

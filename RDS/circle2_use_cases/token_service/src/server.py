@@ -16,13 +16,13 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
 
 def load_yaml_file():
     logger.info("--- Loading OpenAPI file. ---")
-    openapi_filepath = os.getenv("OPENAPI_FILEPATH", "openapi.yaml")
+    openapi_filepath = os.getenv("OPENAPI_FILEPATH", "../use-case_token-storage.yml")
 
     # yaml file not exists equals first start
     openapi_dict = []
     if not os.path.exists(openapi_filepath):
         # no openapi file found. Something was wrong in the container building process
-        paths = ["../central-service_token-storage.yml"]
+        paths = ["../use-case_token-storage.yml"]
         paths = ";".join(paths)
 
         download_path = os.getenv("OPENAPI_FILEPATH_EXTERNAL", paths)
@@ -62,7 +62,7 @@ def bootstrap(name='MicroService', executes=True):
     openapi_dict = load_yaml_file()
 
     app = App(name, use_tracer=config.initialize_tracer(),
-              use_metric=True, use_optimizer={"compress": False, "minify": False}, use_cors=True)
+              use_metric=True, use_optimizer=True, use_cors=True)
 
     for oai in openapi_dict:
         app.add_api(oai, resolver=MultipleResourceResolver(
@@ -79,4 +79,4 @@ def bootstrap(name='MicroService', executes=True):
 
 
 if __name__ == "__main__":
-    bootstrap("PortZenodo")
+    bootstrap("UseCaseTokenStorage")

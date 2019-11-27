@@ -23,11 +23,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/oauth'
-  '/svc/{service}':
+  '/service/{servicename}':
     parameters:
       - schema:
           type: string
-        name: service
+        name: servicename
         in: path
         required: true
     get:
@@ -39,8 +39,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/oauth'
-      description: This is the normally known `/authorize` URL for oauth2 providers. Redirects to the `/authorize` pages for the oauth2-providers with all needed service relevant informations like client_id.
+                $ref: '#/components/schemas/oauth_uri'
+        '302':
+          description: Found
+      description: 'This is the normally known `/authorize` URL for oauth2 providers. If http-headers say, it is a machine, it returns a 200 code and give all informations for a manual redirect. Otherwise it redirects to the `/authorize` pages for the oauth2-providers with all needed service relevant informations like client_id.'
   /authorization-success:
     get:
       summary: Returns success page
@@ -59,6 +61,38 @@ paths:
           description: OK
       description: This endpoint represents an invalid oauth2 process.
     parameters: []
+  /service:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    servicename:
+                      type: string
+                    link:
+                      type: string
+      description: Returns all available services.
+  '/service/{servicename}/redirect_uri_full':
+    parameters:
+      - schema:
+          type: string
+        name: servicename
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
 components:
   schemas:
     oauth_uri:
@@ -66,7 +100,7 @@ components:
       type: object
       description: ''
       properties:
-        redirect_uri_with_client_id:
+        redirect_uri_full:
           type: string
           description: 'A complete uri with client id, type and redirect_uri.'
         redirect_uri:
@@ -74,6 +108,8 @@ components:
         client_id:
           type: string
         response_type:
+          type: string
+        authorize_uri:
           type: string
     oauth:
       title: oauth
