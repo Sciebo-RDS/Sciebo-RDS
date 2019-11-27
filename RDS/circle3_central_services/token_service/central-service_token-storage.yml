@@ -72,7 +72,6 @@ paths:
       responses:
         '200':
           description: OK
-      operationId: get-token-
     parameters:
       - schema:
           type: string
