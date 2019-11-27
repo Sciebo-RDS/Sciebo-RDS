@@ -1,31 +1,31 @@
-.central_service_token_service:
+.use_case_token_service:
   variables:
       FOLDER: RDS/circle2_use_cases/token_service
 
-.tests_token_service:
+.tests_use_case_token_service:
   extends: 
   - .tests
-  - .central_service_token_service
+  - .use_case_token_service
 
   only:
       changes:
       - RDS/circle2_use_cases/token_service/*
       - RDS/circle2_use_cases/token_service/**/*
 
-test:token_service3.6:
+test:use_case_token_service3.6:
   image: python:3.6
-  extends: .tests_token_service
+  extends: .tests_use_case_token_service
 
-test:token_service3.7:
+test:use_case_token_service3.7:
   image: python:3.7
-  extends: .tests_token_service
+  extends: .tests_use_case_token_service
 
-test:token_service3.8:
+test:use_case_token_service3.8:
   image: python:3.8
-  extends: .tests_token_service
+  extends: .tests_use_case_token_service
 
-build:port_zenodo:
+build:use_case_token_service:
     image: python:3.8
     extends: 
     - .builds
-    - .central_service_token_service
+    - .use_case_token_service

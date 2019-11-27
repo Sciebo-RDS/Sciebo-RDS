@@ -1,5 +1,5 @@
-import requests
-import os
+import requests, os, json
+from flask import jsonify
 
 address = os.getenv("CENTRAL-SERVICE_TOKEN-STORAGE")
 
@@ -8,10 +8,11 @@ class TokenStorage():
         pass
 
     def getOAuthURIForService(self, servicename):
-        result = requests.get(f"{address}/service/{servicename}")
-        return result.json()
+        response = requests.get(f"{address}/service/{servicename}")
+        return response.text
 
     def getOAuthURIForServiceShort(self, servicename):
-        result = requests.get(f"{address}/service/{servicename}/redirect_uri_full")
-        return result.json()
+        response = self.getOAuthURIForService(servicename)
+        data = json.loads(response)
+        return data["redirect_uri_full"]
 

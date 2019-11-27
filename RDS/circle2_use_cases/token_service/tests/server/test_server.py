@@ -55,15 +55,15 @@ class TestPortZenodo(unittest.TestCase):
         with pact:
             result = self.client.get("/service/owncloud")
 
-        self.assertEqual(result.json, expected)
+        self.assertEqual(result.json, json.dumps(expected))
 
         pact.given(
             "User can make a valid ownCloud oauth request for short."
         ).upon_receiving(
             "a valid response from UseCase-TokenStorage"
         ).with_request(
-            "GET", "/service/owncloud/redirect_uri_full"
-        ).will_respond_with(200, body=expected["redirect_uri_full"])
+            "GET", "/service/owncloud"
+        ).will_respond_with(200, body=expected)
 
         with pact:
             result = self.client.get("/service/owncloud/redirect_uri_full")

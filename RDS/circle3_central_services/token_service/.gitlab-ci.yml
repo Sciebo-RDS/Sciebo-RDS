@@ -1,13 +1,31 @@
- 
-.tests_token_service:
-  extends: .tests
+.central_service_token_service:
   variables:
       FOLDER: RDS/circle3_central_services/token_service
+
+.tests_central_service_token_service:
+  extends: 
+  - .tests
+  - .central_service_token_service
 
   only:
       changes:
       - RDS/circle3_central_services/token_service/*
       - RDS/circle3_central_services/token_service/**/*
 
-test:token_service:
-  extends: .tests_token_service
+test:central_service_token_service3.6:
+  image: python:3.6
+  extends: .tests_central_service_token_service
+
+test:central_service_token_service3.7:
+  image: python:3.7
+  extends: .tests_central_service_token_service
+
+test:central_service_token_service3.8:
+  image: python:3.8
+  extends: .tests_central_service_token_service
+
+build:central_service_token.service:
+    image: python:3.8
+    extends:
+    - .builds
+    - .central_service_token_service
