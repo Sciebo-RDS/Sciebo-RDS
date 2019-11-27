@@ -22,7 +22,7 @@ def load_yaml_file():
     openapi_dict = []
     if not os.path.exists(openapi_filepath):
         # no openapi file found. Something was wrong in the container building process
-        paths = ["../central-service_token-storage.yml"]
+        paths = ["https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/token-storage/RDS/circle3_central_services/token_service/central-service_token-storage.yml"]
         paths = ";".join(paths)
 
         download_path = os.getenv("OPENAPI_FILEPATH_EXTERNAL", paths)

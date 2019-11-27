@@ -16,7 +16,13 @@ class Token():
         return self._access_token
 
     def __str__(self):
-        return f"Token: {self}, Servicename: {self.servicename}, Access-Token: {self.access_token}"
+        return {"Servicename": self.servicename, "Access-Token": self.access_token}.__str__()
+
+    def __eq__(self, other):
+        return (
+            isinstance(other, (Token)) and
+            self.servicename == other.servicename
+        )
 
 
 class Oauth2Token(Token):
@@ -40,10 +46,6 @@ class Oauth2Token(Token):
         text = super(Oauth2Token, self).__str__()
         return f"{text}, Refresh-Token: {self.refresh_token}"
 
-    def __eq__(self, other):
-        return (
-            isinstance(other, (Token)) and
-            self.servicename == other.servicename and
-            self.access_token == other.access_token and
-            self.refresh_token == other.refresh_token
-        )
+    @classmethod
+    def from_token(cls, token: Token, refresh_token: str):
+        cls(token.servicename, token.access_token, refresh_token)
