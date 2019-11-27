@@ -1,12 +1,14 @@
 
-import unittest, sys, os
+import unittest
+import sys
+import os
 from pactman import Consumer, Provider
 from src.server import bootstrap
 
 
 def create_app():
     # set var for mock service
-    os.environ["ZENODO_ADDRESS"] = "http://localhost:5000"
+    os.environ["address"] = "http://localhost:5000"
     # creates a test client
     app = bootstrap(executes=False).app
     # propagate the exceptions to the test client
@@ -15,12 +17,14 @@ def create_app():
     return app
 
 
-pact = Consumer('PortZenodo').has_pact_with(Provider('Zenodo'), port=5000)
+pact = Consumer('C3TokenStorage').has_pact_with(
+    Provider('OAuth2Provider'), port=5000)
+
 
 class TestPortZenodo(unittest.TestCase):
     app = create_app()
     client = app.test_client()
-    
+
     @classmethod
     def setUpClass(cls):
         pass
@@ -32,7 +36,7 @@ class TestPortZenodo(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_home_status_code(self):
+    """def test_home_status_code(self):
         expected = []
 
         pact.given(
@@ -47,7 +51,8 @@ class TestPortZenodo(unittest.TestCase):
         with pact:
             result = self.client.get("/c2/deposition")
         
-        self.assertEqual(result.json, expected)
+        self.assertEqual(result.json, expected)"""
+
 
 if __name__ == '__main__':
     unittest.main()
