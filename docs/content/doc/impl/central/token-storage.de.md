@@ -30,22 +30,43 @@ sequenceDiagram
 
 Aufgrund der Geheimhaltung des Oauth2-secrets, muss sämtliche Kommunikation der Plugins durch eine Serverstruktur geleitet werden, welcher Zugriff auf dieses Secret besitzt. Dies muss dann hinter einer Login-Seite liegen, sodass der Nutzer authentifiziert sein muss. Somit kann RDS also sicher sein, dass die Anfrage auch authorisiert ist durch den Nutzer, da wir dem Plugin-System vertrauen. Können wir dies nicht, so ist auch der OAuth2-Provider nicht vertrauenswürdig, da eine angreifende Person sich als eine andere Person ausgeben kann, womit OAuth2 sein vertrauen verlieren würde.
 
-## ER-Diagramm
+## UML-Diagramm
 
-Aufgrund der hohen Relevanz einer einwandfreien Speicherung der Nutzertokens, wird im folgenden ein ER-Diagramm dargestellt, welches die Speicherstruktur der Daten beschreibt.
+Aufgrund der hohen Relevanz einer einwandfreien Speicherung der Nutzertokens, wird im folgenden ein UML-Diagramm mit Kardinalitäten dargestellt, welches die Speicherstruktur der Daten beschreibt.
 
 ```mermaid
 classDiagram
 
-  class Storage
-  class User
-  class Token
-  class Service
+  class Storage {
+    - Dict[String key, UserToken value] _storage
+  }
 
-  Storage "1" -- "0..n" User : has
-  Storage "1" -- "0..n" Service : has access to
-  Service "1" -- "0..n" Token : manages
-  User "1" -- "0..n" Token : has
+  class UserToken {
+    + User data
+    + List[Token] tokens
+  }
+
+  class User {
+    + String Username
+  }
+
+  class Token {
+    + String Servicename
+    + String Access_Token
+  }
+
+  class Service {
+    + String Servicename
+  }
+
+  Storage "1" -- "0..n" UserToken : manages
+  UserToken "1" -- "1" User : has
+  UserToken "1" -- "0..n" Token : holds
+  Service "1" -- "0..n" Token : has
 ```
 
-Aktuell kann jeder User nur einen Token für jeden Service besitzen.
+Aktuell kann jeder User nur einen Token für jeden Service besitzen. Dies wird aktuell dadurch gewährleistet, dass Tokens bereits dadurch gleich sind, wenn ihre Servicename übereinstimmen.
+
+## Planungen
+
+Durch die einfachere Handhabung werden aktuell die Daten nur im Speicher abgelegt. Das heißt, sobald der Service abbricht, gehen auch sämtliche Daten verloren, wodurch alle Nutzer sich nocheinmal neu anmelden müssen. Dies soll in Zukunft durch eine persistente und clusterübergreifende Speicherung behoben werden.
