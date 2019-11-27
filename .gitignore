@@ -3,3 +3,4 @@ config.sh
 __pycache__
 .pytest_cache
 openapi.yaml
+*.json
