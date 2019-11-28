@@ -1,11 +1,13 @@
-from .Token import Token
+from .Token import Token, Oauth2Token
+from .User import User
 from urllib.parse import urlparse, urlunparse
-
+import requests, json
+from requests.auth import HTTPBasicAuth
+from datetime import datetime, timedelta
 
 class Service():
     """
     Represents a service, which can be used in RDS.
-    Servicename needs to be unique!
     """
 
     _servicename = None
@@ -23,6 +25,9 @@ class Service():
         if not obj:
             raise ValueError(f"{string} cannot be an empty string.")
 
+    def is_valid(self, token: Token, user: User):
+        pass
+
     def __eq__(self, obj):
         return (
             isinstance(obj, (Service)) and
@@ -35,7 +40,7 @@ class Service():
 
 class OAuth2Service(Service):
     """
-    Represents an OAuth2 Service
+    Represents an OAuth2 service, which can be used in RDS.
     """
 
     _refresh_url = None
@@ -43,11 +48,11 @@ class OAuth2Service(Service):
     _client_id = None
     _client_secret = None
 
-    def __init__(self, servicename: str, refresh_url: str, authorize_url: str, client_id: str, client_secret: str):
+    def __init__(self, servicename: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
         super(OAuth2Service, self).__init__(servicename)
 
-        self.check_string(refresh_url, "refresh_url")
         self.check_string(authorize_url, "authorize_url")
+        self.check_string(refresh_url, "refresh_url")
         self.check_string(client_id, "client_id")
         self.check_string(client_secret, "client_secret")
 
@@ -68,12 +73,26 @@ class OAuth2Service(Service):
 
         return u
 
-    def refresh_token(self, token: Token):
+    def refresh(self, token: Oauth2Token, user: User):
         """
-        Refresh the given oauth2 token.
+        Refresh the given oauth2 token for specified user.
         """
 
-        pass
+        data = {
+            "grant_type": "refresh_token"
+        }
+
+        req = requests.post(self.refresh_url, data=data, auth=HTTPBasicAuth(
+            user.username, self.client_secret))
+
+        data = json.loads(req.text)
+
+        if not data["user_id"] == user.username:
+            from .Exceptions.ServiceExceptions import TokenNotValidError
+            raise TokenNotValidError("User_ID in refresh response not equal to authenticated user.")
+
+        date = datetime.now() + timedelta(seconds=data["expires_in"])
+        return Oauth2Token(token.servicename, data["access_token"], data["refresh_token"], date)
 
     @property
     def refresh_url(self):
@@ -92,8 +111,8 @@ class OAuth2Service(Service):
         return self._client_secret
 
     @classmethod
-    def from_service(cls, service: Service, refresh_url: str, authorize_url: str, client_id: str, client_secret: str):
-        return cls(service.servicename, refresh_url, authorize_url, client_id, client_secret)
+    def from_service(cls, service: Service, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
+        return cls(service.servicename, authorize_url, refresh_url, client_id, client_secret)
 
     def __eq__(self, obj):
         return (

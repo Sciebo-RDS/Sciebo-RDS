@@ -134,4 +134,4 @@ class Test_TokenStorage(unittest.TestCase):
         self.empty_storage.addTokenToUser(
             self.user1, self.oauthtoken_like_token1, Force=True)
         self.assertEqual(self.empty_storage._storage, expected,
-                         msg=f"Storage {self.empty_storage}")
+                         msg=f"\nStorage: {self.empty_storage._storage}\n expected: {expected}")
