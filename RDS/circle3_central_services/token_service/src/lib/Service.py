@@ -1,6 +1,7 @@
 from .Token import Token
 from urllib.parse import urlparse, urlunparse
 
+
 class Service():
     """
     Represents a service, which can be used in RDS.
@@ -27,7 +28,7 @@ class Service():
             isinstance(obj, (Service)) and
             self.servicename == obj.servicename
         )
-    
+
     def __str__(self):
         return f"Servicename: {self.servicename}"
 
@@ -64,9 +65,8 @@ class OAuth2Service(Service):
         # check for trailing slash for url
         if u.path and u.path[-1] == "/":
             u = u._replace(path=u.path[:-1])
-        
-        return u
 
+        return u
 
     def refresh_token(self, token: Token):
         """
@@ -92,12 +92,13 @@ class OAuth2Service(Service):
         return self._client_secret
 
     @classmethod
-    def from_service(self, service: Service, refresh_url: str, authorize_url: str, client_id: str, client_secret: str):
-        return OAuth2Service(service.servicename, refresh_url, authorize_url, client_id, client_secret)
+    def from_service(cls, service: Service, refresh_url: str, authorize_url: str, client_id: str, client_secret: str):
+        return cls(service.servicename, refresh_url, authorize_url, client_id, client_secret)
 
     def __eq__(self, obj):
         return (
             super(OAuth2Service, self).__eq__(obj) and
+            isinstance(obj, (OAuth2Service)) and
             self.refresh_url == obj.refresh_url and
             self.authorize_url == obj.authorize_url and
             self.client_id == obj.client_id and
