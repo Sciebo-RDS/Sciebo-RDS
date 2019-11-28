@@ -75,10 +75,12 @@ class Test_TokenStorage(unittest.TestCase):
             OAuth2Service("MusterService", "", "", "", "")
 
         with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
-            OAuth2Service("", "http://localhost:5001/oauth/refresh", "", "", "")
+            OAuth2Service(
+                "", "http://localhost:5001/oauth/refresh", "", "", "")
 
         with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
-            OAuth2Service("", "", "http://localhost:5001/oauth/authorize", "", "")
+            OAuth2Service(
+                "", "", "http://localhost:5001/oauth/authorize", "", "")
 
         with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
             OAuth2Service("", "", "", "ABC", "")
@@ -87,39 +89,76 @@ class Test_TokenStorage(unittest.TestCase):
             OAuth2Service("", "", "", "", "XYZ")
 
         with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
-            OAuth2Service("MusterService", "http://localhost:5001/oauth/refresh", "", "", "")
+            OAuth2Service("MusterService",
+                          "http://localhost:5001/oauth/refresh", "", "", "")
 
         with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
-            OAuth2Service("MusterService", "", "http://localhost:5001/oauth/authorize", "", "")
-            
+            OAuth2Service("MusterService", "",
+                          "http://localhost:5001/oauth/authorize", "", "")
+
         with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
             OAuth2Service("MusterService", "", "", "ABC", "")
-            
+
         with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
             OAuth2Service("MusterService", "", "", "", "XYZ")
-            
+
         with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
-            OAuth2Service("MusterService", "http://localhost:5001/oauth/refresh", "", "", "")
-            
+            OAuth2Service("MusterService",
+                          "http://localhost:5001/oauth/refresh", "", "", "")
+
         with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
-            OAuth2Service("MusterService", "http://localhost:5001/oauth/refresh", "http://localhost:5001/oauth/authorize", "", "")
+            OAuth2Service("MusterService", "http://localhost:5001/oauth/refresh",
+                          "http://localhost:5001/oauth/authorize", "", "")
 
         # same input for authorize and refresh
         with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
-            OAuth2Service("MusterService", "http://localhost:5001/oauth/refresh", "http://localhost:5001/oauth/refresh", "", "")
+            OAuth2Service("MusterService", "http://localhost:5001/oauth/refresh",
+                          "http://localhost:5001/oauth/refresh", "", "")
 
+    def test_tokenstorage_service_no_protocoll(self):
         # no protocoll
         with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
-            OAuth2Service("MusterService", "localhost", "http://localhost:5001/oauth/authorize", "", "")
-        with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
-            OAuth2Service("MusterService", "localhost:5001", "http://localhost:5001/oauth/authorize", "", "")
+            OAuth2Service("MusterService", "localhost",
+                          "http://localhost:5001/oauth/authorize", "ABC", "XYZ")
 
+        with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
+            OAuth2Service("MusterService", "localhost:5001",
+                          "http://localhost:5001/oauth/authorize", "ABC", "XYZ")
+
+        with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
+            OAuth2Service("MusterService", "localhost:5001/oauth/refresh",
+                          "http://localhost:5001/oauth/authorize", "ABC", "XYZ")
+
+        with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
+            OAuth2Service("MusterService", "http://localhost:5001",
+                          "localhost:5001/oauth/authorize", "ABC", "XYZ")
+
+        with self.assertRaises(ValueError, msg=f"Service {self.empty_storage}"):
+            OAuth2Service("MusterService", "http://localhost:5001",
+                          "localhost:5001/oauth/authorize", "ABC", "XYZ")
+
+    def test_tokenstorage_service_equal(self):
+        # check if they are equal
+        svc1 = OAuth2Service("MusterService", "http://localhost:5001",
+                             "http://localhost:5001/oauth/authorize", "ABC", "XYZ")
+        svc2 = OAuth2Service("MusterService", "http://localhost:5001",
+                             "http://localhost:5001/oauth/authorize", "ABC", "XYZ")
+        self.assertEqual(
+            svc1, svc2, msg=f"Service1: {svc1}\n Service2: {svc2}")
+
+    def test_tokenstorage_service_trailing_slash(self):
         # check if root dir is valid
-        svc = OAuth2Service("MusterService", "http://localhost:5001", "http://localhost:5001/oauth/authorize", "", "")
-        self.assertIsInstance(svc, OAuth2Service)
-        svc2 = OAuth2Service("MusterService", "http://localhost:5001/", "http://localhost:5001/oauth/authorize", "", "")
+        svc1 = OAuth2Service("MusterService", "http://localhost:5001",
+                             "http://localhost:5001/oauth/authorize", "ABC", "XYZ")
+        self.assertIsInstance(svc1, OAuth2Service)
+
+        svc2 = OAuth2Service("MusterService", "http://localhost:5001/",
+                             "http://localhost:5001/oauth/authorize/", "ABC", "XYZ")
         self.assertIsInstance(svc2, OAuth2Service)
-        self.assertEqual(svc, svc2)
+
+        # check if they are equal
+        self.assertEqual(
+            svc1, svc2, msg=f"Service1: {svc1}\n Service2: {svc2}")
 
     def test_tokenstorage_add_user(self):
         # empty storage
