@@ -68,3 +68,7 @@ class OAuth2Service(Service):
     @property
     def client_secret(self):
         return self._client_secret
+
+    @classmethod
+    def from_service(self, service: Service, refresh_url: str, authorize_url: str, client_id: str, client_secret: str):
+        return OAuth2Service(service.servicename, refresh_url, authorize_url, client_id, client_secret)
