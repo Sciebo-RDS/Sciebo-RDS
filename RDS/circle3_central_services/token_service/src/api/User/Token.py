@@ -1,2 +1,4 @@
+from flask import jsonify
+
 def index():
-    pass
+    return jsonify({})

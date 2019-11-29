@@ -1,7 +1,5 @@
 
-import unittest
-import sys
-import os
+import unittest, sys, os, json
 from pactman import Consumer, Provider
 from src.server import bootstrap
 
@@ -35,6 +33,15 @@ class TestPortZenodo(unittest.TestCase):
 
     def tearDown(self):
         pass
+
+    def test_empty_storage(self):
+        expected = {}
+
+        self.assertEqual(self.client.get("/token").json, expected)
+        self.assertEqual(self.client.get("/user").json, expected)
+        self.assertEqual(self.client.get("/service").json, expected)
+
+
 
     """def test_home_status_code(self):
         expected = []

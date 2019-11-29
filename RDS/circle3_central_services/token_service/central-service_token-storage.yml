@@ -115,6 +115,14 @@ paths:
         name: servicename
         in: path
         required: true
+  /service:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+      operationId: ''
 components:
   schemas:
     token:

@@ -1,6 +1,8 @@
+from flask import jsonify
 
 def index():
-    pass
+    return jsonify({})
+
 
 def get(user_id):
     pass

@@ -1,6 +1,8 @@
+from flask import jsonify
 
 def index():
-    pass
+    return jsonify({})
+
 
 def get(token_id):
     pass

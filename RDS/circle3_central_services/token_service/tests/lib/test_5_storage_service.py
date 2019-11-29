@@ -128,12 +128,16 @@ class TestStorageService(unittest.TestCase):
             "message_url": f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorization-successful"
         }
 
+        from base64 import b64encode
+        auth = f"{expected_user.username}:{expected_service.client_secret}"
+        b64 = b64encode(auth.encode("utf-8")).decode("utf-8")
+
         pact.given(
             "Username can refresh given oauth2token to service", username=expected_user.username, service=expected_service
         ).upon_receiving(
             "A valid refresh token response."
         ).with_request(
-            "POST", "/owncloud/index.php/apps/oauth2/api/v1/token", headers={"Authorization": "Basic S2FybGEgS29sdW1kYTpYWVo="}
+            "POST", "/owncloud/index.php/apps/oauth2/api/v1/token", headers={"Authorization": f"Basic {b64}"}
         ).will_respond_with(200, body=json_expected)
 
         result = None
