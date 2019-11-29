@@ -85,11 +85,36 @@ class OAuth2Service(Service):
         req = requests.post(self.refresh_url, data=data, auth=HTTPBasicAuth(
             user.username, self.client_secret))
 
+        if req.status_code == 400:
+            data = json.loads(req.text)
+
+            if "error" in data:
+                error_type = data["error"]
+
+                if error_type == "invalid_request":
+                    from .Exceptions.ServiceExceptions import OAuth2InvalidRequestError
+                    raise OAuth2InvalidRequestError()
+                elif error_type == "invalid_client":
+                    from .Exceptions.ServiceExceptions import OAuth2InvalidClientError
+                    raise OAuth2InvalidClientError()
+                elif error_type == "invalid_grant":
+                    from .Exceptions.ServiceExceptions import OAuth2InvalidGrantError
+                    raise OAuth2InvalidGrantError()
+                elif error_type == "unauthorized_client":
+                    from .Exceptions.ServiceExceptions import OAuth2UnauthorizedClient
+                    raise OAuth2UnauthorizedClient()
+                elif error_type == "unsupported_grant_type":
+                    from .Exceptions.ServiceExceptions import OAuth2UnsupportedGrantType
+                    raise OAuth2UnsupportedGrantType()
+            
+            from .Exceptions.ServiceExceptions import OAuth2UnsuccessfulResponseError
+            raise OAuth2UnsuccessfulResponseError()
+
         data = json.loads(req.text)
 
         if not data["user_id"] == user.username:
             from .Exceptions.ServiceExceptions import TokenNotValidError
-            raise TokenNotValidError(token, "User_ID in refresh response not equal to authenticated user.")
+            raise TokenNotValidError(self, token, "User-ID in refresh response not equal to authenticated user.")
 
         date = datetime.now() + timedelta(seconds=data["expires_in"])
         return Oauth2Token(token.servicename, data["access_token"], data["refresh_token"], date)

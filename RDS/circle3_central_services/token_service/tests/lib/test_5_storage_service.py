@@ -3,7 +3,7 @@ from lib.Service import Service, OAuth2Service
 from lib.Storage import Storage
 from lib.Token import Token, Oauth2Token
 from lib.User import User
-from lib.Exceptions.ServiceExceptions import TokenNotValidError
+from lib.Exceptions.ServiceExceptions import *
 from pactman import Consumer, Provider
 
 
@@ -86,7 +86,7 @@ class TestStorageService(unittest.TestCase):
             self.assertEqual(result, expected,
                              msg=f"\nresult: {result}\nexpected: {expected}")
 
-        # this needs to be here, because it counts the given interactions, 
+        # this needs to be here, because it counts the given interactions,
         # so if this is missing, you get an error, when you do the following assertion.
         pact.given(
             "Username can refresh given oauth2token", username=self.user1.username
@@ -99,3 +99,38 @@ class TestStorageService(unittest.TestCase):
         with self.assertRaises(TokenNotValidError):
             with pact:
                 self.oauthservice1.refresh(self.token1, self.user2)
+
+        pact.given(
+            "Username can't refresh given oauth2token", username=self.user1.username
+        ).upon_receiving(
+            "A bad request was made."
+        ).with_request(
+            "POST", "/owncloud/index.php/apps/oauth2/api/v1/token"
+        ).will_respond_with(400, body=json_expected)
+
+        with self.assertRaises(OAuth2UnsuccessfulResponseError):
+            with pact:
+                self.oauthservice1.refresh(self.token1, self.user1)
+
+        self.make_bad_request_for_oauth_provider("invalid_request", OAuth2InvalidRequestError)
+        self.make_bad_request_for_oauth_provider("invalid_client", OAuth2InvalidClientError)
+        self.make_bad_request_for_oauth_provider("invalid_grant", OAuth2InvalidGrantError)
+        self.make_bad_request_for_oauth_provider("unauthorized_client", OAuth2UnauthorizedClient)
+        self.make_bad_request_for_oauth_provider("unsupported_grant_type", OAuth2UnsupportedGrantType)
+
+    def make_bad_request_for_oauth_provider(self, error_code, error):
+        json_expected = {
+            "error": error_code
+        }
+
+        pact.given(
+            "Username made a bad request", username=self.user1.username
+        ).upon_receiving(
+            f"A bad request with error {error_code} was made."
+        ).with_request(
+            "POST", "/owncloud/index.php/apps/oauth2/api/v1/token"
+        ).will_respond_with(400, body=json_expected)
+
+        with self.assertRaises(error):
+            with pact:
+                self.oauthservice1.refresh(self.token1, self.user1)
