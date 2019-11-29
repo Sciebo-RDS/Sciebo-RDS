@@ -1,6 +1,6 @@
 from ..User import User
 from ..Storage import Storage
-from ..Token import Token
+from ..Token import Token, OAuth2Token
 
 class UserExistsAlreadyError(Exception):
     def __init__(self, storage: Storage, user: User, msg=None):

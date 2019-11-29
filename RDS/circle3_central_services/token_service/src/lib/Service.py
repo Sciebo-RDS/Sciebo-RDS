@@ -1,9 +1,10 @@
-from .Token import Token, Oauth2Token
+from .Token import Token, OAuth2Token
 from .User import User
 from urllib.parse import urlparse, urlunparse
-import requests, json
-from requests.auth import HTTPBasicAuth
+import requests
+import json
 from datetime import datetime, timedelta
+
 
 class Service():
     """
@@ -73,7 +74,7 @@ class OAuth2Service(Service):
 
         return u
 
-    def refresh(self, token: Oauth2Token, user: User):
+    def refresh(self, token: OAuth2Token, user: User):
         """
         Refresh the given oauth2 token for specified user.
         """
@@ -82,8 +83,8 @@ class OAuth2Service(Service):
             "grant_type": "refresh_token"
         }
 
-        req = requests.post(self.refresh_url, data=data, auth=HTTPBasicAuth(
-            user.username, self.client_secret))
+        req = requests.post(self.refresh_url, data=data,
+                            auth=(user.username, self.client_secret))
 
         if req.status_code == 400:
             data = json.loads(req.text)
@@ -106,7 +107,7 @@ class OAuth2Service(Service):
                 elif error_type == "unsupported_grant_type":
                     from .Exceptions.ServiceExceptions import OAuth2UnsupportedGrantType
                     raise OAuth2UnsupportedGrantType()
-            
+
             from .Exceptions.ServiceExceptions import OAuth2UnsuccessfulResponseError
             raise OAuth2UnsuccessfulResponseError()
 
@@ -114,10 +115,11 @@ class OAuth2Service(Service):
 
         if not data["user_id"] == user.username:
             from .Exceptions.ServiceExceptions import TokenNotValidError
-            raise TokenNotValidError(self, token, "User-ID in refresh response not equal to authenticated user.")
+            raise TokenNotValidError(
+                self, token, "User-ID in refresh response not equal to authenticated user.")
 
         date = datetime.now() + timedelta(seconds=data["expires_in"])
-        return Oauth2Token(token.servicename, data["access_token"], data["refresh_token"], date)
+        return OAuth2Token(token.servicename, data["access_token"], data["refresh_token"], date)
 
     @property
     def refresh_url(self):

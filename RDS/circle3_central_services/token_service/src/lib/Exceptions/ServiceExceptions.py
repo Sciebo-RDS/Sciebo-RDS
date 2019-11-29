@@ -1,5 +1,5 @@
 from ..Service import Service
-from ..Token import Token, Oauth2Token
+from ..Token import Token, OAuth2Token
 from ..User import User
 
 

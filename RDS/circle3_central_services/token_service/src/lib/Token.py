@@ -38,7 +38,7 @@ class Token():
         )
 
 
-class Oauth2Token(Token):
+class OAuth2Token(Token):
     """
     Represents a token object.
     """
@@ -48,7 +48,7 @@ class Oauth2Token(Token):
 
     def __init__(self, servicename: str, access_token: str, refresh_token: str = "",
                  expiration_date: datetime.datetime = datetime.datetime.now()):
-        super(Oauth2Token, self).__init__(servicename, access_token)
+        super(OAuth2Token, self).__init__(servicename, access_token)
 
         # remove check for empty string for refresh_token, because it could be an authorization_token
         #self.check_string(refresh_token, "refresh_token")
@@ -66,7 +66,7 @@ class Oauth2Token(Token):
         return self._expiration_date
 
     def __str__(self):
-        text = super(Oauth2Token, self).__str__()
+        text = super(OAuth2Token, self).__str__()
         return f"{text}, Refresh-Token: {self.refresh_token}, exp-date: {self.expiration_date}"
 
     @classmethod
@@ -79,6 +79,6 @@ class Oauth2Token(Token):
         because they could be changed already. Only servicename is relevant.
         """
         return (
-            super(Oauth2Token, self).__eq__(obj) and
-            isinstance(obj, Oauth2Token) 
+            super(OAuth2Token, self).__eq__(obj) and
+            isinstance(obj, OAuth2Token) 
         )

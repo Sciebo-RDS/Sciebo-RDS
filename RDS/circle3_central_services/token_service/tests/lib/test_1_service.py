@@ -6,11 +6,14 @@ class TestService(unittest.TestCase):
     def setUp(self):
         self.service1 = Service("MusterService")
         self.service2 = Service("BetonService")
+        self.service3 = Service("FahrService")
 
         self.oauthservice1 = OAuth2Service.from_service(
             self.service1, "http://localhost:5000/oauth/authorize", "http://localhost:5000/oauth/refresh", "ABC", "XYZ")
-        self.oauthservice1 = OAuth2Service.from_service(
+        self.oauthservice2 = OAuth2Service.from_service(
             self.service2, "http://localhost:5001/oauth/authorize", "http://localhost:5001/oauth/refresh", "DEF", "UVW")
+        self.oauthservice3 = OAuth2Service.from_service(
+            self.service3, "http://localhost:5001/api/authorize", "http://localhost:5001/api/refresh", "GHI", "MNO")
 
     def test_service(self):
         with self.assertRaises(ValueError):

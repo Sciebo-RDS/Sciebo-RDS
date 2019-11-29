@@ -1,7 +1,7 @@
 import unittest
 
 from lib.Storage import Storage
-from lib.Token import Token, Oauth2Token
+from lib.Token import Token, OAuth2Token
 from lib.User import User
 from lib.Exceptions.StorageException import UserExistsAlreadyError, UserHasTokenAlreadyError, UserNotExistsError
 
@@ -18,10 +18,10 @@ class Test_TokenStorage(unittest.TestCase):
         self.token_like_token1 = Token("MusterService", "DEF")
         self.token2 = Token("BetonService", "XYZ")
 
-        self.oauthtoken1 = Oauth2Token.from_token(self.token1, "X_ABC")
-        self.oauthtoken_like_token1 = Oauth2Token.from_token(
+        self.oauthtoken1 = OAuth2Token.from_token(self.token1, "X_ABC")
+        self.oauthtoken_like_token1 = OAuth2Token.from_token(
             self.token_like_token1, "X_DEF")
-        self.oauthtoken2 = Oauth2Token.from_token(self.token2, "X_XYZ")
+        self.oauthtoken2 = OAuth2Token.from_token(self.token2, "X_XYZ")
 
     def test_tokenstorage_add_user(self):
         # empty storage
@@ -29,7 +29,7 @@ class Test_TokenStorage(unittest.TestCase):
 
         # raise an exception, if a user not exist for token
         with self.assertRaises(UserNotExistsError, msg=f"Storage {self.empty_storage}"):
-            self.empty_storage.addTokenToUser(self.user1, self.token1)
+            self.empty_storage.addTokenToUser(self.token1, self.user1)
 
         # add one user, so in storage should be one
         expected = {
@@ -50,13 +50,13 @@ class Test_TokenStorage(unittest.TestCase):
         # add token to user
         expected[self.user1.username]["tokens"].append(self.token1)
 
-        self.empty_storage.addTokenToUser(self.user1, self.token1)
+        self.empty_storage.addTokenToUser(self.token1, self.user1)
         self.assertEqual(self.empty_storage._storage, expected,
                          msg=f"Storage {self.empty_storage}")
 
         # raise an exception, if token already there
         with self.assertRaises(UserHasTokenAlreadyError, msg=f"Storage {self.empty_storage}"):
-            self.empty_storage.addTokenToUser(self.user1, self.token1)
+            self.empty_storage.addTokenToUser(self.token1, self.user1)
 
     def test_tokenstorage_add_token_force(self):
         # add Token to not existing user with force
@@ -67,7 +67,7 @@ class Test_TokenStorage(unittest.TestCase):
             }
         }
 
-        self.empty_storage.addTokenToUser(self.user1, self.token1, Force=True)
+        self.empty_storage.addTokenToUser(self.token1, self.user1, Force=True)
         self.assertEqual(self.empty_storage._storage, expected,
                          msg=f"Storage {self.empty_storage}")
 
@@ -75,7 +75,7 @@ class Test_TokenStorage(unittest.TestCase):
         expected[self.user1.username]["tokens"][0] = self.token_like_token1
 
         self.empty_storage.addTokenToUser(
-            self.user1, self.token_like_token1, Force=True)
+            self.token_like_token1, self.user1, Force=True)
         self.assertEqual(self.empty_storage._storage, expected,
                          msg=f"Storage {self.empty_storage}")
 
@@ -85,7 +85,7 @@ class Test_TokenStorage(unittest.TestCase):
 
         # raise an exception, if a user not exist for token
         with self.assertRaises(UserNotExistsError, msg=f"Storage {self.empty_storage}"):
-            self.empty_storage.addTokenToUser(self.user1, self.oauthtoken1)
+            self.empty_storage.addTokenToUser(self.oauthtoken1, self.user1)
 
         # add one user, so in storage should be one
         expected = {
@@ -106,13 +106,13 @@ class Test_TokenStorage(unittest.TestCase):
         # add token to user
         expected[self.user1.username]["tokens"].append(self.oauthtoken1)
 
-        self.empty_storage.addTokenToUser(self.user1, self.oauthtoken1)
+        self.empty_storage.addTokenToUser(self.oauthtoken1, self.user1)
         self.assertEqual(self.empty_storage._storage, expected,
                          msg=f"Storage {self.empty_storage}")
 
         # raise an exception, if token already there
         with self.assertRaises(UserHasTokenAlreadyError, msg=f"Storage {self.empty_storage}"):
-            self.empty_storage.addTokenToUser(self.user1, self.oauthtoken1)
+            self.empty_storage.addTokenToUser(self.oauthtoken1, self.user1)
 
     def test_tokenstorage_oauthtokens_add_token_force(self):
         # add Token to not existing user with force
@@ -124,7 +124,7 @@ class Test_TokenStorage(unittest.TestCase):
         }
 
         self.empty_storage.addTokenToUser(
-            self.user1, self.oauthtoken1, Force=True)
+            self.oauthtoken1, self.user1, Force=True)
         self.assertEqual(self.empty_storage._storage, expected,
                          msg=f"Storage {self.empty_storage}")
 
@@ -132,6 +132,6 @@ class Test_TokenStorage(unittest.TestCase):
         expected[self.user1.username]["tokens"][0] = self.oauthtoken_like_token1
 
         self.empty_storage.addTokenToUser(
-            self.user1, self.oauthtoken_like_token1, Force=True)
+            self.oauthtoken_like_token1, self.user1, Force=True)
         self.assertEqual(self.empty_storage._storage, expected,
                          msg=f"\nStorage: {self.empty_storage._storage}\n expected: {expected}")
