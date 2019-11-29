@@ -89,7 +89,7 @@ class OAuth2Service(Service):
 
         if not data["user_id"] == user.username:
             from .Exceptions.ServiceExceptions import TokenNotValidError
-            raise TokenNotValidError("User_ID in refresh response not equal to authenticated user.")
+            raise TokenNotValidError(token, "User_ID in refresh response not equal to authenticated user.")
 
         date = datetime.now() + timedelta(seconds=data["expires_in"])
         return Oauth2Token(token.servicename, data["access_token"], data["refresh_token"], date)

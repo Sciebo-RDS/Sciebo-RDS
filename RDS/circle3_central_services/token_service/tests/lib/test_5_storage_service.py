@@ -39,7 +39,6 @@ class TestStorageService(unittest.TestCase):
         self.oauthservice2 = OAuth2Service.from_service(
             self.service2, "http://localhost:5001/oauth/authorize", "http://localhost:5001/oauth/token", "DEF", "UVW")
 
-
     """ Currently not implemented and no idea how to solve.
     def test_valid_token(self):
         # Test, if token can be used in service
@@ -54,7 +53,6 @@ class TestStorageService(unittest.TestCase):
         # try to use the token to raise an exception
         with self.assertRaises(TokenNotValidError):
             self.oauthservice1.status(self.token1)"""
-
 
     def test_refresh_oauth2token(self):
         from datetime import datetime
@@ -75,9 +73,9 @@ class TestStorageService(unittest.TestCase):
         }
 
         pact.given(
-            "Service sends a token to refresh."
+            "Username can refresh given oauth2token", username=self.user1.username
         ).upon_receiving(
-            "A valid token response."
+            "A valid refresh token response."
         ).with_request(
             "POST", "/owncloud/index.php/apps/oauth2/api/v1/token"
         ).will_respond_with(200, body=json_expected)
@@ -86,12 +84,18 @@ class TestStorageService(unittest.TestCase):
         with pact:
             result = self.oauthservice1.refresh(self.token1, self.user1)
             self.assertEqual(result, expected,
-                            msg=f"\nresult: {result}\nexpected: {expected}")
+                             msg=f"\nresult: {result}\nexpected: {expected}")
 
-            check = False
-            try:
+        # this needs to be here, because it counts the given interactions, 
+        # so if this is missing, you get an error, when you do the following assertion.
+        pact.given(
+            "Username can refresh given oauth2token", username=self.user1.username
+        ).upon_receiving(
+            "A valid refresh token response."
+        ).with_request(
+            "POST", "/owncloud/index.php/apps/oauth2/api/v1/token"
+        ).will_respond_with(200, body=json_expected)
+
+        with self.assertRaises(TokenNotValidError):
+            with pact:
                 self.oauthservice1.refresh(self.token1, self.user2)
-            except TokenNotValidError:
-                check = True
-            self.assertTrue(check)
-                         
