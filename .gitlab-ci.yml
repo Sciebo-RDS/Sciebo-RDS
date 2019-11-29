@@ -92,7 +92,7 @@ hugo:test:
       - docs/**/*
 
 pages:
-  image: registry.gitlab.com/pages/hugo:latest
+  image: registry.gitlab.com/pages/hugo:0.59.1
   stage: documentation
   script:
   - cd docs
