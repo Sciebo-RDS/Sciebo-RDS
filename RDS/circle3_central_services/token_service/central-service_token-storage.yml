@@ -45,6 +45,12 @@ paths:
           description: OK
       description: Returns informations from main oauth2-provider
     parameters: []
+    post:
+      summary: Adds a new user
+      operationId: ''
+      responses:
+        '200':
+          description: OK
   '/user/{user-id}':
     parameters:
       - schema:
@@ -117,12 +123,18 @@ paths:
         required: true
   /service:
     get:
-      summary: Your GET endpoint
+      summary: Returns all services
       tags: []
       responses:
         '200':
           description: OK
       operationId: ''
+    post:
+      summary: Adds a new service
+      operationId: ''
+      responses:
+        '200':
+          description: OK
 components:
   schemas:
     token:

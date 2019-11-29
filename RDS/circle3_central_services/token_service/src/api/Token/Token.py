@@ -1,7 +1,7 @@
 from flask import jsonify
 
 def index():
-    return jsonify({})
+    return jsonify([])
 
 
 def get(token_id):

@@ -14,6 +14,12 @@ class Storage():
     def __init__(self):
         self._storage = {}
 
+    def getUsers(self):
+        return [val["data"] for val in self._storage.values()]
+
+    def getTokens(self):
+        return [val["tokens"] for val in self._storage.values()]
+
     def addUser(self, user: User):
         """
         Add user to the _storage.

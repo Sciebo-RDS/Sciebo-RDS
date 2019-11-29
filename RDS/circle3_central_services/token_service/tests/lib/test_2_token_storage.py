@@ -23,6 +23,18 @@ class Test_TokenStorage(unittest.TestCase):
             self.token_like_token1, "X_DEF")
         self.oauthtoken2 = OAuth2Token.from_token(self.token2, "X_XYZ")
 
+    def test_storage_listUser(self):
+        empty_storage = Storage()
+        self.assertEqual(empty_storage.getUsers(), [])
+        empty_storage.addUser(self.user1)
+        self.assertEqual(empty_storage.getUsers(), [self.user1])
+        empty_storage.addUser(self.user2)
+        self.assertEqual(empty_storage.getUsers(), [self.user1, self.user2])
+
+        # should raise an Exception, if user already there
+        with self.assertRaises(UserExistsAlreadyError, msg=f"Storage {empty_storage}"):
+            empty_storage.addUser(self.user1)
+
     def test_tokenstorage_add_user(self):
         # empty storage
         self.assertEqual(self.empty_storage._storage, {})

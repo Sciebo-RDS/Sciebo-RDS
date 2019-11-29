@@ -3,7 +3,8 @@ from connexion_plus import App, MultipleResourceResolver, Util
 import logging, os
 from jaeger_client import Config as jConfig
 from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
-
+import Util as ServerUtil
+from lib.Storage import Storage
 
 log_level = logging.DEBUG
 logger = logging.getLogger('')
@@ -28,7 +29,7 @@ def bootstrap(name='MicroService', executes=True):
     list_openapi = Util.load_oai(os.getenv("OPENAPI_FILEPATH", "central-service_token-storage.yml"))
 
     app = App(name, use_tracer=config.initialize_tracer(),
-              use_metric=True, use_optimizer={"compress": False, "minify": False}, use_cors=True)
+              use_metric=True, use_optimizer=True, use_cors=True)
 
     for oai in list_openapi:
         app.add_api(oai, resolver=MultipleResourceResolver(
@@ -37,6 +38,7 @@ def bootstrap(name='MicroService', executes=True):
     # set the WSGI application callable to allow using uWSGI:
     # uwsgi --http :8080 -w app
 
+    ServerUtil.storage = Storage()
     if executes:
         app.run(port=8080, server='gevent')
 
@@ -45,4 +47,4 @@ def bootstrap(name='MicroService', executes=True):
 
 
 if __name__ == "__main__":
-    bootstrap("PortZenodo")
+    bootstrap("CentralServiceTokenStorage")

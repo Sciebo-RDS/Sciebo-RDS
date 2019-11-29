@@ -44,11 +44,6 @@ class OAuth2Service(Service):
     Represents an OAuth2 service, which can be used in RDS.
     """
 
-    _refresh_url = None
-    _authorize_url = None
-    _client_id = None
-    _client_secret = None
-
     def __init__(self, servicename: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
         super(OAuth2Service, self).__init__(servicename)
 
