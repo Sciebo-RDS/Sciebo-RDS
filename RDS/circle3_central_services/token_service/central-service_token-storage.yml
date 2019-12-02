@@ -64,6 +64,8 @@ paths:
       responses:
         '200':
           description: OK
+        '404':
+          description: Not Found
       description: ''
     post:
       summary: Add a token
@@ -71,6 +73,12 @@ paths:
         '200':
           description: OK
       description: Adds token to the repository.
+    delete:
+      summary: Remove user
+      operationId: ''
+      responses:
+        '200':
+          description: OK
   '/token/{token-id}':
     get:
       summary: Your GET endpoint

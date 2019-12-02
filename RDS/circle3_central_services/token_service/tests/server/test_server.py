@@ -75,6 +75,7 @@ class TestTokenService(unittest.TestCase):
         self.filled_storage_without_tokens.addUser(self.user3)
 
         self.filled_storage = Storage()
+
         # user1 is filled with mixed token and oauth2token
         self.filled_storage.addUser(self.user1)
         self.filled_storage.addTokenToUser(self.token1, self.user1)
@@ -111,12 +112,37 @@ class TestTokenService(unittest.TestCase):
     def test_list_user(self):
         expected = []
 
+        # no user should be there
         self.assertEqual(self.client.get("/user").json, expected)
 
         expected.append(self.user1)
 
+        # add a user, then there should be a user
         self.client.post("/user", data=json.dumps(self.user1), content_type='application/json')
         self.assertEqual(self.client.get("/user").json, expected)
+
+        # get the added user
+        self.assertEqual(self.client.get(f"/user/{self.user1.username}").json, self.user1)
+
+        # add a new user and check
+        expected.append(self.user2)
+        self.client.post("/user", data=json.dumps(self.user2), content_type='application/json')
+        self.assertEqual(self.client.get("/user").json, expected)
+        # the first user should be there
+        self.assertEqual(self.client.get(f"/user/{self.user1.username}").json, self.user1)
+
+        # remove a user
+        del expected[0]
+        result = self.client.delete(f"/user/{self.user1.username}")
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(self.client.get("/user").json, expected)
+        self.assertEqual(self.client.get(f"/user/{self.user1.username}").status_code, 404)
+        
+        result = self.client.delete(f"/user/{self.user1.username}")
+        self.assertEqual(result.status_code, 404)
+
+    def test_add_tokens(self):
+        pass
 
     """def test_home_status_code(self):
         expected = []

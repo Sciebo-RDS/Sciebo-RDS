@@ -4,6 +4,7 @@ from .Service import Service, OAuth2Service
 import logging
 import requests
 
+
 class Storage():
     """
     Represents a Safe for Tokens
@@ -14,6 +15,20 @@ class Storage():
     def __init__(self):
         self._storage = {}
 
+    def getUser(self, user_id: str):
+        if user_id in self._storage:
+            return self._storage[user_id]["data"]
+        
+        from .Exceptions.StorageException import UserNotExistsError
+        raise UserNotExistsError(self, User(user_id))
+
+    def getToken(self, user_id: str):
+        if user_id in self._storage:
+            return self._storage[user_id]["tokens"]
+        
+        from .Exceptions.StorageException import UserNotExistsError
+        raise UserNotExistsError(self, User(user_id))
+
     def getUsers(self):
         return [val["data"] for val in self._storage.values()]
 
@@ -22,7 +37,7 @@ class Storage():
 
     def addUser(self, user: User):
         """
-        Add user to the _storage.
+        Add user to the storage.
 
         If a User with the same username already exists, it raises UserExistsAlreadyError.
         """
@@ -34,11 +49,33 @@ class Storage():
             from .Exceptions.StorageException import UserExistsAlreadyError
             raise UserExistsAlreadyError(self, user)
 
+    def removeUser(self, user: User):
+        """
+        Remove given user from storage.
+
+        If user not in storage, it raises an UserNotExistsError.
+        """
+
+        self.internal_removeUser(user)
+
+    def internal_removeUser(self, user: User):
+        """
+        Remove a user to _storage.
+
+        This is an internal function. Please look at the external one.
+        """
+
+        if not user.username in self._storage:
+            from .Exceptions.StorageException import UserNotExistsError
+            raise UserNotExistsError(self, user)
+
+        del self._storage[user.username]
+
     def internal_addUser(self, user: User):
         """
-        Add a user to the storage.
+        Add a user to the _storage.
 
-        This is the internal function. Please take a look to the external one.
+        This is an internal function. Please take a look to the external one.
         """
         userdict = {}
         userdict["data"] = user
@@ -108,12 +145,13 @@ class Storage():
         # iterate over users
         for user in self._storage.values():
             index = None
-            
+
             # iterate over tokens from current user
             for token in user["tokens"]:
                 # find the corresponding service
                 try:
-                    index = self.internal_find_service(token.servicename, services)
+                    index = self.internal_find_service(
+                        token.servicename, services)
                 except ValueError as e:
                     # there was no one, so we can finish here, cause token cannot be refresh
                     continue
@@ -125,7 +163,6 @@ class Storage():
                 # if service or token is not oauth, it has not any refresh mechanism, so we can finish here.
                 if not isinstance(service, (OAuth2Service)) or not isinstance(token, (OAuth2Token)):
                     continue
-                
 
                 # refresh token
                 from .Exceptions.ServiceExceptions import OAuth2UnsuccessfulResponseError, TokenNotValidError
@@ -152,8 +189,9 @@ class Storage():
         for index, service in enumerate(services):
             if service.servicename == servicename:
                 return index
-        
-        raise ValueError("Servicename {} not found in services {}.".format(servicename, ";".join(map(str, services))))
+
+        raise ValueError("Servicename {} not found in services {}.".format(
+            servicename, ";".join(map(str, services))))
 
     def __str__(self):
         string = "\n"

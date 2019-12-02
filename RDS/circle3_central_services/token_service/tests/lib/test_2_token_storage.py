@@ -35,6 +35,20 @@ class Test_TokenStorage(unittest.TestCase):
         with self.assertRaises(UserExistsAlreadyError, msg=f"Storage {empty_storage}"):
             empty_storage.addUser(self.user1)
 
+    def test_storage_getUser_getToken(self):
+        empty_storage = Storage()
+        with self.assertRaises(UserNotExistsError):
+            empty_storage.getUser(self.user1.username)
+        
+        with self.assertRaises(UserNotExistsError):
+            empty_storage.getToken(self.user1.username)
+
+        empty_storage.addUser(self.user1)
+        empty_storage.addTokenToUser(self.token1, self.user1)
+
+        self.assertEqual(empty_storage.getUser(self.user1.username), self.user1)
+        self.assertEqual(empty_storage.getToken(self.user1.username), [self.token1])
+
     def test_tokenstorage_add_user(self):
         # empty storage
         self.assertEqual(self.empty_storage._storage, {})
@@ -69,6 +83,42 @@ class Test_TokenStorage(unittest.TestCase):
         # raise an exception, if token already there
         with self.assertRaises(UserHasTokenAlreadyError, msg=f"Storage {self.empty_storage}"):
             self.empty_storage.addTokenToUser(self.token1, self.user1)
+
+    def setUpRemove(self):
+        #setUp        
+        self.empty_storage.addUser(self.user1)
+        self.empty_storage.addUser(self.user2)
+
+    def test_tokenstorage_remove_user(self):
+        self.setUpRemove()
+
+        expected = {}
+        expected[self.user1.username] = {
+            "data": self.user1,
+            "tokens": []
+        }
+        expected[self.user2.username] = {
+            "data": self.user2,
+            "tokens": []
+        }
+
+        # remove user
+        self.empty_storage.removeUser(self.user1)
+        del expected[self.user1.username]
+        self.assertEqual(self.empty_storage._storage, expected)
+
+        with self.assertRaises(UserNotExistsError):
+            self.empty_storage.removeUser(self.user1)
+
+        self.empty_storage.removeUser(self.user2)
+        del expected[self.user2.username]
+        self.assertEqual(self.empty_storage._storage, expected)
+
+        # storage now empty
+        self.assertEqual(self.empty_storage.getUsers(), [])
+
+
+
 
     def test_tokenstorage_add_token_force(self):
         # add Token to not existing user with force

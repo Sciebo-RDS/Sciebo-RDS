@@ -8,7 +8,10 @@ def index():
 
 
 def get(user_id):
-    pass
+    try:
+        return jsonify(Util.storage.getUser(user_id))
+    except:
+        return "", 404
 
 def post(user_id = None):
     if user_id:
@@ -16,3 +19,11 @@ def post(user_id = None):
 
     user = User.from_json(request.json)
     Util.storage.addUser(user)
+
+def delete(user_id):
+    try:
+        Util.storage.removeUser(User(user_id))
+        return "", 200
+    except:
+        return "", 404
+    
