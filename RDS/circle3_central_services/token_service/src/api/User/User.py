@@ -13,12 +13,10 @@ def get(user_id):
     except:
         return "", 404
 
-def post(user_id = None):
-    if user_id:
-        pass
-
+def post():
     user = User.from_json(request.json)
     Util.storage.addUser(user)
+    return "", 200
 
 def delete(user_id):
     try:

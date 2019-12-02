@@ -67,12 +67,6 @@ paths:
         '404':
           description: Not Found
       description: ''
-    post:
-      summary: Add a token
-      responses:
-        '200':
-          description: OK
-      description: Adds token to the repository.
     delete:
       summary: Remove user
       operationId: ''
@@ -116,6 +110,13 @@ paths:
       responses:
         '200':
           description: OK
+    post:
+      summary: Add a token
+      operationId: ''
+      responses:
+        '200':
+          description: OK
+      description: Adds token to the repository.
   '/service/{servicename}':
     get:
       summary: Get specified service

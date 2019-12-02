@@ -71,6 +71,31 @@ class Storage():
 
         del self._storage[user.username]
 
+    def removeToken(self, user: User, token: Token):
+        """
+        Remove a token from user.
+        """
+
+        self.removeToken(user, token)
+
+    def internal_removeToken(self, user: User, token: Token):
+        """
+        Remove a token from user.
+
+        This is an internal function. Please look at the external one.
+        """
+
+        if not user.username in self._storage:
+            from .Exceptions.StorageException import UserNotExistsError
+            raise UserNotExistsError(self, user)
+
+        if not token in self._storage[user.username]["tokens"]:
+            from .Exceptions.StorageException import TokenNotExists
+            raise TokenNotExists(self, user, token)
+
+        index = self._storage[user.username]["tokens"].index(token)
+        del self._storage[user.username]["tokens"][index]
+
     def internal_addUser(self, user: User):
         """
         Add a user to the _storage.

@@ -37,9 +37,12 @@ class User():
         """
         Returns this object as a json string.
         """
-        
+
         data = {
-            "username": self._username
+            "type": self.__class__.__name__,
+            "data": {
+                "username": self._username
+            }
         }
         return json.dumps(data)
 
@@ -49,9 +52,13 @@ class User():
         Returns an user object from a json string.
         """
 
-        data = json.loads(user)
+        data = user
+        while type(data) is not dict:
+            data = json.loads(data)
 
-        if "username" in data:
-            return cls(data["username"])
-        
-        raise ValueError("Username not in given json string.")
+        if "type" in data and str(data["type"]).endswith("User"):
+            data = data["data"]
+            if "username" in data:
+                return cls(data["username"])
+
+        raise ValueError("not a valid user object.")

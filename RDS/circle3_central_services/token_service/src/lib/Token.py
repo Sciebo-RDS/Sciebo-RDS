@@ -1,4 +1,5 @@
 import datetime
+import json
 
 
 class Token():
@@ -37,6 +38,38 @@ class Token():
             self.servicename == other.servicename
         )
 
+    def __json__(self):
+        """
+        Returns this object as a dict.
+        """
+
+        data = {
+            "type": self.__class__.__name__,
+            "data": {
+                "servicename": self._servicename,
+                "access_token": self._access_token
+            }
+        }
+        data = json.dumps(data)
+        return data
+
+    @classmethod
+    def from_json(cls, token: str):
+        """
+        Returns a token object from a json string.
+        """
+
+        data = token
+        while type(data) is not dict:
+            data = json.loads(data)
+
+        if "type" in data and str(data["type"]).endswith("Token") and "data" in data:
+            data = data["data"]
+            if "access_token" in data and "servicename" in data:
+                return cls(data["servicename"], data["access_token"])
+
+        raise ValueError("not a valid token json string.")
+
 
 class OAuth2Token(Token):
     """
@@ -51,7 +84,7 @@ class OAuth2Token(Token):
         super(OAuth2Token, self).__init__(servicename, access_token)
 
         # remove check for empty string for refresh_token, because it could be an authorization_token
-        #self.check_string(refresh_token, "refresh_token")
+        # self.check_string(refresh_token, "refresh_token")
 
         if refresh_token:
             self._refresh_token = refresh_token
@@ -70,7 +103,7 @@ class OAuth2Token(Token):
         return f"{text}, Refresh-Token: {self.refresh_token}, exp-date: {self.expiration_date}"
 
     @classmethod
-    def from_token(cls, token: Token, refresh_token: str = ""):
+    def from_token(cls, token: Token, refresh_token: str = "", expiration_date: datetime.datetime = datetime.datetime.now()):
         return cls(token.servicename, token.access_token, refresh_token)
 
     def __eq__(self, obj):
@@ -80,5 +113,38 @@ class OAuth2Token(Token):
         """
         return (
             super(OAuth2Token, self).__eq__(obj) and
-            isinstance(obj, OAuth2Token) 
+            isinstance(obj, OAuth2Token)
         )
+
+    def __json__(self):
+        """
+        Returns this object as a json string.
+        """
+
+        data = super(OAuth2Token, self).__json__()
+        data = json.loads(data)
+
+        data["type"] = self.__class__.__name__
+        data["data"]["refresh_token"] = self._refresh_token
+        data["data"]["expiration_date"] = str(self._expiration_date)
+
+        return json.dumps(data)
+
+    @classmethod
+    def from_json(cls, token: str):
+        """
+        Returns an oauthtoken object from a json string.
+        """
+
+        data = token
+        while type(data) is not dict:
+            data = json.loads(data)
+        
+        token = super(OAuth2Token, cls).from_json(token)
+
+        if "type" in data and str(data["type"]).endswith("OAuth2Token"):
+            data = data["data"]
+            if "refresh_token" and "expiration_date" in data:
+                return cls.from_token(token, data["refresh_token"], data["expiration_date"])
+
+        raise ValueError("not a valid token json string.")

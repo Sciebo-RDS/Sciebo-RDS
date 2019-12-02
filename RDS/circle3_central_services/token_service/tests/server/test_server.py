@@ -29,10 +29,10 @@ pact = Consumer('CentralServiceTokenStorage').has_pact_with(
 
 
 class TestTokenService(unittest.TestCase):
-    app = create_app()
-    client = app.test_client()
 
     def setUp(self):
+        self.app = create_app()
+        self.client = self.app.test_client()
         self.empty_storage = Storage()
 
         self.user1 = User("Max Mustermann")
@@ -104,11 +104,6 @@ class TestTokenService(unittest.TestCase):
         self.assertEqual(self.client.get("/service").json, expected)
         #self.assertEqual(self.client.post("/service", data=vars(self.service1)), self.service1)
 
-    def test_list_tokens(self):
-        expected = []
-
-        self.assertEqual(self.client.get("/token").json, expected)
-
     def test_list_user(self):
         expected = []
 
@@ -118,31 +113,68 @@ class TestTokenService(unittest.TestCase):
         expected.append(self.user1)
 
         # add a user, then there should be a user
-        self.client.post("/user", data=json.dumps(self.user1), content_type='application/json')
+        self.client.post("/user", data=json.dumps(self.user1),
+                         content_type='application/json')
         self.assertEqual(self.client.get("/user").json, expected)
 
         # get the added user
-        self.assertEqual(self.client.get(f"/user/{self.user1.username}").json, self.user1)
+        self.assertEqual(self.client.get(
+            f"/user/{self.user1.username}").json, self.user1)
 
         # add a new user and check
         expected.append(self.user2)
-        self.client.post("/user", data=json.dumps(self.user2), content_type='application/json')
+        self.client.post("/user", data=json.dumps(self.user2),
+                         content_type='application/json')
         self.assertEqual(self.client.get("/user").json, expected)
         # the first user should be there
-        self.assertEqual(self.client.get(f"/user/{self.user1.username}").json, self.user1)
+        self.assertEqual(self.client.get(
+            f"/user/{self.user1.username}").json, self.user1)
 
         # remove a user
         del expected[0]
         result = self.client.delete(f"/user/{self.user1.username}")
         self.assertEqual(result.status_code, 200)
         self.assertEqual(self.client.get("/user").json, expected)
-        self.assertEqual(self.client.get(f"/user/{self.user1.username}").status_code, 404)
-        
+        self.assertEqual(self.client.get(
+            f"/user/{self.user1.username}").status_code, 404)
+
         result = self.client.delete(f"/user/{self.user1.username}")
         self.assertEqual(result.status_code, 404)
 
-    def test_add_tokens(self):
-        pass
+    def test_list_tokens(self):
+        # there have to be a user
+        self.client.post("/user", data=json.dumps(self.user1),
+                         content_type='application/json')
+
+        # no tokens there
+        expected = []
+        self.assertEqual(self.client.get("/token").json, expected)
+
+        # add a token to user
+        expected.append(self.token1)
+        result = self.client.post(f"/user/{self.user1.username}/token",
+                         data=json.dumps(self.token1), content_type='application/json')
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(self.client.get("/token").json, expected)
+
+        # add a oauthtoken to user
+        expected.append(self.oauthtoken1)
+        self.client.post(f"/user/{self.user1.username}/token",
+                         data=json.dumps(self.oauthtoken1), content_type='application/json')
+        self.assertEqual(self.client.get("/token").json, expected)
+
+        # remove a token
+        index = expected.index(self.token1)
+        del expected[index]
+        result = self.client.delete(f"/token/{index}")
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json, expected)
+
+        # remove last token
+        del expected[0]
+        result = self.client.delete(f"/token/{0}")
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json, expected)
 
     """def test_home_status_code(self):
         expected = []

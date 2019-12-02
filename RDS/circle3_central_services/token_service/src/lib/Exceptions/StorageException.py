@@ -24,3 +24,13 @@ class UserHasTokenAlreadyError(UserExistsAlreadyError):
             msg = f"{user} has already {token} in {storage}"
         
         super(UserHasTokenAlreadyError, self).__init__(user, token, msg)
+
+class TokenNotExists(Exception):
+    def __init__(self, storage: Storage, user: User, token: Token, msg=None):
+        if msg is None:
+            msg = f"{Token} not exists in {storage} for user {user}"
+        
+        super(TokenNotExists, self).__init__(msg)
+        self.user = user
+        self.token = token
+        self.storage = storage

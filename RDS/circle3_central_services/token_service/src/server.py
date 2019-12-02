@@ -28,8 +28,11 @@ def bootstrap(name='MicroService', executes=True):
 
     list_openapi = Util.load_oai(os.getenv("OPENAPI_FILEPATH", "central-service_token-storage.yml"))
 
-    app = App(name, use_tracer=config.initialize_tracer(),
-              use_metric=True, use_optimizer=True, use_cors=True)
+    if not executes:
+        app = App(name)
+    else:
+        app = App(name, use_tracer=config.initialize_tracer(),
+                use_metric=True, use_optimizer=True, use_cors=True)
 
     for oai in list_openapi:
         app.add_api(oai, resolver=MultipleResourceResolver(
