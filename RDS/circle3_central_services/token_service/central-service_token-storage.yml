@@ -144,6 +144,32 @@ paths:
       responses:
         '200':
           description: OK
+  '/user/{user-id}/token/{token-id}':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: token-id
+        in: path
+        required: true
+    get:
+      summary: Returns the specified token
+      tags: []
+      responses:
+        '200':
+          description: OK
+      operationId: ''
+      description: ''
+    delete:
+      summary: Remove token
+      operationId: ''
+      responses:
+        '200':
+          description: OK
 components:
   schemas:
     token:

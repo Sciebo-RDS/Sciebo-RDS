@@ -18,14 +18,20 @@ class Storage():
     def getUser(self, user_id: str):
         if user_id in self._storage:
             return self._storage[user_id]["data"]
-        
+
         from .Exceptions.StorageException import UserNotExistsError
         raise UserNotExistsError(self, User(user_id))
 
-    def getToken(self, user_id: str):
+    def getToken(self, user_id: str, token_id: int = None):
         if user_id in self._storage:
-            return self._storage[user_id]["tokens"]
-        
+            tokens = self._storage[user_id]["tokens"]
+            if token_id is not None:
+                try:
+                    tokens = tokens[token_id]
+                except:
+                    raise ValueError("Token_id not found")
+            return tokens
+
         from .Exceptions.StorageException import UserNotExistsError
         raise UserNotExistsError(self, User(user_id))
 
@@ -33,7 +39,7 @@ class Storage():
         return [val["data"] for val in self._storage.values()]
 
     def getTokens(self):
-        return [val["tokens"] for val in self._storage.values()]
+        return [token for val in self._storage.values() for token in val["tokens"]]
 
     def addUser(self, user: User):
         """
@@ -76,7 +82,7 @@ class Storage():
         Remove a token from user.
         """
 
-        self.removeToken(user, token)
+        self.internal_removeToken(user, token)
 
     def internal_removeToken(self, user: User, token: Token):
         """
@@ -110,7 +116,7 @@ class Storage():
     def addTokenToUser(self, token: Token, user: User, Force: bool = False):
         """
         Add a token to an existing user. If user not exists already in the _storage, it raises an UserNotExistsError.
-        If token was added to user specific _storage, then it returns `True`.
+        If token was added to user specific storage, then it returns `True`.
 
         If a token is there for the same token provider, then a UserHasTokenAlreadyError.
 

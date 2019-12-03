@@ -53,9 +53,9 @@ class Test_TokenStorage(unittest.TestCase):
         self.assertEqual(self.oauthtoken1, self.oauthtoken1)
         self.assertEqual(self.oauthtoken2, self.oauthtoken2)
 
-        self.assertNotEqual(self.token1, self.oauthtoken1,
+        self.assertEqual(self.token1, self.oauthtoken1,
                             msg=f"\n{self.token1}\n {self.oauthtoken1}")
-        self.assertNotEqual(self.oauthtoken1, self.token1)
+        self.assertEqual(self.oauthtoken1, self.token1)
 
         self.assertIsInstance(self.oauthtoken1, Token)
 

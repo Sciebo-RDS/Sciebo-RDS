@@ -1,7 +1,9 @@
 from flask import jsonify
+import Util
 
 def index():
-    return jsonify([])
+    data = Util.storage.getTokens()
+    return data
 
 
 def get(token_id):
@@ -12,3 +14,4 @@ def put(token_id):
 
 def post():
     pass
+

@@ -33,6 +33,9 @@ class Token():
         return {"Servicename": self.servicename, "Access-Token": self.access_token}.__str__()
 
     def __eq__(self, other):
+        """
+        Returns True, if this object and other object have the same servicename. Otherwise false.
+        """
         return (
             isinstance(other, (Token)) and
             self.servicename == other.servicename
@@ -112,8 +115,7 @@ class OAuth2Token(Token):
         because they could be changed already. Only servicename is relevant.
         """
         return (
-            super(OAuth2Token, self).__eq__(obj) and
-            isinstance(obj, OAuth2Token)
+            super(OAuth2Token, self).__eq__(obj)
         )
 
     def __json__(self):
