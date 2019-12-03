@@ -103,8 +103,48 @@ class TestTokenService(unittest.TestCase):
     def test_list_service(self):
         expected = []
 
+        # no service should be there
         self.assertEqual(self.client.get("/service").json, expected)
         #self.assertEqual(self.client.post("/service", data=vars(self.service1)), self.service1)
+
+        # add one simple service
+        expected.append(self.service1)
+        result = self.client.post("/service", data=json.dumps(self.service1), content_type='application/json')
+        self.assertEqual(result.status_code, 200)
+
+        data_result = []
+        data = self.client.get("/service").json
+        for d in data:
+            klass = Util.load_class_from_json(d)
+            data_result.append(klass.from_json(d))
+
+        self.assertEqual(data_result, expected)
+
+        # add the same service as oauth, should be an update
+        expected = [self.oauthservice1]
+        result = self.client.post("/service", data=json.dumps(self.oauthservice1), content_type='application/json')
+        self.assertEqual(result.status_code, 204)
+
+        data_result = []
+        data = self.client.get("/service").json
+        for d in data:
+            klass = Util.load_class_from_json(d)
+            data_result.append(klass.from_json(d))
+
+        self.assertEqual(data_result, expected)
+
+        # add a simple service, there should be 2 services now
+        expected.append(self.service2)
+        self.client.post("/service", data=json.dumps(self.service2), content_type='application/json')
+
+        data_result = []
+        data = self.client.get("/service").json
+        for d in data:
+            klass = Util.load_class_from_json(d)
+            data_result.append(klass.from_json(d))
+
+        self.assertEqual(data_result, expected)
+
 
     def test_list_user(self):
         expected = []
