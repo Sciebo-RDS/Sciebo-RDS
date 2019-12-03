@@ -1,7 +1,9 @@
 # updates the pipfiles
 install:
-	pipenv shell
+	pipenv shell || true
 	pip install -r requirements.txt
+
+dev: install
 	pip install -r requirements-dev.txt
 
 update:
@@ -9,8 +11,11 @@ update:
 	pipenv lock -r > requirements.txt
 	pipenv lock -r -d > requirements-dev.txt
 
-test:
+test: dev
 	python -m pytest
 
-run:
+run: install
 	python src/server.py
+
+loc: dev
+	pygount --suffix=py | cut -f 1 | awk '{s+=$$1} END {print s}'
