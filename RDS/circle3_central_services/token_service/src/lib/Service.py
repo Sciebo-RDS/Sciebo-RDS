@@ -1,5 +1,5 @@
-from .Token import Token, OAuth2Token
-from .User import User
+from lib.Token import Token, OAuth2Token
+from lib.User import User
 from urllib.parse import urlparse, urlunparse
 import requests
 import json
@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 class Service():
     """
     Represents a service, which can be used in RDS.
+    This service only allows username:password authentication.
     """
 
     _servicename = None
@@ -42,6 +43,7 @@ class Service():
 class OAuth2Service(Service):
     """
     Represents an OAuth2 service, which can be used in RDS.
+    This service enables the oauth2 workflow.
     """
 
     def __init__(self, servicename: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
@@ -134,6 +136,9 @@ class OAuth2Service(Service):
 
     @classmethod
     def from_service(cls, service: Service, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
+        """
+        Converts the given Service to an oauth2service.
+        """
         return cls(service.servicename, authorize_url, refresh_url, client_id, client_secret)
 
     def __eq__(self, obj):

@@ -19,3 +19,6 @@ run: install
 
 loc: dev
 	pygount --suffix=py | cut -f 1 | awk '{s+=$$1} END {print s}'
+
+doc: dev
+	pydocmd build

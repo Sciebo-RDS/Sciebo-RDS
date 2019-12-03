@@ -4,6 +4,7 @@ import logging
 import os
 from jaeger_client import Config as jConfig
 from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
+
 import Util as ServerUtil
 from lib.Storage import Storage
 from flask import jsonify

@@ -1,5 +1,6 @@
 from flask import jsonify, request
-import json, Util
+import json
+from . import Util
 from lib.User import User
 from lib.Exceptions.StorageException import UserHasTokenAlreadyError
 

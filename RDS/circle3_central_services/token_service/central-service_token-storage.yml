@@ -173,16 +173,22 @@ paths:
 components:
   schemas:
     token:
-      title: token
+      title: Token
       type: object
       properties:
         id:
           type: string
           description: Set by service automatically
-        service:
+        servicename:
           type: string
         access_token:
           type: string
           description: 'The token, which can be used as password for username in service.'
+        username:
+          type: string
+    User:
+      title: User
+      type: object
+      properties:
         username:
           type: string

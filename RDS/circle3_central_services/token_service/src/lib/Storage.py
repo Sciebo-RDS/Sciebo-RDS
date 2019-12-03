@@ -1,6 +1,7 @@
-from .User import User
-from .Token import Token, OAuth2Token
-from .Service import Service, OAuth2Service
+from lib.User import User
+from lib.Token import Token, OAuth2Token
+from lib.Service import Service, OAuth2Service
+
 import logging
 import requests
 

@@ -107,6 +107,9 @@ class OAuth2Token(Token):
 
     @classmethod
     def from_token(cls, token: Token, refresh_token: str = "", expiration_date: datetime.datetime = datetime.datetime.now()):
+        """
+        Convert the given Token into an oauth2token.
+        """
         return cls(token.servicename, token.access_token, refresh_token)
 
     def __eq__(self, obj):
