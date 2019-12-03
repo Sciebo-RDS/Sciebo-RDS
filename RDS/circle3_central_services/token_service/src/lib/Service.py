@@ -5,7 +5,6 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-
 class Service():
     """
     Represents a service, which can be used in RDS.
