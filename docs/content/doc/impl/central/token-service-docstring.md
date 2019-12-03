@@ -34,14 +34,14 @@ Returns a token object from a json string.
 
 ### OAuth2Token
 ```python
-OAuth2Token(self, servicename:str, access_token:str, refresh_token:str='', expiration_date:datetime.datetime=datetime.datetime(2019, 12, 3, 16, 26, 3, 644939))
+OAuth2Token(self, servicename:str, access_token:str, refresh_token:str='', expiration_date:datetime.datetime=None)
 ```
 
 Represents a token object.
 
 #### from_token
 ```python
-OAuth2Token.from_token(token:lib.Token.Token, refresh_token:str='', expiration_date:datetime.datetime=datetime.datetime(2019, 12, 3, 16, 26, 3, 644945))
+OAuth2Token.from_token(token:lib.Token.Token, refresh_token:str='', expiration_date:datetime.datetime=None)
 ```
 
 Convert the given Token into an oauth2token.

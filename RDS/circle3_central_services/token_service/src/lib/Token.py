@@ -3,14 +3,14 @@ import json
 
 
 class Token():
+    """
+    This token represents a simple password.
+    """
+
     _access_token = None
     _servicename = None
 
     def __init__(self, servicename: str, access_token: str):
-        """
-        This token represents a simple password.
-        """
-
         self.check_string(servicename, "servicename")
         self.check_string(access_token, "access_token")
 
@@ -83,8 +83,11 @@ class OAuth2Token(Token):
     _expiration_date = None
 
     def __init__(self, servicename: str, access_token: str, refresh_token: str = "",
-                 expiration_date: datetime.datetime = datetime.datetime.now()):
+                 expiration_date: datetime.datetime = None):
         super(OAuth2Token, self).__init__(servicename, access_token)
+
+        if expiration_date is None:
+            expiration_date = datetime.datetime.now()
 
         # remove check for empty string for refresh_token, because it could be an authorization_token
         # self.check_string(refresh_token, "refresh_token")
@@ -106,11 +109,14 @@ class OAuth2Token(Token):
         return f"{text}, Refresh-Token: {self.refresh_token}, exp-date: {self.expiration_date}"
 
     @classmethod
-    def from_token(cls, token: Token, refresh_token: str = "", expiration_date: datetime.datetime = datetime.datetime.now()):
+    def from_token(cls, token: Token, refresh_token: str = "", expiration_date: datetime.datetime = None):
         """
         Convert the given Token into an oauth2token.
         """
-        return cls(token.servicename, token.access_token, refresh_token)
+        if expiration_date is None:
+            expiration_date = datetime.datetime.now()
+
+        return cls(token.servicename, token.access_token, refresh_token, expiration_date)
 
     def __eq__(self, obj):
         """
@@ -144,7 +150,7 @@ class OAuth2Token(Token):
         data = token
         while type(data) is not dict:
             data = json.loads(data)
-        
+
         token = super(OAuth2Token, cls).from_json(token)
 
         if "type" in data and str(data["type"]).endswith("OAuth2Token"):
