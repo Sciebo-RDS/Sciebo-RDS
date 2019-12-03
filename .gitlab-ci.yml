@@ -92,6 +92,12 @@ hugo:test:
       - docs/*
       - docs/**/*
 
+.documentation:
+  stage: documentation
+  only:
+    refs:
+    - master
+
 pages:
   image: registry.gitlab.com/pages/hugo:0.59.1
   stage: pages

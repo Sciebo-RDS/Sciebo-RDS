@@ -24,8 +24,25 @@ test:central_service_token_service3.8:
   image: python:3.8
   extends: .tests_central_service_token_service
 
-build:central_service_token.service:
-    image: python:3.8
-    extends:
-    - .builds
-    - .central_service_token_service
+build:central_service_token_service:
+  image: python:3.8
+  extends:
+  - .builds
+  - .central_service_token_service
+
+doc:central_service_token-service:
+  image: python:3.8
+  extends:
+  - .documentation
+  - .central_service_token_service
+
+  script:
+  - cd $FOLDER
+  - make doc
+
+  artifacts:
+    untracked: true
+    expire_in: 1 days
+    paths:
+      - docs/
+

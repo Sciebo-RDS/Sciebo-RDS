@@ -22,3 +22,7 @@ loc: dev
 
 doc: dev
 	pydocmd build
+	mv _build/pydocmd/token-service.md ../../../docs/content/doc/impl/central/token-service-docstring.md
+	rm -r _build
+
+
