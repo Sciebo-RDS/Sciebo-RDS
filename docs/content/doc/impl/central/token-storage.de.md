@@ -9,6 +9,10 @@ weight: 1100
 mermaid: true
 ---
 
+# Einführung
+
+Dieser Service stellt den sicheren Umgang und Austausch von Passwörtern und anderen Zugangstokens bereit.
+
 ## Verschlüsselung
 
 Aufgrund der hohen Sicherheit in RDS, muss die Kommunikation zwischen den Plugins und dem RDS-System verschlüsselt sein bzw. mindestens signiert werden. Da ein OAuth2-Provider zur Authentifizierung benötigt wird, wird bereits zu Beginn der Konfiguration ein Client-Secret vom Provider an das RDS-System übergeben. Dieses Secret wird als Passwort verwendet, um die weitere Kommunikation zwischen den beiden Systemen zu verschlüsseln.
@@ -70,3 +74,9 @@ Aktuell kann jeder User nur einen Token für jeden Service besitzen. Dies wird a
 ## Planungen
 
 Durch die einfachere Handhabung werden aktuell die Daten nur im Speicher abgelegt. Das heißt, sobald der Service abbricht, gehen auch sämtliche Daten verloren, wodurch alle Nutzer sich nocheinmal neu anmelden müssen. Dies soll in Zukunft durch eine persistente und clusterübergreifende Speicherung behoben werden.
+
+# OpenAPI v3
+
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/token-storage/RDS/circle3_central_services/token_service/central-service_token-storage.yml"  >}}
+
+{{% code file="doc/impl/central/token-service-docstring.md" %}}
