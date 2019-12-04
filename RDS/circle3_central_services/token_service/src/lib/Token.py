@@ -57,19 +57,19 @@ class Token():
         return data
 
     @classmethod
-    def from_json(cls, token: str):
+    def from_json(cls, tokenStr: str):
         """
         Returns a token object from a json string.
         """
 
-        data = token
-        while type(data) is not dict:
+        data = tokenStr
+        while type(data) is not dict: # FIX for bug: JSON.loads sometimes returns a string
             data = json.loads(data)
 
         if "type" in data and str(data["type"]).endswith("Token") and "data" in data:
             data = data["data"]
             if "access_token" in data and "servicename" in data:
-                return cls(data["servicename"], data["access_token"])
+                return Token(data["servicename"], data["access_token"])
 
         raise ValueError("not a valid token json string.")
 
@@ -142,20 +142,20 @@ class OAuth2Token(Token):
         return json.dumps(data)
 
     @classmethod
-    def from_json(cls, token: str):
+    def from_json(cls, tokenStr: str):
         """
         Returns an oauthtoken object from a json string.
         """
 
-        data = token
-        while type(data) is not dict:
+        data = tokenStr
+        while type(data) is not dict: # FIX for bug: JSON.loads sometimes returns a string
             data = json.loads(data)
 
-        token = super(OAuth2Token, cls).from_json(token)
+        token = super(OAuth2Token, cls).from_json(tokenStr)
 
         if "type" in data and str(data["type"]).endswith("OAuth2Token"):
             data = data["data"]
-            if "refresh_token" and "expiration_date" in data:
+            if "refresh_token" in data and "expiration_date" in data:
                 return cls.from_token(token, data["refresh_token"], data["expiration_date"])
 
         raise ValueError("not a valid token json string.")

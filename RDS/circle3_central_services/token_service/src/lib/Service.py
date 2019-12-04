@@ -5,6 +5,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
+
 class Service():
     """
     Represents a service, which can be used in RDS.
@@ -38,12 +39,47 @@ class Service():
     def __str__(self):
         return f"Servicename: {self.servicename}"
 
+    def __json__(self):
+        """
+        Returns this object as a json string.
+        """
+
+        data = {
+            "type": self.__class__.__name__,
+            "data": {
+                "servicename": self._servicename
+            }
+        }
+        return json.dumps(data)
+
+    @classmethod
+    def from_json(cls, serviceStr: str):
+        """
+        Returns an service object from a json string.
+        """
+
+        data = serviceStr
+        while type(data) is not dict:  # FIX for bug: JSON.loads sometimes returns a string
+            data = json.loads(data)
+
+        if "type" in data and str(data["type"]).endswith("Service") and "data" in data:
+            data = data["data"]
+            if "servicename" in data:
+                return Service(data["servicename"])
+
+        raise ValueError("not a valid service json string.")
+
 
 class OAuth2Service(Service):
     """
     Represents an OAuth2 service, which can be used in RDS.
     This service enables the oauth2 workflow.
     """
+
+    _authorize_url = None
+    _refresh_url = None
+    _client_id = None
+    _client_secret = None
 
     def __init__(self, servicename: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
         super(OAuth2Service, self).__init__(servicename)
@@ -152,3 +188,38 @@ class OAuth2Service(Service):
 
     def __str__(self):
         return f"{super(OAuth2Service, self).__str__()}, RefreshURL: {self.refresh_url}, AuthorizeURL: {self.authorize_url}"
+
+    def __json__(self):
+        """
+        Returns this object as a json string.
+        """
+
+        data = super(OAuth2Service, self).__json__()
+        data = json.loads(data)
+
+        data["type"] = self.__class__.__name__
+        data["data"]["authorize_url"] = self.authorize_url
+        data["data"]["refresh_url"] = self.refresh_url
+        data["data"]["client_id"] = self._client_id
+        data["data"]["client_secret"] = self._client_secret
+
+        return json.dumps(data)
+
+    @classmethod
+    def from_json(cls, serviceStr: str):
+        """
+        Returns an oauthservice object from a json string.
+        """
+
+        data = serviceStr
+        while type(data) is not dict:  # FIX for bug: JSON.loads sometimes returns a string
+            data = json.loads(data)
+
+        service = super(OAuth2Service, cls).from_json(serviceStr)
+
+        if "type" in data and str(data["type"]).endswith("OAuth2Service"):
+            data = data["data"]
+            if "authorize_url" in data and "refresh_url" in data and "client_id" in data and "client_secret" in data:
+                return cls.from_service(service, data["authorize_url"], data["refresh_url"], data["client_id"], data["client_secret"])
+
+        raise ValueError("not a valid service json string.")
