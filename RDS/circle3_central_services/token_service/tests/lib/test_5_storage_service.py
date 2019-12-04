@@ -231,6 +231,9 @@ class TestStorageService(unittest.TestCase):
             "unsupported_grant_type", OAuth2UnsupportedGrantType)
 
     def make_bad_request_for_oauth_provider(self, error_code, error):
+        """
+        For convenience.
+        """
         json_expected = {
             "error": error_code
         }
@@ -246,6 +249,75 @@ class TestStorageService(unittest.TestCase):
         with self.assertRaises(error):
             with pact:
                 self.oauthservice1.refresh(self.token1, self.user1)
+
+    def test_service_list(self):
+        expected = []
+        # there should be no services
+        self.assertEqual(self.empty_storage.getServices(), expected)
+
+        # add an invalid service
+        with self.assertRaises(ValueError):
+            self.empty_storage.addService(123)
+
+        with self.assertRaises(ValueError):
+            self.empty_storage.addService(self.token1)
+
+        with self.assertRaises(ValueError):
+            self.empty_storage.addService(self.user1)
+
+        with self.assertRaises(ValueError):
+            self.empty_storage.getService(123)
+
+        with self.assertRaises(ValueError):
+            self.empty_storage.getService(self.token1)
+
+        with self.assertRaises(ValueError):
+            self.empty_storage.getService(self.user1)
+
+        # add a service
+        expected.append(self.service1)
+        self.empty_storage.addService(self.service1)
+        self.assertEqual(self.empty_storage.getServices(), expected)
+        
+        self.assertIsInstance(self.empty_storage.getService(self.service1.servicename), Service)
+        self.assertEqual(self.empty_storage.getService(self.service1.servicename), self.service1, msg=self.empty_storage.getServices())
+        self.assertEqual(self.empty_storage.getService(self.service1), self.service1)
+
+        _, index = self.empty_storage.getService(self.service1, index=True)
+        self.assertEqual(index, 0)
+
+        _, index = self.empty_storage.getService(self.service2, index=True)
+        self.assertIsNone(index)
+
+        from lib.Exceptions.ServiceExceptions import ServiceExistsAlreadyError
+        with self.assertRaises(ServiceExistsAlreadyError):
+            self.empty_storage.addService(self.service1)
+        
+        # add oauthservice for a already exists service, first with error, then with force
+        with self.assertRaises(ServiceExistsAlreadyError):
+            self.empty_storage.addService(self.oauthservice1)
+
+        expected = [self.oauthservice1]
+        self.empty_storage.addService(self.oauthservice1, Force=True)
+        self.assertEqual(self.empty_storage.getServices(), expected)
+
+        # add the next service
+        expected.append(self.service2)
+        self.empty_storage.addService(self.service2)
+        self.assertEqual(self.empty_storage.getServices(), expected)
+
+        _, index = self.empty_storage.getService(self.service1, index=True)
+        self.assertEqual(index, 0)
+
+        # remove a not existing service
+        self.assertFalse(self.empty_storage.removeService(self.service3))
+        self.assertTrue(self.empty_storage.removeService(self.service2))
+        self.assertTrue(self.empty_storage.removeService(self.service1))
+
+        # should be empty now
+        self.assertEqual(self.empty_storage.getServices(), [])
+
+
 
 if __name__ == "__main__":
     unittest.main()

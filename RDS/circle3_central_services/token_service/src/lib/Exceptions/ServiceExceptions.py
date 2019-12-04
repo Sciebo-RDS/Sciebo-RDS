@@ -69,3 +69,11 @@ class OAuth2UnsupportedGrantType(OAuth2UnsuccessfulResponseError):
             msg = "The authorization grant type is not supported by the authorization server."
 
         super(OAuth2UnsupportedGrantType, self).__init__(msg)
+
+class ServiceExistsAlreadyError(Exception):
+    def __init__(self, service: Service, msg=None):
+        if msg is None:
+            msg = f"{service} already in storage."
+
+        super(ServiceExistsAlreadyError, self).__init__(msg)
+        self.service = service

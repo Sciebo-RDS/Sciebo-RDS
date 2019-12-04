@@ -1,9 +1,13 @@
 from lib.User import User
 from lib.Token import Token, OAuth2Token
 from lib.Service import Service, OAuth2Service
+from typing import Union
+from lib.Exceptions.ServiceExceptions import ServiceExistsAlreadyError
 
 import logging
 import requests
+
+logger = logging.getLogger()
 
 
 class Storage():
@@ -12,11 +16,17 @@ class Storage():
     """
 
     _storage = None
+    _services = None
 
     def __init__(self):
         self._storage = {}
+        self._services = []
 
     def getUser(self, user_id: str):
+        """
+        Returns the user with user_id.
+        Raise a `UserNotExistsError`, if user not found.
+        """
         if user_id in self._storage:
             return self._storage[user_id]["data"]
 
@@ -24,6 +34,12 @@ class Storage():
         raise UserNotExistsError(self, User(user_id))
 
     def getToken(self, user_id: str, token_id: int = None):
+        """
+        Returns the token from user with user_id and token with token_id.
+
+        Raise `ValueError` if token_id not found and `UserNotExistsError` if user_id was not found.
+        """
+
         if user_id in self._storage:
             tokens = self._storage[user_id]["tokens"]
             if token_id is not None:
@@ -37,10 +53,98 @@ class Storage():
         raise UserNotExistsError(self, User(user_id))
 
     def getUsers(self):
+        """
+        Returns a list with all registered users.
+        """
         return [val["data"] for val in self._storage.values()]
 
     def getTokens(self):
+        """
+        Returns a list with all managed tokens.
+        """
         return [token for val in self._storage.values() for token in val["tokens"]]
+
+    def getServices(self):
+        """
+        Returns a list with all registered services.
+        """
+        return self._services
+
+    def getService(self, service: Union[str, Service], index: bool = False):
+        """
+        Returns the service object with the given servicename. If not found, returns None
+
+        This function can be used to check, if an object is already a member of the list of services.
+
+        Set parameter `index` to True to get the index as the second return value in tuple.
+        """
+
+        if not isinstance(service, (str, Service)):
+            raise ValueError("given parameter not string or service.")
+
+        if isinstance(service, (Service)):
+            serviceStr = service.servicename
+        else:
+            serviceStr = service
+
+        logger.debug("Start searching service {}".format(service))
+        for k, svc in enumerate(self._services):
+            if svc.servicename == serviceStr:
+                logger.debug("Found service {}".format(svc))
+                logger.debug("Return index? {}, index: {}".format(
+                    index is not None, k))
+
+                return (svc, k) if index is True else svc
+
+        return (None, None) if index is True else None
+
+    def addService(self, service: Service, Force=False):
+        """
+        Add the given service to the list of services.
+
+        Returns True if success.
+        Otherwise raises a `ServiceExistsAlreadyError` if there is already a service with the same name.
+
+        To force an update, you have to set the parameter `Force` to True.
+
+        Raise an error, if parameter not a service object.
+        """
+        if not isinstance(service, Service):
+            raise ValueError("parameter not a service object.")
+
+        svc, index = self.getService(service, index=True)
+        if svc is not None:
+            if Force is True:
+                self._services[index] = service
+                return True
+
+            from lib.Exceptions.ServiceExceptions import ServiceExistsAlreadyError
+            raise ServiceExistsAlreadyError(service)
+
+        self._services.append(service)
+        return True
+
+    def removeService(self, service: Union[str, Service]):
+        """
+        Removes the service with servicename.
+
+        Returns True if a service was found and removed. Otherwise false.
+        """
+
+        serviceStr = None
+        if not isinstance(service, str) and not isinstance(service, Service):
+            raise ValueError("given parameter not string or service.")
+
+        serviceStr = service.servicename if isinstance(
+            service, Service) else service
+
+        _, index = self.getService(service, index=True)
+
+        if index is not None and isinstance(index, int):
+            del self._services[index]
+            return True
+
+        return False
 
     def addUser(self, user: User):
         """

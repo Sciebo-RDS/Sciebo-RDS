@@ -57,6 +57,7 @@ def internal_load_class(data: dict):
 
             if klass is not None:
                 return klass
+                
         except Exception:
             raise
 
