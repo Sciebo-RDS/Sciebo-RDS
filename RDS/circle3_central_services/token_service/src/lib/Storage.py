@@ -12,7 +12,7 @@ logger = logging.getLogger()
 
 class Storage():
     """
-    Represents a Safe for Tokens
+    Represents a Safe for Tokens.
     """
 
     _storage = None
@@ -22,9 +22,16 @@ class Storage():
         self._storage = {}
         self._services = []
 
+    def getUsers(self):
+        """
+        Returns a list of all registered users.
+        """
+        return [val["data"] for val in self._storage.values()]
+
     def getUser(self, user_id: str):
         """
         Returns the user with user_id.
+
         Raise a `UserNotExistsError`, if user not found.
         """
         if user_id in self._storage:
@@ -32,6 +39,12 @@ class Storage():
 
         from .Exceptions.StorageException import UserNotExistsError
         raise UserNotExistsError(self, User(user_id))
+
+    def getTokens(self):
+        """
+        Returns a list of all managed tokens.
+        """
+        return [token for val in self._storage.values() for token in val["tokens"]]
 
     def getToken(self, user_id: str, token_id: int = None):
         """
@@ -52,21 +65,9 @@ class Storage():
         from .Exceptions.StorageException import UserNotExistsError
         raise UserNotExistsError(self, User(user_id))
 
-    def getUsers(self):
-        """
-        Returns a list with all registered users.
-        """
-        return [val["data"] for val in self._storage.values()]
-
-    def getTokens(self):
-        """
-        Returns a list with all managed tokens.
-        """
-        return [token for val in self._storage.values() for token in val["tokens"]]
-
     def getServices(self):
         """
-        Returns a list with all registered services.
+        Returns a list of all registered services.
         """
         return self._services
 
@@ -82,10 +83,8 @@ class Storage():
         if not isinstance(service, (str, Service)):
             raise ValueError("given parameter not string or service.")
 
-        if isinstance(service, (Service)):
-            serviceStr = service.servicename
-        else:
-            serviceStr = service
+        serviceStr = service.servicename if isinstance(
+            service, (Service)) else service
 
         logger.debug("Start searching service {}".format(service))
         for k, svc in enumerate(self._services):
@@ -131,12 +130,8 @@ class Storage():
         Returns True if a service was found and removed. Otherwise false.
         """
 
-        serviceStr = None
         if not isinstance(service, str) and not isinstance(service, Service):
             raise ValueError("given parameter not string or service.")
-
-        serviceStr = service.servicename if isinstance(
-            service, Service) else service
 
         _, index = self.getService(service, index=True)
 
@@ -259,12 +254,18 @@ class Storage():
 
         return self.internal_refresh_services([service])
 
-    def refresh_services(self, services: list):
+    def refresh_services(self, services: list = None):
         """
         Refresh all tokens, which corresponds to given list of services.
 
+        If no services were given, it will be used the stored one.
+
         Returns True, if one or more Tokens were found in the storage to refresh.
         """
+
+        if services is None:
+            return self.internal_refresh_services(self._services)
+        
         return self.internal_refresh_services(services)
 
     def internal_refresh_services(self, services: list):
@@ -315,12 +316,11 @@ class Storage():
 
     def internal_find_service(self, servicename: str, services: list):
         """
-        Tries to find the given servicename in the list of services. 
-        Returns the index of the first found service with equal servicename.
+        Tries to find the given servicename in the list of services.
+        
+        Returns the index of the *first* found service with equal servicename.
 
         Otherwise raise an ValueError.
-
-        Doesn't check, if services are duplicated.
         """
         for index, service in enumerate(services):
             if service.servicename == servicename:

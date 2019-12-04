@@ -9,7 +9,8 @@ from pactman import Consumer, Provider
 from datetime import datetime
 from time import time
 
-import logging, sys
+import logging
+import sys
 logger = logging.getLogger()
 logger.level = logging.DEBUG
 logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -32,16 +33,18 @@ class TestStorageService(unittest.TestCase):
         self.service2 = Service("BetonService")
         self.service3 = Service("FahrService")
 
+        # owncloud
         self.oauthservice1 = OAuth2Service.from_service(
             self.service1, f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorize",
             f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/api/v1/token", "ABC", "XYZ")
 
+        # zenodo
         self.oauthservice2 = OAuth2Service.from_service(
             self.service2, f"{pact_host_fqdn}/oauth/authorize", f"{pact_host_fqdn}/oauth/token", "DEF", "UVW")
 
         self.oauthservice3 = OAuth2Service.from_service(
             self.service3, f"{pact_host_fqdn}/api/authorize", f"{pact_host_fqdn}/api/token", "GHI", "MNO")
-        
+
         self.token1 = Token(self.service1.servicename, "ABC")
         self.token_like_token1 = Token(self.service1.servicename, "DEF")
         self.token2 = Token(self.service2.servicename, "XYZ")
@@ -52,7 +55,6 @@ class TestStorageService(unittest.TestCase):
             self.token_like_token1, "X_DEF")
         self.oauthtoken2 = OAuth2Token.from_token(self.token2, "X_XYZ")
         self.oauthtoken3 = OAuth2Token.from_token(self.token3, "X_GHI")
-
 
         self.services = [
             self.service1, self.service2, self.service3,
@@ -81,38 +83,55 @@ class TestStorageService(unittest.TestCase):
         self.filled_storage.addTokenToUser(self.oauthtoken3, self.user3)
 
     def test_internal_find_services(self):
-        self.assertEqual(self.empty_storage.internal_find_service(self.service1.servicename, [self.service1]), 0)
-        self.assertEqual(self.empty_storage.internal_find_service(self.service1.servicename, [self.service1, self.service2]), 0)
-        self.assertEqual(self.empty_storage.internal_find_service(self.service1.servicename, [self.service2, self.service1]), 1)
-        self.assertEqual(self.empty_storage.internal_find_service(self.service2.servicename, [self.service1, self.service2]), 1)
+        self.assertEqual(self.empty_storage.internal_find_service(
+            self.service1.servicename, [self.service1]), 0)
+        self.assertEqual(self.empty_storage.internal_find_service(
+            self.service1.servicename, [self.service1, self.service2]), 0)
+        self.assertEqual(self.empty_storage.internal_find_service(
+            self.service1.servicename, [self.service2, self.service1]), 1)
+        self.assertEqual(self.empty_storage.internal_find_service(
+            self.service2.servicename, [self.service1, self.service2]), 1)
 
-        self.assertEqual(self.empty_storage.internal_find_service(self.oauthservice1.servicename, [self.oauthservice1]), 0)
-        self.assertEqual(self.empty_storage.internal_find_service(self.oauthservice1.servicename, [self.oauthservice1, self.oauthservice2]), 0)
-        self.assertEqual(self.empty_storage.internal_find_service(self.oauthservice1.servicename, [self.oauthservice2, self.oauthservice1]), 1)
-        self.assertEqual(self.empty_storage.internal_find_service(self.oauthservice2.servicename, [self.oauthservice1, self.oauthservice2]), 1)
+        self.assertEqual(self.empty_storage.internal_find_service(
+            self.oauthservice1.servicename, [self.oauthservice1]), 0)
+        self.assertEqual(self.empty_storage.internal_find_service(
+            self.oauthservice1.servicename, [self.oauthservice1, self.oauthservice2]), 0)
+        self.assertEqual(self.empty_storage.internal_find_service(
+            self.oauthservice1.servicename, [self.oauthservice2, self.oauthservice1]), 1)
+        self.assertEqual(self.empty_storage.internal_find_service(
+            self.oauthservice2.servicename, [self.oauthservice1, self.oauthservice2]), 1)
 
-        self.assertEqual(self.empty_storage.internal_find_service(self.oauthservice2.servicename, [self.service1, self.oauthservice2]), 1)
+        self.assertEqual(self.empty_storage.internal_find_service(
+            self.oauthservice2.servicename, [self.service1, self.oauthservice2]), 1)
 
         with self.assertRaises(ValueError):
-            self.empty_storage.internal_find_service(self.service1.servicename, [self.service2])
+            self.empty_storage.internal_find_service(
+                self.service1.servicename, [self.service2])
 
         with self.assertRaises(ValueError):
-            self.empty_storage.internal_find_service(self.service1.servicename, [self.service2, self.service3])
+            self.empty_storage.internal_find_service(
+                self.service1.servicename, [self.service2, self.service3])
 
         with self.assertRaises(ValueError):
-            self.empty_storage.internal_find_service(self.service1.servicename, [self.oauthservice2, self.oauthservice3])
+            self.empty_storage.internal_find_service(
+                self.service1.servicename, [self.oauthservice2, self.oauthservice3])
 
         with self.assertRaises(ValueError):
-            self.empty_storage.internal_find_service(self.oauthservice1.servicename, [self.service2, self.service3])
+            self.empty_storage.internal_find_service(self.oauthservice1.servicename, [
+                                                     self.service2, self.service3])
 
     def test_refresh_all_tokens(self):
         # works without any tokens
-        self.assertFalse(self.filled_storage_without_tokens.refresh_service(self.service1))
-        self.assertFalse(self.filled_storage_without_tokens.refresh_services(self.oauthservice1))
-        self.assertFalse(self.filled_storage_without_tokens.refresh_services(self.services))
+        self.assertFalse(
+            self.filled_storage_without_tokens.refresh_service(self.service1))
+        self.assertFalse(
+            self.filled_storage_without_tokens.refresh_services(self.oauthservice1))
+        self.assertFalse(
+            self.filled_storage_without_tokens.refresh_services(self.services))
 
-        self.assertTrue(self.filled_storage.refresh_service(self.service1), msg=self.filled_storage)
-        
+        self.assertTrue(self.filled_storage.refresh_service(
+            self.service1), msg=self.filled_storage)
+
         # works with a request to a provider
         expected_user = self.user3
         expected_service = self.oauthservice1
@@ -142,12 +161,13 @@ class TestStorageService(unittest.TestCase):
 
         result = None
         with pact:
-           result = self.filled_storage.refresh_service(expected_service)
+            result = self.filled_storage.refresh_service(expected_service)
 
         self.assertTrue(result)
 
         # test for missing service
-        self.assertFalse(self.filled_storage.refresh_services([Service("NotFoundService")]))
+        self.assertFalse(self.filled_storage.refresh_services(
+            [Service("NotFoundService")]))
 
     """ Currently not implemented and no idea how to solve.
     def test_valid_token(self):
@@ -278,10 +298,13 @@ class TestStorageService(unittest.TestCase):
         expected.append(self.service1)
         self.empty_storage.addService(self.service1)
         self.assertEqual(self.empty_storage.getServices(), expected)
-        
-        self.assertIsInstance(self.empty_storage.getService(self.service1.servicename), Service)
-        self.assertEqual(self.empty_storage.getService(self.service1.servicename), self.service1, msg=self.empty_storage.getServices())
-        self.assertEqual(self.empty_storage.getService(self.service1), self.service1)
+
+        self.assertIsInstance(self.empty_storage.getService(
+            self.service1.servicename), Service)
+        self.assertEqual(self.empty_storage.getService(
+            self.service1.servicename), self.service1, msg=self.empty_storage.getServices())
+        self.assertEqual(self.empty_storage.getService(
+            self.service1), self.service1)
 
         _, index = self.empty_storage.getService(self.service1, index=True)
         self.assertEqual(index, 0)
@@ -292,7 +315,7 @@ class TestStorageService(unittest.TestCase):
         from lib.Exceptions.ServiceExceptions import ServiceExistsAlreadyError
         with self.assertRaises(ServiceExistsAlreadyError):
             self.empty_storage.addService(self.service1)
-        
+
         # add oauthservice for a already exists service, first with error, then with force
         with self.assertRaises(ServiceExistsAlreadyError):
             self.empty_storage.addService(self.oauthservice1)
@@ -316,6 +339,18 @@ class TestStorageService(unittest.TestCase):
 
         # should be empty now
         self.assertEqual(self.empty_storage.getServices(), [])
+
+    def test_storage_refresh_real_token(self):
+        import os
+        if os.getenv("https://sandbox.zenodo.org/oauth/authorize") is None:
+            return
+
+        zenodo_sandbox = OAuth2Service("sandbox.zenodo.org", os.getenv("https://sandbox.zenodo.org/oauth/authorize"), os.getenv(
+            "ZENODO_OAUTH_ACCESS_TOKEN_URL"), os.getenv("ZENODO_OAUTH_CLIEND_ID"), os.getenv("ZENODO_OAUTH_CLIENT_SECRET"))
+
+        storage = Storage()
+        storage.addService(zenodo_sandbox)
+        # TODO: Add a reallife test
 
 
 

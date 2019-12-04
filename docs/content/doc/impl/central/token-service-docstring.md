@@ -27,7 +27,7 @@ This token represents a simple password.
 
 #### from_json
 ```python
-Token.from_json(token:str)
+Token.from_json(tokenStr:str)
 ```
 
 Returns a token object from a json string.
@@ -48,7 +48,7 @@ Convert the given Token into an oauth2token.
 
 #### from_json
 ```python
-OAuth2Token.from_json(token:str)
+OAuth2Token.from_json(tokenStr:str)
 ```
 
 Returns an oauthtoken object from a json string.
@@ -62,6 +62,13 @@ Service(self, servicename:str)
 
 Represents a service, which can be used in RDS.
 This service only allows username:password authentication.
+
+#### from_json
+```python
+Service.from_json(serviceStr:str)
+```
+
+Returns an service object from a json string.
 
 ### OAuth2Service
 ```python
@@ -85,6 +92,13 @@ OAuth2Service.from_service(service:lib.Service.Service, authorize_url:str, refre
 
 Converts the given Service to an oauth2service.
 
+#### from_json
+```python
+OAuth2Service.from_json(serviceStr:str)
+```
+
+Returns an oauthservice object from a json string.
+
 ## lib.Storage
 
 ### Storage
@@ -93,6 +107,79 @@ Storage(self)
 ```
 
 Represents a Safe for Tokens
+
+#### getUsers
+```python
+Storage.getUsers(self)
+```
+
+Returns a list of all registered users.
+
+#### getUser
+```python
+Storage.getUser(self, user_id:str)
+```
+
+Returns the user with user_id.
+
+Raise a `UserNotExistsError`, if user not found.
+
+#### getTokens
+```python
+Storage.getTokens(self)
+```
+
+Returns a list of all managed tokens.
+
+#### getToken
+```python
+Storage.getToken(self, user_id:str, token_id:int=None)
+```
+
+Returns the token from user with user_id and token with token_id.
+
+Raise `ValueError` if token_id not found and `UserNotExistsError` if user_id was not found.
+
+#### getServices
+```python
+Storage.getServices(self)
+```
+
+Returns a list of all registered services.
+
+#### getService
+```python
+Storage.getService(self, service:Union[str, lib.Service.Service], index:bool=False)
+```
+
+Returns the service object with the given servicename. If not found, returns None
+
+This function can be used to check, if an object is already a member of the list of services.
+
+Set parameter `index` to True to get the index as the second return value in tuple.
+
+#### addService
+```python
+Storage.addService(self, service:lib.Service.Service, Force=False)
+```
+
+Add the given service to the list of services.
+
+Returns True if success.
+Otherwise raises a `ServiceExistsAlreadyError` if there is already a service with the same name.
+
+To force an update, you have to set the parameter `Force` to True.
+
+Raise an error, if parameter not a service object.
+
+#### removeService
+```python
+Storage.removeService(self, service:Union[str, lib.Service.Service])
+```
+
+Removes the service with servicename.
+
+Returns True if a service was found and removed. Otherwise false.
 
 #### addUser
 ```python
@@ -193,9 +280,8 @@ Storage.internal_find_service(self, servicename:str, services:list)
 ```
 
 Tries to find the given servicename in the list of services.
-Returns the index of the first found service with equal servicename.
+
+Returns the index of the *first* found service with equal servicename.
 
 Otherwise raise an ValueError.
-
-Doesn't check, if services are duplicated.
 
