@@ -100,6 +100,17 @@ class TestTokenService(unittest.TestCase):
         self.assertEqual(self.client.get("/user").json, expected)
         self.assertEqual(self.client.get("/service").json, expected)
 
+    def get(self, endpoint):
+        """
+        For convenience in this test suite.
+        """
+        data_result = []
+        data = self.client.get(endpoint).json
+        for d in data:
+            data_result.append(Util.initialize_object_from_json(d))
+
+        return data_result
+
     def test_list_service(self):
         expected = []
 
@@ -107,43 +118,28 @@ class TestTokenService(unittest.TestCase):
         self.assertEqual(self.client.get("/service").json, expected)
         #self.assertEqual(self.client.post("/service", data=vars(self.service1)), self.service1)
 
-        # add one simple service
+        # add one simple service and try to get them
         expected.append(self.service1)
         result = self.client.post("/service", data=json.dumps(self.service1), content_type='application/json')
-        self.assertEqual(result.status_code, 200)
-
-        data_result = []
-        data = self.client.get("/service").json
-        for d in data:
-            klass = Util.load_class_from_json(d)
-            data_result.append(klass.from_json(d))
-
-        self.assertEqual(data_result, expected)
+        self.assertEqual(result.status_code, 200, msg=f"{result.json}")
+        
+        for k, v in enumerate(self.get("/service")):
+            self.assertEqual(v, expected[k], msg=f"{v} {expected[k]}")
 
         # add the same service as oauth, should be an update
         expected = [self.oauthservice1]
         result = self.client.post("/service", data=json.dumps(self.oauthservice1), content_type='application/json')
         self.assertEqual(result.status_code, 204)
 
-        data_result = []
-        data = self.client.get("/service").json
-        for d in data:
-            klass = Util.load_class_from_json(d)
-            data_result.append(klass.from_json(d))
-
-        self.assertEqual(data_result, expected)
+        for k, v in enumerate(self.get("/service")):
+            self.assertEqual(v, expected[k], msg=f"{v} {expected[k]}")
 
         # add a simple service, there should be 2 services now
         expected.append(self.service2)
         self.client.post("/service", data=json.dumps(self.service2), content_type='application/json')
 
-        data_result = []
-        data = self.client.get("/service").json
-        for d in data:
-            klass = Util.load_class_from_json(d)
-            data_result.append(klass.from_json(d))
-
-        self.assertEqual(data_result, expected)
+        for k, v in enumerate(self.get("/service")):
+            self.assertEqual(v, expected[k], msg=f"{v} {expected[k]}")
 
 
     def test_list_user(self):
@@ -197,16 +193,9 @@ class TestTokenService(unittest.TestCase):
         result = self.client.post(f"/user/{self.user1.username}/token",
                          data=json.dumps(self.token1), content_type='application/json')
         self.assertEqual(result.status_code, 200)
-
-        data_result = []
-        
-        data = self.client.get("/token").json
-        for d in data:
-            klass = Util.load_class_from_json(d)
-            data_result.append(klass.from_json(json.dumps(d)))
         
         # list compare doesn't work properly, so we have to iterate.
-        for k, v in enumerate(data_result):
+        for k, v in enumerate(self.get("/token")):
             self.assertEqual(v, expected[k], msg=f"{v} {expected[k]}")
 
         # should response with http code not equal to 200
@@ -218,14 +207,8 @@ class TestTokenService(unittest.TestCase):
         expected.append(self.oauthtoken2)
         self.client.post(f"/user/{self.user1.username}/token",
                          data=json.dumps(self.oauthtoken2), content_type='application/json')
-
-        data_result = []
-        data = self.client.get("/token").json
-        for d in data:
-            klass = Util.load_class_from_json(d)
-            data_result.append(klass.from_json(json.dumps(d)))
         
-        for k, v in enumerate(data_result):
+        for k, v in enumerate(self.get("/token")):
             self.assertEqual(v, expected[k], msg=f"{v} {expected[k]}")
 
 
@@ -233,22 +216,14 @@ class TestTokenService(unittest.TestCase):
         index = expected.index(self.token1)
         result = self.client.get(f"/user/{self.user1.username}/token/{index}")
         self.assertEqual(result.status_code, 200, msg=f"token id: {index} - {result.json}")
-        klass = Util.load_class_from_json(result.json)
-        token = klass.from_json(result.json)
+        token = Util.initialize_object_from_json(result.json)
         self.assertEqual(token, self.token1)
 
         del expected[index]
         result = self.client.delete(f"/user/{self.user1.username}/token/{index}")
         self.assertEqual(result.status_code, 200, msg=f"{result.json}")
         
-        data_result = []
-        data = self.client.get("/token").json
-        for d in data:
-            klass = Util.load_class_from_json(d)
-            data_result.append(klass.from_json(json.dumps(d)))
-        
-        # list compare doesn't work properly, so we have to iterate.
-        for k, v in enumerate(data_result):
+        for k, v in enumerate(self.get("/token")):
             self.assertEqual(v, expected[k], msg=f"{v} {expected[k]}")
 
 
