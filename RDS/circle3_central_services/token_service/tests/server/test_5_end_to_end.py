@@ -1,0 +1,147 @@
+import unittest
+import os
+import json
+import requests, datetime
+from lib.User import User
+from lib.Service import OAuth2Service
+from lib.Token import Token, OAuth2Token
+from lib.Storage import Storage
+from Util import initialize_object_from_json
+from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.common.keys import Keys
+
+class test_end_to_end(unittest.TestCase):
+    driver = None
+
+    def setUp(self):
+        if not os.getenv("CI_DEFAULT_BRANCH"):
+            return 
+
+        server = "http://selenium:4444/wd/hub"
+        self.driver = webdriver.Remote(command_executor=server,
+                                       desired_capabilities=DesiredCapabilities.FIREFOX)
+
+    def tearDown(self):
+        if self.driver is None:
+            return
+
+        self.driver.quit()
+
+    def test_owncloud(self):
+        if self.driver is None:
+            return
+
+        # prepare service
+        storage = Storage()
+        owncloud = OAuth2Service(
+            "owncloud-local",
+            "http://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id=nU5N4MPGvGR5gp37r12j5Abb076tYYzST0DyQKqKJ8Ry30adWNbAMoyR30JT7Zaf&redirect_uri=http://localhost:8080/oauth2/redirect",
+            "http://10.14.28.90/owncloud/index.php/apps/oauth2/api/v1/token",
+            os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"),
+            os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET")
+        )
+
+        storage.addService(owncloud)
+
+        # prepare user, which wants to make the whole oauth workflow
+        user1 = User("user")
+
+        token1 = Token(owncloud.servicename, "user")
+
+        storage.addUser(user1)
+        storage.addTokenToUser(token1, user1)
+
+        def get_acces_token(user, token):
+            nonlocal owncloud, storage
+
+            self.driver.get(owncloud.authorize_url)
+
+            if self.driver.getCurrentURL().startswith("http://10.14.28.90/owncloud/index.php/login"):
+                # it redirects to login form
+                field_username = self.driver.find_elements_by_xpath("//*[@id=\"user\"]")
+                field_password = self.driver.find_elements_by_xpath("//*[@id=\"password\"]")
+                field_username.clear()
+                field_username.send_keys(user.username)
+
+                field_password.clear()
+                field_password.send_keys(token.access_token)
+                field_password.send_keys(Keys.RETURN)
+
+            btn = self.driver.find_elements_by_xpath(
+                "/html/body/div[1]/div/span/form/button")
+            btn.click()
+
+            url = self.driver.getCurrentUrl()
+
+            self.driver.deleteAllCookies() # remove all cookies
+
+            from urllib.parse import urlparse, parse_qs
+            code = parse_qs(urlparse(url).query)["code"]
+
+            data = {
+                "grant_type": "authorization_code",
+                "code": code,
+                "redirect_uri": "http://localhost:8080/oauth2/redirect"
+            }
+
+            req = requests.post(owncloud.refresh_url, data=data, auth=(owncloud.client_id, owncloud.client_secret)).json
+            oauthtoken = OAuth2Token(owncloud.servicename, req["access_token"], req["refresh_token"], datetime.datetime.now() + req["expires_in"])
+            return oauthtoken
+
+        oauthtoken1 = get_acces_token(user1, token1)
+        storage.addTokenToUser(oauthtoken1, user1, Force=True)
+
+        ######## test a refresh token #######
+        # prepare user, which wants to get a refresh token
+
+        oauthuser2 = User("user_refresh")
+
+        # check if there is already a file, which has an oauth2token to reuse it.
+        oauthtoken2 = None
+        try:
+            req = requests.get("https://zivgitlab.uni-muenster.de/{}/{}/-/jobs/artifacts/{}/file/{}?job={}".format(
+                os.getenv("CI_PROJECT_NAMESPACE"),
+                os.getenv("CI_PROJECT_NAME"),
+                os.getenv("CI_COMMIT_REF_NAME"),
+                os.getcwd(),
+                os.getenv("CI_JOB_NAME"))).content
+            oauthtoken2 = initialize_object_from_json(req)
+        except:
+            # initialize like user1 with password
+            token2 = Token(owncloud.servicename, "user_refresh")
+
+            # generate an oauthtoken like before and overwrite oauthtoken1
+            oauthtoken2 = get_acces_token(oauthuser2, token2)
+
+        storage.addUser(oauthuser2)
+        storage.addTokenToUser(oauthtoken2, oauthuser2)
+
+        # try to refresh it now
+        storage.refresh_service(owncloud)
+        tokens = storage.getToken(oauthuser2)
+        checkToken = tokens[0]
+        self.assertGreater(checkToken.expiration_date,
+                           oauthtoken2.expiration_date)
+        self.assertEqual(checkToken, oauthtoken2)
+
+        # safe the current oauthtoken for reuse to test refresh token after a bigger period.
+        with open("user_refresh.token", "w") as f:
+            f.write(json.dumps(checkToken))
+
+    def test_zenodo(self):
+        if self.driver is None:
+            return
+
+        zenodo = OAuth2Service(
+            "sandbox.zenodo.org",
+            "https://sandbox.zenodo.org/oauth/authorize?scope=deposit%3Awrite+deposit%3Aactions&state=CHANGEME&redirect_uri=http%3A%2F%2Flocalhost%3A8080&response_type=code&client_id=feYfqBVCfNDJTQyQRXWiJ8eoga99GxKzXYAZXvbm",
+            " https://sandbox.zenodo.org/oauth/token",
+            os.getenv("ZENODO_OAUTH_CLIEND_ID"),
+            os.getenv("ZENODO_OAUTH_CLIENT_SECRET")
+        )
+        self.driver.get(zenodo.authorize_url)
+        btn = self.driver.find_elements_by_xpath(
+            "/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[2]/form/button[1]")
+        btn.click()
+        

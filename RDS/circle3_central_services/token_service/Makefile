@@ -12,7 +12,9 @@ update:
 	pipenv lock -r -d > requirements-dev.txt
 
 test: dev
+	@#docker run -d --network host --privileged --name server docker.io/selenium/standalone-firefox || true
 	python -m pytest
+	@#docker stop server || true
 
 run: install
 	python src/server.py

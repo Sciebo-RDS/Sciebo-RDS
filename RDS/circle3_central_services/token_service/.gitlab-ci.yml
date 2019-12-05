@@ -12,6 +12,16 @@
       - RDS/circle3_central_services/token_service/*
       - RDS/circle3_central_services/token_service/**/*
 
+  artifacts:
+    untracked: true
+    expire_in: 180 days
+    paths:
+      - $FOLDER/user_refresh.token
+    
+  services:
+  - name: selenium/standalone-firefox
+    alias: selenium
+
 test:central_service_token_service3.6:
   image: python:3.6
   extends: .tests_central_service_token_service

@@ -48,7 +48,7 @@ class Storage():
 
     def getToken(self, user_id: str, token_id: int = None):
         """
-        Returns the token from user with user_id and token with token_id.
+        Returns all tokens from user with user_id or only the token with token_id.
 
         Raise `ValueError` if token_id not found and `UserNotExistsError` if user_id was not found.
         """
