@@ -42,12 +42,19 @@ class Storage():
 
     def getTokens(self, user_id: Union[str, User] = None):
         """
-        Returns a list of all managed tokens.
+        Returns a list of all managed tokens. 
+
+        If user_id (String or User) was given, then the tokens are filtered to this user.
+
+        Raise a UserNotExistsError, if the given user not exists.
         """
 
         if user_id is None:
-            return [token for val in self._storage.values() for token in val["tokens"]]
-        
+            return [
+                token for val in self._storage.values()
+                for token in val["tokens"]
+            ]
+
         if not isinstance(user_id, (str, User)):
             raise ValueError("user_id is not string or User.")
 
@@ -60,8 +67,6 @@ class Storage():
 
         from .Exceptions.StorageException import UserNotExistsError
         raise UserNotExistsError(self, User(user_id))
-
-        
 
     def getToken(self, user_id: Union[str, User], token_id: int):
         """
@@ -106,8 +111,8 @@ class Storage():
         if not isinstance(service, (str, Service)):
             raise ValueError("given parameter not string or service.")
 
-        serviceStr = service.servicename if isinstance(
-            service, (Service)) else service
+        serviceStr = service.servicename if isinstance(service,
+                                                       (Service)) else service
 
         logger.debug("Start searching service {}".format(service))
         for k, svc in enumerate(self._services):
@@ -288,7 +293,7 @@ class Storage():
 
         if services is None:
             return self.internal_refresh_services(self._services)
-        
+
         return self.internal_refresh_services(services)
 
     def internal_refresh_services(self, services: list):
@@ -310,8 +315,8 @@ class Storage():
             for token in user["tokens"]:
                 # find the corresponding service
                 try:
-                    index = self.internal_find_service(
-                        token.servicename, services)
+                    index = self.internal_find_service(token.servicename,
+                                                       services)
                 except ValueError as e:
                     # there was no one, so we can finish here, cause token cannot be refresh
                     continue
@@ -321,7 +326,8 @@ class Storage():
 
                 found = True
                 # if service or token is not oauth, it has not any refresh mechanism, so we can finish here.
-                if not isinstance(service, (OAuth2Service)) or not isinstance(token, (OAuth2Token)):
+                if not isinstance(service, (OAuth2Service)) or not isinstance(
+                        token, (OAuth2Token)):
                     continue
 
                 # refresh token
@@ -340,7 +346,7 @@ class Storage():
     def internal_find_service(self, servicename: str, services: list):
         """
         Tries to find the given servicename in the list of services.
-        
+
         Returns the index of the *first* found service with equal servicename.
 
         Otherwise raise an ValueError.
