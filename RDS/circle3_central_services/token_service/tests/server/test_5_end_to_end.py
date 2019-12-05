@@ -85,7 +85,7 @@ class test_end_to_end(unittest.TestCase):
 
             url = self.driver.current_url
 
-            self.driver.deleteAllCookies()  # remove all cookies
+            self.driver.delete_all_cookies()  # remove all cookies
 
             from urllib.parse import urlparse, parse_qs
             code = parse_qs(urlparse(url).query)["code"]
