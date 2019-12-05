@@ -116,7 +116,7 @@ class test_end_to_end(unittest.TestCase):
         # check if there is already a file, which has an oauth2token to reuse it.
         oauthtoken2 = None
         try:
-            req = requests.get("https://zivgitlab.uni-muenster.de/{}/{}/-/jobs/artifacts/{}/file/{}?job={}".format(
+            req = requests.get("https://zivgitlab.uni-muenster.de/{}/{}/-/jobs/artifacts/{}/raw/file/{}?job={}".format(
                 os.getenv("CI_PROJECT_NAMESPACE"),
                 os.getenv("CI_PROJECT_NAME"),
                 os.getenv("CI_COMMIT_REF_NAME"),
