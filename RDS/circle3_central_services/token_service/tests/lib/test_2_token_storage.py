@@ -41,13 +41,16 @@ class Test_TokenStorage(unittest.TestCase):
             empty_storage.getUser(self.user1.username)
         
         with self.assertRaises(UserNotExistsError):
-            empty_storage.getToken(self.user1.username)
+            empty_storage.getTokens(self.user1.username)
 
         empty_storage.addUser(self.user1)
         empty_storage.addTokenToUser(self.token1, self.user1)
 
         self.assertEqual(empty_storage.getUser(self.user1.username), self.user1)
-        self.assertEqual(empty_storage.getToken(self.user1.username), [self.token1])
+        self.assertEqual(empty_storage.getTokens(self.user1.username), [self.token1])
+
+        self.assertEqual(empty_storage.getToken(self.user1.username, 0), self.token1)
+        self.assertEqual(empty_storage.getTokens(self.user1), [self.token1])
 
     def test_tokenstorage_add_user(self):
         # empty storage

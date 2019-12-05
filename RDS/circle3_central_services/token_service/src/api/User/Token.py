@@ -5,7 +5,7 @@ from lib.User import User
 from lib.Exceptions.StorageException import UserHasTokenAlreadyError
 
 def index(user_id):
-    data = Util.storage.getToken(user_id)
+    data = Util.storage.getTokens(user_id)
     return jsonify(data)
 
 def post(user_id):

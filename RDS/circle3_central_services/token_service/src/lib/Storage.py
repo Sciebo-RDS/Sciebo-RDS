@@ -40,26 +40,49 @@ class Storage():
         from .Exceptions.StorageException import UserNotExistsError
         raise UserNotExistsError(self, User(user_id))
 
-    def getTokens(self):
+    def getTokens(self, user_id: Union[str, User] = None):
         """
         Returns a list of all managed tokens.
         """
-        return [token for val in self._storage.values() for token in val["tokens"]]
 
-    def getToken(self, user_id: str, token_id: int = None):
+        if user_id is None:
+            return [token for val in self._storage.values() for token in val["tokens"]]
+        
+        if not isinstance(user_id, (str, User)):
+            raise ValueError("user_id is not string or User.")
+
+        if isinstance(user_id, User):
+            user_id = user_id.username
+
+        if user_id in self._storage:
+            tokens = self._storage[user_id]["tokens"]
+            return tokens
+
+        from .Exceptions.StorageException import UserNotExistsError
+        raise UserNotExistsError(self, User(user_id))
+
+        
+
+    def getToken(self, user_id: Union[str, User], token_id: int):
         """
-        Returns all tokens from user with user_id or only the token with token_id.
+        Returns only the token with token_id from user_id (String or User).
 
         Raise `ValueError` if token_id not found and `UserNotExistsError` if user_id was not found.
         """
 
+        if not isinstance(user_id, (str, User)):
+            raise ValueError("user_id is not string or User.")
+
+        if isinstance(user_id, User):
+            user_id = user_id.username
+
         if user_id in self._storage:
             tokens = self._storage[user_id]["tokens"]
-            if token_id is not None:
-                try:
-                    tokens = tokens[token_id]
-                except:
-                    raise ValueError("Token_id not found")
+            try:
+                tokens = tokens[token_id]
+            except:
+                raise ValueError("Token_id not found")
+
             return tokens
 
         from .Exceptions.StorageException import UserNotExistsError
