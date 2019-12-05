@@ -184,6 +184,43 @@ class TestStorageService(unittest.TestCase):
         with self.assertRaises(TokenNotValidError):
             self.oauthservice1.status(self.token1)"""
 
+    def test_storage_refresh_save_mechanism(self):
+        expires_in = 3600
+        expected = OAuth2Token.from_token(self.token1, "XYZ")
+        expected._exiration_date = datetime.fromtimestamp(time() + expires_in)
+
+        # example taken from https://github.com/owncloud/oauth2
+        json_expected = {
+            "access_token": "1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ",
+            "token_type": "Bearer",
+            "expires_in": expires_in,
+            "refresh_token": "7y0wJuvKmj5E1vjVnhlPBEhha59JyaAiFIVQDvcBY2ss0pauzdQtnuo1NkIsbndA",
+            "user_id": self.user1.username,
+            "message_url": f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorization-successful"
+        }
+
+        pact.given(
+            "Storage can refresh given oauth2token and saves it in storage"
+        ).upon_receiving(
+            "A valid refresh token response with a higher expiration date."
+        ).with_request(
+            "POST", "/owncloud/index.php/apps/oauth2/api/v1/token"
+        ).will_respond_with(200, body=json_expected)
+
+        result = None
+        with pact:
+            self.empty_storage.addService(self.oauthservice1)
+            self.empty_storage.addUser(self.user1)
+            self.empty_storage.addTokenToUser(self.oauthtoken1, self.user1)
+            self.empty_storage.refresh_service(self.oauthservice1)
+            result = self.empty_storage.getTokens()
+
+            # there should only be one element in list, so it is ours
+            self.assertEqual(len(result), 1)
+            self.assertEqual(result[0], expected,
+                             msg=f"\nresult: {result}\nexpected: {expected}")
+            self.assertGreater(result[0].expiration_date, expected.expiration_date)
+
     def test_refresh_oauth2token(self):
         expires_in = 3600
         expected = OAuth2Token.from_token(self.token1, "XYZ")
@@ -341,20 +378,6 @@ class TestStorageService(unittest.TestCase):
 
         # should be empty now
         self.assertEqual(self.empty_storage.getServices(), [])
-
-    def test_storage_refresh_real_token(self):
-        import os
-        if os.getenv("https://sandbox.zenodo.org/oauth/authorize") is None:
-            return
-
-        zenodo_sandbox = OAuth2Service("sandbox.zenodo.org", os.getenv("https://sandbox.zenodo.org/oauth/authorize"), os.getenv(
-            "ZENODO_OAUTH_ACCESS_TOKEN_URL"), os.getenv("ZENODO_OAUTH_CLIEND_ID"), os.getenv("ZENODO_OAUTH_CLIENT_SECRET"))
-
-        storage = Storage()
-        storage.addService(zenodo_sandbox)
-        # TODO: Add a reallife test
-
-
 
 if __name__ == "__main__":
     unittest.main()

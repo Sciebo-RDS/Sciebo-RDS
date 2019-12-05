@@ -2,6 +2,7 @@ import unittest
 import os
 import json
 import requests
+import logging
 from datetime import datetime, timedelta
 from lib.User import User
 from lib.Service import OAuth2Service
@@ -11,6 +12,8 @@ from Util import initialize_object_from_json
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
+
+logger = logging.getLogger()
 
 
 class test_end_to_end(unittest.TestCase):
@@ -120,7 +123,9 @@ class test_end_to_end(unittest.TestCase):
                 os.getcwd(),
                 os.getenv("CI_JOB_NAME"))).content
             oauthtoken2 = initialize_object_from_json(req)
+            logger.info("Refresh token found in artifacts, use it now.")
         except:
+            logger.warn("No refresh token from previous test run was found, so we collect a new.")
             # initialize like user1 with password
             token2 = Token(owncloud.servicename, "user_refresh")
 
