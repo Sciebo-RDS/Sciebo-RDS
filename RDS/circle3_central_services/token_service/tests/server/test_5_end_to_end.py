@@ -125,7 +125,7 @@ class test_end_to_end(unittest.TestCase):
             oauthtoken2 = initialize_object_from_json(req)
             logger.info("Refresh token found in artifacts, use it now.")
         except:
-            logger.warn("No refresh token from previous test run was found, so we collect a new.")
+            logger.warning("No refresh token from previous test run was found, so we collect a new.")
             # initialize like user1 with password
             token2 = Token(owncloud.servicename, "user_refresh")
 
