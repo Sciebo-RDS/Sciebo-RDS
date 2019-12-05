@@ -1,7 +1,8 @@
 import unittest
 import os
 import json
-import requests, datetime
+import requests
+import datetime
 from lib.User import User
 from lib.Service import OAuth2Service
 from lib.Token import Token, OAuth2Token
@@ -11,12 +12,13 @@ from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 
+
 class test_end_to_end(unittest.TestCase):
     driver = None
 
     def setUp(self):
         if not os.getenv("CI_DEFAULT_BRANCH"):
-            return 
+            return
 
         server = "http://selenium:4444/wd/hub"
         self.driver = webdriver.Remote(command_executor=server,
@@ -35,9 +37,14 @@ class test_end_to_end(unittest.TestCase):
 
         # prepare service
         storage = Storage()
+
+        redirect = "http://sciebords-dev.uni-muenster.de/oauth2/redirect"
         owncloud = OAuth2Service(
             "owncloud-local",
-            "http://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id=nU5N4MPGvGR5gp37r12j5Abb076tYYzST0DyQKqKJ8Ry30adWNbAMoyR30JT7Zaf&redirect_uri=http://localhost:8080/oauth2/redirect",
+            "http://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
+                os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"),
+                redirect
+            ),
             "http://10.14.28.90/owncloud/index.php/apps/oauth2/api/v1/token",
             os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"),
             os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET")
@@ -60,8 +67,10 @@ class test_end_to_end(unittest.TestCase):
 
             if self.driver.current_url.startswith("http://10.14.28.90/owncloud/index.php/login"):
                 # it redirects to login form
-                field_username = self.driver.find_element_by_xpath("//*[@id=\"user\"]")
-                field_password = self.driver.find_element_by_xpath("//*[@id=\"password\"]")
+                field_username = self.driver.find_element_by_xpath(
+                    "//*[@id=\"user\"]")
+                field_password = self.driver.find_element_by_xpath(
+                    "//*[@id=\"password\"]")
                 field_username.clear()
                 field_username.send_keys(user.username)
 
@@ -70,12 +79,13 @@ class test_end_to_end(unittest.TestCase):
                 field_password.send_keys(Keys.RETURN)
 
             btn = self.driver.find_element_by_xpath(
-                "/html/body/div[1]/div/span/form/button")
+                "/html/body/div[1]/div/span/form/button"
+            )
             btn.click()
 
             url = self.driver.current_url
 
-            self.driver.deleteAllCookies() # remove all cookies
+            self.driver.deleteAllCookies()  # remove all cookies
 
             from urllib.parse import urlparse, parse_qs
             code = parse_qs(urlparse(url).query)["code"]
@@ -83,11 +93,13 @@ class test_end_to_end(unittest.TestCase):
             data = {
                 "grant_type": "authorization_code",
                 "code": code,
-                "redirect_uri": "http://localhost:8080/oauth2/redirect"
+                "redirect_uri": redirect
             }
 
-            req = requests.post(owncloud.refresh_url, data=data, auth=(owncloud.client_id, owncloud.client_secret)).json
-            oauthtoken = OAuth2Token(owncloud.servicename, req["access_token"], req["refresh_token"], datetime.datetime.now() + req["expires_in"])
+            req = requests.post(owncloud.refresh_url, data=data, auth=(
+                owncloud.client_id, owncloud.client_secret)).json
+            oauthtoken = OAuth2Token(
+                owncloud.servicename, req["access_token"], req["refresh_token"], datetime.datetime.now() + req["expires_in"])
             return oauthtoken
 
         oauthtoken1 = get_acces_token(user1, token1)
@@ -146,4 +158,3 @@ class test_end_to_end(unittest.TestCase):
         btn = self.driver.find_element_by_xpath(
             "/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[2]/form/button[1]")
         btn.click()
-        
