@@ -57,10 +57,10 @@ class test_end_to_end(unittest.TestCase):
 
             self.driver.get(owncloud.authorize_url)
 
-            if self.driver.getCurrentURL().startswith("http://10.14.28.90/owncloud/index.php/login"):
+            if self.driver.current_url.startswith("http://10.14.28.90/owncloud/index.php/login"):
                 # it redirects to login form
-                field_username = self.driver.find_elements_by_xpath("//*[@id=\"user\"]")
-                field_password = self.driver.find_elements_by_xpath("//*[@id=\"password\"]")
+                field_username = self.driver.find_element_by_xpath("//*[@id=\"user\"]")
+                field_password = self.driver.find_element_by_xpath("//*[@id=\"password\"]")
                 field_username.clear()
                 field_username.send_keys(user.username)
 
@@ -68,11 +68,11 @@ class test_end_to_end(unittest.TestCase):
                 field_password.send_keys(token.access_token)
                 field_password.send_keys(Keys.RETURN)
 
-            btn = self.driver.find_elements_by_xpath(
+            btn = self.driver.find_element_by_xpath(
                 "/html/body/div[1]/div/span/form/button")
             btn.click()
 
-            url = self.driver.getCurrentUrl()
+            url = self.driver.current_url
 
             self.driver.deleteAllCookies() # remove all cookies
 
@@ -141,7 +141,7 @@ class test_end_to_end(unittest.TestCase):
             os.getenv("ZENODO_OAUTH_CLIENT_SECRET")
         )
         self.driver.get(zenodo.authorize_url)
-        btn = self.driver.find_elements_by_xpath(
+        btn = self.driver.find_element_by_xpath(
             "/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[2]/form/button[1]")
         btn.click()
         
