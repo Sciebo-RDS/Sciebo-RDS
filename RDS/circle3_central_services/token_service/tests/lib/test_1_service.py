@@ -110,3 +110,17 @@ class TestService(unittest.TestCase):
         # check if they are equal
         self.assertEqual(
             svc1, svc2, msg=f"Service1: {svc1}\n Service2: {svc2}")
+
+    def test_service_check_raises(self):
+        svc1 = OAuth2Service("MusterService", "http://localhost:5001",
+                             "http://localhost:5001/oauth/refresh", "ABC", "XYZ")
+        
+        from lib.Token import Token, OAuth2Token
+        with self.assertRaises(ValueError):
+            svc1.refresh(Token(svc1.servicename, "ABC"))
+
+        with self.assertRaises(ValueError):
+            svc1.refresh("asd")
+
+        with self.assertRaises(ValueError):
+            svc1.refresh(123)

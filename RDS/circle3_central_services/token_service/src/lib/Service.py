@@ -111,8 +111,12 @@ class OAuth2Service(Service):
         Refresh the given oauth2 token for specified user.
         """
 
+        if not isinstance(token, OAuth2Token):
+            raise ValueError("Token is not an oauthtoken.")
+
         data = {
-            "grant_type": "refresh_token"
+            "grant_type": "refresh_token",
+            "refresh_token": token.refresh_token
         }
 
         req = requests.post(self.refresh_url, data=data,

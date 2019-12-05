@@ -209,7 +209,7 @@ class TestStorageService(unittest.TestCase):
 
         result = None
         with pact:
-            result = self.oauthservice1.refresh(self.token1)
+            result = self.oauthservice1.refresh(self.oauthtoken1)
             self.assertEqual(result, expected,
                              msg=f"\nresult: {result}\nexpected: {expected}")
 
@@ -239,7 +239,7 @@ class TestStorageService(unittest.TestCase):
 
         with self.assertRaises(OAuth2UnsuccessfulResponseError):
             with pact:
-                self.oauthservice1.refresh(self.token1)
+                self.oauthservice1.refresh(self.oauthtoken1)
 
         self.make_bad_request_for_oauth_provider(
             "invalid_request", OAuth2InvalidRequestError)
@@ -270,7 +270,7 @@ class TestStorageService(unittest.TestCase):
 
         with self.assertRaises(error):
             with pact:
-                self.oauthservice1.refresh(self.token1)
+                self.oauthservice1.refresh(self.oauthtoken1)
 
     def test_service_list(self):
         expected = []
