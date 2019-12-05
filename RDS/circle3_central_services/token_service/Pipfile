@@ -8,6 +8,7 @@ pytest = "*"
 pactman = "*"
 pygount = "*"
 pydoc-markdown = "*"
+selenium = "*"
 
 [packages]
 requests = "*"
