@@ -2,7 +2,7 @@ import unittest
 import os
 import json
 import requests
-import datetime
+from datetime import datetime, timedelta
 from lib.User import User
 from lib.Service import OAuth2Service
 from lib.Token import Token, OAuth2Token
@@ -99,7 +99,7 @@ class test_end_to_end(unittest.TestCase):
             req = requests.post(owncloud.refresh_url, data=data, auth=(
                 owncloud.client_id, owncloud.client_secret)).json()
             oauthtoken = OAuth2Token(
-                owncloud.servicename, req["access_token"], req["refresh_token"], datetime.datetime.now() + req["expires_in"])
+                owncloud.servicename, req["access_token"], req["refresh_token"], datetime.now() + timedelta(seconds=req["expires_in"]))
             return oauthtoken
 
         oauthtoken1 = get_acces_token(user1, token1)
