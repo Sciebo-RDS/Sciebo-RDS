@@ -106,7 +106,7 @@ class OAuth2Service(Service):
 
         return u
 
-    def refresh(self, token: OAuth2Token, user: User):
+    def refresh(self, token: OAuth2Token):
         """
         Refresh the given oauth2 token for specified user.
         """
@@ -116,7 +116,7 @@ class OAuth2Service(Service):
         }
 
         req = requests.post(self.refresh_url, data=data,
-                            auth=(user.username, self.client_secret))
+                            auth=(self.client_id, self.client_secret))
 
         if req.status_code == 400:
             data = json.loads(req.text)
@@ -145,10 +145,12 @@ class OAuth2Service(Service):
 
         data = json.loads(req.text)
 
-        if not data["user_id"] == user.username:
+        """ obsolete
+        if not data["user_id"] == self.client_id:
             from .Exceptions.ServiceExceptions import TokenNotValidError
             raise TokenNotValidError(
                 self, token, "User-ID in refresh response not equal to authenticated user.")
+        """
 
         date = datetime.now() + timedelta(seconds=data["expires_in"])
         return OAuth2Token(token.servicename, data["access_token"], data["refresh_token"], date)

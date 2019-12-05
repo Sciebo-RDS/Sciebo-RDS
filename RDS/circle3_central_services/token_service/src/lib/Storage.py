@@ -333,7 +333,7 @@ class Storage():
                 # refresh token
                 from .Exceptions.ServiceExceptions import OAuth2UnsuccessfulResponseError, TokenNotValidError
                 try:
-                    service.refresh(token, user["data"])
+                    service.refresh(token)
                 except TokenNotValidError as e:
                     logging.getLogger().error(e)
                 except OAuth2UnsuccessfulResponseError as e:

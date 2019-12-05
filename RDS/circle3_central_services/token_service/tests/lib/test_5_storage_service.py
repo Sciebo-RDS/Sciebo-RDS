@@ -148,11 +148,11 @@ class TestStorageService(unittest.TestCase):
         }
 
         from base64 import b64encode
-        auth = f"{expected_user.username}:{expected_service.client_secret}"
+        auth = f"{expected_service.client_id}:{expected_service.client_secret}"
         b64 = b64encode(auth.encode("utf-8")).decode("utf-8")
 
         pact.given(
-            "Username can refresh given oauth2token to service", username=expected_user.username, service=expected_service
+            "Username can refresh given oauth2token to service", username=expected_service.client_id, service=expected_service
         ).upon_receiving(
             "A valid refresh token response."
         ).with_request(
@@ -209,10 +209,11 @@ class TestStorageService(unittest.TestCase):
 
         result = None
         with pact:
-            result = self.oauthservice1.refresh(self.token1, self.user1)
+            result = self.oauthservice1.refresh(self.token1)
             self.assertEqual(result, expected,
                              msg=f"\nresult: {result}\nexpected: {expected}")
 
+        """ obsolete
         # this needs to be here, because it counts the given interactions,
         # so if this is missing, you get an error, when you do the following assertion.
         pact.given(
@@ -225,7 +226,8 @@ class TestStorageService(unittest.TestCase):
 
         with self.assertRaises(TokenNotValidError):
             with pact:
-                self.oauthservice1.refresh(self.token1, self.user2)
+                self.oauthservice1.refresh(self.token1)
+        """
 
         pact.given(
             "Username can't refresh given oauth2token", username=self.user1.username
@@ -237,7 +239,7 @@ class TestStorageService(unittest.TestCase):
 
         with self.assertRaises(OAuth2UnsuccessfulResponseError):
             with pact:
-                self.oauthservice1.refresh(self.token1, self.user1)
+                self.oauthservice1.refresh(self.token1)
 
         self.make_bad_request_for_oauth_provider(
             "invalid_request", OAuth2InvalidRequestError)
@@ -268,7 +270,7 @@ class TestStorageService(unittest.TestCase):
 
         with self.assertRaises(error):
             with pact:
-                self.oauthservice1.refresh(self.token1, self.user1)
+                self.oauthservice1.refresh(self.token1)
 
     def test_service_list(self):
         expected = []
