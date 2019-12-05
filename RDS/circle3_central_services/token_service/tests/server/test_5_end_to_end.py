@@ -97,7 +97,7 @@ class test_end_to_end(unittest.TestCase):
             }
 
             req = requests.post(owncloud.refresh_url, data=data, auth=(
-                owncloud.client_id, owncloud.client_secret)).json
+                owncloud.client_id, owncloud.client_secret)).json()
             oauthtoken = OAuth2Token(
                 owncloud.servicename, req["access_token"], req["refresh_token"], datetime.datetime.now() + req["expires_in"])
             return oauthtoken
