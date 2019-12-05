@@ -15,13 +15,11 @@ logging.getLogger('').handlers = []
 logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
 
 
-def bootstrap(name='MicroService'):
+def bootstrap(name='MicroService', *args, **kwargs):
     list_openapi = Util.load_oai(
         os.getenv("OPENAPI_FILEPATH", "central-service_token-storage.yml"))
 
-    # for simpler testing usage
-    app = App(name, use_default_error=True) if __name__ is not "__main__" else App(
-        name, all=True)
+    app = App(name, *args, **kwargs)
 
     for oai in list_openapi:
         app.add_api(oai, resolver=MultipleResourceResolver(
@@ -34,12 +32,12 @@ def bootstrap(name='MicroService'):
 
 
 if __name__ == "__main__":
-    app = bootstrap("CentralServiceTokenStorage")
+    app = bootstrap("CentralServiceTokenStorage", all=True)
 
     # add refresh func for refresh_tokens to scheduler and starts (https://stackoverflow.com/a/52068807)
-    app.scheduler.add_job(
-        ServerUtil.storage.refresh_services, 'interval', minutes=20)
     app.scheduler.start()
+    app.scheduler.add_job("refresh_service",
+                          ServerUtil.storage.refresh_services, trigger='interval', minutes=20)
 
     # set the WSGI application callable to allow using uWSGI:
     # uwsgi --http :8080 -w app
