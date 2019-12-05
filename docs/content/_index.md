@@ -6,4 +6,4 @@ The project sciebo RDS (Research Data Services) has set itself the goal of bring
 
 Sciebo RDS is funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) – project number 403637381.
 
-[You can find more about this in the project description.](/page/about/)
+[You can find out more about this in the project description.](/page/about/)
