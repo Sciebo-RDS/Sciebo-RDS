@@ -80,7 +80,7 @@ This service enables the oauth2 workflow.
 
 #### refresh
 ```python
-OAuth2Service.refresh(self, token:lib.Token.OAuth2Token, user:lib.User.User)
+OAuth2Service.refresh(self, token:lib.Token.OAuth2Token)
 ```
 
 Refresh the given oauth2 token for specified user.
@@ -106,7 +106,7 @@ Returns an oauthservice object from a json string.
 Storage(self)
 ```
 
-Represents a Safe for Tokens
+Represents a Safe for Tokens.
 
 #### getUsers
 ```python
@@ -126,17 +126,21 @@ Raise a `UserNotExistsError`, if user not found.
 
 #### getTokens
 ```python
-Storage.getTokens(self)
+Storage.getTokens(self, user_id:Union[str, lib.User.User]=None)
 ```
 
 Returns a list of all managed tokens.
 
+If user_id (String or User) was given, then the tokens are filtered to this user.
+
+Raise a UserNotExistsError, if the given user not exists.
+
 #### getToken
 ```python
-Storage.getToken(self, user_id:str, token_id:int=None)
+Storage.getToken(self, user_id:Union[str, lib.User.User], token_id:int)
 ```
 
-Returns the token from user with user_id and token with token_id.
+Returns only the token with token_id from user_id (String or User).
 
 Raise `ValueError` if token_id not found and `UserNotExistsError` if user_id was not found.
 
@@ -256,10 +260,12 @@ Returns True, if one or more Tokens were found in the storage to refresh.
 
 #### refresh_services
 ```python
-Storage.refresh_services(self, services:list)
+Storage.refresh_services(self, services:list=None)
 ```
 
 Refresh all tokens, which corresponds to given list of services.
+
+If no services were given, it will be used the stored one.
 
 Returns True, if one or more Tokens were found in the storage to refresh.
 
