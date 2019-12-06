@@ -72,11 +72,11 @@
         },
         "connexion-plus": {
             "hashes": [
-                "sha256:5b1f5d67be65292e7a042fd7c8367dcded2c8d358f5a3693e5f9f56ac9124da4",
-                "sha256:9fd85ab118995219a944ae4d483c155d1e6b534407a00f962f7f25aa0f2ef7e9"
+                "sha256:b574bf913be8ef9c375583747f39ddbb2585c6efd9bcdc7057ea1cb900ab65eb",
+                "sha256:f086c3b4844206bdf2cf242eab81a22900788f5053cc73706a370c899da94334"
             ],
             "index": "pypi",
-            "version": "==0.29"
+            "version": "==0.31"
         },
         "contextlib2": {
             "hashes": [
@@ -267,10 +267,10 @@
         },
         "more-itertools": {
             "hashes": [
-                "sha256:53ff73f186307d9c8ef17a9600309154a6ae27f25579e80af4db8f047ba14bc2",
-                "sha256:a0ea684c39bc4315ba7aae406596ef191fd84f873d2d2751f84d64e81a7a2d45"
+                "sha256:57cc732766f26ddc424a4ed76d837677777a03f557c7ebeecb7e2be2888ce702",
+                "sha256:a293dbdad9d4d22e1e70832b8dcab72aac20805f0fa0575aec27cab8841e09ff"
             ],
-            "version": "==8.0.0"
+            "version": "==8.0.1"
         },
         "openapi-spec-validator": {
             "hashes": [
@@ -546,10 +546,10 @@
         },
         "more-itertools": {
             "hashes": [
-                "sha256:53ff73f186307d9c8ef17a9600309154a6ae27f25579e80af4db8f047ba14bc2",
-                "sha256:a0ea684c39bc4315ba7aae406596ef191fd84f873d2d2751f84d64e81a7a2d45"
+                "sha256:57cc732766f26ddc424a4ed76d837677777a03f557c7ebeecb7e2be2888ce702",
+                "sha256:a293dbdad9d4d22e1e70832b8dcab72aac20805f0fa0575aec27cab8841e09ff"
             ],
-            "version": "==8.0.0"
+            "version": "==8.0.1"
         },
         "packaging": {
             "hashes": [

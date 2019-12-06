@@ -35,7 +35,6 @@ if __name__ == "__main__":
     app = bootstrap("CentralServiceTokenStorage", all=True)
 
     # add refresh func for refresh_tokens to scheduler and starts (https://stackoverflow.com/a/52068807)
-    app.scheduler.start()
     app.scheduler.add_job("refresh_service",
                           ServerUtil.storage.refresh_services, trigger='interval', minutes=20)
 

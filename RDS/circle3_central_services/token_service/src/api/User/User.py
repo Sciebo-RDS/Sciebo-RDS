@@ -1,27 +1,41 @@
-from flask import jsonify, request
+from flask import jsonify, request, abort
+from werkzeug.exceptions import HTTPException
 import Util
 from lib.User import User
 import logging
 
+
 def index():
-    return jsonify(Util.storage.getUsers())
+    users = Util.storage.getUsers()
+    data = {
+        "users": users,
+        "length": len(users)
+    }
+    return jsonify(data)
 
 
 def get(user_id):
     try:
         return jsonify(Util.storage.getUser(user_id))
     except:
-        return "", 404
+        abort(404, description=f"User {user_id} not found")
+
 
 def post():
     user = User.from_json(request.json)
     Util.storage.addUser(user)
-    return "", 200
+    data = {
+        "success": True
+    }
+    return jsonify(data)
+
 
 def delete(user_id):
     try:
         Util.storage.removeUser(User(user_id))
-        return "", 200
+        data = {
+            "success": True
+        }
+        return jsonify(data)
     except:
-        return "", 404
-    
+        abort(404, description="User not found")
