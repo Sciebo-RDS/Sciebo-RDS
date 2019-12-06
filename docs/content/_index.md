@@ -1,4 +1,4 @@
-Do you prefer the German version? You can switch the language anytime via the menu in the upper right corner or just [click here](/de).
+Bevorzugen Sie die deutsche Version? [Bitte hier klicken.](/de).
 
 ## TL;DR
 
