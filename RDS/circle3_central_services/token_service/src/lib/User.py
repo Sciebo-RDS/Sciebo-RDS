@@ -67,3 +67,11 @@ class User():
                 return cls(data["username"])
 
         raise ValueError("not a valid user object.")
+
+    @classmethod
+    def from_dict(cls, userDict: dict):
+        """
+        Returns an user object from a dict.
+        """
+        return User(userDict["username"])
+
