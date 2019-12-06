@@ -247,12 +247,12 @@ class TestTokenService(unittest.TestCase):
             self.assertEqual(v, expected["list"][k], msg="{} {}".format(
                 v, expected["list"][k]))
 
-        # should response with http code not equal to 200
+        # should response with http code not equal to 200, because user has already a token for this service
         response = self.client.post(f"/user/{self.user1.username}/token",
                                     data=json.dumps(self.oauthtoken1.to_dict()), content_type='application/json')
         self.assertNotEqual(response.status_code, 200)
 
-        # add a oauthtoken to user
+        # add an oauthtoken to user
         expected = {
             "length": 2,
             "list": [self.token1, self.token2]
@@ -286,23 +286,6 @@ class TestTokenService(unittest.TestCase):
         for k, v in enumerate(self.get("/token")):
             self.assertEqual(v, expected["list"][k], msg="{} {}".format(
                 v, expected["list"][k]))
-
-    """def test_home_status_code(self):
-        expected = []
-
-        pact.given(
-            'UserA exists and is not an administrator'
-        ).upon_receiving(
-            'a request for UserA'
-        ).with_request(
-            'GET', '/api/deposit/depositions'
-        ) .will_respond_with(200, body=expected)
-
-        result = None
-        with pact:
-            result = self.client.get("/c2/deposition")
-        
-        self.assertEqual(result.json, expected)"""
 
 
 if __name__ == '__main__':
