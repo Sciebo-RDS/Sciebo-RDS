@@ -42,7 +42,7 @@ class User():
             "type": self.__class__.__name__,
             "data": self.to_dict()
         }
-        return json.dumps(data)
+        return data
 
     def to_dict(self):
         """

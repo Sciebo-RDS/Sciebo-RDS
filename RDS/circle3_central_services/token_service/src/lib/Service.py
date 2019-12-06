@@ -48,7 +48,7 @@ class Service():
             "type": self.__class__.__name__,
             "data": self.to_dict()
         }
-        return json.dumps(data)
+        return data
 
     def to_dict(self):
         """
@@ -220,12 +220,11 @@ class OAuth2Service(Service):
         """
 
         data = super(OAuth2Service, self).to_json()
-        data = json.loads(data)
 
         data["type"] = self.__class__.__name__
         data["data"].update(self.to_dict())
 
-        return json.dumps(data)
+        return data
 
     def to_dict(self):
         """

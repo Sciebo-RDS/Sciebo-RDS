@@ -23,7 +23,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
 
     for oai in list_openapi:
         app.add_api(oai, resolver=MultipleResourceResolver(
-            'api', collection_endpoint_name="index"))
+            'api', collection_endpoint_name="index"), validate_responses=True)
 
     # init token storage
     ServerUtil.storage = Storage()

@@ -40,7 +40,7 @@ class Test_Util(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             jsonStr = json.dumps(self.token1)
-            data = json.loads(json.loads(jsonStr))
+            data = json.loads(jsonStr)
             del data["type"]
             Util.load_class_from_json(json.dumps(data))
 

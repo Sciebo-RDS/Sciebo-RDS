@@ -112,7 +112,7 @@ class TestTokenService(unittest.TestCase):
         data_result = []
         data = self.client.get(endpoint).json
         for d in data["list"]:
-            data_result.append(Util.initialize_object_from_json(d))
+            data_result.append(Util.initialize_object_from_json(json.dumps(d)))
 
         return data_result
 
@@ -191,14 +191,18 @@ class TestTokenService(unittest.TestCase):
 
         self.assertEqual(result.status_code, 200, msg=result.json)
         self.assertEqual(result.json, {"success": True})
-        self.assertEqual(self.client.get("/user").json, expected)
+
+        for k, v in enumerate(self.get("/user")):
+            self.assertEqual(v, expected["list"][k], msg="{} {}".format(
+                v, expected["list"][k]))
 
         req = self.client.get(f"/user/{self.user1.username}")
         self.assertEqual(req.status_code, 200)
 
         # get the added user
-        self.assertEqual(self.client.get(
-            f"/user/{self.user1.username}").json, self.user1)
+        d = self.client.get(
+            f"/user/{self.user1.username}")
+        self.assertEqual(Util.initialize_object_from_json(json.dumps(d.get_data(as_text=True))), self.user1)
 
         # add a new user and check
         expected = {
@@ -208,10 +212,14 @@ class TestTokenService(unittest.TestCase):
 
         self.client.post("/user", data=json.dumps(self.user2.to_dict()),
                          content_type='application/json')
-        self.assertEqual(self.client.get("/user").json, expected)
+        for k, v in enumerate(self.get("/user")):
+            self.assertEqual(v, expected["list"][k], msg="{} {}".format(
+                v, expected["list"][k]))
+
         # the first user should be there
-        self.assertEqual(self.client.get(
-            f"/user/{self.user1.username}").json, self.user1)
+        d = self.client.get(
+            f"/user/{self.user1.username}")
+        self.assertEqual(Util.initialize_object_from_json(json.dumps(d.get_data(as_text=True))), self.user1)
 
         # remove a user
         expected = {
@@ -221,7 +229,10 @@ class TestTokenService(unittest.TestCase):
 
         result = self.client.delete(f"/user/{self.user1.username}")
         self.assertEqual(result.status_code, 200)
-        self.assertEqual(self.client.get("/user").json, expected)
+        for k, v in enumerate(self.get("/user")):
+            self.assertEqual(v, expected["list"][k], msg="{} {}".format(
+                v, expected["list"][k]))
+
         self.assertEqual(self.client.get(
             f"/user/{self.user1.username}").status_code, 404)
 
@@ -313,7 +324,7 @@ class TestTokenService(unittest.TestCase):
         result = self.client.get(f"/user/{self.user1.username}/token/{index}")
         self.assertEqual(result.status_code, 200,
                          msg=f"token id: {index} - {result.json}")
-        token = Util.initialize_object_from_json(result.json)
+        token = Util.initialize_object_from_json(result.get_data(as_text=True))
         self.assertEqual(token, self.token1)
 
         expected = {
