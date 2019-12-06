@@ -67,8 +67,8 @@ def internal_load_class(data: dict):
         except Exception:
             raise
 
-        raise ValueError("given parameter not a valid class.")
-    raise ValueError("Type not specified in parameter.")
+        raise ValueError("given parameter is not a valid class.")
+    raise ValueError("Type not specified in dict.")
 
 
 def try_function_on_dict(func: list):
