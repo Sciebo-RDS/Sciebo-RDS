@@ -1,9 +1,11 @@
 from lib.Storage import Storage
-    
-import importlib, json
+
+import importlib
+import json
 
 # singleton storage
 storage = None
+
 
 def load_class_from_json(jsonStr: str):
     """
@@ -15,16 +17,19 @@ def load_class_from_json(jsonStr: str):
 
     data = jsonStr
 
-    while not isinstance(data, dict): # FIX for json bug: Sometimes it returns a string.
+    # FIX for json bug: Sometimes it returns a string.
+    while not isinstance(data, dict):
         data = json.loads(data)
 
     return internal_load_class(data)
+
 
 def load_class_from_dict(data: dict):
     """
     Returns the class of the given dict.
     """
     return internal_load_class(data)
+
 
 def initialize_object_from_json(jsonStr: str):
     """
@@ -33,6 +38,7 @@ def initialize_object_from_json(jsonStr: str):
     This is the easiest way to reverse the __json__ method for objects from our lib folder.
     """
     return load_class_from_json(jsonStr).from_json(jsonStr)
+
 
 def internal_load_class(data: dict):
     """
@@ -57,9 +63,62 @@ def internal_load_class(data: dict):
 
             if klass is not None:
                 return klass
-                
+
         except Exception:
             raise
 
         raise ValueError("given parameter not a valid class.")
     raise ValueError("Type not specified in parameter.")
+
+
+def try_function_on_dict(func: list):
+    """
+    This method trys the given functions on the given dictionary.
+
+    Main purpose of this is the initialization of multiple Classes from json dicts.
+
+    Usage:
+    ```python
+    func_list = [func1, func2, func3]
+    x = Util.try_function_on_dict(func_list)
+    object = x(objDict)
+    ```
+
+    equals to:
+    ```python
+    try:
+        try:
+            func1(objDict)
+        except:
+            pass
+        try:
+            func2(objDict)
+        except:
+            pass
+        try:
+            func3(objDict)
+        except:
+            pass
+    except:
+        raise Exception(...)
+    ```
+
+    Raise an Exception with all raised exception, if no function returns a value for the given jsonDict.
+    """
+
+    def inner_func(jsonDict: dict):
+        nonlocal func
+
+        exp_list = []
+
+        for f in func:
+            try:
+                return f(jsonDict)
+            except Exception as e:
+                exp_list.append(e)
+                continue
+
+        raise Exception("The given jsonDict raise in all functions an exception: {}".format(
+            "\n".join(exp_list)))
+
+    return inner_func

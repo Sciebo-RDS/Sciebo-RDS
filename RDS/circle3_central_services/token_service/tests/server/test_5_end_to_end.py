@@ -15,28 +15,20 @@ from selenium.webdriver.common.keys import Keys
 
 logger = logging.getLogger()
 
-
+@unittest.skipUnless(os.getenv("CI_DEFAULT_BRANCH") is not None, "This should not be executed locally because we use selenium and firefox webdriver.")
 class test_end_to_end(unittest.TestCase):
     driver = None
 
     def setUp(self):
-        if not os.getenv("CI_DEFAULT_BRANCH"):
-            return
-
         server = "http://selenium:4444/wd/hub"
         self.driver = webdriver.Remote(command_executor=server,
                                        desired_capabilities=DesiredCapabilities.FIREFOX)
         self.driver.implicitly_wait(5)
 
     def tearDown(self):
-        if self.driver is None:
-            return
-
         self.driver.quit()
 
     def test_owncloud(self):
-        if self.driver is None:
-            return
 
         # prepare service
         storage = Storage()
@@ -147,6 +139,8 @@ class test_end_to_end(unittest.TestCase):
         with open("user_refresh.token", "w") as f:
             f.write(json.dumps(checkToken))
 
+    # TODO implement me
+    @unittest.skip("Currently not implemented")
     def test_zenodo(self):
         return
         if self.driver is None:

@@ -46,11 +46,16 @@ class Service():
 
         data = {
             "type": self.__class__.__name__,
-            "data": {
-                "servicename": self._servicename
-            }
+            "data": self.to_dict()
         }
         return json.dumps(data)
+
+    def to_dict(self):
+        data = {
+            "servicename": self._servicename
+        }
+
+        return data
 
     @classmethod
     def from_json(cls, serviceStr: str):
@@ -68,6 +73,17 @@ class Service():
                 return Service(data["servicename"])
 
         raise ValueError("not a valid service json string.")
+
+    @classmethod
+    def from_dict(cls, serviceDict: dict):
+        """
+        Returns an service object from a dict string.
+        """
+
+        try:
+            return Service(serviceDict["servicename"])
+        except:
+            raise ValueError("not a valid service dict")
 
 
 class OAuth2Service(Service):
@@ -204,12 +220,18 @@ class OAuth2Service(Service):
         data = json.loads(data)
 
         data["type"] = self.__class__.__name__
-        data["data"]["authorize_url"] = self.authorize_url
-        data["data"]["refresh_url"] = self.refresh_url
-        data["data"]["client_id"] = self._client_id
-        data["data"]["client_secret"] = self._client_secret
+        data["data"].update(self.to_dict())
 
         return json.dumps(data)
+
+    def to_dict(self):
+        data = super(OAuth2Service, self).to_dict()
+        data["authorize_url"] = self.authorize_url
+        data["refresh_url"] = self.refresh_url
+        data["client_id"] = self._client_id
+        data["client_secret"] = self._client_secret
+
+        return data
 
     @classmethod
     def from_json(cls, serviceStr: str):
@@ -229,3 +251,12 @@ class OAuth2Service(Service):
                 return cls.from_service(service, data["authorize_url"], data["refresh_url"], data["client_id"], data["client_secret"])
 
         raise ValueError("not a valid service json string.")
+
+    @classmethod
+    def from_dict(cls, serviceDict: dict):
+        service = super(OAuth2Service, cls).from_dict(serviceDict)
+
+        try:
+            return OAuth2Service.from_service(service, serviceDict["authorize_url"], serviceDict["refresh_url"], serviceDict["client_id"], serviceDict["client_secret"])
+        except:
+            raise ValueError("not a valid oauthservice dict.")

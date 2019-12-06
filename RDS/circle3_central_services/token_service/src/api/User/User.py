@@ -8,7 +8,7 @@ import logging
 def index():
     users = Util.storage.getUsers()
     data = {
-        "users": users,
+        "list": users,
         "length": len(users)
     }
     return jsonify(data)
@@ -22,8 +22,15 @@ def get(user_id):
 
 
 def post():
-    user = User.from_json(request.json)
+    user = None
+    try:
+        req = request.json
+        user = User(req["username"])
+    except:
+        abort(400, description=f"Request not give a valid user object: {request.json}")
+    
     Util.storage.addUser(user)
+
     data = {
         "success": True
     }

@@ -40,11 +40,16 @@ class User():
 
         data = {
             "type": self.__class__.__name__,
-            "data": {
-                "username": self._username
-            }
+            "data": self.to_dict()
         }
         return json.dumps(data)
+
+    def to_dict(self):
+        data = {
+            "username": self._username
+        }
+
+        return data
 
     @classmethod
     def from_json(cls, user: str):

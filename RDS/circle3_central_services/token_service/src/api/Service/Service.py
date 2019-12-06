@@ -5,8 +5,16 @@ from lib.Service import Service, OAuth2Service
 from lib.Exceptions.ServiceExceptions import ServiceExistsAlreadyError
 from werkzeug.exceptions import abort
 
+
+init_object = Util.try_function_on_dict([OAuth2Service.from_dict, Service.from_dict, Util.initialize_object_from_json])
+
 def index():
-    return jsonify(Util.storage.getServices())
+    services = Util.storage.getServices()
+    data = {
+        "length": len(services),
+        "list": services
+    }
+    return jsonify(data)
 
 
 def get(servicename):
@@ -18,15 +26,15 @@ def get(servicename):
     
 
 def post():
-    svc = Util.initialize_object_from_json(request.json)
+    svc = init_object(request.json)
 
     try:
         Util.storage.addService(svc)
 
     except ServiceExistsAlreadyError:
         Util.storage.addService(svc, Force=True)
-        return '', 204
+        return jsonify({"success": True}), 204
     except:
         raise
 
-    return "", 200
+    return jsonify({"success": True})

@@ -48,12 +48,17 @@ class Token():
 
         data = {
             "type": self.__class__.__name__,
-            "data": {
-                "servicename": self._servicename,
-                "access_token": self._access_token
-            }
+            "data": self.to_dict()
         }
         data = json.dumps(data)
+        return data
+
+    def to_dict(self):
+        data = {
+            "servicename": self._servicename,
+            "access_token": self._access_token
+        }
+
         return data
 
     @classmethod
@@ -63,7 +68,7 @@ class Token():
         """
 
         data = tokenStr
-        while type(data) is not dict: # FIX for bug: JSON.loads sometimes returns a string
+        while type(data) is not dict:  # FIX for bug: JSON.loads sometimes returns a string
             data = json.loads(data)
 
         if "type" in data and str(data["type"]).endswith("Token") and "data" in data:
@@ -72,6 +77,14 @@ class Token():
                 return Token(data["servicename"], data["access_token"])
 
         raise ValueError("not a valid token json string.")
+
+    @classmethod
+    def from_dict(cls, tokenDict: dict):
+        """
+        Returns a token object from a dict.
+        """
+
+        return Token(tokenDict["servicename"], tokenDict["access_token"])
 
 
 class OAuth2Token(Token):
@@ -136,10 +149,16 @@ class OAuth2Token(Token):
         data = json.loads(data)
 
         data["type"] = self.__class__.__name__
-        data["data"]["refresh_token"] = self._refresh_token
-        data["data"]["expiration_date"] = str(self._expiration_date)
+        data["data"].update(self.to_dict())
 
         return json.dumps(data)
+
+    def to_dict(self):
+        data = super(OAuth2Token, self).to_dict()
+        data["refresh_token"] = self._refresh_token
+        data["expiration_date"] = str(self._expiration_date)
+
+        return data
 
     @classmethod
     def from_json(cls, tokenStr: str):
@@ -148,7 +167,7 @@ class OAuth2Token(Token):
         """
 
         data = tokenStr
-        while type(data) is not dict: # FIX for bug: JSON.loads sometimes returns a string
+        while type(data) is not dict:  # FIX for bug: JSON.loads sometimes returns a string
             data = json.loads(data)
 
         token = super(OAuth2Token, cls).from_json(tokenStr)
@@ -159,3 +178,12 @@ class OAuth2Token(Token):
                 return cls.from_token(token, data["refresh_token"], data["expiration_date"])
 
         raise ValueError("not a valid token json string.")
+
+    @classmethod
+    def from_dict(cls, tokenDict: dict):
+        """
+        Returns an oauthtoken object from dict.
+        """
+        token = super(OAuth2Token, cls).from_dict(tokenDict)
+
+        return OAuth2Token.from_token(token, tokenDict["refresh_token"], tokenDict["expiration_date"])
