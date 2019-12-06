@@ -45,6 +45,9 @@ class User():
         return json.dumps(data)
 
     def to_dict(self):
+        """
+        Returns this object as a dict.
+        """
         data = {
             "username": self._username
         }
