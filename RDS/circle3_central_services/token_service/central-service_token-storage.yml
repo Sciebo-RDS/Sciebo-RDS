@@ -27,7 +27,7 @@ paths:
                   list:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Token'
+                      $ref: '#/components/schemas/JSONToken'
       description: Returns an unfiltered list of all tokens.
       tags:
         - Token
@@ -55,7 +55,7 @@ paths:
                 user:
                   $ref: '#/components/schemas/User'
                 token:
-                  $ref: '#/components/schemas/Token'
+                  $ref: '#/components/schemas/JSONToken'
         description: ''
       tags:
         - token
@@ -77,7 +77,7 @@ paths:
                   list:
                     type: array
                     items:
-                      $ref: '#/components/schemas/User'
+                      $ref: '#/components/schemas/JSONUser'
       description: Returns informations from main oauth2-provider
     parameters: []
     post:
@@ -119,7 +119,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/JSONUser'
         '404':
           description: Not Found
       description: Returns the user with specified id.
@@ -143,7 +143,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'
+                $ref: '#/components/schemas/JSONToken'
         '404':
           description: Not Found
       description: Returns the specified token.
@@ -189,7 +189,7 @@ paths:
                   length:
                     type: integer
                   list:
-                    $ref: '#/components/schemas/Token'
+                    $ref: '#/components/schemas/JSONToken'
       description: Returns all tokens for the specified user.
     post:
       summary: Add a token
@@ -224,7 +224,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Service'
+                $ref: '#/components/schemas/JSONService'
       description: Returns the specified service.
     parameters:
       - schema:
@@ -300,7 +300,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'
+                $ref: '#/components/schemas/JSONToken'
         '404':
           description: Not Found
       operationId: ''
@@ -376,6 +376,37 @@ components:
           type: string
         client_secret:
           type: string
+    JSONToken:
+      title: JSONToken
+      type: object
+      properties:
+        type:
+          type: string
+        data:
+          anyOf:
+            - $ref: '#/components/schemas/Token'
+            - $ref: '#/components/schemas/OAuthToken'
+    JSONUser:
+      title: JSONUser
+      type: object
+      properties:
+        data:
+          anyOf:
+            - $ref: '#/components/schemas/User'
+        type:
+          type: string
+    OAuthToken:
+      title: OAuthToken
+      type: object
+      properties:
+        servicename:
+          type: string
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+        expiration_date:
+          type: integer
 tags:
   - name: User
     description: All user related objects.
