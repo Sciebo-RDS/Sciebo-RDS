@@ -39,7 +39,7 @@ class Service():
     def __str__(self):
         return f"Servicename: {self.servicename}"
 
-    def __json__(self):
+    def to_json(self):
         """
         Returns this object as a json string.
         """
@@ -51,6 +51,9 @@ class Service():
         return json.dumps(data)
 
     def to_dict(self):
+        """
+        Returns this object as a dict.
+        """
         data = {
             "servicename": self._servicename
         }
@@ -211,12 +214,12 @@ class OAuth2Service(Service):
     def __str__(self):
         return f"{super(OAuth2Service, self).__str__()}, RefreshURL: {self.refresh_url}, AuthorizeURL: {self.authorize_url}"
 
-    def __json__(self):
+    def to_json(self):
         """
         Returns this object as a json string.
         """
 
-        data = super(OAuth2Service, self).__json__()
+        data = super(OAuth2Service, self).to_json()
         data = json.loads(data)
 
         data["type"] = self.__class__.__name__
@@ -225,6 +228,9 @@ class OAuth2Service(Service):
         return json.dumps(data)
 
     def to_dict(self):
+        """
+        Returns this object as a dict.
+        """
         data = super(OAuth2Service, self).to_dict()
         data["authorize_url"] = self.authorize_url
         data["refresh_url"] = self.refresh_url
@@ -254,6 +260,11 @@ class OAuth2Service(Service):
 
     @classmethod
     def from_dict(cls, serviceDict: dict):
+        """
+        Returns an oauthservice object from a dict.
+        """
+
+
         service = super(OAuth2Service, cls).from_dict(serviceDict)
 
         try:

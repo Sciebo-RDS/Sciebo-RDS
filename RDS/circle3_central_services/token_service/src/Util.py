@@ -35,7 +35,7 @@ def initialize_object_from_json(jsonStr: str):
     """
     Initialize and returns an object of the given json string.
 
-    This is the easiest way to reverse the __json__ method for objects from our lib folder.
+    This is the easiest way to reverse the to_json method for objects from our lib folder.
     """
     return load_class_from_json(jsonStr).from_json(jsonStr)
 

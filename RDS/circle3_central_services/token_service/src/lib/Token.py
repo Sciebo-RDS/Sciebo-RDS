@@ -41,9 +41,9 @@ class Token():
             self.servicename == other.servicename
         )
 
-    def __json__(self):
+    def to_json(self):
         """
-        Returns this object as a dict.
+        Returns this object as a json string.
         """
 
         data = {
@@ -54,6 +54,9 @@ class Token():
         return data
 
     def to_dict(self):
+        """
+        Returns this object as a dict.
+        """
         data = {
             "servicename": self._servicename,
             "access_token": self._access_token
@@ -140,12 +143,12 @@ class OAuth2Token(Token):
             super(OAuth2Token, self).__eq__(obj)
         )
 
-    def __json__(self):
+    def to_json(self):
         """
         Returns this object as a json string.
         """
 
-        data = super(OAuth2Token, self).__json__()
+        data = super(OAuth2Token, self).to_json()
         data = json.loads(data)
 
         data["type"] = self.__class__.__name__
@@ -154,6 +157,9 @@ class OAuth2Token(Token):
         return json.dumps(data)
 
     def to_dict(self):
+        """
+        Returns this object as a dict.
+        """
         data = super(OAuth2Token, self).to_dict()
         data["refresh_token"] = self._refresh_token
         data["expiration_date"] = str(self._expiration_date)

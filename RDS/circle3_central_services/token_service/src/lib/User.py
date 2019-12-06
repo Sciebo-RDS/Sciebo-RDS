@@ -33,7 +33,7 @@ class User():
             self.username == obj.username
         )
 
-    def __json__(self):
+    def to_json(self):
         """
         Returns this object as a json string.
         """

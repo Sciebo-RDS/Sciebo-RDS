@@ -9,6 +9,13 @@ User(self, username:str)
 
 Represents a user, which can access services via tokens.
 
+#### to_json
+```python
+User.to_json(self)
+```
+
+Returns this object as a json string.
+
 #### from_json
 ```python
 User.from_json(user:str)
@@ -25,12 +32,33 @@ Token(self, servicename:str, access_token:str)
 
 This token represents a simple password.
 
+#### to_json
+```python
+Token.to_json(self)
+```
+
+Returns this object as a dict.
+
+#### to_dict
+```python
+Token.to_dict(self)
+```
+
+Returns this object as a dict.
+
 #### from_json
 ```python
 Token.from_json(tokenStr:str)
 ```
 
 Returns a token object from a json string.
+
+#### from_dict
+```python
+Token.from_dict(tokenDict:dict)
+```
+
+Returns a token object from a dict.
 
 ### OAuth2Token
 ```python
@@ -46,12 +74,33 @@ OAuth2Token.from_token(token:lib.Token.Token, refresh_token:str='', expiration_d
 
 Convert the given Token into an oauth2token.
 
+#### to_json
+```python
+OAuth2Token.to_json(self)
+```
+
+Returns this object as a json string.
+
+#### to_dict
+```python
+OAuth2Token.to_dict(self)
+```
+
+Returns this object as a dict.
+
 #### from_json
 ```python
 OAuth2Token.from_json(tokenStr:str)
 ```
 
 Returns an oauthtoken object from a json string.
+
+#### from_dict
+```python
+OAuth2Token.from_dict(tokenDict:dict)
+```
+
+Returns an oauthtoken object from dict.
 
 ## lib.Service
 
@@ -63,12 +112,33 @@ Service(self, servicename:str)
 Represents a service, which can be used in RDS.
 This service only allows username:password authentication.
 
+#### to_json
+```python
+Service.to_json(self)
+```
+
+Returns this object as a json string.
+
+#### to_dict
+```python
+Service.to_dict(self)
+```
+
+Returns this object as a dict.
+
 #### from_json
 ```python
 Service.from_json(serviceStr:str)
 ```
 
 Returns an service object from a json string.
+
+#### from_dict
+```python
+Service.from_dict(serviceDict:dict)
+```
+
+Returns an service object from a dict string.
 
 ### OAuth2Service
 ```python
@@ -92,12 +162,33 @@ OAuth2Service.from_service(service:lib.Service.Service, authorize_url:str, refre
 
 Converts the given Service to an oauth2service.
 
+#### to_json
+```python
+OAuth2Service.to_json(self)
+```
+
+Returns this object as a json string.
+
+#### to_dict
+```python
+OAuth2Service.to_dict(self)
+```
+
+Returns this object as a dict.
+
 #### from_json
 ```python
 OAuth2Service.from_json(serviceStr:str)
 ```
 
 Returns an oauthservice object from a json string.
+
+#### from_dict
+```python
+OAuth2Service.from_dict(serviceDict:dict)
+```
+
+Returns an oauthservice object from a dict.
 
 ## lib.Storage
 
