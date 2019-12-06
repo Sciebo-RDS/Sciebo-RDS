@@ -73,7 +73,7 @@ def internal_load_class(data: dict):
 
 def try_function_on_dict(func: list):
     """
-    This method trys the given functions on the given dictionary.
+    This method trys the given functions on the given dictionary. Returns the first function, which returns a value for given dict.
 
     Main purpose of this is the initialization of multiple Classes from json dicts.
 
@@ -103,7 +103,7 @@ def try_function_on_dict(func: list):
         raise Exception(...)
     ```
 
-    Raise an Exception with all raised exception, if no function returns a value for the given jsonDict.
+    Raise an `Exception` with all raised exception as strings, if no function returns a value for the given jsonDict.
     """
 
     def inner_func(jsonDict: dict):

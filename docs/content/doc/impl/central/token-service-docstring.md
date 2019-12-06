@@ -37,7 +37,7 @@ This token represents a simple password.
 Token.to_json(self)
 ```
 
-Returns this object as a dict.
+Returns this object as a json string.
 
 #### to_dict
 ```python
@@ -381,4 +381,73 @@ Tries to find the given servicename in the list of services.
 Returns the index of the *first* found service with equal servicename.
 
 Otherwise raise an ValueError.
+
+## Util
+
+### load_class_from_json
+```python
+load_class_from_json(jsonStr:str)
+```
+
+Returns the class of the given json string.
+
+### load_class_from_dict
+```python
+load_class_from_dict(data:dict)
+```
+
+Returns the class of the given dict.
+
+### initialize_object_from_json
+```python
+initialize_object_from_json(jsonStr:str)
+```
+
+Initialize and returns an object of the given json string.
+
+This is the easiest way to reverse the to_json method for objects from our lib folder.
+
+### internal_load_class
+```python
+internal_load_class(data:dict)
+```
+
+For internal use only.
+
+### try_function_on_dict
+```python
+try_function_on_dict(func:list)
+```
+
+This method trys the given functions on the given dictionary. Returns the first function, which returns a value for given dict.
+
+Main purpose of this is the initialization of multiple Classes from json dicts.
+
+Usage:
+```python
+func_list = [func1, func2, func3]
+x = Util.try_function_on_dict(func_list)
+object = x(objDict)
+```
+
+equals to:
+```python
+try:
+    try:
+        func1(objDict)
+    except:
+        pass
+    try:
+        func2(objDict)
+    except:
+        pass
+    try:
+        func3(objDict)
+    except:
+        pass
+except:
+    raise Exception(...)
+```
+
+Raise an `Exception` with all raised exception as strings, if no function returns a value for the given jsonDict.
 

@@ -37,6 +37,8 @@ class TestTokenService(unittest.TestCase):
 
         self.empty_storage = Storage()
 
+        self.success = {"success": True}
+
         self.user1 = User("Max Mustermann")
         self.user2 = User("Mimi Mimikri")
         self.user3 = User("Karla Kolumda")
@@ -173,6 +175,10 @@ class TestTokenService(unittest.TestCase):
 
         # no user should be there
         self.assertEqual(self.client.get("/user").json, expected)
+        req = self.client.get(f"/user/{self.user1.username}")
+        self.assertEqual(req.status_code, 404)
+        self.assertEqual(req.json["error"], "NotFound")
+        self.assertEqual(req.json["http_code"], 404)
 
         expected = {
             "length": 1,
@@ -186,6 +192,9 @@ class TestTokenService(unittest.TestCase):
         self.assertEqual(result.status_code, 200, msg=result.json)
         self.assertEqual(result.json, {"success": True})
         self.assertEqual(self.client.get("/user").json, expected)
+
+        req = self.client.get(f"/user/{self.user1.username}")
+        self.assertEqual(req.status_code, 200)
 
         # get the added user
         self.assertEqual(self.client.get(
@@ -218,6 +227,39 @@ class TestTokenService(unittest.TestCase):
 
         result = self.client.delete(f"/user/{self.user1.username}")
         self.assertEqual(result.status_code, 404)
+
+    def test_user_tokens(self):
+        req = self.client.get(f"/user/{self.user1.username}")
+        self.assertEqual(req.status_code, 404)
+        self.assertEqual(req.json["error"], "NotFound")
+        self.assertEqual(req.json["http_code"], 404)
+
+        req = self.client.get(f"/user/{self.user1.username}/token")
+        self.assertEqual(req.status_code, 404, msg=req.data)
+        self.assertEqual(req.json["error"], "NotFound")
+        self.assertEqual(req.json["http_code"], 404)
+
+        req = self.client.get(f"/user/{self.user1.username}/token/0")
+        self.assertEqual(req.status_code, 404)
+        self.assertEqual(req.json["error"], "NotFound")
+        self.assertEqual(req.json["http_code"], 404)
+
+        result = self.client.post("/user", data=json.dumps(self.user1.to_dict()),
+                                  content_type='application/json')
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json, self.success)
+
+        # we do not have to check here, if user is there, because it was checked in test_list_user.
+
+        req = self.client.get(f"/user/{self.user1.username}/token/0")
+        self.assertEqual(req.status_code, 404)
+        self.assertEqual(req.json["error"], "NotFound")
+        self.assertEqual(req.json["http_code"], 404)
+
+        result = self.client.post(f"/user/{self.user1.username}/token",
+                                  data=json.dumps(self.token1.to_dict()), content_type='application/json')
+        self.assertEqual(result.status_code, 200, msg=result.json)
+        self.assertEqual(result.json, self.success)
 
     def test_list_tokens(self):
         # there have to be a user

@@ -15,12 +15,12 @@ def index():
 
 
 def get(token_id):
-    pass
+    raise NotImplementedError
 
 
 def put(token_id):
-    pass
+    raise NotImplementedError
 
 
 def post():
-    pass
+    raise NotImplementedError

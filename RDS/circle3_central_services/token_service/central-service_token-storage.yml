@@ -24,7 +24,7 @@ paths:
                 properties:
                   length:
                     type: integer
-                  tokens:
+                  list:
                     type: array
                     items:
                       $ref: '#/components/schemas/Token'
@@ -36,6 +36,13 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
         '400':
           description: Bad Request
       description: Adds a token to repository.
@@ -43,7 +50,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Token'
+              type: object
+              properties:
+                user:
+                  $ref: '#/components/schemas/User'
+                token:
+                  $ref: '#/components/schemas/Token'
         description: ''
       tags:
         - token
@@ -62,7 +74,7 @@ paths:
                 properties:
                   length:
                     type: integer
-                  users:
+                  list:
                     type: array
                     items:
                       $ref: '#/components/schemas/User'
@@ -74,6 +86,13 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
       requestBody:
         content:
           application/json:
@@ -97,6 +116,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
         '404':
           description: Not Found
       description: Returns the user with specified id.
@@ -161,9 +184,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Token'
+                type: object
+                properties:
+                  length:
+                    type: integer
+                  list:
+                    $ref: '#/components/schemas/Token'
       description: Returns all tokens for the specified user.
     post:
       summary: Add a token
@@ -174,11 +200,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'
+                type: object
+                properties:
+                  success:
+                    type: boolean
       description: Adds token to the repository.
       tags:
         - User
         - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Token'
   '/service/{servicename}':
     get:
       summary: Get specified service
@@ -213,7 +247,7 @@ paths:
                 properties:
                   length:
                     type: integer
-                  services:
+                  list:
                     type: array
                     items:
                       $ref: '#/components/schemas/Service'
@@ -225,11 +259,24 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
         '400':
           description: Bad Request
       tags:
         - Service
       description: Adds a new service to storage.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+        description: ''
   '/user/{user-id}/token/{token-id}':
     parameters:
       - schema:
@@ -264,6 +311,13 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
         '404':
           description: Not Found
       tags:
@@ -299,10 +353,10 @@ components:
       x-tags:
         - Service
 tags:
-- name: User
-  description: All user related objects.
-- name: token
-  description: All token related objects.
-- name: Service
-  description: All service related objects.
+  - name: User
+    description: All user related objects.
+  - name: token
+    description: All token related objects.
+  - name: Service
+    description: All service related objects.
 openapi: 3.0.0

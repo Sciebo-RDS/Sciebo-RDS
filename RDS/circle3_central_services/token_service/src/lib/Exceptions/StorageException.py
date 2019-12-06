@@ -16,14 +16,14 @@ class UserNotExistsError(UserExistsAlreadyError):
         if msg is None:
             msg = f"{user} not exist in {storage}"
         
-        super(UserNotExistsError, self).__init__(user, msg)
+        super(UserNotExistsError, self).__init__(storage, user, msg)
 
 class UserHasTokenAlreadyError(UserExistsAlreadyError):
     def __init__(self, storage: Storage, user: User, token: Token, msg=None):
         if msg is None:
             msg = f"{user} has already {token.servicename} in Storage"
         
-        super(UserHasTokenAlreadyError, self).__init__(user, token, msg)
+        super(UserHasTokenAlreadyError, self).__init__(storage, user, msg)
 
 class TokenNotExists(Exception):
     def __init__(self, storage: Storage, user: User, token: Token, msg=None):

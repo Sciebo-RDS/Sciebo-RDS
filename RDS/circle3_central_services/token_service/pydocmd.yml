@@ -11,6 +11,7 @@ generate:
     - lib.Token++
     - lib.Service++
     - lib.Storage++     # (+ to include members)
+    - Util+
 
 # MkDocs pages configuration. The `<<` operator is sugar added by pydocmd
 # that allows you to use an external Markdown file (eg. your project's README)
