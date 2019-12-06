@@ -1,4 +1,4 @@
-Bevorzugen Sie die deutsche Version? [Bitte hier klicken.](/de).
+Bevorzugen Sie die deutsche Version? [Bitte hier klicken.](/de)
 
 ## TL;DR
 
