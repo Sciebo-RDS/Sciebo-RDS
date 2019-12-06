@@ -15,13 +15,11 @@ The work packages for the implementation of these strategies include the develop
 The project is designed with sustainability in mind. This will be achieved by making all results of the project, i.e. software components, documentation and scientific publications, accessible to the general public using open licences. In addition, the implementations shall be easily reusable at other locations.
 
 
-Funding Body: Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) 
-
-Project Number: 403637381.
+Funding Body: Deutsche Forschungsgemeinschaft (DFG) -- Project Number 403637381.
 
 Project Coordination: Holger Przibytzin & Dr. Marc Schutzeichel
 
-Research Associates: Peter Heiss (WWU), Lennart Hofeditz (UDE) & Jens Stegmann (WWU)
+Research Associates: Peter Heiss (WWU), Lennart Hofeditz (UDE), Jens Stegmann (WWU)
 
 Project Partners: ULB (WWU Münster), ZIV (WWU Münster), Department of Computer Science and Applied Cognitive Science (Prof. Dr. Stieglitz, University of Duisburg-Essen)
 
