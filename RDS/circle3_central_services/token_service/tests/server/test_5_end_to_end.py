@@ -107,17 +107,18 @@ class test_end_to_end(unittest.TestCase):
 
         # check if there is already a file, which has an oauth2token to reuse it.
         oauthtoken2 = None
+        filepath = "https://zivgitlab.uni-muenster.de/{}/{}/-/jobs/artifacts/{}/raw/{}?job={}".format(
+            os.getenv("CI_PROJECT_NAMESPACE"),
+            os.getenv("CI_PROJECT_NAME"),
+            os.getenv("CI_COMMIT_REF_NAME"),
+            os.getenv("FOLDER"),
+            os.getenv("CI_JOB_NAME"))
         try:
-            req = requests.get("https://zivgitlab.uni-muenster.de/{}/{}/-/jobs/artifacts/{}/raw/{}?job={}".format(
-                os.getenv("CI_PROJECT_NAMESPACE"),
-                os.getenv("CI_PROJECT_NAME"),
-                os.getenv("CI_COMMIT_REF_NAME"),
-                os.getenv("FOLDER"),
-                os.getenv("CI_JOB_NAME"))).content
+            req = requests.get(filepath).content
             oauthtoken2 = initialize_object_from_json(req)
             logger.info("Refresh token found in artifacts, use it now.")
         except:
-            logger.warning("No refresh token from previous test run was found, so we collect a new.")
+            logger.warning("No refresh token from previous test run was found, so we collect a new one. \nFilepath: {}".format(filepath))
             # initialize like user1 with password
             token2 = Token(owncloud.servicename, "user_refresh")
 
