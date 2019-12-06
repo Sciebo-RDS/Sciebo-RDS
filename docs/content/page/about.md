@@ -15,7 +15,9 @@ The work packages for the implementation of these strategies include the develop
 The project is designed with sustainability in mind. This will be achieved by making all results of the project, i.e. software components, documentation and scientific publications, accessible to the general public using open licences. In addition, the implementations shall be easily reusable at other locations.
 
 
-Funding Body: Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) – project number 403637381.
+Funding Body: Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) 
+
+Project Number: 403637381.
 
 Project Coordination: Holger Przibytzin & Dr. Marc Schutzeichel
 
