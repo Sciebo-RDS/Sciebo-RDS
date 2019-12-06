@@ -1,35 +1,71 @@
-openapi: 3.0.0
 info:
-  title: central-service_token-storage
+  title: Central Service - Token Storage
   version: '1.0'
+  contact:
+    name: Peter Heiss
+    email: peter.heiss@uni-muenster.de
+    url: 'http://www.research-data-services.org'
+  description: 'This file describes the interface for the central service "token storage".'
+  license:
+    name: MIT
 servers:
   - url: 'http://central-service_token-storage:3000'
 paths:
   /token:
     get:
       summary: Returns all tokens
-      tags: []
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  length:
+                    type: integer
+                  tokens:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Token'
+      description: Returns an unfiltered list of all tokens.
+      tags:
+        - Token
     post:
       summary: Add a token
       responses:
         '200':
           description: OK
+        '400':
+          description: Bad Request
       description: Adds a token to repository.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/token'
+              $ref: '#/components/schemas/Token'
+        description: ''
+      tags:
+        - token
   /user:
     get:
       summary: Returns user informations
-      tags: []
+      tags:
+        - User
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  length:
+                    type: integer
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
       description: Returns informations from main oauth2-provider
     parameters: []
     post:
@@ -38,6 +74,15 @@ paths:
       responses:
         '200':
           description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Adds a new user to the storage.
+      tags:
+        - User
+      description: Adds a new user.
   '/user/{user-id}':
     parameters:
       - schema:
@@ -47,26 +92,38 @@ paths:
         required: true
     get:
       summary: Get user with id
-      tags: []
+      tags:
+        - User
       responses:
         '200':
           description: OK
         '404':
           description: Not Found
-      description: ''
+      description: Returns the user with specified id.
     delete:
       summary: Remove user
       operationId: ''
       responses:
         '200':
           description: OK
+      tags:
+        - User
+      description: Delete the user with user-id.
   '/token/{token-id}':
     get:
-      summary: Your GET endpoint
-      tags: []
+      summary: Get specified token
+      tags:
+        - token
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '404':
+          description: Not Found
+      description: Returns the specified token.
     parameters:
       - schema:
           type: string
@@ -83,7 +140,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/token'
+              $ref: '#/components/schemas/Token'
+      tags:
+        - token
   '/user/{user-id}/token':
     parameters:
       - schema:
@@ -93,24 +152,46 @@ paths:
         required: true
     get:
       summary: Get tokens from specified user
-      tags: []
+      tags:
+        - User
+        - token
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Token'
+      description: Returns all tokens for the specified user.
     post:
       summary: Add a token
       operationId: ''
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
       description: Adds token to the repository.
+      tags:
+        - User
+        - token
   '/service/{servicename}':
     get:
       summary: Get specified service
-      tags: []
+      tags:
+        - Service
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+      description: Returns the specified service.
     parameters:
       - schema:
           type: string
@@ -120,17 +201,35 @@ paths:
   /service:
     get:
       summary: Returns all services
-      tags: []
+      tags:
+        - Service
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  length:
+                    type: integer
+                  services:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Service'
       operationId: ''
+      description: Returns all registered services.
     post:
       summary: Adds a new service
       operationId: ''
       responses:
         '200':
           description: OK
+        '400':
+          description: Bad Request
+      tags:
+        - Service
+      description: Adds a new service to storage.
   '/user/{user-id}/token/{token-id}':
     parameters:
       - schema:
@@ -145,37 +244,65 @@ paths:
         required: true
     get:
       summary: Returns the specified token
-      tags: []
+      tags:
+        - User
+        - token
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '404':
+          description: Not Found
       operationId: ''
-      description: ''
+      description: Returns the specified token from the specified user.
     delete:
       summary: Remove token
       operationId: ''
       responses:
         '200':
           description: OK
+        '404':
+          description: Not Found
+      tags:
+        - token
+      description: Deletes the specified token from the specified user.
 components:
   schemas:
-    token:
+    Token:
       title: Token
       type: object
       properties:
-        id:
-          type: string
-          description: Set by service automatically
         servicename:
           type: string
         access_token:
           type: string
           description: 'The token, which can be used as password for username in service.'
-        username:
-          type: string
+      x-tags:
+        - token
     User:
       title: User
       type: object
       properties:
         username:
           type: string
+      x-tags:
+        - User
+    Service:
+      title: Service
+      type: object
+      properties:
+        servicename:
+          type: string
+      x-tags:
+        - Service
+tags:
+- name: User
+  description: All user related objects.
+- name: token
+  description: All token related objects.
+- name: Service
+  description: All service related objects.
+openapi: 3.0.0
