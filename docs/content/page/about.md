@@ -11,3 +11,15 @@ The core idea is to create bridge functionalities to pick up the researchers whe
 The project thus ties in well with other existing projects: As part of the "Research Data Management Organiser Project" (RDMO, https://rdmorganiser.github.io/ for short), a web application is being developed that can be operated separately and that allows "the central input and administration of the information required for sustainable data management". The developed system provides the DMP via API in machine-readable form. This is a basic prerequisite for setting up automated, end-to-end workflows. Therefore it is planned to use the RDMO for the creation of DMP as well as for the collection of project-wide parameters (license information, repository for the delivery of research data, etc.). The sciebo RDS project is the first to consistently use these features, therefore a cooperation was agreed upon. In this respect, we regard the distinct bridge functionality of sciebo RDS as an optimal complement to the ongoing activities.
 
 It must be clearly emphasized that the aim is not to develop another repository for research data or other services in the sense of a virtual research environment. Rather, the sciebo tool, which is widely used among scientists, is to be used as an entry point for research data management and expanded to include functionalities that enable the connection and integration of existing repositories and services. The bridge function between the established work environment of the scientists and the necessary information infrastructures for the exchange, archiving and publication of research data is absolutely in the foreground in the sense of continuous work processes.
+
+Funding Body: Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) – project number 403637381.
+
+Project Coordination: Holger Przibytzin & Dr. Marc Schutzeichel
+
+Research Associates: Peter Heiss (WWU), Lennart Hofeditz (UDE) & Jens Stegmann (WWU)
+
+Project Partners: ULB (WWU Münster), ZIV (WWU Münster), Department of Computer Science and Applied Cognitive Science (Prof. Dr. Stieglitz, University of Duisburg-Essen)
+
+Cooperation Partner: University of Bielefeld
+
+Duration: 2019-2021
