@@ -10,9 +10,9 @@ Das DFG-Projekt sciebo RDS (Research Data Services) hat es sich zum Ziel gesetzt
 * Sie adaptieren und integrieren externe Expertenwerkzeuge, etwa Editoren für spezielle Dateiformate oder Datentypen.
 * Sie bieten grundlegende FDM-Funktionalitäten, beispielsweise zum Erfassen von Metadaten oder zur Erschließung mittels Taxonomien.
 
-Die Arbeitspakete zur Umsetzung der Strategien umfassen einerseits die Entwicklung einer geeigneten Softwarearchitektur passend zum infrastrukturellen Umfeld des Hochschulclouddiensts sciebo, andererseits die Erhebung und Evaluation der Nutzerperspektive im Rahmen einer umfassenden Anforderungsanalyse, für die die Projektpartner des Fachgebiets Professionelle Kommunikation in elektronischen Medien / Social Media an der Universität Duisburg-Essen ihre Expertise einbringen.
+Die Arbeitspakete zur Umsetzung der Strategien umfassen einerseits die Entwicklung einer geeigneten Softwarearchitektur passend zum infrastrukturellen Umfeld des Hochschulclouddiensts sciebo am Standort Münster, andererseits die Erhebung und Evaluation der Nutzerperspektive im Rahmen einer umfassenden Anforderungsanalyse, für die die Projektpartner des Fachgebiets Professionelle Kommunikation in elektronischen Medien / Social Media an der Universität Duisburg-Essen ihre Expertise einbringen.
 
-Das Projekt ist auf Nachhaltigkeit ausgelegt. Diese soll erreicht werden, indem alle Ergebnisse des Projekts, d.h. Softwarekomponenten, Dokumentation sowie wissenschaftliche Publikationen als Open Access respektive als Open Source-Produkte mit offenen Lizenzen der Allgemeinheit zugänglich gemacht werden. Zudem sollen die Implementierungen sehr leicht an anderen Standorten nachgenutzt werden können.
+Das Projekt ist auf Nachhaltigkeit ausgelegt. Diese soll erreicht werden, indem alle Ergebnisse des Projekts, d.h. Softwarekomponenten, Dokumentation sowie wissenschaftliche Publikationen als Open Access respektive als Open-Source-Produkte mit offenen Lizenzen der Allgemeinheit zugänglich gemacht werden. Zudem sollen die Implementierungen sehr leicht an anderen Standorten nachgenutzt werden können.
 
 
 Förderer: Deutsche Forschungsgemeinschaft
