@@ -19,7 +19,7 @@ Förderer: Deutsche Forschungsgemeinschaft (DFG) -- Projektnummer 403637381
 
 Koordination: Holger Przibytzin & Dr. Marc Schutzeichel
 
-Projektmitarbeiter: Peter Heiss (WWU), Lennart Hofeditz (UDE) & Jens Stegmann (WWU)
+Projektmitarbeiter: Peter Heiss (WWU), Lennart Hofeditz (UDE), Jens Stegmann (WWU)
 
 Projektpartner: ULB (WWU Münster), ZIV (WWU Münster), Abteilung Informatik und Angewandte Kognitionswissenschaft (Prof. Dr. Stieglitz, Universität Duisburg-Essen)
 
