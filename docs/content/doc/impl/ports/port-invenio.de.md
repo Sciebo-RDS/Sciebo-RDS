@@ -1,5 +1,5 @@
 ---
-title: Port Zenodo
+title: Port Invenio
 subtitle: Export your package to an invenio repository.
 
 menu:
@@ -10,10 +10,10 @@ weight: 1000
 
 ## OpenAPI v3
 
-{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/port_zenodo-service/RDS/circle2_use_cases/port_invenio.yml"  >}}
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/port_invenio.yml"  >}}
 
 ## Implementierung
 
-The following classes implements a library to work easier with zenodo in the zenodo service.
+Die folgende Klasse implementiert eine Bibliothek, um die Invenio-Installation "Zenodo" verwenden zu können.
 
 {{% code file="doc/impl/ports/port-invenio-docstring.md" %}}
