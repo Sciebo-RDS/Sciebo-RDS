@@ -108,17 +108,20 @@ class test_end_to_end(unittest.TestCase):
 
         # check if there is already a file, which has an oauth2token to reuse it.
         oauthtoken2 = None
-        filepath = "https://zivgitlab.uni-muenster.de/{}/{}/-/jobs/artifacts/{}/raw/{}/user_refresh.token?job={}&job_token={}".format(
+        filepath = "https://zivgitlab.uni-muenster.de/{}/{}/-/jobs/artifacts/{}/raw/{}/user_refresh.token?job_token={}&job={}".format(
             os.getenv("CI_PROJECT_NAMESPACE"),
             os.getenv("CI_PROJECT_NAME"),
             os.getenv("CI_COMMIT_REF_NAME"),
             os.getenv("FOLDER"),
-            os.getenv("CI_JOB_NAME"),
-            os.getenv("CI_JOB_TOKEN"))
+            os.getenv("CI_JOB_TOKEN"),
+            os.getenv("CI_JOB_NAME")
+        )
         try:
-            req = requests.get(filepath)
+            headers = {"JOB-TOKEN": os.getenv("CI_JOB_TOKEN")}
+            req = requests.get(filepath, headers=headers)
             if req.status_code is not 200:
-                raise Exception("Artifact not found, filepath: {filepath}")
+                raise Exception(
+                    "Artifact not found, filepath: {filepath}, headers: {headers}")
 
             try:
                 oauthtoken2 = initialize_object_from_json(req.text)
@@ -140,7 +143,7 @@ class test_end_to_end(unittest.TestCase):
         # try to refresh it now
         storage.refresh_service(owncloud)
         tokens = storage.getTokens(oauthuser2)
-        checkToken = tokens[0]
+        checkToken = tokens[1]
         self.assertGreater(checkToken.expiration_date,
                            oauthtoken2.expiration_date)
         self.assertEqual(checkToken, oauthtoken2)
@@ -151,11 +154,8 @@ class test_end_to_end(unittest.TestCase):
 
     # TODO implement me
     @unittest.skip("Currently not implemented")
-    @unittest.skipUnless(os.getenv("ZENODO_OAUTH_CLIENT_SECRET") is not None, "This tests the zenodo, which only on protected branch will be tested.")
+    @unittest.skipUnless(os.getenv("ZENODO_OAUTH_CLIENT_SECRET") is not None, "This tests the zenodo oauth workflow, which only on protected branch will be tested.")
     def test_zenodo(self):
-        return
-        if self.driver is None:
-            return
 
         zenodo = OAuth2Service(
             "sandbox.zenodo.org",
@@ -165,7 +165,52 @@ class test_end_to_end(unittest.TestCase):
             os.getenv("ZENODO_OAUTH_CLIEND_ID"),
             os.getenv("ZENODO_OAUTH_CLIENT_SECRET")
         )
-        self.driver.get(zenodo.authorize_url)
-        btn = self.driver.find_element_by_xpath(
-            "/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[2]/form/button[1]")
-        btn.click()
+
+        # this needs to be changed
+        zenodouser1 = User("USERNAME")
+        zenodotoken1 = Token(zenodo.servicename, "PASSWORT")
+
+        def get_access_token(user, token):
+            nonlocal zenodo, storage
+
+            self.driver.get(zenodo.authorize_url)
+
+            if self.driver.current_url.startswith("https://sandbox.zenodo.org/login"):
+                # it redirects to login form
+                field_username = self.driver.find_element_by_xpath(
+                    "//*[@id=\"email\"]")
+                field_password = self.driver.find_element_by_xpath(
+                    "//*[@id=\"password\"]")
+                field_username.clear()
+                field_username.send_keys(user.username)
+
+                field_password.clear()
+                field_password.send_keys(token.access_token)
+                field_password.send_keys(Keys.RETURN)
+
+            self.driver.get(zenodo.authorize_url)
+            btn = self.driver.find_element_by_xpath(
+                "/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[2]/form/button[1]")
+            btn.click()
+
+            url = self.driver.current_url
+
+            self.driver.delete_all_cookies()  # remove all cookies
+
+            from urllib.parse import urlparse, parse_qs
+            code = parse_qs(urlparse(url).query)["code"]
+
+            data = {
+                "grant_type": "authorization_code",
+                "code": code,
+                "redirect_uri": redirect
+            }
+
+            req = requests.post(zenodo.refresh_url, data=data, auth=(
+                zenodo.client_id, zenodo.client_secret)).json()
+            oauthtoken = OAuth2Token(
+                zenodo.servicename, req["access_token"], req["refresh_token"], datetime.now() + timedelta(seconds=req["expires_in"]))
+            return oauthtoken
+
+        oauthtoken1 = get_access_token(zenodouser1, zenodotoken1)
+        storage.addTokenToUser(oauthtoken1, zenodouser1, Force=True)
