@@ -16,12 +16,26 @@ User.to_json(self)
 
 Returns this object as a json string.
 
+#### to_dict
+```python
+User.to_dict(self)
+```
+
+Returns this object as a dict.
+
 #### from_json
 ```python
 User.from_json(user:str)
 ```
 
 Returns an user object from a json string.
+
+#### from_dict
+```python
+User.from_dict(userDict:dict)
+```
+
+Returns an user object from a dict.
 
 ## lib.Token
 
