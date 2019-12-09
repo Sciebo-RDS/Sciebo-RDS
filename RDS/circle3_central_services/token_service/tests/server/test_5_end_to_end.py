@@ -15,6 +15,7 @@ from selenium.webdriver.common.keys import Keys
 
 logger = logging.getLogger()
 
+
 @unittest.skipUnless(os.getenv("CI_DEFAULT_BRANCH") is not None, "This should not be executed locally because we use selenium and firefox webdriver.")
 class test_end_to_end(unittest.TestCase):
     driver = None
@@ -55,7 +56,7 @@ class test_end_to_end(unittest.TestCase):
         storage.addUser(user1)
         storage.addTokenToUser(token1, user1)
 
-        def get_acces_token(user, token):
+        def get_access_token(user, token):
             nonlocal owncloud, storage
 
             self.driver.get(owncloud.authorize_url)
@@ -97,7 +98,7 @@ class test_end_to_end(unittest.TestCase):
                 owncloud.servicename, req["access_token"], req["refresh_token"], datetime.now() + timedelta(seconds=req["expires_in"]))
             return oauthtoken
 
-        oauthtoken1 = get_acces_token(user1, token1)
+        oauthtoken1 = get_access_token(user1, token1)
         storage.addTokenToUser(oauthtoken1, user1, Force=True)
 
         ######## test a refresh token #######
@@ -107,6 +108,7 @@ class test_end_to_end(unittest.TestCase):
 
         # check if there is already a file, which has an oauth2token to reuse it.
         oauthtoken2 = None
+        headers = {"JOB-TOKEN": os.getenv("CI_JOB_TOKEN")}
         filepath = "https://zivgitlab.uni-muenster.de/{}/{}/-/jobs/artifacts/{}/raw/{}/user_refresh.token?job={}".format(
             os.getenv("CI_PROJECT_NAMESPACE"),
             os.getenv("CI_PROJECT_NAME"),
@@ -114,16 +116,18 @@ class test_end_to_end(unittest.TestCase):
             os.getenv("FOLDER"),
             os.getenv("CI_JOB_NAME"))
         try:
-            req = requests.get(filepath).content
+            req = requests.get(filepath, headers=headers).content
             oauthtoken2 = initialize_object_from_json(req)
             logger.info("Refresh token found in artifacts, use it now.")
-        except:
-            logger.warning("No refresh token from previous test run was found, so we collect a new one. \nFilepath: {}".format(filepath))
+        except Exception as e:
+            logger.error(e)
+            logger.warning(
+                "No refresh token from previous test run was found, so we collect a new one. \nFilepath: {}".format(filepath))
             # initialize like user1 with password
             token2 = Token(owncloud.servicename, "user_refresh")
 
             # generate an oauthtoken like before and overwrite oauthtoken1
-            oauthtoken2 = get_acces_token(oauthuser2, token2)
+            oauthtoken2 = get_access_token(oauthuser2, token2)
 
         storage.addUser(oauthuser2)
         storage.addTokenToUser(oauthtoken2, oauthuser2)
@@ -142,6 +146,7 @@ class test_end_to_end(unittest.TestCase):
 
     # TODO implement me
     @unittest.skip("Currently not implemented")
+    @unittest.skipUnless(os.getenv("ZENODO_OAUTH_CLIENT_SECRET") is not None, "This tests the zenodo, which only on protected branch will be tested.")
     def test_zenodo(self):
         return
         if self.driver is None:
@@ -149,7 +154,8 @@ class test_end_to_end(unittest.TestCase):
 
         zenodo = OAuth2Service(
             "sandbox.zenodo.org",
-            "https://sandbox.zenodo.org/oauth/authorize?scope=deposit%3Awrite+deposit%3Aactions&state=CHANGEME&redirect_uri=http%3A%2F%2Flocalhost%3A8080&response_type=code&client_id=feYfqBVCfNDJTQyQRXWiJ8eoga99GxKzXYAZXvbm",
+            "https://sandbox.zenodo.org/oauth/authorize?scope=deposit%3Awrite+deposit%3Aactions&state=CHANGEME&redirect_uri=http%3A%2F%2Flocalhost%3A8080&response_type=code&client_id={}".format(
+                os.getenv("ZENODO_OAUTH_CLIEND_ID")),
             "https://sandbox.zenodo.org/oauth/token",
             os.getenv("ZENODO_OAUTH_CLIEND_ID"),
             os.getenv("ZENODO_OAUTH_CLIENT_SECRET")
