@@ -117,10 +117,13 @@ class test_end_to_end(unittest.TestCase):
             os.getenv("CI_JOB_TOKEN"))
         try:
             req = requests.get(filepath)
-            if req.status_code == 200:
+            if req.status_code is not 200:
+                raise Exception("Artifact not found, filepath: {filepath}")
+
+            try:
                 oauthtoken2 = initialize_object_from_json(req.text)
-            else:
-                raise Exception("Artifact not found, response: {req.text}")
+            except Exception as e:
+                raise Exception(f"{str(e)} + \n req: {req.text}")
         except Exception as e:
             logger.error(e)
             logger.warning(
