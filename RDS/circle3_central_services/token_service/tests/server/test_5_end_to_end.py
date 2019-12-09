@@ -108,16 +108,19 @@ class test_end_to_end(unittest.TestCase):
 
         # check if there is already a file, which has an oauth2token to reuse it.
         oauthtoken2 = None
-        headers = {"JOB-TOKEN": os.getenv("CI_JOB_TOKEN")}
-        filepath = "https://zivgitlab.uni-muenster.de/{}/{}/-/jobs/artifacts/{}/raw/{}/user_refresh.token?job={}".format(
+        filepath = "https://zivgitlab.uni-muenster.de/{}/{}/-/jobs/artifacts/{}/raw/{}/user_refresh.token?job={}&job_token={}".format(
             os.getenv("CI_PROJECT_NAMESPACE"),
             os.getenv("CI_PROJECT_NAME"),
             os.getenv("CI_COMMIT_REF_NAME"),
             os.getenv("FOLDER"),
-            os.getenv("CI_JOB_NAME"))
+            os.getenv("CI_JOB_NAME"),
+            os.getenv("CI_JOB_TOKEN"))
         try:
-            req = requests.get(filepath, headers=headers).text
-            oauthtoken2 = initialize_object_from_json(req)
+            req = requests.get(filepath)
+            if req.status_code == 200:
+                oauthtoken2 = initialize_object_from_json(req.text)
+            else:
+                raise Exception("Artifact not found, response: {req.text}")
         except Exception as e:
             logger.error(e)
             logger.warning(
