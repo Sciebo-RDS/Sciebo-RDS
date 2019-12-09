@@ -156,6 +156,8 @@ class test_end_to_end(unittest.TestCase):
     @unittest.skip("Currently not implemented")
     @unittest.skipUnless(os.getenv("ZENODO_OAUTH_CLIENT_SECRET") is not None, "This tests the zenodo oauth workflow, which only on protected branch will be tested.")
     def test_zenodo(self):
+        # prepare service
+        storage = Storage()
 
         zenodo = OAuth2Service(
             "sandbox.zenodo.org",
