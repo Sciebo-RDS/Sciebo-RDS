@@ -168,7 +168,7 @@ class test_end_to_end(unittest.TestCase):
             os.getenv("ZENODO_OAUTH_CLIENT_SECRET")
         )
 
-        # this needs to be changed
+        # TODO: needs valid user in env var in gitlab
         zenodouser1 = User("USERNAME")
         zenodotoken1 = Token(zenodo.servicename, "PASSWORT")
 
