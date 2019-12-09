@@ -1,5 +1,7 @@
 import unittest
+import pytest
 import os
+import json
 from lib.TokenService import TokenService
 from lib.Service import OAuth2Service
 from pactman import Consumer, Provider
@@ -8,7 +10,6 @@ from server import bootstrap
 
 def create_app():
     # set var for mock service
-    os.environ["CENTRAL-SERVICE_TOKEN-STORAGE"] = "http://localhost:3000"
     # creates a test client
     app = bootstrap().app
     # propagate the exceptions to the test client
@@ -20,17 +21,24 @@ def create_app():
 pact = Consumer('UseCaseTokenStorage').has_pact_with(
     Provider('CentralServiceTokenStorage'), port=3000)
 
+os.environ["CENTRAL-SERVICE_TOKEN-STORAGE"] = "http://localhost:3000"
+
 
 class Test_TokenService(unittest.TestCase):
     app = create_app()
     client = app.test_client()
+
+    def run(self, result=None):
+        # this make pact as context in every test available.
+        with pact as p:
+            super(Test_TokenService, self).run(result)
 
     def setUp(self):
         self.tokenService = TokenService()
 
         self.url1 = "http://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
             1, "http://localhost:8080")
-        self.url1 = "http://zenodo.org/oauth/authorize?response_type=code&client_id={}&redirect_uri={}".format(
+        self.url2 = "http://zenodo.org/oauth/authorize?response_type=code&client_id={}&redirect_uri={}".format(
             2, "http://localhost:8080")
 
         self.servicename1 = "owncloud-local"
@@ -42,33 +50,53 @@ class Test_TokenService(unittest.TestCase):
         self.service1 = OAuth2Service(self.servicename1, self.url1,
                                       "http://10.14.28.90/owncloud/index.php/apps/oauth2/api/v1/token", "ABC", "XYZ")
 
-        pact.setup()
+        self.service2 = OAuth2Service(self.servicename2, self.url2,
+                                      "https://sandbox.zenodo.org/oauth/token", "DEF", "UVW")
 
-    def tearDown(self):
-        pact.verify()
-
-    def test_get_service(self):
-        pact.given("some data exists").upon_receiving("a request") \
-            .with_request("get", "/", query={"foo": ["bar"]}).will_respond_with(200)
-
+    def test_get_all_service(self):
         # test to get all service, where no service is
+        pact.given(
+            'No services are registered.'
+        ).upon_receiving(
+            'a request to get all services.'
+        ).with_request(
+            'GET', '/service'
+        ) .will_respond_with(200, body={"length": 0, "list": []})
+
         all_services = self.tokenService.getAllOAuthURIForService()
         self.assertEqual(all_services, [])
 
         # test to get all service, where one service is
+        pact.given(
+            'One service is registered.'
+        ).upon_receiving(
+            'a request to get all services.'
+        ).with_request(
+            'GET', '/service'
+        ) .will_respond_with(200, body={"length": 1, "list": [self.service1.to_dict()]})
+
         all_services = self.tokenService.getAllOAuthURIForService()
         self.assertEqual(all_services, [self.url1])
 
         # test to get all service, where two services are
+        pact.given(
+            'Two services are registered.'
+        ).upon_receiving(
+            'a request to get all services.'
+        ).with_request(
+            'GET', '/service'
+        ) .will_respond_with(200, body={"length": 1, "list": [self.service1.to_dict(), self.service2.to_dict()]})
+
         all_services = self.tokenService.getAllOAuthURIForService()
         self.assertEqual(all_services, [self.url1, self.url2])
 
+    def test_get_specific_service(self):
         # test to get one specific service, where no service is
-        with self.assertRaises(ServiceNotRegisteredError):
+        with self.assertRaises(ServiceNotFoundError):
             self.tokenService.getOAuthURIForService(self.servicename1)
 
         # test to get one specific service, where one different service is
-        with self.assertRaises(ServiceNotRegisteredError):
+        with self.assertRaises(ServiceNotFoundError):
             self.tokenService.getOAuthURIForService(self.servicename1)
 
         # test to get one specific service, where the same services are
