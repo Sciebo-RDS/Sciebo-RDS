@@ -116,9 +116,8 @@ class test_end_to_end(unittest.TestCase):
             os.getenv("FOLDER"),
             os.getenv("CI_JOB_NAME"))
         try:
-            req = requests.get(filepath, headers=headers).content
+            req = requests.get(filepath, headers=headers).text
             oauthtoken2 = initialize_object_from_json(req)
-            logger.info("Refresh token found in artifacts, use it now.")
         except Exception as e:
             logger.error(e)
             logger.warning(
