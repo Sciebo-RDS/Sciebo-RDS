@@ -1,10 +1,10 @@
-from lib.token_storage import TokenStorage
+from lib.TokenService import TokenService
 from flask import jsonify
 
 
 def index():
-    pass
+    return jsonify(TokenService().getAllOAuthURIForService())
 
 
 def get(servicename):
-    return jsonify(TokenStorage().getOAuthURIForService(servicename))
+    return jsonify(TokenService().getOAuthURIForService(servicename))

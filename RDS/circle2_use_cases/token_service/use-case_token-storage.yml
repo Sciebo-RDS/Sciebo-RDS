@@ -80,19 +80,6 @@ paths:
                     link:
                       type: string
       description: Returns all available services.
-  '/service/{servicename}/redirect_uri_full':
-    parameters:
-      - schema:
-          type: string
-        name: servicename
-        in: path
-        required: true
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses:
-        '200':
-          description: OK
 components:
   schemas:
     oauth_uri:

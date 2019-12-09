@@ -1,2 +1,2 @@
 def index():
-    pass
+    return jsonify({"success": True})
