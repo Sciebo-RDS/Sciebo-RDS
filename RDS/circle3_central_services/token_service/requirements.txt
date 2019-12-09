@@ -25,7 +25,7 @@ jinja2==2.10.3
 jsonschema==3.2.0
 markdown==3.1.1
 markupsafe==1.1.1
-more-itertools==8.0.1
+more-itertools==8.0.2
 openapi-spec-validator==0.2.8
 opentracing-instrumentation==3.2.1
 opentracing==2.2.0
