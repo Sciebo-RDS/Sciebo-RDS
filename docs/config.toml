@@ -41,6 +41,11 @@ pygmentCodeFences = true
     url = "/de/doc"
     weight = 40
 
+[[languages.de.menu.main]]
+    name = "Impressum"
+    url = "/de/page/impr"
+    weight = 50
+
 [[languages.de.menu.doc]]
     name = "Dokumentation"
     identifier = "docs home"
@@ -207,6 +212,11 @@ pygmentCodeFences = true
     name = "Doc"
     url = "/doc/"
     weight = 40
+
+[[menu.main]]
+    name = "Imprint"
+    url = "page/impr/"
+    weight = 50
 
 
 # Documentation
