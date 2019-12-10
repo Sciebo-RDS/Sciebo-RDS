@@ -1,13 +1,57 @@
- 
-.tests_token_service:
-  extends: .tests
+.central_service_token_service:
   variables:
       FOLDER: RDS/circle3_central_services/token_service
+
+.tests_central_service_token_service:
+  extends: 
+  - .tests
+  - .central_service_token_service
 
   only:
       changes:
       - RDS/circle3_central_services/token_service/*
       - RDS/circle3_central_services/token_service/**/*
 
-test:token_service:
-  extends: .tests_token_service
+  artifacts:
+    untracked: true
+    expire_in: 180 days
+    paths:
+      - $FOLDER/user_refresh.token
+    
+  services:
+  - name: selenium/standalone-firefox
+    alias: selenium
+
+test:central_service_token_service3.6:
+  image: python:3.6
+  extends: .tests_central_service_token_service
+
+test:central_service_token_service3.7:
+  image: python:3.7
+  extends: .tests_central_service_token_service
+
+test:central_service_token_service3.8:
+  image: python:3.8
+  extends: .tests_central_service_token_service
+
+build:central_service_token_service:
+  extends:
+  - .builds
+  - .central_service_token_service
+
+doc:central_service_token-service:
+  image: python:3.8
+  extends:
+  - .documentation
+  - .central_service_token_service
+
+  script:
+  - cd $FOLDER
+  - make doc
+
+  artifacts:
+    untracked: true
+    expire_in: 1 days
+    paths:
+      - docs/
+

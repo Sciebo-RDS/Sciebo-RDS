@@ -1,22 +1,44 @@
-openapi: 3
+openapi: 3.0.0
 info:
   version: '1.0'
-  title: Adapter Exporter
+  title: SPA Exporter
+  description: This service represents the web frontend of the exporter.
+  contact:
+    name: Peter Heiss
+    email: peter.heiss@uni-muenster.de
 paths:
   /:
     get:
-      summary: Get index page
+      summary: Returns all needed web assets
       tags: []
-      responses: {}
-      description: Returns the single page app for the exporter adapter.
-  '/{api}':
-    parameters:
-      - type: string
-        name: api
-        in: path
-        required: true
+      responses:
+        '200':
+          description: OK
+      description: 'This endpoint returns all needed web assets links for html, images and javascript.'
+  /js:
     get:
-      summary: API endpoint
+      summary: Returns all javascript
       tags: []
-      responses: {}
-      description: Provides a pipeline to the inner circle. Returns the results from inner services.
+      responses:
+        '200':
+          description: OK
+  /html:
+    get:
+      summary: Returns all html
+      tags: []
+      responses:
+        '200':
+          description: OK
+      description: ''
+  /img:
+    get:
+      summary: Returns all images
+      tags: []
+      responses:
+        '200':
+          description: OK
+      description: ''
+    parameters: []
+servers:
+  - url: 'http://spa-exporter:3000/web'
+    description: ''

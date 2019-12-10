@@ -5,6 +5,7 @@ stages:
   - build
   - deploy
   - documentation
+  - pages
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
@@ -77,7 +78,7 @@ include:
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:
   extends: .tests
-  image: registry.gitlab.com/pages/hugo:latest
+  image: registry.gitlab.com/pages/hugo:0.59.1
   
   variables:
     FOLDER: docs/
@@ -91,9 +92,15 @@ hugo:test:
       - docs/*
       - docs/**/*
 
+.documentation:
+  stage: documentation
+  only:
+    refs:
+    - master
+
 pages:
   image: registry.gitlab.com/pages/hugo:0.59.1
-  stage: documentation
+  stage: pages
   script:
   - cd docs
   - hugo
