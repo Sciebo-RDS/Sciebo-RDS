@@ -32,6 +32,7 @@ class TestPortZenodo(unittest.TestCase):
     def tearDown(self):
         pass
 
+    @unittest.skip
     def test_home_status_code(self):
         expected = []
 

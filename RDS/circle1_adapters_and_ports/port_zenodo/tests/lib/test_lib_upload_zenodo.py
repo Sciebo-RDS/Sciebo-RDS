@@ -26,6 +26,7 @@ class TestZenodoMethods(unittest.TestCase):
         # self.clean_up()
         pass
 
+    @unittest.skip
     def test_check_token(self):
         """
         Checks, if the given token is valid.
@@ -47,6 +48,7 @@ class TestZenodoMethods(unittest.TestCase):
         self.assertEqual(result.json(), expected, msg=f"{result.content}")
     """
 
+    @unittest.skip
     def test_create_new_empty_deposit(self):
         """
         Create a new deposition and remove it again.
@@ -94,6 +96,7 @@ class TestZenodoMethods(unittest.TestCase):
         self.assertEqual(
             result.json()["message"], "PID has been deleted.", msg=f"{result.content}")
 
+    @unittest.skip
     def test_create_new_filled_deposit(self):
         """
         Create a new deposition, uploads file to it, sets some metadata and remove it.
