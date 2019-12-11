@@ -1,5 +1,9 @@
 ---
 title: Mithelfen
-subtitle:  Wie kann man sich beteiligen.
+subtitle:  Wie kann man sich beteiligen
 ---
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+Hier wollen wir in naher Zukunft Prozesse und Workflows beschreiben, die für alle von Interesse sind, die konkret zur Entwicklung von Sciebo RDS beitragen möchten.
+
+Stand jetzt möchten wir hier bereits auf [unsere Githubpräsenz](https://github.com/Sciebo-RDS/Sciebo-RDS "Sciebo RDS auf Github") verweisen. 
+
+Wir freuen uns auch über Emails, insbesondere falls Interesse an einer Kooperation bestehen sollte!
