@@ -1,5 +1,9 @@
 ---
 title: Contribution
-subtitle: How you can contribute.
+subtitle: How you can contribute
 ---
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+This is where we intend to describe the processes and workflows governing possible contributions to the Sciebo RDS project .  
+
+For the time being, please take a look at [our github page.](https://github.com/Sciebo-RDS/Sciebo-RDS "Sciebo RDS on Github")   
+  
+We are also look forward to receiving your emails, especially in case you are interested in a cooperation!
