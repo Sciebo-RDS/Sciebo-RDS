@@ -22,8 +22,8 @@ def load_yaml_file():
     openapi_dict = []
     if not os.path.exists(openapi_filepath):
         # no openapi file found. Something was wrong in the container building process
-        paths = ["https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/port_zenodo-service/RDS/circle2_use_cases/port_invenio.yml",
-                 "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/port_zenodo-service/RDS/circle3_central_services/port_invenio.yml"]
+        paths = ["https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/port_invenio.yml",
+                 "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/port_invenio.yml"]
         paths = ";".join(paths)
 
         download_path = os.getenv("OPENAPI_FILEPATH_EXTERNAL", paths)
