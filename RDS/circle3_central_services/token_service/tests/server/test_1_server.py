@@ -80,6 +80,10 @@ class TestTokenService(unittest.TestCase):
 
         self.filled_storage = Storage()
 
+        self.filled_storage.addService(self.oauthservice1)
+        self.filled_storage.addService(self.oauthservice2)
+        self.filled_storage.addService(self.oauthservice3)
+
         # user1 is filled with mixed token and oauth2token
         self.filled_storage.addUser(self.user1)
         self.filled_storage.addTokenToUser(self.token1, self.user1)
@@ -202,7 +206,8 @@ class TestTokenService(unittest.TestCase):
         # get the added user
         d = self.client.get(
             f"/user/{self.user1.username}")
-        self.assertEqual(Util.initialize_object_from_json(json.dumps(d.get_data(as_text=True))), self.user1)
+        self.assertEqual(Util.initialize_object_from_json(
+            json.dumps(d.get_data(as_text=True))), self.user1)
 
         # add a new user and check
         expected = {
@@ -219,7 +224,8 @@ class TestTokenService(unittest.TestCase):
         # the first user should be there
         d = self.client.get(
             f"/user/{self.user1.username}")
-        self.assertEqual(Util.initialize_object_from_json(json.dumps(d.get_data(as_text=True))), self.user1)
+        self.assertEqual(Util.initialize_object_from_json(
+            json.dumps(d.get_data(as_text=True))), self.user1)
 
         # remove a user
         expected = {
@@ -240,6 +246,14 @@ class TestTokenService(unittest.TestCase):
         self.assertEqual(result.status_code, 404)
 
     def test_user_tokens(self):
+
+        self.client.post(
+            "/service", data=json.dumps(self.oauthservice1.to_dict()), content_type='application/json')
+        self.client.post(
+            "/service", data=json.dumps(self.oauthservice2.to_dict()), content_type='application/json')
+        self.client.post(
+            "/service", data=json.dumps(self.oauthservice3.to_dict()), content_type='application/json')
+
         req = self.client.get(f"/user/{self.user1.username}")
         self.assertEqual(req.status_code, 404)
         self.assertEqual(req.json["error"], "NotFound")
@@ -273,6 +287,14 @@ class TestTokenService(unittest.TestCase):
         self.assertEqual(result.json, self.success)
 
     def test_list_tokens(self):
+
+        self.client.post(
+            "/service", data=json.dumps(self.oauthservice1.to_dict()), content_type='application/json')
+        self.client.post(
+            "/service", data=json.dumps(self.oauthservice2.to_dict()), content_type='application/json')
+        self.client.post(
+            "/service", data=json.dumps(self.oauthservice3.to_dict()), content_type='application/json')
+
         # there have to be a user
         self.client.post("/user", data=json.dumps(self.user1.to_dict()),
                          content_type='application/json')

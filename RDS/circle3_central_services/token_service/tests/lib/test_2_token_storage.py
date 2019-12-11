@@ -4,6 +4,8 @@ from lib.Storage import Storage
 from lib.Token import Token, OAuth2Token
 from lib.User import User
 from lib.Exceptions.StorageException import UserExistsAlreadyError, UserHasTokenAlreadyError, UserNotExistsError
+from lib.Exceptions.ServiceExceptions import ServiceNotExistsError, ServiceExistsAlreadyError
+from lib.Service import *
 
 
 class Test_TokenStorage(unittest.TestCase):
@@ -14,9 +16,16 @@ class Test_TokenStorage(unittest.TestCase):
         self.user1 = User("Max Mustermann")
         self.user2 = User("Mimi Mimikri")
 
-        self.token1 = Token("MusterService", "ABC")
-        self.token_like_token1 = Token("MusterService", "DEF")
-        self.token2 = Token("BetonService", "XYZ")
+        self.service1 = Service("MusterService")
+        self.oauthservice1 = OAuth2Service(
+            "BetonService", "http://localhost/oauth/authorize", "http://localhost/oauth/token", "MNO", "UVW")
+
+        self.empty_storage.addService(self.service1)
+        self.empty_storage.addService(self.oauthservice1)
+
+        self.token1 = Token(self.service1.servicename, "ABC")
+        self.token_like_token1 = Token(self.service1.servicename, "DEF")
+        self.token2 = Token(self.oauthservice1.servicename, "XYZ")
 
         self.oauthtoken1 = OAuth2Token.from_token(self.token1, "X_ABC")
         self.oauthtoken_like_token1 = OAuth2Token.from_token(
@@ -35,27 +44,44 @@ class Test_TokenStorage(unittest.TestCase):
         with self.assertRaises(UserExistsAlreadyError, msg=f"Storage {empty_storage}"):
             empty_storage.addUser(self.user1)
 
+    def test_tokenstorage_add_service(self):
+        empty_storage = Storage()
+
+        empty_storage.addUser(self.user1)
+        #  test the exception raise
+        with self.assertRaises(ServiceNotExistsError):
+            empty_storage.addTokenToUser(self.token1, self.user1)
+        # now should work
+        empty_storage.addService(self.service1)
+        empty_storage.addTokenToUser(self.token1, self.user1)
+
+        self.assertEqual(empty_storage.getTokens(self.user1), [self.token1])
+
+        with self.assertRaises(ServiceExistsAlreadyError):
+            self.empty_storage.addService(self.service1)
+
     def test_storage_getUser_getToken(self):
         empty_storage = Storage()
         with self.assertRaises(UserNotExistsError):
             empty_storage.getUser(self.user1.username)
-        
+
         with self.assertRaises(UserNotExistsError):
             empty_storage.getTokens(self.user1.username)
 
         empty_storage.addUser(self.user1)
+        empty_storage.addService(self.service1)
         empty_storage.addTokenToUser(self.token1, self.user1)
 
-        self.assertEqual(empty_storage.getUser(self.user1.username), self.user1)
-        self.assertEqual(empty_storage.getTokens(self.user1.username), [self.token1])
+        self.assertEqual(empty_storage.getUser(
+            self.user1.username), self.user1)
+        self.assertEqual(empty_storage.getTokens(
+            self.user1.username), [self.token1])
 
-        self.assertEqual(empty_storage.getToken(self.user1.username, 0), self.token1)
+        self.assertEqual(empty_storage.getToken(
+            self.user1.username, 0), self.token1)
         self.assertEqual(empty_storage.getTokens(self.user1), [self.token1])
 
     def test_tokenstorage_add_user(self):
-        # empty storage
-        self.assertEqual(self.empty_storage._storage, {})
-
         # raise an exception, if a user not exist for token
         with self.assertRaises(UserNotExistsError, msg=f"Storage {self.empty_storage}"):
             self.empty_storage.addTokenToUser(self.token1, self.user1)
@@ -88,7 +114,7 @@ class Test_TokenStorage(unittest.TestCase):
             self.empty_storage.addTokenToUser(self.token1, self.user1)
 
     def setUpRemove(self):
-        #setUp        
+        # setUp
         self.empty_storage.addUser(self.user1)
         self.empty_storage.addUser(self.user2)
 
@@ -119,9 +145,6 @@ class Test_TokenStorage(unittest.TestCase):
 
         # storage now empty
         self.assertEqual(self.empty_storage.getUsers(), [])
-
-
-
 
     def test_tokenstorage_add_token_force(self):
         # add Token to not existing user with force
