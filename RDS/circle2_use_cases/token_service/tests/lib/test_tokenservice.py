@@ -362,7 +362,7 @@ class Test_TokenService(unittest.TestCase):
             'a request to remove a token.'
         ).with_request(
             'DELETE', f"/user/{self.user1.username}/token/{self.token1.servicename}"
-        ) .will_respond_with(500, body={"error": "TokenNotExists"})
+        ) .will_respond_with(500, body={"error": "TokenNotExistsError"})
 
         with self.assertRaises(TokenNotFoundError):
             self.tokenService.removeTokenFromUser(self.token1, self.user1)
@@ -374,7 +374,7 @@ class Test_TokenService(unittest.TestCase):
             'a request to remove a token.'
         ).with_request(
             'DELETE', f"/user/{self.user1.username}/token/{self.token1.servicename}"
-        ) .will_respond_with(500, body={"error": "TokenNotExists"})
+        ) .will_respond_with(500, body={"error": "TokenNotExistsError"})
 
         with self.assertRaises(TokenNotFoundError):
             self.tokenService.removeTokenFromUser(self.token1, self.user1)
@@ -466,10 +466,10 @@ class Test_TokenService(unittest.TestCase):
         ).upon_receiving(
             'a request to get a specific token for service from user.'
         ).with_request(
-            'GET', f"/user/{self.user1.username}"
+            'GET', f"/user/{self.user1.username}/token/{self.service1.servicename}"
         ) .will_respond_with(404, body={"error": "ServiceNotExistsError", "description": "Service not found."})
 
-        with self.assertEqual(ServiceNotFoundError):
+        with self.assertRaises(ServiceNotFoundError):
             TokenService().getTokenForServiceFromUser(self.service1, self.user1)
 
         # test get token, if one token, but not same is there
@@ -478,10 +478,10 @@ class Test_TokenService(unittest.TestCase):
         ).upon_receiving(
             'a request to get a specific token for service from user.'
         ).with_request(
-            'GET', f"/user/{self.user1.username}"
+            'GET', f"/user/{self.user1.username}/token/{self.service1.servicename}"
         ) .will_respond_with(404, body={"error": "ServiceNotExistsError", "description": "Service not found."})
 
-        with self.assertEqual(ServiceNotFoundError):
+        with self.assertRaises(ServiceNotFoundError):
             TokenService().getTokenForServiceFromUser(self.service1, self.user1)
 
         # test, get token successful
@@ -490,11 +490,25 @@ class Test_TokenService(unittest.TestCase):
         ).upon_receiving(
             'a request to get a specific token for service from user.'
         ).with_request(
-            'GET', f"/user/{self.user1.username}"
-        ) .will_respond_with(200, body={self.token1.to_json()})
+            'GET', f"/user/{self.user1.username}/token/{self.service1.servicename}"
+        ) .will_respond_with(200, body=self.token1.to_json())
 
         self.assertEqual(TokenService().getTokenForServiceFromUser(
             self.service1, self.user1), self.token1)
+
+        # test, get oauthtoken successful, but it have to be reduced to token
+        pact.given(
+            'one searched oauthtoken was registered.'
+        ).upon_receiving(
+            'a request to get a specific oauthtoken for service from user.'
+        ).with_request(
+            'GET', f"/user/{self.user1.username}/token/{self.service1.servicename}"
+        ) .will_respond_with(200, body=self.token2.to_json())
+
+        reduced_token = Token(self.token2.servicename, self.token2.access_token)
+
+        self.assertEqual(TokenService().getTokenForServiceFromUser(
+            self.service1, self.user1), reduced_token)
 
     def test_remove_token_for_service_from_user(self):
         # remove the token, if no token for it is there
@@ -528,7 +542,7 @@ class Test_TokenService(unittest.TestCase):
             'a request to remove a specific token for service from user.'
         ).with_request(
             'DELETE', f"/user/{self.user1.username}/token/{self.service1.servicename}"
-        ) .will_respond_with(404, body={"error": "ServiceNotExistsError", "description": "Service not found."})
+        ) .will_respond_with(200, body={"success": True})
 
         self.assertEqual(TokenService().removeTokenForServiceFromUser(
             self.service1, self.user1), True)

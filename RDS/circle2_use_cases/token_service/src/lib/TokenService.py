@@ -187,28 +187,57 @@ class TokenService():
         Raise an `UserNotFoundError`, if user not found.
         Raise an `TokenNotFoundError`, if token not found for user.
         """
+
+        return self.internal_removeTokenForStringFromUser(token.servicename, user)
+
+    def internal_removeTokenForStringFromUser(self, tokenStr: str, user: User) -> bool:
         response = requests.delete(
-            f"{self.address}/user/{user.username}/token/{token.servicename}")
+            f"{self.address}/user/{user.username}/token/{tokenStr}")
         data = response.json()
         if response.status_code is not 200:
             if "error" in data:
-                if data["error"] == "TokenNotExists":
-                    raise TokenNotFoundError(token)
+                if data["error"] == "TokenNotExistsError":
+                    raise TokenNotFoundError(Token(tokenStr, "NOT_USED"))
                 if data["error"] == "UserNotExistsError":
                     raise UserNotFoundError(user)
+                if data["error"] == "ServiceNotExistsError":
+                    raise ServiceNotFoundError(Service(tokenStr))
 
             raise Exception(data)
 
         return data["success"]
 
+    def getTokenForServiceFromUser(self, service: Service, user: User) -> bool:
+        """
+        Returns the token from type Token (struct: servicename: str, access_token: str) for given service from given user.
+
+        Raise ServiceNotExistsError, if no token for service was found.
+        """
+        response = requests.get(f"{self.address}/user/{user.username}/token/{service.servicename}")
+        data = response.json()
+
+        if response.status_code is not 200:
+            if "error" in data:
+                if data["error"] == "TokenNotExistsError":
+                    raise TokenNotFoundError(Token(service.servicename, "NOT_USED"))
+                if data["error"] == "UserNotExistsError":
+                    raise UserNotFoundError(user)
+                if data["error"] == "ServiceNotExistsError":
+                    raise ServiceNotFoundError(service)
+            raise Exception(data)
+
+        # remove refresh token
+        data["type"] = "Token"
+        token = load_object(data)
+        return token
+
     def removeTokenForServiceFromUser(self, service: Service, user: User) -> bool:
         """
         Remove the token for service from user.
-        """
-        pass
 
-    def getTokenForServiceFromUser(self, service: Service, user: User) -> bool:
+        Raise ServiceNotFoundError, if no token for service was found.
         """
-        Returns the token for given service from given user.
-        """
-        pass
+        try:
+            return self.internal_removeTokenForStringFromUser(service.servicename, user)
+        except TokenNotFoundError:
+            raise ServiceNotFoundError(service)
