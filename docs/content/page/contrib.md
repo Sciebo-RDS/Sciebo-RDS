@@ -6,4 +6,4 @@ This is where we intend to describe the processes and workflows governing possib
 
 For the time being, please take a look at [our github page.](https://github.com/Sciebo-RDS/Sciebo-RDS "Sciebo RDS on Github")   
   
-We are also look forward to receiving your emails, especially in case you are interested in a cooperation!
+We also look forward to emails, especially in case you are interested in a cooperation!
