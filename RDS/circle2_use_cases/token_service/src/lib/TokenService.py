@@ -2,17 +2,22 @@ import requests
 import os
 import json
 from flask import jsonify
-from lib.Service import Service
+from lib.Service import Service, OAuth2Service
 from lib.User import User
 from lib.Token import Token
 import Util
 from lib.Exceptions.ServiceExceptions import *
+import jwt
+import datetime
+import secrets
 
 func = [Util.initialize_object_from_json, Util.initialize_object_from_dict]
 load_object = Util.try_function_on_dict(func)
 
 
 class TokenService():
+    secret = secrets.token_urlsafe()
+
     def __init__(self, address=None):
         self.address = address if address is not None else os.getenv(
             "CENTRAL-SERVICE_TOKEN-STORAGE")
@@ -20,6 +25,10 @@ class TokenService():
             # TODO: load address from oai file
             # https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/token_service/central-service_token-storage.yml
             pass
+
+        secret = os.getenv("TOKENSERVICE_STATE_SECRET")
+        if secret is not None:
+            self.secret = secret
 
     def getOAuthURIForService(self, service: Service) -> str:
         """
@@ -43,6 +52,45 @@ class TokenService():
         data = response.json()
 
         return [load_object(svc).authorize_url for svc in data["list"]]
+
+    def getAllServices(self) -> list:
+        """
+        Returns a `list` of `dict` which represents all registered services.
+
+        `dict` use struct:
+        {
+            "servicename": string,
+            "authorize_url": string,
+            "date": datetime
+        }
+        """
+        response = requests.get(f"{self.address}/service")
+        data = response.json()
+
+        result_list = []
+        for svc in data["list"]:
+            new_obj = {}
+
+            obj = load_object(svc)
+            if type(obj) is not OAuth2Service:
+                continue
+
+            date = str(datetime.datetime.now())
+
+            data = {
+                "servicename": obj.servicename,
+                "authorize_url": obj.authorize_url,
+                "date": date
+            }
+            state = jwt.encode(data, self.secret, algorithm='HS256')
+
+            new_obj["servicename"] = obj.servicename
+            new_obj["authorize_url"] = obj.authorize_url
+            new_obj["jwt"] = state
+
+            result_list.append(new_obj)
+
+        return result_list
 
     def getAllServicesForUser(self, user: User) -> list:
         """
@@ -74,9 +122,9 @@ class TokenService():
         """
         Adds the given user to the token storage.
 
-        Raise an `UserAlreadyRegisteredError`, if user already registered.
+        Returns `True` for success.
 
-        Returns True for succes or raise an error.
+        Raise an `UserAlreadyRegisteredError`, if user already registered.
         """
         response = requests.post(f"{self.address}/user", data=json.dumps(user))
         if response.status_code is not 200:
@@ -152,3 +200,15 @@ class TokenService():
             raise Exception(data)
 
         return data["success"]
+
+    def removeTokenForServiceFromUser(self, service: Service, user: User) -> bool:
+        """
+        Remove the token for service from user.
+        """
+        pass
+
+    def getTokenForServiceFromUser(self, service: Service, user: User) -> bool:
+        """
+        Returns the token for given service from given user.
+        """
+        pass

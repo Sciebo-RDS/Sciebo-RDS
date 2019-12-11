@@ -3,7 +3,7 @@ from flask import jsonify
 
 
 def index():
-    return jsonify(TokenService().getAllOAuthURIForService())
+    return jsonify(TokenService().getAllServices())
 
 
 def get(servicename):

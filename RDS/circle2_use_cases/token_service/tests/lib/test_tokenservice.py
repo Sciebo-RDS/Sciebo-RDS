@@ -1,3 +1,6 @@
+
+import jwt
+import datetime
 import unittest
 import pytest
 import os
@@ -57,7 +60,7 @@ class Test_TokenService(unittest.TestCase):
         self.token1 = Token(self.service1.servicename, "ABC")
         self.token2 = OAuth2Token(self.service2.servicename, "ABC", "XYZ")
 
-    def test_get_all_service(self):
+    def test_get_all_service_oauth(self):
         # test to get all service, where no service is
         pact.given(
             'No services are registered.'
@@ -387,3 +390,145 @@ class Test_TokenService(unittest.TestCase):
 
         self.assertEqual(self.tokenService.removeTokenFromUser(
             self.token1, self.user1), True)
+
+    def test_get_all_service_jwt(self):
+        # test, if no service was registered
+        pact.given(
+            'no service was registered yet.'
+        ).upon_receiving(
+            'a request to get all services.'
+        ).with_request(
+            'GET', "/service"
+        ) .will_respond_with(200, body={"length": 0, "list": []})
+
+        self.assertEqual(self.tokenService.getAllServices(), [])
+
+        # test, if one service was registered
+        pact.given(
+            'one service was registered.'
+        ).upon_receiving(
+            'a request to get all services.'
+        ).with_request(
+            'GET', "/service"
+        ) .will_respond_with(200, body={"length": 1, "list": [self.service1.to_json()]})
+
+        key = "abc"
+
+        req_list = self.tokenService.getAllServices()
+
+        # should raise an invalid signature error
+        from jwt.exceptions import InvalidSignatureError
+        with self.assertRaises(InvalidSignatureError):
+            req = jwt.decode(req_list[0]["jwt"], key, algorithms='HS256')
+
+        pact.given(
+            'one service was registered.'
+        ).upon_receiving(
+            'a request to get all services, but secret is wrong.'
+        ).with_request(
+            'GET', "/service"
+        ) .will_respond_with(200, body={"length": 1, "list": [self.service1.to_json()]})
+
+        self.tokenService.secret = key
+        req_list = self.tokenService.getAllServices()
+        req = jwt.decode(req_list[0]["jwt"], key, algorithms='HS256')
+
+        data = {
+            "servicename": self.service1.servicename,
+            "authorize_url": self.service1.authorize_url,
+            "date": req["date"]
+        }
+
+        state = jwt.encode(data, key, algorithm='HS256')
+
+        new_obj = {}
+        new_obj["servicename"] = data["servicename"]
+        new_obj["authorize_url"] = data["authorize_url"]
+        new_obj["jwt"] = state
+
+        expected = [new_obj]
+
+        self.assertEqual(req_list, expected)
+
+    def test_static_secret(self):
+        # test the static secret variable for this run.
+        frst = TokenService().secret
+        scnd = TokenService().secret
+        thrd = TokenService.secret
+
+        self.assertEqual(frst, scnd)
+        self.assertEqual(frst, thrd)
+
+    def test_get_token_for_service_from_user(self):
+        # test get token, if no token is there
+        pact.given(
+            'no token was registered.'
+        ).upon_receiving(
+            'a request to get a specific token for service from user.'
+        ).with_request(
+            'GET', f"/user/{self.user1.username}"
+        ) .will_respond_with(404, body={"error": "ServiceNotExistsError", "description": "Service not found."})
+
+        with self.assertEqual(ServiceNotFoundError):
+            TokenService().getTokenForServiceFromUser(self.service1, self.user1)
+
+        # test get token, if one token, but not same is there
+        pact.given(
+            'one token was registered.'
+        ).upon_receiving(
+            'a request to get a specific token for service from user.'
+        ).with_request(
+            'GET', f"/user/{self.user1.username}"
+        ) .will_respond_with(404, body={"error": "ServiceNotExistsError", "description": "Service not found."})
+
+        with self.assertEqual(ServiceNotFoundError):
+            TokenService().getTokenForServiceFromUser(self.service1, self.user1)
+
+        # test, get token successful
+        pact.given(
+            'one searched token was registered.'
+        ).upon_receiving(
+            'a request to get a specific token for service from user.'
+        ).with_request(
+            'GET', f"/user/{self.user1.username}"
+        ) .will_respond_with(200, body={self.token1.to_json()})
+
+        self.assertEqual(TokenService().getTokenForServiceFromUser(
+            self.service1, self.user1), self.token1)
+
+    def test_remove_token_for_service_from_user(self):
+        # remove the token, if no token for it is there
+        pact.given(
+            'no token was registered.'
+        ).upon_receiving(
+            'a request to remove a specific token for service from user.'
+        ).with_request(
+            'DELETE', f"/user/{self.user1.username}/token/{self.service1.servicename}"
+        ) .will_respond_with(404, body={"error": "ServiceNotExistsError", "description": "Service not found."})
+
+        with self.assertRaises(ServiceNotFoundError):
+            TokenService().removeTokenForServiceFromUser(self.service1, self.user1)
+
+        # remove the token, if one different token for it is there
+        pact.given(
+            'one token was registered.'
+        ).upon_receiving(
+            'a request to remove a specific token for service from user.'
+        ).with_request(
+            'DELETE', f"/user/{self.user1.username}/token/{self.service1.servicename}"
+        ) .will_respond_with(404, body={"error": "ServiceNotExistsError", "description": "Service not found."})
+
+        with self.assertRaises(ServiceNotFoundError):
+            TokenService().removeTokenForServiceFromUser(self.service1, self.user1)
+
+        # remove the token, if the searched token for it is there
+        pact.given(
+            'the search token was registered.'
+        ).upon_receiving(
+            'a request to remove a specific token for service from user.'
+        ).with_request(
+            'DELETE', f"/user/{self.user1.username}/token/{self.service1.servicename}"
+        ) .will_respond_with(404, body={"error": "ServiceNotExistsError", "description": "Service not found."})
+
+        self.assertEqual(TokenService().removeTokenForServiceFromUser(
+            self.service1, self.user1), True)

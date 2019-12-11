@@ -27,6 +27,9 @@ class TestPortZenodo(unittest.TestCase):
     def setUpClass(cls):
         pass
 
+    def setUp(self):
+        pass
+
     @classmethod
     def tearDownClass(cls):
         pass
@@ -34,7 +37,7 @@ class TestPortZenodo(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_service_authorize(self):
+    def test_get_all(self):
         pass
 
 if __name__ == '__main__':

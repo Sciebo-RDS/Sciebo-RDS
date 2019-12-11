@@ -16,7 +16,10 @@ paths:
       responses:
         '200':
           description: OK
-      description: 'This endpoint takes all tokens to send it to the central-service to save them there and redirects user to `/authorization-success` or `/authorization-cancel`, if anything is wrong with the given data.'
+      description: |-
+        This endpoint takes all tokens to send it to the central-service to save them there and redirects user to `/authorization-success` or `/authorization-cancel`, if anything is wrong with the given data.
+
+        please specify this endpoint when asked for a redirect-uri.
       parameters: []
       requestBody:
         content:
@@ -31,7 +34,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Returns informations about given service.
+      summary: Returns authorize-url from service.
       tags: []
       responses:
         '200':
@@ -42,7 +45,10 @@ paths:
                 $ref: '#/components/schemas/oauth_uri'
         '302':
           description: Found
-      description: 'This is the normally known `/authorize` URL for oauth2 providers. If http-headers say, it is a machine, it returns a 200 code and give all informations for a manual redirect. Otherwise it redirects to the `/authorize` pages for the oauth2-providers with all needed service relevant informations like client_id.'
+      description: |-
+        This is the normally known `/authorize` URL for oauth2 providers. If http-headers say, it is a machine, it returns a 200 code and give all informations for a manual redirect. Otherwise it redirects to the `/authorize` pages for the oauth2-providers with all needed service relevant informations like client_id.
+
+        This is for easier usability, so you don't have to pull the services before.
   /authorization-success:
     get:
       summary: Returns success page
@@ -63,7 +69,7 @@ paths:
     parameters: []
   /service:
     get:
-      summary: Your GET endpoint
+      summary: Returns all available services
       tags: []
       responses:
         '200':
@@ -77,9 +83,78 @@ paths:
                   properties:
                     servicename:
                       type: string
-                    link:
+                    authorize_url:
+                      type: string
+                    jwt:
                       type: string
       description: Returns all available services.
+  '/user/{user-id}':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+    get:
+      summary: Get services from user-id
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  length:
+                    type: integer
+                  list:
+                    type: array
+                    items:
+                      type: string
+      operationId: ''
+      description: Returns all services which the user is registered for.
+  '/user/{user-id}/service/{servicename}':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: servicename
+        in: path
+        required: true
+    get:
+      summary: ''
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+      operationId: ''
+      description: Get current access token for service.
+    delete:
+      summary: Delete the service from user
+      operationId: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+      description: Remove the user token for service.
 components:
   schemas:
     oauth_uri:

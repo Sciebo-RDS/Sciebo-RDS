@@ -13,6 +13,7 @@ gevent = "*"
 python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
+pyjwt = "*"
 
 [requires]
 python_version = "3.6"
