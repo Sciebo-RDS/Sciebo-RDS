@@ -71,11 +71,8 @@ variables:
     - docker push $CI_REGISTRY_IMAGE:$DOCKERTAGNAME:latest
 
 include:
-  - "RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml"
   - "RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
-  - "RDS/circle2_use_cases/exporter/.gitlab-ci.yml"
-  - "RDS/circle3_central_services/metadata_capture/.gitlab-ci.yml"
-  - "RDS/circle3_central_services/project_manager/.gitlab-ci.yml"
+  - "RDS/circle2_use_cases/token_service/.gitlab-ci.yml"
   - "RDS/circle3_central_services/token_service/.gitlab-ci.yml"
 
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
