@@ -213,13 +213,15 @@ class TokenService():
 
         Raise ServiceNotExistsError, if no token for service was found.
         """
-        response = requests.get(f"{self.address}/user/{user.username}/token/{service.servicename}")
+        response = requests.get(
+            f"{self.address}/user/{user.username}/token/{service.servicename}")
         data = response.json()
 
         if response.status_code is not 200:
             if "error" in data:
                 if data["error"] == "TokenNotExistsError":
-                    raise TokenNotFoundError(Token(service.servicename, "NOT_USED"))
+                    raise TokenNotFoundError(
+                        Token(service.servicename, "NOT_USED"))
                 if data["error"] == "UserNotExistsError":
                     raise UserNotFoundError(user)
                 if data["error"] == "ServiceNotExistsError":
