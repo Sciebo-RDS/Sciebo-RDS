@@ -1,5 +1,5 @@
 ---
-title: Token Speicher
+title: Token Service
 subtitle: Für die Verbindung zum zentralen Token Storage Dienst.
 
 menu:
@@ -9,7 +9,7 @@ weight: 1000
 mermaid: True
 ---
 
-## Kommunikation mit den Plugins
+# Kommunikation mit den Plugins
 
 Aufgrund der hohen Relevanz des zentralen Dienstes *Token Storage*, soll eine direkte Kommunikation zwischen diesen und der Außenwelt verhindert werden. Dafür kann der Anwender den TokenStorage Dienst im zweiten Zirkel verwenden, welcher die Funktionen für den Nutzer des zentralen Dienstes im dritten Zirkel anspricht. Für die Bequemlichkeit werden viele Konzepte erneut wegabstrahiert, sodass die Handhabung sehr bequem und einfach bleibt.
 
