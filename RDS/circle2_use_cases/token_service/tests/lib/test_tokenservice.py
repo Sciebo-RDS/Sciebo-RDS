@@ -442,8 +442,6 @@ class Test_TokenService(unittest.TestCase):
         state = jwt.encode(data, key, algorithm='HS256')
 
         new_obj = {}
-        new_obj["servicename"] = data["servicename"]
-        new_obj["authorize_url"] = data["authorize_url"]
         new_obj["jwt"] = state
 
         expected = [new_obj]
@@ -472,8 +470,6 @@ class Test_TokenService(unittest.TestCase):
         state = jwt.encode(data, key, algorithm='HS256')
 
         new_obj = {}
-        new_obj["servicename"] = data["servicename"]
-        new_obj["authorize_url"] = data["authorize_url"]
         new_obj["jwt"] = state
 
         expected = new_obj

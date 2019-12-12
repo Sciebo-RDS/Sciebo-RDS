@@ -17,19 +17,21 @@ load_object = Util.try_function_on_dict(func)
 
 
 class TokenService():
-    secret = secrets.token_urlsafe()
+    # static
+    secret = os.getenv("TOKENSERVICE_STATE_SECRET") if os.getenv(
+        "TOKENSERVICE_STATE_SECRET") is not None else secrets.token_urlsafe()
+    address = os.getenv("CENTRAL-SERVICE_TOKEN-STORAGE")
 
     def __init__(self, address=None):
-        self.address = address if address is not None else os.getenv(
-            "CENTRAL-SERVICE_TOKEN-STORAGE")
+        if address is not None:
+            # overwrite static in this scope
+            self.address = address
+
+        # TODO: if static and address is None, look up file
         if self.address is None:
-            # TODO: load address from oai file
+            # load address from oai file
             # https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/token_service/central-service_token-storage.yml
             pass
-
-        secret = os.getenv("TOKENSERVICE_STATE_SECRET")
-        if secret is not None:
-            self.secret = secret
 
     def getOAuthURIForService(self, service: Service) -> str:
         """
@@ -103,8 +105,6 @@ class TokenService():
         }
         state = jwt.encode(data, self.secret, algorithm='HS256')
 
-        new_obj["servicename"] = service.servicename
-        new_obj["authorize_url"] = service.authorize_url
         new_obj["jwt"] = state
 
         return new_obj
@@ -261,13 +261,14 @@ class TokenService():
         except TokenNotFoundError:
             raise ServiceNotFoundError(service)
 
-    def exchangeAuthCodeToAccessToken(self, code: str, service : Union[str, OAuth2Service]) -> OAuth2Token:
+    def exchangeAuthCodeToAccessToken(self, code: str, service: Union[str, OAuth2Service]) -> OAuth2Token:
         """
         Exchanges the given `code` by the given `service`
         """
 
         if not isinstance(service, (str, OAuth2Service)) and type(service) is not OAuth2Service:
-            raise ValueError("Given service argument is not a valid string or OAuth2Service.")
+            raise ValueError(
+                "Given service argument is not a valid string or OAuth2Service.")
 
         if type(service) is str:
             # get service from tokenStorage for whom the code is
@@ -312,6 +313,7 @@ class TokenService():
             f"{self.address}/user/{user_id}/token", data=json.dumps(oauthtoken))
 
         if response.status_code is not 200:
-            raise CodeNotExchangeable(code, Service(servicename), msg=response.text)
+            raise CodeNotExchangeable(
+                code, Service(servicename), msg=response.text)
 
         return oauthtoken
