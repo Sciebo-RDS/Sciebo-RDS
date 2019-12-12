@@ -27,7 +27,7 @@ def create_app():
     # set var for mock service
     os.environ["CENTRAL-SERVICE_TOKEN-STORAGE"] = address
     # creates a test client
-    app = bootstrap(use_optimizer=True, use_default_error=True, storage_address=address).app
+    app = bootstrap(use_optimizer={"compress":False, "minify": False}, use_default_error=True, storage_address=address).app
     # propagate the exceptions to the test client
     app.config.update({"TESTING": True})
 
@@ -77,8 +77,10 @@ class Test_TokenServiceServer(unittest.TestCase):
         self.assertEqual(response.status_code, 200,
                          msg=response.get_data(as_text=True))
 
+        # ignore signature
         resp_state = jwt.decode(response.json["jwt"], "secret", verify=False)
         logger.info(resp_state)
+
         self.assertEqual(resp_state["servicename"], service.servicename)
         self.assertEqual(resp_state["authorize_url"], service.authorize_url)
 
@@ -89,8 +91,10 @@ class Test_TokenServiceServer(unittest.TestCase):
         self.assertEqual(response.status_code, 200,
                          msg=response.get_data(as_text=True))
 
+        # ignore signature
         resp_state = jwt.decode(response.json["jwt"], "secret", verify=False)
         logger.info(resp_state)
+
         self.assertEqual(resp_state["servicename"], service.servicename)
         self.assertEqual(resp_state["authorize_url"], service.authorize_url)
         self.assertEqual(resp_state["date"], date)
@@ -145,6 +149,23 @@ class Test_TokenServiceServer(unittest.TestCase):
         # test for no service found
         # test for invalid code
         # test for token, which not saved in token storage
+
+    @unittest.skip
+    def test_user(self):
+        # TODO test /user
+        pass
+
+    @unittest.skip
+    def test_user_service(self):
+        # TODO test /user/{user-id}/service
+        pass
+    
+    @unittest.skip
+    def test_service_all(self):
+        # TODO test /service (do not test /service/{servicename}, because its tested in redirect)
+        pass
+
+
 
 
 if __name__ == '__main__':
