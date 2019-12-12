@@ -4,7 +4,7 @@ import json
 from flask import jsonify
 from lib.Service import Service, OAuth2Service
 from lib.User import User
-from lib.Token import Token
+from lib.Token import Token, OAuth2Token
 import Util
 from lib.Exceptions.ServiceExceptions import *
 import jwt
@@ -53,6 +53,16 @@ class TokenService():
 
         return [load_object(svc).authorize_url for svc in data["list"]]
 
+    def getService(self, servicename: str) -> Service:
+        """
+        Returns a dict like self.getAllServices, but for only a single servicename (str).
+        """
+        response = requests.get(f"{self.address}/service/{servicename}")
+        if response.status_code is not 200:
+            raise Exception(response.text)
+
+        return self.internal_getDictWithStateFromService(load_object(response.text))
+
     def getAllServices(self) -> list:
         """
         Returns a `list` of `dict` which represents all registered services.
@@ -61,36 +71,42 @@ class TokenService():
         {
             "servicename": string,
             "authorize_url": string,
-            "date": datetime
+            "jwt": string (json / jwt)
         }
         """
         response = requests.get(f"{self.address}/service")
+        if response.status_code is not 200:
+            raise Exception(response.text)
+
         data = response.json()
 
         result_list = []
         for svc in data["list"]:
-            new_obj = {}
-
             obj = load_object(svc)
             if type(obj) is not OAuth2Service:
                 continue
 
-            date = str(datetime.datetime.now())
-
-            data = {
-                "servicename": obj.servicename,
-                "authorize_url": obj.authorize_url,
-                "date": date
-            }
-            state = jwt.encode(data, self.secret, algorithm='HS256')
-
-            new_obj["servicename"] = obj.servicename
-            new_obj["authorize_url"] = obj.authorize_url
-            new_obj["jwt"] = state
-
-            result_list.append(new_obj)
+            result_list.append(self.internal_getDictWithStateFromService(obj))
 
         return result_list
+
+    def internal_getDictWithStateFromService(self, service: Service) -> dict:
+        new_obj = {}
+
+        date = str(datetime.datetime.now())
+
+        data = {
+            "servicename": service.servicename,
+            "authorize_url": service.authorize_url,
+            "date": date
+        }
+        state = jwt.encode(data, self.secret, algorithm='HS256')
+
+        new_obj["servicename"] = service.servicename
+        new_obj["authorize_url"] = service.authorize_url
+        new_obj["jwt"] = state
+
+        return new_obj
 
     def getAllServicesForUser(self, user: User) -> list:
         """
@@ -243,3 +259,44 @@ class TokenService():
             return self.internal_removeTokenForStringFromUser(service.servicename, user)
         except TokenNotFoundError:
             raise ServiceNotFoundError(service)
+
+    def exchangeAuthCodeToAccessToken(self, code: str, servicename: str, refresh_url: str) -> OAuth2Token:
+        # get service from tokenStorage for whom the code is
+        response = requests.get(
+            "{}/service/{}".format(address, servicename))
+
+        if response.status_code is not 200:
+            raise CodeNotExchangeable(code, service, msg=response.text)
+
+        service = load_object(response.text)
+
+        # FIXME: FLASK_HOST_ADDRESS needs to be set in dockerfile
+        body = {
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:8080"))
+        }
+
+        response = requests.post(f"{refresh_url}", data=body, auth=(
+            service.client_id, service.client_secret))
+
+        if response.status_code is not 200:
+            raise CodeNotExchangeable(code, service, msg=response.text)
+
+        response_with_access_token = response.json()
+        access_token = response_with_access_token["access_token"]
+        refresh_token = response_with_access_token["refresh_token"]
+        exp_date = datetime.datetime.now(
+        ) + datetime.timedelta(seconds=response_with_access_token["expires_in"])
+
+        oauthtoken = OAuth2Token(
+            service.servicename, access_token, refresh_token, exp_date)
+
+        # save the access_token in tokenStorage
+        response = requests.post(
+            "{}/{}/token".format(address, response_with_access_token["user_id"]), data=oauthtoken)
+
+        if response.status_code is not 200:
+            raise CodeNotExchangeable(code, service, msg=response.text)
+
+        return oauthtoken

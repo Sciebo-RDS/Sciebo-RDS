@@ -47,3 +47,12 @@ class UserAlreadyRegisteredError(UserNotFoundError):
 
         super(UserAlreadyRegisteredError, self).__init__(msg)
         self.user = user
+
+class CodeNotExchangeable(Exception):
+    def __init__(self, code, service, msg=None):
+        if msg is None:
+            msg = f"Code {code} coult not be exchanged for {service}"
+
+        super(CodeNotExchangeable, self).__init__(msg)
+        self.code = code
+        self.service = service

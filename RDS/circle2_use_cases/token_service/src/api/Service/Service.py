@@ -7,4 +7,4 @@ def index():
 
 
 def get(servicename):
-    return jsonify(TokenService().getOAuthURIForService(servicename))
+    return jsonify(TokenService().getService(servicename))

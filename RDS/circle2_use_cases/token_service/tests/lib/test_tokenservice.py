@@ -424,7 +424,7 @@ class Test_TokenService(unittest.TestCase):
         pact.given(
             'one service was registered.'
         ).upon_receiving(
-            'a request to get all services, but secret is wrong.'
+            'a request to get all services and secret is okay.'
         ).with_request(
             'GET', "/service"
         ) .will_respond_with(200, body={"length": 1, "list": [self.service1.to_json()]})
@@ -449,6 +449,36 @@ class Test_TokenService(unittest.TestCase):
         expected = [new_obj]
 
         self.assertEqual(req_list, expected)
+
+        # test the single service getter.
+        pact.given(
+            'one service was registered.'
+        ).upon_receiving(
+            'a request to get this one service and secret is okay.'
+        ).with_request(
+            'GET', f"/service/{self.service1.servicename}"
+        ) .will_respond_with(200, body=self.service1.to_json())
+
+        self.tokenService.secret = key
+        req_svc = self.tokenService.getService(self.service1.servicename)
+        req = jwt.decode(req_svc["jwt"], key, algorithms='HS256')
+
+        data = {
+            "servicename": self.service1.servicename,
+            "authorize_url": self.service1.authorize_url,
+            "date": req["date"]
+        }
+
+        state = jwt.encode(data, key, algorithm='HS256')
+
+        new_obj = {}
+        new_obj["servicename"] = data["servicename"]
+        new_obj["authorize_url"] = data["authorize_url"]
+        new_obj["jwt"] = state
+
+        expected = new_obj
+
+        self.assertEqual(req_svc, expected)
 
     def test_static_secret(self):
         # test the static secret variable for this run.
