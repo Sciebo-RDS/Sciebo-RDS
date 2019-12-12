@@ -1,10 +1,11 @@
-from lib.TokenService import TokenService
 from flask import jsonify
+import Util
+from connexion_plus import FlaskOptimize
 
-
+@FlaskOptimize.set_cache_timeout(3600)
 def index():
-    return jsonify(TokenService().getAllServices())
+    return jsonify(Util.tokenService.getAllServices())
 
-
+@FlaskOptimize.set_cache_timeout(3600)
 def get(servicename):
-    return jsonify(TokenService().getService(servicename))
+    return Util.tokenService.getService(servicename)

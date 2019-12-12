@@ -1,5 +1,5 @@
 from flask import request, redirect
-from lib.TokenService import TokenService
+import Util
 import jwt
 import os
 import requests
@@ -7,13 +7,15 @@ from jwt.exceptions import InvalidSignatureError
 import Util
 import logging
 from lib.Exceptions.ServiceExceptions import CodeNotExchangeable
+from lib.Service import OAuth2Service
+from connexion_plus import FlaskOptimize
 
 func = [Util.initialize_object_from_json, Util.initialize_object_from_dict]
 load_object = Util.try_function_on_dict(func)
 
 logger = logging.getLogger()
 
-
+@FlaskOptimize.do_not_minify()
 def index():
     if "code" not in request.args or "state" not in request.args:
         return redirect("/authorization_cancel")
@@ -25,13 +27,16 @@ def index():
     data = None
 
     try:
-        data = jwt.decode(state, TokenService().secret, algorithms="HS256")
+        logger.info(data)
+        data = jwt.decode(state, Util.tokenService.secret, algorithms="HS256")
 
-        TokenService().exchangeAuthCodeToAccessToken(
-            code, data["servicename"], data["refresh_url"])
+        logger.info(data)
+
+        Util.tokenService.exchangeAuthCodeToAccessToken(
+            code, data["servicename"])
 
         return redirect("/authorization_success")
 
     except Exception as e:
-        logger.error(e)
+        logger.error(str(e))
         return redirect("/authorization_cancel")

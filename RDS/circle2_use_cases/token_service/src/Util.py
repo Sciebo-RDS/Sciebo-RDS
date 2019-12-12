@@ -1,6 +1,8 @@
 import importlib
 import json
 
+# singleton
+tokenService = None
 
 def load_class_from_json(jsonStr: str):
     """

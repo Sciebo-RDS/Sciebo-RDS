@@ -442,7 +442,7 @@ class Test_TokenService(unittest.TestCase):
         state = jwt.encode(data, key, algorithm='HS256')
 
         new_obj = {}
-        new_obj["jwt"] = state
+        new_obj["jwt"] = state.decode("utf-8")
 
         expected = [new_obj]
 
@@ -470,7 +470,7 @@ class Test_TokenService(unittest.TestCase):
         state = jwt.encode(data, key, algorithm='HS256')
 
         new_obj = {}
-        new_obj["jwt"] = state
+        new_obj["jwt"] = state.decode("utf-8")
 
         expected = new_obj
 

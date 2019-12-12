@@ -7,6 +7,9 @@ from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 
 from flask import jsonify
 
+import Util as ServerUtil
+from lib.TokenService import TokenService
+
 log_level = logging.DEBUG
 logger = logging.getLogger('')
 logging.getLogger('').handlers = []
@@ -16,6 +19,12 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
 def bootstrap(name='MicroService', *args, **kwargs):
     list_openapi = Util.load_oai(
         os.getenv("OPENAPI_FILEPATH", "use-case_token-storage.yml"))
+
+    if "storage_address" in kwargs:
+        ServerUtil.tokenService = TokenService(kwargs["storage_address"])
+        del kwargs["storage_address"]
+    else:
+        ServerUtil.tokenService = TokenService()
 
     app = App(name, *args, **kwargs)
 

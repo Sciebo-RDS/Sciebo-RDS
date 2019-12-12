@@ -14,18 +14,14 @@ paths:
       summary: Redirect the user to the specified uri
       tags: []
       responses:
-        '200':
-          description: OK
+        '302':
+          description: Found
       description: |-
         This endpoint takes all tokens to send it to the central-service to save them there and redirects user to `/authorization-success` or `/authorization-cancel`, if anything is wrong with the given data.
 
         please specify this endpoint when asked for a redirect-uri.
       parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/oauth'
+    parameters: []
   '/service/{servicename}':
     parameters:
       - schema:

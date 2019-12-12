@@ -23,7 +23,7 @@ class TokenService():
     address = os.getenv("CENTRAL-SERVICE_TOKEN-STORAGE")
 
     def __init__(self, address=None):
-        if address is not None:
+        if address is not None and isinstance(address, str):
             # overwrite static in this scope
             self.address = address
 
@@ -72,9 +72,14 @@ class TokenService():
 
         `dict` use struct:
         {
-            "servicename": string,
-            "authorize_url": string,
             "jwt": string (json / jwt)
+        }
+
+        jwt is base64 encoded, separated by dots, payload struct:
+        {
+            "servicename"
+            "authorize_url"
+            "date"
         }
         """
         response = requests.get(f"{self.address}/service")
@@ -94,6 +99,11 @@ class TokenService():
         return result_list
 
     def internal_getDictWithStateFromService(self, service: Service) -> dict:
+        """
+        **Internal use only**
+
+        Returns a service as jwt encoded dict.
+        """
         new_obj = {}
 
         date = str(datetime.datetime.now())
@@ -105,7 +115,7 @@ class TokenService():
         }
         state = jwt.encode(data, self.secret, algorithm='HS256')
 
-        new_obj["jwt"] = state
+        new_obj["jwt"] = state.decode("utf-8")
 
         return new_obj
 
