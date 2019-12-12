@@ -482,8 +482,8 @@ class Test_TokenService(unittest.TestCase):
 
     def test_static_secret(self):
         # test the static secret variable for this run.
-        frst = TokenService().secret
-        scnd = TokenService().secret
+        frst = self.tokenService.secret
+        scnd = self.tokenService.secret
         thrd = TokenService.secret
 
         self.assertEqual(frst, scnd)
@@ -500,7 +500,8 @@ class Test_TokenService(unittest.TestCase):
         ) .will_respond_with(404, body={"error": "ServiceNotExistsError", "description": "Service not found."})
 
         with self.assertRaises(ServiceNotFoundError):
-            TokenService().getTokenForServiceFromUser(self.service1, self.user1)
+            self.tokenService.getTokenForServiceFromUser(
+                self.service1, self.user1)
 
         # test get token, if one token, but not same is there
         pact.given(
@@ -512,7 +513,8 @@ class Test_TokenService(unittest.TestCase):
         ) .will_respond_with(404, body={"error": "ServiceNotExistsError", "description": "Service not found."})
 
         with self.assertRaises(ServiceNotFoundError):
-            TokenService().getTokenForServiceFromUser(self.service1, self.user1)
+            self.tokenService.getTokenForServiceFromUser(
+                self.service1, self.user1)
 
         # test, get token successful
         pact.given(
@@ -523,7 +525,7 @@ class Test_TokenService(unittest.TestCase):
             'GET', f"/user/{self.user1.username}/token/{self.service1.servicename}"
         ) .will_respond_with(200, body=self.token1.to_json())
 
-        self.assertEqual(TokenService().getTokenForServiceFromUser(
+        self.assertEqual(self.tokenService.getTokenForServiceFromUser(
             self.service1, self.user1), self.token1)
 
         # test, get oauthtoken successful, but it have to be reduced to token
@@ -535,9 +537,10 @@ class Test_TokenService(unittest.TestCase):
             'GET', f"/user/{self.user1.username}/token/{self.service1.servicename}"
         ) .will_respond_with(200, body=self.token2.to_json())
 
-        reduced_token = Token(self.token2.servicename, self.token2.access_token)
+        reduced_token = Token(self.token2.servicename,
+                              self.token2.access_token)
 
-        self.assertEqual(TokenService().getTokenForServiceFromUser(
+        self.assertEqual(self.tokenService.getTokenForServiceFromUser(
             self.service1, self.user1), reduced_token)
 
     def test_remove_token_for_service_from_user(self):
@@ -551,7 +554,8 @@ class Test_TokenService(unittest.TestCase):
         ) .will_respond_with(404, body={"error": "ServiceNotExistsError", "description": "Service not found."})
 
         with self.assertRaises(ServiceNotFoundError):
-            TokenService().removeTokenForServiceFromUser(self.service1, self.user1)
+            self.tokenService.removeTokenForServiceFromUser(
+                self.service1, self.user1)
 
         # remove the token, if one different token for it is there
         pact.given(
@@ -563,7 +567,8 @@ class Test_TokenService(unittest.TestCase):
         ) .will_respond_with(404, body={"error": "ServiceNotExistsError", "description": "Service not found."})
 
         with self.assertRaises(ServiceNotFoundError):
-            TokenService().removeTokenForServiceFromUser(self.service1, self.user1)
+            self.tokenService.removeTokenForServiceFromUser(
+                self.service1, self.user1)
 
         # remove the token, if the searched token for it is there
         pact.given(
@@ -574,5 +579,91 @@ class Test_TokenService(unittest.TestCase):
             'DELETE', f"/user/{self.user1.username}/token/{self.service1.servicename}"
         ) .will_respond_with(200, body={"success": True})
 
-        self.assertEqual(TokenService().removeTokenForServiceFromUser(
+        self.assertEqual(self.tokenService.removeTokenForServiceFromUser(
             self.service1, self.user1), True)
+
+    def test_exchange_code(self):
+        # TODO: test self.tokenService.exchangeAuthCodeToAccessToken
+        code = "XYZABC"
+
+        service = OAuth2Service(
+            "localhost", f"{self.tokenService.address}/authorize", f"{self.tokenService.address}/oauth2/token", "ABC", "XYZ")
+
+        body = {
+            "access_token": "1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ",
+            "token_type": "Bearer",
+            "expires_in": 3600,
+            "refresh_token": "7y0wJuvKmj5E1vjVnhlPBEhha59JyaAiFIVQDvcBY2ss0pauzdQtnuo1NkIsbndA",
+            "user_id": self.user1.username,
+            "message_url": "https://www.example.org/owncloud/index.php/apps/oauth2/authorization-successful"
+        }
+
+        # need pact for service from Token Storage
+        pact.given(
+            'An oauthservice was registered.'
+        ).upon_receiving(
+            'A request to get this oauthservice.'
+        ).with_request(
+            'GET', f"/service/{service.servicename}"
+        ) .will_respond_with(200, body=service.to_json())
+
+        # need pact for exchange for code
+        pact.given(
+            'Client ID and secret was registered.'
+        ).upon_receiving(
+            'A request to exchange the given auth code to get access token and refresh token.'
+        ).with_request(
+            'POST', f"/oauth2/token"
+        ) .will_respond_with(200, body=body)
+
+        expected = OAuth2Token(service.servicename, body["access_token"], body["refresh_token"], datetime.now(
+        ) + timedelta(seconds=body["expires_in"]))
+
+        # need pact for save the access and refresh token in Token Storage
+        pact.given(
+            'No token was registered for user'
+        ).upon_receiving(
+            'A request to add an oauthtoken.'
+        ).with_request(
+            'POST', f"/user/{self.user1.username}/token"
+        ) .will_respond_with(200, body={"success": True})
+
+        token = self.tokenService.exchangeAuthCodeToAccessToken(
+            code, service.servicename, service.refresh_url)
+
+        self.assertEqual(token, expected)
+
+        # test serviceNotFoundError
+        pact.given(
+            'no oauthservice was registered.'
+        ).upon_receiving(
+            'A request to get a oauthservice.'
+        ).with_request(
+            'GET', f"/service/{service.servicename}"
+        ) .will_respond_with(500, body={"error": "ServiceNotExistsError", "http_code": 500})
+
+        with self.assertRaises(ServiceNotFoundError):
+            self.tokenService.exchangeAuthCodeToAccessToken(
+                code, service.servicename, service.refresh_url)
+
+        # test CodeNotExchangeableError
+        pact.given(
+            'An oauthservice was registered.'
+        ).upon_receiving(
+            'A request to get this oauthservice for exchange code.'
+        ).with_request(
+            'GET', f"/service/{service.servicename}"
+        ) .will_respond_with(200, body=service.to_json())
+
+        # need pact for exchange for code
+        pact.given(
+            'Client ID and secret was not registered.'
+        ).upon_receiving(
+            'A request to exchange the given auth code to get access token and refresh token.'
+        ).with_request(
+            'POST', f"/oauth2/token"
+        ) .will_respond_with(500, body={"error": "Login not successful"})
+
+        with self.assertRaises(CodeNotExchangeable):
+            self.tokenService.exchangeAuthCodeToAccessToken(
+                code, service.servicename, service.refresh_url)

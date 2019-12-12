@@ -263,27 +263,33 @@ class TokenService():
     def exchangeAuthCodeToAccessToken(self, code: str, servicename: str, refresh_url: str) -> OAuth2Token:
         # get service from tokenStorage for whom the code is
         response = requests.get(
-            "{}/service/{}".format(address, servicename))
+            f"{self.address}/service/{servicename}")
 
         if response.status_code is not 200:
-            raise CodeNotExchangeable(code, service, msg=response.text)
+            raise ServiceNotFoundError(Service(servicename), msg=response.text)
 
         service = load_object(response.text)
+
+        if type(service) is not OAuth2Service:
+            raise ServiceNotFoundError(
+                service, msg="No oauthservice for {service} found.")
 
         # FIXME: FLASK_HOST_ADDRESS needs to be set in dockerfile
         body = {
             "grant_type": "authorization_code",
             "code": code,
-            "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:8080"))
+            "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:3000"))
         }
 
         response = requests.post(f"{refresh_url}", data=body, auth=(
             service.client_id, service.client_secret))
 
         if response.status_code is not 200:
-            raise CodeNotExchangeable(code, service, msg=response.text)
+            raise CodeNotExchangeable(code, Service(servicename), msg=response.text)
 
         response_with_access_token = response.json()
+
+        user_id = response_with_access_token["user_id"]
         access_token = response_with_access_token["access_token"]
         refresh_token = response_with_access_token["refresh_token"]
         exp_date = datetime.datetime.now(
@@ -294,9 +300,9 @@ class TokenService():
 
         # save the access_token in tokenStorage
         response = requests.post(
-            "{}/{}/token".format(address, response_with_access_token["user_id"]), data=oauthtoken)
+            f"{self.address}/user/{user_id}/token", data=json.dumps(oauthtoken))
 
         if response.status_code is not 200:
-            raise CodeNotExchangeable(code, service, msg=response.text)
+            raise CodeNotExchangeable(code, Service(servicename), msg=response.text)
 
         return oauthtoken
