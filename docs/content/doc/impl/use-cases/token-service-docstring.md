@@ -364,6 +364,48 @@ Exchanges the given `code` by the given `service`
 
 ## lib.Exceptions.ServiceException
 
+### ServiceNotFoundError
+```python
+ServiceNotFoundError(self, service:lib.Service.Service, msg=None)
+```
+
+Represents an error, when a service was not found.
+
+### TokenNotFoundError
+```python
+TokenNotFoundError(self, token:lib.Token.Token, msg=None)
+```
+
+Represents an error, when a token was not found.
+
+### UserNotFoundError
+```python
+UserNotFoundError(self, user:lib.User.User, msg=None)
+```
+
+Represents an error, when an user was not found.
+
+### UserHasTokenAlreadyError
+```python
+UserHasTokenAlreadyError(self, user:lib.User.User, token:lib.Token.Token, msg=None)
+```
+
+Represents an error, when a user has already a token for the service.
+
+### UserAlreadyRegisteredError
+```python
+UserAlreadyRegisteredError(self, user:lib.User.User, msg=None)
+```
+
+Represents an error, when a user-id is already registered.
+
+### CodeNotExchangeable
+```python
+CodeNotExchangeable(self, code, service, msg=None)
+```
+
+Represents an error, when a given code for the oauth workflow could not be exchanged against an access_token.
+
 ## Util
 
 ### load_class_from_json

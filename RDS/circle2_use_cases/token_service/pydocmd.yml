@@ -11,7 +11,7 @@ generate:
     - lib.Token++
     - lib.Service++
     - lib.TokenService++     # (+ to include members)
-    - lib.Exceptions.ServiceException++
+    - lib.Exceptions.ServiceException+++
     - Util+
 
 # MkDocs pages configuration. The `<<` operator is sugar added by pydocmd
