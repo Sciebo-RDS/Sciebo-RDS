@@ -10,6 +10,7 @@ from lib.Exceptions.ServiceExceptions import *
 import jwt
 import datetime
 import secrets
+from typing import Union
 
 func = [Util.initialize_object_from_json, Util.initialize_object_from_dict]
 load_object = Util.try_function_on_dict(func)
@@ -260,19 +261,27 @@ class TokenService():
         except TokenNotFoundError:
             raise ServiceNotFoundError(service)
 
-    def exchangeAuthCodeToAccessToken(self, code: str, servicename: str, refresh_url: str) -> OAuth2Token:
-        # get service from tokenStorage for whom the code is
-        response = requests.get(
-            f"{self.address}/service/{servicename}")
+    def exchangeAuthCodeToAccessToken(self, code: str, service : Union[str, OAuth2Service]) -> OAuth2Token:
+        """
+        Exchanges the given `code` by the given `service`
+        """
 
-        if response.status_code is not 200:
-            raise ServiceNotFoundError(Service(servicename), msg=response.text)
+        if not isinstance(service, (str, OAuth2Service)) and type(service) is not OAuth2Service:
+            raise ValueError("Given service argument is not a valid string or OAuth2Service.")
 
-        service = load_object(response.text)
+        if type(service) is str:
+            # get service from tokenStorage for whom the code is
+            response = requests.get(
+                f"{self.address}/service/{service}")
 
-        if type(service) is not OAuth2Service:
-            raise ServiceNotFoundError(
-                service, msg="No oauthservice for {service} found.")
+            if response.status_code is not 200:
+                raise ServiceNotFoundError(Service(service), msg=response.text)
+
+            service = load_object(response.text)
+
+            if type(service) is not OAuth2Service:
+                raise ServiceNotFoundError(
+                    service, msg="No oauthservice for {service} found, so we cannot exchange code.")
 
         # FIXME: FLASK_HOST_ADDRESS needs to be set in dockerfile
         body = {
@@ -281,11 +290,11 @@ class TokenService():
             "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:3000"))
         }
 
-        response = requests.post(f"{refresh_url}", data=body, auth=(
+        response = requests.post(f"{service.refresh_url}", data=body, auth=(
             service.client_id, service.client_secret))
 
         if response.status_code is not 200:
-            raise CodeNotExchangeable(code, Service(servicename), msg=response.text)
+            raise CodeNotExchangeable(code, service, msg=response.text)
 
         response_with_access_token = response.json()
 

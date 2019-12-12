@@ -583,11 +583,13 @@ class Test_TokenService(unittest.TestCase):
             self.service1, self.user1), True)
 
     def test_exchange_code(self):
-        # TODO: test self.tokenService.exchangeAuthCodeToAccessToken
         code = "XYZABC"
-
         service = OAuth2Service(
             "localhost", f"{self.tokenService.address}/authorize", f"{self.tokenService.address}/oauth2/token", "ABC", "XYZ")
+
+        with self.assertRaises(ValueError):
+            self.tokenService.exchangeAuthCodeToAccessToken(code, Service("localhost"))
+
 
         body = {
             "access_token": "1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ",
@@ -629,7 +631,31 @@ class Test_TokenService(unittest.TestCase):
         ) .will_respond_with(200, body={"success": True})
 
         token = self.tokenService.exchangeAuthCodeToAccessToken(
-            code, service.servicename, service.refresh_url)
+            code, service.servicename)
+
+        self.assertEqual(token, expected)
+
+        # test for service object
+        # need pact for exchange for code
+        pact.given(
+            'Client ID and secret was registered.'
+        ).upon_receiving(
+            'A request to exchange the given auth code to get access token and refresh token with service object.'
+        ).with_request(
+            'POST', f"/oauth2/token"
+        ) .will_respond_with(200, body=body)
+
+        # need pact for save the access and refresh token in Token Storage
+        pact.given(
+            'No token was registered for user'
+        ).upon_receiving(
+            'A request to add an oauthtoken with service object.'
+        ).with_request(
+            'POST', f"/user/{self.user1.username}/token"
+        ) .will_respond_with(200, body={"success": True})
+
+        token = self.tokenService.exchangeAuthCodeToAccessToken(
+            code, service)
 
         self.assertEqual(token, expected)
 
@@ -644,7 +670,7 @@ class Test_TokenService(unittest.TestCase):
 
         with self.assertRaises(ServiceNotFoundError):
             self.tokenService.exchangeAuthCodeToAccessToken(
-                code, service.servicename, service.refresh_url)
+                code, service.servicename)
 
         # test CodeNotExchangeableError
         pact.given(
@@ -666,4 +692,4 @@ class Test_TokenService(unittest.TestCase):
 
         with self.assertRaises(CodeNotExchangeable):
             self.tokenService.exchangeAuthCodeToAccessToken(
-                code, service.servicename, service.refresh_url)
+                code, service.servicename)
