@@ -6,7 +6,7 @@ import requests
 from jwt.exceptions import InvalidSignatureError
 import Util
 import logging
-from lib.Exceptions.ServiceExceptions import CodeNotExchangeable
+from lib.Exceptions.ServiceException import CodeNotExchangeable
 from lib.Service import OAuth2Service
 from connexion_plus import FlaskOptimize
 

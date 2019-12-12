@@ -2,7 +2,7 @@ from flask import jsonify, request, Response
 import Util, json
 
 from lib.Service import Service, OAuth2Service
-from lib.Exceptions.ServiceExceptions import ServiceExistsAlreadyError, ServiceNotExistsError
+from lib.Exceptions.ServiceException import ServiceExistsAlreadyError, ServiceNotExistsError
 from werkzeug.exceptions import abort
 
 

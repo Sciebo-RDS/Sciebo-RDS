@@ -1,4 +1,4 @@
-# Storage
+# TokenService
 
 ## lib.User
 
@@ -204,201 +204,165 @@ OAuth2Service.from_dict(serviceDict:dict)
 
 Returns an oauthservice object from a dict.
 
-## lib.Storage
+## lib.TokenService
 
-### Storage
+### TokenService
 ```python
-Storage(self)
+TokenService(self, address=None)
 ```
 
-Represents a Safe for Tokens.
+#### secret
+str(object='') -> str
+str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-#### getUsers
+Create a new string object from the given object. If encoding or
+errors is specified, then the object must expose a data buffer
+that will be decoded using the given encoding and error handler.
+Otherwise, returns the result of object.__str__() (if defined)
+or repr(object).
+encoding defaults to sys.getdefaultencoding().
+errors defaults to 'strict'.
+#### getOAuthURIForService
 ```python
-Storage.getUsers(self)
+TokenService.getOAuthURIForService(self, service:lib.Service.Service) -> str
 ```
 
-Returns a list of all registered users.
+Returns authorize-url as `String` for the given service.
 
-#### getUser
+#### getAllOAuthURIForService
 ```python
-Storage.getUser(self, user_id:str)
+TokenService.getAllOAuthURIForService(self) -> list
 ```
 
-Returns the user with user_id.
-
-Raise a `UserNotExistsError`, if user not found.
-
-#### getTokens
-```python
-Storage.getTokens(self, user_id:Union[str, lib.User.User]=None)
-```
-
-Returns a list of all managed tokens.
-
-If user_id (String or User) was given, then the tokens are filtered to this user.
-
-Raise a UserNotExistsError, if the given user not exists.
-
-#### getToken
-```python
-Storage.getToken(self, user_id:Union[str, lib.User.User], token_id:int)
-```
-
-Returns only the token with token_id from user_id (String or User).
-
-Raise `ValueError` if token_id not found and `UserNotExistsError` if user_id was not found.
-
-#### getServices
-```python
-Storage.getServices(self)
-```
-
-Returns a list of all registered services.
+Returns a `list` of `String` which represents all authorize-urls for registered services.
 
 #### getService
 ```python
-Storage.getService(self, service:Union[str, lib.Service.Service], index:bool=False)
+TokenService.getService(self, servicename:str) -> lib.Service.Service
 ```
 
-Returns the service object with the given servicename. If not found, returns None
+Returns a dict like self.getAllServices, but for only a single servicename (str).
 
-This function can be used to check, if an object is already a member of the list of services.
-
-Set parameter `index` to True to get the index as the second return value in tuple.
-
-#### addService
+#### getAllServices
 ```python
-Storage.addService(self, service:lib.Service.Service, Force=False)
+TokenService.getAllServices(self) -> list
 ```
 
-Add the given service to the list of services.
+Returns a `list` of `dict` which represents all registered services.
 
-Returns True if success.
-Otherwise raises a `ServiceExistsAlreadyError` if there is already a service with the same name.
+`dict` use struct:
+{
+    "jwt": string (json / jwt)
+}
 
-To force an update, you have to set the parameter `Force` to True.
+jwt is base64 encoded, separated by dots, payload struct:
+{
+    "servicename"
+    "authorize_url"
+    "date"
+}
 
-Raise an error, if parameter not a service object.
+#### internal_getDictWithStateFromService
+```python
+TokenService.internal_getDictWithStateFromService(self, service:lib.Service.Service) -> dict
+```
+
+**Internal use only**
+
+Returns a service as jwt encoded dict.
+
+#### getAllServicesForUser
+```python
+TokenService.getAllServicesForUser(self, user:lib.User.User) -> list
+```
+
+Returns a `list` for all services which the user has registered a token for.
 
 #### removeService
 ```python
-Storage.removeService(self, service:Union[str, lib.Service.Service])
+TokenService.removeService(self, service:lib.Service.Service) -> bool
 ```
 
-Removes the service with servicename.
+Remove a registered service.
 
-Returns True if a service was found and removed. Otherwise false.
+Returns `True` for success.
+
+Raise a `ServiceNotFoundError`, if service was not found.
+
+**Notice**: This function is currently discussed for removal.
 
 #### addUser
 ```python
-Storage.addUser(self, user:lib.User.User)
+TokenService.addUser(self, user:lib.User.User) -> bool
 ```
 
-Add user to the storage.
+Adds the given user to the token storage.
 
-If a User with the same username already exists, it raises UserExistsAlreadyError.
+Returns `True` for success.
+
+Raise an `UserAlreadyRegisteredError`, if user already registered.
 
 #### removeUser
 ```python
-Storage.removeUser(self, user:lib.User.User)
+TokenService.removeUser(self, user:lib.User.User) -> bool
 ```
 
-Remove given user from storage.
+Remove the given user from the token storage.
 
-If user not in storage, it raises an UserNotExistsError.
+Returns `True` for success.
 
-#### internal_removeUser
-```python
-Storage.internal_removeUser(self, user:lib.User.User)
-```
-
-Remove a user to _storage.
-
-This is an internal function. Please look at the external one.
-
-#### removeToken
-```python
-Storage.removeToken(self, user:lib.User.User, token:lib.Token.Token)
-```
-
-Remove a token from user.
-
-#### internal_removeToken
-```python
-Storage.internal_removeToken(self, user:lib.User.User, token:lib.Token.Token)
-```
-
-Remove a token from user.
-
-This is an internal function. Please look at the external one.
-
-#### internal_addUser
-```python
-Storage.internal_addUser(self, user:lib.User.User)
-```
-
-Add a user to the _storage.
-
-This is an internal function. Please take a look to the external one.
+Raise an `UserNotfoundError`, if user was not found.
 
 #### addTokenToUser
 ```python
-Storage.addTokenToUser(self, token:lib.Token.Token, user:lib.User.User, Force:bool=False)
+TokenService.addTokenToUser(self, token:lib.Token.Token, user:lib.User.User) -> bool
 ```
 
-Add a token to an existing user. If user not exists already in the _storage, it raises an UserNotExistsError.
-If token was added to user specific storage, then it returns `True`.
+Adds the given token to user.
 
-If a token is there for the same token provider, then a UserHasTokenAlreadyError.
+Returns `True` for success.
 
-Use `Force` Parameter (boolean) to create User, if not already exists and overwrite any existing Token.
+Raise an `UserNotFoundError`, if user not found.
+Raise a `ServiceNotFoundError`, if service not found.
 
-#### refresh_service
+#### removeTokenFromUser
 ```python
-Storage.refresh_service(self, service:lib.Service.Service)
+TokenService.removeTokenFromUser(self, token:lib.Token.Token, user:lib.User.User) -> bool
 ```
 
-Refresh all tokens, which corresponds to given service.
+Removes given token from user.
 
-Returns True, if one or more Tokens were found in the storage to refresh.
+Returns `True` for success.
 
-#### refresh_services
+Raise an `UserNotFoundError`, if user not found.
+Raise an `TokenNotFoundError`, if token not found for user.
+
+#### getTokenForServiceFromUser
 ```python
-Storage.refresh_services(self, services:list=None)
+TokenService.getTokenForServiceFromUser(self, service:lib.Service.Service, user:lib.User.User) -> bool
 ```
 
-Refresh all tokens, which corresponds to given list of services.
+Returns the token from type Token (struct: servicename: str, access_token: str) for given service from given user.
 
-If no services were given, it will be used the stored one.
+Raise ServiceNotExistsError, if no token for service was found.
 
-Returns True, if one or more Tokens were found in the storage to refresh.
-
-#### internal_refresh_services
+#### removeTokenForServiceFromUser
 ```python
-Storage.internal_refresh_services(self, services:list)
+TokenService.removeTokenForServiceFromUser(self, service:lib.Service.Service, user:lib.User.User) -> bool
 ```
 
-*Only for internal use. Do not use it in another class.*
+Remove the token for service from user.
 
-Refresh all tokens, which corresponds to given list of services.
+Raise ServiceNotFoundError, if no token for service was found.
 
-Returns True, if one or more Tokens were found in the storage to refresh.
-
-#### internal_find_service
+#### exchangeAuthCodeToAccessToken
 ```python
-Storage.internal_find_service(self, servicename:str, services:list)
+TokenService.exchangeAuthCodeToAccessToken(self, code:str, service:Union[str, lib.Service.OAuth2Service]) -> lib.Token.OAuth2Token
 ```
 
-Tries to find the given servicename in the list of services.
-
-Returns the index of the *first* found service with equal servicename.
-
-Otherwise raise an ValueError.
+Exchanges the given `code` by the given `service`
 
 ## lib.Exceptions.ServiceException
-
-## lib.Exceptions.StorageException
 
 ## Util
 
@@ -424,6 +388,15 @@ initialize_object_from_json(jsonStr:str)
 Initialize and returns an object of the given json string.
 
 This is the easiest way to reverse the to_json method for objects from our lib folder.
+
+### initialize_object_from_dict
+```python
+initialize_object_from_dict(jsonDict:dict)
+```
+
+Initialize and returns an object of the given dict.
+
+This is another easy way to reverse the to_json method for objects from our lib folder.
 
 ### internal_load_class
 ```python

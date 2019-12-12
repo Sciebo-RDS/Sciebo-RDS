@@ -3,7 +3,7 @@ from lib.Service import Service, OAuth2Service
 from lib.Storage import Storage
 from lib.Token import Token, OAuth2Token
 from lib.User import User
-from lib.Exceptions.ServiceExceptions import *
+from lib.Exceptions.ServiceException import *
 from pactman import Consumer, Provider
 
 from datetime import datetime
@@ -355,7 +355,7 @@ class TestStorageService(unittest.TestCase):
         _, index = self.empty_storage.getService(self.service2, index=True)
         self.assertIsNone(index)
 
-        from lib.Exceptions.ServiceExceptions import ServiceExistsAlreadyError
+        from lib.Exceptions.ServiceException import ServiceExistsAlreadyError
         with self.assertRaises(ServiceExistsAlreadyError):
             self.empty_storage.addService(self.service1)
 

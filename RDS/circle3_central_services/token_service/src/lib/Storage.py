@@ -2,7 +2,7 @@ from lib.User import User
 from lib.Token import Token, OAuth2Token
 from lib.Service import Service, OAuth2Service
 from typing import Union
-from lib.Exceptions.ServiceExceptions import ServiceExistsAlreadyError, ServiceNotExistsError
+from lib.Exceptions.ServiceException import ServiceExistsAlreadyError, ServiceNotExistsError
 
 import logging
 import requests
@@ -145,7 +145,7 @@ class Storage():
                 self._services[index] = service
                 return True
 
-            from lib.Exceptions.ServiceExceptions import ServiceExistsAlreadyError
+            from lib.Exceptions.ServiceException import ServiceExistsAlreadyError
             raise ServiceExistsAlreadyError(service)
 
         self._services.append(service)
@@ -336,7 +336,7 @@ class Storage():
                     continue
 
                 # refresh token
-                from .Exceptions.ServiceExceptions import OAuth2UnsuccessfulResponseError, TokenNotValidError
+                from .Exceptions.ServiceException import OAuth2UnsuccessfulResponseError, TokenNotValidError
                 try:
                     new_token = service.refresh(token)
                     self.addTokenToUser(new_token, user["data"], Force=True)

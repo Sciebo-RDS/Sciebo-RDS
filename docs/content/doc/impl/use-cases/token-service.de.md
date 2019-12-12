@@ -55,3 +55,5 @@ deactivate UC
 ```
 
 Das State-Argument wird, genauso wie das Code-Argument, mittels Query-Parameter weitergeleitet. Das Plugin entnimmt den JWT aus den Daten des Services. Durch den State kann der Service verifizieren, zu welchem Service der Code gehört.
+
+{{% code file="doc/impl/use-cases/token-service-docstring.md" %}}

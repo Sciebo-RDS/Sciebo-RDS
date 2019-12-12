@@ -148,29 +148,29 @@ class OAuth2Service(Service):
                 error_type = data["error"]
 
                 if error_type == "invalid_request":
-                    from .Exceptions.ServiceExceptions import OAuth2InvalidRequestError
+                    from .Exceptions.ServiceException import OAuth2InvalidRequestError
                     raise OAuth2InvalidRequestError()
                 elif error_type == "invalid_client":
-                    from .Exceptions.ServiceExceptions import OAuth2InvalidClientError
+                    from .Exceptions.ServiceException import OAuth2InvalidClientError
                     raise OAuth2InvalidClientError()
                 elif error_type == "invalid_grant":
-                    from .Exceptions.ServiceExceptions import OAuth2InvalidGrantError
+                    from .Exceptions.ServiceException import OAuth2InvalidGrantError
                     raise OAuth2InvalidGrantError()
                 elif error_type == "unauthorized_client":
-                    from .Exceptions.ServiceExceptions import OAuth2UnauthorizedClient
+                    from .Exceptions.ServiceException import OAuth2UnauthorizedClient
                     raise OAuth2UnauthorizedClient()
                 elif error_type == "unsupported_grant_type":
-                    from .Exceptions.ServiceExceptions import OAuth2UnsupportedGrantType
+                    from .Exceptions.ServiceException import OAuth2UnsupportedGrantType
                     raise OAuth2UnsupportedGrantType()
 
-            from .Exceptions.ServiceExceptions import OAuth2UnsuccessfulResponseError
+            from .Exceptions.ServiceException import OAuth2UnsuccessfulResponseError
             raise OAuth2UnsuccessfulResponseError()
 
         data = json.loads(req.text)
 
         """ obsolete
         if not data["user_id"] == self.client_id:
-            from .Exceptions.ServiceExceptions import TokenNotValidError
+            from .Exceptions.ServiceException import TokenNotValidError
             raise TokenNotValidError(
                 self, token, "User-ID in refresh response not equal to authenticated user.")
         """

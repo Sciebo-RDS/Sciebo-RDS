@@ -4,7 +4,7 @@ from lib.Storage import Storage
 from lib.Token import Token, OAuth2Token
 from lib.User import User
 from lib.Exceptions.StorageException import UserExistsAlreadyError, UserHasTokenAlreadyError, UserNotExistsError
-from lib.Exceptions.ServiceExceptions import ServiceNotExistsError, ServiceExistsAlreadyError
+from lib.Exceptions.ServiceException import ServiceNotExistsError, ServiceExistsAlreadyError
 from lib.Service import *
 
 

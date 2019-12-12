@@ -8,7 +8,7 @@ import json
 from lib.TokenService import TokenService
 from pactman import Consumer, Provider
 from server import bootstrap
-from lib.Exceptions.ServiceExceptions import *
+from lib.Exceptions.ServiceException import *
 from lib.Token import *
 from lib.Service import *
 from lib.User import *

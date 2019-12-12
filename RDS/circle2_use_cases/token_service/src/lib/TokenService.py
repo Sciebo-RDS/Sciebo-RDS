@@ -6,7 +6,7 @@ from lib.Service import Service, OAuth2Service
 from lib.User import User
 from lib.Token import Token, OAuth2Token
 import Util
-from lib.Exceptions.ServiceExceptions import *
+from lib.Exceptions.ServiceException import *
 import jwt
 import datetime
 import secrets

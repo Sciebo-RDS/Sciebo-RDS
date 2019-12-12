@@ -6,13 +6,12 @@ site_name: "My Documentation"
 # documented. Higher indentation leads to smaller header size.
 generate:
 - token-service.md:
-  - Storage:
+  - TokenService:
     - lib.User++
     - lib.Token++
     - lib.Service++
-    - lib.Storage++     # (+ to include members)
+    - lib.TokenService++     # (+ to include members)
     - lib.Exceptions.ServiceException++
-    - lib.Exceptions.StorageException++
     - Util+
 
 # MkDocs pages configuration. The `<<` operator is sugar added by pydocmd
