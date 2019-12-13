@@ -7,7 +7,7 @@ use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 
-class ServiceAPIController extends ApiController
+class ServiceApiController extends ApiController
 {
     private $rdsURL = "http://sciebords-dev.uni-muenster.de";
     private $userId;

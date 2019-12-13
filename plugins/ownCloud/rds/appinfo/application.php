@@ -3,7 +3,7 @@ namespace OCA\RDS\AppInfo;
 
 use \OCP\AppFramework\App;
 use \OCA\RDS\Controller\PageController;
-use \OCA\RDS\Controller\ServiceAPIController;
+use \OCA\RDS\Controller\ServiceApiController;
 
 class Application extends App {
     public function __construct(array $urlParams=array()){
@@ -20,8 +20,8 @@ class Application extends App {
             );
         });
 
-        $container->registerService('ServiceAPIController', function($c) {
-            return new ServiceAPIController(
+        $container->registerService('ServiceApiController', function($c) {
+            return new ServiceApiController(
                 $c->query('AppName'),
                 $c->query('Request'),
                 $c->query('UserId')
