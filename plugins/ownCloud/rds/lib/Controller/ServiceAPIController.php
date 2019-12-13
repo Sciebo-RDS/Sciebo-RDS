@@ -3,10 +3,11 @@
 namespace OCA\RDS\Controller;
 
 use OCP\IRequest;
-use OCP\AppFramework\Controller;
+use OCP\AppFramework\ApiController;
+use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 
-class ServiceController extends Controller
+class ServiceAPIController extends ApiController
 {
     private $rds_url = "http://sciebords-dev.uni-muenster.de";
 
