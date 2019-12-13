@@ -28,8 +28,31 @@
 
     Services.prototype = {
       loadAll: function() {
-        this.loadServices();
-        this.loadUserServices();
+        var deferred = $.Deferred();
+        var counter = 2;
+        this.loadServices()
+          .done(function() {
+            counter -= 1;
+            if (counter == 0) {
+              deferred.resolve();
+            }
+          })
+          .fail(function() {
+            alert("Could not load all services");
+            deferred.reject();
+          });
+        this.loadUserServices()
+          .done(function() {
+            counter -= 1;
+            if (counter == 0) {
+              deferred.resolve();
+            }
+          })
+          .fail(function() {
+            alert("Could not load user services");
+            deferred.reject();
+          });
+        return deferred.promise();
       },
 
       loadServices: function() {
