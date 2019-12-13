@@ -5,7 +5,7 @@
     function openAuthorizeOwncloud() {
       window.location.href =
         OC.generateUrl("/apps/oauth2/authorize") +
-        "?response_type=code&client_id=R5c76Dyjk8wcg2NQpnbMCkRKwXW2SYSOyB1fcueqWQTfigac3oTeV24IzRT69GmF&redirect_uri=http://localhost:8080/redirect";
+        "?response_type=code&client_id=sELuihhurmCifQV7hEyHAYSLNBedM5cBzGGnqLqU8ikg88JeNeRU69BcYMLxbNkz&redirect_uri=http://10.14.28.90/owncloud/index.php/settings/personal?sectionid=additional";
     }
 
     var button = document.getElementById("openAuthorizeOwncloud");
