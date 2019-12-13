@@ -9,7 +9,10 @@ use OCP\AppFramework\Http\JSONResponse;
 
 class ServiceAPIController extends ApiController
 {
-    private $rds_url = "http://sciebords-dev.uni-muenster.de";
+    private $rdsURL = "http://sciebords-dev.uni-muenster.de";
+    private $userId;
+    
+    use Errors;
 
     public function __construct($AppName, IRequest $request, $userId)
     {
@@ -26,7 +29,7 @@ class ServiceAPIController extends ApiController
      */
     public function index()
     {
-        $curl = curl_init($this->rds_url + "/service");
+        $curl = curl_init($this->rdsURL + "/service");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($curl));
@@ -43,9 +46,7 @@ class ServiceAPIController extends ApiController
             $listOfServices[] = $payload;
         }
 
-        $json = JSONResponse($listOfServices);
-
-        return $json;
+        return new JSONResponse($listOfServices);
     }
 
     /**
@@ -58,15 +59,13 @@ class ServiceAPIController extends ApiController
      */
     public function show($servicename)
     {
-        $curl = curl_init($this->rds_url + "/service/" + $servicename);
+        $curl = curl_init($this->rdsURL + "/service/" + $servicename);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($curl));
         curl_close($curl);
 
-        $json = JSONResponse($response);
-
-        return $json;
+        return new JSONResponse($response);
     }
 
     /**
@@ -79,16 +78,14 @@ class ServiceAPIController extends ApiController
      */
     public function removeServiceFromUser($servicename)
     {
-        $curl = curl_init($this->rds_url + "/user/" + $this->userId + "/service/" + $servicename);
+        $curl = curl_init($this->rdsURL + "/user/" + $this->userId + "/service/" + $servicename);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => "DELETE"];
         curl_setopt_array($curl, $options);
 
         $response = json_decode(curl_exec($curl));
         curl_close($curl);
 
-        $json = JSONResponse($response);
-
-        return $json;
+        return new JSONResponse($response);
     }
 
 
@@ -102,14 +99,12 @@ class ServiceAPIController extends ApiController
      */
     public function getRegisteredServicesForUser()
     {
-        $curl = curl_init($this->rds_url + "/user/" + $this->userId);
+        $curl = curl_init($this->rdsURL + "/user/" + $this->userId);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($curl));
         curl_close($curl);
 
-        $json = JSONResponse($response);
-
-        return $json;
+        return JSONResponse($response);
     }
 }
