@@ -171,12 +171,13 @@
       .loadAll()
       .done(function() {
         view.render();
-      })
-      .fail(function() {
-        var service_div = document.getElementById("services");
-        if (service_div) {
-          service_div.style.display = "none";
-        }
       });
+
+    if (services._user_services.length === 0) {
+      var serviceDiv = document.getElementById("services");
+      if (serviceDiv) {
+        serviceDiv.style.display = "none";
+      }
+    }
   });
 })(OC, window, jQuery);
