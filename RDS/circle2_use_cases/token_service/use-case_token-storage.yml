@@ -34,11 +34,17 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
+          description: |-
+            OK
+
+            For the jwt string, take a look at the jwt model.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/oauth_uri'
+                type: object
+                properties:
+                  jwt:
+                    type: string
         '302':
           description: Found
       description: |-
@@ -69,7 +75,10 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
+          description: |-
+            OK
+
+            For the jwt string, take a look at the jwt model.
           content:
             application/json:
               schema:
@@ -77,14 +86,10 @@ paths:
                 items:
                   type: object
                   properties:
-                    servicename:
-                      type: string
-                    authorize_url:
-                      type: string
                     jwt:
                       type: string
       description: Returns all available services.
-  '/user/{user-id}':
+  '/user/{user-id}/service':
     parameters:
       - schema:
           type: string
@@ -107,7 +112,10 @@ paths:
                   list:
                     type: array
                     items:
-                      type: string
+                      type: object
+                      properties:
+                        servicename:
+                          type: string
       operationId: ''
       description: Returns all services which the user is registered for.
   '/user/{user-id}/service/{servicename}':
@@ -183,3 +191,14 @@ components:
           type: string
         access_token:
           type: string
+    jwt:
+      title: jwt
+      type: object
+      properties:
+        servicename:
+          type: string
+        authorize_url:
+          type: string
+        date:
+          type: string
+      description: 'This string is a jwt, so it follows the structure: header.payload.signature. The payload follows the defined struct below.'

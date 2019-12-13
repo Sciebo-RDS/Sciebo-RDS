@@ -166,7 +166,7 @@ class Test_TokenService(unittest.TestCase):
 
         data = self.tokenService.getAllServicesForUser(
             self.user1)
-        self.assertEqual(data, [self.servicename1], msg=str(data[0]))
+        self.assertEqual(data, [{"servicename": self.servicename1}], msg=str(data[0]))
 
         # test to get all services from one user, with two services
         pact.given(
@@ -178,7 +178,7 @@ class Test_TokenService(unittest.TestCase):
         ) .will_respond_with(200, body={"length": 2, "list": [self.token1.to_json(), self.token2.to_json()]})
 
         self.assertEqual(self.tokenService.getAllServicesForUser(
-            self.user1), [self.servicename1, self.servicename2])
+            self.user1), [{"servicename": self.servicename1}, {"servicename": self.servicename2}])
 
     # FIXME: addService not through this use case? directly to central service?
     """

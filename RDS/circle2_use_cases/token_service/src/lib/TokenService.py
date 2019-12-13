@@ -129,7 +129,7 @@ class TokenService():
         services = []
         for l in data["list"]:
             token = load_object(l)
-            services.append(token.servicename)
+            services.append({"servicename": token.servicename})
 
         return services
 
