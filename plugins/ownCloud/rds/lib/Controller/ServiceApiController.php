@@ -12,8 +12,6 @@ class ServiceApiController extends ApiController
     private $rdsURL = "http://sciebords-dev.uni-muenster.de";
     private $userId;
     
-    use Errors;
-
     public function __construct($AppName, IRequest $request, $userId)
     {
         parent::__construct($AppName, $request);
