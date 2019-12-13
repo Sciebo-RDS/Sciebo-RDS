@@ -27,7 +27,7 @@ class ServiceApiController extends ApiController
      */
     public function index()
     {
-        $curl = curl_init($this->rdsURL + "/service");
+        $curl = curl_init($this->rdsURL . "/service");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($curl));
@@ -57,7 +57,7 @@ class ServiceApiController extends ApiController
      */
     public function show($servicename)
     {
-        $curl = curl_init($this->rdsURL + "/service/" + $servicename);
+        $curl = curl_init($this->rdsURL . "/service/" . $servicename);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($curl));
@@ -76,7 +76,7 @@ class ServiceApiController extends ApiController
      */
     public function removeServiceFromUser($servicename)
     {
-        $curl = curl_init($this->rdsURL + "/user/" + $this->userId + "/service/" + $servicename);
+        $curl = curl_init($this->rdsURL . "/user/" . $this->userId . "/service/" . $servicename);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => "DELETE"];
         curl_setopt_array($curl, $options);
 
@@ -97,7 +97,7 @@ class ServiceApiController extends ApiController
      */
     public function getRegisteredServicesForUser()
     {
-        $curl = curl_init($this->rdsURL + "/user/" + $this->userId);
+        $curl = curl_init($this->rdsURL . "/user/" . $this->userId);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($curl));
