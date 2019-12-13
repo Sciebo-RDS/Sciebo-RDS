@@ -56,4 +56,12 @@ deactivate UC
 
 Das State-Argument wird, genauso wie das Code-Argument, mittels Query-Parameter weitergeleitet. Das Plugin entnimmt den JWT aus den Daten des Services. Durch den State kann der Service verifizieren, zu welchem Service der Code gehört.
 
+## Service einem Nutzer zuordnen
+
+Bei einem Blick in die OpenAPI-Spezifikation ist ersichtlich, dass es keinen Endpunkt gibt, welcher Daten entgegennimmt. Das Hinzufügen eines Nutzers wird durch die `redirect_uri`-Resource im OAuth2-Workflow vollzogen, welcher auf den Enpdunkt `/redirect` verweisen muss. Der Nutzer wird dabei direkt auf das RDS weitergeleitet und erhält eine Rückmeldung über den Erfolg oder Misserfolg. Ob die Anfrage valide oder nicht ist, wird auch durch den Inhalt des `state`-Arguments (einem JWT Objekt) bestimmt, da dieser Informationen über die Anfrage enthält, welche durch die Signatur validiert werden.
+
+## OpenAPI
+
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/token_service/use-case_token-storage.yml"  >}}
+
 {{% code file="doc/impl/use-cases/token-service-docstring.md" %}}
