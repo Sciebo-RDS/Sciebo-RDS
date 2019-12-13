@@ -31,7 +31,12 @@ class ServiceApiController extends ApiController
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($curl));
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
+
+        if($httpcode >= 300) {
+            return new JSONResponse();
+        }
 
         $listOfServices = [];
 
@@ -61,7 +66,12 @@ class ServiceApiController extends ApiController
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($curl));
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
+
+        if($httpcode >= 300) {
+            return new JSONResponse();
+        }
 
         return new JSONResponse($response);
     }
@@ -81,7 +91,12 @@ class ServiceApiController extends ApiController
         curl_setopt_array($curl, $options);
 
         $response = json_decode(curl_exec($curl));
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
+
+        if($httpcode >= 300) {
+            return new JSONResponse();
+        }
 
         return new JSONResponse($response);
     }
@@ -101,7 +116,12 @@ class ServiceApiController extends ApiController
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($curl));
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
+
+        if($httpcode >= 300) {
+            return new JSONResponse();
+        }
 
         return JSONResponse($response);
     }
