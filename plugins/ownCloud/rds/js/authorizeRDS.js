@@ -5,7 +5,7 @@
     function openAuthorizeOwncloud() {
       window.location.href =
         OC.generateUrl("/apps/oauth2/authorize") +
-        "?response_type=code&client_id=sELuihhurmCifQV7hEyHAYSLNBedM5cBzGGnqLqU8ikg88JeNeRU69BcYMLxbNkz&redirect_uri=http://10.14.28.90/owncloud/index.php/settings/personal?sectionid=additional";
+        "?response_type=code&client_id=S4MQ9MjTqb2sV47noTsQJ6REijG0u0LkScWJA2VG3LHkq7ue5t3CQPlu4ypX7RkS&redirect_uri=http://sciebords-dev.uni-muenster.de/oauth2/redirect";
     }
 
     var button = document.getElementById("openAuthorizeOwncloud");
