@@ -49,7 +49,7 @@
     script('rds', 'authorizeRDS');
     p($l->t('Sciebo RDS is not authorized yet.'));
     ?><br>
-    <button onclick="openAuthorizeOwncloud()" class="button"><?php p($l->t('Authorize Sciebo RDS now.')); ?></button>
+    <button id="openAuthorizeOwncloud" class="button"><?php p($l->t('Authorize Sciebo RDS now.')); ?></button>
 <?php
 } ?>
 </div>
