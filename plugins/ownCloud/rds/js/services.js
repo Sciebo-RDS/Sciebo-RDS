@@ -174,6 +174,7 @@
       })
       .fail(function() {
         alert("Could not load services");
+        document.getElementById("services").style.display = "none";
       });
   });
 })(OC, window, jQuery);
