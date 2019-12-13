@@ -45,8 +45,8 @@ paths:
                 properties:
                   jwt:
                     type: string
-        '302':
-          description: Found
+        '404':
+          description: Not Found
       description: |-
         This is the normally known `/authorize` URL for oauth2 providers. If http-headers say, it is a machine, it returns a 200 code and give all informations for a manual redirect. Otherwise it redirects to the `/authorize` pages for the oauth2-providers with all needed service relevant informations like client_id.
 
@@ -116,6 +116,10 @@ paths:
                       properties:
                         servicename:
                           type: string
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
       operationId: ''
       description: Returns all services which the user is registered for.
   '/user/{user-id}/service/{servicename}':
@@ -143,6 +147,10 @@ paths:
                 properties:
                   access_token:
                     type: string
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
       operationId: ''
       description: Get current access token for service.
     delete:
@@ -158,6 +166,12 @@ paths:
                 properties:
                   success:
                     type: boolean
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
       description: Remove the user token for service.
 components:
   schemas:
@@ -202,3 +216,14 @@ components:
         date:
           type: string
       description: 'This string is a jwt, so it follows the structure: header.payload.signature. The payload follows the defined struct below.'
+    error:
+      title: error
+      type: object
+      properties:
+        error:
+          type: string
+        http_code:
+          type: string
+        description:
+          type: string
+      description: Represents an internal server error.
