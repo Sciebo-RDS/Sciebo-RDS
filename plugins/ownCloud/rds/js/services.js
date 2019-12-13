@@ -173,8 +173,10 @@
         view.render();
       })
       .fail(function() {
-        alert("Could not load services");
-        document.getElementById("services").style.display = "none";
+        var service_div = document.getElementById("services");
+        if (service_div) {
+          service_div.style.display = "none";
+        }
       });
   });
 })(OC, window, jQuery);

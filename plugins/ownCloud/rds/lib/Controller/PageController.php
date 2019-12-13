@@ -29,7 +29,8 @@ class PageController extends Controller
     }
 
     /**
-     - @NoCSRFRequired
+     * @NoCSRFRequired
+     * @NoAdminRequired
      */
     public function index()
     {

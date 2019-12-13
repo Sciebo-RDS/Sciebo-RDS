@@ -1,7 +1,6 @@
 <?php
 
 /** @var \OCA\OAuth2\Db\Client $client */
-script('rds', 'services');
 ?>
 
 
@@ -18,6 +17,7 @@ script('rds', 'services');
     }
 
     if ($logged_in) {
+        script('rds', 'services');
         ?>
 
         <?php p($l->t('Which services do you want to use?')); ?>
@@ -46,9 +46,10 @@ script('rds', 'services');
     </form>
 <?php
 } else {
+    script('rds', 'authorizeRDS');
     p($l->t('Sciebo RDS is not authorized yet.'));
     ?><br>
-    <button onclick="window.location.href=OC.generateUrl('/apps/oauth2/authorize')+'?response_type=code&client_id=S4MQ9MjTqb2sV47noTsQJ6REijG0u0LkScWJA2VG3LHkq7ue5t3CQPlu4ypX7RkS&redirect_uri=http:\/\/sciebords-dev.uni-muenster.de/oauth2/redirect" class="button"><?php p($l->t('Authorize Sciebo RDS now.')); ?></button>
+    <button onclick="openAuthorizeOwncloud()" class="button"><?php p($l->t('Authorize Sciebo RDS now.')); ?></button>
 <?php
 } ?>
 </div>
