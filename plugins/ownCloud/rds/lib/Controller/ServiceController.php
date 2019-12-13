@@ -8,7 +8,7 @@ use OCP\AppFramework\Http\JSONResponse;
 
 class ServiceController extends Controller
 {
-    private $rds_url = "http://sciebords-dev.uni-muenster.de"
+    private $rds_url = "http://sciebords-dev.uni-muenster.de";
 
     public function __construct($AppName, IRequest $request, $userId)
     {
@@ -21,9 +21,10 @@ class ServiceController extends Controller
      * 
      * @return array a list with object with key "jwt", see $this->show()
      * 
-      * @NoAdminRequired
-      */
-      public function index() {
+     * @NoAdminRequired
+     */
+    public function index()
+    {
         $curl = curl_init($this->rds_url + "/service");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
@@ -54,7 +55,8 @@ class ServiceController extends Controller
      *
      * @NoAdminRequired
      */
-    public function show($servicename) {
+    public function show($servicename)
+    {
         $curl = curl_init($this->rds_url + "/service/" + $servicename);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
@@ -66,15 +68,16 @@ class ServiceController extends Controller
         return $json;
     }
 
-     /**
-      * Removes a single service from the user in RDS.
-      *
-      * @param int $servicename
-      * @return bool returns true for success, else false
-      *
-      * @NoAdminRequired
-      */
-    public function removeServiceFromUser($servicename) {
+    /**
+     * Removes a single service from the user in RDS.
+     *
+     * @param int $servicename
+     * @return bool returns true for success, else false
+     *
+     * @NoAdminRequired
+     */
+    public function removeServiceFromUser($servicename)
+    {
         $curl = curl_init($this->rds_url + "/user/" + $this->userId + "/service/" + $servicename);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => "DELETE"];
         curl_setopt_array($curl, $options);
@@ -87,7 +90,7 @@ class ServiceController extends Controller
         return $json;
     }
 
-    
+
     /**
      * Returns a list with all services from rds, which registered for user.
      * 
@@ -96,7 +99,8 @@ class ServiceController extends Controller
      *
      * @NoAdminRequired
      */
-    public function getRegisteredServicesForUser() {
+    public function getRegisteredServicesForUser()
+    {
         $curl = curl_init($this->rds_url + "/user/" + $this->userId);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
@@ -107,6 +111,4 @@ class ServiceController extends Controller
 
         return $json;
     }
-
-
 }
