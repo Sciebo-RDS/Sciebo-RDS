@@ -1,7 +1,9 @@
 <?php
 
 /** @var \OCA\OAuth2\Db\Client $client */
+script('rds', 'services');
 ?>
+
 
 <div class="section" id="oauth2">
     <h2 class="app-name"><?php p($l->t('Sciebo RDS')); ?></h2>
