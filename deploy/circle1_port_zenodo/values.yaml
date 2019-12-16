@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds
-  tag: port_zenodo:latest
+  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/port_zenodo
+  tag: latest
   pullPolicy: Always
 
 imagePullSecrets:

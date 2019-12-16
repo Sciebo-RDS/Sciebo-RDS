@@ -48,10 +48,3 @@ doc:central_service_token-service:
   script:
   - cd $FOLDER
   - make doc
-
-  artifacts:
-    untracked: true
-    expire_in: 1 days
-    paths:
-      - docs/
-

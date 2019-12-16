@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds
-  tag: use_case_token_service:latest
+  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/use_case_token_service
+  tag: latest
   pullPolicy: Always
 
 imagePullSecrets:

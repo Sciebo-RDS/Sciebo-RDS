@@ -97,6 +97,11 @@ hugo:test:
   only:
     refs:
       - master
+  artifacts:
+    untracked: true
+    expire_in: 1 days
+    paths:
+      - docs/
 
 pages:
   image: registry.gitlab.com/pages/hugo:0.59.1
