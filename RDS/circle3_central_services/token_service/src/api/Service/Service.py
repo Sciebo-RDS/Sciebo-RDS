@@ -2,7 +2,7 @@ from flask import jsonify, request, Response
 import Util, json
 
 from lib.Service import Service, OAuth2Service
-from lib.Exceptions.ServiceExceptions import ServiceExistsAlreadyError
+from lib.Exceptions.ServiceException import ServiceExistsAlreadyError, ServiceNotExistsError
 from werkzeug.exceptions import abort
 
 
@@ -17,13 +17,12 @@ def index():
     return jsonify(data)
 
 
-def get(servicename):
+def get(servicename: str):
     svc = Util.storage.getService(servicename)
     if svc is not None:
         return jsonify(svc)
 
-    abort(Response(f"{servicename} not found."))
-    
+    raise ServiceNotExistsError(Service(servicename))    
 
 def post():
     svc = init_object(request.json)

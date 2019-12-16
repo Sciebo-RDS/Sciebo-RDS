@@ -396,6 +396,10 @@ Returns the index of the *first* found service with equal servicename.
 
 Otherwise raise an ValueError.
 
+## lib.Exceptions.ServiceException
+
+## lib.Exceptions.StorageException
+
 ## Util
 
 ### load_class_from_json

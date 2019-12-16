@@ -8,8 +8,6 @@
     - .tests
     - .port_zenodo
 
-    retry: 2
-
     only:
         changes:
         - RDS/circle1_adapters_and_ports/port_zenodo/*

@@ -39,10 +39,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
+                $ref: '#/components/schemas/JSONResponse'
         '400':
           description: Bad Request
       description: Adds a token to repository.
@@ -89,10 +86,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
+                $ref: '#/components/schemas/JSONResponse'
       requestBody:
         content:
           application/json:
@@ -129,6 +123,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JSONResponse'
       tags:
         - User
       description: Delete the user with user-id.
@@ -158,6 +156,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JSONResponse'
       description: Updates a token
       requestBody:
         content:
@@ -200,10 +202,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
+                $ref: '#/components/schemas/JSONResponse'
       description: Adds token to the repository.
       tags:
         - User
@@ -262,10 +261,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
+                $ref: '#/components/schemas/JSONResponse'
         '400':
           description: Bad Request
       tags:
@@ -314,10 +310,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
+                $ref: '#/components/schemas/JSONResponse'
         '404':
           description: Not Found
       tags:
@@ -362,6 +355,7 @@ components:
           anyOf:
             - $ref: '#/components/schemas/OAuthService'
             - $ref: '#/components/schemas/Service'
+            - $ref: '#/components/schemas/Error'
     OAuthService:
       title: OAuthService
       type: object
@@ -386,6 +380,7 @@ components:
           anyOf:
             - $ref: '#/components/schemas/Token'
             - $ref: '#/components/schemas/OAuthToken'
+            - $ref: '#/components/schemas/Error'
     JSONUser:
       title: JSONUser
       type: object
@@ -393,6 +388,7 @@ components:
         data:
           anyOf:
             - $ref: '#/components/schemas/User'
+            - $ref: '#/components/schemas/Error'
         type:
           type: string
     OAuthToken:
@@ -407,6 +403,28 @@ components:
           type: string
         expiration_date:
           type: integer
+    Error:
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
+        http_code:
+          type: string
+        description:
+          type: string
+      description: This model represents an unhandled error raise.
+    Success:
+      title: Success
+      type: object
+      properties:
+        success:
+          type: boolean
+    JSONResponse:
+      title: JSONResponse
+      anyOf:
+        - $ref: '#/components/schemas/Error'
+        - $ref: '#/components/schemas/Success'
 tags:
   - name: User
     description: All user related objects.

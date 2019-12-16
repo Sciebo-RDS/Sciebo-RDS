@@ -7,7 +7,6 @@ from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 
 import Util as ServerUtil
 from lib.Storage import Storage
-from flask import jsonify
 
 log_level = logging.DEBUG
 logger = logging.getLogger('')

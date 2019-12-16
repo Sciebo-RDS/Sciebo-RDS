@@ -6,6 +6,8 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 pactman = "*"
+pygount = "*"
+pydoc-markdown = "*"
 
 [packages]
 requests = "*"
@@ -13,6 +15,7 @@ gevent = "*"
 python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
+pyjwt = "*"
 
 [requires]
 python_version = "3.6"
