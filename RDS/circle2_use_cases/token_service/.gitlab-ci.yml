@@ -25,7 +25,6 @@ test:use_case_token_service3.8:
   extends: .tests_use_case_token_service
 
 build:use_case_token_service:
-    image: python:3.8
     extends: 
     - .builds
     - .use_case_token_service
