@@ -31,10 +31,10 @@ pygmentCodeFences = true
     url = "/de/page/about"
     weight = 20
 
-#[[languages.de.menu.main]]
-#    name = "Mithelfen"
-#    url = "/de/page/contrib/"
-#    weight = 25
+[[languages.de.menu.main]]
+    name = "Mithelfen"
+    url = "/de/page/contrib/"
+    weight = 25
     
 [[languages.de.menu.main]]
     name = "Dokumentation"
@@ -203,10 +203,10 @@ pygmentCodeFences = true
 #    url = "tags"
 #    weight = 3
 
-#[[menu.main]]
-#    name = "Contribute"
-#    url = "page/contrib/"
-#    weight = 25
+[[menu.main]]
+    name = "Contribute"
+    url = "page/contrib/"
+    weight = 25
     
 [[menu.main]]
     name = "Doc"
