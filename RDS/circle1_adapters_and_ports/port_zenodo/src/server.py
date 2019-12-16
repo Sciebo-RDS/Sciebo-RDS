@@ -2,6 +2,7 @@ from connexion_plus import App, MultipleResourceResolver, Util
 
 import logging
 import os
+import json
 from jaeger_client import Config as jConfig
 from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 import requests
@@ -38,7 +39,7 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
             "client_secret": client_secret}
     }
     response = requests.post(
-        f"{tokenStorage}/service", data=data)
+        f"{tokenStorage}/service", data=json.dumps(data))
 
     if response.status_code is not 200:
         raise Exception(

@@ -28,7 +28,7 @@ ENV ZENODO_OAUTH_ACCESS_TOKEN_URL "https://sandbox.zenodo.org/oauth/token"
 ENV ZENODO_OAUTH_CLIEND_ID "XY"
 ENV ZENODO_OAUTH_CLIENT_SECRET "ABC"
 
-ENV CENTRAL-SERVICE_TOKEN-STORAGE "http://circle3-token-storage"
+ENV CENTRAL-SERVICE_TOKEN-STORAGE "http://circle3-token-storage/token-service"
 
 # now add everything else, which changes often
 ADD src ./
