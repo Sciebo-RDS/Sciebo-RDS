@@ -28,6 +28,8 @@ def bootstrap(name='MicroService', *args, **kwargs):
 if __name__ == "__main__":
     app = bootstrap("PortZenodo", all=True)
 
+    # TODO: Register service at token storage
+
     # set the WSGI application callable to allow using uWSGI:
     # uwsgi --http :8080 -w app
     app.run(port=8080, server='gevent')
