@@ -27,6 +27,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
 
 
 def register_service(servicename: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
+    tokenStorage = os.getenv("CENTRAL-SERVICE_TOKEN-STORAGE")
     data = {
         "type": "OAuth2Service",
         "data": {
@@ -37,7 +38,7 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
             "client_secret": client_secret}
     }
     response = requests.post(
-        os.getenv("CENTRAL-SERVICE_TOKEN-STORAGE"), data=data)
+        f"{tokenStorage}/service", data=data)
 
     if response.status_code is not 200:
         raise Exception(
