@@ -13,8 +13,6 @@ import Util
 
 
 def create_app():
-    # set var for mock service
-    os.environ["address"] = "http://localhost:5000"
     # creates a test client
     app = bootstrap(use_default_error=True).app
     # propagate the exceptions to the test client
