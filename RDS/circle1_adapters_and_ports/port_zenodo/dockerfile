@@ -31,6 +31,6 @@ ENV ZENODO_OAUTH_CLIENT_SECRET "ABC"
 ENV CENTRAL-SERVICE_TOKEN-STORAGE "http://circle3-token-storage"
 
 # now add everything else, which changes often
-ADD src/* ./
+ADD src ./
 
 ENTRYPOINT [ "python", "server.py" ]

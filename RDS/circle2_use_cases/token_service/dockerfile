@@ -18,6 +18,6 @@ RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
 ENV CENTRAL-SERVICE_TOKEN-STORAGE "http://circle3-token-storage"
 
 # now add everything else, which changes often
-ADD src/* ./
+ADD src ./
 
 ENTRYPOINT [ "python", "server.py" ]
