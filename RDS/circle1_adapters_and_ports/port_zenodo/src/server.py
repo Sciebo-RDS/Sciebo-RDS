@@ -27,11 +27,13 @@ def bootstrap(name='MicroService', *args, **kwargs):
 
 def register_service(servicename: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
     data = {
-        "servicename": servicename,
-        "authorize_url": authorize_url,
-        "refresh_url": refresh_url,
-        "client_id": client_id,
-        "client_secret": client_secret
+        "type": "OAuth2Service",
+        "data": {
+            "servicename": servicename,
+            "authorize_url": authorize_url,
+            "refresh_url": refresh_url,
+            "client_id": client_id,
+            "client_secret": client_secret}
     }
     response = requests.post(
         os.getenv("CENTRAL-SERVICE_TOKEN-STORAGE"), data=data)
