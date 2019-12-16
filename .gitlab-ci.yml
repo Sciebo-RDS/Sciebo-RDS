@@ -22,7 +22,7 @@ variables:
     - python -m pytest
 
   tags:
-  -  autoscaling
+    - autoscaling
 
   except:
     refs:
@@ -44,48 +44,48 @@ variables:
 
   only:
     refs:
-    - master
+      - master
 
   services:
     - docker:dind
 
   tags:
-  -  docker-in-docker
+    - docker-in-docker
 
   variables:
-      DOCKER_HOST: tcp://docker:2375
-      DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
 
   script: # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#using-docker-caching
     - cd $FOLDER
+    - export DOCKERTAGNAME=$(echo "$CI_JOB_NAME" | cut -d":" -f2)
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker pull $CI_REGISTRY_IMAGE:latest || true
-    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_JOB_ID --tag $CI_REGISTRY_IMAGE:latest ./
+    - docker pull $CI_REGISTRY_IMAGE:$DOCKERTAGNAME:latest || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE:$DOCKERTAGNAME:latest \
+      --tag $CI_REGISTRY_IMAGE:$DOCKERTAGNAME:$CI_JOB_ID \
+      --tag $CI_REGISTRY_IMAGE:$DOCKERTAGNAME:latest \
+      ./
     - docker build ./
-    - docker push $CI_REGISTRY_IMAGE:$CI_JOB_ID
-    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:$DOCKERTAGNAME:$CI_JOB_ID
+    - docker push $CI_REGISTRY_IMAGE:$DOCKERTAGNAME:latest
 
 include:
-  - 'RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml'
-  - 'RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml'
-  - 'RDS/circle2_use_cases/exporter/.gitlab-ci.yml'
-  - 'RDS/circle3_central_services/metadata_capture/.gitlab-ci.yml'
-  - 'RDS/circle3_central_services/project_manager/.gitlab-ci.yml'
-  - 'RDS/circle3_central_services/token_service/.gitlab-ci.yml'
-
+  - "RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
+  - "RDS/circle2_use_cases/token_service/.gitlab-ci.yml"
+  - "RDS/circle3_central_services/token_service/.gitlab-ci.yml"
 
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:
   extends: .tests
   image: registry.gitlab.com/pages/hugo:0.59.1
-  
+
   variables:
     FOLDER: docs/
 
   script:
-  - cd $FOLDER
-  - hugo
+    - cd $FOLDER
+    - hugo
 
   only:
     changes:
@@ -96,17 +96,17 @@ hugo:test:
   stage: documentation
   only:
     refs:
-    - master
+      - master
 
 pages:
   image: registry.gitlab.com/pages/hugo:0.59.1
   stage: pages
   script:
-  - cd docs
-  - hugo
-  - mv public ../
+    - cd docs
+    - hugo
+    - mv public ../
   artifacts:
     paths:
-    - public
+      - public
   only:
-  - master
+    - master

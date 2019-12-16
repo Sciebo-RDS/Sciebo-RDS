@@ -14,6 +14,7 @@ class TokenNotValidError(Exception):
 
 # messages taken from https://tools.ietf.org/html/rfc6749#section-5.2
 
+
 class OAuth2UnsuccessfulResponseError(Exception):
     def __init__(self, msg=None):
         if msg is None:
@@ -48,7 +49,7 @@ class OAuth2InvalidClientError(OAuth2UnsuccessfulResponseError):
 
 
 class OAuth2InvalidGrantError(OAuth2UnsuccessfulResponseError):
-    def __init__(self, msg = None):
+    def __init__(self, msg=None):
         if msg is None:
             msg = """The provided authorization grant(e.g., authorization code, resource owner credentials) 
             or refresh token is invalid, expired, revoked, does not match the redirection
@@ -56,19 +57,22 @@ class OAuth2InvalidGrantError(OAuth2UnsuccessfulResponseError):
 
         super(OAuth2InvalidGrantError, self).__init__(msg)
 
+
 class OAuth2UnauthorizedClient(OAuth2UnsuccessfulResponseError):
-    def __init__(self, msg = None):
+    def __init__(self, msg=None):
         if msg is None:
             msg = "The authenticated client is not authorized to use this authorization grant type."
 
         super(OAuth2UnauthorizedClient, self).__init__(msg)
 
+
 class OAuth2UnsupportedGrantType(OAuth2UnsuccessfulResponseError):
-    def __init__(self, msg = None):
+    def __init__(self, msg=None):
         if msg is None:
             msg = "The authorization grant type is not supported by the authorization server."
 
         super(OAuth2UnsupportedGrantType, self).__init__(msg)
+
 
 class ServiceExistsAlreadyError(Exception):
     def __init__(self, service: Service, msg=None):
@@ -76,4 +80,13 @@ class ServiceExistsAlreadyError(Exception):
             msg = f"{service} already in storage."
 
         super(ServiceExistsAlreadyError, self).__init__(msg)
+        self.service = service
+
+
+class ServiceNotExistsError(Exception):
+    def __init__(self, service: Service, msg=None):
+        if msg is None:
+            msg = f"{service} not found."
+
+        super(ServiceNotExistsError, self).__init__(msg)
         self.service = service

@@ -1,5 +1,5 @@
 ---
-title: Token Storage
+title: Token Speicher
 subtitle: Speichere deine Geheimnisse hier ab
 
 menu:

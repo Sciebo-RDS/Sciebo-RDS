@@ -3,7 +3,7 @@ from lib.Service import Service, OAuth2Service
 from lib.Storage import Storage
 from lib.Token import Token, OAuth2Token
 from lib.User import User
-from lib.Exceptions.ServiceExceptions import *
+from lib.Exceptions.ServiceException import *
 from pactman import Consumer, Provider
 
 from datetime import datetime
@@ -69,6 +69,9 @@ class TestStorageService(unittest.TestCase):
         self.filled_storage = Storage()
         # user1 is filled with mixed token and oauth2token
         self.filled_storage.addUser(self.user1)
+        self.filled_storage.addService(self.oauthservice1)
+        self.filled_storage.addService(self.oauthservice2)
+        self.filled_storage.addService(self.oauthservice3)
         self.filled_storage.addTokenToUser(self.token1, self.user1)
         self.filled_storage.addTokenToUser(self.token3, self.user1)
         self.filled_storage.addTokenToUser(self.oauthtoken2, self.user1)
@@ -219,7 +222,8 @@ class TestStorageService(unittest.TestCase):
             self.assertEqual(len(result), 1)
             self.assertEqual(result[0], expected,
                              msg=f"\nresult: {result}\nexpected: {expected}")
-            self.assertGreater(result[0].expiration_date, expected.expiration_date)
+            self.assertGreater(
+                result[0].expiration_date, expected.expiration_date)
 
     def test_refresh_oauth2token(self):
         expires_in = 3600
@@ -351,7 +355,7 @@ class TestStorageService(unittest.TestCase):
         _, index = self.empty_storage.getService(self.service2, index=True)
         self.assertIsNone(index)
 
-        from lib.Exceptions.ServiceExceptions import ServiceExistsAlreadyError
+        from lib.Exceptions.ServiceException import ServiceExistsAlreadyError
         with self.assertRaises(ServiceExistsAlreadyError):
             self.empty_storage.addService(self.service1)
 
@@ -378,6 +382,7 @@ class TestStorageService(unittest.TestCase):
 
         # should be empty now
         self.assertEqual(self.empty_storage.getServices(), [])
+
 
 if __name__ == "__main__":
     unittest.main()

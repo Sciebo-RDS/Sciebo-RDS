@@ -49,3 +49,7 @@ stateDiagram
     N: Zenodo OAuth redirect
   }
 ```
+
+## Verweis auf Token Service auf Ebene 2
+
+Der hintergründige Ablauf der Eingabemasken wird stark durch den entsprechenden Use-Case Dienst beeinflusst. Dafür muss man auf jedenfall die Seite des [Token Services](/de/doc/impl/use-cases/token-service/#kommunikation-mit-den-plugins) betrachten.

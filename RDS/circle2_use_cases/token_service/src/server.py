@@ -1,12 +1,14 @@
-from connexion_plus import App, MultipleResourceResolver
+from connexion_plus import App, MultipleResourceResolver, Util
 
 import logging
 import os
-import requests
-import yaml
 from jaeger_client import Config as jConfig
 from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 
+from flask import jsonify
+
+import Util as ServerUtil
+from lib.TokenService import TokenService
 
 log_level = logging.DEBUG
 logger = logging.getLogger('')
@@ -14,69 +16,29 @@ logging.getLogger('').handlers = []
 logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
 
 
-def load_yaml_file():
-    logger.info("--- Loading OpenAPI file. ---")
-    openapi_filepath = os.getenv("OPENAPI_FILEPATH", "../use-case_token-storage.yml")
+def bootstrap(name='MicroService', *args, **kwargs):
+    list_openapi = Util.load_oai(
+        os.getenv("OPENAPI_FILEPATH", "use-case_token-storage.yml"))
 
-    # yaml file not exists equals first start
-    openapi_dict = []
-    if not os.path.exists(openapi_filepath):
-        # no openapi file found. Something was wrong in the container building process
-        paths = ["../use-case_token-storage.yml"]
-        paths = ";".join(paths)
-
-        download_path = os.getenv("OPENAPI_FILEPATH_EXTERNAL", paths)
-        logger.warning("No openapi file found. Filepath: {}. Loads webfiles: {}".format(
-            openapi_filepath, download_path))
-
-        downloads = download_path.split(";")
-        for d in downloads:
-            openapi_file = requests.get(d)
-            openapi_dict.append(yaml.full_load(openapi_file.content))
+    if "storage_address" in kwargs:
+        ServerUtil.tokenService = TokenService(kwargs["storage_address"])
+        del kwargs["storage_address"]
     else:
-        logger.info("openapi file found. Filepath: {}".format(openapi_filepath))
+        ServerUtil.tokenService = TokenService()
 
-        with open(openapi_filepath, 'r') as f:
-            logger.info("load openapi file")
-            openapi_dict.append(yaml.full_load(f.read()))
+    app = App(name, *args, **kwargs)
 
-    logger.info("--- Loading OpenAPI file finished. ---")
-
-    return openapi_dict
-
-
-def bootstrap(name='MicroService', executes=True):
-    config = jConfig(
-        config={  # usually read from some yaml config
-            'sampler': {
-                'type': 'const',
-                'param': 1,
-            },
-            'logging': True,
-        },
-        service_name=name,
-        validate=True,
-        metrics_factory=PrometheusMetricsFactory(namespace=name),
-    )
-
-    openapi_dict = load_yaml_file()
-
-    app = App(name, use_tracer=config.initialize_tracer(),
-              use_metric=True, use_optimizer=True, use_cors=True)
-
-    for oai in openapi_dict:
+    for oai in list_openapi:
         app.add_api(oai, resolver=MultipleResourceResolver(
-            'api', collection_endpoint_name="index"))
+            'api', collection_endpoint_name="index"), validate_responses=True)
 
-    # set the WSGI application callable to allow using uWSGI:
-    # uwsgi --http :8080 -w app
-
-    if executes:
-        app.run(port=8080, server='gevent')
-
-    # return app for test or error handling purpose
     return app
 
 
 if __name__ == "__main__":
-    bootstrap("UseCaseTokenStorage")
+    app = bootstrap("UseCaseTokenStorage", all=True)
+
+    # set the WSGI application callable to allow using uWSGI:
+    # uwsgi --http :8080 -w app
+    app.run(port=8080, server='gevent')
+
