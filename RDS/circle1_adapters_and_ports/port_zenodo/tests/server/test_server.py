@@ -8,7 +8,7 @@ def create_app():
     # set var for mock service
     os.environ["ZENODO_ADDRESS"] = "http://localhost:5000"
     # creates a test client
-    app = bootstrap(executes=False).app
+    app = bootstrap(use_default_error=True).app
     # propagate the exceptions to the test client
     app.config.update({"TESTING": True})
 
