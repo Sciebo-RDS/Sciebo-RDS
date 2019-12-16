@@ -39,7 +39,7 @@ build:central_service_token_service:
   - .builds
   - .central_service_token_service
 
-doc:central_service_token-service:
+doc:central_service_token_service:
   image: python:3.8
   extends:
   - .documentation
