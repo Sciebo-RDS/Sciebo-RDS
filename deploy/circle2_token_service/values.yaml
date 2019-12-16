@@ -27,7 +27,7 @@ ingress:
   hosts:
     - host: sciebords-dev.uni-muenster.de
       paths:
-      - token-service
+      - /token-service
 
   tls: []
   #  - secretName: chart-example-tls
