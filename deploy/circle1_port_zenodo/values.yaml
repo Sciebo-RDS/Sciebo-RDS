@@ -52,3 +52,8 @@ affinity: {}
 
 environment: 
   CENTRAL-SERVICE_TOKEN-STORAGE: http://central-service_token-storage:3000
+  ZENODO_OAUTH_AUTHORIZE_URL: https://sandbox.zenodo.org/oauth/authorize
+  ZENODO_OAUTH_ACCESS_TOKEN_URL: https://sandbox.zenodo.org/oauth/token
+  # TODO: Add this as a secret
+  ZENODO_OAUTH_CLIEND_ID: XYZ # Adjust me to valid values
+  ZENODO_OAUTH_CLIENT_SECRET: ABC # Adjust me to valid values
