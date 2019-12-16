@@ -23,11 +23,12 @@ RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
 ENV OPENAPI_MULTIPLE_FILES      "c2_invenio.yml;c3_invenio.yml"
 
 # this has to be set separatley and safely
-ENV ZENODO_API_KEY "ABC"
 ENV ZENODO_OAUTH_AUTHORIZE_URL "https://sandbox.zenodo.org/oauth/authorize"
 ENV ZENODO_OAUTH_ACCESS_TOKEN_URL "https://sandbox.zenodo.org/oauth/token"
 ENV ZENODO_OAUTH_CLIEND_ID "XY"
 ENV ZENODO_OAUTH_CLIENT_SECRET "ABC"
+
+ENV CENTRAL-SERVICE_TOKEN-STORAGE "http://circle3-token-storage"
 
 # now add everything else, which changes often
 ADD src/* ./
