@@ -17,6 +17,7 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 80
+  targetPort: 8080
 
 ingress:
   enabled: false
@@ -51,7 +52,7 @@ tolerations: []
 affinity: {}
 
 environment: 
-  CENTRAL-SERVICE_TOKEN-STORAGE: http://central-service_token-storage:3000
+  CENTRAL-SERVICE_TOKEN-STORAGE: http://circle3-token-storage
   ZENODO_OAUTH_AUTHORIZE_URL: https://sandbox.zenodo.org/oauth/authorize
   ZENODO_OAUTH_ACCESS_TOKEN_URL: https://sandbox.zenodo.org/oauth/token
   # TODO: change this to a secret

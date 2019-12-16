@@ -9,7 +9,7 @@ use OCP\AppFramework\Http\JSONResponse;
 
 class ServiceApiController extends ApiController
 {
-    private $rdsURL = "http://sciebords-dev.uni-muenster.de";
+    private $rdsURL = "http://sciebords-dev.uni-muenster.de/token-service";
     private $userId;
     
     public function __construct($AppName, IRequest $request, $userId)
