@@ -150,7 +150,7 @@ class TestTokenService(unittest.TestCase):
 
         result = self.client.post(
             "/service", data=json.dumps(self.oauthservice1.to_dict()), content_type='application/json')
-        self.assertEqual(result.status_code, 204)
+        self.assertEqual(result.status_code, 200)
 
         for k, v in enumerate(self.get("/service")):
             self.assertEqual(v, expected["list"][k], msg="{} {}".format(

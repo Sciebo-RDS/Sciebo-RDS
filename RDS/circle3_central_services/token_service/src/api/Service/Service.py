@@ -32,7 +32,6 @@ def post():
 
     except ServiceExistsAlreadyError:
         Util.storage.addService(svc, Force=True)
-        return jsonify({"success": True}), 204
     except:
         raise
 

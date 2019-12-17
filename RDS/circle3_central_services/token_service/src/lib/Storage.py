@@ -136,7 +136,7 @@ class Storage():
 
         Raise an error, if parameter not a service object.
         """
-        if not isinstance(service, Service):
+        if not isinstance(service, (Service, OAuth2Service)):
             raise ValueError("parameter not a service object.")
 
         svc, index = self.getService(service, index=True)
