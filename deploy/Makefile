@@ -37,6 +37,5 @@ clean_install: uninstall_circle1 uninstall_circle2 uninstall_circle3 circle1 cir
 
 make jaeger:
 	$(eval POD_JAEGER=$(shell kubectl get pods --namespace sciebo-rds -l "app.kubernetes.io/instance=jaeger,app.kubernetes.io/component=query" -o jsonpath="{.items[0].metadata.name}"))
-	echo $(POD_JAEGER)
 	echo http://127.0.0.1:8080/
 	kubectl port-forward --namespace sciebo-rds $(POD_JAEGER) 8080:16686
