@@ -12,7 +12,7 @@ circle2: token_service
 circle3: token_storage
 
 features:
-	helm upgrade jaeger incubator/jaeger --install  --set cassandra.config.max_heap_size=1024M --set cassandra.config.heap_new_size=256M --set cassandra.resources.requests.memory=2048Mi --set cassandra.resources.requests.cpu=0.4 --set cassandra.resources.limits.memory=2048Mi --set cassandra.resources.limits.cpu=0.4 --values jaeger.yaml
+	helm upgrade jaeger incubator/jaeger --install --values jaeger.yaml
 
 remove_features:
 	helm delete --purge jaeger || true
@@ -32,3 +32,9 @@ uninstall_circle3: remove_token_storage
 
 install: circle1 circle2 circle3 features
 uninstall: uninstall_circle1 uninstall_circle2 uninstall_circle3 remove_features
+
+make jaeger:
+	$(eval POD_JAEGER=$(shell kubectl get pods --namespace sciebo-rds -l "app.kubernetes.io/instance=jaeger,app.kubernetes.io/component=query" -o jsonpath="{.items[0].metadata.name}"))
+	echo $(POD_JAEGER)
+	echo http://127.0.0.1:8080/
+	kubectl port-forward --namespace sciebo-rds $(POD_JAEGER) 8080:16686
