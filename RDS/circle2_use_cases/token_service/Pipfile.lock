@@ -63,19 +63,19 @@
                 "swagger-ui"
             ],
             "hashes": [
-                "sha256:6e0569b646f2e6229923dc4e4c6e0325e223978bd19105779fd81e16bcb22fdf",
-                "sha256:7b4268e9ea837241e530738b35040345b78c8748d05d2c22805350aca0cd5b1c"
+                "sha256:0fa5776a44b32668f20d59e6e478f15a1dc19def8e4d07d837e10d837379c2ba",
+                "sha256:4b643821a775927b2ec6220c427779b6d9c3a83ddf43662d69e68dcdad4be603"
             ],
             "index": "pypi",
-            "version": "==2.4.0"
+            "version": "==2.5.0"
         },
         "connexion-plus": {
             "hashes": [
-                "sha256:b574bf913be8ef9c375583747f39ddbb2585c6efd9bcdc7057ea1cb900ab65eb",
-                "sha256:f086c3b4844206bdf2cf242eab81a22900788f5053cc73706a370c899da94334"
+                "sha256:31981166c346bc861f4c6595616f8ef1ef879892541e30a12640e4e3aa5b2143",
+                "sha256:f1b4898280c431f8586182bbfa6d4e666534db83c95eefbb2f571dbcb4619f85"
             ],
             "index": "pypi",
-            "version": "==0.31"
+            "version": "==0.32"
         },
         "contextlib2": {
             "hashes": [
@@ -616,11 +616,11 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:63344a2e3bce2e4d522fd62b4fdebb647c019f1f9e4ca075debbd13219db4418",
-                "sha256:f67403f33b2b1d25a6756184077394167fe5e2f9d8bdaab30707d19ccec35427"
+                "sha256:6b571215b5a790f9b41f19f3531c53a45cf6bb8ef2988bc1ff9afb38270b25fa",
+                "sha256:e41d489ff43948babd0fad7ad5e49b8735d5d55e26628a58673c39ff61d95de4"
             ],
             "index": "pypi",
-            "version": "==5.3.1"
+            "version": "==5.3.2"
         },
         "pyyaml": {
             "hashes": [
