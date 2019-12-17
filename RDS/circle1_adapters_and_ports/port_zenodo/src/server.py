@@ -40,7 +40,7 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
         }
     }
     response = requests.post(
-        f"{tokenStorage}/service", data=json.dumps(data))
+        f"{tokenStorage}/service", json=data)
 
     if response.status_code is not 200:
         raise Exception(
