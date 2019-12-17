@@ -30,14 +30,11 @@ def bootstrap(name='MicroService', *args, **kwargs):
 def register_service(servicename: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
     tokenStorage = os.getenv("CENTRAL-SERVICE_TOKEN-STORAGE")
     data = {
-        "type": "OAuth2Service",
-        "data": {
-            "servicename": servicename,
-            "authorize_url": authorize_url,
-            "refresh_url": refresh_url,
-            "client_id": client_id,
-            "client_secret": client_secret
-        }
+        "servicename": servicename,
+        "authorize_url": authorize_url,
+        "refresh_url": refresh_url,
+        "client_id": client_id,
+        "client_secret": client_secret
     }
     headers = {"Content-Type": "application/json"}
 
