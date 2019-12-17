@@ -72,11 +72,11 @@
         },
         "connexion-plus": {
             "hashes": [
-                "sha256:31981166c346bc861f4c6595616f8ef1ef879892541e30a12640e4e3aa5b2143",
-                "sha256:f1b4898280c431f8586182bbfa6d4e666534db83c95eefbb2f571dbcb4619f85"
+                "sha256:5409732bafa0c983306bb2f75ca9b244f7834558e03dee33b688c30e01572e94",
+                "sha256:ee3840cefb6c091bd337f55033bfe611f74820397ea59a19c54a9cd1f4c685ef"
             ],
             "index": "pypi",
-            "version": "==0.32"
+            "version": "==0.33"
         },
         "contextlib2": {
             "hashes": [
