@@ -36,7 +36,8 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
             "authorize_url": authorize_url,
             "refresh_url": refresh_url,
             "client_id": client_id,
-            "client_secret": client_secret}
+            "client_secret": client_secret
+        }
     }
     response = requests.post(
         f"{tokenStorage}/service", data=json.dumps(data))
