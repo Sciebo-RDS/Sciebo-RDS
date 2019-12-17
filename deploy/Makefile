@@ -33,6 +33,8 @@ uninstall_circle3: remove_token_storage
 install: circle1 circle2 circle3 features
 uninstall: uninstall_circle1 uninstall_circle2 uninstall_circle3 remove_features
 
+clean_install: uninstall_circle1 uninstall_circle2 uninstall_circle3 circle1 circle2 circle3
+
 make jaeger:
 	$(eval POD_JAEGER=$(shell kubectl get pods --namespace sciebo-rds -l "app.kubernetes.io/instance=jaeger,app.kubernetes.io/component=query" -o jsonpath="{.items[0].metadata.name}"))
 	echo $(POD_JAEGER)
