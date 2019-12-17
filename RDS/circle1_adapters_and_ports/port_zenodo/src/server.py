@@ -39,8 +39,10 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
             "client_secret": client_secret
         }
     }
+    headers = {"Content-Type": "application/json"}
+
     response = requests.post(
-        f"{tokenStorage}/service", json=data)
+        f"{tokenStorage}/service", data=json.dumps(data), headers=headers)
 
     if response.status_code is not 200:
         raise Exception(
