@@ -73,7 +73,7 @@ class Test_TokenServiceServer(unittest.TestCase):
             'GET', f"/service/{service.servicename}"
         ) .will_respond_with(200, body=service.to_json())
 
-        response = self.client.get(f"/service/{service.servicename}")
+        response = self.client.get(f"/token-service/service/{service.servicename}")
         self.assertEqual(response.status_code, 200,
                          msg=response.get_data(as_text=True))
 
@@ -87,7 +87,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         date = resp_state["date"]
 
         # following request should not be needed a new pact, because its cached and date shuld be the same.
-        response = self.client.get(f"/service/{service.servicename}")
+        response = self.client.get(f"/token-service/service/{service.servicename}")
         self.assertEqual(response.status_code, 200,
                          msg=response.get_data(as_text=True))
 
@@ -139,7 +139,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         ) .will_respond_with(200, body={"success": True})
 
         response = self.client.get(
-            "/redirect", query_string={"code": code, "state": state})
+            "/token-service/redirect", query_string={"code": code, "state": state})
         self.assertEqual(response.status_code, 302, msg=response.get_data())
         self.assertEqual(
             response.headers["location"], "http://localhost/authorization_success", msg=response.get_data())

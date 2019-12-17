@@ -62,11 +62,11 @@ if __name__ == "__main__":
 
     # TODO: Register service at token storage
     register_service(
-        "PortZenodo",
-        "ZENODO_OAUTH_AUTHORIZE_URL",
-        "ZENODO_OAUTH_ACCESS_TOKEN_URL",
-        "ZENODO_OAUTH_CLIEND_ID",
-        "ZENODO_OAUTH_CLIENT_SECRET"
+        "Zenodo",
+        os.getenv("ZENODO_OAUTH_AUTHORIZE_URL"),
+        os.getenv("ZENODO_OAUTH_ACCESS_TOKEN_URL"),
+        os.getenv("ZENODO_OAUTH_CLIEND_ID"),
+        os.getenv("ZENODO_OAUTH_CLIENT_SECRET")
     )
 
     # set the WSGI application callable to allow using uWSGI:

@@ -14,6 +14,20 @@ logging.getLogger('').handlers = []
 logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
 
 
+def monkeypatch():
+    """ Module that monkey-patches json module when it's imported so
+    JSONEncoder.default() automatically checks for a special "to_json()"
+    method and uses it to encode the object if found.
+    """
+    from json import JSONEncoder, JSONDecoder
+
+    def to_default(self, obj):
+        return getattr(obj.__class__, "to_json", to_default.default)(obj)
+
+    to_default.default = JSONEncoder.default  # Save unmodified default.
+    JSONEncoder.default = to_default  # Replace it.
+
+
 def bootstrap(name='MicroService', *args, **kwargs):
     list_openapi = Util.load_oai(
         os.getenv("OPENAPI_FILEPATH", "central-service_token-storage.yml"))
@@ -31,6 +45,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
 
 
 if __name__ == "__main__":
+    monkeypatch()
     app = bootstrap("CentralServiceTokenStorage", all=True)
 
     # add refresh func for refresh_tokens to scheduler and starts (https://stackoverflow.com/a/52068807)

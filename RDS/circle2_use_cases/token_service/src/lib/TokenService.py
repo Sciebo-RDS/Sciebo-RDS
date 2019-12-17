@@ -9,12 +9,13 @@ import Util
 from lib.Exceptions.ServiceException import *
 import jwt
 import datetime
-import secrets
+import secrets, logging
 from typing import Union
 
 func = [Util.initialize_object_from_json, Util.initialize_object_from_dict]
 load_object = Util.try_function_on_dict(func)
 
+logger = logging.getLogger()
 
 class TokenService():
     # static
@@ -95,6 +96,8 @@ class TokenService():
                 continue
 
             result_list.append(self.internal_getDictWithStateFromService(obj))
+
+        logger.warning(result_list)
 
         return result_list
 

@@ -4,7 +4,6 @@ JSONEncoder.default() automatically checks for a special "to_json()"
 method and uses it to encode the object if found.
 """
 from json import JSONEncoder, JSONDecoder
-from . Util import storage
 
 def to_default(self, obj):
     return getattr(obj.__class__, "to_json", to_default.default)(obj)
