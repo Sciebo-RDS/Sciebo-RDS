@@ -45,7 +45,7 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
         raise Exception(
             "Cannot find and register Token Storage, msg:\n{}".format(response.text))
 
-    response = response.json
+    response = response.json()
     if response["success"]:
         logger.info(
             f"Registering {servicename} in token storage was successful.")
