@@ -35,8 +35,13 @@ def index():
         Util.tokenService.exchangeAuthCodeToAccessToken(
             code, data["servicename"])
 
-        return redirect("/authorization_success")
+        string = request.url
+        url = "/" + "/".join(string.split("/")[3:-1]) + "/authorization_success"
+
+        return redirect(url)
 
     except Exception as e:
         logger.error(str(e))
-        return redirect("/authorization_cancel")
+        string = request.url
+        url = "/" + "/".join(string.split("/")[3:-1]) + "/authorization_cancel"
+        return redirect(url)
