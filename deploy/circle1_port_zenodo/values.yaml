@@ -55,8 +55,8 @@ affinity: {}
 
 environment: 
   CENTRAL-SERVICE_TOKEN-STORAGE: http://circle3-token-storage
-  ZENODO_OAUTH_AUTHORIZE_URL: https://sandbox.zenodo.org/oauth/authorize
+  ZENODO_OAUTH_AUTHORIZE_URL: https://sandbox.zenodo.org/oauth/authorize?scope=deposit%3Awrite+deposit%3Aactions&redirect_uri=https%3A%2F%2Fsciebords-dev.uni-muenster.de%2Ftoken-service%2Fredirect&response_type=code&client_id=feYfqBVCfNDJTQyQRXWiJ8eoga99GxKzXYAZXvbm
   ZENODO_OAUTH_ACCESS_TOKEN_URL: https://sandbox.zenodo.org/oauth/token
   # TODO: change this to a secret
   ZENODO_OAUTH_CLIEND_ID: XYZ # Adjust me to valid values
-  ZENODO_OAUTH_CLIENT_SECRET: ABC # Adjust me to valid values
+  ZENODO_OAUTH_CLIENT_SECRET: feYfqBVCfNDJTQyQRXWiJ8eoga99GxKzXYAZXvbm

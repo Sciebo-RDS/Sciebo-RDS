@@ -177,9 +177,7 @@
           var select = self._select;
           var win = window.open(
             self._authorize_url[select.options[select.selectedIndex].text],
-            "oauth2-service-for-rds"
-          );
-          win("width=100%,height=100%,scrollbars=yes");
+            "oauth2-service-for-rds", "width=100%,height=100%,scrollbars=yes");
 
           var timer = setInterval(function() {
             if (win.closed) {
