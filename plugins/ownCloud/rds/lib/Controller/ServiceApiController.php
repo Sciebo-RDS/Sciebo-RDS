@@ -27,11 +27,13 @@ class ServiceApiController extends ApiController
      */
     public function index()
     {
+        $url = $this->rdsURL . "/service";
+
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_URL, $this->rdsURL . "/service");
-
-        $response = json_decode(curl_exec($curl));
+        curl_setopt($curl, CURLOPT_URL, $url);
+        $result = curl_exec($curl);
+        $response = json_decode($result, true);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
@@ -41,12 +43,13 @@ class ServiceApiController extends ApiController
 
         $listOfServices = [];
 
-        foreach ((array) $response as $jwt) {
+        foreach ((array) $response as $element) {
+            $jwt = $element["jwt"];
             # decode jwt
-            $pieces = explode(".", $response);
+            $pieces = explode(".", $jwt);
             $payload = base64_decode($pieces[1]);
-            $payload = json_decode($payload);
-            $payload->state = $jwt;
+            $payload = json_decode($payload, true);
+            $payload["state"] = $jwt;
             $listOfServices[] = $payload;
         }
 

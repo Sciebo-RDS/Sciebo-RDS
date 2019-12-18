@@ -14,11 +14,13 @@
       this._baseurl = baseUrl;
       this._services = []; // holds object with servicename, authorize_url, state, date
       this._user_services = []; // holds strings
+
+      var self = this;
       this._services_without_user = function() {
         var list = [];
 
-        this._services.foreach(function(item, index) {
-          if (this._user_services.indexOf(item["servicename"]) < 0) {
+        self._services.forEach(function(item, index) {
+          if (self._user_services.indexOf(item["servicename"]) < 0) {
             list.push(item);
           }
         });
@@ -30,6 +32,9 @@
       loadAll: function() {
         var deferred = $.Deferred();
         var counter = 2;
+
+        var self = this;
+
         this.loadServices()
           .done(function() {
             counter -= 1;
@@ -41,6 +46,7 @@
             alert("Could not load all services");
             deferred.reject();
           });
+
         this.loadUserServices()
           .done(function() {
             counter -= 1;
@@ -58,6 +64,7 @@
       loadServices: function() {
         var deferred = $.Deferred();
         var self = this;
+
         $.get(this._baseurl + "/service", "json")
           .done(function(services) {
             self._services = services;
@@ -72,7 +79,8 @@
       loadUserServices: function() {
         var deferred = $.Deferred();
         var self = this;
-        $.get(this.baseUrl + "/user/service", "json")
+
+        $.get(this._baseUrl + "/user/service", "json")
           .done(function(services) {
             self._user_services = services;
             deferred.resolve();
@@ -86,9 +94,9 @@
       removeServiceFromUser: function(servicename) {
         var deferred = $.Deferred();
         var self = this;
-        $.post(this.baseUrl + "/service/" + servicename, "json")
+        $.post(this._baseUrl + "/service/" + servicename, "json")
           .done(function(services) {
-            this.loadAll();
+            self.loadAll();
             deferred.resolve();
           })
           .fail(function() {
@@ -103,13 +111,15 @@
       this._services = services;
       this._authorize_url = {};
       this._btn = document.getElementById("svc-button");
-      this._select = document.getElementById("svc-select");
+      this._select = document.getElementById("svc-selector");
     };
 
     View.prototype = {
       renderContent: function() {
+        var self = this;
         var source = $("#serviceStable > tbody:last-child");
-        this._services._user_services.foreach(function(item, index, array) {
+        console.log(this._services._user_services);
+        this._services._user_services.forEach(function(item, index) {
           source.append(
             "<tr><td>" +
               item +
@@ -117,7 +127,7 @@
               '<form class="form-inline delete" data-confirm="' +
               t("rds", "Are you sure you want to delete this item?") +
               '" action="' +
-              OC.generateUrl(this._services._baseurl) +
+              OC.generateUrl(self._services._baseurl) +
               "/service/" +
               item +
               '/delete" method="post">' +
@@ -130,22 +140,26 @@
         });
       },
       renderSelect: function() {
-        this._services._services_without_user().foreach(function(item, index) {
-          this._authorize_url[item.servicename] =
+        var self = this;
+
+        self._services._services_without_user().forEach(function(item, index) {
+          self._authorize_url[item.servicename] =
             item.authorize_url + "&state=" + item.state;
           var option = document.createElement("option");
           option.text = option.value = item.servicename;
-          this._select.add(option, 0);
+          self._select.add(option, 0);
         });
 
-        this._select.click(function() {
-          this._btn.attr("value", t("rds", "Authorize " + this.val() + " now"));
+        self._select.click(function() {
+          self._btn.attr("value", t("rds", "Authorize " + self.val() + " now"));
         });
       },
       renderButton: function() {
-        this._btn.click(function() {
+        var self = this;
+
+        self._btn.click(function() {
           var win = window.open(
-            this._authorize_url[this._select.value],
+            self._authorize_url[self._select.value],
             "oauth2-service-for-rds"
           );
           ("width=100%,height=100%,scrollbars=yes");
@@ -167,11 +181,9 @@
 
     var services = new Services(OC.generateUrl("apps/rds/api/v1"));
     var view = new View(services);
-    services
-      .loadAll()
-      .done(function() {
-        view.render();
-      });
+    services.loadAll().done(function() {
+      view.render();
+    });
 
     if (services._user_services.length === 0) {
       var serviceDiv = document.getElementById("services");
