@@ -80,7 +80,7 @@
         var deferred = $.Deferred();
         var self = this;
 
-        $.get(this._baseUrl + "/user/service", "json")
+        $.get(this._baseurl + "/user/service", "json")
           .done(function(services) {
             self._user_services = services;
             deferred.resolve();
@@ -94,7 +94,7 @@
       removeServiceFromUser: function(servicename) {
         var deferred = $.Deferred();
         var self = this;
-        $.post(this._baseUrl + "/service/" + servicename, "json")
+        $.post(this._baseurl + "/service/" + servicename, "json")
           .done(function(services) {
             self.loadAll();
             deferred.resolve();
@@ -118,7 +118,7 @@
       renderContent: function() {
         var self = this;
         var source = $("#serviceStable > tbody:last-child");
-        console.log(this._services._user_services);
+
         this._services._user_services.forEach(function(item, index) {
           source.append(
             "<tr><td>" +
@@ -141,8 +141,9 @@
       },
       renderSelect: function() {
         var self = this;
+        var notUsedServices = self._services._services_without_user();
 
-        self._services._services_without_user().forEach(function(item, index) {
+        notUsedServices.forEach(function(item, index) {
           self._authorize_url[item.servicename] =
             item.authorize_url + "&state=" + item.state;
           var option = document.createElement("option");
@@ -150,19 +151,35 @@
           self._select.add(option, 0);
         });
 
-        self._select.click(function() {
-          self._btn.attr("value", t("rds", "Authorize " + self.val() + " now"));
-        });
+        var setBtnText = function() {
+          var select = self._select;
+          var btn = self._btn;
+
+          btn.textContent = t(
+            "rds",
+            "Authorize " + select.options[select.selectedIndex].text + " now"
+          );
+          btn.value = select.options[select.selectedIndex].value;
+          btn.disabled = false;
+        };
+
+        setBtnText();
+        if (notUsedServices.length === 1) {
+          return;
+        }
+
+        self._select.onchange = setBtnText();
       },
       renderButton: function() {
         var self = this;
 
-        self._btn.click(function() {
+        self._btn.onclick = function() {
+          var select = self._select;
           var win = window.open(
-            self._authorize_url[self._select.value],
+            self._authorize_url[select.options[select.selectedIndex].text],
             "oauth2-service-for-rds"
           );
-          ("width=100%,height=100%,scrollbars=yes");
+          win("width=100%,height=100%,scrollbars=yes");
 
           var timer = setInterval(function() {
             if (win.closed) {
@@ -170,7 +187,7 @@
               location.reload();
             }
           }, 300);
-        });
+        };
       },
       render: function() {
         this.renderSelect();
