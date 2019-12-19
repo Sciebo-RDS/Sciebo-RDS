@@ -14,11 +14,15 @@ func = [Util.initialize_object_from_json, Util.initialize_object_from_dict]
 load_object = Util.try_function_on_dict(func)
 
 logger = logging.getLogger()
+def getURL():
+    string = request.url
+    return "/" + "/".join(string.split("/")[3:-1])
 
 @FlaskOptimize.do_not_minify()
 def index():
     if "code" not in request.args or "state" not in request.args:
-        return redirect("/authorization_cancel")
+        url =  getURL() + "/authorization_cancel"
+        return redirect(url)
 
     code = request.args.get("code")
     state = request.args.get("state")
@@ -35,13 +39,10 @@ def index():
         Util.tokenService.exchangeAuthCodeToAccessToken(
             code, data["servicename"])
 
-        string = request.url
-        url = "/" + "/".join(string.split("/")[3:-1]) + "/authorization_success"
-
+        url =  getURL() + "/authorization_success"
         return redirect(url)
 
     except Exception as e:
         logger.error(str(e))
-        string = request.url
-        url = "/" + "/".join(string.split("/")[3:-1]) + "/authorization_cancel"
+        url =  getURL() + "/authorization_cancel"
         return redirect(url)

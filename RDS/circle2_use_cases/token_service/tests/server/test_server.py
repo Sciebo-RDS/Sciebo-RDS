@@ -142,7 +142,7 @@ class Test_TokenServiceServer(unittest.TestCase):
             "/token-service/redirect", query_string={"code": code, "state": state})
         self.assertEqual(response.status_code, 302, msg=response.get_data())
         self.assertEqual(
-            response.headers["location"], "http://localhost/authorization_success", msg=response.get_data())
+            response.headers["location"], "http://localhost/token-service/authorization_success", msg=response.get_data())
 
 
         # TODO: add tests here for redirects to cancel page
