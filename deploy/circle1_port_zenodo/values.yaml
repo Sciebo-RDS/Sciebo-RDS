@@ -55,7 +55,7 @@ affinity: {}
 
 environment: 
   CENTRAL_SERVICE_TOKEN_STORAGE: http://circle3-token-storage
-  ZENODO_OAUTH_AUTHORIZE_URL: https://sandbox.zenodo.org/oauth/authorize?scope=deposit%3Awrite+deposit%3Aactions&redirect_uri=https%3A%2F%2Fsciebords-dev.uni-muenster.de%2Ftoken-service%2Fredirect&response_type=code&client_id=feYfqBVCfNDJTQyQRXWiJ8eoga99GxKzXYAZXvbm
+  ZENODO_OAUTH_AUTHORIZE_URL: https://sandbox.zenodo.org/oauth/authorize?scope=deposit%3Awrite%20deposit%3Aactions%26redirect_uri%3Dhttps%3A%2F%2Fsciebords-dev.uni-muenster.de%2Ftoken-service%2Fredirect%26response_type%3Dcode%26client_id%3DfeYfqBVCfNDJTQyQRXWiJ8eoga99GxKzXYAZXvbm
   ZENODO_OAUTH_ACCESS_TOKEN_URL: https://sandbox.zenodo.org/oauth/token
   ZENODO_OAUTH_CLIEND_ID: feYfqBVCfNDJTQyQRXWiJ8eoga99GxKzXYAZXvbm
   # FIXME: secret needs to be set manually 

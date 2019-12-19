@@ -47,10 +47,13 @@ class ServiceApiController extends ApiController
             $jwt = $element["jwt"];
             # decode jwt
             $pieces = explode(".", $jwt);
-            $payload = base64_decode($pieces[1]);
-            $payload = json_decode($payload, true);
-            $payload["state"] = $jwt;
-            $listOfServices[] = $payload;
+            $payload = json_decode(base64_decode($pieces[1], true), true);
+            $obj = array(
+                "servicename" => $payload["servicename"],
+                "authorize_url" => $payload["authorize_url"],
+                "state" => $jwt
+            );
+            $listOfServices[] = $obj;
         }
 
         return new JSONResponse($listOfServices);
