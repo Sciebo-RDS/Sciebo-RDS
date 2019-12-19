@@ -24,6 +24,20 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: "CENTRAL-SERVICE_TOKEN-STORAGE"
+            value: "{{ .Values.environment.CENTRAL_SERVICE_TOKEN_STORAGE }}"
+          - name: "ZENODO_OAUTH_AUTHORIZE_URL"
+            value: "{{ .Values.environment.ZENODO_OAUTH_AUTHORIZE_URL }}"
+          - name: "ZENODO_OAUTH_ACCESS_TOKEN_URL"
+            value: "{{ .Values.environment.ZENODO_OAUTH_ACCESS_TOKEN_URL }}"
+          - name: "ZENODO_OAUTH_CLIEND_ID"
+            value: "{{ .Values.environment.ZENODO_OAUTH_CLIEND_ID }}"
+          - name: "ZENODO_OAUTH_CLIENT_SECRET"
+            valueFrom:
+              secretKeyRef:
+                name: zenodo-oauth-client-secret
+                key: secret
           ports:
             - name: http
               containerPort: 8080

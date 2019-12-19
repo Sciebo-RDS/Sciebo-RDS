@@ -55,4 +55,4 @@ tolerations: []
 affinity: {}
 
 environment:
-  CENTRAL-SERVICE_TOKEN-STORAGE: http://circle3-token-storage
+  CENTRAL_SERVICE_TOKEN_STORAGE: http://circle3-token-storage

@@ -24,6 +24,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: "CENTRAL-SERVICE_TOKEN-STORAGE"
+            value: "{{ .Values.environment.CENTRAL_SERVICE_TOKEN_STORAGE }}"
           ports:
             - name: http
               containerPort: 8080
