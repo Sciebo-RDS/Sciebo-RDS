@@ -58,6 +58,13 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
       description: 'Like ownclouds: index.php/apps/oauth2/authorization-successful'
     parameters: []
   /authorization-cancel:
@@ -67,6 +74,15 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: string
       description: This endpoint represents an invalid oauth2 process.
     parameters: []
   /service:
@@ -118,8 +134,16 @@ paths:
                           type: string
         '404':
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
         '500':
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
       operationId: ''
       description: Returns all services which the user is registered for.
   '/user/{user-id}/service/{servicename}':
@@ -146,6 +170,8 @@ paths:
                 type: object
                 properties:
                   access_token:
+                    type: string
+                  servicename:
                     type: string
         '404':
           description: Not Found

@@ -14,14 +14,17 @@ func = [Util.initialize_object_from_json, Util.initialize_object_from_dict]
 load_object = Util.try_function_on_dict(func)
 
 logger = logging.getLogger()
+
+
 def getURL():
     string = request.url
     return "/" + "/".join(string.split("/")[3:-1])
 
+
 @FlaskOptimize.do_not_minify()
 def index():
     if "code" not in request.args or "state" not in request.args:
-        url =  getURL() + "/authorization_cancel"
+        url = getURL() + "/authorization-cancel"
         return redirect(url)
 
     code = request.args.get("code")
@@ -31,18 +34,18 @@ def index():
     data = None
 
     try:
-        logger.info(data)
         data = jwt.decode(state, Util.tokenService.secret, algorithms="HS256")
+        logger.info("code: {}, state: {}".format(code, state))
+        logger.info(f"decoded state: {data}")
 
-        logger.info(data)
 
         Util.tokenService.exchangeAuthCodeToAccessToken(
             code, data["servicename"])
 
-        url =  getURL() + "/authorization_success"
+        url = getURL() + "/authorization-success"
         return redirect(url)
 
     except Exception as e:
         logger.error(str(e))
-        url =  getURL() + "/authorization_cancel"
+        url = getURL() + "/authorization-cancel"
         return redirect(url)

@@ -56,3 +56,6 @@ affinity: {}
 
 environment:
   CENTRAL_SERVICE_TOKEN_STORAGE: http://circle3-token-storage
+  http_proxy: http://wwwproxy.uni-muenster.de:3128
+  no_proxy: circle3-token-storage
+  FLASK_HOST_ADDRESS: http://sciebords-dev.uni-muenster.de/token-service

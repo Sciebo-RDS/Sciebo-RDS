@@ -131,18 +131,18 @@ class Test_TokenServiceServer(unittest.TestCase):
 
         # need pact for save the access and refresh token in Token Storage
         pact.given(
-            'No token was registered for user'
+            'No token was registered for not registered user'
         ).upon_receiving(
             'A request to add an oauthtoken.'
         ).with_request(
             'POST', f"/user/{user.username}/token"
-        ) .will_respond_with(200, body={"success": True})
+        ) .will_respond_with(201, body={"success": True})
 
         response = self.client.get(
             "/token-service/redirect", query_string={"code": code, "state": state})
         self.assertEqual(response.status_code, 302, msg=response.get_data())
         self.assertEqual(
-            response.headers["location"], "http://localhost/token-service/authorization_success", msg=response.get_data())
+            response.headers["location"], "http://localhost/token-service/authorization-success", msg=response.get_data())
 
 
         # TODO: add tests here for redirects to cancel page

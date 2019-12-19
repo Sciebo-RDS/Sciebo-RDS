@@ -91,7 +91,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/JSONUser'
         description: Adds a new user to the storage.
       tags:
         - User
@@ -165,7 +165,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Token'
+              $ref: '#/components/schemas/JSONToken'
       tags:
         - token
   '/user/{user-id}/token':
@@ -191,7 +191,9 @@ paths:
                   length:
                     type: integer
                   list:
-                    $ref: '#/components/schemas/JSONToken'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JSONToken'
       description: Returns all tokens for the specified user.
     post:
       summary: Add a token
@@ -211,7 +213,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Token'
+              $ref: '#/components/schemas/JSONToken'
   '/service/{servicename}':
     get:
       summary: Get specified service

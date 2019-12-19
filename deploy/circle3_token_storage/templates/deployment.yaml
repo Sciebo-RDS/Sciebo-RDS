@@ -24,6 +24,17 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          {{- with .Values.environment.http_proxy }}
+          - name: "HTTP_PROXY"
+            value: "{{ . }}"
+          - name: "http_proxy"
+            value: "{{ . }}"
+          - name: "HTTPS_PROXY"
+            value: "{{ . }}"
+          - name: "https_proxy"
+            value: "{{ . }}"
+          {{- end }}
           ports:
             - name: http
               containerPort: 8080

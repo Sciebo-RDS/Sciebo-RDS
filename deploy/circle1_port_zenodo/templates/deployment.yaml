@@ -38,6 +38,22 @@ spec:
               secretKeyRef:
                 name: zenodo-oauth-client-secret
                 key: secret
+          {{- with .Values.environment.http_proxy }}
+          - name: "HTTP_PROXY"
+            value: "{{ . }}"
+          - name: "http_proxy"
+            value: "{{ . }}"
+          - name: "HTTPS_PROXY"
+            value: "{{ . }}"
+          - name: "https_proxy"
+            value: "{{ . }}"
+          {{- end }}
+          {{- with .Values.environment.no_proxy }}
+          - name: "no_proxy"
+            value: "{{ . }}"
+          - name: "NO_PROXY"
+            value: "{{ . }}"
+          {{- end }}
           ports:
             - name: http
               containerPort: 8080

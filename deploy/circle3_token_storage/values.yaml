@@ -53,4 +53,5 @@ tolerations: []
 
 affinity: {}
 
-environment: {}
+environment:
+  http_proxy: http://wwwproxy.uni-muenster.de:3128

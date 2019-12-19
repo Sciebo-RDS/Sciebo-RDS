@@ -19,9 +19,16 @@
       this._services_without_user = function() {
         var list = [];
 
-        self._services.forEach(function(item, index) {
-          if (self._user_services.indexOf(item["servicename"]) < 0) {
-            list.push(item);
+        self._services.forEach(function(service, index) {
+          var found = false;
+          self._user_services.forEach(function(user_service, index) {
+            if (service["servicename"] === user_service["servicename"]) {
+              found = true;
+            }
+          }, this);
+
+          if (!found) {
+            list.push(service);
           }
         });
         return list;
@@ -82,7 +89,7 @@
 
         $.get(this._baseurl + "/user/service", "json")
           .done(function(services) {
-            self._user_services = services;
+            self._user_services = services["list"];
             deferred.resolve();
           })
           .fail(function() {
@@ -111,6 +118,7 @@
       this._services = services;
       this._authorize_url = {};
       this._btn = document.getElementById("svc-button");
+      this._btn.disabled = true;
       this._select = document.getElementById("svc-selector");
     };
 
@@ -122,14 +130,13 @@
         this._services._user_services.forEach(function(item, index) {
           source.append(
             "<tr><td>" +
-              item +
+              item["servicename"] +
               "</td><td>" +
               '<form class="form-inline delete" data-confirm="' +
               t("rds", "Are you sure you want to delete this item?") +
               '" action="' +
-              OC.generateUrl(self._services._baseurl) +
-              "/service/" +
-              item +
+              OC.generateUrl("apps/rds/api/v1") + "/service/" +
+              item["servicename"] +
               '/delete" method="post">' +
               '<input type="hidden" name="requesttoken" value=' +
               OC.requestToken +
@@ -137,21 +144,20 @@
               '<input type="submit" class="button icon-delete" value=""></form>' +
               "</td></tr>"
           );
-        });
+        }, this);
+
+        if (this._services._user_services.length > 0) {
+          var serviceDiv = document.getElementById("services");
+          if (serviceDiv) {
+            serviceDiv.style.display = "block";
+          }
+        }
       },
       renderSelect: function() {
         var self = this;
         var notUsedServices = self._services._services_without_user();
 
-        notUsedServices.forEach(function(item, index) {
-          self._authorize_url[item.servicename] =
-            item.authorize_url + "&state=" + item.state;
-          var option = document.createElement("option");
-          option.text = option.value = item.servicename;
-          self._select.add(option, 0);
-        });
-
-        var setBtnText = function() {
+        self._select.addEventListener("change", function() {
           var select = self._select;
           var btn = self._btn;
 
@@ -161,14 +167,18 @@
           );
           btn.value = select.options[select.selectedIndex].value;
           btn.disabled = false;
-        };
+        });
 
-        setBtnText();
-        if (notUsedServices.length === 1) {
-          return;
-        }
+        notUsedServices.forEach(function(item, index) {
+          self._authorize_url[item.servicename] =
+            item.authorize_url + "&state=" + item.state;
+          var option = document.createElement("option");
+          option.text = option.value = item.servicename;
+          self._select.add(option, 0);
+          self._select.selectedIndex = 0;
+        });
 
-        self._select.onchange = setBtnText();
+        self._select.value = 0;
       },
       renderButton: function() {
         var self = this;
@@ -177,7 +187,9 @@
           var select = self._select;
           var win = window.open(
             self._authorize_url[select.options[select.selectedIndex].text],
-            "oauth2-service-for-rds", "width=100%,height=100%,scrollbars=yes");
+            "oauth2-service-for-rds",
+            "width=100%,height=100%,scrollbars=yes"
+          );
 
           var timer = setInterval(function() {
             if (win.closed) {
@@ -199,12 +211,5 @@
     services.loadAll().done(function() {
       view.render();
     });
-
-    if (services._user_services.length === 0) {
-      var serviceDiv = document.getElementById("services");
-      if (serviceDiv) {
-        serviceDiv.style.display = "none";
-      }
-    }
   });
 })(OC, window, jQuery);

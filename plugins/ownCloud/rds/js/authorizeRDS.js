@@ -2,15 +2,26 @@
   "use strict";
 
   $(document).ready(function() {
-    function openAuthorizeOwncloud() {
-      window.location.href =
-        OC.generateUrl("/apps/oauth2/authorize") +
-        "?response_type=code&client_id=DjuJWDG8xzXYu5ttjaKoY0KPfRKcVmhvdkt6u2Y2KZq8fFb5i2FtRiBQmBDJgAIM&redirect_uri=http://sciebords-dev.uni-muenster.de/token-service/redirect";
-    }
+    $.ajax({
+      url: OC.generateUrl("apps/rds/api/v1") + "/service/Owncloud",
+      success: function(result) {
+        if (result.isOk == false) return;
+        var state = result["state"];
+        var authorize_url = result["authorize_url"] + "&state=" + state;
 
-    var button = document.getElementById("openAuthorizeOwncloud");
-    if (button) {
-      button.addEventListener("click", openAuthorizeOwncloud);
-    }
+        var button = document.getElementById("openAuthorizeOwncloud");
+
+        if (button) {
+          button.addEventListener(
+            "click",
+            function() {
+              window.location.href = authorize_url;
+            }.bind(this)
+          );
+        }
+      },
+      dataType: "json",
+      async: false
+    });
   });
 })(OC, window, jQuery);

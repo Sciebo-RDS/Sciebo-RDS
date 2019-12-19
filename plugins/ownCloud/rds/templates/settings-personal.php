@@ -17,20 +17,24 @@
     }
 
     if ($logged_in) {
-        script('rds', 'services');
-        ?>
+    ?>
 
         <?php p($l->t('Which services do you want to use?')); ?>
-        <select id="svc-selector">
-        </select>
-        <button id="svc-button" class="button" disabled><?php p($l->t('Please select a service.')); ?></button>
+        <p>
+            <select id="svc-selector">
+                <!-- JS will generate the options automatically and add them here -->
+            </select>
+            <button id="svc-button" class="button" disabled><?php p($l->t('Please select a service.')); ?></button>
+        </p>
 </div>
 
-<div class="section" id="services">
+<div class="section" id="services" style="display: none;">
     <table id="serviceStable" data-preview-x="32" data-preview-y="32">
         <thead>
-            <th id="servicename"><?php p($l->t("Servicename")); ?></th>
-            <th id="actions"><?php p($l->t("Actions")); ?></th>
+            <tr>
+                <th id="servicename"><?php p($l->t("Servicename")); ?></th>
+                <th id="actions"><?php p($l->t("Actions")); ?></th>
+            </tr>
         </thead>
         <tbody id="serviceList">
         </tbody>
@@ -45,11 +49,12 @@
         <input type="submit" class="button icon-delete" value="">
     </form>
 <?php
-} else {
-    script('rds', 'authorizeRDS');
-    p($l->t('Sciebo RDS is not authorized yet.'));
-    ?><br>
+        script('rds', 'services');
+    } else {
+        script('rds', 'authorizeRDS');
+        p($l->t('Sciebo RDS is not authorized yet.'));
+?><br>
     <button id="openAuthorizeOwncloud" class="button"><?php p($l->t('Authorize Sciebo RDS now.')); ?></button>
 <?php
-} ?>
+    } ?>
 </div>

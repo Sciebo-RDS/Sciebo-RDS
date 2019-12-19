@@ -9,13 +9,15 @@ import Util
 from lib.Exceptions.ServiceException import *
 import jwt
 import datetime
-import secrets, logging
+import secrets
+import logging
 from typing import Union
 
 func = [Util.initialize_object_from_json, Util.initialize_object_from_dict]
 load_object = Util.try_function_on_dict(func)
 
 logger = logging.getLogger()
+
 
 class TokenService():
     # static
@@ -130,9 +132,12 @@ class TokenService():
         data = response.json()
 
         services = []
-        for l in data["list"]:
-            token = load_object(l)
-            services.append({"servicename": token.servicename})
+        try:
+            for l in data["list"]:
+                token = load_object(l)
+                services.append({"servicename": token.servicename})
+        except:
+            raise UserNotFoundError(user)
 
         return services
 
@@ -301,11 +306,17 @@ class TokenService():
         body = {
             "grant_type": "authorization_code",
             "code": code,
-            "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:3000"))
+            "client_id": service.client_id,
+            "client_secret": service.client_secret,
+            "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:8080"))
         }
+
+        logger.info(f"request body: {body}")
 
         response = requests.post(f"{service.refresh_url}", data=body, auth=(
             service.client_id, service.client_secret))
+
+        logger.info(f"response body: {response.text}")
 
         if response.status_code is not 200:
             raise CodeNotExchangeable(code, service, msg=response.text)
@@ -322,11 +333,14 @@ class TokenService():
             service.servicename, access_token, refresh_token, exp_date)
 
         # save the access_token in tokenStorage
+        logger.info(f"request oauthtoken body: {oauthtoken}")
+        headers = {'Content-type': 'application/json'}
         response = requests.post(
-            f"{self.address}/user/{user_id}/token", data=json.dumps(oauthtoken))
+            f"{self.address}/user/{user_id}/token", data=json.dumps(oauthtoken.to_dict()), headers=headers)
+        logger.info(f"response oauthtoken body: {response.text}")
 
-        if response.status_code is not 200:
+        if response.status_code >= 300:
             raise CodeNotExchangeable(
-                code, Service(servicename), msg=response.text)
+                response.status_code, Service(service.servicename), msg=response.text)
 
         return oauthtoken

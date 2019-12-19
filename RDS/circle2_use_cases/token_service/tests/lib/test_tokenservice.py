@@ -180,6 +180,17 @@ class Test_TokenService(unittest.TestCase):
         self.assertEqual(self.tokenService.getAllServicesForUser(
             self.user1), [{"servicename": self.servicename1}, {"servicename": self.servicename2}])
 
+        pact.given(
+            'two services were registered.'
+        ).upon_receiving(
+            'a request to get services from one specific user, which not exists.'
+        ).with_request(
+            'GET', f"/user/{self.user2.username}/token"
+        ) .will_respond_with(404, body={})
+
+        with self.assertRaises(UserNotFoundError):
+            self.tokenService.getAllServicesForUser(self.user2)
+
     # FIXME: addService not through this use case? directly to central service?
     """
     def test_add_one_service(self):

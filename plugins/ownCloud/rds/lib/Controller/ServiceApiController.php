@@ -47,10 +47,11 @@ class ServiceApiController extends ApiController
             $jwt = $element["jwt"];
             # decode jwt
             $pieces = explode(".", $jwt);
-            $payload = json_decode(base64_decode($pieces[1], true), true);
+            $decode = base64_decode($pieces[1], true);
+            $payload = json_decode($decode, true);
             $obj = array(
                 "servicename" => $payload["servicename"],
-                "authorize_url" => $payload["authorize_url"],
+                "authorize_url" => urldecode($payload["authorize_url"]),
                 "state" => $jwt
             );
             $listOfServices[] = $obj;
@@ -62,31 +63,45 @@ class ServiceApiController extends ApiController
     /**
      * Returns a single service from RDS to authenticate with.
      * 
-     * @param int $servicename
+     * @param string $servicename
      * @return object an object with jwt encoded object {"servicename", "authorize_url", "date"}
      *
      * @NoAdminRequired
      */
     public function show($servicename)
     {
-        $curl = curl_init($this->rdsURL . "/service/" . $servicename);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $url = $this->rdsURL . "/service/" . $servicename;
 
-        $response = json_decode(curl_exec($curl));
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        $result = curl_exec($curl);
+        $response = json_decode($result, true);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
         if($httpcode >= 300) {
             return new JSONResponse();
         }
+        
+        $jwt = $response["jwt"];
+        # decode jwt
+        $pieces = explode(".", $jwt);
+        $decode = base64_decode($pieces[1], true);
+        $payload = json_decode($decode, true);
+        $obj = array(
+            "servicename" => $payload["servicename"],
+            "authorize_url" => urldecode($payload["authorize_url"]),
+            "state" => $jwt
+        );
 
-        return new JSONResponse($response);
+        return new JSONResponse($obj);
     }
 
     /**
      * Removes a single service from the user in RDS.
      *
-     * @param int $servicename
+     * @param string $servicename
      * @return bool returns true for success, else false
      *
      * @NoAdminRequired
@@ -112,14 +127,13 @@ class ServiceApiController extends ApiController
     /**
      * Returns a list with all services from rds, which registered for user.
      * 
-     * @param int $servicename
      * @return string a list of strings, which are servicenames
      *
      * @NoAdminRequired
      */
     public function getRegisteredServicesForUser()
     {
-        $curl = curl_init($this->rdsURL . "/user/" . $this->userId);
+        $curl = curl_init($this->rdsURL . "/user/" . $this->userId . "/service");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response = json_decode(curl_exec($curl));
@@ -130,6 +144,6 @@ class ServiceApiController extends ApiController
             return new JSONResponse();
         }
 
-        return JSONResponse($response);
+        return new JSONResponse($response);
     }
 }

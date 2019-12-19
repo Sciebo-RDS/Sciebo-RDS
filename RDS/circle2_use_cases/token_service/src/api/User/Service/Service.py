@@ -3,9 +3,14 @@ from lib.Service import Service
 from lib.User import User
 from flask import jsonify
 
-
 def index(user_id):
-    return jsonify(Util.tokenService.getAllServicesForUser(User(user_id)))
+    listOfServices = Util.tokenService.getAllServicesForUser(User(user_id))
+    data = {
+        "length": len(listOfServices),
+        "list": listOfServices
+    }
+
+    return jsonify(data)
 
 
 def get(user_id, servicename):

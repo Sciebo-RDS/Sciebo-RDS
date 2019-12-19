@@ -1,13 +1,16 @@
 port_zenodo:
 	helm upgrade circle1-port-zenodo circle1_port_zenodo --install
 
+port_owncloud:
+	helm upgrade circle1-port-owncloud circle1_port_owncloud --install
+
 token_service:
 	helm upgrade circle2-token-service circle2_token_service --install
 
 token_storage:
 	helm upgrade circle3-token-storage circle3_token_storage --install
 
-circle1: port_zenodo
+circle1: port_zenodo port_owncloud
 circle2: token_service
 circle3: token_storage
 
@@ -20,20 +23,23 @@ remove_features:
 remove_port_zenodo:
 	helm delete --purge circle1-port-zenodo || true
 
+remove_port_owncloud:
+	helm delete --purge circle1-port-owncloud || true
+
 remove_token_service:
 	helm delete --purge circle2-token-service || true
 
 remove_token_storage:
 	helm delete --purge circle3-token-storage || true
 
-uninstall_circle1: remove_port_zenodo
+uninstall_circle1: remove_port_zenodo remove_port_owncloud
 uninstall_circle2: remove_token_service
 uninstall_circle3: remove_token_storage
 
-install: circle1 circle2 circle3 features
+install: features circle3 circle2 circle1
 uninstall: uninstall_circle1 uninstall_circle2 uninstall_circle3 remove_features
 
-clean_install: uninstall_circle1 uninstall_circle2 uninstall_circle3 circle1 circle2 circle3
+clean_install: uninstall_circle1 uninstall_circle2 uninstall_circle3 circle3 circle2 circle1
 
 make jaeger:
 	$(eval POD_JAEGER=$(shell kubectl get pods --namespace sciebo-rds -l "app.kubernetes.io/instance=jaeger,app.kubernetes.io/component=query" -o jsonpath="{.items[0].metadata.name}"))

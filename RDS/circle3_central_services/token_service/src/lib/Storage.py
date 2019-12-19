@@ -68,9 +68,9 @@ class Storage():
         from .Exceptions.StorageException import UserNotExistsError
         raise UserNotExistsError(self, User(user_id))
 
-    def getToken(self, user_id: Union[str, User], token_id: int):
+    def getToken(self, user_id: Union[str, User], token_id: Union[str, int]):
         """
-        Returns only the token with token_id from user_id (String or User).
+        Returns only the token with token_id (str or int) from user_id (String or User).
 
         Raise `ValueError` if token_id not found and `UserNotExistsError` if user_id was not found.
         """
@@ -80,6 +80,19 @@ class Storage():
 
         if isinstance(user_id, User):
             user_id = user_id.username
+
+        try:
+            token_id = int(token_id)
+        except ValueError:
+            logger.warning("token_id is not an int, so we try to find the service by str.")
+            try:
+                servicelist = []
+                for s in self._storage[user_id]["tokens"]:
+                    servicelist.append(Service(s.servicename))
+                token_id = self.internal_find_service(token_id, servicelist)
+            except ValueError:
+                logger.error("Given token_id was not an int and could not be found in services.")
+                raise
 
         if user_id in self._storage:
             tokens = self._storage[user_id]["tokens"]
@@ -251,14 +264,17 @@ class Storage():
         Use `Force` Parameter (boolean) to create User, if not already exists and overwrite any existing Token.
         """
 
+        logger.info(f"Try to find service {token.servicename}")
         try:
             self.internal_find_service(token.servicename, self._services)
         except ValueError:
             raise ServiceNotExistsError(Service(token.servicename))
+        logger.info("found")
 
         if not user.username in self._storage:
             if Force:
                 self.internal_addUser(user)
+                logger.info(f"add user {user} with force, because he does not exist in storage already.")
             else:
                 from .Exceptions.StorageException import UserNotExistsError
                 raise UserNotExistsError(self, user)
@@ -268,6 +284,7 @@ class Storage():
 
             if Force:
                 self._storage[user.username]["tokens"][index] = token
+                logger.info(f"overwrite token for user {user}")
 
             else:
                 from .Exceptions.StorageException import UserHasTokenAlreadyError

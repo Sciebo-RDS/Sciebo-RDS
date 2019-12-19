@@ -280,9 +280,30 @@ class TestTokenService(unittest.TestCase):
         self.assertEqual(req.json["http_code"], 404)
 
         result = self.client.post(f"/user/{self.user1.username}/token",
-                                  data=json.dumps(self.token1.to_dict()), content_type='application/json')
+                                  data=json.dumps(self.oauthtoken1.to_dict()), content_type='application/json')
         self.assertEqual(result.status_code, 200, msg=result.json)
         self.assertEqual(result.json, self.success)
+
+        req = self.client.get(f"/user/{self.user1.username}/token/0")
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(Util.initialize_object_from_json(
+            req.get_data(as_text=True)), self.oauthtoken1)
+
+        result = self.client.post(f"/user/{self.user1.username}/token",
+                                  data=json.dumps(self.oauthtoken1.to_dict()), content_type='application/json')
+        self.assertEqual(result.status_code, 409, msg=result.json)
+        self.assertEqual(result.json["error"], "Conflict", msg=result.json)
+
+        # test, if user will be created, if not exists
+        result = self.client.post(f"/user/{self.user2.username}/token",
+                                  data=json.dumps(self.oauthtoken3.to_dict()), content_type='application/json')
+        self.assertEqual(result.status_code, 201, msg=result.json)
+        self.assertEqual(result.json, self.success)
+
+        req = self.client.get(f"/user/{self.user2.username}/token/0")
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(Util.initialize_object_from_json(
+            req.get_data(as_text=True)), self.oauthtoken3)
 
     def test_list_tokens(self):
 
@@ -338,7 +359,18 @@ class TestTokenService(unittest.TestCase):
             self.assertEqual(v, expected["list"][k], msg="{} {}".format(
                 v, expected["list"][k]))
 
+        # check, if we can find a token by its servicename
+        index = self.oauthtoken2.servicename
+
+        result = self.client.get(f"/user/{self.user1.username}/token/{index}")
+        self.assertEqual(result.status_code, 200,
+                         msg=f"token id: {index} - {result.json}")
+        token = Util.initialize_object_from_json(result.get_data(as_text=True))
+        self.assertEqual(token, self.oauthtoken2)
+
         # remove a token
+
+        # check, if we can find a token by its index
         index = 0
 
         result = self.client.get(f"/user/{self.user1.username}/token/{index}")
@@ -359,6 +391,83 @@ class TestTokenService(unittest.TestCase):
         for k, v in enumerate(self.get("/token")):
             self.assertEqual(v, expected["list"][k], msg="{} {}".format(
                 v, expected["list"][k]))
+
+    def test_get_tokens_for_user(self):
+
+        self.client.post(
+            "/service", data=json.dumps(self.oauthservice1.to_dict()), content_type='application/json')
+        self.client.post(
+            "/service", data=json.dumps(self.oauthservice2.to_dict()), content_type='application/json')
+        self.client.post(
+            "/service", data=json.dumps(self.oauthservice3.to_dict()), content_type='application/json')
+
+        # there have to be a user
+        self.client.post("/user", data=json.dumps(self.user1.to_dict()),
+                         content_type='application/json')
+
+        # no tokens there
+        expected = {
+            "length": 0,
+            "list": []
+        }
+
+        self.assertEqual(self.client.get("/token").json, expected)
+
+        # add a token to user
+        expected = {
+            "length": 1,
+            "list": [self.token2]
+        }
+
+        result = self.client.post(f"/user/{self.user1.username}/token",
+                                  data=json.dumps(self.token2.to_dict()), content_type='application/json')
+        self.assertEqual(result.status_code, 200, msg=result.json)
+
+        # list compare doesn't work properly, so we have to iterate.
+        for k, v in enumerate(self.get("/token")):
+            self.assertEqual(v, expected["list"][k], msg="{} {}".format(
+                v, expected["list"][k]))
+
+        # should response with http code not equal to 200, because user has already a token for this service
+        response = self.client.post(f"/user/{self.user1.username}/token",
+                                    data=json.dumps(self.oauthtoken2.to_dict()), content_type='application/json')
+        self.assertNotEqual(response.status_code, 200)
+
+        # add an oauthtoken to user
+        expected = {
+            "length": 2,
+            "list": [self.token2, self.token1]
+        }
+
+        self.client.post(f"/user/{self.user1.username}/token",
+                         data=json.dumps(self.oauthtoken1.to_dict()), content_type='application/json')
+
+        for k, v in enumerate(self.get("/token")):
+            self.assertEqual(v, expected["list"][k], msg="{} {}".format(
+                v, expected["list"][k]))
+
+        # check, if we can find a token by its servicename
+        index = self.oauthtoken1.servicename
+
+        result = self.client.get(f"/user/{self.user1.username}/token/{index}")
+        self.assertEqual(result.status_code, 200,
+                         msg=f"token id: {index} - {result.json}")
+        token = Util.initialize_object_from_json(result.get_data(as_text=True))
+        self.assertEqual(token, self.oauthtoken1, msg=token)
+
+        # check, if we can find a token by its index
+        index = 0
+
+        result = self.client.get(f"/user/{self.user1.username}/token/{index}")
+        self.assertEqual(result.status_code, 200,
+                         msg=f"token id: {index} - {result.json}")
+        token = Util.initialize_object_from_json(result.get_data(as_text=True))
+        self.assertEqual(token, self.token2, msg=token)
+
+        expected = {
+            "length": 1,
+            "list": [self.token2]
+        }
 
 
 if __name__ == '__main__':
