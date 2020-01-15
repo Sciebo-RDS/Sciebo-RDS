@@ -1,4 +1,4 @@
-baseurl = "http://www.research-data-services.org/"
+baseurl = "https://www.research-data-services.org/"
 contentdir    = "content"
 layoutdir     = "layouts"
 publishdir    = "public"
