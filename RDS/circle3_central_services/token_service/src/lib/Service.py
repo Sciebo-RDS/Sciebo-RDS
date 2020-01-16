@@ -4,6 +4,7 @@ from urllib.parse import urlparse, urlunparse
 import requests
 import json
 from datetime import datetime, timedelta
+from typing import Union
 
 
 class Service():
@@ -87,6 +88,26 @@ class Service():
             return Service(serviceDict["servicename"])
         except:
             raise ValueError("not a valid service dict")
+
+    @staticmethod
+    def init(obj: Union[str, dict]):
+        """
+        Returns a Service or oauthService object for json String or dict.
+        """
+        if isinstance(obj, (Service, OAuth2Service)):
+            return obj
+
+        if not isinstance(obj, (str, dict)):
+            raise ValueError("Given object not from type str or dict.")
+
+        from Util import try_function_on_dict
+        
+        if isinstance(obj, str):
+            load = try_function_on_dict([OAuth2Service.from_json, Service.from_json])
+            return load(obj)
+
+        load = try_function_on_dict([OAuth2Service.from_dict, Service.from_dict])
+        return load(obj)
 
 
 class OAuth2Service(Service):
