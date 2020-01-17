@@ -42,31 +42,39 @@ Aufgrund der hohen Relevanz einer einwandfreien Speicherung der Nutzertokens, wi
 classDiagram
 
   class Storage {
-    - Dict[String key, UserToken value] _storage
-  }
-
-  class UserToken {
-    + User data
-    + List[Token] tokens
+    - List[Token value] _storage
+    - List[User value] _user
+    - List[Service value] _service
   }
 
   class User {
-    + String Username
-  }
-
-  class Token {
-    + String Servicename
-    + String Access_Token
+    + String username
+    + String userpasswort
+    + String loginservice
   }
 
   class Service {
-    + String Servicename
+    + String servicename
+    + String client_id
+    + String client_secret
+    + String authorize_url
+    + String refresh_url
   }
 
-  Storage "1" -- "0..n" UserToken : manages
-  UserToken "1" -- "1" User : has
-  UserToken "1" -- "0..n" Token : holds
-  Service "1" -- "0..n" Token : has
+  class Token {
+    + String username
+    + String servicename
+    + String access_token
+    + String refresh_token
+    + datetime expiration_date
+  }
+
+  Storage "1" -- "0..n" Token : has
+  Storage "1" -- "0..n" User : has
+  Storage "1" -- "0..n" Service : has
+
+  Token "0..n" -- "1" Service : has
+  Token "0..n" -- "1" User : has
 ```
 
 Aktuell kann jeder User nur einen Token für jeden Service besitzen. Dies wird aktuell dadurch gewährleistet, dass Tokens bereits dadurch gleich sind, wenn ihre Servicename übereinstimmen.
