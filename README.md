@@ -1,3 +1,3 @@
 # Sciebo Research data services
 
-Documentation: https://sciebo-rds.zivgitlabpages.uni-muenster.de/sciebo-rds
+Documentation: https://www.research-data-services.org
