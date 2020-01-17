@@ -114,10 +114,11 @@ class TestService(unittest.TestCase):
     def test_service_check_raises(self):
         svc1 = OAuth2Service("MusterService", "http://localhost:5001",
                              "http://localhost:5001/oauth/refresh", "ABC", "XYZ")
-        
+
+        from lib.User import User
         from lib.Token import Token, OAuth2Token
         with self.assertRaises(ValueError):
-            svc1.refresh(Token(svc1.servicename, "ABC"))
+            svc1.refresh(Token(User("Max Mustermann"), svc1, "ABC"))
 
         with self.assertRaises(ValueError):
             svc1.refresh("asd")

@@ -25,9 +25,19 @@ class UserNotExistsError(UserExistsAlreadyError):
 class UserHasTokenAlreadyError(UserExistsAlreadyError):
     def __init__(self, storage: Storage, user: User, token: Token, msg=None):
         if msg is None:
-            msg = f"{user} has already {token.servicename} in Storage"
+            msg = f"{user} has already {token.service} in Storage"
 
         super(UserHasTokenAlreadyError, self).__init__(storage, user, msg)
+
+class TokenNotForUser(Exception):
+    def __init__(self, storage: Storage, user: User, token: Token, msg=None):
+        if msg is None:
+            msg = f"{user} not qualified for {token} in Storage"
+
+        super(TokenNotExistsError, self).__init__(msg)
+        self.user = user
+        self.token = token
+        self.storage = storage
 
 
 class TokenNotExistsError(Exception):

@@ -20,7 +20,7 @@ class User():
         return self._username
 
     def __str__(self):
-        return str({"name": self.username})
+        return json.dumps(self)
 
     def __eq__(self, obj):
         if isinstance(obj, str):
@@ -92,9 +92,5 @@ class User():
 
         from Util import try_function_on_dict
         
-        if isinstance(obj, str):
-            load = try_function_on_dict([User.from_json])
-            return load(obj)
-
-        load = try_function_on_dict([User.from_dict])
+        load = try_function_on_dict([User.from_json, User.from_dict])
         return load(obj)

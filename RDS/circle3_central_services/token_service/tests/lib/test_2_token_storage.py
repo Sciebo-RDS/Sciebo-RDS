@@ -5,7 +5,7 @@ from lib.Token import Token, OAuth2Token
 from lib.User import User
 from lib.Exceptions.StorageException import UserExistsAlreadyError, UserHasTokenAlreadyError, UserNotExistsError
 from lib.Exceptions.ServiceException import ServiceNotExistsError, ServiceExistsAlreadyError
-from lib.Service import *
+from lib.Service import Service, OAuth2Service
 
 
 class Test_TokenStorage(unittest.TestCase):
@@ -23,14 +23,13 @@ class Test_TokenStorage(unittest.TestCase):
         self.empty_storage.addService(self.service1)
         self.empty_storage.addService(self.oauthservice1)
 
-        self.token1 = Token(self.service1.servicename, "ABC")
-        self.token_like_token1 = Token(self.service1.servicename, "DEF")
-        self.token2 = Token(self.oauthservice1.servicename, "XYZ")
+        self.token1 = Token(self.user1, self.service1, "ABC")
+        self.token_like_token1 = Token(self.user1, self.service1, "DEF")
+        self.token2 = Token(self.user1, self.oauthservice1, "XYZ")
 
-        self.oauthtoken1 = OAuth2Token.from_token(self.token1, "X_ABC")
-        self.oauthtoken_like_token1 = OAuth2Token.from_token(
-            self.token_like_token1, "X_DEF")
-        self.oauthtoken2 = OAuth2Token.from_token(self.token2, "X_XYZ")
+        self.oauthtoken1 = OAuth2Token(self.user1, self.oauthservice1, "ABC", "X_ABC")
+        self.oauthtoken_like_token1 = OAuth2Token(self.user1, self.oauthservice1, "ABC", "X_DEF")
+        self.oauthtoken2 = OAuth2Token(self.user1, self.oauthservice1, "XYZ", "X_XYZ")
 
     def test_storage_listUser(self):
         empty_storage = Storage()

@@ -25,7 +25,7 @@ def get(servicename: str):
     raise ServiceNotExistsError(Service(servicename))    
 
 def post():
-    svc = init_object(request.json)
+    svc = Service.init(request.json)
 
     try:
         Util.storage.addService(svc)

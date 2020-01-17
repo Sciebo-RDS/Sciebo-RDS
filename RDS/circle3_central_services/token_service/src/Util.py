@@ -119,6 +119,6 @@ def try_function_on_dict(func: list):
                 continue
 
         raise Exception("The given jsonDict raise in all functions an exception: {}".format(
-            "\n".join(exp_list)))
+            "\n".join(map(repr, exp_list))))
 
     return inner_func

@@ -45,16 +45,16 @@ class TestStorageService(unittest.TestCase):
         self.oauthservice3 = OAuth2Service.from_service(
             self.service3, f"{pact_host_fqdn}/api/authorize", f"{pact_host_fqdn}/api/token", "GHI", "MNO")
 
-        self.token1 = Token(self.service1.servicename, "ABC")
-        self.token_like_token1 = Token(self.service1.servicename, "DEF")
-        self.token2 = Token(self.service2.servicename, "XYZ")
-        self.token3 = Token(self.service3.servicename, "GHI")
+        self.token1 = Token(self.user1, self.service1, "ABC")
+        self.token_like_token1 = Token(self.user1, self.service1, "DEF")
+        self.token2 = Token(self.user2, self.service2, "XYZ")
+        self.token3 = Token(self.user1, self.service3, "GHI")
 
-        self.oauthtoken1 = OAuth2Token.from_token(self.token1, "X_ABC")
-        self.oauthtoken_like_token1 = OAuth2Token.from_token(
-            self.token_like_token1, "X_DEF")
-        self.oauthtoken2 = OAuth2Token.from_token(self.token2, "X_XYZ")
-        self.oauthtoken3 = OAuth2Token.from_token(self.token3, "X_GHI")
+        self.oauthtoken1 = OAuth2Token(self.user3, self.oauthservice1, "ABC", "X_ABC")
+        self.oauthtoken_like_token1 = OAuth2Token(self.user3, self.oauthservice1, "ABC", "X_DEF")
+        self.oauthtoken2 = OAuth2Token(self.user1, self.oauthservice2, "XYZ", "X_XYZ")
+        self.oauthtoken3 = OAuth2Token(self.user3, self.oauthservice3, "GHI", "X_GHI")
+        self.oauthtoken4 = OAuth2Token(self.user1, self.oauthservice1, "AMZ", "X_AMZ")
 
         self.services = [
             self.service1, self.service2, self.service3,
@@ -132,7 +132,8 @@ class TestStorageService(unittest.TestCase):
         self.assertFalse(
             self.filled_storage_without_tokens.refresh_services(self.services))
 
-        self.assertTrue(self.filled_storage.refresh_service(
+        # false because only a simple service
+        self.assertFalse(self.filled_storage.refresh_service(
             self.service1), msg=self.filled_storage)
 
         # works with a request to a provider
@@ -157,10 +158,27 @@ class TestStorageService(unittest.TestCase):
         pact.given(
             "Username can refresh given oauth2token to service", username=expected_service.client_id, service=expected_service
         ).upon_receiving(
+            "An invalid response."
+        ).with_request(
+            "POST", "/oauth/token"
+        ).will_respond_with(404, body={})
+
+        pact.given(
+            "Username can refresh given oauth2token to service", username=expected_service.client_id, service=expected_service
+        ).upon_receiving(
             "A valid refresh token response."
         ).with_request(
             "POST", "/owncloud/index.php/apps/oauth2/api/v1/token", headers={"Authorization": f"Basic {b64}"}
         ).will_respond_with(200, body=json_expected)
+
+        pact.given(
+            "Username can refresh given oauth2token to service"
+        ).upon_receiving(
+            "An invalid response for another service."
+        ).with_request(
+            "POST", "/api/token"
+        ).will_respond_with(404, body={})
+
 
         result = None
         with pact:
@@ -189,15 +207,15 @@ class TestStorageService(unittest.TestCase):
 
     def test_storage_refresh_save_mechanism(self):
         expires_in = 3600
-        expected = OAuth2Token.from_token(self.token1, "XYZ")
-        expected._exiration_date = datetime.fromtimestamp(time() + expires_in)
+        expected = OAuth2Token(self.user1, self.oauthservice1, "ABC", "XYZ")
+        expected._expiration_date = datetime.fromtimestamp(time() + expires_in)
 
         # example taken from https://github.com/owncloud/oauth2
         json_expected = {
-            "access_token": "1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ",
+            "access_token": expected.access_token,
             "token_type": "Bearer",
             "expires_in": expires_in,
-            "refresh_token": "7y0wJuvKmj5E1vjVnhlPBEhha59JyaAiFIVQDvcBY2ss0pauzdQtnuo1NkIsbndA",
+            "refresh_token": expected.refresh_token,
             "user_id": self.user1.username,
             "message_url": f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorization-successful"
         }
@@ -214,29 +232,31 @@ class TestStorageService(unittest.TestCase):
         with pact:
             self.empty_storage.addService(self.oauthservice1)
             self.empty_storage.addUser(self.user1)
-            self.empty_storage.addTokenToUser(self.oauthtoken1, self.user1)
+            self.empty_storage.addTokenToUser(self.oauthtoken4, self.user1)
             self.empty_storage.refresh_service(self.oauthservice1)
             result = self.empty_storage.getTokens()
 
             # there should only be one element in list, so it is ours
             self.assertEqual(len(result), 1)
             self.assertEqual(result[0], expected,
-                             msg=f"\nresult: {result}\nexpected: {expected}")
-            self.assertGreater(
+                             msg=f"\nresult: {result[0]}\nexpected: {expected}")
+            self.assertGreaterEqual(
                 result[0].expiration_date, expected.expiration_date)
 
     def test_refresh_oauth2token(self):
         expires_in = 3600
-        expected = OAuth2Token.from_token(self.token1, "XYZ")
+        expected = self.oauthtoken1
+        expected._access_token = "XYZABCTESTKORREKT"
+        expected._refresh_token = "PLASDPJAPSJFSNIDFN"
         expected._exiration_date = datetime.fromtimestamp(time() + expires_in)
 
         # example taken from https://github.com/owncloud/oauth2
         json_expected = {
-            "access_token": "1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ",
+            "access_token": expected.access_token,
             "token_type": "Bearer",
             "expires_in": expires_in,
-            "refresh_token": "7y0wJuvKmj5E1vjVnhlPBEhha59JyaAiFIVQDvcBY2ss0pauzdQtnuo1NkIsbndA",
-            "user_id": self.user1.username,
+            "refresh_token": expected.refresh_token,
+            "user_id": expected.user.username,
             "message_url": f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorization-successful"
         }
 
@@ -250,7 +270,7 @@ class TestStorageService(unittest.TestCase):
 
         result = None
         with pact:
-            result = self.oauthservice1.refresh(self.oauthtoken1)
+            result = self.oauthtoken1.refresh()
             self.assertEqual(result, expected,
                              msg=f"\nresult: {result}\nexpected: {expected}")
 
@@ -378,7 +398,7 @@ class TestStorageService(unittest.TestCase):
         # remove a not existing service
         self.assertFalse(self.empty_storage.removeService(self.service3))
         self.assertTrue(self.empty_storage.removeService(self.service2))
-        self.assertTrue(self.empty_storage.removeService(self.service1))
+        self.assertTrue(self.empty_storage.removeService(self.service1), msg="{}".format(",".join(map(str, self.empty_storage._services))))
 
         # should be empty now
         self.assertEqual(self.empty_storage.getServices(), [])

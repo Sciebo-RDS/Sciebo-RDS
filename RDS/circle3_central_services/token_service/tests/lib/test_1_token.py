@@ -6,45 +6,60 @@ from lib.Token import Token, OAuth2Token
 
 class Test_TokenStorage(unittest.TestCase):
     def setUp(self):
-        self.token1 = Token("MusterService", "ABC")
-        self.token2 = Token("BetonService", "DEF")
+        from lib.User import User
+        self.user1 = User("Max Mustermann")
+        self.user2 = User("12345")
 
-        self.oauthtoken1 = OAuth2Token.from_token(self.token1, "XYZ")
-        self.oauthtoken2 = OAuth2Token.from_token(self.token2, "UVW")
+        from lib.Service import Service, OAuth2Service
+        self.service1 = Service("MusterService")
+        self.service2 = Service("BetonService")
+
+        self.token1 = Token(self.user1, self.service1, "ABC")
+        self.token2 = Token(self.user1, self.service2, "DEF")
+
+        self.oauthservice1 = OAuth2Service(
+            "MusterService", "http://localhost/oauth/authorize", "http://localhost/oauth/token", "MNO", "UVW")
+        self.oauthservice2 = OAuth2Service(
+            "BetonService", "http://owncloud/oauth/authorize", "http://owncloud/oauth/token", "UVP", "OMN")
+
+        self.oauthtoken1 = OAuth2Token(self.user1, self.oauthservice1, "ABC", "XYZ")
+        self.oauthtoken2 = OAuth2Token(self.user1, self.oauthservice2, "DEF", "UVW")
+
 
     def test_token_empty_string(self):
         with self.assertRaises(ValueError):
-            Token("", "")
+            Token(None, None, "")
 
         with self.assertRaises(ValueError):
-            Token("MusterService", "")
+            Token(self.user1, None, "")
 
         with self.assertRaises(ValueError):
-            Token("", "ABC")
+            Token(self.user1, None, "ABC")
 
         with self.assertRaises(ValueError):
-            OAuth2Token("", "", "")
+            OAuth2Token(self.user1, None, "", "")
 
         # refresh_token is the only parameter, which can be empty
-        self.assertIsInstance(OAuth2Token("MusterService", "ABC"), OAuth2Token)
+        self.assertIsInstance(OAuth2Token(self.user1, self.oauthservice1, "ABC"), OAuth2Token)
+        self.assertIsInstance(OAuth2Token(self.user1, self.oauthservice2, "ABC"), Token)
 
         with self.assertRaises(ValueError):
-            OAuth2Token("MusterService", "")
+            OAuth2Token(self.user1, self.oauthservice1, "")
 
         with self.assertRaises(ValueError):
-            OAuth2Token("MusterService", "", "")
+            OAuth2Token(self.user1, self.oauthservice1, "", "")
 
         with self.assertRaises(ValueError):
-            OAuth2Token("", "ABC", "")
+            OAuth2Token(self.user1, None, "ABC", "")
 
         with self.assertRaises(ValueError):
-            OAuth2Token("", "", "X_ABC")
+            OAuth2Token(self.user1, None, "", "X_ABC")
 
         with self.assertRaises(ValueError):
-            OAuth2Token("MusterService", "", "X_ABC")
+            OAuth2Token(self.user1, self.oauthservice1, "", "X_ABC")
 
         with self.assertRaises(ValueError):
-            OAuth2Token("", "ABC", "X_ABC")
+            OAuth2Token(self.user1, None, "ABC", "X_ABC")
 
     def test_token_equal(self):
         self.assertEqual(self.token1, self.token1)
@@ -63,7 +78,7 @@ class Test_TokenStorage(unittest.TestCase):
         expected = {
             "type": "Token",
             "data": {
-                "servicename": self.token1._servicename,
+                "service": self.service1,
                 "access_token": self.token1._access_token
             }
         }
@@ -75,7 +90,7 @@ class Test_TokenStorage(unittest.TestCase):
         expected = {
             "type": "OAuth2Token",
             "data": {
-                "servicename": self.oauthtoken1.servicename,
+                "service": self.service1,
                 "access_token": self.oauthtoken1.access_token,
                 "refresh_token": self.oauthtoken1.refresh_token,
                 "expiration_date": str(self.oauthtoken1.expiration_date)

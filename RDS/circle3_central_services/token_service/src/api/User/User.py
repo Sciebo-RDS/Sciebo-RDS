@@ -24,8 +24,7 @@ def get(user_id):
 def post():
     user = None
     try:
-        req = request.json
-        user = User(req["username"])
+        user = User.init(request.json)
     except:
         abort(400, description=f"Request not give a valid user object: {request.json}")
     
@@ -39,7 +38,7 @@ def post():
 
 def delete(user_id):
     try:
-        Util.storage.removeUser(User(user_id))
+        Util.storage.removeUser(Util.storage.getUser(user_id))
         data = {
             "success": True
         }
