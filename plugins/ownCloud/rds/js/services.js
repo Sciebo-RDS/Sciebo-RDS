@@ -25,7 +25,7 @@
             if (service["servicename"] === user_service["servicename"]) {
               found = true;
             }
-          }, this);
+          });
 
           if (!found) {
             list.push(service);
@@ -89,7 +89,7 @@
 
         $.get(this._baseurl + "/user/service", "json")
           .done(function(services) {
-            self._user_services = services["list"];
+            self._user_services = services;
             deferred.resolve();
           })
           .fail(function() {

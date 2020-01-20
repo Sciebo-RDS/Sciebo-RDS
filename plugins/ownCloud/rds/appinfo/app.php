@@ -23,7 +23,6 @@
 
 use OCP\Util;
 $eventDispatcher = \OC::$server->getEventDispatcher();
-/*$eventDispatcher->addListener('OCA\Files::loadAdditionalScripts', function(){
+$eventDispatcher->addListener('OCA\Files::loadAdditionalScripts', function(){
     Util::addScript('rds', 'simpleRequest' );
-    Util::addScript('rds', 'rds' );
-});*/
+});

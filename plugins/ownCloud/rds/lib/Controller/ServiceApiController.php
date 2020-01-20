@@ -141,7 +141,7 @@ class ServiceApiController extends ApiController
         curl_close($curl);
 
         if($httpcode >= 300) {
-            return new JSONResponse();
+            return new JSONResponse([]);
         }
 
         return new JSONResponse($response);

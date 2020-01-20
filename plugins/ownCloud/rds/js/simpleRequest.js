@@ -5,17 +5,56 @@ $(document).ready(function() {
       var self = this;
       OCA.Files.fileActions.registerAction({
         name: "reverseText",
-        displayName: t("reverse", "Reverse text"),
+        displayName: t("export_zenodo", "Export to Zenodo"),
         mime: "text",
         permissions: OC.PERMISSION_UPDATE,
         type: OCA.Files.FileActions.TYPE_DROPDOWN,
         iconClass: "icon-extract",
         actionHandler: function(filename, context) {
-          var data = {
+          /*var data = {
             text: filename
           };
 
-          getReversedText(data);
+          getReversedText(data);*/
+          console.log("do something here");
+        }
+      });
+    }
+  };
+
+  var pdfSimple = {
+    init: function() {
+      var self = this;
+      OCA.Files.fileActions.registerAction({
+        name: "pdf2Word",
+        displayName: t("make_word", "Convert to Word"),
+        mime: "application/pdf",
+        permissions: OC.PERMISSION_UPDATE,
+        type: OCA.Files.FileActions.TYPE_DROPDOWN,
+        iconClass: "icon-extract",
+        actionHandler: function(filename, context) {
+          /*var data = {
+            text: filename
+          };
+
+          getReversedText(data);*/
+          console.log("do something here");
+        }
+      });
+    }
+  };
+  
+
+  var importZenodo = {
+    attach: function(menu) {
+      menu.addMenuEntry({
+        id: "importZenodo",
+        displayName: "Import file from zenodo",
+        templateName: "templateName.ext",
+        iconClass: "icon-filetype-text",
+        fileType: "file",
+        actionHandler: function() {
+          console.log("do something here");
         }
       });
     }
@@ -36,14 +75,16 @@ $(document).ready(function() {
           );
         },
         201: function() {
-          getReversedText(request)
+          getReversedText(request);
         },
         202: function() {
-          getReversedText(request)
+          getReversedText(request);
         }
       }
     });
   }
 
   actionsSimple.init();
+  pdfSimple.init();
+  OC.Plugins.register('OCA.Files.NewFileMenu', importZenodo);
 });

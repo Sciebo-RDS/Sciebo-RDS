@@ -336,7 +336,7 @@ class TokenService():
         logger.info(f"request oauthtoken body: {oauthtoken}")
         headers = {'Content-type': 'application/json'}
         response = requests.post(
-            f"{self.address}/user/{user_id}/token", data=json.dumps(oauthtoken.to_dict()), headers=headers)
+            f"{self.address}/user/{user_id}/token", data=json.dumps(oauthtoken), headers=headers)
         logger.info(f"response oauthtoken body: {response.text}")
 
         if response.status_code >= 300:
