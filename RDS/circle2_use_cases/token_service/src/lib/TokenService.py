@@ -335,8 +335,13 @@ class TokenService():
         # save the access_token in tokenStorage
         logger.info(f"request oauthtoken body: {oauthtoken}")
         headers = {'Content-type': 'application/json'}
+
+        # adjustment to new model in c3 token storage
+        data = oauthtoken.to_json()
+        data["data"]["user"] = user_id
+
         response = requests.post(
-            f"{self.address}/user/{user_id}/token", data=json.dumps(oauthtoken), headers=headers)
+            f"{self.address}/user/{user_id}/token", data=json.dumps(data), headers=headers)
         logger.info(f"response oauthtoken body: {response.text}")
 
         if response.status_code >= 300:
