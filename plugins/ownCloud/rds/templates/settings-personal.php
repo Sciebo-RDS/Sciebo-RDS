@@ -1,5 +1,29 @@
 <?php
+$rdsURL = "http://sciebords-dev.uni-muenster.de/token-service";
+function getRegisteredServicesForUser()
+{
+    global $rdsURL;
+    $curl = curl_init($rdsURL . "/user/" . $_['user_id'] . "/service");
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
+    $response = json_decode(curl_exec($curl));
+    $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+
+    if($httpcode >= 300) {
+        return [];
+    }
+
+    return $response;
+}
+$logged_in = false;
+$services = getRegisteredServicesForUser();
+foreach ($services as $service) {
+    if ("Owncloud" == $service) {
+        $logged_in = true;
+        break;
+    }
+}
 /** @var \OCA\OAuth2\Db\Client $client */
 ?>
 
@@ -7,14 +31,14 @@
 <div class="section" id="oauth2">
     <h2 class="app-name"><?php p($l->t('Sciebo RDS')); ?></h2>
 
-    <?php $logged_in = false;
+    <?php /*$logged_in = false;
     if (!empty($_['clients'])) {
         foreach ($_['clients'] as $client) {
             if ($client->getName() == "Sciebo RDS") {
                 $logged_in = true;
             }
         }
-    }
+    }*/
 
     if ($logged_in) {
     ?>

@@ -75,4 +75,5 @@ class PersonalPanel implements ISettings
     {
         return 20;
     }
+
 }
