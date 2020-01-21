@@ -342,8 +342,8 @@ class TestTokenService(unittest.TestCase):
 
         # should response with http code not equal to 200, because user has already a token for this service
         response = self.client.post(f"/user/{self.user1.username}/token",
-                                    data=json.dumps(self.oauthtoken2), content_type='application/json')
-        self.assertNotEqual(response.status_code, 200)
+                                    data=json.dumps(self.oauthtoken1), content_type='application/json')
+        self.assertGreaterEqual(response.status_code, 300)
 
         # add an oauthtoken to user
         expected = {

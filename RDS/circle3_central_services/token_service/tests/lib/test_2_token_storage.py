@@ -17,11 +17,15 @@ class Test_TokenStorage(unittest.TestCase):
         self.user2 = User("Mimi Mimikri")
 
         self.service1 = Service("MusterService")
+        self.service2 = Service("FahrService")
         self.oauthservice1 = OAuth2Service(
             "BetonService", "http://localhost/oauth/authorize", "http://localhost/oauth/token", "MNO", "UVW")
+        self.oauthservice2 = OAuth2Service(
+            "FlugService", "http://localhost21/oauth/authorize", "http://localhost21/oauth/token", "XCA", "BCXY")
 
         self.empty_storage.addService(self.service1)
         self.empty_storage.addService(self.oauthservice1)
+        self.empty_storage.addService(self.oauthservice2)
 
         self.token1 = Token(self.user1, self.service1, "ABC")
         self.token_like_token1 = Token(self.user1, self.service1, "DEF")
@@ -222,3 +226,24 @@ class Test_TokenStorage(unittest.TestCase):
             self.oauthtoken_like_token1, self.user1, Force=True)
         self.assertEqual(self.empty_storage._storage, expected,
                          msg=f"\nStorage: {self.empty_storage._storage}\n expected: {expected}")
+
+    def test_tokenstorage_tokens_under_user(self):
+        oauthtoken1 = OAuth2Token(self.user1, self.oauthservice1, "ABC", "X_ABC")
+        self.empty_storage.addTokenToUser(
+            oauthtoken1, self.user1, Force=True)
+
+        oauthtoken2 = OAuth2Token(self.user1, self.oauthservice2, "XYZ", "X_XYZ")
+        self.empty_storage.addTokenToUser(
+            oauthtoken2, self.user1, Force=True)
+
+        token1 = Token(self.user1, self.service2, "ISADF")
+        with self.assertRaises(ServiceNotExistsError):
+            self.empty_storage.addTokenToUser(
+                token1, self.user1, Force=True)
+
+        self.empty_storage.addTokenToUser(
+            self.token1, self.user1, Force=True)
+
+        
+
+        

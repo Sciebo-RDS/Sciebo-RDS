@@ -33,13 +33,19 @@ def post(user_id):
     logger.debug(f"parsed token: {token}.")
 
     code = 200
+
     try:
-        Util.storage.addTokenToUser(token, user_id)
+        user = Util.storage.getUser(user_id)
+    except UserNotExistsError as e:
+        user = User(user_id)
+    
+    try:
+        Util.storage.addTokenToUser(token, user)
     except UserHasTokenAlreadyError as e:
         abort(409, description=str(e))
     except UserNotExistsError as e:
         # only force adding, if user not exists, otherwise it also overwrites existing tokens.
-        Util.storage.addTokenToUser(token, user_id, Force=True)
+        Util.storage.addTokenToUser(token, user, Force=True)
         code = 201
 
     return jsonify({"success": True}), code

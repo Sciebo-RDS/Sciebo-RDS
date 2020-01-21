@@ -15,35 +15,30 @@ class Storage():
     Represents a Safe for Tokens.
     """
 
-    _tokens = None
+    _storage = None
     _services = None
-    _users = None
 
     def __init__(self):
-        self._tokens = []
+        self._storage = {}
         self._services = []
-        self._users = []
 
     @property
-    def _storage(self):
-        """
-        This method generates a dict from the new data model for older code.
-        """
+    def users(self):
+        return [val["data"] for val in self.storage.values()]
 
-        storage = {}
-        for u in self._users:
-            storage[u.username] = {
-                "data": u,
-                "tokens": self.getTokens(u)
-            }
+    @property
+    def storage(self):
+        return self._storage
 
-        return storage
+    @property
+    def tokens(self):
+        return [token for val in self.storage.values() for token in val["tokens"]]
 
     def getUsers(self):
         """
         Returns a list of all registered users.
         """
-        return self._users
+        return self.users
 
     def getUser(self, user_id: str):
         """
@@ -51,9 +46,9 @@ class Storage():
 
         Raise a `UserNotExistsError`, if user not found.
         """
-        for u in self._users:
-            if u.username == user_id:
-                return u
+
+        if user_id in self._storage:
+            return self._storage[user_id]["data"]
 
         from .Exceptions.StorageException import UserNotExistsError
         raise UserNotExistsError(self, User(user_id))
@@ -68,21 +63,19 @@ class Storage():
         """
 
         if user is None:
-            return self._tokens
+            return self.tokens
 
         if not isinstance(user, (str, User)):
             raise ValueError("paremeter user is not string or User.")
 
         if not isinstance(user, User):
-            for u in self._users:
+            for u in self.users:
                 if u.username == user:
                     user = u
                     break
 
-        if user in self._users:
-            tokens = [
-                token for token in self._tokens if token.user is user
-            ]
+        if user in self.users:
+            tokens = self._storage[user.username]["tokens"]
             return tokens
 
         from .Exceptions.StorageException import UserNotExistsError
@@ -108,14 +101,13 @@ class Storage():
         try:
             token_id = int(token_id)
         except:
-            for i, t in enumerate(self._tokens):
+            for i, t in enumerate(self.tokens):
                 if t.servicename == token_id:
                     token_id = i
                     break
 
-
-        if len(self._tokens) > token_id:
-            return self._tokens[token_id]
+        if len(self.tokens) > token_id:
+            return self.tokens[token_id]
 
         from .Exceptions.StorageException import UserNotExistsError
         raise UserNotExistsError(self, user)
@@ -201,10 +193,12 @@ class Storage():
             return False
 
         self._services.pop(index)
-        # remove all corresponding tokens
-        self._tokens = [
-            token for token in self._tokens if token.service.servicename is not service
-        ]
+
+        for val in self._storage.values():
+            for token in reversed(val.get("tokens")):
+                if token.service is service:
+                    val.get("tokens").remove(token)
+
         return True
 
     def addUser(self, user: User):
@@ -214,7 +208,7 @@ class Storage():
         If a User with the same username already exists, it raises UserExistsAlreadyError.
         """
 
-        if not user in self._users:
+        if not user in self.users:
             self.internal_addUser(user)
 
         else:
@@ -232,20 +226,16 @@ class Storage():
 
     def internal_removeUser(self, user: User):
         """
-        Remove a user to _tokens.
+        Remove a user to tokens.
 
         This is an internal function. Please look at the external one.
         """
 
-        if not user in self._users:
+        if not user.username in self._storage:
             from .Exceptions.StorageException import UserNotExistsError
             raise UserNotExistsError(self, user)
 
-        self._users.remove(user)
-
-        self._tokens = [
-            token for token in self._tokens if token.user is not user
-        ]
+        del self._storage[user.username]
 
     def removeToken(self, user: User, token: Token):
         """
@@ -261,34 +251,44 @@ class Storage():
         This is an internal function. Please look at the external one.
         """
 
-        if not user in self._users:
+        if not user.username in self._storage:
             from .Exceptions.StorageException import UserNotExistsError
             raise UserNotExistsError(self, user)
 
         try:
-            index = self._tokens.index(token)
+            self._storage[user.username]["tokens"].remove(token)
         except ValueError:
             from .Exceptions.StorageException import TokenNotExists
             raise TokenNotExists(self, user, token)
 
-        del self._tokens[index]
-
     def internal_addUser(self, user: User):
         """
-        Add a user to the _tokens.
+        Add a user to storage as superuser.
 
         This is an internal function. Please take a look to the external one.
         """
-        self._users.append(user)
+
+        # check if this id is a superuser
+        if not user.username in self._storage:
+            self._storage[user.username] = {
+                "data": user,
+                "tokens": []
+            }
+
+        else:
+            from lib.Exceptions.StorageException import UserExistsAlreadyError
+            raise UserExistsAlreadyError(self, user)
 
     def addTokenToUser(self, token: Token, user: User = None, Force: bool = False):
         """
-        Add a token to an existing user. If user not exists already in the _tokens, it raises an UserNotExistsError.
+        Add a token to an existing user. If user not exists already in the tokens, it raises an UserNotExistsError.
         If token was added to user specific storage, then it returns `True`.
 
         If a token is there for the same token provider, then a UserHasTokenAlreadyError.
 
         Use `Force` Parameter (boolean) to create User, if not already exists and overwrite any existing Token, too.
+
+        If user parameter not provided, it takes the user from token as superuser.
         """
 
         logger.info(f"Try to find service {token.servicename}")
@@ -298,23 +298,22 @@ class Storage():
             raise ServiceNotExistsError(Service(token.servicename))
         logger.debug("service found")
 
-        # ignore user parameter
-        user = token.user
+        # if user is None, user wants to add a superuser or refresh its token
+        if user is None:
+            user = token.user
 
-        logger.debug(f"user {user}")
-
-        if user is not None and not user in self._users:
+        if not user.username in self._storage:
             logger.debug("user not found")
             if Force:
                 self.internal_addUser(user)
                 logger.debug(
-                    f"add user {user} with force, because he does not exist in storage already.")
+                    f"add user {user} with force, because it does not exist in storage already.")
             else:
-                from .Exceptions.StorageException import UserNotExistsError
+                from lib.Exceptions.StorageException import UserNotExistsError
                 raise UserNotExistsError(self, user)
 
         try:
-            index = self._tokens.index(token)
+            index = self._storage[user.username]["tokens"].index(token)
 
             """
             obsolete since model update
@@ -324,7 +323,7 @@ class Storage():
             """
 
             if Force:
-                self._tokens[index] = token
+                self._storage[user.username]["tokens"][index] = token
                 logger.debug(f"overwrite token for user {user}")
 
             else:
@@ -333,7 +332,7 @@ class Storage():
 
         except ValueError:
             # token not found in storage, so we can add it here.
-            self._tokens.append(token)
+            self._storage[user.username]["tokens"].append(token)
 
         return True
 
@@ -372,16 +371,23 @@ class Storage():
         found = False
 
         # iterate over tokens
-        for token in self._tokens:
+        tokens = [
+            (userdata["data"],  token)
+            for userdata in self._storage.values()
+            for token in userdata["tokens"]
+        ]
+
+        for user, token in tokens:
             if not isinstance(token, OAuth2Token) or not isinstance(token.service, OAuth2Service):
                 continue
 
             # refresh token
             from .Exceptions.ServiceException import OAuth2UnsuccessfulResponseError, TokenNotValidError
             try:
-                new_token = token.service.refresh(token)
-                self.addTokenToUser(new_token, token.user, Force=True)
+                new_token = token.refresh()
+                self.addTokenToUser(new_token, user, Force=True)
                 found = True
+
             except TokenNotValidError as e:
                 logging.getLogger().error(e)
             except OAuth2UnsuccessfulResponseError as e:
@@ -410,29 +416,14 @@ class Storage():
             servicename, ";".join(map(str, services))))
 
     def __str__(self):
-        string = "\n"
-
-        for key, value in self._storage.items():
-            string += f'- \'User\' {key}\n'
-            string += f'-- \'Data\': {value["data"]}\n'
-
-            token_string = []
-
-            for token in value["tokens"]:
-                token_string.append(str(token))
-
-            token_string = ",".join(token_string)
-            token_string = f"[{token_string}]"
-
-            string += f'-- \'Tokens\': {token_string}\n'
-
-        return string
+        import json
+        return json.dumps(self.storage)
 
         """
         def __str__(self):
         string = "\n"
 
-        for index, value in enumerate(self._tokens):
+        for index, value in enumerate(self.tokens):
             string += f'- \'User\' {value.user}\n'
             string += f'-- \'Data\': {value}\n'
 
