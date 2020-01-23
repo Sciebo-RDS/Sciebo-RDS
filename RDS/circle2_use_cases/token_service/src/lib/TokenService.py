@@ -13,9 +13,6 @@ import secrets
 import logging
 from typing import Union
 
-func = [Util.initialize_object_from_json, Util.initialize_object_from_dict]
-load_object = Util.try_function_on_dict(func)
-
 logger = logging.getLogger()
 
 
@@ -24,6 +21,8 @@ class TokenService():
     secret = os.getenv("TOKENSERVICE_STATE_SECRET") if os.getenv(
         "TOKENSERVICE_STATE_SECRET") is not None else secrets.token_urlsafe()
     address = os.getenv("CENTRAL-SERVICE_TOKEN-STORAGE")
+
+    _services = None
 
     def __init__(self, address=None):
         if address is not None and isinstance(address, str):
@@ -36,40 +35,78 @@ class TokenService():
             # https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/token_service/central-service_token-storage.yml
             pass
 
+        self._services = []
+
     def getOAuthURIForService(self, service: Service) -> str:
         """
         Returns authorize-url as `String` for the given service.
         """
+
+        if not service in self._services:
+            self.refreshService(service)
+
+            if not service in self._services:
+                raise ServiceNotFoundError(service)
+
+        return service.authorize_url
+
+    def refreshServices(self) -> bool:
+        response = requests.get(f"{self.address}/service")
+        data = response.json()
+        services = [Service.init(svc) for svc in data["list"]]
+
+        if len(services) is not len(self._services):
+            self._services = services
+            return True
+        return False
+
+    def refreshService(self, service: Union[str, Service]) -> bool:
+        if isinstance(service, Service):
+            service = service.servicename
+
         response = requests.get(
-            f"{self.address}/service/{service.servicename}")
+            f"{self.address}/service/{service}")
 
         if response.status_code is not 200:
-            raise ServiceNotFoundError(service)
+            raise ServiceNotFoundError(Service(service))
 
-        data = response.text
-        service = load_object(data)
-        return service.authorize_url
+        svc = Service.init(response.json())
+
+        if not svc in self._services:
+            self._services.append(svc)
+
+        return svc
 
     def getAllOAuthURIForService(self) -> list:
         """
         Returns a `list` of `String` which represents all authorize-urls for registered services.
         """
-        response = requests.get(f"{self.address}/service")
-        data = response.json()
 
-        return [load_object(svc).authorize_url for svc in data["list"]]
+        self.refreshServices()
 
-    def getService(self, servicename: str) -> Service:
+        return [svc.authorize_url for svc in self._services]
+
+    def getService(self, servicename: str, clean=False) -> Service:
         """
         Returns a dict like self.getAllServices, but for only a single servicename (str).
         """
-        response = requests.get(f"{self.address}/service/{servicename}")
-        if response.status_code is not 200:
-            raise Exception(response.text)
 
-        return self.internal_getDictWithStateFromService(load_object(response.text))
+        svc = None
 
-    def getAllServices(self) -> list:
+        for service in self._services:
+            if servicename is service.servicename:
+                svc = service
+                break
+
+        if not svc:
+            svc = self.refreshService(servicename)
+
+        if clean:
+            return svc
+
+        return self.internal_getDictWithStateFromService(svc)
+
+    def getAllServices(self, clean=False) -> list:
         """
         Returns a `list` of `dict` which represents all registered services.
 
@@ -85,19 +122,18 @@ class TokenService():
             "date"
         }
         """
-        response = requests.get(f"{self.address}/service")
-        if response.status_code is not 200:
-            raise Exception(response.text)
 
-        data = response.json()
+        if len(self._services) is 0:
+            self.refreshServices()
+        services = self._services
+
+        if clean:
+            return services
 
         result_list = []
-        for svc in data["list"]:
-            obj = load_object(svc)
-            if type(obj) is not OAuth2Service:
-                continue
 
-            result_list.append(self.internal_getDictWithStateFromService(obj))
+        for svc in services:
+            result_list.append(self.internal_getDictWithStateFromService(svc))
 
         logger.warning(result_list)
 
@@ -134,7 +170,7 @@ class TokenService():
         services = []
         try:
             for l in data["list"]:
-                token = load_object(l)
+                token = Token.init(l)
                 services.append({"servicename": token.servicename})
         except:
             raise UserNotFoundError(user)
@@ -207,7 +243,7 @@ class TokenService():
                     raise UserNotFoundError(user)
 
                 if data["error"] == "ServiceNotFoundError":
-                    raise ServiceNotFoundError(Service(token.servicename))
+                    raise ServiceNotFoundError(token.service)
 
             raise Exception(data)
 
@@ -223,20 +259,20 @@ class TokenService():
         Raise an `TokenNotFoundError`, if token not found for user.
         """
 
-        return self.internal_removeTokenForStringFromUser(token.servicename, user)
+        return self.internal_removeTokenForStringFromUser(token.service, user)
 
-    def internal_removeTokenForStringFromUser(self, tokenStr: str, user: User) -> bool:
+    def internal_removeTokenForStringFromUser(self, service: Service, user: User) -> bool:
         response = requests.delete(
-            f"{self.address}/user/{user.username}/token/{tokenStr}")
+            f"{self.address}/user/{user.username}/token/{service.servicename}")
         data = response.json()
         if response.status_code is not 200:
             if "error" in data:
                 if data["error"] == "TokenNotExistsError":
-                    raise TokenNotFoundError(Token(tokenStr, "NOT_USED"))
+                    raise TokenNotFoundError(Token(user, service, "NOT_USED"))
                 if data["error"] == "UserNotExistsError":
                     raise UserNotFoundError(user)
                 if data["error"] == "ServiceNotExistsError":
-                    raise ServiceNotFoundError(Service(tokenStr))
+                    raise ServiceNotFoundError(service)
 
             raise Exception(data)
 
@@ -250,13 +286,16 @@ class TokenService():
         """
         response = requests.get(
             f"{self.address}/user/{user.username}/token/{service.servicename}")
+
         data = response.json()
+        while type(data) is not dict:
+            data = json.loads(data)
 
         if response.status_code is not 200:
             if "error" in data:
                 if data["error"] == "TokenNotExistsError":
                     raise TokenNotFoundError(
-                        Token(service.servicename, "NOT_USED"))
+                        Token(user, service, "NOT_USED"))
                 if data["error"] == "UserNotExistsError":
                     raise UserNotFoundError(user)
                 if data["error"] == "ServiceNotExistsError":
@@ -265,7 +304,7 @@ class TokenService():
 
         # remove refresh token
         data["type"] = "Token"
-        token = load_object(data)
+        token = Token.init(data)
         return token
 
     def removeTokenForServiceFromUser(self, service: Service, user: User) -> bool:
@@ -275,7 +314,7 @@ class TokenService():
         Raise ServiceNotFoundError, if no token for service was found.
         """
         try:
-            return self.internal_removeTokenForStringFromUser(service.servicename, user)
+            return self.internal_removeTokenForStringFromUser(service, user)
         except TokenNotFoundError:
             raise ServiceNotFoundError(service)
 
@@ -284,23 +323,16 @@ class TokenService():
         Exchanges the given `code` by the given `service`
         """
 
-        if not isinstance(service, (str, OAuth2Service)) and type(service) is not OAuth2Service:
+        if not isinstance(service, (str, OAuth2Service)):
             raise ValueError(
-                "Given service argument is not a valid string or OAuth2Service.")
+                f"Given service argument {service} is not a valid string or OAuth2Service.")
 
         if type(service) is str:
-            # get service from tokenStorage for whom the code is
-            response = requests.get(
-                f"{self.address}/service/{service}")
+            service = self.getService(service, clean=True)
 
-            if response.status_code is not 200:
-                raise ServiceNotFoundError(Service(service), msg=response.text)
-
-            service = load_object(response.text)
-
-            if type(service) is not OAuth2Service:
+            if not isinstance(service, OAuth2Service):
                 raise ServiceNotFoundError(
-                    service, msg="No oauthservice for {service} found, so we cannot exchange code.")
+                    service, msg=f"No oauthservice for {service} found, so we cannot exchange code.")
 
         # FIXME: FLASK_HOST_ADDRESS needs to be set in dockerfile
         body = {
@@ -329,19 +361,17 @@ class TokenService():
         exp_date = datetime.datetime.now(
         ) + datetime.timedelta(seconds=response_with_access_token["expires_in"])
 
-        oauthtoken = OAuth2Token(
-            service.servicename, access_token, refresh_token, exp_date)
+        oauthtoken = OAuth2Token(User(user_id),
+                                 service, access_token, refresh_token, exp_date)
 
         # save the access_token in tokenStorage
         logger.info(f"request oauthtoken body: {oauthtoken}")
         headers = {'Content-type': 'application/json'}
 
         # adjustment to new model in c3 token storage
-        data = oauthtoken.to_json()
-        data["data"]["user"] = user_id
 
         response = requests.post(
-            f"{self.address}/user/{user_id}/token", data=json.dumps(data), headers=headers)
+            f"{self.address}/user/{user_id}/token", data=json.dumps(oauthtoken), headers=headers)
         logger.info(f"response oauthtoken body: {response.text}")
 
         if response.status_code >= 300:

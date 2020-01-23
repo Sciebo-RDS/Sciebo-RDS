@@ -1,6 +1,6 @@
 
 import jwt
-import datetime
+from datetime import datetime, timedelta
 import unittest
 import pytest
 import os
@@ -9,9 +9,9 @@ from lib.TokenService import TokenService
 from pactman import Consumer, Provider
 from server import bootstrap
 from lib.Exceptions.ServiceException import *
-from lib.Token import *
-from lib.Service import *
-from lib.User import *
+from lib.Token import Token, OAuth2Token
+from lib.Service import Service, OAuth2Service
+from lib.User import User
 
 
 def create_app():
@@ -57,8 +57,8 @@ class Test_TokenService(unittest.TestCase):
         self.service2 = OAuth2Service(self.servicename2, self.url2,
                                       "https://sandbox.zenodo.org/oauth/token", "DEF", "UVW")
 
-        self.token1 = Token(self.service1.servicename, "ABC")
-        self.token2 = OAuth2Token(self.service2.servicename, "ABC", "XYZ")
+        self.token1 = Token(self.user1, self.service1, "ABC")
+        self.token2 = OAuth2Token(self.user1, self.service2, "ABC", "XYZ")
 
     def test_get_all_service_oauth(self):
         # test to get all service, where no service is
@@ -80,7 +80,7 @@ class Test_TokenService(unittest.TestCase):
             'a request to get all services.'
         ).with_request(
             'GET', '/service'
-        ) .will_respond_with(200, body={"length": 1, "list": [self.service1.to_json()]})
+        ) .will_respond_with(200, body={"length": 1, "list": [json.dumps(self.service1)]})
 
         all_services = self.tokenService.getAllOAuthURIForService()
         self.assertEqual(all_services, [self.url1])
@@ -92,7 +92,7 @@ class Test_TokenService(unittest.TestCase):
             'a request to get all services.'
         ).with_request(
             'GET', '/service'
-        ) .will_respond_with(200, body={"length": 2, "list": [self.service1.to_json(), self.service2.to_json()]})
+        ) .will_respond_with(200, body={"length": 2, "list": [json.dumps(self.service1), json.dumps(self.service2)]})
 
         all_services = self.tokenService.getAllOAuthURIForService()
         self.assertEqual(
@@ -137,7 +137,7 @@ class Test_TokenService(unittest.TestCase):
             'a request to get this one specific service.'
         ).with_request(
             'GET', f"/service/{self.service1.servicename}"
-        ) .will_respond_with(200, body=self.service1.to_json())
+        ) .will_respond_with(200, body=json.dumps(self.service1))
 
         svc = self.tokenService.getOAuthURIForService(self.service1)
         self.assertEqual(svc, self.url1)
@@ -162,11 +162,12 @@ class Test_TokenService(unittest.TestCase):
             'a request to get services from one specific user.'
         ).with_request(
             'GET', f"/user/{self.user1.username}/token"
-        ) .will_respond_with(200, body={"length": 1, "list": [self.token1.to_json()]})
+        ) .will_respond_with(200, body={"length": 1, "list": [json.dumps(self.token1)]})
 
         data = self.tokenService.getAllServicesForUser(
             self.user1)
-        self.assertEqual(data, [{"servicename": self.servicename1}], msg=str(data[0]))
+        self.assertEqual(
+            data, [{"servicename": self.servicename1}], msg=str(data[0]))
 
         # test to get all services from one user, with two services
         pact.given(
@@ -175,7 +176,7 @@ class Test_TokenService(unittest.TestCase):
             'a request to get services from one specific user.'
         ).with_request(
             'GET', f"/user/{self.user1.username}/token"
-        ) .will_respond_with(200, body={"length": 2, "list": [self.token1.to_json(), self.token2.to_json()]})
+        ) .will_respond_with(200, body={"length": 2, "list": [json.dumps(self.token1), json.dumps(self.token2)]})
 
         self.assertEqual(self.tokenService.getAllServicesForUser(
             self.user1), [{"servicename": self.servicename1}, {"servicename": self.servicename2}])
@@ -421,7 +422,7 @@ class Test_TokenService(unittest.TestCase):
             'a request to get all services.'
         ).with_request(
             'GET', "/service"
-        ) .will_respond_with(200, body={"length": 1, "list": [self.service1.to_json()]})
+        ) .will_respond_with(200, body={"length": 1, "list": [json.dumps(self.service1)]})
 
         key = "abc"
 
@@ -432,13 +433,14 @@ class Test_TokenService(unittest.TestCase):
         with self.assertRaises(InvalidSignatureError):
             req = jwt.decode(req_list[0]["jwt"], key, algorithms='HS256')
 
+        """
         pact.given(
             'one service was registered.'
         ).upon_receiving(
             'a request to get all services and secret is okay.'
         ).with_request(
             'GET', "/service"
-        ) .will_respond_with(200, body={"length": 1, "list": [self.service1.to_json()]})
+        ) .will_respond_with(200, body={"length": 1, "list": [json.dumps(self.service1)]})"""
 
         self.tokenService.secret = key
         req_list = self.tokenService.getAllServices()
@@ -466,10 +468,10 @@ class Test_TokenService(unittest.TestCase):
             'a request to get this one service and secret is okay.'
         ).with_request(
             'GET', f"/service/{self.service1.servicename}"
-        ) .will_respond_with(200, body=self.service1.to_json())
+        ) .will_respond_with(200, body=json.dumps(self.service1))
 
         self.tokenService.secret = key
-        req_svc = self.tokenService.getService(self.service1.servicename)
+        req_svc = self.tokenService.getService(self.service1)
         req = jwt.decode(req_svc["jwt"], key, algorithms='HS256')
 
         data = {
@@ -530,7 +532,7 @@ class Test_TokenService(unittest.TestCase):
             'a request to get a specific token for service from user.'
         ).with_request(
             'GET', f"/user/{self.user1.username}/token/{self.service1.servicename}"
-        ) .will_respond_with(200, body=self.token1.to_json())
+        ) .will_respond_with(200, body=json.dumps(self.token1))
 
         self.assertEqual(self.tokenService.getTokenForServiceFromUser(
             self.service1, self.user1), self.token1)
@@ -542,9 +544,9 @@ class Test_TokenService(unittest.TestCase):
             'a request to get a specific oauthtoken for service from user.'
         ).with_request(
             'GET', f"/user/{self.user1.username}/token/{self.service1.servicename}"
-        ) .will_respond_with(200, body=self.token2.to_json())
+        ) .will_respond_with(200, body=json.dumps(self.token2))
 
-        reduced_token = Token(self.token2.servicename,
+        reduced_token = Token(self.user1, self.token2.service,
                               self.token2.access_token)
 
         self.assertEqual(self.tokenService.getTokenForServiceFromUser(
@@ -595,8 +597,8 @@ class Test_TokenService(unittest.TestCase):
             "localhost", f"{self.tokenService.address}/authorize", f"{self.tokenService.address}/oauth2/token", "ABC", "XYZ")
 
         with self.assertRaises(ValueError):
-            self.tokenService.exchangeAuthCodeToAccessToken(code, Service("localhost"))
-
+            self.tokenService.exchangeAuthCodeToAccessToken(
+                code, Service("localhost"))
 
         body = {
             "access_token": "1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ",
@@ -607,15 +609,6 @@ class Test_TokenService(unittest.TestCase):
             "message_url": "https://www.example.org/owncloud/index.php/apps/oauth2/authorization-successful"
         }
 
-        # need pact for service from Token Storage
-        pact.given(
-            'An oauthservice was registered.'
-        ).upon_receiving(
-            'A request to get this oauthservice.'
-        ).with_request(
-            'GET', f"/service/{service.servicename}"
-        ) .will_respond_with(200, body=service.to_json())
-
         # need pact for exchange for code
         pact.given(
             'Client ID and secret was registered.'
@@ -625,7 +618,7 @@ class Test_TokenService(unittest.TestCase):
             'POST', f"/oauth2/token"
         ) .will_respond_with(200, body=body)
 
-        expected = OAuth2Token(service.servicename, body["access_token"], body["refresh_token"], datetime.now(
+        expected = OAuth2Token(self.user1, service, body["access_token"], body["refresh_token"], datetime.now(
         ) + timedelta(seconds=body["expires_in"]))
 
         # need pact for save the access and refresh token in Token Storage
@@ -638,7 +631,7 @@ class Test_TokenService(unittest.TestCase):
         ) .will_respond_with(200, body={"success": True})
 
         token = self.tokenService.exchangeAuthCodeToAccessToken(
-            code, service.servicename)
+            code, service)
 
         self.assertEqual(token, expected)
 
@@ -679,6 +672,8 @@ class Test_TokenService(unittest.TestCase):
             self.tokenService.exchangeAuthCodeToAccessToken(
                 code, service.servicename)
 
+        self.tokenService._storage = {}
+
         # test CodeNotExchangeableError
         pact.given(
             'An oauthservice was registered.'
@@ -686,7 +681,7 @@ class Test_TokenService(unittest.TestCase):
             'A request to get this oauthservice for exchange code.'
         ).with_request(
             'GET', f"/service/{service.servicename}"
-        ) .will_respond_with(200, body=service.to_json())
+        ) .will_respond_with(200, body=json.dumps(service))
 
         # need pact for exchange for code
         pact.given(

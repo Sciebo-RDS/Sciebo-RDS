@@ -23,24 +23,24 @@ def getURL():
 
 @FlaskOptimize.do_not_minify()
 def index():
-    if "code" not in request.args or "state" not in request.args:
-        url = getURL() + "/authorization-cancel"
-        return redirect(url)
 
     code = request.args.get("code")
     state = request.args.get("state")
+
+    if code is None or state is None:
+        url = getURL() + "/authorization-cancel"
+        return redirect(url)
 
     # use state for servicename
     data = None
 
     try:
         data = jwt.decode(state, Util.tokenService.secret, algorithms="HS256")
-        logger.info("code: {}, state: {}".format(code, state))
-        logger.info(f"decoded state: {data}")
-
+        logger.debug("code: {}, state: {}".format(code, state))
+        logger.debug(f"decoded state: {data}")
 
         Util.tokenService.exchangeAuthCodeToAccessToken(
-            code, data["servicename"])
+            code, Util.tokenService.getService(data["servicename"], clean=True))
 
         url = getURL() + "/authorization-success"
         return redirect(url)

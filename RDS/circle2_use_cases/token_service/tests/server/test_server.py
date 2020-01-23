@@ -126,7 +126,7 @@ class Test_TokenServiceServer(unittest.TestCase):
             'POST', f"/oauth/token"
         ) .will_respond_with(200, body=body)
 
-        expected = OAuth2Token(service.servicename, body["access_token"], body["refresh_token"], datetime.datetime.now(
+        expected = OAuth2Token(user, service, body["access_token"], body["refresh_token"], datetime.datetime.now(
         ) + datetime.timedelta(seconds=body["expires_in"]))
 
         # need pact for save the access and refresh token in Token Storage

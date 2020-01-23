@@ -4,6 +4,7 @@ from urllib.parse import urlparse, urlunparse
 import requests
 import json
 from datetime import datetime, timedelta
+from typing import Union
 
 
 class Service():
@@ -37,7 +38,7 @@ class Service():
         )
 
     def __str__(self):
-        return f"Servicename: {self.servicename}"
+        return json.dumps(self)
 
     def to_json(self):
         """
@@ -54,6 +55,7 @@ class Service():
         """
         Returns this object as a dict.
         """
+
         data = {
             "servicename": self._servicename
         }
@@ -87,6 +89,23 @@ class Service():
             return Service(serviceDict["servicename"])
         except:
             raise ValueError("not a valid service dict")
+
+    @staticmethod
+    def init(obj: Union[str, dict]):
+        """
+        Returns a Service or oauthService object for json String or dict.
+        """
+        if isinstance(obj, (Service, OAuth2Service)):
+            return obj
+
+        if not isinstance(obj, (str, dict)):
+            raise ValueError("Given object not from type str or dict.")
+
+        from Util import try_function_on_dict
+
+        load = try_function_on_dict(
+            [OAuth2Service.from_json, Service.from_json, OAuth2Service.from_dict, Service.from_dict])
+        return load(obj)
 
 
 class OAuth2Service(Service):
@@ -131,17 +150,20 @@ class OAuth2Service(Service):
         """
 
         if not isinstance(token, OAuth2Token):
-            raise ValueError("Token is not an oauthtoken.")
+            raise ValueError("parameter token is not an oauthtoken.")
+
+        import os
 
         data = {
             "grant_type": "refresh_token",
-            "refresh_token": token.refresh_token
+            "refresh_token": token.refresh_token,
+            "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:8080"))
         }
 
         req = requests.post(self.refresh_url, data=data,
                             auth=(self.client_id, self.client_secret))
 
-        if req.status_code == 400:
+        if req.status_code >= 400:
             data = json.loads(req.text)
 
             if "error" in data:
@@ -170,13 +192,13 @@ class OAuth2Service(Service):
 
         """ obsolete
         if not data["user_id"] == self.client_id:
-            from .Exceptions.ServiceException import TokenNotValidError
-            raise TokenNotValidError(
+            from .Exceptions.ServiceException import Token.TokenNotValidError
+            raise Token.TokenNotValidError(
                 self, token, "User-ID in refresh response not equal to authenticated user.")
         """
 
         date = datetime.now() + timedelta(seconds=data["expires_in"])
-        return OAuth2Token(token.servicename, data["access_token"], data["refresh_token"], date)
+        return OAuth2Token(token.user, token.service, data["access_token"], data["refresh_token"], date)
 
     @property
     def refresh_url(self):
@@ -203,16 +225,15 @@ class OAuth2Service(Service):
 
     def __eq__(self, obj):
         return (
-            super(OAuth2Service, self).__eq__(obj) and
-            isinstance(obj, (OAuth2Service)) and
-            self.refresh_url == obj.refresh_url and
-            self.authorize_url == obj.authorize_url and
-            self.client_id == obj.client_id and
-            self.client_secret == obj.client_secret
+            super(OAuth2Service, self).__eq__(obj) or
+            (
+                isinstance(obj, (OAuth2Service)) and
+                self.refresh_url == obj.refresh_url and
+                self.authorize_url == obj.authorize_url and
+                self.client_id == obj.client_id and
+                self.client_secret == obj.client_secret
+            )
         )
-
-    def __str__(self):
-        return f"{super(OAuth2Service, self).__str__()}, RefreshURL: {self.refresh_url}, AuthorizeURL: {self.authorize_url}"
 
     def to_json(self):
         """
@@ -262,7 +283,6 @@ class OAuth2Service(Service):
         """
         Returns an oauthservice object from a dict.
         """
-
 
         service = super(OAuth2Service, cls).from_dict(serviceDict)
 

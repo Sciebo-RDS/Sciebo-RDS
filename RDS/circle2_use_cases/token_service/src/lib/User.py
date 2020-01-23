@@ -1,4 +1,5 @@
 import json
+from typing import Union
 
 
 class User():
@@ -19,7 +20,7 @@ class User():
         return self._username
 
     def __str__(self):
-        return str({"name": self.username})
+        return json.dumps(self)
 
     def __eq__(self, obj):
         if isinstance(obj, str):
@@ -78,3 +79,18 @@ class User():
         """
         return User(userDict["username"])
 
+    @staticmethod
+    def init(obj: Union[str, dict]):
+        """
+        Returns a User object for json String or dict.
+        """
+        if isinstance(obj, (User)):
+            return obj
+
+        if not isinstance(obj, (str, dict)):
+            raise ValueError("Given object not from type str or dict.")
+
+        from Util import try_function_on_dict
+        
+        load = try_function_on_dict([User.from_json, User.from_dict])
+        return load(obj)
