@@ -304,6 +304,8 @@ class TokenService():
 
         # remove refresh token
         data["type"] = "Token"
+        # remove client_secret infos
+        data["service"]["type"] = "Service"
         token = Token.init(data)
         return token
 
