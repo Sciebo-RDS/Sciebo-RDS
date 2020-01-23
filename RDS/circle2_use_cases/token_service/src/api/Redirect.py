@@ -27,6 +27,12 @@ def index():
     code = request.args.get("code")
     state = request.args.get("state")
 
+    # state is base64 for dict:
+    # {
+    #   "user": <user id for logged user account in interface>, 
+    #   "jwt": <state jwt from token-service system>
+    # }
+
     if code is None or state is None:
         url = getURL() + "/authorization-cancel"
         return redirect(url)
@@ -35,12 +41,16 @@ def index():
     data = None
 
     try:
-        data = jwt.decode(state, Util.tokenService.secret, algorithms="HS256")
+        import json
+        import base64
+        state_dict = json.loads(base64.b64decode(state))
+        data = jwt.decode(state_dict.get("jwt"),
+                          Util.tokenService.secret, algorithms="HS256")
         logger.debug("code: {}, state: {}".format(code, state))
         logger.debug(f"decoded state: {data}")
 
         Util.tokenService.exchangeAuthCodeToAccessToken(
-            code, Util.tokenService.getService(data["servicename"], clean=True))
+            code, Util.tokenService.getService(data["servicename"], user=state_dict.get("user"), clean=True))
 
         url = getURL() + "/authorization-success"
         return redirect(url)

@@ -56,7 +56,7 @@ class ServiceApiController extends ApiController
             $obj = array(
                 "servicename" => $payload["servicename"],
                 "authorize_url" => urldecode($payload["authorize_url"]),
-                "state" => $jwt
+                "state" => base64_encode(json_encode(["jwt" => $jwt, "user" => $this->userId]))
             );
             $listOfServices[] = $obj;
         }

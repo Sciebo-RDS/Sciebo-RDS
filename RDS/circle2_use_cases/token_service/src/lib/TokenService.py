@@ -318,7 +318,7 @@ class TokenService():
         except TokenNotFoundError:
             raise ServiceNotFoundError(service)
 
-    def exchangeAuthCodeToAccessToken(self, code: str, service: Union[str, OAuth2Service]) -> OAuth2Token:
+    def exchangeAuthCodeToAccessToken(self, code: str, service: Union[str, OAuth2Service], user=None) -> OAuth2Token:
         """
         Exchanges the given `code` by the given `service`
         """
@@ -363,6 +363,10 @@ class TokenService():
             # zenodo specific
             user_id = response_with_access_token["user"]["id"]
 
+        # if no user was set, then this token will be used for superuser
+        if user is None:
+            user = user_id
+
         access_token = response_with_access_token["access_token"]
         refresh_token = response_with_access_token["refresh_token"]
         exp_date = datetime.datetime.now(
@@ -378,7 +382,7 @@ class TokenService():
         # adjustment to new model in c3 token storage
 
         response = requests.post(
-            f"{self.address}/user/{user_id}/token", data=json.dumps(oauthtoken), headers=headers)
+            f"{self.address}/user/{user}/token", data=json.dumps(oauthtoken), headers=headers)
         logger.info(f"response oauthtoken body: {response.text}")
 
         if response.status_code >= 300:
