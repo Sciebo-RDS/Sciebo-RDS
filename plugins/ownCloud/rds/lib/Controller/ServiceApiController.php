@@ -9,7 +9,7 @@ use OCP\AppFramework\Http\JSONResponse;
 
 class ServiceApiController extends ApiController
 {
-    private $rdsURL = "http://sciebords-dev.uni-muenster.de/token-service";
+    private $rdsURL = "https://sciebords-dev.uni-muenster.de/token-service";
     private $userId;
     
     public function __construct($AppName, IRequest $request, $userId)
@@ -24,6 +24,7 @@ class ServiceApiController extends ApiController
      * @return array a list with object with key "jwt", see $this->show()
      * 
      * @NoAdminRequired
+     * @NoCSRFRequired
      */
     public function index()
     {
@@ -32,6 +33,9 @@ class ServiceApiController extends ApiController
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_ENCODING , "gzip");
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         $result = curl_exec($curl);
         $response = json_decode($result, true);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -75,6 +79,8 @@ class ServiceApiController extends ApiController
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         $result = curl_exec($curl);
         $response = json_decode($result, true);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -111,6 +117,8 @@ class ServiceApiController extends ApiController
         $curl = curl_init($this->rdsURL . "/user/" . $this->userId . "/service/" . $servicename);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => "DELETE"];
         curl_setopt_array($curl, $options);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
         $response = json_decode(curl_exec($curl));
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -135,6 +143,8 @@ class ServiceApiController extends ApiController
     {
         $curl = curl_init($this->rdsURL . "/user/" . $this->userId . "/service");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
         $response = json_decode(curl_exec($curl));
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -144,6 +154,6 @@ class ServiceApiController extends ApiController
             return new JSONResponse([]);
         }
 
-        return new JSONResponse($response);
+        return new JSONResponse($response->list);
     }
 }

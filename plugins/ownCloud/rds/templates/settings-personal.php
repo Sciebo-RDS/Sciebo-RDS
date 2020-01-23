@@ -1,12 +1,12 @@
 <?php
-$rdsURL = "http://sciebords-dev.uni-muenster.de/token-service";
-function getRegisteredServicesForUser()
+function getRegisteredServicesForUser($userId)
 {
-    global $rdsURL;
-    $curl = curl_init($rdsURL . "/user/" . $_['user_id'] . "/service");
+    $rdsURL = "http://sciebords-dev.uni-muenster.de/token-service";
+    $curl = curl_init($rdsURL . "/user/" . $userId . "/service");
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-    $response = json_decode(curl_exec($curl));
+    $response = curl_exec($curl);
+    $json = json_decode($response);
     $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     curl_close($curl);
 
@@ -14,16 +14,27 @@ function getRegisteredServicesForUser()
         return [];
     }
 
-    return $response;
+    return $json->list;
 }
-$logged_in = false;
-$services = getRegisteredServicesForUser();
+$found = false;
+$services = getRegisteredServicesForUser($_['user_id']);
 foreach ($services as $service) {
-    if ("Owncloud" == $service) {
-        $logged_in = true;
+    if ($service->servicename == "Owncloud") {
+        $found = true;
         break;
     }
 }
+
+$logged_in = false;
+if (!empty($_['clients'])) {
+    foreach ($_['clients'] as $client) {
+        if ($client->getName() == "Sciebo RDS" and $found) {
+            $logged_in = true;
+            break;
+        }
+    }
+}
+
 /** @var \OCA\OAuth2\Db\Client $client */
 ?>
 
@@ -31,14 +42,7 @@ foreach ($services as $service) {
 <div class="section" id="oauth2">
     <h2 class="app-name"><?php p($l->t('Sciebo RDS')); ?></h2>
 
-    <?php /*$logged_in = false;
-    if (!empty($_['clients'])) {
-        foreach ($_['clients'] as $client) {
-            if ($client->getName() == "Sciebo RDS") {
-                $logged_in = true;
-            }
-        }
-    }*/
+    <?php 
 
     if ($logged_in) {
     ?>
@@ -67,7 +71,10 @@ foreach ($services as $service) {
 
 
 <div class="section" id="rds">
-    <?php p($l->t('Do you want to revoke the access for Sciebo RDS?')); ?>
+    <?php p($l->t('Do you want to revoke the access for Sciebo RDS?')); 
+    /* TODO: remove the Owncloud access token from token storage (otherwise it will be revoked in the next refresh step automatically) */
+    ?>
+
     <form id="form-inline" class="delete" data-confirm="<?php p($l->t('Are you sure you want to delete this item?')); ?>" action="<?php p($_['urlGenerator']->linkToRoute('oauth2.settings.revokeAuthorization', ['id' => $client->getId()])); ?>" method="post">
         <input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>" />
         <input type="submit" class="button icon-delete" value="">

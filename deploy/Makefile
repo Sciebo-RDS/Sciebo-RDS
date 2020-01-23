@@ -15,7 +15,9 @@ circle2: token_service
 circle3: token_storage
 
 features:
-	helm upgrade jaeger incubator/jaeger --install --values jaeger.yaml
+	helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
+	helm repo update
+	helm upgrade jaeger jaegertracing/jaeger --install --values jaeger.yaml
 
 remove_features:
 	helm delete --purge jaeger || true

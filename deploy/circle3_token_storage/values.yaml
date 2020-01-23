@@ -55,4 +55,4 @@ affinity: {}
 
 environment:
   http_proxy: http://wwwproxy.uni-muenster.de:3128
-  FLASK_HOST_ADDRESS: http://sciebords-dev.uni-muenster.de/token-service
+  FLASK_HOST_ADDRESS: https://sciebords-dev.uni-muenster.de/token-service
