@@ -355,7 +355,14 @@ class TokenService():
 
         response_with_access_token = response.json()
 
-        user_id = response_with_access_token["user_id"]
+        # FIXME: need here some solution, where the response will be evaluated by the corresponding port
+        try:
+            # owncloud / oauth2 spec
+            user_id = response_with_access_token["user_id"]
+        except:
+            # zenodo specific
+            user_id = response_with_access_token["user"]["id"]
+
         access_token = response_with_access_token["access_token"]
         refresh_token = response_with_access_token["refresh_token"]
         exp_date = datetime.datetime.now(

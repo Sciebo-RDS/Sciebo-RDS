@@ -4,6 +4,8 @@ function getRegisteredServicesForUser($userId)
     $rdsURL = "http://sciebords-dev.uni-muenster.de/token-service";
     $curl = curl_init($rdsURL . "/user/" . $userId . "/service");
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
     $response = curl_exec($curl);
     $json = json_decode($response);
@@ -28,7 +30,7 @@ foreach ($services as $service) {
 $logged_in = false;
 if (!empty($_['clients'])) {
     foreach ($_['clients'] as $client) {
-        if ($client->getName() == "Sciebo RDS" and $found) {
+        if (($client->getName() == "Sciebo RDS") and $found) {
             $logged_in = true;
             break;
         }
