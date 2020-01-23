@@ -3,32 +3,32 @@ title: Imprint
 subtitle: Legal Notice
 ---
 
-Impressum:
+Imprint:
 
-Zentrum für Informationsverarbeitung  
-Westfälische Wilhelms-Universität Münster   
-Röntgenstraße 7-13   
+Center for Information Processing  
+Westphalian Wilhelm University of Münster   
+Röntgenstrasse 7-13   
 D-48149 Münster   
 info@sciebo.de   
  
-Die Westfälische Wilhelms-Universität (WWU) Münster ist eine Körperschaft des öffentlichen Rechts und zugleich eine Einrichtung des Landes Nordrhein-Westfalen. Sie wird vertreten durch Rektor Prof. Dr. Johannes Wessels. Zuständige Aufsichtsbehörde ist das Ministerium für Kultur und Wissenschaft des Landes Nordrhein-Westfalen.
+The Westfälische Wilhelms-Universität (WWU) Münster is a public corporation and at the same time an institution of the State of North Rhine-Westphalia. It is represented by Rector Prof. Dr. Johannes Wessels. The responsible supervisory authority is the Ministry of Culture and Science of the State of North Rhine-Westphalia.
 
-Umsatzsteuer-ID-Nummer: DE 126118759
+Value added tax ID number: DE 126118759
 
-Redaktionell verantwortlich gemäß §5 TMG:  
+Editorial responsibility according to §5 TMG:  
 
 Dr. Raimund Vogl  
-Westfälische Wilhelms-Universität  
-Zentrum für Informationsverarbeitung  
-Röntgenstraße 7-13  
+Westphalian Wilhelm University  
+Centre for Information Processing  
+Röntgenstrasse 7-13  
 D-48149 Münster  
 
-Das Webangebot von research-data-services.org ist barrierefrei im Sinne des Gleichstellungsgesetzes und der BITV NRW.
+The website of research-data-services.org is barrier-free in the sense of the Equal Opportunities Act and the BITV NRW.
 
-Disclaimer:
+disclaimer:
 
-Die Texte und Fotos auf research-data-services.org und aller Unterseiten sind urheberrechtlich geschützt. Das Kopieren dieser Dateien und ihre evtl. Veränderung sind daher ohne Genehmigung des Rechteinhabers nicht gestattet. Unberührt davon bleibt das "Kopieren" der Dateien auf den eigenen Rechner, um sich die WWW-Seiten auf einem Browser anzuschauen.
+The texts and photos on research-data-services.org and all sub-pages are protected by copyright. Copying these files and their possible modification is therefore not permitted without the permission of the copyright holder. Copying" the files on your own computer to view the WWW pages on a browser remains unaffected.
 
-Die Zusammenstellung der Informationen auf dieser Website wurde mit größtmöglicher Sorgfalt vorgenommen. Dennoch kann keinerlei Gewähr für Aktualität, Richtigkeit, Vollständigkeit und Qualität der bereitgestellten Daten übernommen werden. Haftungsansprüche gegen die Westfälische Wilhelms-Universität Münster oder die Autoren bzw. Verantwortlichen dieser Website für Schäden materieller oder immaterieller Art, die auf eventuell fehlerhaften oder unvollständigen Daten beruhen, sind, soweit nicht Vorsatz oder grobe Fahrlässigkeit vorliegt, ausgeschlossen.
+The information on this website has been compiled with the greatest possible care. Nevertheless, no guarantee can be given for the topicality, correctness, completeness and quality of the data provided. Liability claims against the Westfälische Wilhelms-Universität Münster or the authors or persons responsible for this website for material or immaterial damages based on possibly incorrect or incomplete data are excluded, unless in cases of intent or gross negligence.
 
-Alle aus dieser Website entstehenden Rechtsstreitigkeiten unterliegen ausschließlich deutschem Recht.
+All legal disputes arising from this website are subject exclusively to German law.

@@ -56,6 +56,8 @@ class ServiceApiController extends ApiController
             $obj = array(
                 "servicename" => $payload["servicename"],
                 "authorize_url" => urldecode($payload["authorize_url"]),
+                /* FIXME: Level HIGH, Add here security for userid, otherwise a rouge can register his own service account for another user. 
+                Any ideas? pub/priv keys?*/
                 "state" => base64_encode(json_encode(["jwt" => $jwt, "user" => $this->userId]))
             );
             $listOfServices[] = $obj;
@@ -98,6 +100,8 @@ class ServiceApiController extends ApiController
         $obj = array(
             "servicename" => $payload["servicename"],
             "authorize_url" => urldecode($payload["authorize_url"]),
+            /* FIXME: Level HIGH, Add here security for userid, otherwise a rouge can register his own service account for another user. 
+            Any ideas? pub/priv keys? */
             "state" => base64_encode(json_encode(["jwt" => $jwt, "user" => $this->userId]))
         );
 
