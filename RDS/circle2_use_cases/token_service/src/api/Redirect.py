@@ -46,11 +46,12 @@ def index():
         state_dict = json.loads(base64.b64decode(state))
         data = jwt.decode(state_dict.get("jwt"),
                           Util.tokenService.secret, algorithms="HS256")
+
         logger.debug("code: {}, state: {}".format(code, state))
         logger.debug(f"decoded state: {data}")
 
         Util.tokenService.exchangeAuthCodeToAccessToken(
-            code, Util.tokenService.getService(data["servicename"], user=state_dict.get("user"), clean=True))
+            code, Util.tokenService.getService(data["servicename"], clean=True), user=state_dict.get("user"))
 
         url = getURL() + "/authorization-success"
         return redirect(url)
