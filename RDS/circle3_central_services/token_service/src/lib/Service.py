@@ -5,7 +5,9 @@ import requests
 import json
 from datetime import datetime, timedelta
 from typing import Union
+import logging
 
+logger = logging.getLogger()
 
 class Service():
     """
@@ -149,7 +151,9 @@ class OAuth2Service(Service):
         Refresh the given oauth2 token for specified user.
         """
 
+
         if not isinstance(token, OAuth2Token):
+            logger.debug("call refresh on non oauth token.")
             raise ValueError("parameter token is not an oauthtoken.")
 
         import os
@@ -160,8 +164,13 @@ class OAuth2Service(Service):
             "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:8080"))
         }
 
+        logger.debug(f"send data {data}")
+
+        
         req = requests.post(self.refresh_url, data=data,
                             auth=(self.client_id, self.client_secret))
+
+        logger.debug(f"status code: {req.status_code}")
 
         if req.status_code >= 400:
             data = json.loads(req.text)
@@ -190,6 +199,8 @@ class OAuth2Service(Service):
 
         data = json.loads(req.text)
 
+        logger.debug(f"response data {data}")
+
         """ obsolete
         if not data["user_id"] == self.client_id:
             from .Exceptions.ServiceException import Token.TokenNotValidError
@@ -198,7 +209,9 @@ class OAuth2Service(Service):
         """
 
         date = datetime.now() + timedelta(seconds=data["expires_in"])
-        return OAuth2Token(token.user, token.service, data["access_token"], data["refresh_token"], date)
+        new_token = OAuth2Token(token.user, token.service, data["access_token"], data["refresh_token"], date)
+        logger.debug(f"new token {}")
+        return new_token
 
     @property
     def refresh_url(self):
