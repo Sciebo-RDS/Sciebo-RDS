@@ -162,8 +162,8 @@ class OAuth2Service(Service):
             "grant_type": "refresh_token",
             "refresh_token": token.refresh_token,
             "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:8080")),
-            "client_id": service.client_id,
-            "client_secret": service.client_secret,
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
         }
 
         logger.debug(f"send data {data}")
