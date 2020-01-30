@@ -212,7 +212,7 @@ class OAuth2Service(Service):
 
         date = datetime.now() + timedelta(seconds=data["expires_in"])
         new_token = OAuth2Token(token.user, token.service, data["access_token"], data["refresh_token"], date)
-        logger.debug(f"new token {}")
+        logger.debug(f"new token {new_token}")
         return new_token
 
     @property
