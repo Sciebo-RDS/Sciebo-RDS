@@ -54,7 +54,6 @@ tolerations: []
 affinity: {}
 
 environment: 
-  CENTRAL_SERVICE_TOKEN_STORAGE: http://circle3-token-storage
   ZENODO_OAUTH_AUTHORIZE_URL: https://sandbox.zenodo.org%2Foauth%2Fauthorize%3Fscope%3Ddeposit%253Awrite%2520deposit%253Aactions%26redirect_uri%3Dhttps%253A%252F%252Fsciebords-dev.uni-muenster.de%252Ftoken-service%252Fredirect%26response_type%3Dcode%26client_id%3DfeYfqBVCfNDJTQyQRXWiJ8eoga99GxKzXYAZXvbm
   ZENODO_OAUTH_ACCESS_TOKEN_URL: https://sandbox.zenodo.org/oauth/token
   ZENODO_OAUTH_CLIEND_ID: feYfqBVCfNDJTQyQRXWiJ8eoga99GxKzXYAZXvbm
@@ -62,5 +61,3 @@ environment:
   # (https://kubernetes.io/docs/concepts/configuration/secret/#using-secrets-as-environment-variables), 
   # but should be set via installations script or makefile
   zenodo-oauth-client-secret: ABC # Adjust me to valid values
-  http_proxy: http://wwwproxy.uni-muenster.de:3128
-  no_proxy: circle3-token-storage

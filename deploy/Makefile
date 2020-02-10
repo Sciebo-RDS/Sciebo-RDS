@@ -1,3 +1,18 @@
+install_configmap_proxy:
+	kubectl apply -f configmaps/httpproxy.yaml
+
+install_configmap_mserviceurl:
+	kubectl apply -f configmaps/mserviceurl.yaml
+
+remove_configmap_proxy:
+	kubectl delete -f configmaps/httpproxy.yaml
+
+remove_configmap_mserviceurl:
+	kubectl delete -f configmaps/mserviceurl.yaml
+
+install_configmaps: install_configmap_proxy install_configmap_mserviceurl
+uninstall_configmaps: remove_configmap_mserviceurl remove_configmap_proxy
+
 port_zenodo:
 	helm upgrade circle1-port-zenodo circle1_port_zenodo --install
 
@@ -38,12 +53,13 @@ uninstall_circle1: remove_port_zenodo remove_port_owncloud
 uninstall_circle2: remove_token_service
 uninstall_circle3: remove_token_storage
 
-install: features circle3 circle2 circle1
-uninstall: uninstall_circle1 uninstall_circle2 uninstall_circle3 remove_features
-
+install: install_configmaps features circle3 circle2 circle1
+uninstall: uninstall_circle1 uninstall_circle2 uninstall_circle3 remove_features uninstall_configmaps
+clean: uninstall
+reinstall: uninstall install
 clean_install: uninstall_circle1 uninstall_circle2 uninstall_circle3 circle3 circle2 circle1
 
-make jaeger:
+jaeger:
 	$(eval POD_JAEGER=$(shell kubectl get pods --namespace sciebo-rds -l "app.kubernetes.io/instance=jaeger,app.kubernetes.io/component=query" -o jsonpath="{.items[0].metadata.name}"))
 	echo http://127.0.0.1:8080/
 	kubectl port-forward --namespace sciebo-rds $(POD_JAEGER) 8080:16686

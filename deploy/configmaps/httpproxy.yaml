@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: proxy
+data:
+  http: http://wwwproxy.uni-muenster.de:3128
+  no_http_proxy: circle3-token-storage
