@@ -82,7 +82,21 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/deposit'
       description: Get all depositions.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                userid:
+                  type: string
   /:
     get:
       tags:
@@ -347,9 +361,9 @@ components:
       x-tags:
         - deposit
     archive-invenio:
-      title: archive-zenodo
+      title: archive-invenio
       type: object
-      description: This archive represents an file archive for invenio.
+      description: This archive represents a file archive for invenio.
       properties:
         metadata:
           $ref: '#/components/schemas/metadata'

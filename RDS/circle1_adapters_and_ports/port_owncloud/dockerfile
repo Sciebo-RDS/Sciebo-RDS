@@ -23,9 +23,10 @@ RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
 ENV OPENAPI_MULTIPLE_FILES      "c2_owncloud.yml;c3_owncloud.yml"
 
 # this has to be set separatley and safely
-ENV CENTRAL-SERVICE_TOKEN-STORAGE "http://circle3-token-storage"
-ENV OWNCLOUD_OAUTH_AUTHORIZE_URL "https://sandbox.zenodo.org/oauth/authorize"
-ENV OWNCLOUD_OAUTH_ACCESS_TOKEN_URL "https://sandbox.zenodo.org/oauth/token"
+ENV CENTRAL_SERVICE_TOKEN_STORAGE "http://circle3-token-storage"
+ENV OWNCLOUD_INSTALLATION_URL "http://owncloud"
+ENV OWNCLOUD_OAUTH_AUTHORIZE_URL "https://owncloud/index.php/apps/oauth2/authorize"
+ENV OWNCLOUD_OAUTH_ACCESS_TOKEN_URL "https://owncloud/index.php/apps/oauth2/api/v1/token"
 ENV OWNCLOUD_OAUTH_CLIEND_ID "XY"
 ENV OWNCLOUD_OAUTH_CLIENT_SECRET "ABC"
 

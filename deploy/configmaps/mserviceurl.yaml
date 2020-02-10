@@ -4,3 +4,4 @@ metadata:
   name: mservice
 data:
   CENTRAL_SERVICE_TOKEN_STORAGE: http://circle3-token-storage
+  OWNCLOUD_INSTALLATION_URL: http://10.14.28.90/owncloud

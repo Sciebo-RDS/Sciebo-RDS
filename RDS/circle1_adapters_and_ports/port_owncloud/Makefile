@@ -1,6 +1,6 @@
 # updates the pipfiles
 install:
-	pipenv shell
+	pipenv shell || true
 	pip install -r requirements.txt
 	pip install -r requirements-dev.txt
 

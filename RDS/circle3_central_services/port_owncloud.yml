@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: '1.0'
-  title: Port Invenio
+  title: Port ownCloud
   description: This describes the needed specification for circle 3.
   contact:
     name: Peter Heiss
@@ -50,5 +50,5 @@ components:
         This model describes the object, which represents all needed informations for oauth2.
         https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/
 servers:
-  - url: 'http://port-invenio:3000/central_service'
+  - url: 'http://port-owncloud:3000'
     description: ''
