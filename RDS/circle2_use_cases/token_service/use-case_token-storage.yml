@@ -20,7 +20,17 @@ paths:
         This endpoint takes all tokens to send it to the central-service to save them there and redirects user to `/authorization-success` or `/authorization-cancel`, if anything is wrong with the given data.
 
         please specify this endpoint when asked for a redirect-uri.
-      parameters: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: code
+          description: The oauth2 exchange token from oauth2 service provider.
+        - schema:
+            type: string
+          in: query
+          name: state
+          description: 'The encoded state string, which does not allow any changes by the user.'
     parameters: []
   '/service/{servicename}':
     parameters:
@@ -234,6 +244,7 @@ components:
     jwt:
       title: jwt
       type: object
+      description: 'This string is a jwt, so it follows the structure: header.payload.signature. The payload follows the defined struct below.'
       properties:
         servicename:
           type: string
@@ -241,7 +252,6 @@ components:
           type: string
         date:
           type: string
-      description: 'This string is a jwt, so it follows the structure: header.payload.signature. The payload follows the defined struct below.'
     error:
       title: error
       type: object

@@ -323,14 +323,16 @@ components:
     Token:
       title: Token
       type: object
+      x-tags:
+        - token
       properties:
-        servicename:
-          type: string
+        service:
+          $ref: '#/components/schemas/Service'
         access_token:
           type: string
           description: 'The token, which can be used as password for username in service.'
-      x-tags:
-        - token
+        user:
+          $ref: '#/components/schemas/User'
     User:
       title: User
       type: object
@@ -397,14 +399,16 @@ components:
       title: OAuthToken
       type: object
       properties:
-        servicename:
-          type: string
+        service:
+          $ref: '#/components/schemas/OAuthService'
         access_token:
           type: string
         refresh_token:
           type: string
         expiration_date:
           type: integer
+        user:
+          $ref: '#/components/schemas/User'
     Error:
       title: Error
       type: object
