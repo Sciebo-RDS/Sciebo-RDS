@@ -19,14 +19,17 @@ port_zenodo:
 port_owncloud:
 	helm upgrade circle1-port-owncloud circle1_port_owncloud --install
 
-token_service:
+service_exporter:
+	helm upgrade circle2-exporter-service circle2_exporter_service --install
+
+service_token:
 	helm upgrade circle2-token-service circle2_token_service --install
 
 token_storage:
 	helm upgrade circle3-token-storage circle3_token_storage --install
 
 circle1: port_zenodo port_owncloud
-circle2: token_service
+circle2: service_token service_exporter
 circle3: token_storage
 
 features:
@@ -43,14 +46,17 @@ remove_port_zenodo:
 remove_port_owncloud:
 	helm delete --purge circle1-port-owncloud || true
 
-remove_token_service:
+remove_service_exporter:
+	helm delete --purge circle2-exporter || true
+
+remove_service_token:
 	helm delete --purge circle2-token-service || true
 
 remove_token_storage:
 	helm delete --purge circle3-token-storage || true
 
 uninstall_circle1: remove_port_zenodo remove_port_owncloud
-uninstall_circle2: remove_token_service
+uninstall_circle2: remove_service_token remove_service_exporter
 uninstall_circle3: remove_token_storage
 
 install: install_configmaps features circle3 circle2 circle1
