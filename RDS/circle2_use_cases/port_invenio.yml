@@ -66,14 +66,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/archive-invenio'
+              type: object
+              properties:
+                userId:
+                  type: string
+              required:
+                - userId
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/deposit'
+                type: object
+                properties:
+                  depositionId:
+                    type: string
         '401':
           description: Unauthorized
       parameters: []
@@ -115,147 +123,6 @@ paths:
               examples: {}
       summary: Get sitemap
     parameters: []
-  '/deposition/{deposition-id}/actions/publish':
-    get:
-      summary: Get information about publish status
-      responses:
-        '200':
-          description: OK
-      description: Get the publish-status of the given deposition.
-      tags:
-        - deposit
-    put:
-      summary: Publish deposition
-      responses:
-        '200':
-          description: OK
-      description: Publish the specified invenio project.
-      tags:
-        - deposit
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-    parameters:
-      - schema:
-          type: string
-        name: deposition-id
-        in: path
-        required: true
-  '/deposition/{deposition-id}/creator':
-    parameters:
-      - schema:
-          type: integer
-        name: deposition-id
-        in: path
-        required: true
-    get:
-      summary: Get creator list from deposition.
-      responses:
-        '200':
-          description: OK
-        '404':
-          description: Not Found
-      description: Returns information about the creators from the specified deposition.
-      tags:
-        - deposit
-    put:
-      summary: Update the creatorlist from deposition
-      responses:
-        '200':
-          description: OK
-        '304':
-          description: Not Modified
-        '401':
-          description: Unauthorized
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/creator'
-        description: 'If the array is empty, nothing changed. Otherwise the creators overwrite the previous one. '
-      description: Updates the specified creator (id) to the given values. Empty values are not updated.
-      operationId: ''
-      tags:
-        - deposit
-    delete:
-      summary: ''
-      responses:
-        '200':
-          description: OK
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                creator-id:
-                  type: string
-  '/deposition/{deposition-id}/creator/{creator-id}':
-    get:
-      tags:
-        - creator
-      description: Get informations about the given creator.
-      requestBody:
-        $ref: '#/components/requestBodies/creator_get'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/creator'
-        '401':
-          description: Unauthorized
-        '404':
-          description: User not found or no permission to view.
-      summary: Creator informations
-      parameters: []
-    put:
-      tags:
-        - creator
-      description: This endpoint updates and returns the informations about the given creator from zenodo.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/creator'
-            examples: {}
-        description: Empty values will not be updated.
-      responses:
-        '200':
-          description: 'This response signals, that the updates succeeded and returns the new values of the given creator.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/creator'
-        '401':
-          description: The given creator cannot be updated.
-        '404':
-          description: The given creator was not found.
-      summary: Get creator informations
-    parameters:
-      - schema:
-          type: integer
-        name: deposition-id
-        in: path
-        required: true
-      - schema:
-          type: integer
-        name: creator-id
-        in: path
-        required: true
-    delete:
-      summary: ''
-      responses:
-        '200':
-          description: OK
   '/deposition/{deposition-id}/actions/upload':
     parameters:
       - schema:
@@ -275,46 +142,17 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
       description: Adds the given file from port_storage to the specified deposition
       requestBody:
         content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filepath:
-                  type: string
+          application/octet-stream:
+            schema: {}
         description: 'The filepath needs to be valid in port_storage context, so for example it needs a valid path in an ownCloud installation for given user.'
-  '/deposition/{deposition-id}/files':
-    parameters:
-      - schema:
-          type: string
-        name: deposition-id
-        in: path
-        required: true
-    get:
-      summary: Get all files
-      tags: []
-      responses:
-        '200':
-          description: OK
-      description: Returns all files stored by the specified deposition.
-    delete:
-      summary: Remove an uploaded file
-      responses:
-        '200':
-          description: OK
-      description: Removes the given file.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  description: ''
-        description: ''
 components:
   schemas:
     creator:

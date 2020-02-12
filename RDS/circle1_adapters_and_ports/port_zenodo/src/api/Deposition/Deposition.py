@@ -2,26 +2,40 @@ import os
 import requests
 import logging
 from lib.upload_zenodo import Zenodo
-from flask import jsonify
+from flask import jsonify, request, g
 
-logger = logging.getLogger('')
+logger = logging.getLogger()
 
-z = Zenodo(os.getenv("ZENODO_API_KEY"))
 
 def index():
-    return z.get_deposition()
+    if g.zenodo is None:
+        return "No userid provided. Unauthorized access", 401
+
+    logger.debug("get deposition list")
+    return g.zenodo.get_deposition()
+
 
 def get(deposition_id):
-    return z.get_deposition(deposition_id)
+    if g.zenodo is None:
+        return "No userid provided. Unauthorized access", 401
+
+    return g.zenodo.get_deposition(deposition_id)
+
 
 def put(deposition_id):
     # TODO implements needed
-    #return "deposit update {}".format(deposition_id), 200
+    # return "deposit update {}".format(deposition_id), 200
     pass
 
+
 def post():
-    r = z.create_new_deposition(return_response=True)
-    return r.json(), r.status_code
+    if g.zenodo is None:
+        return "No userid provided. Unauthorized access", 401
+
+    r = g.zenodo.create_new_deposition(return_response=True)
+    return {"depositionId": r.json()["id"]}
+
 
 def delete(deposition_id):
-    return z.remove_deposition(deposition_id)
+    pass
+    # return zenodo.remove_deposition(deposition_id)
