@@ -1,14 +1,14 @@
 openapi: 3.0.0
 info:
-  title: Port Invenio
+  title: Port Owncloud
   version: '1.0'
-  description: This document describes the interface of the port zenodo from the innermost circle of the rds architecture to the second circle.
+  description: This document describes the interface of the port owncloud from the innermost circle of the rds architecture to the second circle.
   contact:
     name: Peter Heiss
     email: peter.heiss@uni-muenster.de
     url: 'https://www.research-data-services.org'
 servers:
-  - url: 'http://port-invenio:3000/use_case'
+  - url: 'http://port-owncloud:3000/'
 paths:
   /:
     get:
