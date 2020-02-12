@@ -61,7 +61,6 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
 
 app = bootstrap("PortOwncloud", all=True)
 
-# TODO: Register service at token storage
 register_service(
     "Owncloud",
     os.getenv("OWNCLOUD_OAUTH_AUTHORIZE_URL", "http://localhost:3000"),
