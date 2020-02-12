@@ -1,0 +1,50 @@
+openapi: 3.0.0
+paths:
+  '/export/{service}':
+    parameters:
+      - schema:
+          type: string
+        name: service
+        in: path
+        required: true
+    post:
+      summary: Export a file to the given service
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+      operationId: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filename:
+                  type: string
+                  description: 'The string for the file / folder, which should be export.'
+                from_service:
+                  type: string
+                  description: 'the service, which holds the filename.'
+                user_id:
+                  type: string
+        description: ''
+info:
+  version: '1.0'
+  title: Exporter
+  description: This service is responsible for any exporting functionality.
+  contact:
+    name: Peter Heiss
+    url: 'https://www.research-data-services.org'
+    email: peter.heiss@uni-muenster.de
+servers:
+  - url: 'http://use-case_exporter/export'
+    description: ''

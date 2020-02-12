@@ -11,11 +11,9 @@ RUN pip install -r requirements.txt
 # download yaml file for better usability and reproducable behaviour
 RUN apk add curl
 
-ENV OPENAPI_FILEPATH_EXTERNAL   "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/token_service/use-case_token-storage.yml"
-ENV OPENAPI_FILEPATH            "token_service.yml"
+ENV OPENAPI_FILEPATH_EXTERNAL   "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/exporter/use-case_exporter.yml"
+ENV OPENAPI_FILEPATH            "exporter.yml"
 RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
-
-ENV CENTRAL-SERVICE_TOKEN-STORAGE "http://circle3-token-storage"
 
 # now add everything else, which changes often
 ADD src ./
