@@ -51,14 +51,13 @@ paths:
                 type: string
       operationId: ''
       description: Returns the file
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                userId:
-                  type: string
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: userId
+          description: ''
+          required: true
 tags:
   - name: deposit
     description: All about depositions

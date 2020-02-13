@@ -132,7 +132,7 @@ class Test_OwncloudUser(unittest.TestCase):
                 "userId" : expected_user
             }
 
-            file = self.client.get(f"/use_case/file/{expected_filename}", data=data).get_data()
+            file = self.client.get(f"/file/{expected_filename}", query_string=data).get_data()
 
         import json
         self.assertEqual(json.dumps(expected_file).encode("utf-8"), file, msg=file)
@@ -182,7 +182,7 @@ class Test_OwncloudUser(unittest.TestCase):
                 "userId" : expected_user
             }
 
-            file = self.client.get(f"/use_case/file/{expected_filename}", data=data).get_data()
+            file = self.client.get(f"/file/{expected_filename}", query_string=data).get_data()
 
         import json
         self.assertEqual(json.dumps(expected_file).encode("utf-8"), file, msg=file)

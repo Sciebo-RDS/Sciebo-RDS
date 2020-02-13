@@ -28,13 +28,13 @@ class ExporterService():
 
         url = f"http://circle1-port-{from_service}" if not self.testing else self.testing_address
         response_from = requests.get(
-            f"{url}/file/{filepath}", data={"userId": user})
+            f"{url}/file/{filepath}", params={"userId": user})
 
         if response_from.status_code >= 300:
-            logger.error(response_from)
+            logger.error(response_from.json)
             return False
 
-        file = {"file": response_from.raw}
+        file = {"file": response_from.content}
 
         # upload file to to_service for user via port for to_service
         url = f"http://circle1-port-{to_service}" if not self.testing else self.testing_address
@@ -44,7 +44,7 @@ class ExporterService():
             f"{url}/deposition", data={"userId": user})
 
         if response_to.status_code >= 300:
-            logger.error(response_from)
+            logger.error(response_to.json)
             return False
 
         depositionId = response_to.json()["depositionId"]
@@ -53,12 +53,12 @@ class ExporterService():
             f"{url}/deposition/{depositionId}/actions/upload", data={"userId": user}, files=file)
 
         if response_to.status_code >= 300:
-            logger.error(response_from)
+            logger.error(response_to.json)
             return False
 
         if response_from is not None and response_to is not None and response_from.status_code < 300 and response_to.status_code < 300:
             return True
 
-        logger.error(response_from)
-        logger.error(response_to)
+        logger.error(response_from.json)
+        logger.error(response_to.json)
         return False
