@@ -4,4 +4,4 @@ metadata:
   name: proxy
 data:
   http: http://wwwproxy.uni-muenster.de:3128
-  no_http_proxy: circle3-token-storage
+  no_http_proxy: circle1-port-owncloud,circle1-port-zenodo,circle3-token-storage

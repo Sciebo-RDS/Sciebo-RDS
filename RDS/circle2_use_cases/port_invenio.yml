@@ -8,7 +8,7 @@ info:
     email: peter.heiss@uni-muenster.de
     url: 'https://www.research-data-services.org'
 servers:
-  - url: 'http://port-invenio:3000/'
+  - url: 'http://port-invenio:3000'
 paths:
   '/deposition/{deposition-id}':
     parameters:
