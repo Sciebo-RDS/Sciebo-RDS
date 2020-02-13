@@ -43,7 +43,7 @@ class ExporterService():
 
         # create project
         response_to = requests.post(
-            f"{url}/deposition", json={"userId": user})
+            f"{url}/deposition", data={"userId": user})
 
         if response_to.status_code >= 300:
             logger.error(response_to.json())
@@ -51,8 +51,9 @@ class ExporterService():
 
         depositionId = response_to.json()["depositionId"]
         # upload file to it
+        headers = {"Content-Type": "multipart/form-data"}
         response_to = requests.post(
-            f"{url}/deposition/{depositionId}/actions/upload", json={"userId": user}, files=file)
+            f"{url}/deposition/{depositionId}/actions/upload", data={"userId": user}, files=file, headers=headers)
 
         if response_to.status_code >= 300:
             logger.error(response_to.json())

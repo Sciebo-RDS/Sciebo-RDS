@@ -64,7 +64,7 @@ paths:
       description: Add a new deposition to collection of the token user.
       requestBody:
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               properties:
