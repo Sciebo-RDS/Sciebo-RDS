@@ -1,10 +1,10 @@
 openapi: 3.0.0
 paths:
-  '/export/{service}':
+  '/export/{toService}':
     parameters:
       - schema:
           type: string
-        name: service
+        name: toService
         in: path
         required: true
     post:
@@ -37,6 +37,7 @@ paths:
                 user_id:
                   type: string
         description: ''
+      description: ''
 info:
   version: '1.0'
   title: Exporter
