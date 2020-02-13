@@ -150,7 +150,7 @@ paths:
       description: Adds the given file from port_storage to the specified deposition
       requestBody:
         content:
-          application/octet-stream:
+          multipart/form-data:
             schema: {}
         description: 'The filepath needs to be valid in port_storage context, so for example it needs a valid path in an ownCloud installation for given user.'
 components:
