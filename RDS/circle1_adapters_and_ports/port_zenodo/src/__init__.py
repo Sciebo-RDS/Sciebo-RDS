@@ -42,7 +42,8 @@ def bootstrap(name='MicroService', *args, **kwargs):
             logger.debug("userId token was found")
             g.zenodo = Zenodo(token, address=app.zenodo_address)
             logger.debug("Zenodo object to work with was created")
-        logger.debug("no userId provided")
+        else:
+            logger.debug("no userId provided")
 
     for oai in list_openapi:
         app.add_api(oai, resolver=MultipleResourceResolver(

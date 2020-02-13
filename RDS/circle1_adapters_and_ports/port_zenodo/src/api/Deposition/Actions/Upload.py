@@ -16,8 +16,12 @@ def post(deposition_id):
     if g.zenodo is None:
         return "No userid provided. Unauthorized access", 401
 
+    logger.debug("Read file from request")
     file = request.files['file']
+
+    logger.debug("Start file upload")  
     resp = g.zenodo.upload_new_file_to_deposition(deposition_id, file)
+    logger.debug("Finished file upload")
 
     if resp:
         return jsonify({"success": True})

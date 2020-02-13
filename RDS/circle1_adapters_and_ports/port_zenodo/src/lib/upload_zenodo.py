@@ -123,17 +123,24 @@ class Zenodo(object):
 
         from io import BytesIO
         if file is not None and isinstance(file, BytesIO):
-            files = file
+            self.log.debug("Given file is BytesIO")
+            files = {'file': file}
         else:
+            self.log.debug("Given file is a localfile")
+            # for temporary files
             files = {'file': open(os.path.expanduser(path_to_file), 'rb')}
 
         _, filename = os.path.split(path_to_file)
         data = {"name": filename}
 
+        self.log.debug("Data: {}, Files: {}".format(data, files))
+
         r = requests.post(
             f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}/files',
             headers={'Authorization': f"Bearer {self.api_key}"}, data=data,
             files=files)
+
+        self.log.debug("Content: {}".format(r.content))
 
         return r.status_code == 201 if not return_response else r
 
