@@ -36,11 +36,11 @@ spec:
               secretKeyRef:
                 name: owncloud-oauth-client-secret
                 key: secret
-          - name: CENTRAL-SERVICE_TOKEN-STORAGE
+          - name: USE_CASE_SERVICE_TOKEN_SERVICE
             valueFrom:
               configMapKeyRef:
                 name: mservice
-                key: CENTRAL_SERVICE_TOKEN_STORAGE
+                key: USE_CASE_SERVICE_TOKEN_SERVICE
           - name: HTTP_PROXY
             valueFrom:
               configMapKeyRef:
