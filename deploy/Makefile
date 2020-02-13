@@ -47,7 +47,7 @@ remove_port_owncloud:
 	helm delete --purge circle1-port-owncloud || true
 
 remove_service_exporter:
-	helm delete --purge circle2-exporter || true
+	helm delete --purge circle2-exporter-service || true
 
 remove_service_token:
 	helm delete --purge circle2-token-service || true

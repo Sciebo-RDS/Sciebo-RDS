@@ -44,16 +44,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
     list_openapi = Util.load_oai(
         os.getenv("OPENAPI_FILEPATH", "use-case_exporter.yml"))
 
-    zenodo_address = None
-    if "address" in kwargs:
-        zenodo_address = kwargs["address"]
-        del kwargs["address"]
-
     app = App(name, *args, **kwargs)
-
-
-    if zenodo_address is not None:
-        app.zenodo_address = zenodo_address
 
     for oai in list_openapi:
         app.add_api(oai, resolver=MultipleResourceResolver(

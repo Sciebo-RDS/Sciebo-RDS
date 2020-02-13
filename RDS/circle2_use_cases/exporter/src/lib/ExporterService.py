@@ -6,8 +6,10 @@ logger = logging.getLogger()
 
 
 class ExporterService():
-    def __init__(self, testing=False):
+    def __init__(self, testing=False, testing_address=None):
         self.testing = testing
+        if testing:
+            self.testing_address = "http://localhost:3000" if testing_address is None else testing_address
 
     def export(self, from_service: str, to_service: str, filepath: str, user: str):
         # sync
@@ -24,7 +26,7 @@ class ExporterService():
         if not to_service.startswith("invenio") and not to_service.startswith("zenodo"):
             raise ValueError("To-Service is unknown")
 
-        url = f"http://circle1-port-{from_service}" if not self.testing else "http://localhost:3000"
+        url = f"http://circle1-port-{from_service}" if not self.testing else self.testing_address
         response_from = requests.get(
             f"{url}/file/{filepath}", data={"userId": user})
 
@@ -35,7 +37,7 @@ class ExporterService():
         file = {"file": response_from.raw}
 
         # upload file to to_service for user via port for to_service
-        url = f"http://circle1-port-{to_service}" if not self.testing else "http://localhost:3000"
+        url = f"http://circle1-port-{to_service}" if not self.testing else self.testing_address
 
         # create project
         response_to = requests.post(
