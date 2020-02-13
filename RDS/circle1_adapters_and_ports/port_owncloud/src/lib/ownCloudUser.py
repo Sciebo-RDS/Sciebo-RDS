@@ -6,19 +6,26 @@ logger = logging.getLogger()
 
 
 def loadAccessToken(userId: str, service: str):
-    tokenStorageURL = os.getenv("CENTRAL_SERVICE_TOKEN_STORAGE", "http://localhost:3000")
+    tokenStorageURL = os.getenv(
+        "CENTRAL_SERVICE_TOKEN_STORAGE", "http://localhost:3000")
     # load access token from token-storage
-    access_token_list = requests.get(
-        f"{tokenStorageURL}/user/{userId}/token").json()
-    access_token = None
+    result = requests.get(
+        f"{tokenStorageURL}/user/{userId}/service/{service}")
+    
+    if result.status_code > 200:
+        return None
 
-    for token in access_token_list["list"]:
-        if token["data"]["service"]["data"]["servicename"] is service:
-            access_token = token["data"]["access_token"]
+    access_token = result.json()
+    logger.debug(f"got: {access_token}")
 
-    logger.debug("userId: {}, token: {}, service: {}".format(userId, access_token, service))
+    if "type" in access_token and access_token["type"].endswith("Token"):
+        access_token = access_token["data"]["access_token"]
+
+    logger.debug("userId: {}, token: {}, service: {}".format(
+        userId, access_token, service))
 
     return access_token
+
 
 
 class OwncloudUser():
