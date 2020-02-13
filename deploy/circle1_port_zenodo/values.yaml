@@ -61,3 +61,4 @@ environment:
   # (https://kubernetes.io/docs/concepts/configuration/secret/#using-secrets-as-environment-variables), 
   # but should be set via installations script or makefile
   zenodo-oauth-client-secret: ABC # Adjust me to valid values
+  ZENODO_ADDRESS: https://sandbox.zenodo.org

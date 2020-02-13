@@ -25,8 +25,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
 
     app = App(name, *args, **kwargs)
 
-    if zenodo_address is not None:
-        app.zenodo_address = zenodo_address
+    app.zenodo_address = zenodo_address
 
     from lib.Util import loadAccessToken
     from flask import request, g
@@ -42,7 +41,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
                 return "No token for userid provided. Unauthorized access", 401
             logger.debug("userId token was found")
             g.zenodo = Zenodo(token, address=app.zenodo_address)
-            logger.debug("Zenodo object created")
+            logger.debug("Zenodo object to work with was created")
         logger.debug("no userId provided")
 
     for oai in list_openapi:

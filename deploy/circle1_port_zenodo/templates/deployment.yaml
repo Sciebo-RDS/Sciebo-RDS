@@ -31,6 +31,8 @@ spec:
             value: "{{ .Values.environment.ZENODO_OAUTH_ACCESS_TOKEN_URL }}"
           - name: "ZENODO_OAUTH_CLIEND_ID"
             value: "{{ .Values.environment.ZENODO_OAUTH_CLIEND_ID }}"
+          - name: "ZENODO_ADDRESS"
+            value: "{{ .Values.environment.ZENODO_ADDRESS }}"
           - name: "ZENODO_OAUTH_CLIENT_SECRET"
             valueFrom:
               secretKeyRef:
