@@ -20,7 +20,7 @@ def post(deposition_id):
     file = request.files['file']
 
     logger.debug("Start file upload")  
-    resp = g.zenodo.upload_new_file_to_deposition(deposition_id, file)
+    resp = g.zenodo.upload_new_file_to_deposition(deposition_id, file.filename, file)
     logger.debug("Finished file upload")
 
     if resp:

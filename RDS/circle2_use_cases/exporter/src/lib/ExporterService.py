@@ -34,7 +34,12 @@ class ExporterService():
             logger.error(response_from.json())
             return False
 
-        file = {"file": response_from.content}
+        # multipart needs another structure
+        # https://stackoverflow.com/questions/12385179/how-to-send-a-multipart-form-data-with-requests-in-python/35974071#35974071
+
+        file = {
+            "file": (os.path.basename(filepath), response_from.content, "multipart/form-data")
+        }
 
         logger.debug("File: {}".format(file))
 
@@ -50,10 +55,9 @@ class ExporterService():
             return False
 
         depositionId = response_to.json()["depositionId"]
-        # upload file to it
-        headers = {"Content-Type": "multipart/form-data"}
+        # upload file to to_service
         response_to = requests.post(
-            f"{url}/deposition/{depositionId}/actions/upload", data={"userId": user}, files=file, headers=headers)
+            f"{url}/deposition/{depositionId}/actions/upload", files=file, data={"userId": user})
 
         if response_to.status_code >= 300:
             logger.error(response_to.json())
