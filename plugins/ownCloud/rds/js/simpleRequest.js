@@ -1,66 +1,49 @@
 // inspired by https://github.com/PaulLereverend/NextcloudExtract/blob/master/js/extraction.js
 $(document).ready(function() {
-  /*var actionsSimple = {
+  var pdfZenodo = {
     init: function() {
       var self = this;
       OCA.Files.fileActions.registerAction({
-        name: "reverseText",
-        displayName: t("export_zenodo", "Export to Zenodo"),
-        mime: "text",
-        permissions: OC.PERMISSION_UPDATE,
-        type: OCA.Files.FileActions.TYPE_DROPDOWN,
-        iconClass: "icon-extract",
-        actionHandler: function(filename, context) {
-          var data = {
-            text: filename
-          };
-
-          getReversedText(data);
-          console.log("do something here");
-        }
-      });
-    }
-  };*/
-
-  var pdfSimple = {
-    init: function() {
-      var self = this;
-      OCA.Files.fileActions.registerAction({
-        name: "pdf2Word",
-        displayName: t("make_word", "Convert to Word"),
+        name: "pdf2Zenodo",
+        displayName: t("upload_zenodo", "Push this file to Zenodo"),
         mime: "application/pdf",
         permissions: OC.PERMISSION_UPDATE,
         type: OCA.Files.FileActions.TYPE_DROPDOWN,
         iconClass: "icon-extract",
         actionHandler: function(filename, context) {
-          /*$.ajax({
+          /*curl -X POST -d '{"user_id": "admin", "from_service":"Owncloud", "filename":"features.txt"}' https://sciebords-│
+dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:application/json"     */
+          var data = {
+            user_id: OC.currentUser,
+            from_service: "Owncloud",
+            filename: filename
+          };
+          console.log("send data:", data);
+          $.ajax({
             type: "POST",
             async: "false",
-            url: "http://sciebords-dev.uni-muenster.de/api/time/text/reverse",
-            data: JSON.stringify(request),
+            url: "https://sciebords-dev.uni-muenster.de/exporter/export/Zenodo",
+            data: JSON.stringify(data),
+            dataType: "json",
             statusCode: {
               200: function(element) {
                 response = element;
-                OC.dialogs.alert(
-                  t("reverse", response.myReversedText),
-                  t("reverse", "reversed " + request.text)
-                );
-              },
-              201: function() {
-                getReversedText(request);
-              },
-              202: function() {
-                getReversedText(request);
+                if (response.success == "True") {
+                  text = "Upload " + filename + " to Zenodo sucessfully.";
+                } else {
+                  text = response;
+                }
+
+                OC.dialogs.alert(t("rds", text));
               }
             }
-          });*/
-          console.log("do something here");
+          });
         }
       });
     }
   };
-  
-/*
+
+  /*
   var importZenodo = {
     attach: function(menu) {
       menu.addMenuEntry({
@@ -75,32 +58,7 @@ $(document).ready(function() {
       });
     }
   };*/
-/*
-  function getReversedText(request) {
-    $.ajax({
-      type: "POST",
-      async: "false",
-      url: "http://sciebords-dev.uni-muenster.de/api/time/text/reverse",
-      data: JSON.stringify(request),
-      statusCode: {
-        200: function(element) {
-          response = element;
-          OC.dialogs.alert(
-            t("reverse", response.myReversedText),
-            t("reverse", "reversed " + request.text)
-          );
-        },
-        201: function() {
-          getReversedText(request);
-        },
-        202: function() {
-          getReversedText(request);
-        }
-      }
-    });
-  }
-
-  actionsSimple.init();*/
-  pdfSimple.init();
-  OC.Plugins.register('OCA.Files.NewFileMenu', importZenodo);
+  
+  pdfZenodo.init();
+  //OC.Plugins.register("OCA.Files.NewFileMenu", importZenodo);
 });
