@@ -81,9 +81,7 @@ paths:
                 type: object
                 properties:
                   depositionId:
-                    type:
-                      - string
-                      - integer
+                    type: integer
         '401':
           description: Unauthorized
       parameters: []
