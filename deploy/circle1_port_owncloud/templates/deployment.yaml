@@ -16,6 +16,10 @@ spec:
         app.kubernetes.io/name: {{ include "circle1_port_owncloud.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      initContainers:
+        - name: init-mysql
+          image: busybox
+          command: ['sh', '-c', 'until nslookup circle3-token-storage; do echo waiting for mysql; sleep 2; done;']
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

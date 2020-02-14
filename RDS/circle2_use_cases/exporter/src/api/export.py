@@ -1,4 +1,4 @@
-from flask import request, current_app
+from flask import request, current_app, jsonify
 from lib.ExporterService import ExporterService
 import logging
 
@@ -14,6 +14,6 @@ def post(toService):
         "TESTSERVER", None)).export(fromService, toService, filepath, userId)
 
     if result:
-        return True
+        return jsonify({"success": True})
 
     return "Export failed", 500
