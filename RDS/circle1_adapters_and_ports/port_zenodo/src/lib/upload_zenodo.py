@@ -123,16 +123,16 @@ class Zenodo(object):
         (More: https://developers.zenodo.org/#deposition-files)
         """
 
-        from io import BytesIO
-        if file is not None and isinstance(file, BytesIO):
-            self.log.debug("Given file is BytesIO")
-            files = {'file': file}
+        from io import IOBase
+        if file is not None and isinstance(file, IOBase):
+            self.log.debug("Given file is IOBase")
+            files = {'file': file.read()}
         else:
             self.log.debug("Given file is a localfile")
             # for temporary files
             files = {'file': open(os.path.expanduser(path_to_file), 'rb')}
 
-        _, filename = os.path.split(path_to_file)
+        filename = os.path.basename(path_to_file)
         data = {"name": filename}
 
         self.log.debug("Data: {}, Files: {}".format(data, files))
