@@ -146,7 +146,9 @@ paths:
             application/json:
               schema:
                 type: object
-                properties: {}
+                properties:
+                  success:
+                    type: boolean
       description: Adds the given file from port_storage to the specified deposition
       requestBody:
         content:
