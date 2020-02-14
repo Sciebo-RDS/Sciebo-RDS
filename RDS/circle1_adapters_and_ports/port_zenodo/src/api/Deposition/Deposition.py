@@ -33,7 +33,7 @@ def post():
         return "No userid provided. Unauthorized access", 401
 
     r = g.zenodo.create_new_deposition(return_response=True)
-    return {"depositionId": r.json()["id"]}
+    return jsonify({"depositionId": r.json()["id"]})
 
 
 def delete(deposition_id):
