@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger()
 
 def post(toService):
-    json = request.get_json(force=True)
+    json = request.values
     userId = json.get("user_id")
     fromService = json.get("from_service")
     filepath = json.get("filename")

@@ -143,5 +143,5 @@ class Test_ExporterService(unittest.TestCase):
         ) .will_respond_with(200, body={"success": True})
 
         with pact:
-            result = self.client.post("/exporter/export/Zenodo", json={"user_id": "admin", "from_service":"Owncloud", "filename":"testfile.txt"})
+            result = self.client.post("/exporter/export/Zenodo", data={"user_id": "admin", "from_service":"Owncloud", "filename":"testfile.txt"})
         self.assertEqual(result.json, {"success": True})
