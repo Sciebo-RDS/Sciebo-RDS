@@ -124,18 +124,18 @@ class Zenodo(object):
         """
 
         from io import IOBase
-        if file is not None and isinstance(file, IOBase):
-            self.log.debug("Given file is IOBase")
+        try:
+            self.log.debug("Try read the file content.")
             files = {'file': file.read()}
-        else:
-            self.log.debug("Given file is a localfile")
+        except Exception:
+            self.log.debug("Cannot read the content. So maybe it is in cache?")
             # for temporary files
             files = {'file': open(os.path.expanduser(path_to_file), 'rb')}
 
         filename = os.path.basename(path_to_file)
         data = {"name": filename}
 
-        self.log.debug("Data: {}, Files: {}".format(data, files))
+        self.log.debug("Submit the following informations to zenodo.\nData: {}, Files: {}".format(data, files))
 
         r = requests.post(
             f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}/files',
