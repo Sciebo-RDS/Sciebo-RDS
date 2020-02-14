@@ -67,12 +67,14 @@ class Zenodo(object):
 
             Description: Get all depositions for the account, which owns the api-key."""
 
+        self.log.debug("get depositions from zenodo")
+        headers = {"Authorization": f"Bearer {self.api_key}"}
         if id > -1:
             r = requests.get(f"{self.zenodo_address}/api/deposit/depositions/{id}",
-                             headers={"Authorization": f"Bearer {self.api_key}"})
+                             headers=headers)
         else:
             r = requests.get(f"{self.zenodo_address}/api/deposit/depositions",
-                             headers={"Authorization": f"Bearer {self.api_key}"})
+                             headers=headers)
             self.log.debug(
                 "Get Depositions: Status Code: {}".format(r.status_code))
 

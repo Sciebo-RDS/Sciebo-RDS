@@ -55,14 +55,68 @@ class TestPortZenodo(unittest.TestCase):
         result = None
         with pact:
             data = {"userId": "admin"}
-            result = self.client.get("/use_case/deposition", data=data)
+            result = self.client.get("/deposition", data=data)
+
+        self.assertEqual(result.json, expected)
+
+    @unittest.skip
+    def test_home_status_code_json(self):
+        expected = []
+
+        pact.given(
+            'user admin has a token in rds'
+        ).upon_receiving(
+            'the currently available token'
+        ).with_request(
+            'GET', '/user/admin/service/Zenodo'
+        ) .will_respond_with(200, body={"data": {"access_token": "ASD123GANZSICHA", "service": {"data": {"servicename": "Zenodo"}}}})
+
+        pact.given(
+            'user admin exists in zenodo'
+        ).upon_receiving(
+            'user has no deposit'
+        ).with_request(
+            'GET', '/api/deposit/depositions'
+        ) .will_respond_with(200, body=expected)
+
+        result = None
+        with pact:
+            import json
+            data = {"userId": "admin"}
+            result = self.client.get("/deposition", data=json.dumps(data))
+
+        self.assertEqual(result.json, expected)
+
+        expected = []
+
+        pact.given(
+            'user admin has a token in rds'
+        ).upon_receiving(
+            'the currently available token'
+        ).with_request(
+            'GET', '/user/admin/service/Zenodo'
+        ) .will_respond_with(200, body={"data": {"access_token": "ASD123GANZSICHA", "service": {"data": {"servicename": "Zenodo"}}}})
+
+        pact.given(
+            'user admin exists in zenodo'
+        ).upon_receiving(
+            'user has no deposit'
+        ).with_request(
+            'GET', '/api/deposit/depositions'
+        ) .will_respond_with(200, body=expected)
+
+        result = None
+        with pact:
+            import json
+            data = {"userId": "admin"}
+            result = self.client.get("/deposition", json=data)
 
         self.assertEqual(result.json, expected)
 
     def test_get_token_for_userid(self):
         result = None
         with pact:
-            result = self.client.get("/use_case/deposition")
+            result = self.client.get("/deposition")
 
         self.assertEqual(result.status_code, 401)
 
@@ -77,7 +131,7 @@ class TestPortZenodo(unittest.TestCase):
         result = None
         with pact:
             data = {"userId": "user"}
-            result = self.client.get("/use_case/deposition", data=data)
+            result = self.client.get("/deposition", data=data)
 
         self.assertEqual(result.status_code, 401)
 
@@ -96,7 +150,7 @@ class TestPortZenodo(unittest.TestCase):
         result = None
         with pact:
             data = {"userId": "admin"}
-            result = self.client.get("/use_case/deposition", data=data)
+            result = self.client.get("/deposition", data=data)
 
         self.assertEqual(result.json, {"success": True})
 

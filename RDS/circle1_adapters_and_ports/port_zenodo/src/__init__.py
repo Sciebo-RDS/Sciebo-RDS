@@ -33,15 +33,29 @@ def bootstrap(name='MicroService', *args, **kwargs):
     @app.app.before_request
     def load_zenodo_token():
         g.zenodo = None
-        logger.debug("get user token")
+
+        logger.debug("get user token from query or form?")
         userid = request.values.get("userId")
+        if userid is None:
+            logger.debug("no query userId found.")
+            logger.debug("get user token from data?")
+
+            if len(request.data) > 0:
+                import json
+                j = json.loads(request.data.decode("utf-8"))
+                userid = j.get("userId")
+
         if userid is not None:
+            logger.debug("userId found: {}".format(userid))
+            logger.debug("look for token for userId")
             token = loadAccessToken(userid, "Zenodo")
             if token is None:
                 return "No token for userid provided. Unauthorized access", 401
+
             logger.debug("userId token was found")
             g.zenodo = Zenodo(token, address=app.zenodo_address)
             logger.debug("Zenodo object to work with was created")
+
         else:
             logger.debug("no userId provided")
 
