@@ -21,8 +21,9 @@ def bootstrap(name='MicroService', *args, **kwargs):
     app = App(name, *args, **kwargs)
 
     for oai in list_openapi:
+        # TODO: enable validator for response
         app.add_api(oai, resolver=MultipleResourceResolver(
-            'api', collection_endpoint_name="index"), validate_responses=True)
+            'api', collection_endpoint_name="index"), validate_responses=False)
 
     return app
 
