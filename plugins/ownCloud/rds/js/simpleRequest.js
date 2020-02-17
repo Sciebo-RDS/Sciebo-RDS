@@ -53,7 +53,10 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
     }
   };*/
   
-  pushZenodo.init("text/plain");
-  pushZenodo.init("application/pdf");
+  mimes = ["text/plain", "application/pdf"]
+  mimes.forEach(item => {
+    pushZenodo.init(item);
+  });
+  
   //OC.Plugins.register("OCA.Files.NewFileMenu", importZenodo);
 });
