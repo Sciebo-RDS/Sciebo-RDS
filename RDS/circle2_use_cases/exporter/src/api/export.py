@@ -10,6 +10,8 @@ def post(toService):
     fromService = json.get("from_service")
     filepath = json.get("filename")
 
+    logger.debug("userId: {}, fromService: {}, toService: {}, filepath: {}".format(userId, fromService, toService, filepath))
+
     result = ExporterService(testing=current_app.config.get("TESTING", False), testing_address=current_app.config.get(
         "TESTSERVER")).export(fromService, toService, filepath, userId)
 

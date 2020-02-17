@@ -1,40 +1,34 @@
 // inspired by https://github.com/PaulLereverend/NextcloudExtract/blob/master/js/extraction.js
 $(document).ready(function() {
-  var pdfZenodo = {
-    init: function() {
+  var pushZenodo = {
+    init: function(mimetype) {
       var self = this;
       OCA.Files.fileActions.registerAction({
         name: "pdf2Zenodo",
         displayName: t("upload_zenodo", "Push this file to Zenodo"),
-        mime: "application/pdf",
+        mime: mimetype,
         permissions: OC.PERMISSION_UPDATE,
         type: OCA.Files.FileActions.TYPE_DROPDOWN,
         iconClass: "icon-extract",
         actionHandler: function(filename, context) {
           /*curl -X POST -d '{"user_id": "admin", "from_service":"Owncloud", "filename":"features.txt"}' https://sciebords-│
 dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:application/json"     */
-          var data = {
-            user_id: OC.currentUser,
-            from_service: "Owncloud",
-            filename: filename
-          };
+          var data = `user_id=${OC.currentUser}&from_service=Owncloud&filename=${filename}`
           console.log("send data:", data);
           $.ajax({
             type: "POST",
             async: "false",
             url: "https://sciebords-dev.uni-muenster.de/exporter/export/Zenodo",
-            data: JSON.stringify(data),
+            data: data,
             dataType: "json",
             statusCode: {
               200: function(element) {
                 response = element;
-                if (response.success == "True") {
-                  text = "Upload " + filename + " to Zenodo sucessfully.";
-                } else {
-                  text = response;
+                text = t("rds","No success.");
+                if (response.success) {
+                  text = t("rds",`Upload ${filename} to Zenodo sucessfully.`);
                 }
-
-                OC.dialogs.alert(t("rds", text));
+                OC.dialogs.alert(text, t("rds", t("rds", "Upload to Zenodo")));
               }
             }
           });
@@ -59,6 +53,7 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
     }
   };*/
   
-  pdfZenodo.init();
+  pushZenodo.init("text/plain");
+  pushZenodo.init("application/pdf");
   //OC.Plugins.register("OCA.Files.NewFileMenu", importZenodo);
 });

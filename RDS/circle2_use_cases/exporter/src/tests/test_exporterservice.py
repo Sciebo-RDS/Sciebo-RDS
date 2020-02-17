@@ -112,7 +112,6 @@ class Test_ExporterService(unittest.TestCase):
                 "Owncloud", "Zenodo", "testfile.txt", "admin")
         self.assertFalse(result)
 
-    @unittest.skip
     def test_export_server(self):
         # call to get file from owncloud
         pact.given(

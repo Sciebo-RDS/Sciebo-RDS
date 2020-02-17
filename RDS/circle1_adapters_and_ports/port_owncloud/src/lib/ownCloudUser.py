@@ -11,7 +11,7 @@ def loadAccessToken(userId: str, service: str):
     # load access token from token-storage
     result = requests.get(
         f"{tokenStorageURL}/user/{userId}/service/{service}")
-    
+
     if result.status_code > 200:
         return None
 
@@ -27,7 +27,6 @@ def loadAccessToken(userId: str, service: str):
     return access_token
 
 
-
 class OwncloudUser():
     """
     This represents an owncloud user. It initialize only one connection to owncloud for one user and holds the current access token.
@@ -40,7 +39,7 @@ class OwncloudUser():
         self._user_id = userId
         self._access_token = loadAccessToken(userId, "Owncloud")
 
-    def getFile(self, filename):    
+    def getFile(self, filename):
         """
         Returns the given filename from specified owncloud. The path does not start with /.
         """
@@ -57,11 +56,12 @@ class OwncloudUser():
         headers = {
             "Authorization": f"Bearer {self._access_token}"
         }
-        file = requests.get(os.getenv("OWNCLOUD_INSTALLATION_URL", "http://localhost:3000") +
-                            f"/remote.php/webdav/{filename}", headers=headers)
+        url = os.getenv("OWNCLOUD_INSTALLATION_URL",
+                        "http://localhost:3000") + f"/remote.php/webdav/{filename}"
+        file = requests.get(url, headers=headers)
 
         # FIXME: if its utf-8, then we should return text
-        #if file.encoding is "UTF-8":
+        # if file.encoding is "UTF-8":
         #    return file.text
 
         logger.debug("File is None? {}".format(file is None))
