@@ -53,6 +53,7 @@ class OwncloudUser():
         if unquote(filename) is filename:
             filename = quote(filename)
 
+        # TODO chunk download https://stackoverflow.com/questions/34503412/download-and-save-pdf-file-with-python-requests-module/34503421
         headers = {
             "Authorization": f"Bearer {self._access_token}"
         }
