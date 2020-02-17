@@ -57,8 +57,8 @@ class OwncloudUser():
         headers = {
             "Authorization": f"Bearer {self._access_token}"
         }
-        url = os.getenv("OWNCLOUD_INSTALLATION_URL",
-                        "http://localhost:3000") + f"/remote.php/webdav/{filename}"
+        url = "{}/remote.php/webdav/{}".format(os.getenv("OWNCLOUD_INSTALLATION_URL",
+                                                         "http://localhost:3000"), filename)
         file = requests.get(url, headers=headers)
 
         # FIXME: if its utf-8, then we should return text

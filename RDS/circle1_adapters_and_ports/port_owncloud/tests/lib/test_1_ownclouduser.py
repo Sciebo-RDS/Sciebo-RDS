@@ -53,7 +53,7 @@ class Test_OwncloudUser(unittest.TestCase):
         ).upon_receiving(
             "send access token."
         ).with_request(
-            "GET", f"/user/{expected_user}/token"
+            "GET", f"/user/{expected_user}/service/Owncloud"
         ).will_respond_with(200, body=expected_token_dict)
 
         pact.given(
@@ -116,7 +116,7 @@ class Test_OwncloudUser(unittest.TestCase):
         ).upon_receiving(
             "send access token."
         ).with_request(
-            "GET", f"/user/{expected_user}/token"
+            "GET", f"/user/{expected_user}/service/Owncloud"
         ).will_respond_with(200, body=expected_token_dict)
 
         pact.given(
@@ -166,7 +166,7 @@ class Test_OwncloudUser(unittest.TestCase):
         ).upon_receiving(
             "send access token."
         ).with_request(
-            "GET", f"/user/{expected_user}/token"
+            "GET", f"/user/{expected_user}/service/Owncloud"
         ).will_respond_with(200, body=expected_token_dict)
 
         pact.given(
