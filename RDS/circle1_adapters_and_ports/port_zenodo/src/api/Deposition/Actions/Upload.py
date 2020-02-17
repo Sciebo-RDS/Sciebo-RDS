@@ -19,8 +19,9 @@ def post(deposition_id):
     logger.debug("Read file from request")
     file = request.files['file']
 
-    logger.debug("Start file upload")  
-    resp = g.zenodo.upload_new_file_to_deposition(deposition_id, file.filename, file)
+    logger.debug("Start file upload")
+    from urllib.parse import unquote
+    resp = g.zenodo.upload_new_file_to_deposition(deposition_id, unquote(file.filename), file)
     logger.debug("Finished file upload")
 
     if resp:
