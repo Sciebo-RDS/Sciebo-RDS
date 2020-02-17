@@ -10,7 +10,7 @@ import requests
 log_level = logging.DEBUG
 logger = logging.getLogger('')
 logging.getLogger('').handlers = []
-logging.basicConfig(format='%(asctime)s %(module)s %(funcName)s %(message)s', level=log_level)
+logging.basicConfig(format='%(asctime)s %(module)s %(funcName)s:%(lineno)d %(message)s', level=log_level)
 
 
 def bootstrap(name='MicroService', *args, **kwargs):
