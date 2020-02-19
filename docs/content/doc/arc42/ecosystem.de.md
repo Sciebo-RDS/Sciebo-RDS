@@ -33,11 +33,11 @@ graph TD;
         UCExporter[Exporter Service]
         UCToken[Token Service]
         UCMetadata[Metadata Service]
-        UCProject[Project Service]
+        %% UCProject[Project Service]
 
         subgraph Central Services
           CSToken[Token Storage]
-          CSProject[Project Storage]
+          CSProject[Project Manager]
         end
       end
     end
@@ -49,7 +49,6 @@ graph TD;
   click SPATS "/de/doc/impl/adapters/spa-token-storage"
   click UCExporter "/de/doc/impl/use-cases/exporter"
   click UCToken "/de/doc/impl/use-cases/token-service"
-  click CSToken "/de/doc/impl/central/token-storage"
   click CSProject "/de/doc/impl/central/project-manager"
   click PInvenio "/de/doc/impl/ports/port-invenio"
   click POwncloud "/de/doc/impl/ports/port-storage"
@@ -60,10 +59,10 @@ graph TD;
   %% Ingress --> SPAEx --> UCExporter
   %% Ingress --> SPATS --> CSToken
   Ingress -->|Nur für die Registration von neuen Tokens| UCToken
-  Ingress --> UCProject & UCExporter & UCMetadata
+  Ingress --> CSProject & UCExporter & UCMetadata
 
   %% UCExporter --> UCProject
-  UCProject --> CSProject
+  %% UCProject --> CSProject
   UCToken --> CSToken
 
   UCToken --- PInvenio & POwncloud

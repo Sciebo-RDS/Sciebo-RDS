@@ -1,0 +1,13 @@
+openapi: 3.0.0
+paths: {}
+info:
+  version: '1.0'
+  title: Exporter
+  description: This service is responsible for any exporting functionality.
+  contact:
+    name: Peter Heiss
+    url: 'https://www.research-data-services.org'
+    email: peter.heiss@uni-muenster.de
+servers:
+  - url: 'http://use-case_metadata/metadata'
+    description: ''

@@ -1,0 +1,30 @@
+.use_metadata:
+  variables:
+      FOLDER: RDS/circle2_use_cases/metadata
+
+.tests_use_metadata:
+  extends: 
+  - .tests
+  - .use_metadata
+
+  only:
+      changes:
+      - RDS/circle2_use_cases/metadata/*
+      - RDS/circle2_use_cases/metadata/**/*
+
+test:use_metadata.6:
+  image: python:3.6
+  extends: .tests_use_metadata
+
+test:use_metadata.7:
+  image: python:3.7
+  extends: .tests_use_metadata
+
+test:use_metadata.8:
+  image: python:3.8
+  extends: .tests_use_metadata
+
+build:use_metadata:
+    extends: 
+    - .builds
+    - .use_metadata

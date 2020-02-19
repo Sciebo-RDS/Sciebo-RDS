@@ -1,0 +1,14 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: Central Service Project Manager
+  description: This describes the needed specification for circle 3.
+  contact:
+    name: Peter Heiss
+    email: peter.heiss@uni-muenster.de
+paths: {}
+components:
+  schemas: {}
+servers:
+  - url: 'http://central-service_project-manager:3000/project'
+    description: ''
