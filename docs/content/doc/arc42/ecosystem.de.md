@@ -59,15 +59,15 @@ graph TD;
 
   %% Ingress --> SPAEx --> UCExporter
   %% Ingress --> SPATS --> CSToken
-  Ingress --> UCToken & UCProject & UCExporter
+  Ingress -->|Nur für die Registration von neuen Tokens| UCToken
+  Ingress --> UCProject & UCExporter & UCMetadata
 
   %% UCExporter --> UCProject
-  UCExporter --> PInvenio & POwncloud & UCMetadata
   UCProject --> CSProject
-
   UCToken --> CSToken
+
   UCToken --- PInvenio & POwncloud
-  UCMetadata --> PInvenio & POwncloud
+  UCExporter & UCMetadata --> PInvenio & POwncloud
 
   %% PInvenio --> POwncloud
 
