@@ -1,5 +1,27 @@
 openapi: 3.0.0
-paths: {}
+paths:
+  /jsonschema:
+    get:
+      summary: Get jsonschema
+      tags: []
+      responses:
+        '200':
+          description: 'Responds with the jsonschema of datacite kernel 4.3 '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  kernelversion:
+                    type: string
+                  schema:
+                    type: string
+      operationId: ''
+      description: |-
+        Returns the used jsonschema.
+        Currently this is datacite kernel 4.3
+
+        https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json
 info:
   version: '1.0'
   title: Exporter
@@ -9,5 +31,5 @@ info:
     url: 'https://www.research-data-services.org'
     email: peter.heiss@uni-muenster.de
 servers:
-  - url: 'http://use-case_metadata/metadata'
+  - url: 'http://use-case_metadata:3000/schema'
     description: ''

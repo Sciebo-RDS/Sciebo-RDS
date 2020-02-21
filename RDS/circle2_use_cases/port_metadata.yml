@@ -1,10 +1,14 @@
 openapi: 3.0.0
 info:
-  title: port_metadata.yml
+  title: Metadata for any port
   version: '1.0'
   contact:
     name: Peter Heiss
     email: peter.heiss@uni-muenster.de
+  description: |-
+    This api describes the metadata endpoints, which have to be implemented by all ports in the rds system, so the system is enabled to retrieve and set metadata from all different plattforms without knowing them.
+
+    You can imagine, that this api is like an interface that every port has to implement it.
 servers:
   - url: 'http://port:3000/metadata'
 paths:
@@ -42,35 +46,6 @@ paths:
         A name or title by which a resource is known. May be the title of a dataset or the name of a piece of software.
 
         Free Text
-  /resourcetype:
-    get:
-      summary: Get resourcetype
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceType'
-      description: A description of the resource.
-    patch:
-      summary: Update resourcetype
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceType'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ResourceType'
-        description: ''
-      description: A description of the resource.
-    parameters: []
   /identifiers:
     get:
       summary: Get all identifiers
@@ -89,7 +64,7 @@ paths:
                       type: string
                     identifier:
                       $ref: '#/components/schemas/Identifier'
-      description: 'The Identifier is a unique string that identifies a resource.  For software, determine whether the identifier is for a specific version of a piece of software, (per the Force11 Software Citation Principles11), or for all versions.'
+      description: 'The Identifier is a unique string that identifies a resource.  For software, determine whether the identifier is for a specific version of a piece of software, (per the Force "Software Citation Principles"), or for all versions.'
     parameters: []
   /creators:
     get:
@@ -213,11 +188,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Creator'
-        '':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Creator'
       description: 'May be a corporate/institutional or personal name. Note: DataCite infrastructure supports up to 8000-10000 names. For name lists above that size, consider attribution via linking to the related metadata.'
     patch:
       summary: Update a creator
@@ -291,44 +261,112 @@ paths:
         A name or title by which a resource is known. May be the title of a dataset or the name of a piece of software.
 
         Free Text
+  /resourcetype:
+    patch:
+      summary: Update resourcetype
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceType'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceType'
+      description: A description of the resource.
+    get:
+      summary: Get resourcetype
+      tags: []
+      description: A description of the resource.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceType'
+  /property:
+    get:
+      summary: Get optional fieldname
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fieldName:
+                    type: string
+                  id:
+                    type:
+                      - string
+                      - integer
+                  data:
+                    type: array
+                    description: ''
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        value:
+                          type: string
+              examples:
+                example-1:
+                  value:
+                    fieldname: creators
+                    data:
+                      - field: name
+                        value: Peter Heiss
+                      - field: nameType
+                        value: Personal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Property'
+      description: |-
+        This endpoint is for all other fieldnames, which are optional in the datacite specification.
+        Take a look to the scheme definitition (https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf) to find out more about valid fieldnames.
+        With this endpoint it is possible to get all required fields, so the other endpoints are for an easier use.
+    parameters: []
 components:
   schemas:
     Creator:
       title: Creator
-      type: object
-      properties:
-        creatorName:
-          type: string
-          description: The full name of the creator.
-        nameType:
-          type: string
-          description: |-
-            The type of name
-
-            Controlled List Values: OrganizationalPersonal(default)
-        familyName:
-          type: string
-          description: The surname or last name of the creator.
-        givenName:
-          type: string
-          description: The personal or first name of the creator.
       description: |-
         The main researchers involved in producing the data, or the authors of the publication, in priority order. To supply multiple creators, repeat this property.
 
         May be a corporate/institutional or personal name. Note: DataCite infrastructure supports up to 8000-10000 names. For name lists above that size, consider attribution via linking to the related metadata.
-    Identifier:
-      title: Identifier
       type: object
       properties:
-        identifier:
+        creatorName:
           type: string
-        type:
+        nameType:
           type: string
+        familyName:
+          type: string
+        givenName:
+          type: string
+    Identifier:
+      title: Identifier
       description: 'The Identifier is a unique string that identifies a resource.  For software, determine whether the identifier is for a specific version of a piece of software, (per the Force11 Software Citation Principles11), or for all versions.'
+      anyOf:
+        - properties:
+            identifier:
+              type: string
+            type:
+              type: string
+      type: object
     ResourceType:
       title: Resource type
-      type: object
       description: A description of the resource.
+      type: object
       properties:
         type:
           type: string
@@ -337,39 +375,38 @@ components:
 
             ***
             Examples: Dataset/Census Data, where 'Dataset' is resourceTypeGeneral value and 'Census Data' is ResourceType value. Text/Conference Abstract, where 'Text' is resourceTypeGeneral value and 'Conference Abstract' is resourceType value aligned with CASRAI Publications term.
-        resourceTypeGeneral:
-          type: string
-          description: |-
-            The general type of a resource.
+          resourceTypeGeneral:
+            type: string
+            description: |-
+              The general type of a resource.
 
-            Controlled List Values:
-            Audiovisual
-            Collection
-            Data
-            Paper
-            Dataset
-            Event
-            Image
-            InteractiveResource
-            Model
-            Physical
-            Object
-            Service
-            Software
-            Sound
-            Text
-            Workflow
-            Other
+              Controlled List Values:
+              Audiovisual
+              Collection
+              Data
+              Paper
+              Dataset
+              Event
+              Image
+              InteractiveResource
+              Model
+              Physical
+              Object
+              Service
+              Software
+              Sound
+              Text
+              Workflow
+                Other
     Publisher:
       title: Publisher
-      type: object
       description: "The name of the entitythat holds, archives, publishes prints, distributes, releases, issues, or produces the resource. This property will be used to formulate the citation, so consider the prominence of the role. For software, use Publisher for the code repository. If there is an entity other than a code repository, that \"holds, archives, publishes, prints, distributes, releases, issues, or produces\" the code, use the property Contributor/contributorType/hosting Institution for the code repository.\n\nExamples: World Data Center for Climate (WDCC); GeoForschungsZentrum Potsdam (GFZ); Geological Institute, University of Tokyo, GitHub "
+      type: object
       properties:
         publisher:
           type: string
     PublicationYear:
       title: PublicationYear
-      type: object
       description: |-
         The year when the data was or will be made publicly available.  In the case of resources such as software or dynamic data where there may be multiple releases in one year, include the Date/dateType/dateInformation property and sub-properties to provide more information about the publication or release date details.
 
@@ -378,39 +415,58 @@ components:
         ***
 
         If an embargo period has been in effect, use the date when the embargo period ends.In the case of datasets, "publish" is understood to mean making the data available on a specific date to the community of researchers.If there is no standard publication year value, use the date that would be preferred from a citation perspective
-      properties:
-        year:
-          type: string
+      anyOf:
+        - properties:
+            year:
+              type: string
+      type: object
     SchemaVersion:
       title: SchemaVersion
-      type: object
       x-examples:
         example-1:
           scheme: 'http://datacite.org/schema/kernel-4'
+      description: Constant schema version
+      type: object
       properties:
-        type:
+        schemaVersion:
           type: string
           description: 'Constant: http://datacite.org/schema/kernel-4"'
-      description: Constant schema version
     Title:
       title: Title
-      type: object
       description: |-
         A name or title by which a resource is known. May be the title of a dataset or the name of a piece of software.
 
         Free Text
-      properties:
-        text:
-          type: string
-        type:
-          type: string
-          description: |-
-            Controlled List Values:
-            - AlternativeTitle
-            - Subtitle
-            - TranslatedTitle
-            - Other
       x-examples:
         example-1:
           text: Example Test
           type: Subtitle
+      anyOf:
+        - properties:
+            text:
+              type: string
+            type:
+              type: string
+              description: |-
+                Controlled List Values:
+                - AlternativeTitle
+                - Subtitle
+                - TranslatedTitle
+                - Other
+      type: object
+    Property:
+      title: Optional
+      type: object
+      x-examples:
+        example-1:
+          creators:
+            - nameType: Personal
+              name: 'Mari, Bernard'
+              givenName: Bernard
+              familyName: Mari
+      description: |-
+        This model describes a property of the datacite scheme. View the example to see more.
+        With this model it should be possible to redirect the request to an datacite-compatible endpoint.
+
+        The model has to be datacite kernel 4.3 valid.
+        https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json
