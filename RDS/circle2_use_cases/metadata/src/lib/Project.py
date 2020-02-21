@@ -2,7 +2,13 @@ from src.lib.EnumStatus import Status
 
 
 class Project():
-    def __init__(self, user, portIn=[], portOut=[]):
+    def __init__(self, user, portIn=None, portOut=None):
+        if portIn is None:
+            portIn = []
+
+        if portOut is None:
+            portOut = []
+
         self.user = user
         self.status = Status.CREATED
         self.portIn = portIn
@@ -48,9 +54,9 @@ class Project():
         p2 = d2.get("projectId")
 
         if p1 is None and p2 is not None:
-                del d2["projectId"]
-            
+            del d2["projectId"]
+
         elif p1 is not None and p2 is None:
-                del d1["projectId"]
+            del d1["projectId"]
 
         return (d1 == d2)
