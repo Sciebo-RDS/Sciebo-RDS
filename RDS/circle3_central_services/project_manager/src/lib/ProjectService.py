@@ -1,7 +1,7 @@
 from src.lib.Project import Project
 
 
-class MetadataService():
+class ProjectService():
     def __init__(self):
         self.projects = []
 

@@ -1,5 +1,5 @@
 import unittest
-from src.lib.MetadataService import MetadataService
+from src.lib.ProjectService import ProjectService
 from src.lib.Port import Port
 from src.lib.Project import Project
 from src.lib.EnumStatus import Status
@@ -10,7 +10,7 @@ class Test_MetadataService(unittest.TestCase):
         """
         Check a lot of init
         """
-        md = MetadataService()
+        md = ProjectService()
 
         self.assertEqual(md.getProject(), [])
 
@@ -82,7 +82,7 @@ class Test_MetadataService(unittest.TestCase):
         """
         Check the setter for imports and portOuts
         """
-        md = MetadataService()
+        md = ProjectService()
 
         portOwncloud = Port("port-owncloud", fileStorage=True)
         portInvenio = Port("port-invenio", fileStorage=True, metadata=True)
@@ -122,7 +122,7 @@ class Test_MetadataService(unittest.TestCase):
         """
         Check the getters for the projects
         """
-        md = MetadataService()
+        md = ProjectService()
 
         portOwncloud = Port("port-owncloud", fileStorage=True)
         portInvenio = Port("port-invenio", fileStorage=True, metadata=True)
@@ -147,7 +147,7 @@ class Test_MetadataService(unittest.TestCase):
         """
         Check the methods, which changes the values within the object.
         """
-        md = MetadataService()
+        md = ProjectService()
 
         portOwncloud = Port("port-owncloud", fileStorage=True)
         portInvenio = Port("port-invenio", fileStorage=True, metadata=True)
