@@ -275,7 +275,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResourceType'
+              type: array
+              items:
+                $ref: '#/components/schemas/ResourceType'
+        description: 'Only the fieds, which should be updated.'
       description: A description of the resource.
     get:
       summary: Get resourcetype
@@ -288,53 +291,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResourceType'
-  /property:
-    get:
-      summary: Get optional fieldname
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  fieldName:
-                    type: string
-                  id:
-                    type:
-                      - string
-                      - integer
-                  data:
-                    type: array
-                    description: ''
-                    items:
-                      type: object
-                      properties:
-                        field:
-                          type: string
-                        value:
-                          type: string
-              examples:
-                example-1:
-                  value:
-                    fieldname: creators
-                    data:
-                      - field: name
-                        value: Peter Heiss
-                      - field: nameType
-                        value: Personal
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Property'
-      description: |-
-        This endpoint is for all other fieldnames, which are optional in the datacite specification.
-        Take a look to the scheme definitition (https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf) to find out more about valid fieldnames.
-        With this endpoint it is possible to get all required fields, so the other endpoints are for an easier use.
-    parameters: []
 components:
   schemas:
     Creator:
@@ -368,36 +324,36 @@ components:
       description: A description of the resource.
       type: object
       properties:
-        type:
+        resourceType:
           type: string
           description: |-
             The format is open, but the preferred format is a singleterm of some detail so that a pair can be formed with the sub-property.Text formats can be free-text OR terms from the CASRAI Publications resource type list.17
 
             ***
             Examples: Dataset/Census Data, where 'Dataset' is resourceTypeGeneral value and 'Census Data' is ResourceType value. Text/Conference Abstract, where 'Text' is resourceTypeGeneral value and 'Conference Abstract' is resourceType value aligned with CASRAI Publications term.
-          resourceTypeGeneral:
-            type: string
-            description: |-
-              The general type of a resource.
+        resourceTypeGeneral:
+          type: string
+          description: |-
+            The general type of a resource.
 
-              Controlled List Values:
-              Audiovisual
-              Collection
-              Data
-              Paper
-              Dataset
-              Event
-              Image
-              InteractiveResource
-              Model
-              Physical
-              Object
-              Service
-              Software
-              Sound
-              Text
-              Workflow
-                Other
+            Controlled List Values:
+            Audiovisual
+            Collection
+            Data
+            Paper
+            Dataset
+            Event
+            Image
+            InteractiveResource
+            Model
+            Physical
+            Object
+            Service
+            Software
+            Sound
+            Text
+            Workflow
+              Other
     Publisher:
       title: Publisher
       description: "The name of the entitythat holds, archives, publishes prints, distributes, releases, issues, or produces the resource. This property will be used to formulate the citation, so consider the prominence of the role. For software, use Publisher for the code repository. If there is an entity other than a code repository, that \"holds, archives, publishes, prints, distributes, releases, issues, or produces\" the code, use the property Contributor/contributorType/hosting Institution for the code repository.\n\nExamples: World Data Center for Climate (WDCC); GeoForschungsZentrum Potsdam (GFZ); Geological Institute, University of Tokyo, GitHub "
@@ -470,3 +426,6 @@ components:
 
         The model has to be datacite kernel 4.3 valid.
         https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json
+      properties:
+        asd:
+          type: string
