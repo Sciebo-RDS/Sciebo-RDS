@@ -1,0 +1,125 @@
+import unittest
+
+
+def create_app():
+    from src import bootstrap
+    # creates a test client
+    app = bootstrap(use_default_error=True).app
+    # propagate the exceptions to the test client
+    app.config.update({"TESTING": True})
+
+    return app
+
+
+class TestProjectService(unittest.TestCase):
+
+    def setUp(self):
+        self.app = create_app()
+        self.client = self.app.test_client()
+
+    def test_empty_projects(self):
+        def test_user_creation(userId):
+            resp = self.client.get(f"/projects/{userId}")
+            self.assertEqual(resp.json, [])
+            self.assertEqual(resp.status_code, 404)
+
+            expected = [{
+                "userId": f"{userId}",
+                "status": 0,
+                "portIn": [],
+                "portOut": []
+            }]
+            resp = self.client.post(
+                "/projects", json={"userId": expected[0]["userId"]})
+            self.assertEqual(resp.json, expected)
+            self.assertEqual(resp.status_code, 200)
+
+            resp = self.client.get(f"/projects/{userId}")
+            self.assertEqual(resp.json, expected)
+            self.assertEqual(resp.status_code, 200)
+
+        test_user_creation(0)
+        test_user_creation("1")
+        test_user_creation("admin")
+        test_user_creation("user")
+
+    def test_get_and_change_projects(self):
+        expected = [{
+            "userId": "admin",
+            "status": 0,
+            "portIn": [],
+            "portOut": []
+        }]
+        resp = self.client.post(
+            "/projects", json={"userId": expected[0]["userId"]})
+        self.assertEqual(resp.json, expected)
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.get(
+            "/projects/{}/project/0".format(expected[0]["userId"]))
+        self.assertEqual(resp.json, expected[0])
+        self.assertEqual(resp.status_code, 200)
+
+        expected[0]["userId"] = "user"
+        resp = self.client.patch("/projects/{}/project/0".format(
+            expected[0]["userId"]), json={"userId": expected[0]["userId"]})
+        self.assertEqual(resp.json, expected[0])
+        self.assertEqual(resp.status_code, 200)
+
+    def test_remove_projects(self):
+        expected = [{
+            "userId": "admin",
+            "status": 0,
+            "portIn": [],
+            "portOut": []
+        }]
+        resp = self.client.post(
+            "/projects", json={"userId": expected[0]["userId"]})
+        self.assertEqual(resp.json, expected)
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.delete("/projects/{}/project/0".format(
+            expected[0]["userId"]))
+        self.assertEqual(resp.status_code, 204)
+
+    def test_add_ports(self):
+        expected = [{
+            "userId": "admin",
+            "status": 0,
+            "portIn": [],
+            "portOut": []
+        }]
+        resp = self.client.post(
+            "/projects", json={"userId": expected[0]["userId"]})
+        self.assertEqual(resp.json, expected)
+        self.assertEqual(resp.status_code, 200)
+
+        # TODO test add ports to import and export
+
+    def test_change_ports(self):
+        expected = [{
+            "userId": "admin",
+            "status": 0,
+            "portIn": [],
+            "portOut": []
+        }]
+        resp = self.client.post(
+            "/projects", json={"userId": expected[0]["userId"]})
+        self.assertEqual(resp.json, expected)
+        self.assertEqual(resp.status_code, 200)
+
+        # TODO test add one port  to import and export and change it
+
+    def test_remove_ports(self):
+        expected = [{
+            "userId": "admin",
+            "status": 0,
+            "portIn": [],
+            "portOut": []
+        }]
+        resp = self.client.post(
+            "/projects", json={"userId": expected[0]["userId"]})
+        self.assertEqual(resp.json, expected)
+        self.assertEqual(resp.status_code, 200)
+
+        # TODO test add one port  to import and export and delete it

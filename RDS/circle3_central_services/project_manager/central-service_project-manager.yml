@@ -41,6 +41,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Project'
+        '404':
+          description: Not Found
       operationId: api.user.get
     post:
       summary: Add a project to user
@@ -48,6 +50,20 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
   '/{user-id}/project/{project-id}':
     parameters:
       - schema:
@@ -87,8 +103,8 @@ paths:
     delete:
       summary: Delete a Project
       responses:
-        '200':
-          description: OK
+        '204':
+          description: No Content
   '/{user-id}/project/{project-id}/exports':
     parameters:
       - schema:
@@ -179,7 +195,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Port'
     patch:
-      summary: Modify a Project Import
+      summary: Modify a Project Import Port
       responses:
         '200':
           description: OK
@@ -187,6 +203,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Port'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Port'
     delete:
       summary: Delete a Project Import
       responses:
@@ -220,7 +241,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Port'
     patch:
-      summary: Modify a Project Export
+      summary: Modify a Project Export Port
       responses:
         '200':
           description: OK
@@ -228,6 +249,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Port'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Port'
     delete:
       summary: Delete a Project Export
       responses:
@@ -256,57 +282,40 @@ components:
                   value: 'true'
                 - type: metadata
                   value: 'true'
-      anyOf:
-        - properties:
-            id:
-              type: string
-            status:
-              type: string
-            import:
-              type: array
-              items:
-                $ref: '#/components/schemas/Port'
-            export:
-              type: array
-              items:
-                $ref: '#/components/schemas/Port'
       type: object
+      properties:
+        userId:
+          type: string
+        status:
+          type: string
+        import:
+          type: array
+          items:
+            $ref: '#/components/schemas/Port'
+        export:
+          type: array
+          items:
+            $ref: '#/components/schemas/Port'
     Port:
       title: Port
       description: 'This model represents a port, which can be used in a project.'
-      x-examples:
-        example-1:
-          id: '1'
-          port: port-invenio
-          properties:
-            - type: metadata
-              value: 'true'
-            - type: filestorage
-              value: 'true'
-        example-2:
-          id: '1'
-          port: port-owncloud
-          properties:
-            - type: filestorage
-              value: 'true'
-      anyOf:
-        - properties:
-            id:
-              type: string
-            port:
-              type: string
-            properties:
-              type: array
-              items:
-                type: object
-                description: ''
-                properties:
-                  type:
-                    type: string
-                    description: 'Only "metadata" and "filestorage" are currently supported as booleans. If type is not set, it defaults to false.'
-                  value:
-                    type: string
       type: object
+      properties:
+        id:
+          type: string
+        port:
+          type: string
+        properties:
+          type: array
+          items:
+            type: object
+            description: ''
+            properties:
+              portType:
+                type: string
+                description: 'Only "metadata" and "filestorage" are currently supported as booleans. If type is not set, it defaults to false.'
+              value:
+                type: string
 servers:
   - url: 'http://central-service_project-manager:3000/projects'
     description: ''

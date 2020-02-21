@@ -4,11 +4,11 @@ def index():
 def post():
     pass
 
-def get(userId, projectId, portId):
+def get(user_id, project_id, port_id):
     pass
 
-def patch(userId, projectId, portId):
+def patch(user_id, project_id, port_id):
     pass
 
-def delete(userId, projectId, portId):
+def delete(user_id, project_id, port_id):
     pass

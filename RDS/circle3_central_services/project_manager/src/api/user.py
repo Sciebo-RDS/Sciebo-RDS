@@ -1,5 +1,5 @@
-def get(userId):
+def get(user_id):
     pass
 
-def post(userId):
+def post(user_id):
     pass
