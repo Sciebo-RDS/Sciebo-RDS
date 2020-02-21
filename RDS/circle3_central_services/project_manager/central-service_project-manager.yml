@@ -18,7 +18,7 @@ paths:
             text/plain:
               schema:
                 type: string
-      operationId: ''
+      operationId: api.sitemap.index
       parameters: []
       description: Returns all projects.
     parameters: []
@@ -41,10 +41,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Project'
-      operationId: get-projects-user-id
+      operationId: api.user.get
     post:
       summary: Add a project to user
-      operationId: post-projects-user-id
+      operationId: api.user.post
       responses:
         '200':
           description: OK
@@ -70,10 +70,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
-      operationId: get-projects-user-id-project-id
     patch:
       summary: Modify a Project
-      operationId: patch-projects-user-id-project-id
       responses:
         '200':
           description: OK
@@ -88,7 +86,6 @@ paths:
               $ref: '#/components/schemas/Project'
     delete:
       summary: Delete a Project
-      operationId: delete-user-id-project-id
       responses:
         '200':
           description: OK
@@ -114,10 +111,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Port'
-      operationId: ''
     post:
       summary: ''
-      operationId: post-user-id-project-id-exports
       responses:
         '200':
           description: OK
@@ -145,10 +140,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Port'
-      operationId: ''
     post:
       summary: Create a Project Import
-      operationId: post-user-id-project-id-imports
       responses:
         '200':
           description: OK
@@ -185,10 +178,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Port'
-      operationId: get-user-id-project-id-imports-port-id
     patch:
       summary: Modify a Project Import
-      operationId: patch-user-id-project-id-imports-port-id
       responses:
         '200':
           description: OK
@@ -198,7 +189,6 @@ paths:
                 $ref: '#/components/schemas/Port'
     delete:
       summary: Delete a Project Import
-      operationId: delete-user-id-project-id-imports-port-id
       responses:
         '200':
           description: OK
@@ -229,10 +219,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Port'
-      operationId: get-user-id-project-id-exports-port-id
     patch:
       summary: Modify a Project Export
-      operationId: patch-user-id-project-id-exports-port-id
       responses:
         '200':
           description: OK
@@ -242,7 +230,6 @@ paths:
                 $ref: '#/components/schemas/Port'
     delete:
       summary: Delete a Project Export
-      operationId: delete-user-id-project-id-exports-port-id
       responses:
         '200':
           description: OK
