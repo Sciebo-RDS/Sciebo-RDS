@@ -2,13 +2,324 @@ openapi: 3.0.0
 info:
   version: '1.0'
   title: Central Service Project Manager
-  description: This describes the needed specification for circle 3.
+  description: 'This api describes the project endpoints, which manages projects and workflows.'
   contact:
     name: Peter Heiss
     email: peter.heiss@uni-muenster.de
-paths: {}
+paths:
+  /:
+    get:
+      summary: Sitemap
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+      operationId: ''
+      parameters: []
+      description: Returns all projects.
+    parameters: []
+  '/{user-id}':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+    get:
+      summary: List all projects from given user
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+      operationId: get-projects-user-id
+    post:
+      summary: Add a project to user
+      operationId: post-projects-user-id
+      responses:
+        '200':
+          description: OK
+  '/{user-id}/project/{project-id}':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+    get:
+      summary: Get a Project
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+      operationId: get-projects-user-id-project-id
+    patch:
+      summary: Modify a Project
+      operationId: patch-projects-user-id-project-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+    delete:
+      summary: Delete a Project
+      operationId: delete-user-id-project-id
+      responses:
+        '200':
+          description: OK
+  '/{user-id}/project/{project-id}/exports':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+    get:
+      summary: List Project Exports
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Port'
+      operationId: ''
+    post:
+      summary: ''
+      operationId: post-user-id-project-id-exports
+      responses:
+        '200':
+          description: OK
+  '/{user-id}/project/{project-id}/imports':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+    get:
+      summary: List Project Imports
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Port'
+      operationId: ''
+    post:
+      summary: Create a Project Import
+      operationId: post-user-id-project-id-imports
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Port'
+  '/{user-id}/project/{project-id}/imports/{port-id}':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: port-id
+        in: path
+        required: true
+    get:
+      summary: Get a Project Import
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Port'
+      operationId: get-user-id-project-id-imports-port-id
+    patch:
+      summary: Modify a Project Import
+      operationId: patch-user-id-project-id-imports-port-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Port'
+    delete:
+      summary: Delete a Project Import
+      operationId: delete-user-id-project-id-imports-port-id
+      responses:
+        '200':
+          description: OK
+  '/{user-id}/project/{project-id}/exports/{port-id}':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: port-id
+        in: path
+        required: true
+    get:
+      summary: Get a Project Export
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Port'
+      operationId: get-user-id-project-id-exports-port-id
+    patch:
+      summary: Modify a Project Export
+      operationId: patch-user-id-project-id-exports-port-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Port'
+    delete:
+      summary: Delete a Project Export
+      operationId: delete-user-id-project-id-exports-port-id
+      responses:
+        '200':
+          description: OK
 components:
-  schemas: {}
+  schemas:
+    Project:
+      title: Project
+      description: This model represents a project.
+      x-examples:
+        example-1:
+          id: '1'
+          status: created
+          import:
+            - id: '1'
+              port: port-owncloud
+              properties:
+                - type: filestorage
+                  value: 'true'
+          export:
+            - id: '1'
+              port: port-invenio
+              properties:
+                - type: filestorage
+                  value: 'true'
+                - type: metadata
+                  value: 'true'
+      anyOf:
+        - properties:
+            id:
+              type: string
+            status:
+              type: string
+            import:
+              type: array
+              items:
+                $ref: '#/components/schemas/Port'
+            export:
+              type: array
+              items:
+                $ref: '#/components/schemas/Port'
+      type: object
+    Port:
+      title: Port
+      description: 'This model represents a port, which can be used in a project.'
+      x-examples:
+        example-1:
+          id: '1'
+          port: port-invenio
+          properties:
+            - type: metadata
+              value: 'true'
+            - type: filestorage
+              value: 'true'
+        example-2:
+          id: '1'
+          port: port-owncloud
+          properties:
+            - type: filestorage
+              value: 'true'
+      anyOf:
+        - properties:
+            id:
+              type: string
+            port:
+              type: string
+            properties:
+              type: array
+              items:
+                type: object
+                description: ''
+                properties:
+                  type:
+                    type: string
+                    description: 'Only "metadata" and "filestorage" are currently supported as booleans. If type is not set, it defaults to false.'
+                  value:
+                    type: string
+      type: object
 servers:
-  - url: 'http://central-service_project-manager:3000/project'
+  - url: 'http://central-service_project-manager:3000/projects'
     description: ''
