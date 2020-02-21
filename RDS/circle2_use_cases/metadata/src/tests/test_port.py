@@ -14,30 +14,28 @@ class Test_Port(unittest.TestCase):
 
         expected = {
             "port": "port-owncloud",
-            "properties": {[]}
+            "properties": []
         }
-        self.assertEqual(portSmall.getJSON(), expected)
+        self.assertEqual(portSmall.getDict(), expected)
 
         expected = {
             "port": "port-owncloud",
-            "properties": {
+            "properties":
                 [
-                    {"type": "fileStorage", "value": True}
+                    {"portType": "fileStorage", "value": True}
                 ]
-            }
         }
-        self.assertEqual(portOwncloud.getJSON(), expected)
+        self.assertEqual(portOwncloud.getDict(), expected)
 
         expected = {
             "port": "port-invenio",
-            "properties": {
+            "properties":
                 [
-                    {"type": "fileStorage", "value": True},
-                    {"type": "metadata", "value": True},
+                    {"portType": "fileStorage", "value": True},
+                    {"portType": "metadata", "value": True},
                 ]
-            }
         }
-        self.assertEqual(portInvenio.getJSON(), expected)
+        self.assertEqual(portInvenio.getDict(), expected)
 
     def test_port_change(self):
         portOwncloud = Port("port-owncloud")
@@ -46,7 +44,7 @@ class Test_Port(unittest.TestCase):
             "port": "port-owncloud",
             "properties": []
         }
-        self.assertEqual(portOwncloud.getJSON(), expected)
+        self.assertEqual(portOwncloud.getDict(), expected)
         self.assertEqual(portOwncloud, Port("port-owncloud"))
 
         with self.assertRaises(ValueError):
@@ -58,25 +56,23 @@ class Test_Port(unittest.TestCase):
         self.assertTrue(portOwncloud.setProperty("fileStorage", True))
         expected = {
             "port": "port-owncloud",
-            "properties": {
+            "properties":
                 [
-                    {"type": "fileStorage", "value": True}
+                    {"portType": "fileStorage", "value": True}
                 ]
-            }
         }
-        self.assertEqual(portOwncloud.getJSON(), expected)
+        self.assertEqual(portOwncloud.getDict(), expected)
         self.assertEqual(portOwncloud, Port("port-owncloud", fileStorage=True))
 
         portOwncloud.setProperty("metadata", True)
         expected = {
             "port": "port-owncloud",
-            "properties": {
+            "properties":
                 [
-                    {"type": "fileStorage", "value": True},
-                    {"type": "metadata", "value": True}
+                    {"portType": "fileStorage", "value": True},
+                    {"portType": "metadata", "value": True}
                 ]
-            }
         }
-        self.assertEqual(portOwncloud.getJSON(), expected)
+        self.assertEqual(portOwncloud.getDict(), expected)
         self.assertEqual(portOwncloud, Port(
             "port-owncloud", fileStorage=True, metadata=True))

@@ -29,10 +29,28 @@ class Project():
 
     def getDict(self):
         obj = {
-            "user": self.user,
-            "status": self.status,
-            "portIn": self.portIn,
-            "portOut": self.portOut
+            "userId": self.user,
+            "status": self.status.value,
+            "portIn": [port.getDict() for port in self.portIn],
+            "portOut": [port.getDict() for port in self.portOut]
         }
 
         return obj
+
+    def __eq__(self, obj):
+        if not isinstance(obj, Project):
+            return False
+
+        d1 = self.getDict()
+        d2 = obj.getDict()
+
+        p1 = d1.get("projectId")
+        p2 = d2.get("projectId")
+
+        if p1 is None and p2 is not None:
+                del d2["projectId"]
+            
+        elif p1 is not None and p2 is None:
+                del d1["projectId"]
+
+        return (d1 == d2)

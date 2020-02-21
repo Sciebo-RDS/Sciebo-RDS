@@ -35,7 +35,9 @@ class Port():
 
     def getJSON(self):
         import json
+        return json.dumps(self.getDict())
 
+    def getDict(self):
         obj = {
             "port": self.port,
             "properties": []
@@ -53,4 +55,10 @@ class Port():
                 "value": self.metadata
             })
 
-        return json.dumps(obj)
+        return obj
+
+    def __eq__(self, obj):
+        if not isinstance(obj, Port):
+            return False
+
+        return (self.getDict() == obj.getDict())

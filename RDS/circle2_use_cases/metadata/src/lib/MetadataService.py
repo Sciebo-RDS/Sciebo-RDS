@@ -21,13 +21,16 @@ class MetadataService():
             userOrProject = Project(
                 userOrProject, portIn=portIn, portOut=portOut)
 
-        self.projects.append = userOrProject
+        userOrProject.getDict = monkeypatch_getDict(userOrProject.getDict, len(self.projects))
+
+        self.projects.append(userOrProject)
 
     def getProject(self, user="", id=-1):
         """
         This method returns all projects, if no parameters were set.
         If the parameter `user` is set, it returns all projects, which belongs to the user.
         If the `id` is set, it returns the corresponding project.
+        **Beware:** *You start counting at Zero!*
 
         If you set the parameter `user` and `id`, it returns the project relative to all user specific projects.
 
@@ -65,10 +68,22 @@ class MetadataService():
         """
         Returns a dict of all projects with a new attribute "id", which symbolize the project id in the system.
         """
-        obj = []
-        for i, project in enumerate(self.projects):
-            d = project.getDict()
-            d["id"] = i
-            obj.append(d)
+        return [proj.getDict() for proj in self.projects]
 
-        return obj
+    def __eq__(self, obj):
+        if not isinstance(obj, MetadataService):
+            return False
+
+        return (self.getDict() == obj.getDict())
+
+def monkeypatch_getDict(getDictFunc, projectId):
+    """
+    Returns a dict of all projects with a new attribute "id", which symbolize the project id in the system.
+    """
+
+    def getDict():
+        d = getDictFunc()
+        d["projectId"] = projectId
+        return d
+
+    return getDict

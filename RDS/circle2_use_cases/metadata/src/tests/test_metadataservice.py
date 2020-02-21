@@ -2,6 +2,7 @@ import unittest
 from src.lib.MetadataService import MetadataService
 from src.lib.Port import Port
 from src.lib.Project import Project
+from src.lib.EnumStatus import Status
 
 
 class Test_MetadataService(unittest.TestCase):
@@ -18,59 +19,64 @@ class Test_MetadataService(unittest.TestCase):
         expected = [
             {
                 "userId": "admin",
-                "projectId": 1,
-                "status": "created",
-                "portIn": {},
-                "portOut": {}
+                "projectId": 0,
+                "status": Status.CREATED.value,
+                "portIn": [],
+                "portOut": []
             }
         ]
 
-        self.assertEqual(md.getProject(), expected)
+        self.assertEqual([proj.getDict() for proj in md.getProject()], expected)
 
         md.addProject("user")
 
         expected = [
             {
                 "userId": "admin",
-                "projectId": 1,
-                "status": "created",
-                "portIn": {},
-                "portOut": {}
+                "projectId": 0,
+                "status": Status.CREATED.value,
+                "portIn": [],
+                "portOut": []
             },
             {
                 "userId": "user",
-                "projectId": 2,
-                "status": "created",
-                "portIn": {},
-                "portOut": {}
+                "projectId": 1,
+                "status": Status.CREATED.value,
+                "portIn": [],
+                "portOut": []
             }
         ]
 
-        self.assertEqual(md.getProject().getJSON(), expected)
+        self.assertEqual([proj.getDict() for proj in md.getProject()], expected)
 
         expected = [
             {
                 "userId": "admin",
-                "projectId": 1,
-                "status": "created",
-                "portIn": {},
-                "portOut": {}
+                "projectId": 0,
+                "status": Status.CREATED.value,
+                "portIn": [],
+                "portOut": []
             }
         ]
 
-        self.assertEqual(md.getProject(user="admin").getJSON(), expected)
+        self.assertEqual([proj.getDict() for proj in md.getProject(user="admin")], expected)
 
         expected = [
             {
                 "userId": "user",
-                "projectId": 2,
-                "status": "created",
-                "portIn": {},
-                "portOut": {}
+                "projectId": 1,
+                "status": Status.CREATED.value,
+                "portIn": [],
+                "portOut": []
             }
         ]
 
-        self.assertEqual(md.getProject(user="user").getJSON(), expected)
+        self.assertEqual([proj.getDict() for proj in md.getProject(user="user")], expected)
+
+        with self.assertRaises(ValueError):
+            md.getProject(user="user", id="0")
+
+        self.assertEqual(md.getProject(user="user", id=0).getDict(), expected[0])
 
     def test_service_ports(self):
         """
@@ -88,28 +94,29 @@ class Test_MetadataService(unittest.TestCase):
         expected = [
             {
                 "userId": "admin",
-                "projectId": 1,
-                "status": "created",
+                "projectId": 0,
+                "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
             },
             {
                 "userId": "admin",
-                "projectId": 2,
-                "status": "created",
-                "portIn": [portOwncloud.getJSON()],
+                "projectId": 1,
+                "status": Status.CREATED.value,
+                "portIn": [portOwncloud.getDict()],
                 "portOut": []
             },
             {
                 "userId": "user",
-                "projectId": 3,
-                "status": "created",
-                "portIn": [portOwncloud.getJSON()],
-                "portOut": [portInvenio.getJSON()]
+                "projectId": 2,
+                "status": Status.CREATED.value,
+                "portIn": [portOwncloud.getDict()],
+                "portOut": [portInvenio.getDict()]
             }
         ]
 
-        self.assertEqual(md.getProject().getJSON(), expected)
+        
+        self.assertEqual([proj.getDict() for proj in md.getProject()], expected)
 
     def test_metadata_get_project(self):
         """
@@ -125,12 +132,13 @@ class Test_MetadataService(unittest.TestCase):
         proj = Project(user="user", portIn=[portOwncloud], portOut=[portInvenio])
         md.addProject(proj)
 
-        self.assertEqual(md.getProject(id=1), Project(user="admin"))
-        self.assertEqual(md.getProject(id=1).getJSON(), Project(user="admin").getJSON())
-        self.assertEqual(md.getProject(id=3), proj)
+        self.assertEqual(md.getProject(id=0), Project("admin"))
+        # the following is not equal, because the first project comes with a projectId
+        self.assertNotEqual(md.getProject(id=0).getDict(), Project("admin").getDict())
+        self.assertEqual(md.getProject(id=2), proj)
 
         # check if the id is used as index relative to user, if username is set.
-        self.assertEqual(md.getProject(user="admin", id=2), Project(user="admin", portIn=[portOwncloud]))
+        self.assertEqual(md.getProject(user="admin", id=1), Project("admin", portIn=[portOwncloud]))
 
         with self.assertRaises(IndexError):
             md.getProject(user="user", id=2)
@@ -148,4 +156,4 @@ class Test_MetadataService(unittest.TestCase):
         md.addProject("admin", portIn=[portOwncloud])
         md.addProject("user", portIn=[portOwncloud], portOut=[portInvenio])
 
-        md.getProject(user="admin", id="1")
+        md.getProject(user="admin", id=1)
