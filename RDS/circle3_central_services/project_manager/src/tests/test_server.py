@@ -83,6 +83,11 @@ class TestProjectService(unittest.TestCase):
             expected[0]["userId"]))
         self.assertEqual(resp.status_code, 204)
 
+        resp = self.client.get(
+            "/projects/{}".format(expected[0]["userId"]))
+        self.assertEqual(resp.json, [])
+        self.assertEqual(resp.status_code, 200)
+
     def test_add_ports(self):
         expected = [{
             "userId": "admin",

@@ -40,7 +40,7 @@ class ProjectService():
 
         return userOrProject
 
-    def getProject(self, user="", id=-1):
+    def getProject(self, user="", id=None):
         """
         This method returns all projects, if no parameters were set.
         If the parameter `user` is set, it returns all projects, which belongs to the user.
@@ -55,11 +55,11 @@ class ProjectService():
         if not isinstance(user, str):
             raise ValueError("Parameter `user` is not of type string.")
 
-        if not isinstance(id, int):
+        if not isinstance(id, (int, type(None))):
             raise ValueError("Parameter `id` is not of type int.")
 
         if not user:
-            if id < 0:
+            if id is None:
                 return self.getAllProjects()
             elif id >= 0:
                 for proj in self.getAllProjects():
@@ -72,35 +72,38 @@ class ProjectService():
                 from src.lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
                 raise NotFoundUserError(user, id)
 
-            if id < 0:
+            if id is None:
                 return listOfProjects
 
             for proj in listOfProjects:
                 if proj.projectId is id:
                     return listOfProjects[id]
-            
+
             if id < len(listOfProjects):
                 return listOfProjects[id]
 
         from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
         raise NotFoundIDError(user, id)
 
-    def removeProject(self, user: str = None, id: int = -1):
+    def removeProject(self, user: str = None, id: int = None):
         """
         This method removes the projects for given user. If id was given, only the corresponding id will be removed (no user required, but it is faster).
         Returns True if it is successful or raise an exception if user or id not found. Else returns false.
         """
         if user is not None:
-            if id > -1:
-                rmv_id = -1
+            if id is not None:
+                rmv_id = None
                 for index, proj in enumerate(self.getProject(user)):
                     if proj.projectId is id:
                         rmv_id = index
                 try:
                     del self.projects.get(user)[rmv_id]
                 except:
-                    from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
-                    raise NotFoundIDError(user, id)
+                    try:
+                        del self.projects.get(user)[id]
+                    except:
+                        from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
+                        raise NotFoundIDError(user, id)
             else:
                 try:
                     del self.projects[user]
@@ -109,16 +112,19 @@ class ProjectService():
                     raise NotFoundUserError(user, id)
             return True
 
-        if id > -1:
+        if id is not None:
             for user, listOfProjects in self.projects.items():
-                rmv_id = -1
+                rmv_id = None
                 for index, proj in enumerate(listOfProjects):
                     if proj.projectId is id:
                         rmv_id = index
 
-                if rmv_id > -1:
+                try:
                     del self.projects[user][rmv_id]
-                    return True
+                except:
+                    from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
+                    raise NotFoundIDError(user, id)
+                return True
 
         return False
 

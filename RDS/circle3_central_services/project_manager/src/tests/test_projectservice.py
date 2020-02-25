@@ -5,7 +5,7 @@ from src.lib.Project import Project
 from src.lib.EnumStatus import Status
 
 
-class Test_MetadataService(unittest.TestCase):
+class Test_projectserviceService(unittest.TestCase):
     def test_service_init(self):
         """
         Check a lot of init
@@ -118,7 +118,7 @@ class Test_MetadataService(unittest.TestCase):
         
         self.assertEqual([proj.getDict() for proj in md.getProject()], expected)
 
-    def test_metadata_get_project(self):
+    def test_projectservice_get_project(self):
         """
         Check the getters for the projects
         """
@@ -143,7 +143,7 @@ class Test_MetadataService(unittest.TestCase):
         with self.assertRaises(IndexError):
             md.getProject(user="user", id=2)
 
-    def test_metadata_port_change(self):
+    def test_projectservice_port_change(self):
         """
         Check the methods, which changes the values within the object.
         """
@@ -157,3 +157,56 @@ class Test_MetadataService(unittest.TestCase):
         md.addProject("user", portIn=[portOwncloud], portOut=[portInvenio])
 
         md.getProject(user="admin", id=1)
+
+    def test_projectservice_remove_project(self):
+        """
+        Check the remove method
+        """
+        md = ProjectService()
+
+        portOwncloud = Port("port-owncloud", fileStorage=True)
+        portInvenio = Port("port-invenio", fileStorage=True, metadata=True)
+
+        id1 = md.addProject("admin", portIn=[]).projectId
+        id2 = md.addProject("admin", portIn=[portOwncloud]).projectId
+        id3 = md.addProject("user", portIn=[portOwncloud], portOut=[portInvenio]).projectId
+
+        md.removeProject("admin", id1)
+        expected = [
+            {
+                "userId": "admin",
+                "projectId": 1,
+                "status": Status.CREATED.value,
+                "portIn": [portOwncloud.getDict()],
+                "portOut": []
+            },
+            {
+                "userId": "user",
+                "projectId": 2,
+                "status": Status.CREATED.value,
+                "portIn": [portOwncloud.getDict()],
+                "portOut": [portInvenio.getDict()]
+            }
+        ]
+
+        
+        self.assertEqual([proj.getDict() for proj in md.getProject()], expected)
+
+        md.removeProject("admin", 0)
+        del expected[0]
+        self.assertEqual([proj.getDict() for proj in md.getProject()], expected)
+
+        md.removeProject("user")
+        self.assertEqual([proj.getDict() for proj in md.getProject()], [])
+
+        from src.lib.Exceptions.ProjectServiceExceptions import NotFoundUserError, NotFoundIDError
+        with self.assertRaises(NotFoundUserError):
+            md.removeProject("user")
+
+        with self.assertRaises(NotFoundIDError):
+            md.removeProject(id=2)
+
+        with self.assertRaises(NotFoundUserError):
+            md.removeProject("user", id=2)
+
+
