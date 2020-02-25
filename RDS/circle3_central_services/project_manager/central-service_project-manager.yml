@@ -53,17 +53,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Project'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                userId:
-                  type: string
+                $ref: '#/components/schemas/Project'
   '/{user-id}/project/{project-id}':
     parameters:
       - schema:
@@ -86,20 +76,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
-    patch:
-      summary: Modify a Project
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Project'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Project'
     delete:
       summary: Delete a Project
       responses:
@@ -194,20 +170,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Port'
-    patch:
-      summary: Modify a Project Import Port
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Port'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Port'
     delete:
       summary: Delete a Project Import
       responses:
@@ -240,20 +202,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Port'
-    patch:
-      summary: Modify a Project Export Port
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Port'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Port'
     delete:
       summary: Delete a Project Export
       responses:
@@ -287,12 +235,12 @@ components:
         userId:
           type: string
         status:
-          type: string
-        import:
+          type: integer
+        portIn:
           type: array
           items:
             $ref: '#/components/schemas/Port'
-        export:
+        portOut:
           type: array
           items:
             $ref: '#/components/schemas/Port'
