@@ -144,9 +144,6 @@ class Test_TokenServiceServer(unittest.TestCase):
         response = self.client.get(
             "/token-service/redirect", query_string={"code": code, "state": state})
 
-
-        import logging
-        logging.getLogger().error(state)
         self.assertEqual(response.status_code, 302, msg=response.get_data())
         self.assertEqual(
             response.headers["location"], "http://localhost/token-service/authorization-success", msg=response.get_data())
