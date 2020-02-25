@@ -1,8 +1,8 @@
-def get(userId, projectId):
-    pass
+from Singleton import ProjectService
+from flask import jsonify
 
-def patch(userId, projectId):
-    pass
+def get(user_id, project_id):
+    return jsonify(ProjectService.getProject(user_id, int(project_id)))
 
-def delete(userId, projectId):
+def delete(user_id, project_id):
     pass

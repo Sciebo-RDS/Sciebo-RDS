@@ -20,6 +20,12 @@ class Project():
     def addPortOut(self, port):
         self.portOut.append(port)
 
+    def getPortIn(self):
+        return self.portIn
+    
+    def getPortOut(self):
+        return self.portOut
+
     def nextStatus(self):
         """
         Set the next status and returns the new value.

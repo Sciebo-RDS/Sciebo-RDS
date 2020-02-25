@@ -9,6 +9,8 @@ import os
 import logging
 from connexion_plus import App, MultipleResourceResolver, Util
 from json import JSONEncoder, JSONDecoder
+import Singleton
+from src.lib.ProjectService import ProjectService
 
 log_level = logging.DEBUG
 logger = logging.getLogger('')
@@ -25,7 +27,7 @@ def monkeypatch():
     from json import JSONEncoder, JSONDecoder
 
     def to_default(self, obj):
-        return getattr(obj.__class__, "getJSON", to_default.default)(obj)
+        return getattr(obj.__class__, "getDict", to_default.default)(obj)
 
     to_default.default = JSONEncoder.default  # Save unmodified default.
     JSONEncoder.default = to_default  # Replace it.
@@ -36,6 +38,8 @@ def bootstrap(name='MicroService', *args, **kwargs):
         os.getenv("OPENAPI_FILEPATH", "central-service_project-manager.yml"))
 
     app = App(name, *args, **kwargs)
+
+    Singleton.ProjectService = ProjectService()
 
     for oai in list_openapi:
         app.add_api(oai, resolver=MultipleResourceResolver(

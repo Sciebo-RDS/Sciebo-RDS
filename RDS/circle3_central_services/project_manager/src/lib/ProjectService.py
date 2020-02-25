@@ -3,15 +3,21 @@ from src.lib.Project import Project
 
 class ProjectService():
     def __init__(self):
-        self.projects = []
+        # format: {user: []}
+        self.projects = {}
 
-    def addProject(self, userOrProject, portIn=[], portOut=[]):
+    def addProject(self, userOrProject, portIn=None, portOut=None):
         """
         If parameter `userOrProject is an project object, this method adds the given project to the storage.
 
         If parameter `userOrProject` is a string, it first creates an project object for you. 
         As a convenient parameter, you can set portIn and portOut also, which are used as parameters in project initialization.
         """
+        if portIn is None:
+            portIn = []
+
+        if portOut is None:
+            portOut = []
 
         if not isinstance(userOrProject, (Project, str)):
             raise ValueError(
@@ -21,9 +27,18 @@ class ProjectService():
             userOrProject = Project(
                 userOrProject, portIn=portIn, portOut=portOut)
 
-        userOrProject.getDict = monkeypatch_getDict(userOrProject.getDict, len(self.projects))
+        projectId = len(self.getAllProjects())
 
-        self.projects.append(userOrProject)
+        userOrProject.projectId = projectId
+        userOrProject.getDict = monkeypatch_getDict(
+            userOrProject.getDict, userOrProject)
+
+        if userOrProject.user not in self.projects:
+            self.projects[userOrProject.user] = []
+
+        self.projects.get(userOrProject.user).append(userOrProject)
+
+        return userOrProject
 
     def getProject(self, user="", id=-1):
         """
@@ -45,24 +60,77 @@ class ProjectService():
 
         if not user:
             if id < 0:
-                return self.projects
+                return self.getAllProjects()
             elif id >= 0:
-                return self.projects[id]
+                for proj in self.getAllProjects():
+                    if proj.projectId is id:
+                        return proj
 
         if user:
-            listOfProjects = []
-            for proj in self.projects:
-                if proj.user is user:
-                    listOfProjects.append(proj)
+            listOfProjects = self.projects.get(user)
+            if listOfProjects is None:
+                from src.lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
+                raise NotFoundUserError(user, id)
 
             if id < 0:
                 return listOfProjects
-            elif id >= 0:
+
+            for proj in listOfProjects:
+                if proj.projectId is id:
+                    return listOfProjects[id]
+            
+            if id < len(listOfProjects):
                 return listOfProjects[id]
+
+        from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
+        raise NotFoundIDError(user, id)
+
+    def removeProject(self, user: str = None, id: int = -1):
+        """
+        This method removes the projects for given user. If id was given, only the corresponding id will be removed (no user required, but it is faster).
+        Returns True if it is successful or raise an exception if user or id not found. Else returns false.
+        """
+        if user is not None:
+            if id > -1:
+                rmv_id = -1
+                for index, proj in enumerate(self.getProject(user)):
+                    if proj.projectId is id:
+                        rmv_id = index
+                try:
+                    del self.projects.get(user)[rmv_id]
+                except:
+                    from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
+                    raise NotFoundIDError(user, id)
+            else:
+                try:
+                    del self.projects[user]
+                except:
+                    from src.lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
+                    raise NotFoundUserError(user, id)
+            return True
+
+        if id > -1:
+            for user, listOfProjects in self.projects.items():
+                rmv_id = -1
+                for index, proj in enumerate(listOfProjects):
+                    if proj.projectId is id:
+                        rmv_id = index
+
+                if rmv_id > -1:
+                    del self.projects[user][rmv_id]
+                    return True
+
+        return False
 
     def getJSON(self):
         import json
         return json.dumps(self.getDict())
+
+    def getAllProjects(self):
+        listOfProjects = []
+        for proj in self.projects.values():
+            listOfProjects += proj
+        return listOfProjects
 
     def getDict(self):
         """
@@ -71,19 +139,20 @@ class ProjectService():
         return [proj.getDict() for proj in self.projects]
 
     def __eq__(self, obj):
-        if not isinstance(obj, MetadataService):
+        if not isinstance(obj, Project):
             return False
 
         return (self.getDict() == obj.getDict())
 
-def monkeypatch_getDict(getDictFunc, projectId):
+
+def monkeypatch_getDict(getDictFunc, obj):
     """
     Returns a dict of all projects with a new attribute "id", which symbolize the project id in the system.
     """
 
     def getDict():
         d = getDictFunc()
-        d["projectId"] = projectId
+        d["projectId"] = obj.projectId
         return d
 
     return getDict
