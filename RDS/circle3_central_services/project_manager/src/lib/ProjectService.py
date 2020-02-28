@@ -1,5 +1,7 @@
 from src.lib.Project import Project
+import logging
 
+logger = logging.getLogger()
 
 class ProjectService():
     def __init__(self):
@@ -40,7 +42,7 @@ class ProjectService():
 
         return userOrProject
 
-    def getProject(self, user="", id=None):
+    def getProject(self, user="", identifier=None):
         """
         This method returns all projects, if no parameters were set.
         If the parameter `user` is set, it returns all projects, which belongs to the user.
@@ -55,75 +57,76 @@ class ProjectService():
         if not isinstance(user, str):
             raise ValueError("Parameter `user` is not of type string.")
 
-        if not isinstance(id, (int, type(None))):
+        if not isinstance(identifier, (int, type(None))):
             raise ValueError("Parameter `id` is not of type int.")
 
         if not user:
-            if id is None:
+            if identifier is None:
                 return self.getAllProjects()
-            elif id >= 0:
+            elif identifier >= 0:
                 for proj in self.getAllProjects():
-                    if proj.projectId is id:
+                    if proj.projectId is identifier:
                         return proj
 
         if user:
             listOfProjects = self.projects.get(user)
             if listOfProjects is None:
                 from src.lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
-                raise NotFoundUserError(user, id)
+                raise NotFoundUserError(user, identifier)
 
-            if id is None:
+            if identifier is None:
                 return listOfProjects
 
             for proj in listOfProjects:
-                if proj.projectId is id:
-                    return listOfProjects[id]
+                if proj.projectId is identifier:
+                    return listOfProjects[identifier]
 
-            if id < len(listOfProjects):
-                return listOfProjects[id]
+            if identifier < len(listOfProjects):
+                return listOfProjects[identifier]
 
         from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
-        raise NotFoundIDError(user, id)
+        raise NotFoundIDError(user, identifier)
 
-    def removeProject(self, user: str = None, id: int = None):
+    def removeProject(self, user: str = None, identifier: int = None):
         """
-        This method removes the projects for given user. If id was given, only the corresponding id will be removed (no user required, but it is faster).
-        Returns True if it is successful or raise an exception if user or id not found. Else returns false.
+        This method removes the projects for given user. If identifier was given, only the corresponding identifier will be removed (no user required, but it is faster).
+        Returns True if it is successful or raise an exception if user or identifier not found. Else returns false.
         """
         if user is not None:
-            if id is not None:
+            if identifier is not None:
                 rmv_id = None
                 for index, proj in enumerate(self.getProject(user)):
-                    if proj.projectId is id:
+                    if proj.projectId is identifier:
                         rmv_id = index
                 try:
-                    del self.projects.get(user)[rmv_id]
+                    del self.projects[user][rmv_id]
                 except:
+                    logger.error("id {} not found for user {}, try to find identifier {} as index".format(rmv_id, user, identifier))
                     try:
-                        del self.projects.get(user)[id]
+                        del self.projects[user][identifier]
                     except:
                         from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
-                        raise NotFoundIDError(user, id)
+                        raise NotFoundIDError(user, identifier)
             else:
                 try:
                     del self.projects[user]
                 except:
                     from src.lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
-                    raise NotFoundUserError(user, id)
+                    raise NotFoundUserError(user, identifier)
             return True
 
-        if id is not None:
+        if identifier is not None:
             for user, listOfProjects in self.projects.items():
                 rmv_id = None
                 for index, proj in enumerate(listOfProjects):
-                    if proj.projectId is id:
+                    if proj.projectId is identifier:
                         rmv_id = index
 
                 try:
                     del self.projects[user][rmv_id]
                 except:
                     from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
-                    raise NotFoundIDError(user, id)
+                    raise NotFoundIDError(user, identifier)
                 return True
 
         return False
@@ -140,7 +143,7 @@ class ProjectService():
 
     def getDict(self):
         """
-        Returns a dict of all projects with a new attribute "id", which symbolize the project id in the system.
+        Returns a dict of all projects with a new attribute "id", which symbolize the project identifier in the system.
         """
         return [proj.getDict() for proj in self.projects]
 
@@ -153,7 +156,7 @@ class ProjectService():
 
 def monkeypatch_getDict(getDictFunc, obj):
     """
-    Returns a dict of all projects with a new attribute "id", which symbolize the project id in the system.
+    Returns a dict of all projects with a new attribute "id", which symbolize the project identifier in the system.
     """
 
     def getDict():

@@ -74,15 +74,29 @@ class TestProjectService(unittest.TestCase):
             "portIn": [],
             "portOut": []
         }]
+
+        # first it should be empty
+        resp = self.client.get(
+            "/projects/{}".format(expected[0]["userId"]))
+        self.assertEqual(resp.json, [])
+
+        # add one entry
         resp = self.client.post(
             "/projects/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected[0])
         self.assertEqual(resp.status_code, 200)
 
+        # is it there?
+        resp = self.client.get(
+            "/projects/{}".format(expected[0]["userId"]))
+        self.assertEqual(resp.json, expected)
+
+        # remove it
         resp = self.client.delete("/projects/{}/project/0".format(
             expected[0]["userId"]))
         self.assertEqual(resp.status_code, 204)
 
+        # should be empty again
         resp = self.client.get(
             "/projects/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, [])

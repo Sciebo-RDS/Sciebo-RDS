@@ -74,9 +74,9 @@ class Test_projectserviceService(unittest.TestCase):
         self.assertEqual([proj.getDict() for proj in md.getProject(user="user")], expected)
 
         with self.assertRaises(ValueError):
-            md.getProject(user="user", id="0")
+            md.getProject(user="user", identifier="0")
 
-        self.assertEqual(md.getProject(user="user", id=0).getDict(), expected[0])
+        self.assertEqual(md.getProject(user="user", identifier=0).getDict(), expected[0])
 
     def test_service_ports(self):
         """
@@ -132,16 +132,16 @@ class Test_projectserviceService(unittest.TestCase):
         proj = Project(user="user", portIn=[portOwncloud], portOut=[portInvenio])
         md.addProject(proj)
 
-        self.assertEqual(md.getProject(id=0), Project("admin"))
+        self.assertEqual(md.getProject(identifier=0), Project("admin"))
         # the following is not equal, because the first project comes with a projectId
-        self.assertNotEqual(md.getProject(id=0).getDict(), Project("admin").getDict())
-        self.assertEqual(md.getProject(id=2), proj)
+        self.assertNotEqual(md.getProject(identifier=0).getDict(), Project("admin").getDict())
+        self.assertEqual(md.getProject(identifier=2), proj)
 
         # check if the id is used as index relative to user, if username is set.
-        self.assertEqual(md.getProject(user="admin", id=1), Project("admin", portIn=[portOwncloud]))
+        self.assertEqual(md.getProject(user="admin", identifier=1), Project("admin", portIn=[portOwncloud]))
 
         with self.assertRaises(IndexError):
-            md.getProject(user="user", id=2)
+            md.getProject(user="user", identifier=2)
 
     def test_projectservice_port_change(self):
         """
@@ -156,7 +156,7 @@ class Test_projectserviceService(unittest.TestCase):
         md.addProject("admin", portIn=[portOwncloud])
         md.addProject("user", portIn=[portOwncloud], portOut=[portInvenio])
 
-        md.getProject(user="admin", id=1)
+        md.getProject(user="admin", identifier=1)
 
     def test_projectservice_remove_project(self):
         """
@@ -204,9 +204,9 @@ class Test_projectserviceService(unittest.TestCase):
             md.removeProject("user")
 
         with self.assertRaises(NotFoundIDError):
-            md.removeProject(id=2)
+            md.removeProject(identifier=2)
 
         with self.assertRaises(NotFoundUserError):
-            md.removeProject("user", id=2)
+            md.removeProject("user", identifier=2)
 
 
