@@ -12,7 +12,7 @@ info:
 servers:
   - url: 'http://port:3000/metadata'
 paths:
-  /titles:
+  '/project/{project-id}/titles':
     get:
       summary: Get all titles
       tags: []
@@ -27,7 +27,12 @@ paths:
         A name or title by which a resource is known. May be the title of a dataset or the name of a piece of software.
 
         Free Text
-    parameters: []
+    parameters:
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
     post:
       summary: Add title
       responses:
@@ -46,7 +51,7 @@ paths:
         A name or title by which a resource is known. May be the title of a dataset or the name of a piece of software.
 
         Free Text
-  /identifiers:
+  '/project/{project-id}/identifiers':
     get:
       summary: Get all identifiers
       tags: []
@@ -65,8 +70,13 @@ paths:
                     identifier:
                       $ref: '#/components/schemas/Identifier'
       description: 'The Identifier is a unique string that identifies a resource.  For software, determine whether the identifier is for a specific version of a piece of software, (per the Force "Software Citation Principles"), or for all versions.'
-    parameters: []
-  /creators:
+    parameters:
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+  '/project/{project-id}/creators':
     get:
       summary: Get all creators
       tags: []
@@ -95,7 +105,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Creator'
       description: 'The main researchers involved in producing the data, or the authors of the publication, in priority order. To supply multiple creators, repeat this property.'
-  /publisher:
+    parameters:
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+  '/project/{project-id}/publisher':
     get:
       summary: Get Publisher
       tags: []
@@ -117,7 +133,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Publisher'
       description: 'The name of the entitythat holds, archives, publishes prints, distributes, releases, issues, or produces the resource. This property will be used to formulate the citation, so consider the prominence of the role. For software, use Publisher for the code repository. If there is an entity other than a code repository, that "holds, archives, publishes, prints, distributes, releases, issues, or produces" the code, use the property Contributor/contributorType/hosting Institution for the code repository.'
-  /publicationyear:
+    parameters:
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+  '/project/{project-id}/publicationyear':
     get:
       summary: Publication Year
       tags: []
@@ -160,7 +182,13 @@ paths:
         ***
 
         If an embargo period has been in effect, use the date when the embargo period ends.In the case of datasets, "publish" is understood to mean making the data available on a specific date to the community of researchers.If there is no standard publication year value, use the date that would be preferred from a citation perspective
-  /schemaversion:
+    parameters:
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+  '/project/{project-id}/schemaversion':
     get:
       summary: Your GET endpoint
       tags: []
@@ -172,11 +200,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/SchemaVersion'
       description: Constant schema version
-  '/creators/{creators-id}':
+    parameters:
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+  '/project/{project-id}/creators/{creators-id}':
     parameters:
       - schema:
           type: string
         name: creators-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: project-id
         in: path
         required: true
     get:
@@ -205,11 +244,16 @@ paths:
             schema:
               $ref: '#/components/schemas/Creator'
       description: 'May be a corporate/institutional or personal name. Note: DataCite infrastructure supports up to 8000-10000 names. For name lists above that size, consider attribution via linking to the related metadata.'
-  '/identifiers/{identifiers-id}':
+  '/project/{project-id}/identifiers/{identifiers-id}':
     parameters:
       - schema:
           type: string
         name: identifiers-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: project-id
         in: path
         required: true
     get:
@@ -223,11 +267,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/Identifier'
       description: 'The Identifier is a unique string that identifies a resource.  For software, determine whether the identifier is for a specific version of a piece of software, (per the Force11 Software Citation Principles11), or for all versions.'
-  '/titles/{title-id}':
+  '/project/{project-id}/titles/{title-id}':
     parameters:
       - schema:
           type: string
         name: title-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: project-id
         in: path
         required: true
     get:
@@ -262,7 +311,7 @@ paths:
         A name or title by which a resource is known. May be the title of a dataset or the name of a piece of software.
 
         Free Text
-  /resourcetype:
+  '/project/{project-id}/resourcetype':
     patch:
       summary: Update resourcetype
       responses:
@@ -292,6 +341,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResourceType'
+    parameters:
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
 components:
   schemas:
     Creator:

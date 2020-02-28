@@ -22,6 +22,33 @@ paths:
         Currently this is datacite kernel 4.3
 
         https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json
+  '/user/{user-id}/project/{project-index}':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: project-index
+        in: path
+        required: true
+    get:
+      summary: Get the corresponding projectId
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  projectId:
+                    type: string
+      operationId: ''
+      description: This endpoint returns the projectId for the given user and the index of project. This is an endpoint for convenience.
 info:
   version: '1.0'
   title: Exporter
