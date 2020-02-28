@@ -209,4 +209,31 @@ class Test_projectserviceService(unittest.TestCase):
         with self.assertRaises(NotFoundUserError):
             md.removeProject("user", identifier=2)
 
+    def test_projectservice_get_projectId(self):
+        """
+        This unit tests the projectid, if it goes up, although we remove some projects.
+        """
+        md = ProjectService()
+        
+        portOwncloud = Port("port-owncloud", fileStorage=True)
+        portInvenio = Port("port-invenio", fileStorage=True, metadata=True)
 
+        id1 = md.addProject("admin", portIn=[]).projectId
+        id2 = md.addProject("admin", portIn=[portOwncloud]).projectId
+        id3 = md.addProject("user", portIn=[portOwncloud], portOut=[portInvenio]).projectId
+
+        # we remove the first one, so there are only 2 projects left
+        md.removeProject(identifier=id1)
+
+        # save for later asserts
+        id_old = id1
+
+        # now we add one project
+        id1 = md.addProject("admin", portIn=[]).projectId
+
+        # all id's should be different
+        self.assertNotEqual(id1, id2)
+        self.assertNotEqual(id3, id2)
+        self.assertNotEqual(id3, id1)
+
+        self.assertNotEqual(id_old, id1)

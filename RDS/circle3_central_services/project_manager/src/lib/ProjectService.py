@@ -7,6 +7,7 @@ class ProjectService():
     def __init__(self):
         # format: {user: []}
         self.projects = {}
+        self.highest_index = 0
 
     def addProject(self, userOrProject, portIn=None, portOut=None):
         """
@@ -29,7 +30,8 @@ class ProjectService():
             userOrProject = Project(
                 userOrProject, portIn=portIn, portOut=portOut)
 
-        projectId = len(self.getAllProjects())
+        projectId = self.highest_index
+        self.highest_index += 1
 
         userOrProject.projectId = projectId
         userOrProject.getDict = monkeypatch_getDict(
