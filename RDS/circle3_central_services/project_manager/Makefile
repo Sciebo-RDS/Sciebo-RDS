@@ -18,9 +18,9 @@ run: install
 	python src/server.py
 
 loc: dev
-	@pygount --suffix=py src | cut -f 1 | awk '{s+=$$1} END {print "Source " s}'
-	@pygount --suffix=py tests | cut -f 1 | awk '{s+=$$1} END {print "Tests " s}'
-	@pygount --suffix=py | cut -f 1 | awk '{s+=$$1} END {print "All " s}'
+	@pygount --suffix=py src/api | cut -f 1 | awk '{s+=$$1} END {print "API " s}'
+	@pygount --suffix=py src/tests | cut -f 1 | awk '{s+=$$1} END {print "Tests " s}'
+	@pygount --suffix=py src | cut -f 1 | awk '{s+=$$1} END {print "full source " s}'
 
 doc: dev
 	pydocmd build
