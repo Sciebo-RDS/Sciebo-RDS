@@ -101,7 +101,7 @@ class ProjectService():
                 try:
                     del self.projects[user][rmv_id]
                 except:
-                    logger.error("id {} not found for user {}, try to find identifier {} as index".format(rmv_id, user, identifier))
+                    logger.debug("id {} not found for user {}, try to find identifier as index".format(identifier, user))
                     try:
                         del self.projects[user][identifier]
                     except:

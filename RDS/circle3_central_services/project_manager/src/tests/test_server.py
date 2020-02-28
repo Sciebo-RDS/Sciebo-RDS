@@ -17,7 +17,7 @@ class TestProjectService(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client()
 
-    def test_empty_projects(self):
+    def test_add_user(self):
         def test_user_creation(userId):
             resp = self.client.get(f"/projects/{userId}")
             self.assertEqual(resp.status_code, 404)
@@ -43,7 +43,7 @@ class TestProjectService(unittest.TestCase):
         test_user_creation("admin")
         test_user_creation("user")
 
-    def test_get_and_change_projects(self):
+    def test_add_and_change_projects(self):
         expected = [{
             "userId": "admin",
             "status": 1,
@@ -60,7 +60,7 @@ class TestProjectService(unittest.TestCase):
         self.assertEqual(resp.json, expected[0])
         self.assertEqual(resp.status_code, 200)
 
-        # patch methods not needed, remove it, if you want to change it.
+        # TODO: patch method test
         """expected[0]["userId"] = "user"
         resp = self.client.patch("/projects/{}/project/0".format(
             expected[0]["userId"]), json={"userId": expected[0]["userId"]})
@@ -114,21 +114,36 @@ class TestProjectService(unittest.TestCase):
         self.assertEqual(resp.json, expected[0])
         self.assertEqual(resp.status_code, 200)
 
-        # TODO test add ports to import and export
+        expected[0]["portIn"].append(
+            {"port": "port-zenodo", "properties": [{"portType": "metadata", "value": True}]})
+        resp = self.client.post("/projects/{}/project/{}/imports".format(
+            expected[0]["userId"], 0), json=expected[0]["portIn"][0])
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json, expected[0]["portIn"])
 
-    def test_change_ports(self):
-        expected = [{
-            "userId": "admin",
-            "status": 1,
-            "portIn": [],
-            "portOut": []
-        }]
-        resp = self.client.post(
+        resp = self.client.get(
             "/projects/{}".format(expected[0]["userId"]))
-        self.assertEqual(resp.json, expected[0])
+        self.assertEqual(resp.json, expected)
         self.assertEqual(resp.status_code, 200)
 
-        # TODO test add one port  to import and export and change it
+        expected[0]["portOut"].append(
+            {"port": "port-zenodo", "properties": [{"portType": "metadata", "value": True}]})
+        resp = self.client.post("/projects/{}/project/{}/exports".format(
+            expected[0]["userId"], 0), json=expected[0]["portOut"][0])
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json, expected[0]["portOut"])
+
+        expected[0]["portOut"].append(
+            {"port": "port-owncloud", "properties": [{"portType": "fileStorage", "value": True}]})
+        resp = self.client.post("/projects/{}/project/{}/exports".format(
+            expected[0]["userId"], 0), json=expected[0]["portOut"][1])
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json, expected[0]["portOut"])
+
+        resp = self.client.get(
+            "/projects/{}".format(expected[0]["userId"]))
+        self.assertEqual(resp.json, expected)
+        self.assertEqual(resp.status_code, 200)
 
     def test_remove_ports(self):
         expected = [{
@@ -142,4 +157,35 @@ class TestProjectService(unittest.TestCase):
         self.assertEqual(resp.json, expected[0])
         self.assertEqual(resp.status_code, 200)
 
-        # TODO test add one port  to import and export and delete it
+        # add one to portIn and remove it
+        expected[0]["portIn"].append(
+            {"port": "port-zenodo", "properties": [{"portType": "metadata", "value": True}]})
+        resp = self.client.post("/projects/{}/project/{}/imports".format(
+            expected[0]["userId"], 0), json=expected[0]["portIn"][0])
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json, expected[0]["portIn"])
+
+        del expected[0]["portIn"][0]
+        resp = self.client.delete("/projects/{}/project/{}/imports/{}".format(
+            expected[0]["userId"], 0, 0))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json, expected[0]["portIn"])
+
+        # add one to portOut and remove it
+        expected[0]["portOut"].append(
+            {"port": "port-owncloud", "properties": [{"portType": "fileStorage", "value": True}]})
+        resp = self.client.post("/projects/{}/project/{}/exports".format(
+            expected[0]["userId"], 0), json=expected[0]["portOut"][0])
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json, expected[0]["portOut"])
+
+        del expected[0]["portOut"][0]
+        resp = self.client.delete("/projects/{}/project/{}/exports/{}".format(
+            expected[0]["userId"], 0, 0))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json, expected[0]["portOut"])
+
+        resp = self.client.get(
+            "/projects/{}".format(expected[0]["userId"]))
+        self.assertEqual(resp.json, expected)
+        self.assertEqual(resp.status_code, 200)

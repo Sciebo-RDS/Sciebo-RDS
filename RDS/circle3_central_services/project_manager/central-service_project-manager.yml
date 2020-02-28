@@ -81,6 +81,22 @@ paths:
       responses:
         '204':
           description: No Content
+    patch:
+      summary: ''
+      operationId: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+      description: 'Currently not implemented, because there are no function, which could be updated.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
   '/{user-id}/project/{project-id}/exports':
     parameters:
       - schema:
@@ -102,12 +118,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Port'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Port'
     post:
       summary: ''
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Port'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Port'
   '/{user-id}/project/{project-id}/imports':
     parameters:
       - schema:
@@ -143,6 +172,11 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Port'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Port'
   '/{user-id}/project/{project-id}/imports/{port-id}':
     parameters:
       - schema:
@@ -170,11 +204,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Port'
+        '404':
+          description: Not Found
     delete:
       summary: Delete a Project Import
       responses:
-        '200':
-          description: OK
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
   '/{user-id}/project/{project-id}/exports/{port-id}':
     parameters:
       - schema:
@@ -202,11 +240,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Port'
+        '404':
+          description: Not Found
     delete:
       summary: Delete a Project Export
       responses:
-        '200':
-          description: OK
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
 components:
   schemas:
     Project:
@@ -263,7 +305,7 @@ components:
                 type: string
                 description: 'Only "metadata" and "filestorage" are currently supported as booleans. If type is not set, it defaults to false.'
               value:
-                type: string
+                type: boolean
 servers:
   - url: 'http://central-service_project-manager:3000/projects'
     description: ''

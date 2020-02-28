@@ -15,14 +15,52 @@ class Project():
         self.portOut = portOut
 
     def addPortIn(self, port):
-        self.portIn.append(port)
+        self.addPort(port, self.portIn)
 
     def addPortOut(self, port):
-        self.portOut.append(port)
+        self.addPort(port, self.portOut)
+
+    def removePortIn(self, port):
+        self.removePort(port, self.portIn)
+
+    def removePortOut(self, port):
+        self.removePort(port, self.portOut)
+
+    @staticmethod
+    def addPort(port, portList):
+        """
+        Adds port (type `Port`) to given portList.
+        """
+        portList.append(port)
+
+    @staticmethod
+    def removePort(port, portList):
+        """
+        Remove port from portList.
+        Port can be `int` as index or an object with type `Port`.
+        """
+        if isinstance(port, int):
+            try:
+                del portList[port]
+                return True
+            except:
+                return False
+
+        index = None
+        for i, current in enumerate(portList):
+            if current is port:
+                index = i
+                break
+
+        if index is not None:
+            del portList[index]
+            return True
+
+        return False
 
     def getPortIn(self):
         return self.portIn
-    
+
     def getPortOut(self):
         return self.portOut
 

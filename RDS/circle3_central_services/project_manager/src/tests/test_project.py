@@ -37,13 +37,32 @@ class Test_Project(unittest.TestCase):
 
         projOwncloud2 = Project("admin", portOut=[portOwncloud])
         project2.addPortOut(portOwncloud)
-        self.assertEqual(project2, projOwncloud2, msg="{},{}".format(project2.getDict(), projOwncloud2.getDict()))
+        self.assertEqual(project2, projOwncloud2, msg="{},{}".format(
+            project2.getDict(), projOwncloud2.getDict()))
 
         projOwncloud3 = Project(
             "admin", portIn=[portOwncloud], portOut=[portOwncloud])
         project3.addPortIn(portOwncloud)
         project3.addPortOut(portOwncloud)
         self.assertEqual(project3, projOwncloud3)
+
+    def test_project_removePort(self):
+        project1 = Project("admin")
+        project2 = Project("admin", portIn=[])
+
+        portOwncloud = Port("port-owncloud")
+
+        projOwncloud1 = Project("admin", portIn=[portOwncloud])
+        project1.addPortIn(portOwncloud)
+        self.assertEqual(project1, projOwncloud1)
+        project1.removePortIn(portOwncloud)
+        self.assertEqual(project1, Project("admin", portIn=[]))
+
+        projOwncloud2 = Project("admin", portOut=[portOwncloud])
+        project2.addPortOut(portOwncloud)
+        self.assertEqual(project2, projOwncloud2)
+        project2.removePortOut(portOwncloud)
+        self.assertEqual(project1, Project("admin", portOut=[]))
 
     def test_project_status(self):
         proj1 = Project("admin")
