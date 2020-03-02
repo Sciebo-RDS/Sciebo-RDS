@@ -22,7 +22,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Title'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Title'
       description: |-
         A name or title by which a resource is known. May be the title of a dataset or the name of a piece of software.
 
@@ -63,12 +65,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    identifier:
-                      $ref: '#/components/schemas/Identifier'
+                  $ref: '#/components/schemas/Identifier'
       description: 'The Identifier is a unique string that identifies a resource.  For software, determine whether the identifier is for a specific version of a piece of software, (per the Force "Software Citation Principles"), or for all versions.'
     parameters:
       - schema:
@@ -88,12 +85,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    creator:
-                      $ref: '#/components/schemas/Creator'
+                  $ref: '#/components/schemas/Creator'
       description: 'The main researchers involved in producing the data, or the authors of the publication, in priority order. To supply multiple creators, repeat this property.'
     post:
       summary: Add a creator
@@ -348,6 +340,46 @@ paths:
         name: project-id
         in: path
         required: true
+  '/project/{project-id}':
+    parameters:
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+    get:
+      summary: Get all metadata
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Titles:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Title'
+                  Creators:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Creator'
+                  Publisher:
+                    $ref: '#/components/schemas/Publisher'
+                  PublicationYear:
+                    $ref: '#/components/schemas/PublicationYear'
+                  ResourceType:
+                    $ref: '#/components/schemas/ResourceType'
+                  Identifiers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Identifier'
+                  SchemaVersion:
+                    type: string
+      operationId: ''
+      description: This endpoint responses with all available resources.
 components:
   schemas:
     Creator:
@@ -360,12 +392,19 @@ components:
       properties:
         creatorName:
           type: string
+          description: The full name of the creator.
         nameType:
           type: string
+          description: |-
+            Controlled List Values:
+            Organizational
+            Personal(default)
         familyName:
           type: string
+          description: The surname or last name of the creator.
         givenName:
           type: string
+          description: The personal or first name of the creator.
     Identifier:
       title: Identifier
       description: 'The Identifier is a unique string that identifies a resource.  For software, determine whether the identifier is for a specific version of a piece of software, (per the Force11 Software Citation Principles11), or for all versions.'
@@ -430,7 +469,7 @@ components:
         If an embargo period has been in effect, use the date when the embargo period ends.In the case of datasets, "publish" is understood to mean making the data available on a specific date to the community of researchers.If there is no standard publication year value, use the date that would be preferred from a citation perspective
       anyOf:
         - properties:
-            year:
+            PublicationYear:
               type: string
       type: object
     SchemaVersion:
@@ -443,7 +482,7 @@ components:
       properties:
         schemaVersion:
           type: string
-          description: 'Constant: http://datacite.org/schema/kernel-4"'
+          description: 'Constant: "http://datacite.org/schema/kernel-4"'
     Title:
       title: Title
       description: |-
@@ -468,7 +507,7 @@ components:
                 - Other
       type: object
     Property:
-      title: Optional
+      title: Property
       type: object
       x-examples:
         example-1:
@@ -478,12 +517,14 @@ components:
               givenName: Bernard
               familyName: Mari
       description: |-
+        Custom RDS Model.
+
         This model describes a property of the datacite scheme. View the example to see more.
         With this model it should be possible to redirect the request to an datacite-compatible endpoint.
 
         The model has to be datacite kernel 4.3 valid.
         https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json
       properties:
-        asd:
+        property:
           type: string
   securitySchemes: {}

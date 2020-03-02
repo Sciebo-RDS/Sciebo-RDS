@@ -5,7 +5,7 @@ logger = logging.getLogger()
 
 class ProjectService():
     def __init__(self):
-        # format: {user: []}
+        # format: {user: [<type project>]}
         self.projects = {}
         self.highest_index = 0
 
@@ -79,9 +79,10 @@ class ProjectService():
             if identifier is None:
                 return listOfProjects
 
-            for proj in listOfProjects:
-                if proj.projectId is identifier:
-                    return listOfProjects[identifier]
+            # this assumes, that identifier could also be a projectId
+            # for proj in listOfProjects:
+            #     if proj.projectId == identifier:
+            #         return proj
 
             if identifier < len(listOfProjects):
                 return listOfProjects[identifier]

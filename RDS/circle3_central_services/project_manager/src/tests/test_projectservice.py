@@ -140,7 +140,8 @@ class Test_projectserviceService(unittest.TestCase):
         # check if the id is used as index relative to user, if username is set.
         self.assertEqual(md.getProject(user="admin", identifier=1), Project("admin", portIn=[portOwncloud]))
 
-        with self.assertRaises(IndexError):
+        from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
+        with self.assertRaises(NotFoundIDError):
             md.getProject(user="user", identifier=2)
 
     def test_projectservice_port_change(self):
