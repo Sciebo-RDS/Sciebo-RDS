@@ -249,6 +249,25 @@ paths:
           description: No Content
         '404':
           description: Not Found
+  '/id/{project-id}':
+    parameters:
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+    get:
+      summary: Returns the corresponding project.
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+      operationId: ''
+      description: ''
 components:
   schemas:
     Project:

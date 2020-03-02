@@ -141,7 +141,7 @@ class Test_Metadata(unittest.TestCase):
         ).will_respond_with(200, body=json.dumps(metadata))
 
         result = md.getMetadataForProjectFromPort(port, projectId)
-        self.assertEqual(metadata, result)
+        self.assertEqual(result, metadata)
 
     def test_metadata_get_metadata_from_projectId(self):
         """
@@ -176,7 +176,7 @@ class Test_Metadata(unittest.TestCase):
         ).will_respond_with(200, body=json.dumps(metadata))
 
         result = md.getMetadataForProject(projectId)
-        self.assertEqual(metadata, result)
+        self.assertEqual(result, metadata)
 
     def test_metadata_update_metadata_from_connector(self):
         """
@@ -212,7 +212,7 @@ class Test_Metadata(unittest.TestCase):
 
             result = md.updateMetadataForProjectFromPort(
                 port, projectId, updateMetadata)
-            self.assertEqual(metadata, result)
+            self.assertEqual(result, metadata)
 
         updateMetadata = {}
         updateMetadata["Creators"] = [{
