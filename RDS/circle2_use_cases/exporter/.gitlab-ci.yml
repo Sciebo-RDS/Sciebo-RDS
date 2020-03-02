@@ -1,16 +1,16 @@
 .use_case_exporter:
   variables:
-      FOLDER: RDS/circle2_use_cases/exporter
+    FOLDER: RDS/circle2_use_cases/exporter
 
 .tests_use_case_exporter:
-  extends: 
-  - .tests
-  - .use_case_exporter
+  extends:
+    - .tests
+    - .use_case_exporter
 
   only:
     changes:
-    - RDS/circle2_use_cases/exporter/*
-    - RDS/circle2_use_cases/exporter/**/*
+      - RDS/circle2_use_cases/exporter/*
+      - RDS/circle2_use_cases/exporter/**/*
 
 test:use_case_exporter3.6:
   image: python:3.6
@@ -25,6 +25,6 @@ test:use_case_exporter3.8:
   extends: .tests_use_case_exporter
 
 build:use_case_exporter:
-    extends: 
+  extends:
     - .builds
     - .use_case_exporter
