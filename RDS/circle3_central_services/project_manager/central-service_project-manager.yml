@@ -307,6 +307,8 @@ components:
             $ref: '#/components/schemas/Port'
         projectId:
           type: integer
+        projectIndex:
+          type: integer
     Port:
       title: Port
       description: 'This model represents a port, which can be used in a project.'
