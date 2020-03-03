@@ -1,70 +1,51 @@
 import requests
+import logging
+from src.lib.Project import Project
+
+logger = logging.getLogger()
 
 
 class Metadata():
-    def __init__(self, testing=None):
-        self.project_manager = "circle3-project-manager"
+    def __init__(self, testing: str = None):
+        """
+        This is the constructor. No needed parameters.
+
+        Testing has to be valid url string without protocol schema (e.g. http), 
+        so this class use the given address for all requests.
+        """
+        self.testing = None
+
         if testing is not None:
-            self.project_manager = testing
+            self.testing = testing
 
     def getProjectId(self, userId, projectIndex):
         """
         This method returns the corresponding projectId to the given userId and projectIndex.
         """
-        return self.getProject(userId=userId, projectIndex=projectIndex).get("projectId", -1)
+        return Project(testing=self.testing, userId=userId, projectIndex=projectIndex).projectId
 
-    def getProject(self, userId: str = None, projectIndex: int = None, projectId: int = None):
-        """
-        This method catches the project information from the central service project manager.
-        userId and projectIndex are only used together. You can provide projectId,
-        so you do not need to enter userId and projectIndex for convenience.
-        """
-        if userId is None and projectIndex is None:
-            if projectId is not None:
-                req = requests.get(
-                    f"{self.project_manager}/projects/id/{projectIndex}")
-                if req.status_code == 200:
-                    data = req.json()
-                    userId = data["userId"]
-                    projectIndex = data["projectIndex"]
-            else:
-                raise ValueError(
-                    "userId and projectIndex or projectId are needed parameters.")
+    def getPortString(self, port: str):
+        res = f"circle1-{port}"
 
-        req = requests.get(
-            f"{self.project_manager}/projects/{userId}/project/{projectIndex}")
+        if self.testing:
+            res = self.testing
 
-        if req.status_code == 200:
-            return req.json()
+        return res
 
-        return {}
-
-    def getPortIn(self, userId, projectIndex):
-        """
-        This method returns all ports, which functions as input in RDS.
-        """
-        return self.getProject(userId=userId, projectIndex=projectIndex).get("portIn", [])
-
-    def getPortOut(self, userId, projectIndex):
-        """
-        This method returns all ports, which functions as output in RDS.
-        """
-        return self.getProject(userId=userId, projectIndex=projectIndex).get("portOut", [])
-
-    def getMetadataForProject(self, projectId: int):
+    def getMetadataForProject(self, userId: str = None, projectIndex: int = None, projectId: int = None):
         """
         This method returns the metadata from all available ports for specified projectId.
         """
         allMetadata = []
 
-        # get all ports registered to projectId
-        ports = []
+        ports = Project(testing=self.testing,
+                        userId=userId, projectIndex=projectIndex, projectId=projectId).ports
 
-        # TODO: parallize me
+        # FIXME: parallize me
         for port in ports:
             metadata = self.getMetadataForProjectFromPort(port, projectId)
             d = {
-                "port": port,
+                "port": port["port"],
                 "metadata": metadata
             }
             allMetadata.append(d)
@@ -74,8 +55,17 @@ class Metadata():
     def getMetadataForProjectFromPort(self, port: str, projectId: int):
         """
         This method returns the metadata from given port for specified projectId.
+        Returns a dict, which was described in the metadata api endpoint "/metadata/project/{project-id}" or an empty one.
         """
         # pull all metadata from given port for projectId
+
+        req = requests.get(
+            f"http://{self.getPortString(port)}/metadata/project/{projectId}")
+
+        if req.status_code == 200:
+            return req.json()
+
+        logger.exception(Exception(f"Metadata model req: {req.content()}"))
         return {}
 
     def updateMetadataForProject(self, projectId: int, updateMetadata: dict):
@@ -86,9 +76,9 @@ class Metadata():
         allMetadata = []
 
         # get all ports registered to projectId
-        ports = []
+        ports = Project(testing=self.testing, projectId=projectId).ports
 
-        # TODO: parallize me
+        # FIXME: parallize me
         for port in ports:
             metadata = self.updateMetadataForProjectFromPort(
                 port, projectId, updateMetadata)
@@ -103,7 +93,33 @@ class Metadata():
     def updateMetadataForProjectFromPort(self, port: str, projectId: int, updateMetadata: dict):
         """
         This method changes the metadata in given port to the given metadata values in given dict for specified projectId.
+        Returns the current metadata data, so you can check, if the update was successful or not.
+
+        The given updateMetadata has to be a dict with the following struct:
+        {
+            "Creator": {
+                "creatorName": "Max Mustermann", 
+                ...
+            }, 
+            "Publisher": {
+                    "publisher": "Lorem Ipsum"
+            },
+            ...
+        }
+
+        The struct of a metadata model have to be the same as described in the metadata api.
         """
 
-        # TODO: updates all metadata in givne dict for received ports for projectId
-        return {}
+        port = str(port).lower()
+
+        # FIXME: parallize me
+        for key, value in updateMetadata.items():
+            key = str(key).lower()
+            req = requests.patch(
+                f"http://{self.getPortString(port)}/metadata/project/{projectId}/{key}", json=value)
+
+            if req.status_code >= 300:
+                logger.exception(
+                    Exception(f"Update metadata for \"{key}\" failed with value \"{value}\""))
+
+        return self.getMetadataForProjectFromPort(port, projectId)

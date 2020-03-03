@@ -1,14 +1,13 @@
 from src.lib.Metadata import Metadata
+from pactman import Consumer, Provider
 import unittest
 import json
-from pactman import Consumer, Provider
 
-# TODO: use pactman for requests
 
 pact = Consumer('UseCaseMetadata').has_pact_with(
     Provider('PortMetadata'), port=3000)
 
-testing_address = "http://localhost:3000"
+testing_address = "localhost:3000"
 
 
 class Test_Metadata(unittest.TestCase):
@@ -17,15 +16,15 @@ class Test_Metadata(unittest.TestCase):
         This unit tests the metadata object constructor.
         """
 
-        md = Metadata()
+        md = Metadata(testing=testing_address)
 
     def test_metadata_get_projectid(self):
         """
         This unit tests ability of metadata object to get the projectId for corresponding userId and project index.
         """
-        md = Metadata()
+        md = Metadata(testing=testing_address)
 
-        def test_projectId(userId, projectIndex):
+        def test_projectId(userId, projectIndex, projectId):
             nonlocal md
 
             project = {
@@ -33,6 +32,44 @@ class Test_Metadata(unittest.TestCase):
                 "status": 1,
                 "portIn": [],
                 "portOut": [],
+                "projectIndex": projectIndex,
+                "projectId": projectId
+            }
+
+            pact.given(
+                'A project service with projects.'
+            ).upon_receiving(
+                f'A call to get the projectId from userId {userId} and projectIndex {projectIndex}.'
+            ).with_request(
+                'GET', f"/projects/{userId}/project/{projectIndex}"
+            ).will_respond_with(200, body=project)
+
+            # should be the same as projectIndex, because there are no other projects
+            with pact:
+                result = md.getProjectId(userId, projectIndex)
+            self.assertEqual(result, projectId)
+
+        userId = "admin"
+        projectIndex = 0
+        projectId = 0
+        test_projectId(userId, projectIndex, projectId)
+        projectIndex = 1
+        projectId = 4
+        test_projectId(userId, projectIndex, projectId)
+
+    @unittest.skip("This test is currently not needed, because this is not implemented.")
+    def test_metadata_get_connector(self):
+        """
+        This unit tests the ability of metadata object to get connector from a projectId.
+        """
+        md = Metadata(testing=testing_address)
+
+        def test_getPorts(func, userId, projectId, portIn, portOut):
+            project = {
+                "userId": userId,
+                "status": 1,
+                "portIn": portIn,
+                "portOut": portOut,
                 "projectId": projectIndex
             }
 
@@ -42,83 +79,32 @@ class Test_Metadata(unittest.TestCase):
                 'A call to get the projectId from userId and projectIndex.'
             ).with_request(
                 'GET', f"/projects/{userId}/project/{projectIndex}"
-            ).will_respond_with(200, body=json.dumps(project))
+            ).will_respond_with(200, body=project)
 
-            # should be the same as projectIndex, because there are no other projects
             with pact:
-                result = md.getProjectId(userId, projectIndex)
-            self.assertEqual(result, projectIndex)
+                result = func(userId, projectIndex)
+            return result
 
         userId = "admin"
         projectIndex = 0
-        test_projectId(userId, projectIndex)
-        projectIndex = 1
-        test_projectId(userId, projectIndex)
 
-        # should be not the same as projectIndex, because there are other projects
-        expectedId = 4
-        projectIndex = 2
-        result = md.getProjectId(userId, projectIndex)
-        self.assertEqual(result, expectedId)
-        self.assertNotEqual(result, projectIndex)
+        for portIn in [[], ["port-owncloud"], ["port-owncloud", "port-zenodo"]]:
+            for portOut in [[], ["port-owncloud"], ["port-owncloud", "port-zenodo"]]:
+                with self.subTest(portIn=portIn, portOut=portOut):
+                    result = test_getPorts(md.getPortIn, userId,
+                                           projectIndex, portIn, portOut)
+                    self.assertEqual(result, portIn)
 
-    def test_metadata_get_connector(self):
-        """
-        This unit tests the ability of metadata object to get connector from a projectId.
-        """
-        md = Metadata()
-
-        def test_ports(portIn, portOut):
-            def test_getPorts(func, userId, projectId, portIn, portOut):
-                project = {
-                    "userId": userId,
-                    "status": 1,
-                    "portIn": portIn,
-                    "portOut": portOut,
-                    "projectId": projectIndex
-                }
-
-                pact.given(
-                    'A project service with projects.'
-                ).upon_receiving(
-                    'A call to get the projectId from userId and projectIndex.'
-                ).with_request(
-                    'GET', f"/projects/{userId}/project/{projectIndex}"
-                ).will_respond_with(200, body=json.dumps(project))
-
-                with pact:
-                    result = func(userId, projectIndex)
-                return result
-
-            userId = "admin"
-            projectIndex = 0
-
-            result = test_getPorts(md.getPortIn, userId,
-                                   projectIndex, portIn, portOut)
-            self.assertEqual(result, portIn)
-            result = test_getPorts(md.getPortOut, userId,
-                                   projectIndex, portIn, portOut)
-            self.assertEqual(result, portOut)
-
-        ports = [
-            ([], []),
-            ([], ["port-zenodo"]),
-            ([], ["port-owncloud", "port-zenodo"]),
-            (["port-owncloud"], []),
-            (["port-owncloud", "port-zenodo"], []),
-            (["port-owncloud"], ["port-zenodo"]),
-            (["port-owncloud"], ["port-owncloud", "port-zenodo"])
-        ]
-
-        for portIn, portOut in ports:
-            test_ports(portIn, portOut)
+                    result = test_getPorts(md.getPortOut, userId,
+                                           projectIndex, portIn, portOut)
+                    self.assertEqual(result, portOut)
 
     def test_metadata_get_metadata_from_connector(self):
         """
         This unit tests the ability of metadata object to get metadata from a given connector.
         This is the hard way to get informations from a specific port.
         """
-        md = Metadata()
+        md = Metadata(testing=testing_address)
 
         projectId = 0
         port = "localhost:3000"
@@ -137,10 +123,11 @@ class Test_Metadata(unittest.TestCase):
         ).upon_receiving(
             'A call to get the metadata from specific projectId.'
         ).with_request(
-            'GET', f"/project/{projectId}"
-        ).will_respond_with(200, body=json.dumps(metadata))
+            'GET', f"/metadata/project/{projectId}"
+        ).will_respond_with(200, body=metadata)
 
-        result = md.getMetadataForProjectFromPort(port, projectId)
+        with pact:
+            result = md.getMetadataForProjectFromPort(port, projectId)
         self.assertEqual(result, metadata)
 
     def test_metadata_get_metadata_from_projectId(self):
@@ -149,9 +136,12 @@ class Test_Metadata(unittest.TestCase):
         This is the handy way with projectId.
         Notice: Should be very similar to `test_metadata_get_metadata_from_connector`
         """
-        md = Metadata()
+        md = Metadata(testing=testing_address)
 
-        projectId = 0
+        userId = 20
+        projectIndex = 21
+        projectId = 22
+
         metadata = {
             "Creators": [{
                 "creatorName":  "Max Mustermann",
@@ -167,27 +157,71 @@ class Test_Metadata(unittest.TestCase):
             "Titles": ["This is a test title"]
         }
 
-        pact.given(
-            'A port with metadata informations.'
-        ).upon_receiving(
-            'A call to get the metadata from specific projectId.'
-        ).with_request(
-            'GET', f"/project/{projectId}"
-        ).will_respond_with(200, body=json.dumps(metadata))
+        expected_project = {
+            "userId": userId,
+            "projectIndex": projectIndex
+        }
 
-        result = md.getMetadataForProject(projectId)
-        self.assertEqual(result, metadata)
+        expected_project["projectId"] = projectId
+        expected_project["portIn"] = [{
+            "port": "port-zenodo",
+            "properties": [{
+                    "portType": "metadata", "value": True
+            }]
+        },
+            {
+            "port": "port-owncloud",
+            "properties": [{
+                "portType": "fileStorage", "value": True
+            }]
+        }]
+
+        expected_project["portOut"] = [{
+            "port": "port-zenodo",
+            "properties": [{
+                    "portType": "metadata", "value": True
+            }]
+        }]
+
+        pact.given(
+            'The project manager.'
+        ).upon_receiving(
+            f'A call to get the projectIndex {projectIndex} and user {userId}.'
+        ).with_request(
+            'GET', f"/projects/id/{projectId}"
+        ).will_respond_with(200, body=expected_project)
+
+        expected_metadata = []
+
+        for ports in expected_project["portIn"] + expected_project["portOut"]:
+            port = ports["port"]
+            pact.given(
+                'A port with metadata informations.'
+            ).upon_receiving(
+                f'A call to get the metadata from specific projectId {projectId} and port {port}.'
+            ).with_request(
+                'GET', f"/metadata/project/{projectId}"
+            ).will_respond_with(200, body=metadata)
+
+            expected_metadata.append({
+                "port": port,
+                "metadata": metadata
+            })
+
+        with pact:
+            result = md.getMetadataForProject(projectId=projectId)
+        self.assertEqual(result, expected_metadata)
 
     def test_metadata_update_metadata_from_connector(self):
         """
         This unit tests the ability of metadata object to update metadata from a given connector.
         This is the hard way.
         """
-        md = Metadata()
+        md = Metadata(testing=testing_address)
 
-        def test_metadata_response(updateMetadata):
+        def test_metadata_response(updateMetadata, projectId):
             port = "localhost:3000"
-            projectId = 0
+
             metadata = {
                 "Creators": [],
                 "Identifiers": [],
@@ -202,16 +236,28 @@ class Test_Metadata(unittest.TestCase):
                             list(updateMetadata.items()))
 
             for key, value in updateMetadata.items():
+                key = str(key).lower()
+                print(key, projectId)
+
                 pact.given(
                     'A port with metadata informations.'
                 ).upon_receiving(
-                    'A call to update the metadata from specific projectId.'
+                    f'A call to update the metadata from specific projectId {projectId} for key {key}.'
                 ).with_request(
-                    'PATCH', f"/project/{projectId}/{key}"
-                ).will_respond_with(200, body=json.dumps({str(key).lower(): value}))
+                    'PATCH', f"/metadata/project/{projectId}/{key}"
+                ).will_respond_with(200, body=value)
 
-            result = md.updateMetadataForProjectFromPort(
-                port, projectId, updateMetadata)
+            pact.given(
+                'A port with metadata informations.'
+            ).upon_receiving(
+                f'A call to get the metadata from specific projectId {projectId}.'
+            ).with_request(
+                'GET', f"/metadata/project/{projectId}"
+            ).will_respond_with(200, body=metadata)
+
+            with pact:
+                result = md.updateMetadataForProjectFromPort(
+                    port, projectId, updateMetadata)
             self.assertEqual(result, metadata)
 
         updateMetadata = {}
@@ -221,10 +267,10 @@ class Test_Metadata(unittest.TestCase):
             "familyName": "Mustermann",
             "givenName": "Max",
         }]
-        test_metadata_response(updateMetadata)
+        test_metadata_response(updateMetadata, 10)
 
         updateMetadata["PublicationYear"] = "2020"
-        test_metadata_response(updateMetadata)
+        test_metadata_response(updateMetadata, 11)
 
     def test_metadata_update_metadata_from_projectId(self):
         """
@@ -232,10 +278,13 @@ class Test_Metadata(unittest.TestCase):
         This is the handy way.
         Notice: Should be very similar to `test_metadata_get_metadata_from_connector`
         """
-        md = Metadata()
+        md = Metadata(testing=testing_address)
 
         def test_metadata_response(updateMetadata):
-            projectId = 0
+            userId = 0
+            projectIndex = 0
+            projectId = 2
+
             metadata = {
                 "Creators": [],
                 "Identifiers": [],
@@ -249,28 +298,75 @@ class Test_Metadata(unittest.TestCase):
             metadata = dict(list(metadata.items()) +
                             list(updateMetadata.items()))
 
-            for key, value in updateMetadata.items():
-                pact.given(
-                    'A port with metadata informations.'
-                ).upon_receiving(
-                    'A call to update the metadata from specific projectId.'
-                ).with_request(
-                    'PATCH', f"/project/{projectId}/{key}"
-                ).will_respond_with(200, body=json.dumps({str(key).lower(): value}))
+            expected_pid = {
+                "userId": userId,
+                "projectIndex": projectIndex
+            }
 
-            result = md.updateMetadataForProject(
-                projectId, updateMetadata)
-            self.assertEqual(metadata, result)
+            expected_project = expected_pid.copy()
+            expected_project["status"] = 1
+            expected_project["projectId"] = projectId
+            expected_project["portIn"] = [{
+                "port": "port-zenodo",
+                "properties": [{
+                        "portType": "metadata", "value": True
+                }]
+            }, {
+                "port": "port-owncloud",
+                "properties": [{
+                        "portType": "fileStorage", "value": True
+                }]
+            }]
+
+            expected_project["portOut"] = [{
+                "port": "port-zenodo",
+                "properties": [{
+                        "portType": "metadata", "value": True
+                }]
+            }]
+
+            pact.given(
+                'The project manager.'
+            ).upon_receiving(
+                'A call to get the projectIndex and user.'
+            ).with_request(
+                'GET', f"/projects/id/{projectId}"
+            ).will_respond_with(200, body=expected_project)
+
+            for key, value in updateMetadata.items():
+                for ports in expected_project["portIn"] + expected_project["portOut"]:
+                    port = ports["port"]
+                    print((projectId, key, port, value))
+                    key = str(key).lower()
+
+                    pact.given(
+                        'A port with metadata informations.'
+                    ).upon_receiving(
+                        f'A call to update the metadata from specific projectId {projectId} for key {key} and port {port}.'
+                    ).with_request(
+                        'PATCH', f"/metadata/project/{projectId}/{key}"
+                    ).will_respond_with(200, body=value)
+
+            pact.given(
+                'A port with metadata informations.'
+            ).upon_receiving(
+                f'A call to get the metadata from specific projectId {projectId}.'
+            ).with_request(
+                'GET', f"/metadata/project/{projectId}"
+            ).will_respond_with(200, body=metadata)
+
+            with pact:
+                result = md.updateMetadataForProject(
+                    projectId, updateMetadata)
+            self.assertEqual(result, metadata, msg=metadata)
 
         updateMetadata = {}
-        updateMetadata["Creators"] = [
-            {
-                "creatorName":  "Max Mustermann",
-                "nameType": "Personal",
-                "familyName": "Mustermann",
-                "givenName": "Max",
-            }
-        ]
+        updateMetadata["Creators"] = [{
+            "creatorName":  "Max Mustermann",
+            "nameType": "Personal",
+            "familyName": "Mustermann",
+            "givenName": "Max",
+        }]
         test_metadata_response(updateMetadata)
 
         updateMetadata["PublicationYear"] = "2021"
