@@ -1,4 +1,11 @@
 import unittest
+from pactman import Consumer, Provider
+
+
+pact = Consumer('UseCaseMetadataProject').has_pact_with(
+    Provider('PortMetadata'), port=3000)
+
+testing_address = "localhost:3000"
 
 
 def create_app():
@@ -6,7 +13,7 @@ def create_app():
     # creates a test client
     app = bootstrap(use_default_error=True).app
     # propagate the exceptions to the test client
-    app.config.update({"TESTING": True})
+    app.config.update({"TESTING": testing_address})
 
     return app
 
