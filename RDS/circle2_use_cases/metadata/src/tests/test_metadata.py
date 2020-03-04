@@ -57,7 +57,7 @@ class Test_Metadata(unittest.TestCase):
         projectId = 4
         test_projectId(userId, projectIndex, projectId)
 
-    @unittest.skip("This test is currently not needed, because this is not implemented.")
+    @unittest.skip("This test is currently not needed, because getPort is tested in Project")
     def test_metadata_get_connector(self):
         """
         This unit tests the ability of metadata object to get connector from a projectId.

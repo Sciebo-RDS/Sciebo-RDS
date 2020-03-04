@@ -68,6 +68,19 @@ class Test_Project(unittest.TestCase):
                     self.assertEqual(
                         p.getPorts(metadata=False), project["portIn"] + project["portOut"])
 
+                    # check, if we can find duplicates and metadata
+                    noDuplicates = []
+
+                    for port in project["portIn"] + project["portOut"]:
+                        if port not in noDuplicates:
+                            for prop in port["properties"]:
+                                if prop["portType"] == "metadata":
+                                    noDuplicates.append(port)
+                                    break
+
+                    self.assertEqual(p.getPorts(), noDuplicates)
+                    self.assertEqual(p.getPorts(metadata=True), noDuplicates)
+
     def test_project_init_projectIndex(self):
         userId = 0
         projectIndex = 0
