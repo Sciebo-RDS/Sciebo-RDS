@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from gevent import monkey
+monkey.patch_all()
 
 from __init__ import app
 

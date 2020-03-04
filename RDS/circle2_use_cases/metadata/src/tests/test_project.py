@@ -104,8 +104,10 @@ class Test_Project(unittest.TestCase):
         ).will_respond_with(200, body=project)
 
         with pact:
-            Project(testing=testing_address, userId=userId,
+            p = Project(testing=testing_address, userId=userId,
                     projectIndex=projectIndex)
+
+        self.assertEqual(p.projectId, projectId)
 
     def test_project_init_exceptions(self):
         userId = 0

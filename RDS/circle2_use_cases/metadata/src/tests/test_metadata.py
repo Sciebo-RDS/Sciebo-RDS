@@ -144,12 +144,13 @@ class Test_Metadata(unittest.TestCase):
 
         metadata = {
             "Creators": [{
-                "creatorName":  "Max Mustermann",
+                "name":  "Mustermann, Max",
                 "nameType": "Personal",
                 "familyName": "Mustermann",
                 "givenName": "Max",
             }],
-            "Identifiers": ["xyz"],
+            "Identifiers": [{"identifierType": "DOI",
+                             "identifier": "10.5072/example"}],
             "PublicationYear": "2020",
             "Publisher": "University of Münster",
             "ResourceType": "Poster",
@@ -215,7 +216,8 @@ class Test_Metadata(unittest.TestCase):
             ).will_respond_with(200, body=metadata)
 
             expected_metadata.append({
-                port: metadata
+                "port": port,
+                "metadata": metadata
             })
 
         with pact:
@@ -375,7 +377,8 @@ class Test_Metadata(unittest.TestCase):
             ).will_respond_with(200, body=metadata)
 
             expected_metadata.append({
-                port: metadata
+                "port": port,
+                "metadata": metadata
             })
 
             with pact:

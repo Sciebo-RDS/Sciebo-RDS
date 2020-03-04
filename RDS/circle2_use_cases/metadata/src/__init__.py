@@ -1,8 +1,6 @@
+from gevent import monkey
+monkey.patch_all()
 
-""" Module that monkey-patches json module when it's imported so
-JSONEncoder.default() automatically checks for a special "to_json()"
-method and uses it to encode the object if found.
-"""
 from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 from jaeger_client import Config as jConfig
 import os
@@ -42,7 +40,6 @@ def bootstrap(name='MicroService', *args, **kwargs):
             'api', collection_endpoint_name="index"), validate_responses=True)
 
     return app
-
 
 monkeypatch()
 app = bootstrap("UseCaseMetadata", all=True)

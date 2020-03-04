@@ -51,7 +51,8 @@ class Metadata():
             port = port["port"]
             metadata = self.getMetadataForProjectFromPort(port, projectId)
             d = {
-                port: metadata
+                "port": port,
+                "metadata": metadata
             }
             allMetadata.append(d)
 
@@ -93,7 +94,8 @@ class Metadata():
             metadata = self.updateMetadataForProjectFromPort(
                 port, projectId, updateMetadata)
             d = {
-                    port: metadata
+                "port": port,
+                "metadata": metadata
             }
             allMetadata.append(d)
 

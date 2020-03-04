@@ -46,8 +46,8 @@ paths:
                 type: object
                 properties:
                   projectId:
-                    type: string
-      operationId: ''
+                    type: integer
+      operationId: api.UserProject.get
       description: This endpoint returns the projectId for the given user and the index of project. This is an endpoint for convenience.
 info:
   version: '1.0'
@@ -58,5 +58,5 @@ info:
     url: 'https://www.research-data-services.org'
     email: peter.heiss@uni-muenster.de
 servers:
-  - url: 'http://use-case_metadata:3000/schema'
+  - url: 'http://use-case_metadata:3000/service'
     description: ''
