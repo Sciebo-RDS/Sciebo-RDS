@@ -14,7 +14,29 @@ class Test_Project(unittest.TestCase):
         projectIndex = 0
         projectId = 1
 
-        ports = [[], ["port-zenodo"], ["port-zenodo", "port-owncloud"]]
+        ports = [
+            # no entries
+            [],
+            # one entry
+            [{
+                "port": "port-zenodo",
+                "properties": [{
+                        "portType": "metadata", "value": True
+                }]
+            }],
+            # two entries
+            [{
+                "port": "port-zenodo",
+                "properties": [{
+                    "portType": "metadata", "value": True
+                }]
+            }, {
+                "port": "port-owncloud",
+                "properties": [{
+                    "portType": "fileStorage", "value": True
+                }]
+            }]
+        ]
 
         for portIn in ports:
             for portOut in ports:
@@ -44,7 +66,7 @@ class Test_Project(unittest.TestCase):
                     self.assertEqual(p.portIn, project["portIn"])
                     self.assertEqual(p.portOut, project["portOut"])
                     self.assertEqual(
-                        p.ports, project["portIn"] + project["portOut"])
+                        p.getPorts(metadata=False), project["portIn"] + project["portOut"])
 
     def test_project_init_projectIndex(self):
         userId = 0

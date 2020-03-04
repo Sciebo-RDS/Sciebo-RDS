@@ -10,7 +10,7 @@ class Metadata():
         """
         This is the constructor. No needed parameters.
 
-        Testing has to be valid url string without protocol schema (e.g. http), 
+        Testing has to be valid url string without protocol schema (e.g. http),
         so this class use the given address for all requests.
         """
         self.testing = None
@@ -38,15 +38,20 @@ class Metadata():
         """
         allMetadata = []
 
+        logger.debug("start get metadata method for project")
+
         ports = Project(testing=self.testing,
                         userId=userId, projectIndex=projectIndex, projectId=projectId).ports
 
+        logger.debug(f"got ports {ports}")
+
         # FIXME: parallize me
         for port in ports:
+            logger.debug(f"work on port {port}")
+            port = port["port"]
             metadata = self.getMetadataForProjectFromPort(port, projectId)
             d = {
-                "port": port["port"],
-                "metadata": metadata
+                port: metadata
             }
             allMetadata.append(d)
 
@@ -76,15 +81,19 @@ class Metadata():
         allMetadata = []
 
         # get all ports registered to projectId
+        logger.debug("start update for project method")
         ports = Project(testing=self.testing, projectId=projectId).ports
+        logger.debug("project ports: {}".format(ports))
 
         # FIXME: parallize me
         for port in ports:
+            logger.debug("work on port {}".format(port))
+            port = port["port"]
+
             metadata = self.updateMetadataForProjectFromPort(
                 port, projectId, updateMetadata)
             d = {
-                "port": port,
-                "metadata": metadata
+                    port: metadata
             }
             allMetadata.append(d)
 

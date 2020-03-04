@@ -193,7 +193,18 @@ class Test_Metadata(unittest.TestCase):
 
         expected_metadata = []
 
-        for ports in expected_project["portIn"] + expected_project["portOut"]:
+        # only portOut, because it has a duplicate from portIn and portIn has port-owncloud,
+        # which should be out in results, because it is not of type `metadata`.
+        for ports in expected_project["portOut"]:
+            skip = True
+
+            for prop in ports["properties"]:
+                if prop["portType"] == "metadata":
+                    skip = False
+
+            if skip:
+                continue
+
             port = ports["port"]
             pact.given(
                 'A port with metadata informations.'
@@ -204,8 +215,7 @@ class Test_Metadata(unittest.TestCase):
             ).will_respond_with(200, body=metadata)
 
             expected_metadata.append({
-                "port": port,
-                "metadata": metadata
+                port: metadata
             })
 
         with pact:
@@ -237,7 +247,6 @@ class Test_Metadata(unittest.TestCase):
 
             for key, value in updateMetadata.items():
                 key = str(key).lower()
-                print(key, projectId)
 
                 pact.given(
                     'A port with metadata informations.'
@@ -333,10 +342,20 @@ class Test_Metadata(unittest.TestCase):
                 'GET', f"/projects/id/{projectId}"
             ).will_respond_with(200, body=expected_project)
 
+            expected_metadata = []
+            # add patch requests for all given example ports, which are portType `metadata`
             for key, value in updateMetadata.items():
-                for ports in expected_project["portIn"] + expected_project["portOut"]:
+                for ports in expected_project["portOut"]:
+                    skip = True
+
+                    for prop in ports["properties"]:
+                        if prop["portType"] == "metadata":
+                            skip = False
+
+                    if skip:
+                        continue
+
                     port = ports["port"]
-                    print((projectId, key, port, value))
                     key = str(key).lower()
 
                     pact.given(
@@ -350,15 +369,19 @@ class Test_Metadata(unittest.TestCase):
             pact.given(
                 'A port with metadata informations.'
             ).upon_receiving(
-                f'A call to get the metadata from specific projectId {projectId}.'
+                f'A call to get the metadata from specific projectId {projectId} for key {key} and for port {port}.'
             ).with_request(
                 'GET', f"/metadata/project/{projectId}"
             ).will_respond_with(200, body=metadata)
 
+            expected_metadata.append({
+                port: metadata
+            })
+
             with pact:
                 result = md.updateMetadataForProject(
                     projectId, updateMetadata)
-            self.assertEqual(result, metadata, msg=metadata)
+            self.assertEqual(result, expected_metadata)
 
         updateMetadata = {}
         updateMetadata["Creators"] = [{
