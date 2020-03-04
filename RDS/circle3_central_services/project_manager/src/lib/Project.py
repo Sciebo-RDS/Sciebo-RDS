@@ -1,4 +1,4 @@
-from src.lib.EnumStatus import Status
+from lib.EnumStatus import Status
 
 
 class Project():

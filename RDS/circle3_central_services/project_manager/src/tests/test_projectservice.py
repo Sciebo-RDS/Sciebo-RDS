@@ -1,8 +1,8 @@
 import unittest
-from src.lib.ProjectService import ProjectService
-from src.lib.Port import Port
-from src.lib.Project import Project
-from src.lib.EnumStatus import Status
+from lib.ProjectService import ProjectService
+from lib.Port import Port
+from lib.Project import Project
+from lib.EnumStatus import Status
 
 
 class Test_projectserviceService(unittest.TestCase):
@@ -140,7 +140,7 @@ class Test_projectserviceService(unittest.TestCase):
         # check if the id is used as index relative to user, if username is set.
         self.assertEqual(md.getProject(user="admin", identifier=1), Project("admin", portIn=[portOwncloud]))
 
-        from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
+        from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
         with self.assertRaises(NotFoundIDError):
             md.getProject(user="user", identifier=2)
 
@@ -200,7 +200,7 @@ class Test_projectserviceService(unittest.TestCase):
         md.removeProject("user")
         self.assertEqual([proj.getDict() for proj in md.getProject()], [])
 
-        from src.lib.Exceptions.ProjectServiceExceptions import NotFoundUserError, NotFoundIDError
+        from lib.Exceptions.ProjectServiceExceptions import NotFoundUserError, NotFoundIDError
         with self.assertRaises(NotFoundUserError):
             md.removeProject("user")
 

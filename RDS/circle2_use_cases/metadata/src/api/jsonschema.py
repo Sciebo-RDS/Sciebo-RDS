@@ -1,4 +1,4 @@
-from src.lib.Metadata import Metadata
+from lib.Metadata import Metadata
 from flask import jsonify
 
 def index():

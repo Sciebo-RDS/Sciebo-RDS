@@ -1,4 +1,4 @@
-from src.lib.Metadata import Metadata
+from lib.Metadata import Metadata
 from pactman import Consumer, Provider
 import unittest
 import json

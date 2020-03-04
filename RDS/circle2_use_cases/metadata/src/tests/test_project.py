@@ -1,4 +1,4 @@
-from src.lib.Project import Project
+from lib.Project import Project
 from pactman import Consumer, Provider
 import unittest
 

@@ -1,5 +1,5 @@
 import unittest
-from src.lib.Port import Port
+from lib.Port import Port
 
 
 class Test_Port(unittest.TestCase):

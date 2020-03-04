@@ -1,6 +1,6 @@
 import requests
 import logging
-from src.lib.Project import Project
+from lib.Project import Project
 
 logger = logging.getLogger()
 

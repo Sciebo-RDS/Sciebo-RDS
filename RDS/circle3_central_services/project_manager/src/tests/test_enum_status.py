@@ -1,5 +1,5 @@
 import unittest
-from src.lib.EnumStatus import Status
+from lib.EnumStatus import Status
 
 class Test_Enum_Status(unittest.TestCase):
     def test_successor(self):

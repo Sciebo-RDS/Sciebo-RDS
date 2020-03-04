@@ -1,4 +1,4 @@
-from src.lib.Project import Project
+from lib.Project import Project
 import logging
 
 logger = logging.getLogger()
@@ -73,7 +73,7 @@ class ProjectService():
         if user:
             listOfProjects = self.projects.get(user)
             if listOfProjects is None:
-                from src.lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
+                from lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
                 raise NotFoundUserError(user, identifier)
 
             if identifier is None:
@@ -87,7 +87,7 @@ class ProjectService():
             if identifier < len(listOfProjects):
                 return listOfProjects[identifier]
 
-        from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
+        from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
         raise NotFoundIDError(user, identifier)
 
     def removeProject(self, user: str = None, identifier: int = None):
@@ -108,13 +108,13 @@ class ProjectService():
                     try:
                         del self.projects[user][identifier]
                     except:
-                        from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
+                        from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
                         raise NotFoundIDError(user, identifier)
             else:
                 try:
                     del self.projects[user]
                 except:
-                    from src.lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
+                    from lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
                     raise NotFoundUserError(user, identifier)
             return True
 
@@ -128,7 +128,7 @@ class ProjectService():
                 try:
                     del self.projects[user][rmv_id]
                 except:
-                    from src.lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
+                    from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
                     raise NotFoundIDError(user, identifier)
                 return True
 

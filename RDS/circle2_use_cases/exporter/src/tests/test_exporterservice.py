@@ -1,5 +1,5 @@
 import unittest
-from src.lib.ExporterService import ExporterService
+from lib.ExporterService import ExporterService
 from pactman import Consumer, Provider
 
 

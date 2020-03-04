@@ -7,13 +7,13 @@ import logging
 from pactman import Consumer, Provider
 from server import bootstrap
 
-from src.lib.TokenService import TokenService
-from src.lib.User import User
+from lib.TokenService import TokenService
+from lib.User import User
 import src.Util as Util
 import jwt
 import datetime
-from src.lib.Service import OAuth2Service
-from src.lib.Token import OAuth2Token
+from lib.Service import OAuth2Service
+from lib.Token import OAuth2Token
 
 func = [Util.initialize_object_from_json, Util.initialize_object_from_dict]
 load_object = Util.try_function_on_dict(func)

@@ -10,7 +10,7 @@ import logging
 from connexion_plus import App, MultipleResourceResolver, Util
 from json import JSONEncoder, JSONDecoder
 import Singleton
-from src.lib.ProjectService import ProjectService
+from lib.ProjectService import ProjectService
 
 log_level = logging.DEBUG
 logger = logging.getLogger('')

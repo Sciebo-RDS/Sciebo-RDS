@@ -1,7 +1,7 @@
 import unittest
-from src.lib.Project import Project
-from src.lib.EnumStatus import Status
-from src.lib.Port import Port
+from lib.Project import Project
+from lib.EnumStatus import Status
+from lib.Port import Port
 
 
 class Test_Project(unittest.TestCase):

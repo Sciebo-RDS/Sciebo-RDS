@@ -20,7 +20,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
     import os
     from connexion_plus import App, MultipleResourceResolver, Util
 
-    from src.lib.TokenService import TokenService
+    from lib.TokenService import TokenService
 
     list_openapi = Util.load_oai(
         os.getenv("OPENAPI_FILEPATH", "use-case_token-storage.yml"))
