@@ -12,7 +12,7 @@ def delete(user_id, project_id):
     if resp:
         return None, 204
 
-    raise Exception("given project not removed")
+    raise Exception(f"given project with id {project_id} not removed")
 
 
 def patch(user_id, project_id):

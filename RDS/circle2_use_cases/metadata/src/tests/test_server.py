@@ -296,6 +296,12 @@ class TestMetadata(unittest.TestCase):
 
         self.assertEqual(result, expectedListMetadata)
 
+        # TODO: add more tests for the following cases
+        # - the port responds with a status_code >= 300, this could be follow, when
+        #   - the port does not support an optional metadata property
+        #   - the port does not support a required property
+        #   - the port has a bad implementation (bad request etc.)
+
     @unittest.skip("Does not fit currently")
     def test_creators_id(self):
         """
