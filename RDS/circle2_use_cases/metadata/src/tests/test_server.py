@@ -471,3 +471,28 @@ class TestMetadata(unittest.TestCase):
         In this unit, we test the endpoint for resourcetype to get and update entries.
         """
         pass
+
+    def test_jsonschema(self):
+        result = self.client.get("/metadata/jsonschema").json
+
+        with open("src/datacite_4.3_schema.json", "r") as file:
+            import json
+            d = json.load(file)
+
+            # schema in result should be string
+            expected = {
+                "kernelversion": "4.3", "schema": json.dumps(d)
+            }
+            self.assertEqual(result, expected)
+
+            # schema in result should be not a dict
+            expected = {
+                "kernelversion": "4.3", "schema": d
+            }
+            self.assertNotEqual(result, expected)
+
+            # schema in result should be not a bytestring
+            expected = {
+                "kernelversion": "4.3", "schema": str(json.dumps(d)).encode("utf-8")
+            }
+            self.assertNotEqual(result, expected)

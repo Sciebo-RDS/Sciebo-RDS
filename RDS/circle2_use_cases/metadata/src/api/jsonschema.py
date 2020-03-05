@@ -5,8 +5,9 @@ import json
 
 def index():
     # taken from https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json
-    with open("../../datacite_4.3_schema.json", "r") as file:
+    # example can be found here: https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/example/datacite-example-HasMetadata-v4.json
+    with open("src/datacite_4.3_schema.json", "r") as file:
         return jsonify({
             "kernelversion": "4.3",
-            "schema": json.load(file)
+            "schema": json.dumps(json.load(file))
         })
