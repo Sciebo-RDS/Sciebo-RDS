@@ -1,12 +1,13 @@
+
 from gevent import monkey
 monkey.patch_all()
 
-from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
-from jaeger_client import Config as jConfig
-import os
-import logging
-from connexion_plus import App, MultipleResourceResolver, Util
 from json import JSONEncoder, JSONDecoder
+from connexion_plus import App, MultipleResourceResolver, Util
+import logging
+import os
+from jaeger_client import Config as jConfig
+from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 
 log_level = logging.DEBUG
 logger = logging.getLogger('')
@@ -40,6 +41,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
             'api', collection_endpoint_name="index"), validate_responses=True)
 
     return app
+
 
 monkeypatch()
 app = bootstrap("UseCaseMetadata", all=True)
