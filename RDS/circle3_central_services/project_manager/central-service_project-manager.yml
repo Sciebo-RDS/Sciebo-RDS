@@ -7,22 +7,7 @@ info:
     name: Peter Heiss
     email: peter.heiss@uni-muenster.de
 paths:
-  /:
-    get:
-      summary: Sitemap
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            text/plain:
-              schema:
-                type: string
-      operationId: api.sitemap.index
-      parameters: []
-      description: Returns all projects.
-    parameters: []
-  '/{user-id}':
+  '/user/{user-id}':
     parameters:
       - schema:
           type: string
@@ -54,7 +39,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
-  '/{user-id}/project/{project-id}':
+  '/user/{user-id}/project/{project-id}':
     parameters:
       - schema:
           type: string
@@ -97,7 +82,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Project'
-  '/{user-id}/project/{project-id}/exports':
+  '/user/{user-id}/project/{project-id}/exports':
     parameters:
       - schema:
           type: string
@@ -137,7 +122,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Port'
-  '/{user-id}/project/{project-id}/imports':
+  '/user/{user-id}/project/{project-id}/imports':
     parameters:
       - schema:
           type: string
@@ -177,7 +162,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Port'
-  '/{user-id}/project/{project-id}/imports/{port-id}':
+  '/user/{user-id}/project/{project-id}/imports/{port-id}':
     parameters:
       - schema:
           type: string
@@ -213,7 +198,7 @@ paths:
           description: No Content
         '404':
           description: Not Found
-  '/{user-id}/project/{project-id}/exports/{port-id}':
+  '/user/{user-id}/project/{project-id}/exports/{port-id}':
     parameters:
       - schema:
           type: string
