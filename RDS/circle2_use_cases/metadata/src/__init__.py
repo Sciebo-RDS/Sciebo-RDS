@@ -32,7 +32,7 @@ def monkeypatch():
 
 def bootstrap(name='MicroService', *args, **kwargs):
     list_openapi = Util.load_oai(
-        os.getenv("OPENAPI_FILEPATH", "use-case_metadata.yml;../port_metadata.yml"))
+        os.getenv("OPENAPI_FILEPATH", "use-case_metadata.yml"))
 
     app = App(name, *args, **kwargs)
 

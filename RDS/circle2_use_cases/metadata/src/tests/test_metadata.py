@@ -109,13 +109,19 @@ class Test_Metadata(unittest.TestCase):
         projectId = 0
         port = "localhost:3000"
         metadata = {
-            "Creators": ["admin"],
-            "Identifiers": ["xyz"],
+            "Creators": [{
+                "name":  "Mustermann, Max",
+                "nameType": "Personal",
+                "familyName": "Mustermann",
+                "givenName": "Max",
+            }],
+            "Identifiers": [{"identifierType": "DOI",
+                             "identifier": "10.5072/example"}],
             "PublicationYear": "2020",
             "Publisher": "University of Münster",
             "ResourceType": "Poster",
             "SchemaVersion": "http://datacite.org/schema/kernel-4",
-            "Titles": ["This is a test title"]
+            "Titles": [{"title": "This is a test title", "lang": "de"}]
         }
 
         pact.given(
@@ -155,7 +161,7 @@ class Test_Metadata(unittest.TestCase):
             "Publisher": "University of Münster",
             "ResourceType": "Poster",
             "SchemaVersion": "http://datacite.org/schema/kernel-4",
-            "Titles": ["This is a test title"]
+            "Titles": [{"title": "This is a test title", "lang": "de"}]
         }
 
         expected_project = {
@@ -258,18 +264,10 @@ class Test_Metadata(unittest.TestCase):
                     'PATCH', f"/metadata/project/{projectId}/{key}"
                 ).will_respond_with(200, body=value)
 
-            pact.given(
-                'A port with metadata informations.'
-            ).upon_receiving(
-                f'A call to get the metadata from specific projectId {projectId}.'
-            ).with_request(
-                'GET', f"/metadata/project/{projectId}"
-            ).will_respond_with(200, body=metadata)
-
             with pact:
                 result = md.updateMetadataForProjectFromPort(
                     port, projectId, updateMetadata)
-            self.assertEqual(result, metadata)
+            self.assertEqual(result, updateMetadata)
 
         updateMetadata = {}
         updateMetadata["Creators"] = [{
@@ -368,23 +366,15 @@ class Test_Metadata(unittest.TestCase):
                         'PATCH', f"/metadata/project/{projectId}/{key}"
                     ).will_respond_with(200, body=value)
 
-            pact.given(
-                'A port with metadata informations.'
-            ).upon_receiving(
-                f'A call to get the metadata from specific projectId {projectId} for key {key} and for port {port}.'
-            ).with_request(
-                'GET', f"/metadata/project/{projectId}"
-            ).will_respond_with(200, body=metadata)
-
             expected_metadata.append({
                 "port": port,
-                "metadata": metadata
+                "metadata": updateMetadata
             })
 
             with pact:
                 result = md.updateMetadataForProject(
                     projectId, updateMetadata)
-            self.assertEqual(result, expected_metadata)
+            self.assertEqual(result, expected_metadata, msg="{} \n- {}".format(result, expected_metadata))
 
         updateMetadata = {}
         updateMetadata["Creators"] = [{

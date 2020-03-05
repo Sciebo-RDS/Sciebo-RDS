@@ -108,10 +108,10 @@ class Metadata():
 
         The given updateMetadata has to be a dict with the following struct:
         {
-            "Creator": {
+            "Creator": [{
                 "creatorName": "Max Mustermann", 
                 ...
-            }, 
+            }], 
             "Publisher": {
                     "publisher": "Lorem Ipsum"
             },
@@ -123,14 +123,18 @@ class Metadata():
 
         port = str(port).lower()
 
+        reqMetadata = {}
+
         # FIXME: parallize me
         for key, value in updateMetadata.items():
-            key = str(key).lower()
+            keyL = str(key).lower()
             req = requests.patch(
-                f"http://{self.getPortString(port)}/metadata/project/{projectId}/{key}", json=value)
+                f"http://{self.getPortString(port)}/metadata/project/{projectId}/{keyL}", json=value)
 
             if req.status_code >= 300:
                 logger.exception(
-                    Exception(f"Update metadata for \"{key}\" failed with value \"{value}\""))
+                    Exception(f"Update metadata for \"{keyL}\" failed with value \"{value}\""))
 
-        return self.getMetadataForProjectFromPort(port, projectId)
+            reqMetadata[key] = req.json()
+
+        return reqMetadata

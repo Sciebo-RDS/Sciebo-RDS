@@ -2,9 +2,6 @@ import unittest
 from pactman import Consumer, Provider
 
 
-pact = Consumer('UseCaseMetadataProject').has_pact_with(
-    Provider('PortMetadata'), port=3000)
-
 testing_address = "localhost:3000"
 
 
@@ -21,6 +18,10 @@ def create_app():
 class TestMetadata(unittest.TestCase):
 
     def setUp(self):
+        global pact
+        pact = Consumer('UseCaseMetadataProject').has_pact_with(
+            Provider('PortMetadata'), port=3000)
+
         self.app = create_app()
         self.client = self.app.test_client()
 
@@ -52,15 +53,15 @@ class TestMetadata(unittest.TestCase):
 
         with pact:
             result = self.client.get(
-                f"/service/user/{userId}/project/{projectIndex}").json
+                f"/metadata/user/{userId}/project/{projectIndex}").json
 
         expected = {"projectId": projectId}
 
         self.assertEqual(result, expected)
 
-    def test_creators(self):
+    def test_project_get(self):
         """
-        In this unit, we test the endpoint for creators to get and add entries.
+        In this unit, we test the endpoint for creators to get and update entries.
         """
 
         userId = 0
@@ -99,7 +100,7 @@ class TestMetadata(unittest.TestCase):
 
         with pact:
             result = self.client.get(
-                f"/metadata/project/{projectId}/creators").json
+                f"/metadata/project/{projectId}").json
 
         expectedListMetadata = {"list": [], "length": 0}
         self.assertEqual(result, expectedListMetadata)
@@ -132,7 +133,7 @@ class TestMetadata(unittest.TestCase):
 
         with pact:
             result = self.client.get(
-                f"/metadata/project/{projectId}/creators").json
+                f"/metadata/project/{projectId}").json
 
         expectedListMetadata["list"].append({
             "port": project["portIn"][0]["port"],
@@ -170,16 +171,250 @@ class TestMetadata(unittest.TestCase):
 
         with pact:
             result = self.client.get(
-                f"/metadata/project/{projectId}/creators").json
+                f"/metadata/project/{projectId}").json
 
         self.assertEqual(result, expectedListMetadata)
 
-    @unittest.skip("Currently not implemented")
+    def test_project_update_metadata(self):
+        userId = 0
+        projectIndex = 0
+        projectId = 1
+
+        project = {
+            "userId": userId,
+            "status": 1,
+            "portIn": [],
+            "portOut": [{
+                "port": "port-zenodo",
+                "properties": [{
+                        "portType": "metadata", "value": True
+                }]
+            }],
+            "projectId": projectId,
+            "projectIndex": projectIndex
+        }
+
+        pact.given(
+            'A project manager.'
+        ).upon_receiving(
+            'A call to get the project with port {} to update creators.'.format(
+                project["portIn"] + project["portOut"])
+        ).with_request(
+            'GET', f"/projects/id/{projectId}"
+        ).will_respond_with(200, body=project)
+
+        metadataFull = {
+            "Creators": [{
+                "name":  "Mustermann, Max",
+                "nameType": "Personal",
+                "familyName": "Mustermann",
+                "givenName": "Max",
+            }],
+            "Identifiers": [{"identifierType": "DOI",
+                             "identifier": "10.5072/example"}],
+            "PublicationYear": "2020",
+            "Publisher": "University of Münster",
+            "ResourceType": "Poster",
+            "SchemaVersion": "http://datacite.org/schema/kernel-4",
+            "Titles": [{"title": "This is a test title", "lang": "de"}]
+        }
+
+        metadata = {
+            "Creators": metadataFull["Creators"]
+        }
+
+        pact.given(
+            'A port with metadata informations.'
+        ).upon_receiving(
+            f'A call to update the metadata for creators from specific projectId {projectId}.'
+        ).with_request(
+            'PATCH', f"/metadata/project/{projectId}/creators"
+        ).will_respond_with(200, body=metadataFull["Creators"])
+
+        with pact:
+            result = self.client.patch(
+                f"/metadata/project/{projectId}", json=metadata).json
+
+        expectedListMetadata = {}
+        expectedListMetadata["list"] = [{
+            "port": project["portOut"][0]["port"],
+            "metadata": metadata
+        }]
+        expectedListMetadata["length"] = 1
+
+        self.assertEqual(result, expectedListMetadata)
+
+        metadata = {
+            "Creators": metadataFull["Creators"],
+            "Titles": metadataFull["Titles"],
+            "Publisher": metadataFull["Publisher"]
+        }
+
+        pact.given(
+            'A project manager.'
+        ).upon_receiving(
+            'A call to get the project with port {} to update creators.'.format(
+                project["portIn"] + project["portOut"])
+        ).with_request(
+            'GET', f"/projects/id/{projectId}"
+        ).will_respond_with(200, body=project)
+
+        pact.given(
+            'A port with metadata informations.'
+        ).upon_receiving(
+            f'A call to update the metadata for creators again from specific projectId {projectId}.'
+        ).with_request(
+            'PATCH', f"/metadata/project/{projectId}/creators"
+        ).will_respond_with(200, body=metadataFull["Creators"])
+
+        pact.given(
+            'A port with metadata informations.'
+        ).upon_receiving(
+            f'A call to update the metadata for publisher from specific projectId {projectId}.'
+        ).with_request(
+            'PATCH', f"/metadata/project/{projectId}/publisher"
+        ).will_respond_with(200, body=metadataFull["Publisher"])
+
+        pact.given(
+            'A port with metadata informations.'
+        ).upon_receiving(
+            f'A call to update the metadata for titles from specific projectId {projectId}.'
+        ).with_request(
+            'PATCH', f"/metadata/project/{projectId}/titles"
+        ).will_respond_with(200, body=metadataFull["Titles"])
+
+        with pact:
+            result = self.client.patch(
+                f"/metadata/project/{projectId}", json=metadata).json
+
+        expectedListMetadata = {}
+        expectedListMetadata["list"] = [{
+            "port": project["portOut"][0]["port"],
+            "metadata": metadata
+        }]
+        expectedListMetadata["length"] = 1
+
+        self.assertEqual(result, expectedListMetadata)
+
+    @unittest.skip("Does not fit currently")
     def test_creators_id(self):
         """
         In this unit, we test the endpoint for given creators to get and update a specific entry.
         """
-        pass
+        userId = 0
+        projectIndex = 0
+        projectId = 1
+
+        project = {
+            "userId": userId,
+            "status": 1,
+            "portIn": [],
+            "portOut": [],
+            "projectId": projectId,
+            "projectIndex": projectIndex
+        }
+
+        project["portIn"] = [{
+            "port": "port-zenodo",
+            "properties": [{
+                    "portType": "metadata", "value": True
+            }]
+        }]
+
+        metadata = {
+            "Creators": [{
+                "name":  "Mustermann, Max",
+                "nameType": "Personal",
+                "familyName": "Mustermann",
+                "givenName": "Max",
+            }],
+            "Identifiers": [{"identifierType": "DOI",
+                             "identifier": "10.5072/example"}],
+            "PublicationYear": "2020",
+            "Publisher": "University of Münster",
+            "ResourceType": "Poster",
+            "SchemaVersion": "http://datacite.org/schema/kernel-4",
+            "Titles": [{"title": "This is a test title", "lang": "de"}]
+        }
+
+        # check, if there are creators
+        pact.given(
+            'A project manager.'
+        ).upon_receiving(
+            'A call to get the project with port {} for creators.'.format(
+                project["portIn"] + project["portOut"])
+        ).with_request(
+            'GET', f"/projects/id/{projectId}"
+        ).will_respond_with(200, body=project)
+
+        pact.given(
+            'A port with metadata informations.'
+        ).upon_receiving(
+            f'A call to get the metadata for creator from specific projectId {projectId}.'
+        ).with_request(
+            'GET', f"/metadata/project/{projectId}"
+        ).will_respond_with(200, body=metadata)
+
+        expectedMetadata = []
+        for port in project["portIn"]:
+            expectedMetadata.append({
+                "port": port["port"],
+                "metadata": metadata
+            })
+
+        expectedMetadata = {
+            "length": len(expectedMetadata),
+            "list": expectedMetadata
+        }
+
+        with pact:
+            result = self.client.get(
+                f"/metadata/project/{projectId}/creators").json
+
+        self.assertEqual(result, expectedMetadata)
+
+        # update the creator
+        metadata["Creators"] = [{
+            "name":  "Mimimi, Maxim",
+            "nameType": "Personal",
+            "familyName": "Mimimi",
+            "givenName": "Maxim",
+        }]
+
+        pact.given(
+            'A project manager.'
+        ).upon_receiving(
+            'A call to get the project with port {} for creators to update.'.format(
+                project["portIn"] + project["portOut"])
+        ).with_request(
+            'GET', f"/projects/id/{projectId}"
+        ).will_respond_with(200, body=project)
+
+        pact.given(
+            'A port with metadata informations.'
+        ).upon_receiving(
+            f'A call to get the metadata for creator from specific projectId {projectId}.'
+        ).with_request(
+            'PATCH', f"/metadata/project/{projectId}/creators/0"
+        ).will_respond_with(200, body=metadata)
+
+        with pact:
+            result = self.client.patch(
+                f"/metadata/project/{projectId}/creators/0", json=metadata["Creators"][0]).json
+
+        expectedMetadata = []
+        for port in project["portIn"]:
+            expectedMetadata.append({
+                "port": port["port"],
+                "metadata": metadata
+            })
+
+        expectedMetadata = {
+            "length": len(expectedMetadata),
+            "list": expectedMetadata
+        }
+
+        self.assertEqual(result, expectedMetadata)
 
     @unittest.skip("Currently not implemented")
     def test_titles(self):
