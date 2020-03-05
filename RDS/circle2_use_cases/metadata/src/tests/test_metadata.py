@@ -41,7 +41,7 @@ class Test_Metadata(unittest.TestCase):
             ).upon_receiving(
                 f'A call to get the projectId from userId {userId} and projectIndex {projectIndex}.'
             ).with_request(
-                'GET', f"/projects/{userId}/project/{projectIndex}"
+                'GET', f"/projects/user/{userId}/project/{projectIndex}"
             ).will_respond_with(200, body=project)
 
             # should be the same as projectIndex, because there are no other projects
@@ -78,7 +78,7 @@ class Test_Metadata(unittest.TestCase):
             ).upon_receiving(
                 'A call to get the projectId from userId and projectIndex.'
             ).with_request(
-                'GET', f"/projects/{userId}/project/{projectIndex}"
+                'GET', f"/projects/user/{userId}/project/{projectIndex}"
             ).will_respond_with(200, body=project)
 
             with pact:

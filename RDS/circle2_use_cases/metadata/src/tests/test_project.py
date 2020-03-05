@@ -100,7 +100,7 @@ class Test_Project(unittest.TestCase):
         ).upon_receiving(
             'A call to get the project with projectId.'
         ).with_request(
-            'GET', f"/projects/{userId}/project/{projectIndex}"
+            'GET', f"/projects/user/{userId}/project/{projectIndex}"
         ).will_respond_with(200, body=project)
 
         with pact:

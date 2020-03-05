@@ -91,7 +91,7 @@ class Project():
 
         if userId is not None and projectIndex is not None:
             req = requests.get(
-                f"http://{self.projectManager}/projects/{userId}/project/{projectIndex}")
+                f"http://{self.projectManager}/projects/user/{userId}/project/{projectIndex}")
 
             if req.status_code < 300:
                 return req.json()
