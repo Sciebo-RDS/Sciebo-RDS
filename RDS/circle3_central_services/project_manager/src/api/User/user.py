@@ -1,17 +1,31 @@
 import Singleton
 from flask import jsonify, request
+import logging
+
+logger = logging.getLogger()
 
 
 def get(user_id):
+    result = []
+
     try:
-        return jsonify(Singleton.ProjectService.getProject(user_id))
+        result = Singleton.ProjectService.getProject(user_id)
     except:
         return jsonify([]), 404
 
+    return jsonify(result)
+
 
 def post(user_id):
+    result = None
+
     try:
         json = request.json
-        return jsonify(Singleton.ProjectService.addProject(user_id, portIn=json.get("portIn"), portOut=json.get("portOut")))
+        result = Singleton.ProjectService.addProject(
+            user_id, portIn=json.get("portIn"), portOut=json.get("portOut"))
     except:
-        return jsonify(Singleton.ProjectService.addProject(user_id))
+        result = Singleton.ProjectService.addProject(user_id)
+
+    result = result.getDict()
+    logger.error(result)
+    return jsonify(result)

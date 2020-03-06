@@ -14,12 +14,14 @@ class Test_projectserviceService(unittest.TestCase):
 
         self.assertEqual(md.getProject(), [])
 
-        md.addProject("admin")
+        add = md.addProject("admin")
+        self.assertEqual(add, Project("admin"))
 
         expected = [
             {
                 "userId": "admin",
                 "projectId": 0,
+                "projectIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
@@ -34,6 +36,7 @@ class Test_projectserviceService(unittest.TestCase):
             {
                 "userId": "admin",
                 "projectId": 0,
+                "projectIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
@@ -41,6 +44,7 @@ class Test_projectserviceService(unittest.TestCase):
             {
                 "userId": "user",
                 "projectId": 1,
+                "projectIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
@@ -53,6 +57,7 @@ class Test_projectserviceService(unittest.TestCase):
             {
                 "userId": "admin",
                 "projectId": 0,
+                "projectIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
@@ -65,6 +70,7 @@ class Test_projectserviceService(unittest.TestCase):
             {
                 "userId": "user",
                 "projectId": 1,
+                "projectIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
@@ -95,6 +101,7 @@ class Test_projectserviceService(unittest.TestCase):
             {
                 "userId": "admin",
                 "projectId": 0,
+                "projectIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
@@ -102,6 +109,7 @@ class Test_projectserviceService(unittest.TestCase):
             {
                 "userId": "admin",
                 "projectId": 1,
+                "projectIndex": 1,
                 "status": Status.CREATED.value,
                 "portIn": [portOwncloud.getDict()],
                 "portOut": []
@@ -109,6 +117,7 @@ class Test_projectserviceService(unittest.TestCase):
             {
                 "userId": "user",
                 "projectId": 2,
+                "projectIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [portOwncloud.getDict()],
                 "portOut": [portInvenio.getDict()]
@@ -116,7 +125,7 @@ class Test_projectserviceService(unittest.TestCase):
         ]
 
         
-        self.assertEqual([proj.getDict() for proj in md.getProject()], expected)
+        self.assertEqual(md.getDict(), expected)
 
     def test_projectservice_get_project(self):
         """
@@ -177,6 +186,7 @@ class Test_projectserviceService(unittest.TestCase):
             {
                 "userId": "admin",
                 "projectId": 1,
+                "projectIndex": 1,
                 "status": Status.CREATED.value,
                 "portIn": [portOwncloud.getDict()],
                 "portOut": []
@@ -184,6 +194,7 @@ class Test_projectserviceService(unittest.TestCase):
             {
                 "userId": "user",
                 "projectId": 2,
+                "projectIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [portOwncloud.getDict()],
                 "portOut": [portInvenio.getDict()]

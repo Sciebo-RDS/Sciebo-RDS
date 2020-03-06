@@ -1,3 +1,6 @@
+import Singleton
+from flask import jsonify
+
 def get(project_id):
-    #TODO: implements me and make tests!
-    return ""
+    result = Singleton.ProjectService.getProject(identifier=int(project_id))
+    return jsonify(result)

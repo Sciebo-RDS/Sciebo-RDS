@@ -3,6 +3,7 @@ import logging
 
 logger = logging.getLogger()
 
+
 class ProjectService():
     def __init__(self):
         # format: {user: [<type project>]}
@@ -33,14 +34,23 @@ class ProjectService():
         projectId = self.highest_index
         self.highest_index += 1
 
-        userOrProject.projectId = projectId
-        userOrProject.getDict = monkeypatch_getDict(
-            userOrProject.getDict, userOrProject)
-
         if userOrProject.user not in self.projects:
             self.projects[userOrProject.user] = []
 
-        self.projects.get(userOrProject.user).append(userOrProject)
+        listProject = self.projects[userOrProject.user]
+        
+        userOrProject.projectId = projectId
+        userOrProject.projectIndex = len(listProject)
+
+        def getDict():
+            nonlocal userOrProject, listProject
+            d = userOrProject.dict
+            d["projectId"] = userOrProject.projectId
+            d["projectIndex"] = userOrProject.projectIndex
+            return d
+
+        userOrProject.getDict = getDict
+        listProject.append(userOrProject)
 
         return userOrProject
 
@@ -48,19 +58,19 @@ class ProjectService():
         """
         This method returns all projects, if no parameters were set.
         If the parameter `user` is set, it returns all projects, which belongs to the user.
-        If the `id` is set, it returns the corresponding project.
+        If the `identifier` is set, it returns the corresponding project.
         **Beware:** *You start counting at Zero!*
 
-        If you set the parameter `user` and `id`, it returns the project relative to all user specific projects.
+        If you set the parameter `user` and `identifier`, it returns the project relative to all user specific projects.
 
-        Raises ValueError if parameter `user` or `id` are wrong types and IndexError, when you try to access lists and index is to big.
+        Raises ValueError if parameter `user` or `identifier` are wrong types and IndexError, when you try to access lists and index is to big.
         """
 
         if not isinstance(user, str):
             raise ValueError("Parameter `user` is not of type string.")
 
         if not isinstance(identifier, (int, type(None))):
-            raise ValueError("Parameter `id` is not of type int.")
+            raise ValueError("Parameter identifier` is not of type int.")
 
         if not user:
             if identifier is None:
@@ -71,7 +81,7 @@ class ProjectService():
                         return proj
 
         if user:
-            listOfProjects = self.projects.get(user)
+            listOfProjects = self.projects.get(user, None)
             if listOfProjects is None:
                 from lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
                 raise NotFoundUserError(user, identifier)
@@ -104,7 +114,8 @@ class ProjectService():
                 try:
                     del self.projects[user][rmv_id]
                 except:
-                    logger.debug("id {} not found for user {}, try to find identifier as index".format(identifier, user))
+                    logger.debug("id {} not found for user {}, try to find identifier as index".format(
+                        identifier, user))
                     try:
                         del self.projects[user][identifier]
                     except:
@@ -148,23 +159,17 @@ class ProjectService():
         """
         Returns a dict of all projects with a new attribute "id", which symbolize the project identifier in the system.
         """
-        return [proj.getDict() for proj in self.projects]
+        returnList = []
+
+        for listProjects in self.projects.values():
+            for index, proj in enumerate(listProjects):
+                d = proj.getDict()
+                returnList.append(d)
+
+        return returnList
 
     def __eq__(self, obj):
         if not isinstance(obj, Project):
             return False
 
         return (self.getDict() == obj.getDict())
-
-
-def monkeypatch_getDict(getDictFunc, obj):
-    """
-    Returns a dict of all projects with a new attribute "id", which symbolize the project identifier in the system.
-    """
-
-    def getDict():
-        d = getDictFunc()
-        d["projectId"] = obj.projectId
-        return d
-
-    return getDict

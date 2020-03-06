@@ -78,6 +78,10 @@ class Project():
         return json.dumps(self.getDict())
 
     def getDict(self):
+        return self.dict
+        
+    @property
+    def dict(self):
         obj = {
             "userId": self.user,
             "status": self.status.value,
@@ -94,13 +98,5 @@ class Project():
         d1 = self.getDict()
         d2 = obj.getDict()
 
-        p1 = d1.get("projectId")
-        p2 = d2.get("projectId")
-
-        if p1 is None and p2 is not None:
-            del d2["projectId"]
-
-        elif p1 is not None and p2 is None:
-            del d1["projectId"]
-
-        return (d1 == d2)
+        # check if one dict is subset of the other dict, so we can ignore if there is set projectId etc. through projectService
+        return (d1.items() <= d2.items()) or (d1.items() >= d2.items())

@@ -18,7 +18,11 @@ class TestProjectService(unittest.TestCase):
         self.client = self.app.test_client()
 
     def test_add_user(self):
+        highest_index = 0
+
         def test_user_creation(userId):
+            nonlocal highest_index
+
             resp = self.client.get(f"/projects/user/{userId}")
             self.assertEqual(resp.status_code, 404)
             self.assertEqual(resp.json, [])
@@ -27,8 +31,13 @@ class TestProjectService(unittest.TestCase):
                 "userId": f"{userId}",
                 "status": 1,
                 "portIn": [],
-                "portOut": []
+                "portOut": [],
+                "projectId": highest_index,
+                "projectIndex": 0
             }]
+
+            highest_index += 1
+
             resp = self.client.post(
                 "/projects/user/{}".format(expected[0]["userId"]))
             self.assertEqual(resp.status_code, 200)
@@ -48,7 +57,9 @@ class TestProjectService(unittest.TestCase):
             "userId": "admin",
             "status": 1,
             "portIn": [],
-            "portOut": []
+            "portOut": [],
+            "projectId": 0,
+            "projectIndex": 0
         }]
         resp = self.client.post(
             "/projects/user/{}".format(expected[0]["userId"]))
@@ -72,7 +83,9 @@ class TestProjectService(unittest.TestCase):
             "userId": "admin",
             "status": 1,
             "portIn": [],
-            "portOut": []
+            "portOut": [],
+            "projectId": 0,
+            "projectIndex": 0
         }]
 
         # first it should be empty
@@ -107,7 +120,9 @@ class TestProjectService(unittest.TestCase):
             "userId": "admin",
             "status": 1,
             "portIn": [],
-            "portOut": []
+            "portOut": [],
+            "projectId": 0,
+            "projectIndex": 0
         }]
         resp = self.client.post(
             "/projects/user/{}".format(expected[0]["userId"]))
@@ -150,7 +165,9 @@ class TestProjectService(unittest.TestCase):
             "userId": "admin",
             "status": 1,
             "portIn": [],
-            "portOut": []
+            "portOut": [],
+            "projectId": 0,
+            "projectIndex": 0
         }]
         resp = self.client.post(
             "/projects/user/{}".format(expected[0]["userId"]))
@@ -189,3 +206,31 @@ class TestProjectService(unittest.TestCase):
             "/projects/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected)
         self.assertEqual(resp.status_code, 200)
+
+    def test_get_projectIndex_and_user_from_id(self):
+        # test the projcetId getter
+
+        projectId = 0
+        userId = "admin"
+        projectIndex = 0
+
+        project = {
+            "userId": userId,
+            "projectIndex": projectIndex,
+            "projectId": projectId,
+            "status": 1,
+            "portIn": [],
+            "portOut": [],
+        }
+
+        respProject = self.client.post(
+            "/projects/user/{}".format(userId)).json
+
+        self.assertEqual(respProject, project)
+
+        resp = self.client.get(
+            "/projects/user/{}/project/{}".format(userId, projectIndex)).json
+        resp2 = self.client.get("projects/id/{}".format(projectId)).json
+
+        self.assertEqual(resp, respProject)
+        self.assertEqual(resp2, respProject)

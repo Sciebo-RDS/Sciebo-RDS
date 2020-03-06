@@ -39,6 +39,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
   '/user/{user-id}/project/{project-id}':
     parameters:
       - schema:
@@ -276,24 +281,30 @@ components:
                   value: 'true'
                 - type: metadata
                   value: 'true'
-      type: object
-      properties:
-        userId:
-          type: string
-        status:
-          type: integer
-        portIn:
-          type: array
-          items:
-            $ref: '#/components/schemas/Port'
-        portOut:
-          type: array
-          items:
-            $ref: '#/components/schemas/Port'
-        projectId:
-          type: integer
-        projectIndex:
-          type: integer
+      anyOf:
+        - type: object
+          properties:
+            userId:
+              type: string
+              description: This field will be set through the system.
+            status:
+              type: integer
+              description: This field will be set through the system.
+            portIn:
+              type: array
+              items:
+                $ref: '#/components/schemas/Port'
+            portOut:
+              type: array
+              items:
+                $ref: '#/components/schemas/Port'
+            projectId:
+              type: integer
+              description: This field will be set through the system.
+            projectIndex:
+              type: integer
+              description: This field will be set through the system.
+        - description: 'This is required, because connexion refused otherwise a connection without any requestBody.'
     Port:
       title: Port
       description: 'This model represents a port, which can be used in a project.'
