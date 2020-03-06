@@ -28,10 +28,10 @@ paths:
                   $ref: '#/components/schemas/Project'
         '404':
           description: Not Found
-      operationId: api.user.get
+      operationId: ''
     post:
       summary: Add a project to user
-      operationId: api.user.post
+      operationId: ''
       responses:
         '200':
           description: OK
