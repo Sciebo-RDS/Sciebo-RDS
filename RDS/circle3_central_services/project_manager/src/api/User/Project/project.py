@@ -14,7 +14,3 @@ def delete(user_id, project_id):
 
     raise Exception(f"given project with id {project_id} not removed")
 
-
-def patch(user_id, project_id):
-    # TODO Implement me
-    pass

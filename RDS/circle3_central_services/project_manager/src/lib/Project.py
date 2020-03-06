@@ -1,5 +1,5 @@
 from lib.EnumStatus import Status
-
+from lib.Port import Port
 
 class Project():
     def __init__(self, user, portIn=None, portOut=None):
@@ -11,8 +11,19 @@ class Project():
 
         self.user = user
         self.status = Status.CREATED
-        self.portIn = portIn
-        self.portOut = portOut
+
+        self.portIn = []
+        self.portOut = []
+
+        # test, if the port can be converted to port object
+        try:
+            for port in portIn:
+                self.portIn.append(Port.fromDict(port))
+            for port in portOut:
+                self.portOut.append(Port.fromDict(port))
+        except:
+            self.portIn = portIn
+            self.portOut = portOut
 
     def addPortIn(self, port):
         self.addPort(port, self.portIn)
@@ -79,7 +90,7 @@ class Project():
 
     def getDict(self):
         return self.dict
-        
+
     @property
     def dict(self):
         obj = {

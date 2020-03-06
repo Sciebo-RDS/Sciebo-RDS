@@ -60,23 +60,52 @@ class TestProjectService(unittest.TestCase):
             "portOut": [],
             "projectId": 0,
             "projectIndex": 0
+        }, {
+            "userId": "admin",
+            "status": 1,
+            "portIn": [],
+            "portOut": [],
+            "projectId": 1,
+            "projectIndex": 1
+        }, {
+            "userId": "user",
+            "status": 1,
+            "portIn": [],
+            "portOut": [],
+            "projectId": 2,
+            "projectIndex": 0
         }]
-        resp = self.client.post(
-            "/projects/user/{}".format(expected[0]["userId"]))
-        self.assertEqual(resp.json, expected[0])
-        self.assertEqual(resp.status_code, 200)
 
-        resp = self.client.get(
-            "/projects/user/{}/project/0".format(expected[0]["userId"]))
-        self.assertEqual(resp.json, expected[0])
-        self.assertEqual(resp.status_code, 200)
+        portZenodo = {
+            "port": "port-zenodo",
+            "properties": [{
+                "portType": "metadata",
+                "value": True
+            }]
+        }
 
-        # TODO: patch method test
-        """expected[0]["userId"] = "user"
-        resp = self.client.patch("/projects/user/{}/project/0".format(
-            expected[0]["userId"]), json={"userId": expected[0]["userId"]})
-        self.assertEqual(resp.json, expected[0])
-        self.assertEqual(resp.status_code, 200)"""
+        portOwncloud = {
+            "port": "port-owncloud",
+            "properties": [{
+                "portType": "fileStorage",
+                "value": True
+            }]
+        }
+
+        expected[1]["portIn"].append(portZenodo)
+        expected[2]["portIn"].append(portZenodo)
+        expected[2]["portOut"].append(portOwncloud)
+
+        for ex in expected:
+            resp = self.client.post(
+                "/projects/user/{}".format(ex["userId"]), json=ex)
+            self.assertEqual(resp.json, ex)
+            self.assertEqual(resp.status_code, 200)
+
+            resp = self.client.get(
+                "/projects/user/{}/project/{}".format(ex["userId"], ex["projectIndex"]))
+            self.assertEqual(resp.json, ex)
+            self.assertEqual(resp.status_code, 200)
 
     def test_remove_projects(self):
         expected = [{

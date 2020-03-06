@@ -32,7 +32,6 @@ class Port():
             return False
         return True
 
-
     def getJSON(self):
         import json
         return json.dumps(self.getDict())
@@ -56,6 +55,20 @@ class Port():
             })
 
         return obj
+
+    @classmethod
+    def fromDict(cls, portDict):
+        portName = portDict["port"]
+        fileStorage = False
+        metadata = False
+
+        for prop in portDict["properties"]:
+            if prop["portType"] == "metadata":
+                metadata = prop["value"]
+            elif prop["portType"] == "fileStorage":
+                fileStorage = prop["value"]
+
+        return cls(portName, fileStorage=fileStorage, metadata=metadata)
 
     def __eq__(self, obj):
         if not isinstance(obj, Port):

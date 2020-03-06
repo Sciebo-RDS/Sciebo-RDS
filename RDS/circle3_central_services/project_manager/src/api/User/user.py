@@ -26,6 +26,4 @@ def post(user_id):
     except:
         result = Singleton.ProjectService.addProject(user_id)
 
-    result = result.getDict()
-    logger.error(result)
     return jsonify(result)

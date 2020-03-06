@@ -71,22 +71,6 @@ paths:
       responses:
         '204':
           description: No Content
-    patch:
-      summary: ''
-      operationId: ''
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Project'
-      description: 'Currently not implemented, because there are no function, which could be updated.'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Project'
   '/user/{user-id}/project/{project-id}/exports':
     parameters:
       - schema:
