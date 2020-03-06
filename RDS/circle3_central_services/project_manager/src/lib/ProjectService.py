@@ -1,5 +1,6 @@
 from lib.Project import Project
 import logging
+from lib.EnumStatus import Status
 
 logger = logging.getLogger()
 
@@ -38,7 +39,7 @@ class ProjectService():
             self.projects[userOrProject.user] = []
 
         listProject = self.projects[userOrProject.user]
-        
+
         userOrProject.projectId = projectId
         userOrProject.projectIndex = len(listProject)
 
@@ -54,93 +55,112 @@ class ProjectService():
 
         return userOrProject
 
-    def getProject(self, user="", identifier=None):
+    def getProject(self, user="", projectIndex: int = None, projectId: int = None):
         """
         This method returns all projects, if no parameters were set.
         If the parameter `user` is set, it returns all projects, which belongs to the user.
-        If the `identifier` is set, it returns the corresponding project.
+        If the `projectIndex` is set, it returns the corresponding project.
         **Beware:** *You start counting at Zero!*
 
-        If you set the parameter `user` and `identifier`, it returns the project relative to all user specific projects.
+        If you set the parameter `user` and `projectIndex`, it returns the project relative to all user specific projects.
 
-        Raises ValueError if parameter `user` or `identifier` are wrong types and IndexError, when you try to access lists and index is to big.
+        Raises ValueError if parameter `user` or `projectIndex` are wrong types and IndexError, when you try to access lists and index is to big.
         """
 
         if not isinstance(user, str):
             raise ValueError("Parameter `user` is not of type string.")
 
-        if not isinstance(identifier, (int, type(None))):
-            raise ValueError("Parameter identifier` is not of type int.")
+        if not isinstance(projectIndex, (int, type(None))):
+            raise ValueError("Parameter projectIndex` is not of type int.")
 
         if not user:
-            if identifier is None:
+            if projectId is None:
                 return self.getAllProjects()
-            elif identifier >= 0:
+            elif projectId >= 0:
                 for proj in self.getAllProjects():
-                    if proj.projectId is identifier:
+                    if proj.projectId is projectId:
                         return proj
 
         if user:
             listOfProjects = self.projects.get(user, None)
             if listOfProjects is None:
                 from lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
-                raise NotFoundUserError(user, identifier)
+                raise NotFoundUserError(user, projectIndex)
 
-            if identifier is None:
+            if projectIndex is None:
                 return listOfProjects
 
-            # this assumes, that identifier could also be a projectId
+            # this assumes, that projectIndex could also be a projectId
             # for proj in listOfProjects:
-            #     if proj.projectId == identifier:
+            #     if proj.projectId == projectIndex:
             #         return proj
 
-            if identifier < len(listOfProjects):
-                return listOfProjects[identifier]
+            if projectIndex < len(listOfProjects):
+                return listOfProjects[projectIndex]
 
         from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
-        raise NotFoundIDError(user, identifier)
+        raise NotFoundIDError(user, projectIndex)
 
-    def removeProject(self, user: str = None, identifier: int = None):
+    def removeProject(self, user: str = None, projectIndex: int = None, projectId: int = None):
         """
-        This method removes the projects for given user. If identifier was given, only the corresponding identifier will be removed (no user required, but it is faster).
-        Returns True if it is successful or raise an exception if user or identifier not found. Else returns false.
+        This method removes the projects for given user. 
+
+        If projectIndex was given, only the corresponding projectIndex will be removed (no user required, but it is faster).
+        Returns True if it is successful or raise an exception if user or projectIndex not found. Else returns false.
         """
         if user is not None:
-            if identifier is not None:
+            if projectIndex is not None:
                 rmv_id = None
+
                 for index, proj in enumerate(self.getProject(user)):
-                    if proj.projectId is identifier:
+                    if proj.projectIndex == projectIndex:
                         rmv_id = index
+
                 try:
-                    del self.projects[user][rmv_id]
+                    self.projects[user][rmv_id].status = Status.DELETED
+                    #del self.projects[user][rmv_id]
                 except:
-                    logger.debug("id {} not found for user {}, try to find identifier as index".format(
-                        identifier, user))
+                    logger.debug("id {} not found for user {}, try to find projectIndex as index".format(
+                        projectIndex, user))
+
                     try:
-                        del self.projects[user][identifier]
+                        self.projects[user][projectIndex].status = Status.DELETED
+                        #del self.projects[user][projectIndex]
+                        return True
                     except:
                         from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
-                        raise NotFoundIDError(user, identifier)
+                        raise NotFoundIDError(user, projectIndex)
+
             else:
                 try:
-                    del self.projects[user]
+                    found = False
+                    for proj in self.projects[user]:
+                        if proj.status != Status.DELETED:
+                            proj.status = Status.DELETED
+                            found = True
+
+                    if not found:
+                        raise Exception
+                    #del self.projects[user]
+                    
                 except:
                     from lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
-                    raise NotFoundUserError(user, identifier)
+                    raise NotFoundUserError(user, projectIndex)
             return True
 
-        if identifier is not None:
+        if projectId is not None:
             for user, listOfProjects in self.projects.items():
                 rmv_id = None
                 for index, proj in enumerate(listOfProjects):
-                    if proj.projectId is identifier:
+                    if proj.projectId is projectId:
                         rmv_id = index
 
                 try:
-                    del self.projects[user][rmv_id]
+                    self.projects[user][rmv_id].status = Status.DELETED
+                    #del self.projects[user][rmv_id]
                 except:
                     from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
-                    raise NotFoundIDError(user, identifier)
+                    raise NotFoundIDError(user, projectId)
                 return True
 
         return False
@@ -157,7 +177,7 @@ class ProjectService():
 
     def getDict(self):
         """
-        Returns a dict of all projects with a new attribute "id", which symbolize the project identifier in the system.
+        Returns a dict of all projects with a new attribute "id", which symbolize the project projectIndex in the system.
         """
         returnList = []
 

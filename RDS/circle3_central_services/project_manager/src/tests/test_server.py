@@ -1,5 +1,5 @@
 import unittest
-
+from lib.EnumStatus import Status
 
 def create_app():
     from src import bootstrap
@@ -138,10 +138,11 @@ class TestProjectService(unittest.TestCase):
             expected[0]["userId"]))
         self.assertEqual(resp.status_code, 204)
 
-        # should be empty again
+        # status should be set to deleted
+        expected[0]["status"] = Status.DELETED.value
         resp = self.client.get(
             "/projects/user/{}".format(expected[0]["userId"]))
-        self.assertEqual(resp.json, [])
+        self.assertEqual(resp.json, expected)
         self.assertEqual(resp.status_code, 200)
 
     def test_add_ports(self):
