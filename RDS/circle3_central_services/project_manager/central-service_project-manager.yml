@@ -256,7 +256,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: Get the current status
       tags: []
       responses:
         '200':
@@ -270,7 +270,7 @@ paths:
                     type: integer
       operationId: ''
     patch:
-      summary: ''
+      summary: Increase status to the next value
       operationId: ''
       responses:
         '200':
