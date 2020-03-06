@@ -243,6 +243,46 @@ paths:
                 $ref: '#/components/schemas/Project'
       operationId: ''
       description: ''
+  '/user/{user-id}/project/{project-id}/status':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+      operationId: ''
+    patch:
+      summary: ''
+      operationId: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+      description: This endpoint push the project to the next step.
 components:
   schemas:
     Project:

@@ -19,5 +19,5 @@ class Status(Enum):
     def hasNext(self):
         return not (self.value is len(Status))
 
-    def getJSON(self):
-        return self.name
+    def getDict(self):
+        return self.value

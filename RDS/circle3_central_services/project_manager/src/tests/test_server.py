@@ -264,3 +264,35 @@ class TestProjectService(unittest.TestCase):
 
         self.assertEqual(resp, respProject)
         self.assertEqual(resp2, respProject)
+
+    def test_next_status(self):
+        expected = [{
+            "userId": "admin",
+            "status": 1,
+            "portIn": [],
+            "portOut": [],
+            "projectId": 0,
+            "projectIndex": 0
+        }]
+        resp = self.client.post(
+            "/projects/user/{}".format(expected[0]["userId"]))
+        self.assertEqual(resp.json, expected[0])
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.get("/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
+        self.assertEqual(resp.json, {"status": expected[0]["status"]})
+        self.assertEqual(resp.status_code, 200)
+
+        expected[0]["status"] = 2
+        resp = self.client.patch("/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
+        self.assertEqual(resp.json, {"status": expected[0]["status"]})
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.get("/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
+        self.assertEqual(resp.json, {"status": expected[0]["status"]})
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.get(
+            "/projects/user/{}".format(expected[0]["userId"]))
+        self.assertEqual(resp.json, expected)
+        self.assertEqual(resp.status_code, 200)
