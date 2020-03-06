@@ -6,6 +6,7 @@ RUN apk update && apk add build-base
 
 WORKDIR /app
 ADD ./requirements.txt ./
+ADD ./datacite_4.3_schema.json ./
 RUN pip install -r requirements.txt
 
 # download yaml file for better usability and reproducable behaviour

@@ -66,6 +66,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
+      operationId: ''
     delete:
       summary: Delete a Project
       responses:
