@@ -1,11 +1,11 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "circle2_exporter_service.fullname" . -}}
+{{- $fullName := include "circle3_project_manager.fullname" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-{{ include "circle2_exporter_service.labels" . | indent 4 }}
+{{ include "circle3_project_manager.labels" . | indent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "circle2_exporter_service.fullname" . }}
+  name: {{ include "circle3_project_manager.fullname" . }}
   labels:
-{{ include "circle2_exporter_service.labels" . | indent 4 }}
+{{ include "circle3_project_manager.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "circle2_exporter_service.name" . }}
+      app.kubernetes.io/name: {{ include "circle3_project_manager.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "circle2_exporter_service.name" . }}
+        app.kubernetes.io/name: {{ include "circle3_project_manager.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
     {{- with .Values.imagePullSecrets }}
@@ -25,13 +25,6 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-          - name: "FLASK_HOST_ADDRESS"
-            value: "{{ .Values.environment.FLASK_HOST_ADDRESS }}"
-          - name: CENTRAL-SERVICE_TOKEN-STORAGE
-            valueFrom:
-              configMapKeyRef:
-                name: mservice
-                key: CENTRAL_SERVICE_TOKEN_STORAGE
           - name: HTTP_PROXY
             valueFrom:
               configMapKeyRef:
