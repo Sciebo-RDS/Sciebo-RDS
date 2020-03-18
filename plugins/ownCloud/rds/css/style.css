@@ -1,0 +1,11 @@
+#app-content-wrapper {
+    height: 100%;
+}
+
+#connection-overview {
+    visibility: visible;
+}
+
+#connection-edit-service, #connection-edit-file, #connection-edit-metadata {
+    visibility: hidden;
+}

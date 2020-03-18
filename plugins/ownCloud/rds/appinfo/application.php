@@ -27,5 +27,13 @@ class Application extends App {
                 $c->query('UserId')
             );
         });
+
+        $container->registerService('ConnectionApiController', function($c) {
+            return new ConnectionApiController(
+                $c->query('AppName'),
+                $c->query('Request'),
+                $c->query('UserId')
+            );
+        });
     }
 }

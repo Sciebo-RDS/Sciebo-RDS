@@ -116,7 +116,7 @@ class ServiceApiController extends ApiController
      *
      * @NoAdminRequired
      */
-    public function removeServiceFromUser($servicename)
+    public function delete($servicename)
     {
         $curl = curl_init($this->rdsURL . "/user/" . $this->userId . "/service/" . $servicename);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => "DELETE"];

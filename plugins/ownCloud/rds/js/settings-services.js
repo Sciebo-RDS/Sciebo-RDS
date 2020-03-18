@@ -101,7 +101,7 @@
       removeServiceFromUser: function(servicename) {
         var deferred = $.Deferred();
         var self = this;
-        $.post(this._baseurl + "/service/" + servicename, "json")
+        $.delete(this._baseurl + "/service/" + servicename, "json")
           .done(function(services) {
             self.loadAll();
             deferred.resolve();
@@ -135,9 +135,9 @@
               '<form class="form-inline delete" data-confirm="' +
               t("rds", "Are you sure you want to delete this item?") +
               '" action="' +
-              OC.generateUrl("apps/rds/api/v1") + "/service/" +
+              OC.generateUrl("apps/rds") + "/service/" +
               item["servicename"] +
-              '/delete" method="post">' +
+              '" method="delete">' +
               '<input type="hidden" name="requesttoken" value=' +
               OC.requestToken +
               " />" +
@@ -206,7 +206,7 @@
       }
     };
 
-    var services = new Services(OC.generateUrl("apps/rds/api/v1"));
+    var services = new Services(OC.generateUrl("apps/rds"));
     var view = new View(services);
     services.loadAll().done(function() {
       view.render();

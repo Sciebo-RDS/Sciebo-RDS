@@ -82,7 +82,7 @@ if (!empty($_['clients'])) {
         <input type="submit" class="button icon-delete" value="">
     </form>
 <?php
-        script('rds', 'services');
+        script('rds', 'settings-services');
     } else {
         script('rds', 'authorizeRDS');
         p($l->t('Sciebo RDS is not authorized yet.'));
