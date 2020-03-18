@@ -1,10 +1,10 @@
 <!-- translation strings -->
-<div style="display:none" id="new-note-string"><?php p($l->t('New note')); ?></div>
+<div style="display:none" id="new-connection-string"><?php p($l->t('New connection')); ?></div>
 
 <script id="navigation-tpl" type="text/x-handlebars-template">
-    <li id="new-note"><a href="#"><?php p($l->t('Add note')); ?></a></li>
-    {{#each notes}}
-        <li class="note with-menu {{#if active}}active{{/if}}"  data-id="{{ id }}">
+    <li id="new-connection"><a href="#"><?php p($l->t('Add connection')); ?></a></li>
+    {{#each connections}}
+        <li class="connection with-menu {{#if active}}active{{/if}}"  data-id="{{ id }}">
             <a href="#">{{ title }}</a>
             <div class="app-navigation-entry-utils">
                 <ul>

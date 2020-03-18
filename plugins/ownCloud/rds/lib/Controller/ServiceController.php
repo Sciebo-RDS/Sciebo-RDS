@@ -7,6 +7,7 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 use OCA\RDS\Service\ServiceportService;
+use OCP\AppFramework\Http\RedirectResponse;
 
 class ServiceController extends Controller {
     private $userId;
@@ -59,7 +60,8 @@ class ServiceController extends Controller {
 
     public function delete( $servicename ) {
         return $this->handleNotFound(function () use ($servicename) {
-            return new JSONResponse( $this->service->delete( $servicename, $this->userId ) );
+             new JSONResponse( $this->service->delete( $servicename, $this->userId ) );
+             return new RedirectResponse('index.php/settings/personal?sectionid=additional');
         });
     }
 

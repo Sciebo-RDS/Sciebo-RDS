@@ -103,8 +103,9 @@
         var self = this;
         $.delete(this._baseurl + "/service/" + servicename, "json")
           .done(function(services) {
-            self.loadAll();
-            deferred.resolve();
+            self.loadAll().done(function() {
+              deferred.resolve();
+            });
           })
           .fail(function() {
             deferred.reject();
@@ -127,21 +128,35 @@
         var self = this;
         var source = $("#serviceStable > tbody:last-child");
 
+        function removeService(servicename) {
+          if (
+            confirm(
+              t(
+                "rds",
+                "Are you sure, that you want to delete " + servicename + "?"
+              )
+            )
+          ) {
+            self._services
+              .removeServiceFromUser(servicename)
+              .done(function() {
+                self.render();
+              })
+              .fail(function() {
+                alert("Could not delete note, not found");
+              });
+          }
+        }
+
         this._services._user_services.forEach(function(item, index) {
           source.append(
             "<tr><td>" +
               item["servicename"] +
               "</td><td>" +
-              '<form class="form-inline delete" data-confirm="' +
-              t("rds", "Are you sure you want to delete this item?") +
-              '" action="' +
-              OC.generateUrl("apps/rds") + "/service/" +
+              '<button onclick="removeService(' +
               item["servicename"] +
-              '" method="delete">' +
-              '<input type="hidden" name="requesttoken" value=' +
-              OC.requestToken +
-              " />" +
-              '<input type="submit" class="button icon-delete" value=""></form>' +
+              '); return false;" ' +
+              'class="button icon-delete"></button>' +
               "</td></tr>"
           );
         }, this);
@@ -199,6 +214,7 @@
           }, 300);
         };
       },
+
       render: function() {
         this.renderSelect();
         this.renderButton();

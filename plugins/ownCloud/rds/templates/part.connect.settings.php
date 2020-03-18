@@ -6,7 +6,5 @@
 	</div>
 	<div id="app-settings-content">
 		<!-- Your settings in here -->
-		+ Create new Connection
-		- <i>Remove this connection</i> 
 	</div>
 </div>

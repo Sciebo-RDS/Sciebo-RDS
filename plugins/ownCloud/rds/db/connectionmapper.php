@@ -11,22 +11,22 @@ class ConnectionMapper {
     }
 
     public function insert( $userId ) {
-        # create a new connection in RDS and return it
+        # TODO:  create a new connection in RDS and return it
         return [];
     }
 
     public function update( $conn ) {
-        # update a new connection in RDS and return it
+        # TODO:  update a new connection in RDS and return it
         return [];
     }
 
     public function find( $id, $userId ) {
-        # add here the request to get specific connection for id
+        # TODO:  add here the request to get specific connection for id
         return [];
     }
 
     public function findAll( $userId ) {
-        # add here the request to get all connections for userid
+        # TODO:  add here the request to get all connections for userid
         return [];
     }
 

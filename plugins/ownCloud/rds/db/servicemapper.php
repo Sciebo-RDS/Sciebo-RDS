@@ -103,7 +103,7 @@ class ServiceMapper {
             $svc->setAuthorizeUrl( urldecode( $payload['authorize_url'] ) );
 
             /* FIXME: Level HIGH, Add here security for userid, otherwise a rouge can register his own service account for another user.
-            Any ideas? pub/priv keys?*/
+            Any ideas? pub/priv keys, send current oauth token?*/
             $svc->setState( base64_encode( json_encode( ['jwt' => $jwt, 'user' => $this->userId] ) ) );
             $listOfServices[] = $svc;
         }
