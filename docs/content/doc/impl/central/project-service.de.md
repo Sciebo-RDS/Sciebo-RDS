@@ -10,7 +10,7 @@ weight: 1009
 
 # Einführung
 
-Dieser Service dienst dem Abspeichern von projektspezifischen Informationen.
+Dieser Service dienst dem Abspeichern von projektspezifischen Informationen. Aufgrund der simplen Struktur ist es ein Service, welcher eher ein Datenspeicher darstellt.
 
 # OpenAPI v3
 
