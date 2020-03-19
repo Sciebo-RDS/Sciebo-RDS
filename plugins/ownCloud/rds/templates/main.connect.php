@@ -14,7 +14,7 @@ style( 'rds', 'style' );
 </div>
 
 <script id="connection-overview-tpl" type="text/x-handlebars-template">
-  <?php print_unescaped( $this->inc( 'part.connect.content' ) );
+  <?php print_unescaped( $this->inc( 'part.connect.content.overview' ) );
   ?>
 </script>
 

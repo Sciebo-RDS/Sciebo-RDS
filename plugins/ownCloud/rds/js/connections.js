@@ -131,6 +131,11 @@
 
     View.prototype = {
       renderContent: function() {
+        saveFunction = function() {
+          console.log("nothing todo in saveFunction");
+          return $.when();
+        };
+
         loadId = "#connection-overview-tpl";
         if (self._activeConnection !== undefined) {
           switch (self._stateView) {
@@ -142,6 +147,7 @@
               break;
             default:
               self._stateView = 1;
+              saveFunction = self._connections.updateActive;
               loadId = "#connection-edit-service-tpl";
           }
         }
@@ -153,12 +159,12 @@
         $("#app-content").html(html);
 
         var self = this;
-        // TODO: add a  function, which edits the activeConnection to the new values
+
+        // TODO: add a function, which edits the activeConnection to the new values
 
         // TODO: handle saves
-        function saveConnection() {
-          self._connections
-            .updateActive()
+        function saveCurrentState() {
+          saveFunction()
             .done(function() {
               self.render();
             })
@@ -168,12 +174,13 @@
         }
 
         $("#app-content button #btn-save-connection").click(function() {
-          saveConnection();
+          saveCurrentState();
         });
 
         $("#app-content button #btn-save-connection-and-continue").click(
           function() {
-            saveConnection();
+            self._stateView += 1;
+            saveCurrentState();
           }
         );
       },
