@@ -35,7 +35,7 @@ def monkeypatch():
 
 def bootstrap(name='MicroService', *args, **kwargs):
     list_openapi = Util.load_oai(
-        os.getenv("OPENAPI_FILEPATH", "central-service_project-manager.yml"))
+        os.getenv("OPENAPI_FILEPATH", "project-manager.yml"))
 
     app = App(name, *args, **kwargs)
 
