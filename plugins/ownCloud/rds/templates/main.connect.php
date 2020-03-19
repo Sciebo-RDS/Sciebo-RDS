@@ -10,24 +10,25 @@ style( 'rds', 'style' );
     <?php print_unescaped( $this->inc( 'part.connect.settings' ) ); ?>
   </div>
 
-  <div id="app-content">
-    <div id="app-content-wrapper">
-      <div id="connection-overview">
-        <?php print_unescaped( $this->inc( 'part.connect.content' ) ); ?>
-      </div>
-
-      <div id="connection-edit-service">
-        <?php print_unescaped($this->inc('part.connect.connection.service')); ?>
-      </div>
-
-      <div id="connection-edit-metadata">
-        <?php print_unescaped($this->inc('part.connect.connection.metadata'));
-        ?>
-      </div>
-
-      <div id="connection-edit-file">
-        <?php print_unescaped($this->inc('part.connect.connection.file')); ?>
-      </div>
-    </div>
-  </div>
+  <div id="app-content"></div>
 </div>
+
+<script id="connection-overview-tpl" type="text/x-handlebars-template">
+  <?php print_unescaped( $this->inc( 'part.connect.content' ) );
+  ?>
+</script>
+
+<script id="connection-edit-service-tpl" type="text/x-handlebars-template">
+  <?php print_unescaped( $this->inc( 'part.connect.connection.service' ) );
+  ?>
+</script>
+
+<script id="connection-edit-metadata-tpl" type="text/x-handlebars-template">
+  <?php print_unescaped( $this->inc( 'part.connect.connection.metadata' ) );
+  ?>
+</script>
+
+<script id="connection-edit-file-tpl" type="text/x-handlebars-template">
+  <?php print_unescaped( $this->inc( 'part.connect.connection.file' ) );
+  ?>
+</script>
