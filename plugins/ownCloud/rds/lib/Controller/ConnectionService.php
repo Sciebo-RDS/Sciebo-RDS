@@ -61,9 +61,7 @@ class ConnectionService {
 
     public function delete( $projectIndex, $userId ) {
         try {
-            $conn = $this->mapper->find( $projectIndex, $userId );
-            $this->mapper->delete( $conn );
-            return $conn;
+            return $this->mapper->delete( $projectIndex, $userId );
         } catch( Exception $e ) {
             $this->handleException( $e );
         }

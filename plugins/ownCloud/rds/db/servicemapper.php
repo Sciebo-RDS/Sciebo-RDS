@@ -10,17 +10,19 @@ class ServiceMapper {
 
     }
 
+    # this should be the way to add a service to rds
     public function insert( $userId ) {
         #TODO: create a new connection in RDS and return it
         return [];
     }
 
+    # not used. if you want to update a service, you have to delete it first
     public function update( $servicename, $userId ) {
-        #TODO: update a connection in RDS and return it
         return [];
     }
 
     public function delete( $servicename, $userId ) {
+        $svc = $this->find($servicename, $userId);
 
         $curl = curl_init( $this->rdsURL . '/user/' . $this->userId . '/service/' . $servicename );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
@@ -32,10 +34,10 @@ class ServiceMapper {
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
         curl_close( $curl );
 
-        return $response;
+        return $svc;
     }
 
-    public function find( $id, $userId ) {
+    public function find( $servicename, $userId ) {
         # add here the request to get specific connection for id
 
         $url = $this->rdsURL . '/service/' . $servicename;

@@ -46,9 +46,7 @@ class ServiceportService {
 
     public function delete( $servicename, $userId ) {
         try {
-            $service = $this->mapper->find( $servicename, $userId );
-            $this->mapper->delete( $service );
-            return $service;
+            return $this->mapper->delete( $servicename, $userId );
         } catch( Exception $e ) {
             $this->handleException( $e );
         }
