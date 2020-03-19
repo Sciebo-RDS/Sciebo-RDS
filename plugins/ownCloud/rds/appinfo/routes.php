@@ -6,7 +6,7 @@ $application = new Application();
 $application->registerRoutes( $this, [
     'resources' => [
         # Connection intern API Endpoints
-        'connection' => ['url' => '/connection'],
+        'connection' => ['url' => '/connections'],
 
         # Service intern API Endpoints
         'service' => ['url' => '/service'],
