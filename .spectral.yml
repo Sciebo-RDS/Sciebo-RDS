@@ -1,3 +1,7 @@
-extends: spectral:oas3
-rules:
-    operation-operationId: false
+{
+  "extends": "spectral:oas",
+  "rules": {
+    "oas2-schema": false,
+    "operation-operationId": false
+  }
+}

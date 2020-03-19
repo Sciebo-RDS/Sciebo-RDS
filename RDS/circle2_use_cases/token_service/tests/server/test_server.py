@@ -9,7 +9,7 @@ from server import bootstrap
 
 from lib.TokenService import TokenService
 from lib.User import User
-import Util
+import src.Util as Util
 import jwt
 import datetime
 from lib.Service import OAuth2Service
@@ -106,7 +106,9 @@ class Test_TokenServiceServer(unittest.TestCase):
             "authorize_url": service.authorize_url,
             "date": str(datetime.datetime.now())
         }
+        import base64, json
         state = jwt.encode(data, key, algorithm="HS256")
+        state = base64.b64encode(json.dumps({"jwt": state.decode("utf-8"), "user": user.username}).encode("utf-8"))
 
         # need pact for service from Token Storage
         pact.given(
@@ -126,8 +128,9 @@ class Test_TokenServiceServer(unittest.TestCase):
             'POST', f"/oauth/token"
         ) .will_respond_with(200, body=body)
 
-        expected = OAuth2Token(user, service, body["access_token"], body["refresh_token"], datetime.datetime.now(
-        ) + datetime.timedelta(seconds=body["expires_in"]))
+        # currently not needed
+        #expected = OAuth2Token(user, service, body["access_token"], body["refresh_token"], datetime.datetime.now(
+        #) + datetime.timedelta(seconds=body["expires_in"]))
 
         # need pact for save the access and refresh token in Token Storage
         pact.given(
@@ -137,9 +140,10 @@ class Test_TokenServiceServer(unittest.TestCase):
         ).with_request(
             'POST', f"/user/{user.username}/token"
         ) .will_respond_with(201, body={"success": True})
-
+        
         response = self.client.get(
             "/token-service/redirect", query_string={"code": code, "state": state})
+
         self.assertEqual(response.status_code, 302, msg=response.get_data())
         self.assertEqual(
             response.headers["location"], "http://localhost/token-service/authorization-success", msg=response.get_data())

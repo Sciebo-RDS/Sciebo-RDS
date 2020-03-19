@@ -1,10 +1,10 @@
 from flask import request, redirect
-import Util
+import src.Util as Util
 import jwt
 import os
 import requests
 from jwt.exceptions import InvalidSignatureError
-import Util
+
 import logging
 from lib.Exceptions.ServiceException import CodeNotExchangeable
 from lib.Service import OAuth2Service
@@ -57,6 +57,6 @@ def index():
         return redirect(url)
 
     except Exception as e:
-        logger.error(str(e))
+        logger.exception(e)
         url = getURL() + "/authorization-cancel"
         return redirect(url)

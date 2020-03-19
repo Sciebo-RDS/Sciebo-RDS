@@ -28,10 +28,11 @@ graph TD;
 
       PInvenio[Port Invenio]
       POwncloud[Port Owncloud]
+      ARegister[Adapter Register]
 
       subgraph Use Cases
         UCExporter[Exporter Service]
-        UCToken[Token Service]
+        %% UCToken[Token Service]
         UCMetadata[Metadata Service]
         %% UCProject[Project Service]
 
@@ -58,15 +59,17 @@ graph TD;
 
   %% Ingress --> SPAEx --> UCExporter
   %% Ingress --> SPATS --> CSToken
-  Ingress -->|Nur für die Registration von neuen Tokens| UCToken
+  Ingress -->|Nur für die Registration von neuen Tokens| ARegister
   Ingress --> CSProject & UCExporter & UCMetadata
+
+  ARegister --> CSToken
 
   %% UCExporter --> UCProject
   %% UCProject --> CSProject
-  UCToken --> CSToken
+  %% UCToken --> CSToken
 
-  UCToken --- PInvenio & POwncloud
-  UCExporter & UCMetadata --> PInvenio & POwncloud
+  CSToken --- PInvenio & POwncloud
+  UCExporter & UCMetadata --> PInvenio & POwncloud & CSProject
 
   %% PInvenio --> POwncloud
 

@@ -1,5 +1,5 @@
 import unittest
-from src.lib.ownCloudUser import OwncloudUser
+from lib.ownCloudUser import OwncloudUser
 from pactman import Consumer, Provider
 from urllib.parse import quote
 import atexit

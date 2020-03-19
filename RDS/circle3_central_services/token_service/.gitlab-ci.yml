@@ -9,7 +9,7 @@
 
   only:
       changes:
-      - RDS/circle3_central_services/token_service/*
+      - RDS/ing review is required by re/token_service/*
       - RDS/circle3_central_services/token_service/**/*
 
   artifacts:

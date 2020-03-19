@@ -1,7 +1,7 @@
 import unittest
 import sys
 import os
-from src.lib.upload_zenodo import Zenodo
+from lib.upload_zenodo import Zenodo
 from pactman import Consumer, Provider
 
 api_key = os.getenv("ZENODO_API_KEY", default=None)
