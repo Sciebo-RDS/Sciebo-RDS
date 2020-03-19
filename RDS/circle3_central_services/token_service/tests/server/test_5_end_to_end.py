@@ -51,7 +51,7 @@ class test_end_to_end(unittest.TestCase):
         # prepare user, which wants to make the whole oauth workflow
         user1 = User("user")
 
-        token1 = Token(user1, owncloud, "ABC")
+        token1 = Token(user1, owncloud, "user")
 
         storage.addUser(user1)
         storage.addTokenToUser(token1, user1)
