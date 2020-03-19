@@ -7,10 +7,11 @@ site_name: "My Documentation"
 generate:
 - project.md:
   - ProjectService:
-    - lib.EnumStatus++
-    - lib.MetadataService++
-    - lib.Port++
-    - lib.Project++     # (+ to include members)
+    - lib.EnumStatus
+    - lib.MetadataService
+    - lib.Port
+    - lib.Project     # (+ to include members)
+    - lib.Exceptions.ProjectServiceExceptions
 
 # MkDocs pages configuration. The `<<` operator is sugar added by pydocmd
 # that allows you to use an external Markdown file (eg. your project's README)
