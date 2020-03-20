@@ -138,10 +138,7 @@ paths:
                   list:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        servicename:
-                          type: string
+                      $ref: '#/components/schemas/service'
         '404':
           description: Not Found
           content:
@@ -177,12 +174,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  access_token:
-                    type: string
-                  servicename:
-                    type: string
+                $ref: '#/components/schemas/service'
         '404':
           description: Not Found
         '500':
@@ -209,6 +201,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
       description: Remove the user token for service.
+  '/user/{user-id}/service/{servicename}/projects':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: servicename
+        in: path
+        required: true
+    get:
+      summary: Returns all projects within service
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/serviceprojects'
+      operationId: ''
+      description: 'This endpoints returns all projects, which are currently registered in the service.'
 components:
   schemas:
     oauth_uri:
@@ -263,3 +281,25 @@ components:
         description:
           type: string
       description: Represents an internal server error.
+    serviceprojects:
+      title: serviceprojects
+      type: object
+      properties:
+        id:
+          type: string
+        projectname:
+          type: string
+    service:
+      title: service
+      type: object
+      properties:
+        id:
+          type: string
+        servicename:
+          type: string
+        access_token:
+          type: string
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/serviceprojects'

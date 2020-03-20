@@ -1,11 +1,4 @@
 openapi: 3.0.0
-info:
-  version: '1.0'
-  title: Central Service Project Manager
-  description: 'This api describes the project endpoints, which manages projects and workflows.'
-  contact:
-    name: Peter Heiss
-    email: peter.heiss@uni-muenster.de
 paths:
   '/user/{user-id}':
     parameters:
@@ -342,14 +335,31 @@ components:
         properties:
           type: array
           items:
+            oneOf:
+              - properties:
+                  portType:
+                    type: string
+                    description: 'Only "metadata" and "filestorage" are currently supported as booleans. If type is not set, it defaults to false.'
+                  value:
+                    type: boolean
+              - properties:
+                  key:
+                    type: string
+                  value:
+                    oneOf:
+                      - type: object
+                      - type: string
+                description: You can use this object to save further informations.
             type: object
-            description: ''
-            properties:
-              portType:
-                type: string
-                description: 'Only "metadata" and "filestorage" are currently supported as booleans. If type is not set, it defaults to false.'
-              value:
-                type: boolean
+      required:
+        - port
 servers:
   - url: 'http://central-service_project-manager:3000/projects'
     description: ''
+info:
+  version: '1.0'
+  title: Central Service Project Manager
+  description: 'This api describes the project endpoints, which manages projects and workflows.'
+  contact:
+    name: Peter Heiss
+    email: peter.heiss@uni-muenster.de

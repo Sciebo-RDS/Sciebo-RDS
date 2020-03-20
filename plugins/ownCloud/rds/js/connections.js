@@ -16,6 +16,31 @@
       this._baseUrl = baseUrl;
     };
 
+    var Services = function(baseUrl) {
+      this._baseUrl = baseUrl;
+      this._services = [];
+    };
+
+    Services.prototype = {
+      loadAll: function() {
+        var deferred = $.Deferred();
+        var self = this;
+
+        $.get(this._baseurl + "/user/service", "json")
+          .done(function(services) {
+            self._services = services;
+            deferred.resolve();
+          })
+          .fail(function() {
+            deferred.reject();
+          });
+        return deferred.promise();
+      },
+      getAll: function() {
+        return self._services;
+      }
+    };
+
     var Connections = function(baseUrl) {
       this._baseUrl = baseUrl;
       this._connections = [];
@@ -122,8 +147,9 @@
       }
     };
 
-    var View = function(connections, metadata, files) {
+    var View = function(connections, services, metadata, files) {
       this._connections = connections;
+      this._services = services;
       this._metadata = metadata;
       this._files = files;
       this._stateView = undefined;
@@ -131,38 +157,100 @@
 
     View.prototype = {
       renderContent: function() {
+        var self = this;
+
         saveFunction = function() {
           console.log("nothing todo in saveFunction");
+          // self.metadata.saveCurrent()
           return $.when();
         };
 
-        loadId = "#connection-overview-tpl";
+        function saveCurrentServiceInformations() {
+          var portIn = [];
+          var portOut = [];
+
+          this._services.forEach(element => {
+            var properties = [];
+
+            var value = $(
+              "input[name='radiobutton-" + element.servicename + "']:checked"
+            ).val();
+
+            tempPortIn["port"] = element.servicename;
+            tempPortOut["port"] = element.servicename;
+
+            var propertyProjectInService = {};
+            propertyProjectInService["key"] = "projectName";
+            propertyProjectInService["value"] = value;
+            properties.push(propertyProjectInService);
+
+            $.each(
+              $(
+                "input[name='checkbox-" +
+                  element.servicename +
+                  "-property']:checked"
+              ),
+              function() {
+                var val = $(this).val();
+
+                var property = {};
+                property["portType"] = val;
+                property["value"] = true;
+                properties.push(property);
+              }
+            );
+
+            tempPortIn["properties"] = properties;
+            tempPortOut["properties"] = properties;
+
+            if (
+              $(
+                'input[id="checkbox-' + element.servicename + '-ingoing"]'
+              ).prop("checked")
+            ) {
+              portIn.push(tempPortIn);
+            }
+
+            if (
+              $(
+                'input[id="checkbox-' + element.servicename + '-outgoing"]'
+              ).prop("checked")
+            ) {
+              portOut.push(tempPortOut);
+            }
+          });
+
+          var projectIndex = self._connections.getActive().projectIndex;
+          var status = self._connections.getActive().status;
+
+          self._connections.updateActive(projectIndex, status, portIn, portOut);
+        }
+
+        loadView = "#connection-overview-tpl";
         if (self._activeConnection !== undefined) {
           switch (self._stateView) {
             case 2:
-              loadId = "#connection-edit-metadata-tpl";
+              loadView = "#connection-edit-metadata-tpl";
               break;
             case 3:
-              loadId = "#connection-edit-file-tpl";
+              loadView = "#connection-edit-file-tpl";
               break;
             default:
               self._stateView = 1;
-              saveFunction = self._connections.updateActive;
-              loadId = "#connection-edit-service-tpl";
+              saveFunction = saveCurrentServiceInformations;
+              loadView = "#connection-edit-service-tpl";
           }
         }
 
-        var source = $(loadId).html();
+        var source = $(loadView).html();
         var template = Handlebars.compile(source);
-        var html = template({ connection: this._connections.getActive() });
+        var html = template({
+          connection: this._connections.getActive(),
+          services: this._services.getAll()
+        });
 
         $("#app-content").html(html);
 
-        var self = this;
-
-        // TODO: add a function, which edits the activeConnection to the new values
-
-        // TODO: handle saves
         function saveCurrentState() {
           saveFunction()
             .done(function() {
@@ -249,7 +337,8 @@
         var self = this;
 
         return $.when(
-          self._connections.loadAll()
+          self._connections.loadAll(),
+          self._services.loadAll()
           // needed later
           //self._metadata.loadAll(),
           //self._files.loadAll()
@@ -258,10 +347,11 @@
     };
 
     var connections = new Connections(OC.generateUrl("/apps/rds/connections"));
+    var services = new Services(OC.generateUrl("/apps/rds/connections"));
     var metadata = new Metadata(undefined);
-    var files = new Metadata(undefined);
+    var files = new Files(undefined);
 
-    var view = new View(connections, metadata, files);
+    var view = new View(connections, services, metadata, files);
     view
       .loadAll()
       .done(function() {

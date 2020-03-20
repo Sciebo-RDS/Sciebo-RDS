@@ -9,13 +9,29 @@ class Service extends Entity implements JsonSerializable {
 
     protected $servicename;
     protected $authorizeUrl;
-    protected $date;
+    protected $state;
 
     public function jsonSerialize() {
         return [
             'servicename' => $this->servicename,
             'authorizeUrl' => $this->authorizeUrl,
-            'state' => $this->date
+            'state' => $this->state,
+        ];
+    }
+}
+
+class RegisteredService extends Entity implements JsonSerializable {
+    protected $servicename;
+    protected $userId;
+    protected $serviceProjects;
+    protected $accessToken;
+
+    public function jsonSerialize() {
+        return [
+            'servicename' => $this->servicename,
+            'userId' => $this->userId,
+            'accessToken' => $this->accessToken,
+            'serviceProjects' => $this->serviceProjects,
         ];
     }
 }

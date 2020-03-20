@@ -86,7 +86,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Publisher'
-      description: 'The name of the entitythat holds, archives, publishes prints, distributes, releases, issues, or produces the resource. This property will be used to formulate the citation, so consider the prominence of the role. For software, use Publisher for the code repository. If there is an entity other than a code repository, that "holds, archives, publishes, prints, distributes, releases, issues, or produces" the code, use the property Contributor/contributorType/hosting Institution for the code repository.'
+      description: 'The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource. This property will be used to formulate the citation, so consider the prominence of the role. For software, use Publisher for the code repository. If there is an entity other than a code repository, that "holds, archives, publishes, prints, distributes, releases, issues, or produces" the code, use the property Contributor/contributorType/hosting Institution for the code repository.'
+      operationId: ''
     patch:
       summary: Update Publisher
       responses:
