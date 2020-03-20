@@ -63,14 +63,14 @@ class ConnectionController extends Controller
      * Update a single connection in rds system
      *
      * @param integer $projectIndex
+     * @param integer $status
      * @param array $portIn
      * @param array $portOut
-     * @param integer $status
      * @return string returns the updated object as json
      *
      * @NoAdminRequired
      */
-    public function update($projectIndex, $portIn, $portOut, $status) {
+    public function update($projectIndex, $status, $portIn, $portOut) {
         return new JSONResponse($this->service->update( $this->userId, $projectIndex, $portIn, $portOut, $status));
     }
 
