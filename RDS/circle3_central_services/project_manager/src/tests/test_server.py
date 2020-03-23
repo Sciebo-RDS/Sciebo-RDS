@@ -1,6 +1,7 @@
 import unittest
 from lib.EnumStatus import Status
 
+
 def create_app():
     from src import bootstrap
     # creates a test client
@@ -279,20 +280,54 @@ class TestProjectService(unittest.TestCase):
         self.assertEqual(resp.json, expected[0])
         self.assertEqual(resp.status_code, 200)
 
-        resp = self.client.get("/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
+        resp = self.client.get(
+            "/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
         self.assertEqual(resp.json, {"status": expected[0]["status"]})
         self.assertEqual(resp.status_code, 200)
 
         expected[0]["status"] = 2
-        resp = self.client.patch("/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
+        resp = self.client.patch(
+            "/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
         self.assertEqual(resp.json, {"status": expected[0]["status"]})
         self.assertEqual(resp.status_code, 200)
 
-        resp = self.client.get("/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
+        resp = self.client.get(
+            "/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
         self.assertEqual(resp.json, {"status": expected[0]["status"]})
         self.assertEqual(resp.status_code, 200)
 
         resp = self.client.get(
             "/projects/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_customProperties(self):
+        custom = {"key": "serviceProjectId", "value": "12345"}
+
+        portExpected = {
+            "port": "port-zenodo",
+            "properties":
+            [
+                {
+                    "portType": "customProperties",
+                    "value": custom
+                }
+            ]
+        }
+
+        expected = [{
+            "userId": "admin",
+            "status": 1,
+            "portIn": [portExpected],
+            "portOut": [],
+            "projectId": 0,
+            "projectIndex": 0
+        }]
+        resp = self.client.post(
+            "/projects/user/{}".format(expected[0]["userId"]))
+
+        resp = self.client.post("/projects/user/{}/project/{}/imports".format(
+            expected[0]["userId"], 0), json=expected[0]["portIn"][0])
+
+        self.assertEqual(resp.json, expected[0]["portIn"])
         self.assertEqual(resp.status_code, 200)

@@ -335,22 +335,19 @@ components:
         properties:
           type: array
           items:
-            oneOf:
-              - properties:
-                  portType:
-                    type: string
-                    description: 'Only "metadata" and "filestorage" are currently supported as booleans. If type is not set, it defaults to false.'
-                  value:
-                    type: boolean
-              - properties:
-                  key:
-                    type: string
-                  value:
-                    oneOf:
-                      - type: object
-                      - type: string
-                description: You can use this object to save further informations.
             type: object
+            properties:
+              portType:
+                type: string
+                description: |-
+                  Only "metadata" and "filestorage" are currently supported as booleans. If type is not set, it defaults to false.
+                  If you set customProperties as portType, you can specify an array of objects as value.
+              value:
+                oneOf:
+                  - type: boolean
+                  - type: array
+                    items:
+                      type: object
       required:
         - port
 servers:

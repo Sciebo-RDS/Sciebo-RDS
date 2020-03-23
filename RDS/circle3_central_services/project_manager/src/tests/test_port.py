@@ -76,3 +76,37 @@ class Test_Port(unittest.TestCase):
         self.assertEqual(portOwncloud.getDict(), expected)
         self.assertEqual(portOwncloud, Port(
             "port-owncloud", fileStorage=True, metadata=True))
+
+    def test_port_customProperties(self):
+        custom = [
+            {
+                "key": "serviceProjectId",
+                "value": "12345"
+            }
+        ]
+
+        expected = {
+            "port": "port-owncloud",
+            "properties":
+                [
+                    {
+                        "portType": "customProperties",
+                        "value": custom
+                    }
+                ]
+        }
+
+        portOwncloud = Port("port-owncloud", customProperties=custom)
+
+        self.assertEqual(portOwncloud.getDict(), expected)
+
+        expected["port"] = "port-zenodo"
+        portZenodo = Port("port-zenodo")
+        portZenodo.setProperty("customProperties", custom)
+
+        self.assertEqual(portZenodo.getDict(), expected)
+
+        self.assertEqual(portZenodo, Port.fromDict(portZenodo.getDict()))
+        self.assertNotEqual(portOwncloud, Port.fromDict(portZenodo.getDict()))
+        self.assertNotEqual(Port("port-zenodo"),
+                            Port.fromDict(portZenodo.getDict()))
