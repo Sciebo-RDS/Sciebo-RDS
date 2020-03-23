@@ -310,7 +310,7 @@ class TestProjectService(unittest.TestCase):
             [
                 {
                     "portType": "customProperties",
-                    "value": custom
+                    "value": [custom]
                 }
             ]
         }
@@ -329,5 +329,57 @@ class TestProjectService(unittest.TestCase):
         resp = self.client.post("/projects/user/{}/project/{}/imports".format(
             expected[0]["userId"], 0), json=expected[0]["portIn"][0])
 
-        self.assertEqual(resp.json, expected[0]["portIn"])
+        self.assertEqual(resp.json, expected[0]["portIn"], msg=resp.json)
         self.assertEqual(resp.status_code, 200)
+
+        expected[0]["portOut"].append(portExpected)
+
+        resp = self.client.post("/projects/user/{}/project/{}/exports".format(
+            expected[0]["userId"], 0), json=expected[0]["portOut"][0])
+
+        self.assertEqual(resp.json, expected[0]["portOut"])
+        self.assertEqual(resp.status_code, 200)
+
+    def test_customProperties_wrong(self):
+        custom = {"key": "serviceProjectId", "value": "12345"}
+
+        portNotExpected = {
+            "port": "port-zenodo",
+            "properties":
+            [
+                {
+                    "portType": "customProperty",
+                    "value": [custom]
+                }
+            ]
+        }
+
+        notExpected = [{
+            "userId": "admin",
+            "status": 1,
+            "portIn": [portNotExpected],
+            "portOut": [],
+            "projectId": 0,
+            "projectIndex": 0
+        }]
+        resp = self.client.post(
+            "/projects/user/{}".format(notExpected[0]["userId"]))
+
+        resp = self.client.post("/projects/user/{}/project/{}/imports".format(
+            notExpected[0]["userId"], 0), json=notExpected[0]["portIn"][0])
+
+        self.assertNotEqual(resp.json, notExpected[0]["portIn"], msg=resp.json)
+        self.assertEqual(resp.status_code, 200)
+
+        notExpected[0]["portOut"].append(portNotExpected)
+
+        resp = self.client.post("/projects/user/{}/project/{}/exports".format(
+            notExpected[0]["userId"], 0), json=notExpected[0]["portOut"][0])
+
+        self.assertNotEqual(
+            resp.json, notExpected[0]["portOut"])
+        self.assertEqual(resp.status_code, 200)
+
+        del portNotExpected["properties"][0]
+
+        self.assertEqual(resp.json, [portNotExpected])

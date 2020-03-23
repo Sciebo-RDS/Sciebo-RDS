@@ -15,6 +15,7 @@ def post(user_id, project_id):
     fs = False
     md = False
     cp = None
+    
     for prop in json.get("properties", []):
         if prop.get("portType", "") == "fileStorage":
             fs = prop["value"]
