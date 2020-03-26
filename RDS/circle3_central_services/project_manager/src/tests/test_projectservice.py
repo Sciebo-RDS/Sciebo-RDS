@@ -239,6 +239,11 @@ class Test_projectserviceService(unittest.TestCase):
         with self.assertRaises(NotFoundIDError):
             md.removeProject("user", projectIndex=2)
 
+<<<<<<< HEAD
+=======
+        
+
+>>>>>>> master
     def test_projectservice_get_projectId(self):
         """
         This unit tests the projectid, if it goes up, although we remove some projects.
@@ -268,6 +273,7 @@ class Test_projectserviceService(unittest.TestCase):
         self.assertNotEqual(id3, id1)
 
         self.assertNotEqual(id_old, id1)
+<<<<<<< HEAD
 
     def test_projectservice_customProp(self):
         """
@@ -283,3 +289,5 @@ class Test_projectserviceService(unittest.TestCase):
 
         # we remove the first one, so there are only 2 projects left
         self.assertEqual([portOwncloud], md.getProject(projectId=id1).getPortIn())
+=======
+>>>>>>> master

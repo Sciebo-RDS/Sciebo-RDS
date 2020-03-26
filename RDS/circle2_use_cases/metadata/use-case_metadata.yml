@@ -47,12 +47,15 @@ paths:
                 properties:
                   projectId:
                     type: integer
+<<<<<<< HEAD
                   length:
                     type: integer
                   list:
                     type: array
                     items:
                       $ref: '#/components/schemas/Property'
+=======
+>>>>>>> master
       operationId: api.UserProject.get
       description: This endpoint returns the projectId for the given user and the index of project. This is an endpoint for convenience.
   '/project/{project-id}':

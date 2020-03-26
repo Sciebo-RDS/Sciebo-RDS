@@ -22,6 +22,7 @@ service:
      prometheus.io/scrape: 'true'
 
 ingress:
+<<<<<<< HEAD
   enabled: false
   annotations: {}
     # kubernetes.io/ingress.class: nginx
@@ -34,6 +35,21 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+=======
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx-internal
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: sciebords-dev.uni-muenster.de
+      paths:
+      - /projects
+
+  tls:
+    - secretName: sciebords-tls-public
+      hosts:
+        - sciebords-dev.uni-muenster.de
+>>>>>>> master
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

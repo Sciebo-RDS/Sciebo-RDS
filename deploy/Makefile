@@ -28,9 +28,15 @@ service_token:
 token_storage:
 	helm upgrade circle3-token-storage circle3_token_storage --install
 
+metadata:
+	helm upgrade circle2-metadata-service circle2_metadata_service --install
+
+project_manager:
+	helm upgrade circle3-project-manager circle3_project_manager --install
+
 circle1: port_zenodo port_owncloud
-circle2: service_token service_exporter
-circle3: token_storage
+circle2: service_token service_exporter metadata
+circle3: token_storage project_manager
 
 features:
 	helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
@@ -55,9 +61,15 @@ remove_service_token:
 remove_token_storage:
 	helm delete --purge circle3-token-storage || true
 
+remove_metadata:
+	helm delete --purge circle2-metadata-service || true
+
+remove_project_manager:
+	helm delete --purge circle3-project-manager || true
+
 uninstall_circle1: remove_port_zenodo remove_port_owncloud
-uninstall_circle2: remove_service_token remove_service_exporter
-uninstall_circle3: remove_token_storage
+uninstall_circle2: remove_service_token remove_service_exporter remove_metadata
+uninstall_circle3: remove_token_storage remove_project_manager
 
 install: install_configmaps features circle3 circle2 circle1
 uninstall: uninstall_circle1 uninstall_circle2 uninstall_circle3 remove_features uninstall_configmaps
