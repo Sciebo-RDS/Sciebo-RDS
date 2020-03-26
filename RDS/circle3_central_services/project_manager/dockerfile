@@ -11,8 +11,8 @@ RUN pip install -r requirements.txt
 # download yaml file for better usability and reproducable behaviour
 RUN apk add curl
 
-ENV OPENAPI_FILEPATH_EXTERNAL   "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/exporter/use-case_exporter.yml"
-ENV OPENAPI_FILEPATH            "exporter.yml"
+ENV OPENAPI_FILEPATH_EXTERNAL   "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/project_manager/central-service_project-manager.yml"
+ENV OPENAPI_FILEPATH            "project_manager.yml"
 RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
 
 # now add everything else, which changes often

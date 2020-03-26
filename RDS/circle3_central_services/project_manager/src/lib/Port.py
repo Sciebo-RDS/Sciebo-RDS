@@ -23,9 +23,9 @@ class Port():
         if not isinstance(value, bool):
             raise ValueError("parameter \"value\" is not of type boolean.")
 
-        if portType is "fileStorage":
+        if portType == "fileStorage":
             self.fileStorage = value
-        elif portType is "metadata":
+        elif portType == "metadata":
             self.metadata = value
         else:
             # if nothing was found, return false
