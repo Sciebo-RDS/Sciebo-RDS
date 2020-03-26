@@ -52,10 +52,14 @@ class test_end_to_end(unittest.TestCase):
         user1 = User("user")
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         token1 = Token(user1, owncloud, "ABC")
 =======
         token1 = Token(user1, owncloud, "user")
 >>>>>>> master
+=======
+        token1 = Token(user1, owncloud, "user")
+>>>>>>> metadataservice
 
         storage.addUser(user1)
         storage.addTokenToUser(token1, user1)
