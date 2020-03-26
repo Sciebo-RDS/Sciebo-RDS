@@ -50,16 +50,7 @@ class test_end_to_end(unittest.TestCase):
 
         # prepare user, which wants to make the whole oauth workflow
         user1 = User("user")
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-        token1 = Token(user1, owncloud, "ABC")
-=======
         token1 = Token(user1, owncloud, "user")
->>>>>>> master
-=======
-        token1 = Token(user1, owncloud, "user")
->>>>>>> metadataservice
 
         storage.addUser(user1)
         storage.addTokenToUser(token1, user1)
@@ -102,8 +93,8 @@ class test_end_to_end(unittest.TestCase):
 
             req = requests.post(owncloud.refresh_url, data=data, auth=(
                 owncloud.client_id, owncloud.client_secret)).json()
-            oauthtoken = OAuth2Token(user, owncloud, req["access_token"], req["refresh_token"], datetime.now(
-            ) + timedelta(seconds=req["expires_in"]))
+            oauthtoken = OAuth2Token(
+                owncloud.servicename, req["access_token"], req["refresh_token"], datetime.now() + timedelta(seconds=req["expires_in"]))
             return oauthtoken
 
         oauthtoken1 = get_access_token(user1, token1)
@@ -140,7 +131,7 @@ class test_end_to_end(unittest.TestCase):
             logger.warning(
                 "No refresh token from previous test run was found, so we collect a new one. \nFilepath: {}".format(filepath))
             # initialize like user1 with password
-            token2 = Token(oauthuser2, owncloud, "user_refresh")
+            token2 = Token(owncloud.servicename, "user_refresh")
 
             # generate an oauthtoken like before and overwrite oauthtoken1
             oauthtoken2 = get_access_token(oauthuser2, token2)

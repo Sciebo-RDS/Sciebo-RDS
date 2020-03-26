@@ -14,25 +14,17 @@ def post(user_id, project_id):
 
     fs = False
     md = False
-<<<<<<< HEAD
     cp = None
     
-=======
->>>>>>> master
     for prop in json.get("properties", []):
         if prop.get("portType", "") == "fileStorage":
             fs = prop["value"]
         elif prop.get("portType", "") == "metadata":
             md = prop["value"]
-<<<<<<< HEAD
         elif prop.get("portType", "") == "customProperties":
             cp = prop["value"]
 
     p = Port(json["port"], fileStorage=fs, metadata=md, customProperties=cp)
-=======
-
-    p = Port(json["port"], fileStorage=fs, metadata=md)
->>>>>>> master
 
     Singleton.ProjectService.getProject(user_id, int(project_id)).addPortIn(p)
     return jsonify(Singleton.ProjectService.getProject(user_id, int(project_id)).getPortIn())

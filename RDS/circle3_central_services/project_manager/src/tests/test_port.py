@@ -76,7 +76,6 @@ class Test_Port(unittest.TestCase):
         self.assertEqual(portOwncloud.getDict(), expected)
         self.assertEqual(portOwncloud, Port(
             "port-owncloud", fileStorage=True, metadata=True))
-<<<<<<< HEAD
 
     def test_port_customProperties(self):
         custom = [
@@ -111,5 +110,3 @@ class Test_Port(unittest.TestCase):
         self.assertNotEqual(portOwncloud, Port.fromDict(portZenodo.getDict()))
         self.assertNotEqual(Port("port-zenodo"),
                             Port.fromDict(portZenodo.getDict()))
-=======
->>>>>>> master

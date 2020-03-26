@@ -6,20 +6,11 @@ site_name: "My Documentation"
 # documented. Higher indentation leads to smaller header size.
 generate:
 - project.md:
-<<<<<<< HEAD
   - ProjectService:
     - lib.EnumStatus++
     - lib.MetadataService++
     - lib.Port++
     - lib.Project++     # (+ to include members)
-=======
-  - lib.Port++
-  - lib.Project++     # (+ to include members)
-  - lib.ProjectService++
-  - lib.EnumStatus.Status++
-  - lib.Exceptions.ProjectServiceExceptions.NotFoundIDError
-  - lib.Exceptions.ProjectServiceExceptions.NotFoundUserError
->>>>>>> master
 
 # MkDocs pages configuration. The `<<` operator is sugar added by pydocmd
 # that allows you to use an external Markdown file (eg. your project's README)

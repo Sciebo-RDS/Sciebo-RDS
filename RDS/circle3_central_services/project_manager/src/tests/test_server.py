@@ -1,10 +1,7 @@
 import unittest
 from lib.EnumStatus import Status
 
-<<<<<<< HEAD
 
-=======
->>>>>>> master
 def create_app():
     from src import bootstrap
     # creates a test client
@@ -283,17 +280,12 @@ class TestProjectService(unittest.TestCase):
         self.assertEqual(resp.json, expected[0])
         self.assertEqual(resp.status_code, 200)
 
-<<<<<<< HEAD
         resp = self.client.get(
             "/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
-=======
-        resp = self.client.get("/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
->>>>>>> master
         self.assertEqual(resp.json, {"status": expected[0]["status"]})
         self.assertEqual(resp.status_code, 200)
 
         expected[0]["status"] = 2
-<<<<<<< HEAD
         resp = self.client.patch(
             "/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
         self.assertEqual(resp.json, {"status": expected[0]["status"]})
@@ -301,13 +293,6 @@ class TestProjectService(unittest.TestCase):
 
         resp = self.client.get(
             "/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
-=======
-        resp = self.client.patch("/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
-        self.assertEqual(resp.json, {"status": expected[0]["status"]})
-        self.assertEqual(resp.status_code, 200)
-
-        resp = self.client.get("/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
->>>>>>> master
         self.assertEqual(resp.json, {"status": expected[0]["status"]})
         self.assertEqual(resp.status_code, 200)
 
@@ -315,7 +300,6 @@ class TestProjectService(unittest.TestCase):
             "/projects/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected)
         self.assertEqual(resp.status_code, 200)
-<<<<<<< HEAD
 
     def test_customProperties(self):
         custom = {"key": "serviceProjectId", "value": "12345"}
@@ -399,5 +383,3 @@ class TestProjectService(unittest.TestCase):
         del portNotExpected["properties"][0]
 
         self.assertEqual(resp.json, [portNotExpected])
-=======
->>>>>>> master
