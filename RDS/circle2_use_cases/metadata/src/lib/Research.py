@@ -4,58 +4,58 @@ import logging
 logger = logging.getLogger()
 
 
-class Project():
+class Research():
     """
     This class enables metadataservice to reuse requests and let it easier to use.
     *Currently* only for get requests.
     """
 
-    def __init__(self, userId: str = None, projectIndex: int = None, projectId: int = None, testing: str = None):
+    def __init__(self, userId: str = None, researchIndex: int = None, researchId: int = None, testing: str = None):
         """
-        This constructor loads all project relevant informations.
+        This constructor loads all research relevant informations.
 
         The parameter testing enables the unittest to make requests to a mock server.
         """
 
         self.testing = testing
-        self.projectManager = "circle3-research-manager"
+        self.researchManager = "circle3-research-manager"
 
         if self.testing is not None:
-            self.projectManager = self.testing
+            self.researchManager = self.testing
 
-        self.projectObj = self.reload(
-            userId=userId, projectIndex=projectIndex, projectId=projectId)
-
-    @property
-    def projectId(self):
-        return self.projectObj.get("projectId", None)
+        self.researchObj = self.reload(
+            userId=userId, researchIndex=researchIndex, researchId=researchId)
 
     @property
-    def projectIndex(self):
-        return self.projectObj.get("projectIndex", None)
+    def researchId(self):
+        return self.researchObj.get("researchId", None)
+
+    @property
+    def researchIndex(self):
+        return self.researchObj.get("researchIndex", None)
 
     @property
     def userId(self):
-        return self.projectObj.get("userId", None)
+        return self.researchObj.get("userId", None)
 
     @property
     def portIn(self):
         """
         This property returns all ports, which functions as input in RDS.
         """
-        return self.projectObj.get("portIn", [])
+        return self.researchObj.get("portIn", [])
 
     @property
     def portOut(self):
         """
         This property returns all ports, which functions as output in RDS.
         """
-        return self.projectObj.get("portOut", [])
+        return self.researchObj.get("portOut", [])
 
     def getPorts(self, metadata=True):
         """
         This method returns only the ports with metadata as type. No duplicates.
-        You can set the parameter `metadata` to False to get all ports. Duplicates ports, which are set as input and output. 
+        Set parameter `metadata` to False to get all ports. Duplicates ports, which are set as input and output. 
         """
         if metadata:
             ports = []
@@ -68,6 +68,7 @@ class Project():
 
         return self.portIn + self.portOut
 
+
     @property
     def ports(self):
         """
@@ -75,23 +76,23 @@ class Project():
         """
         return self.getPorts()
 
-    def reload(self, userId: str = None, projectIndex: int = None, projectId: int = None):
+    def reload(self, userId: str = None, researchIndex: int = None, researchId: int = None):
         """
-        This method catches the project information from the central service project manager.
-        userId and projectIndex are only used together. You can provide projectId,
-        so you do not need to enter userId and projectIndex for convenience.
+        This method catches the research information from the central service research manager.
+        userId and researchIndex are only used together. You can provide researchId,
+        so you do not need to enter userId and researchIndex for convenience.
         """
-        if userId is None and projectIndex is None:
-            if projectId is not None:
+        if userId is None and researchIndex is None:
+            if researchId is not None:
                 req = requests.get(
-                    f"http://{self.projectManager}/projects/id/{projectId}")
+                    f"http://{self.researchManager}/research/id/{researchId}")
 
                 if req.status_code == 200:
                     return req.json()
 
-        if userId is not None and projectIndex is not None:
+        if userId is not None and researchIndex is not None:
             req = requests.get(
-                f"http://{self.projectManager}/projects/user/{userId}/project/{projectIndex}")
+                f"http://{self.researchManager}/research/user/{userId}/research/{researchIndex}")
 
             if req.status_code < 300:
                 return req.json()
@@ -100,4 +101,4 @@ class Project():
             return {}
         else:
             raise ValueError(
-                "userId and projectIndex or projectId are needed parameters.")
+                "userId and researchIndex or researchId are needed parameters.")

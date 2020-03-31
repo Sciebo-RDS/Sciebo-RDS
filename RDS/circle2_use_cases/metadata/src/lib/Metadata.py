@@ -1,6 +1,6 @@
 import requests
 import logging
-from lib.Project import Project
+from lib.Research import Research
 
 logger = logging.getLogger()
 
@@ -18,11 +18,11 @@ class Metadata():
         if testing is not None:
             self.testing = testing
 
-    def getProjectId(self, userId, projectIndex):
+    def getResearchId(self, userId, researchIndex):
         """
-        This method returns the corresponding projectId to the given userId and projectIndex.
+        This method returns the corresponding researchId to the given userId and researchIndex.
         """
-        return Project(testing=self.testing, userId=userId, projectIndex=projectIndex).projectId
+        return Research(testing=self.testing, userId=userId, researchIndex=researchIndex).researchId
 
     def getPortString(self, port: str):
         res = f"circle1-{port}"
@@ -32,16 +32,16 @@ class Metadata():
 
         return res
 
-    def getMetadataForProject(self, userId: str = None, projectIndex: int = None, projectId: int = None):
+    def getMetadataForResearch(self, userId: str = None, researchIndex: int = None, researchId: int = None):
         """
-        This method returns the metadata from all available ports for specified projectId.
+        This method returns the metadata from all available ports for specified researchId.
         """
         allMetadata = []
 
-        logger.debug("start get metadata method for project")
+        logger.debug("start get metadata method for research")
 
-        ports = Project(testing=self.testing,
-                        userId=userId, projectIndex=projectIndex, projectId=projectId).ports
+        ports = Research(testing=self.testing,
+                        userId=userId, researchIndex=researchIndex, researchId=researchId).ports
 
         logger.debug(f"got ports {ports}")
 
@@ -49,7 +49,7 @@ class Metadata():
         for port in ports:
             logger.debug(f"work on port {port}")
             port = port["port"]
-            metadata = self.getMetadataForProjectFromPort(port, projectId)
+            metadata = self.getMetadataForResearchFromPort(port, researchId)
             d = {
                 "port": port,
                 "metadata": metadata
@@ -58,15 +58,15 @@ class Metadata():
 
         return allMetadata
 
-    def getMetadataForProjectFromPort(self, port: str, projectId: int):
+    def getMetadataForResearchFromPort(self, port: str, researchId: int):
         """
-        This method returns the metadata from given port for specified projectId.
-        Returns a dict, which was described in the metadata api endpoint "/metadata/project/{project-id}" or an empty one.
+        This method returns the metadata from given port for specified researchId.
+        Returns a dict, which was described in the metadata api endpoint "/metadata/research/{research-id}" or an empty one.
         """
-        # pull all metadata from given port for projectId
+        # pull all metadata from given port for researchId
 
         req = requests.get(
-            f"http://{self.getPortString(port)}/metadata/project/{projectId}")
+            f"http://{self.getPortString(port)}/metadata/research/{researchId}")
 
         if req.status_code == 200:
             return req.json()
@@ -74,25 +74,25 @@ class Metadata():
         logger.exception(Exception(f"Metadata model req: {req.content()}"))
         return {}
 
-    def updateMetadataForProject(self, projectId: int, updateMetadata: dict):
+    def updateMetadataForResearch(self, researchId: int, updateMetadata: dict):
         """
-        This method changes the metadata in all available ports to the given metadata values in given dict for specified projectId.
+        This method changes the metadata in all available ports to the given metadata values in given dict for specified researchId.
         """
-        # get all ports registered to projectId
+        # get all ports registered to researchId
         allMetadata = []
 
-        # get all ports registered to projectId
-        logger.debug("start update for project method")
-        ports = Project(testing=self.testing, projectId=projectId).ports
-        logger.debug("project ports: {}".format(ports))
+        # get all ports registered to researchId
+        logger.debug("start update for research method")
+        ports = Research(testing=self.testing, researchId=researchId).ports
+        logger.debug("research ports: {}".format(ports))
 
         # FIXME: parallize me
         for port in ports:
             logger.debug("work on port {}".format(port))
             port = port["port"]
 
-            metadata = self.updateMetadataForProjectFromPort(
-                port, projectId, updateMetadata)
+            metadata = self.updateMetadataForResearchFromPort(
+                port, researchId, updateMetadata)
             d = {
                 "port": port,
                 "metadata": metadata
@@ -101,9 +101,9 @@ class Metadata():
 
         return allMetadata
 
-    def updateMetadataForProjectFromPort(self, port: str, projectId: int, updateMetadata: dict):
+    def updateMetadataForResearchFromPort(self, port: str, researchId: int, updateMetadata: dict):
         """
-        This method changes the metadata in given port to the given metadata values in given dict for specified projectId.
+        This method changes the metadata in given port to the given metadata values in given dict for specified researchId.
         Returns the current metadata data, so you can check, if the update was successful or not.
 
         The given updateMetadata has to be a dict with the following struct:
@@ -129,7 +129,7 @@ class Metadata():
         for key, value in updateMetadata.items():
             keyL = str(key).lower()
             req = requests.patch(
-                f"http://{self.getPortString(port)}/metadata/project/{projectId}/{keyL}", json=value)
+                f"http://{self.getPortString(port)}/metadata/research/{researchId}/{keyL}", json=value)
 
             if req.status_code >= 300:
                 logger.exception(
