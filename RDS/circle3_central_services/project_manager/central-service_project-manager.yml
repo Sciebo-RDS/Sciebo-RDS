@@ -340,8 +340,9 @@ components:
               portType:
                 type: string
                 description: |-
-                  Only "metadata" and "filestorage" are currently supported as booleans. If type is not set, it defaults to false.
-                  If you set customProperties as portType, you can specify an array of objects as value.
+                  Only "metadata" and "filestorage" are currently supported as booleans. If portType is not set, it defaults to false for metadata and fileStorage.
+
+                  If you set 'customProperties' for portType, you can specify an array of objects as value with custom key and value as string. This is useful, if you want to save a filepath or a servicename for the port, which you wants to add to this RDS project.
               value:
                 oneOf:
                   - type: boolean

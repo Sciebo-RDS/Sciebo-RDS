@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Port Owncloud
+  title: Interface for Ports used as file storage
   version: '1.0'
   description: This document describes the interface of the port owncloud from the innermost circle of the rds architecture to the second circle.
   contact:
@@ -8,26 +8,8 @@ info:
     email: peter.heiss@uni-muenster.de
     url: 'https://www.research-data-services.org'
 servers:
-  - url: 'http://port-owncloud:3000'
+  - url: 'http://port:3000/storage'
 paths:
-  /:
-    get:
-      tags:
-        - misc
-      description: Shows all endpoints for this microservice.
-      operationId: api.sitemap.index
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              examples: {}
-      summary: Get sitemap
-    parameters: []
   '/file/{filepath}':
     parameters:
       - schema:
@@ -49,7 +31,6 @@ paths:
             application/json:
               schema:
                 type: string
-      operationId: ''
       description: Returns the file
       parameters:
         - schema:
@@ -58,6 +39,16 @@ paths:
           name: userId
           description: ''
           required: true
+    post:
+      summary: Create the file in filepath
+      responses:
+        '200':
+          description: OK
+    patch:
+      summary: Updates the file in filepath
+      responses:
+        '200':
+          description: OK
 tags:
   - name: deposit
     description: All about depositions

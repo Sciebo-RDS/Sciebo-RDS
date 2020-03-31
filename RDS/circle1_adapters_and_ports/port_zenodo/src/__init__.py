@@ -15,8 +15,8 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
 
 def bootstrap(name='MicroService', *args, **kwargs):
     list_openapi = Util.load_oai(os.getenv("OPENAPI_MULTIPLE_FILES",
-                                           "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/port_invenio.yml;" +
-                                           "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/port_invenio.yml"))
+                                           "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_metadata.yml;" +
+                                           "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/interface_port_token_storage.yml"))
 
     zenodo_address = None
     if "address" in kwargs:

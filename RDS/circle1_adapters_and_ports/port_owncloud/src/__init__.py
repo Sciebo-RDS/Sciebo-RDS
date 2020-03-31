@@ -15,8 +15,8 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
 
 def bootstrap(name='MicroService', *args, **kwargs):
     list_openapi = Util.load_oai(os.getenv("OPENAPI_MULTIPLE_FILES",
-                                           "../../circle2_use_cases/port_owncloud.yml;" +
-                                           "../../circle3_central_services/port_owncloud.yml"))
+                                           "../../circle2_use_cases/interface_port_file_storage.yml;" +
+                                           "../../interface_port_token_storage.yml"))
 
     app = App(name, *args, **kwargs)
 
