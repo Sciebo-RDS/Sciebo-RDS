@@ -18,7 +18,7 @@ class Project():
         """
 
         self.testing = testing
-        self.projectManager = "circle3-project-manager"
+        self.projectManager = "circle3-research-manager"
 
         if self.testing is not None:
             self.projectManager = self.testing

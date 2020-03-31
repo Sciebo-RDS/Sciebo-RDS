@@ -6,15 +6,15 @@ use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
-use OCA\RDS\Service\ConnectionService;
+use OCA\RDS\Service\ResearchService;
 
 
-class ConnectionController extends Controller
+class ResearchController extends Controller
 {
     private $userId;
     private $service;
     
-    public function __construct($AppName, IRequest $request, ConnectionService $service, $userId)
+    public function __construct($AppName, IRequest $request, ResearchService $service, $userId)
     {
         parent::__construct($AppName, $request);
         $this->userId = $userId;
@@ -22,7 +22,7 @@ class ConnectionController extends Controller
     }
 
     /**
-     * Returns all connections in rds for userId
+     * Returns all research in rds for userId
      *
      * @param integer $id
      * @return string returns json
@@ -34,7 +34,7 @@ class ConnectionController extends Controller
     }
 
     /**
-     * Returns all connection informations in rds for given id
+     * Returns all Research informations in rds for given id
      *
      * @param integer $id
      * @return string returns json
@@ -49,9 +49,9 @@ class ConnectionController extends Controller
     }
 
     /**
-     * Create a new connection.
+     * Create a new Research.
      *
-     * @return string returns the connection object as json
+     * @return string returns the Research object as json
      * 
      * @NoAdminRequired
      */
@@ -60,9 +60,9 @@ class ConnectionController extends Controller
     }
 
     /**
-     * Update a single connection in rds system
+     * Update a single Research in rds system
      *
-     * @param integer $projectIndex
+     * @param integer $researchIndex
      * @param integer $status
      * @param array $portIn
      * @param array $portOut
@@ -70,19 +70,19 @@ class ConnectionController extends Controller
      *
      * @NoAdminRequired
      */
-    public function update($projectIndex, $status, $portIn, $portOut) {
-        return new JSONResponse($this->service->update( $this->userId, $projectIndex, $portIn, $portOut, $status));
+    public function update($researchIndex, $status, $portIn, $portOut) {
+        return new JSONResponse($this->service->update( $this->userId, $researchIndex, $portIn, $portOut, $status));
     }
 
     /**
-     * Removes a single connection from the user in RDS.
+     * Removes a single research from the user in RDS.
      *
-     * @param integer $projectIndex
+     * @param integer $researchIndex
      * @return string returns the removed object as json
      *
      * @NoAdminRequired
      */
-    public function remove($projectIndex) {
-        return new JSONResponse($this->service->remove($projectIndex, $this->userId));
+    public function remove($researchIndex) {
+        return new JSONResponse($this->service->remove($researchIndex, $this->userId));
     }
 }

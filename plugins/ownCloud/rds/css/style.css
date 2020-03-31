@@ -2,10 +2,10 @@
     height: 100%;
 }
 
-#connection-overview {
+#research-overview {
     visibility: visible;
 }
 
-#connection-edit-service, #connection-edit-file, #connection-edit-metadata {
+#research-edit-service, #research-edit-file, #research-edit-metadata {
     visibility: hidden;
 }

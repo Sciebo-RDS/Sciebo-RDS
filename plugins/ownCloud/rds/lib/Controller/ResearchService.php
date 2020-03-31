@@ -8,13 +8,13 @@ use Exception;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
-use OCA\RDS\Db\Connection;
-use OCA\RDS\Db\ConnectionMapper;
+use OCA\RDS\Db\Research;
+use OCA\RDS\Db\ResearchMapper;
 
-class ConnectionService {
+class ResearchService {
     private $mapper;
 
-    public function __construct( ConnectionMapper $mapper ) {
+    public function __construct( ResearchMapper $mapper ) {
         $this->mapper = $mapper;
     }
 
@@ -31,9 +31,9 @@ class ConnectionService {
         }
     }
 
-    public function find( $projectIndex, $userId ) {
+    public function find( $researchIndex, $userId ) {
         try {
-            return $this->mapper->find( $projectIndex, $userId );
+            return $this->mapper->find( $researchIndex, $userId );
         } catch( Exception $e ) {
             $this->handleException( $e );
         }
@@ -44,11 +44,11 @@ class ConnectionService {
         return $conn;
     }
 
-    public function update( $userId, $projectIndex, $portIn, $portOut, $status ) {
+    public function update( $userId, $researchIndex, $portIn, $portOut, $status ) {
         try {
-            $conn = new Connection();
+            $conn = new Research();
             $conn->setUserId( $userId );
-            $conn->setProjectIndex( $projectIndex );
+            $conn->setResearchIndex( $researchIndex );
             $conn->setPortIn( $portIn );
             $conn->setPortOut( $portOut );
             $conn->setStatus( $status );
@@ -59,9 +59,9 @@ class ConnectionService {
         }
     }
 
-    public function delete( $projectIndex, $userId ) {
+    public function delete( $researchIndex, $userId ) {
         try {
-            return $this->mapper->delete( $projectIndex, $userId );
+            return $this->mapper->delete( $researchIndex, $userId );
         } catch( Exception $e ) {
             $this->handleException( $e );
         }

@@ -77,7 +77,7 @@ include:
   - "RDS/circle2_use_cases/token_service/.gitlab-ci.yml"
   - "RDS/circle2_use_cases/metadata/.gitlab-ci.yml"
   - "RDS/circle3_central_services/token_service/.gitlab-ci.yml"
-  - "RDS/circle3_central_services/project_manager/.gitlab-ci.yml"
+  - "RDS/circle3_central_services/research_manager/.gitlab-ci.yml"
 
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:

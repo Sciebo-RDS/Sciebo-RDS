@@ -1,10 +1,10 @@
 <?php
 namespace OCA\RDS\Db;
 
-use OCA\RDS\Db\Connection;
+use OCA\RDS\Db\Research;
 
 class ConnectionMapper {
-    private $rdsURL = 'https://sciebords-dev.uni-muenster.de/project';
+    private $rdsURL = 'https://sciebords-dev.uni-muenster.de/research';
 
     public function __construct() {
 
@@ -30,7 +30,7 @@ class ConnectionMapper {
     }
 
     public function update( $conn ) {
-        $curl = curl_init( $this->rdsURL . '/user/' . $this->userId . '/project/' . $projectIndex );
+        $curl = curl_init( $this->rdsURL . '/user/' . $this->userId . '/research/' . $researchIndex );
         $options = [CURLOPT_RETURNTRANSFER => true];
         curl_setopt_array( $curl, $options );
         curl_setopt( $curl, CURLOPT_POSTFIELDS, $conn->jsonSerialize() );
@@ -45,13 +45,13 @@ class ConnectionMapper {
             return NULL;
         }
 
-        return $this->find( $conn->projectIndex, $conn->userId );
+        return $this->find( $conn->researchIndex, $conn->userId );
     }
 
-    public function delete( $projectIndex, $userId ) {
-        $conn = $this->find( $projectIndex, $userId );
+    public function delete( $researchIndex, $userId ) {
+        $conn = $this->find( $researchIndex, $userId );
 
-        $curl = curl_init( $this->rdsURL . '/user/' . $this->userId . '/project/' . $projectIndex );
+        $curl = curl_init( $this->rdsURL . '/user/' . $this->userId . '/research/' . $researchIndex );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
         curl_setopt_array( $curl, $options );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
@@ -68,8 +68,8 @@ class ConnectionMapper {
         return $conn;
     }
 
-    public function find( $projectIndex, $userId ) {
-        $url = $this->rdsURL . '/user/' . $userId . '/project/' . $projectIndex;
+    public function find( $researchIndex, $userId ) {
+        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex;
 
         $curl = curl_init();
         curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
@@ -85,11 +85,11 @@ class ConnectionMapper {
             return NULL;
         }
 
-        $conn = new Connection();
+        $conn = new Research();
         $conn->setUserid( $response['userId'] );
         $conn->setStatus( $response['status'] );
-        $conn->setProjectId( $response['projectId'] );
-        $conn->setProjectIndex( $response['projectIndex'] );
+        $conn->setResearchId( $response['researchId'] );
+        $conn->setResearchIndex( $response['researchIndex'] );
         $conn->setPortIn( $response['portIn'] );
         $conn->setPortOut( $response['portOut'] );
 
@@ -116,11 +116,11 @@ class ConnectionMapper {
         $result = [];
 
         foreach ( $response as $rdsConn ) {
-            $conn = new Connection();
+            $conn = new Research();
             $conn->setUserid( $rdsConn['userId'] );
             $conn->setStatus( $rdsConn['status'] );
-            $conn->setProjectId( $rdsConn['projectId'] );
-            $conn->setProjectIndex( $rdsConn['projectIndex'] );
+            $conn->setResearchId( $rdsConn['research'] );
+            $conn->setResearchIndex( $rdsConn['researchIndex'] );
             $conn->setPortIn( $rdsConn['portIn'] );
             $conn->setPortOut( $rdsConn['portOut'] );
 

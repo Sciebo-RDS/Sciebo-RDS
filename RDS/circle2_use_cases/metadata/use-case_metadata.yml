@@ -22,7 +22,7 @@ paths:
         Currently this is datacite kernel 4.3
 
         https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json
-  '/user/{user-id}/project/{project-index}':
+  '/user/{user-id}/research/{research-index}':
     parameters:
       - schema:
           type: string
@@ -31,7 +31,7 @@ paths:
         required: true
       - schema:
           type: string
-        name: project-index
+        name: research-index
         in: path
         required: true
     get:
@@ -53,17 +53,17 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Property'
-      operationId: api.UserProject.get
+      operationId: api.UserResearch.get
       description: This endpoint returns the projectId for the given user and the index of project. This is an endpoint for convenience.
-  '/project/{project-id}':
+  '/research/{research-id}':
     parameters:
       - schema:
           type: string
-        name: project-id
+        name: research-id
         in: path
         required: true
     get:
-      summary: Get all metadata from given project
+      summary: Get all metadata from given research
       tags: []
       responses:
         '200':
@@ -82,7 +82,7 @@ paths:
       operationId: ''
       description: ''
     patch:
-      summary: Modify a project
+      summary: Modify a research
       operationId: ''
       responses:
         '200':

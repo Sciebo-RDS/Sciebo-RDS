@@ -68,6 +68,6 @@ this are the fields for services
 <div id="wrapper-custom-buttons">
   <button id="btn-add-new-service">Add new service</button>
   <div id="spacer"></div>
-  <button id="btn-save-connection">Save</button>
-  <button id="btn-save-connection-and-continue">Save & continue</button>
+  <button id="btn-save-research">Save</button>
+  <button id="btn-save-research-and-continue">Save & continue</button>
 </div>

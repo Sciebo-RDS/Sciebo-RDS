@@ -6,15 +6,15 @@ $application = new Application();
 $application->registerRoutes( $this, [
     'resources' => [
         # Connection intern API Endpoints
-        'connection' => ['url' => '/connections'],
+        'research' => ['url' => '/research'],
 
         # Service intern API Endpoints
         'service' => ['url' => '/service'],
     ],
     'routes' => [
-        ['name' => 'page#index',                                'url' => '/connection',                             'verb' => 'GET'],
-        ['name' => 'page#connectionShow',                       'url' => '/connection/{id}',                        'verb' => 'GET'],
-        ['name' => 'page#connectionEdit',                       'url' => '/connection/{id}/edit',                   'verb' => 'GET'],
+        ['name' => 'page#index',                                'url' => '/research',                             'verb' => 'GET'],
+        ['name' => 'page#connectionShow',                       'url' => '/research/{id}',                        'verb' => 'GET'],
+        ['name' => 'page#connectionEdit',                       'url' => '/research/{id}/edit',                   'verb' => 'GET'],
 
         # Service API endpoints
         ['name' => 'service_api#getRegisteredServicesForUser',  'url' => '/user/service',                           'verb' => 'GET'],

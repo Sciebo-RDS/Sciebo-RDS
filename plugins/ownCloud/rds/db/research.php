@@ -5,11 +5,11 @@ use JsonSerializable;
 
 use OCP\AppFramework\Db\Entity;
 
-class Connection extends Entity implements JsonSerializable {
+class Research extends Entity implements JsonSerializable {
 
     protected $userId;
-    protected $projectIndex;
-    protected $projectId;
+    protected $researchIndex;
+    protected $researchId;
     protected $status;
     protected $portIn;
     protected $portOut;
@@ -17,8 +17,8 @@ class Connection extends Entity implements JsonSerializable {
     public function jsonSerialize() {
         return [
             'userId' => $this->userId,
-            'projectIndex' => $this->projectIndex,
-            'projectId' => $this->projectId,
+            'researchIndex' => $this->researchIndex,
+            'researchId' => $this->researchId,
             'status' => $this->status,
             'portIn' => $this->portIn,
             'portOut' => $this->portOut

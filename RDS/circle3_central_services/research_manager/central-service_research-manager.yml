@@ -8,7 +8,7 @@ paths:
         in: path
         required: true
     get:
-      summary: List all projects from given user
+      summary: List all research from given user
       tags: []
       responses:
         '200':
@@ -18,12 +18,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Project'
+                  $ref: '#/components/schemas/Research'
         '404':
           description: Not Found
       operationId: ''
     post:
-      summary: Add a project to user
+      summary: Add a research to user
       operationId: ''
       responses:
         '200':
@@ -31,13 +31,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Project'
+                $ref: '#/components/schemas/Research'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Project'
-  '/user/{user-id}/project/{project-id}':
+              $ref: '#/components/schemas/Research'
+  '/user/{user-id}/research/{research-id}':
     parameters:
       - schema:
           type: string
@@ -46,11 +46,11 @@ paths:
         required: true
       - schema:
           type: string
-        name: project-id
+        name: research-id
         in: path
         required: true
     get:
-      summary: Get a Project
+      summary: Get a research
       tags: []
       responses:
         '200':
@@ -58,14 +58,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Project'
+                $ref: '#/components/schemas/Research'
       operationId: ''
+      description: ''
     delete:
-      summary: Delete a Project
+      summary: Delete a research
       responses:
         '204':
           description: No Content
-  '/user/{user-id}/project/{project-id}/exports':
+  '/user/{user-id}/research/{research-id}/exports':
     parameters:
       - schema:
           type: string
@@ -74,11 +75,11 @@ paths:
         required: true
       - schema:
           type: string
-        name: project-id
+        name: research-id
         in: path
         required: true
     get:
-      summary: List Project Exports
+      summary: List Research Exports
       tags: []
       responses:
         '200':
@@ -105,7 +106,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Port'
-  '/user/{user-id}/project/{project-id}/imports':
+  '/user/{user-id}/research/{research-id}/imports':
     parameters:
       - schema:
           type: string
@@ -114,11 +115,11 @@ paths:
         required: true
       - schema:
           type: string
-        name: project-id
+        name: research-id
         in: path
         required: true
     get:
-      summary: List Project Imports
+      summary: List Research Imports
       tags: []
       responses:
         '200':
@@ -130,7 +131,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Port'
     post:
-      summary: Create a Project Import
+      summary: Create a Research Import
       responses:
         '200':
           description: OK
@@ -145,7 +146,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Port'
-  '/user/{user-id}/project/{project-id}/imports/{port-id}':
+  '/user/{user-id}/research/{research-id}/imports/{port-id}':
     parameters:
       - schema:
           type: string
@@ -154,16 +155,16 @@ paths:
         required: true
       - schema:
           type: string
-        name: project-id
+        name: port-id
         in: path
         required: true
       - schema:
           type: string
-        name: port-id
+        name: research-id
         in: path
         required: true
     get:
-      summary: Get a Project Import
+      summary: Get a Research Import
       tags: []
       responses:
         '200':
@@ -175,13 +176,13 @@ paths:
         '404':
           description: Not Found
     delete:
-      summary: Delete a Project Import
+      summary: Delete a Research Import
       responses:
         '204':
           description: No Content
         '404':
           description: Not Found
-  '/user/{user-id}/project/{project-id}/exports/{port-id}':
+  '/user/{user-id}/research/{research-id}/exports/{port-id}':
     parameters:
       - schema:
           type: string
@@ -190,16 +191,16 @@ paths:
         required: true
       - schema:
           type: string
-        name: project-id
+        name: port-id
         in: path
         required: true
       - schema:
           type: string
-        name: port-id
+        name: research-id
         in: path
         required: true
     get:
-      summary: Get a Project Export
+      summary: Get a Research Export
       tags: []
       responses:
         '200':
@@ -211,21 +212,21 @@ paths:
         '404':
           description: Not Found
     delete:
-      summary: Delete a Project Export
+      summary: Delete a Research Export
       responses:
         '204':
           description: No Content
         '404':
           description: Not Found
-  '/id/{project-id}':
+  '/id/{research-id}':
     parameters:
       - schema:
           type: string
-        name: project-id
+        name: research-id
         in: path
         required: true
     get:
-      summary: Returns the corresponding project.
+      summary: Returns the corresponding research.
       tags: []
       responses:
         '200':
@@ -233,10 +234,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Project'
+                $ref: '#/components/schemas/Research'
       operationId: ''
       description: ''
-  '/user/{user-id}/project/{project-id}/status':
+  '/user/{user-id}/research/{research-id}/status':
     parameters:
       - schema:
           type: string
@@ -245,7 +246,7 @@ paths:
         required: true
       - schema:
           type: string
-        name: project-id
+        name: research-id
         in: path
         required: true
     get:
@@ -275,12 +276,12 @@ paths:
                 properties:
                   status:
                     type: integer
-      description: This endpoint push the project to the next step.
+      description: This endpoint push the research to the next step.
 components:
   schemas:
-    Project:
-      title: Project
-      description: This model represents a project.
+    Research:
+      title: Research
+      description: This model represents a research.
       x-examples:
         example-1:
           id: '1'
@@ -316,16 +317,16 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Port'
-            projectId:
+            researchId:
               type: integer
               description: This field will be set through the system.
-            projectIndex:
+            researchIndex:
               type: integer
               description: This field will be set through the system.
         - description: 'This is required, because connexion refused otherwise a connection without any requestBody.'
     Port:
       title: Port
-      description: 'This model represents a port, which can be used in a project.'
+      description: 'This model represents a port, which can be used in a research.'
       type: object
       properties:
         id:
@@ -342,7 +343,7 @@ components:
                 description: |-
                   Only "metadata" and "filestorage" are currently supported as booleans. If portType is not set, it defaults to false for metadata and fileStorage.
 
-                  If you set 'customProperties' for portType, you can specify an array of objects as value with custom key and value as string. This is useful, if you want to save a filepath or a servicename for the port, which you wants to add to this RDS project.
+                  If you set 'customProperties' for portType, you can specify an array of objects as value with custom key and value as string. This is useful, if you want to save a filepath or a servicename for the port, which you wants to add to this RDS research.
               value:
                 oneOf:
                   - type: boolean
@@ -357,12 +358,12 @@ components:
       required:
         - port
 servers:
-  - url: 'http://central-service_project-manager:3000/projects'
+  - url: 'http://central-service_research-manager:3000/research'
     description: ''
 info:
   version: '1.0'
-  title: Central Service Project Manager
-  description: 'This api describes the project endpoints, which manages projects and workflows.'
+  title: Central Service Research Manager
+  description: 'This api describes the research endpoints, which manages research and workflows.'
   contact:
     name: Peter Heiss
     email: peter.heiss@uni-muenster.de

@@ -1,8 +1,8 @@
 <!-- translation strings -->
-<div style="display:none" id="new-connection-string"><?php p($l->t('New connection')); ?></div>
+<div style="display:none" id="new-research-string"><?php p($l->t('New connection')); ?></div>
 
 <script id="navigation-tpl" type="text/x-handlebars-template">
-    <li id="new-connection"><a href="#"><?php p($l->t('Add connection')); ?></a></li>
+    <li id="new-research"><a href="#"><?php p($l->t('Add connection')); ?></a></li>
     {{#each connections}}
         <li class="connection with-menu {{#if active}}active{{/if}}"  data-id="{{ id }}">
             <a href="#">{{ title }}</a>

@@ -50,7 +50,7 @@ graph TD;
   click UCExporter "/doc/impl/use-cases/exporter"
   click UCToken "/doc/impl/use-cases/token-service"
   click CSToken "/doc/impl/central/token-storage"
-  click CSProject "/doc/impl/central/project-manager"
+  click CSProject "/doc/impl/central/research-manager"
   click PInvenio "/doc/impl/ports/port-invenio"
   click POwncloud "/doc/impl/ports/port-storage"
 

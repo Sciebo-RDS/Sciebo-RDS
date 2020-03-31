@@ -25,7 +25,7 @@ Die folgenden Pfaddefinierungen werden von den jeweiligen Diensten ausdefiniert.
 |    Exporter     |    /exporter     |
 |    Importer     |    /importer     |
 |    Archiver     |    /archiver     |
-| Project-Manager | /project-manager |
+| research-manager | /research-manager |
 
 </center>
 
