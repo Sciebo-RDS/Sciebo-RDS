@@ -68,6 +68,31 @@ class Research():
 
         return self.portIn + self.portOut
 
+    def getPortsWithProjectId(self, metadata=True):
+        """
+        This method returns a list of tuple with (port, projectId) with metadata as type. No duplicates.
+        Set parameter `metadata` to False to get all ports. Duplicates ports, which are set as input and output.
+        If no projectId was found, it is None.
+
+        This method is useful, if you want to redirect a call to all ports which are configured for a research project in RDS.
+        """
+        ports = self.getPorts(metadata=metadata)
+        result = []
+
+        for port in ports:
+            projectId = None
+            for prop in port["properties"]:
+                if prop.get("portType", "") == "customProperties":
+                    for customVal in prop["value"]:
+                        try:
+                            if customVal["key"] == "projectId":
+                                projectId = customVal["value"]
+                                break
+                        except:
+                            pass
+            result.append((port, projectId))
+
+        return result
 
     @property
     def ports(self):

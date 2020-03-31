@@ -41,15 +41,19 @@ class Metadata():
         logger.debug("start get metadata method for research")
 
         ports = Research(testing=self.testing,
-                        userId=userId, researchIndex=researchIndex, researchId=researchId).ports
+                        userId=userId, researchIndex=researchIndex, researchId=researchId).getPortsWithProjectId()
 
         logger.debug(f"got ports {ports}")
 
         # FIXME: parallize me
-        for port in ports:
+        for port, projectId in ports:
+            # beware, that projectId could also be a string or sth else
+            if projectId is None:
+                continue
+
             logger.debug(f"work on port {port}")
             port = port["port"]
-            metadata = self.getMetadataForResearchFromPort(port, researchId)
+            metadata = self.getMetadataForResearchFromPort(port, projectId)
             d = {
                 "port": port,
                 "metadata": metadata

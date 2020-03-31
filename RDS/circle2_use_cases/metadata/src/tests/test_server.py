@@ -111,6 +111,11 @@ class TestMetadata(unittest.TestCase):
             "port": "port-zenodo",
             "properties": [{
                     "portType": "metadata", "value": True
+            }, {
+                "portType": "customProperties", "value": [{
+                    "key": "projectId",
+                    "value": str(1)
+                }]
             }]
         }]
 

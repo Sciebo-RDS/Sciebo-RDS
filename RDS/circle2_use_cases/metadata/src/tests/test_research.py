@@ -126,6 +126,9 @@ class Test_Research(unittest.TestCase):
         researchIndex = 0
         researchId = 1
 
+        projectId_zen1 = 1
+        projectId_zen2 = 3
+
         ports = [
             # no entries
             [],
@@ -137,7 +140,7 @@ class Test_Research(unittest.TestCase):
                 }, {
                     "portType": "customProperties", "value": [{
                         "key": "projectId",
-                        "value": "1"
+                        "value": str(projectId_zen1)
                     }]
                 }]
             }],
@@ -149,7 +152,7 @@ class Test_Research(unittest.TestCase):
                 }, {
                     "portType": "customProperties", "value": [{
                         "key": "projectId",
-                        "value": "3"
+                        "value": str(projectId_zen2)
                     }]
                 }]
             }, {
@@ -160,9 +163,24 @@ class Test_Research(unittest.TestCase):
             }]
         ]
 
+        i = 0
         for portIn in ports:
             for portOut in ports:
                 with self.subTest(portIn=portIn, portOut=portOut):
+                    expected = []
+
+                    for port in portIn + portOut:
+                        projectId = None
+                        for prop in port["properties"]:
+                            if prop.get("portType", "") == "customProperties":
+                                for customVal in prop["value"]:
+                                    try:
+                                        if customVal["key"] == "projectId":
+                                            projectId = customVal["value"]
+                                            break
+                                    except:
+                                        pass
+                        expected.append((port, projectId))
 
                     research = {
                         "userId": userId,
@@ -176,7 +194,7 @@ class Test_Research(unittest.TestCase):
                     pact.given(
                         'A research manager.'
                     ).upon_receiving(
-                        f'A call to get the researchId from userId and researchIndex with portIn {len(portIn)} and  portOut {len(portOut)}.'
+                        f'A call to get the researchId from userId and researchIndex with portIn {len(portIn)} and  portOut {len(portOut)} with projectIds.'
                     ).with_request(
                         'GET', f"/research/id/{researchId}"
                     ).will_respond_with(200, body=research)
@@ -188,17 +206,20 @@ class Test_Research(unittest.TestCase):
                     self.assertEqual(p.portIn, research["portIn"])
                     self.assertEqual(p.portOut, research["portOut"])
                     self.assertEqual(
-                        p.getPorts(metadata=False), research["portIn"] + research["portOut"])
+                        p.getPortsWithProjectId(metadata=False), expected)
 
                     # check, if we can find duplicates and metadata
                     noDuplicates = []
 
-                    for port in research["portIn"] + research["portOut"]:
+                    for port in expected:
                         if port not in noDuplicates:
-                            for prop in port["properties"]:
+                            for prop in port[0]["properties"]:
                                 if prop["portType"] == "metadata":
                                     noDuplicates.append(port)
                                     break
 
-                    self.assertEqual(p.getPorts(), noDuplicates)
-                    self.assertEqual(p.getPorts(metadata=True), noDuplicates)
+                    self.assertEqual(p.getPortsWithProjectId(), noDuplicates)
+                    self.assertEqual(p.getPortsWithProjectId(
+                        metadata=True), noDuplicates)
+
+                    i += 1

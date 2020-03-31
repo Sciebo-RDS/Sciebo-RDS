@@ -138,7 +138,7 @@ class Test_Metadata(unittest.TestCase):
 
     def test_metadata_get_metadata_from_researchId(self):
         """
-        This unit tests the ability of metadata object to get metadata from a given researchId. 
+        This unit tests the ability of metadata object to get metadata from a given researchId.
         This is the handy way with researchId.
         Notice: Should be very similar to `test_metadata_get_metadata_from_connector`
         """
@@ -147,6 +147,7 @@ class Test_Metadata(unittest.TestCase):
         userId = 20
         researchIndex = 21
         researchId = 22
+        projectId = 5
 
         metadata = {
             "Creators": [{
@@ -174,6 +175,11 @@ class Test_Metadata(unittest.TestCase):
             "port": "port-zenodo",
             "properties": [{
                     "portType": "metadata", "value": True
+            }, {
+                "portType": "customProperties", "value": [{
+                    "key": "projectId",
+                    "value": str(projectId)
+                }]
             }]
         },
             {
@@ -216,9 +222,9 @@ class Test_Metadata(unittest.TestCase):
             pact.given(
                 'A port with metadata informations.'
             ).upon_receiving(
-                f'A call to get the metadata from specific researchId {researchId} and port {port}.'
+                f'A call to get the metadata from specific researchId {projectId} and port {port}.'
             ).with_request(
-                'GET', f"/metadata/research/{researchId}"
+                'GET', f"/metadata/research/{projectId}"
             ).will_respond_with(200, body=metadata)
 
             expected_metadata.append({
@@ -283,7 +289,7 @@ class Test_Metadata(unittest.TestCase):
 
     def test_metadata_update_metadata_from_projectId(self):
         """
-        This unit tests the ability of metadata object to update metadata from a given researchId. 
+        This unit tests the ability of metadata object to update metadata from a given researchId.
         This is the handy way.
         Notice: Should be very similar to `test_metadata_get_metadata_from_connector`
         """
@@ -374,7 +380,8 @@ class Test_Metadata(unittest.TestCase):
             with pact:
                 result = md.updateMetadataForResearch(
                     researchId, updateMetadata)
-            self.assertEqual(result, expected_metadata, msg="{} \n- {}".format(result, expected_metadata))
+            self.assertEqual(result, expected_metadata,
+                             msg="{} \n- {}".format(result, expected_metadata))
 
         updateMetadata = {}
         updateMetadata["Creators"] = [{
