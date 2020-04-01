@@ -31,37 +31,72 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
-                  Titles:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Title'
-                  Creators:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Creator'
-                  Publisher:
-                    $ref: '#/components/schemas/Publisher'
-                  PublicationYear:
-                    $ref: '#/components/schemas/PublicationYear'
-                  ResourceType:
-                    $ref: '#/components/schemas/Type'
-                  Identifiers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Identifier'
-                  SchemaVersion:
-                    type: string
-                  Files:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/File'
-      description: This endpoint responses with all available resources.
+              examples:
+                example-1:
+                  value:
+                    titles:
+                      - title: long title
+                        lang: en
+                    publisher: research publisher gmbh
+                    type:
+                      resourceType: ''
+                      resourceTypeGeneral: Poster
+      description: "Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. \n\nSee the examples to see, how to use it."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                - type: 'null'
+            examples:
+              example-1:
+                value:
+                  titles: ''
+                  publisher: ''
+                  type: ''
     delete:
       summary: Remove a project from this service
       responses:
         '200':
           description: OK
+    patch:
+      summary: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                example-1:
+                  value:
+                    titles:
+                      - title: long title
+                        lang: en
+                    publisher: research publisher gmbh
+                    type:
+                      resourceType: ''
+                      resourceTypeGeneral: Poster
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            examples:
+              example-1:
+                value:
+                  titles:
+                    - title: long title
+                      lang: en
+                  publisher: research publisher gmbh
+                  type:
+                    resourceType: ''
+                    resourceTypeGeneral: Poster
+        description: The given body has to be valid against the datacite jsonschema (without required fields).
   '/project/{project-id}/files':
     parameters:
       - schema:
@@ -120,6 +155,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/File'
       description: ''
+    patch:
+      summary: ''
+      responses:
+        '200':
+          description: OK
   /project:
     get:
       summary: Returns all projects available in the corresponding service
@@ -152,88 +192,6 @@ paths:
               properties:
                 projectName:
                   type: string
-  '/project/{project-id}/metadata':
-    parameters:
-      - schema:
-          type: string
-        name: project-id
-        in: path
-        required: true
-    get:
-      summary: Returns all specified metadata
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-              examples:
-                example-1:
-                  value:
-                    titles:
-                      - title: long title
-                        lang: en
-                    publisher: research publisher gmbh
-                    type:
-                      resourceType: ''
-                      resourceTypeGeneral: Poster
-      operationId: ''
-      requestBody:
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - type: object
-                - type: 'null'
-            examples:
-              example-1:
-                value:
-                  titles: ''
-                  publisher: ''
-                  type: ''
-        description: 'If no keys are given, it returns all metadata.'
-      description: "Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. \n\nSee the examples to see, how to use it."
-    patch:
-      summary: Update metadata fields
-      operationId: ''
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
-              examples:
-                example-1:
-                  value:
-                    titles:
-                      - title: long title
-                        lang: en
-                    publisher: research publisher gmbh
-                    type:
-                      resourceType: ''
-                      resourceTypeGeneral: Poster
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties: {}
-            examples:
-              example-1:
-                value:
-                  titles:
-                    - title: long title
-                      lang: en
-                  publisher: research publisher gmbh
-                  type:
-                    resourceType: ''
-                    resourceTypeGeneral: Poster
-        description: The given body has to be valid against the datacite jsonschema (without required fields).
-      description: "Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. \n\nSee the examples to see, how to use it."
 components:
   schemas:
     File:

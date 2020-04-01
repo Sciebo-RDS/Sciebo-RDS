@@ -1,13 +1,17 @@
-import logging
-import os
-from lib.upload_zenodo import Zenodo
-from flask import jsonify, request
+from flask import request, jsonify
+
 
 def index(project_id):
-    pass
 
-def post(project_id):
-    pass
+    return jsonify({})
+
 
 def get(project_id, file_id):
-    pass
+
+    return jsonify({})
+
+
+def patch(project_id):
+    req = request.json
+
+    jsonify({})
