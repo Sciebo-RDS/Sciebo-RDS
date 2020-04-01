@@ -73,11 +73,11 @@ class Metadata():
 
         if metadataFields is not None:
             req = requests.get(
-                f"http://{self.getPortString(port)}/metadata/project/{projectId}/metadata", json=metadataFields)
+                f"http://{self.getPortString(port)}/metadata/project/{projectId}", json=metadataFields)
 
         else:
             req = requests.get(
-                f"http://{self.getPortString(port)}/metadata/project/{projectId}/metadata")
+                f"http://{self.getPortString(port)}/metadata/project/{projectId}")
 
         if req.status_code == 200:
             return req.json()
@@ -138,7 +138,7 @@ class Metadata():
         port = str(port).lower()
 
         req = requests.patch(
-            f"http://{self.getPortString(port)}/metadata/project/{projectId}/metadata", json=updateMetadata)
+            f"http://{self.getPortString(port)}/metadata/project/{projectId}", json=updateMetadata)
 
         if req.status_code >= 300:
             logger.exception(

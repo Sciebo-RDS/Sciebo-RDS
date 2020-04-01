@@ -133,7 +133,7 @@ class Test_Metadata(unittest.TestCase):
         ).upon_receiving(
             'A call to get the metadata from specific researchId.'
         ).with_request(
-            'GET', f"/metadata/project/{projectId}/metadata"
+            'GET', f"/metadata/project/{projectId}"
         ).will_respond_with(200, body=metadata)
 
         with pact:
@@ -228,7 +228,7 @@ class Test_Metadata(unittest.TestCase):
             ).upon_receiving(
                 f'A call to get the metadata from specific researchId {projectId} and port {port}.'
             ).with_request(
-                'GET', f"/metadata/project/{projectId}/metadata"
+                'GET', f"/metadata/project/{projectId}"
             ).will_respond_with(200, body=metadata)
 
             expected_metadata.append({
@@ -268,7 +268,7 @@ class Test_Metadata(unittest.TestCase):
             ).upon_receiving(
                 f'A call to update the metadata from specific projectId {projectId}.'
             ).with_request(
-                'PATCH', f"/metadata/project/{projectId}/metadata"
+                'PATCH', f"/metadata/project/{projectId}"
             ).will_respond_with(200, body=updateMetadata)
 
             with pact:
@@ -376,7 +376,7 @@ class Test_Metadata(unittest.TestCase):
                 ).upon_receiving(
                     f'A call to update the metadata from specific projectId {projectId} for port {portname} with update {updateMetadata.keys()}.'
                 ).with_request(
-                    'PATCH', f"/metadata/project/{projectId}/metadata"
+                    'PATCH', f"/metadata/project/{projectId}"
                 ).will_respond_with(200, body=updateMetadata)
 
                 expected_metadata.append({
@@ -499,7 +499,7 @@ class Test_Metadata(unittest.TestCase):
             ).upon_receiving(
                 f'A call to get the metadata from specific projectId {projectId} and port {port} for {expected_metadata_from_port}.'
             ).with_request(
-                'GET', f"/metadata/project/{projectId}/metadata"
+                'GET', f"/metadata/project/{projectId}"
             ).will_respond_with(200, body=expected_metadata_from_port)
 
             expected_metadata.append({

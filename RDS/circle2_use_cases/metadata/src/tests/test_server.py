@@ -166,7 +166,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the empty metadata from specific projectId {projectId}.'
         ).with_request(
-            'GET', f"/metadata/project/{projectId}/metadata"
+            'GET', f"/metadata/project/{projectId}"
         ).will_respond_with(200, body=metadata)
 
         with pact:
@@ -204,7 +204,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the metadata from specific projectId {projectId}.'
         ).with_request(
-            'GET', f"/metadata/project/{projectId}/metadata"
+            'GET', f"/metadata/project/{projectId}"
         ).will_respond_with(200, body=metadata)
 
         with pact:
@@ -274,7 +274,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to update the metadata for from specific projectId {projectId}.'
         ).with_request(
-            'PATCH', f"/metadata/project/{projectId}/metadata"
+            'PATCH', f"/metadata/project/{projectId}"
         ).will_respond_with(200, body=metadata)
 
         with pact:
@@ -310,7 +310,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to update the metadata again from specific projectId {projectId}.'
         ).with_request(
-            'PATCH', f"/metadata/project/{projectId}/metadata"
+            'PATCH', f"/metadata/project/{projectId}"
         ).will_respond_with(200, body=metadata)
 
         with pact:
@@ -393,7 +393,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the metadata for creator from specific projectId {projectId}.'
         ).with_request(
-            'GET', f"/metadata/project/{projectId}/metadata"
+            'GET', f"/metadata/project/{projectId}"
         ).will_respond_with(200, body={"Creators": metadata["Creators"]})
 
         expectedMetadata = []
@@ -436,7 +436,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to update the metadata for creator from specific projectId {projectId}.'
         ).with_request(
-            'PATCH', f"/metadata/project/{projectId}/metadata"
+            'PATCH', f"/metadata/project/{projectId}"
         ).will_respond_with(200, body=metadata)
 
         with pact:
