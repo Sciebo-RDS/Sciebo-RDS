@@ -354,7 +354,7 @@ paths:
       description: ''
   /project:
     get:
-      summary: Returns all projects
+      summary: Returns all projects available in the corresponding service
       tags: []
       responses:
         '200':

@@ -133,7 +133,7 @@ class Test_Metadata(unittest.TestCase):
         ).will_respond_with(200, body=metadata)
 
         with pact:
-            result = md.getMetadataForResearchFromPort(port, researchId)
+            result = md.getMetadataForProjectFromPort(port, researchId)
         self.assertEqual(result, metadata)
 
     def test_metadata_get_metadata_from_researchId(self):

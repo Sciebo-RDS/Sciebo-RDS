@@ -3,6 +3,15 @@ from flask import jsonify, current_app
 
 
 def get(user_id, research_index):
-    researchId = Metadata(testing=current_app.config.get("TESTING")).getResearchId(
+    md = Metadata(testing=current_app.config.get("TESTING"))
+    
+    researchId = md.getResearchId(
         userId=user_id, researchIndex=research_index)
-    return jsonify({"researchId": researchId})
+
+    result = md.getMetadataForResearch(researchId=researchId)
+
+    return jsonify({
+        "researchId": researchId,
+        "length": len(result),
+        "list": result
+    })

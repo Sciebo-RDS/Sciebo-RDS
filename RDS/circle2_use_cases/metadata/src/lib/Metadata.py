@@ -53,7 +53,7 @@ class Metadata():
 
             logger.debug(f"work on port {port}")
             port = port["port"]
-            metadata = self.getMetadataForResearchFromPort(port, projectId)
+            metadata = self.getMetadataForProjectFromPort(port, projectId)
             d = {
                 "port": port,
                 "metadata": metadata
@@ -62,15 +62,16 @@ class Metadata():
 
         return allMetadata
 
-    def getMetadataForResearchFromPort(self, port: str, researchId: int):
+    def getMetadataForProjectFromPort(self, port: str, projectId: int):
         """
-        This method returns the metadata from given port for specified researchId.
+        This method returns the metadata from given port for specified projectId.
+        Beware that the projectId comes from the service, which is connected throug the port.
         Returns a dict, which was described in the metadata api endpoint "/metadata/research/{research-id}" or an empty one.
         """
         # pull all metadata from given port for researchId
 
         req = requests.get(
-            f"http://{self.getPortString(port)}/metadata/research/{researchId}")
+            f"http://{self.getPortString(port)}/metadata/research/{projectId}")
 
         if req.status_code == 200:
             return req.json()

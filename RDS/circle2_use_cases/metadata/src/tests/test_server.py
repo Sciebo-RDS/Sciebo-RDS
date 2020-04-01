@@ -33,6 +33,7 @@ class TestMetadata(unittest.TestCase):
         userId = 0
         researchIndex = 0
         researchId = 1
+        projectId=22
 
         research = {
             "userId": userId,
@@ -51,13 +52,43 @@ class TestMetadata(unittest.TestCase):
             'GET', f"/research/user/{userId}/research/{researchIndex}"
         ).will_respond_with(200, body=research)
 
+        research = {
+            "userId": userId,
+            "status": 1,
+            "portIn": [],
+            "portOut": [],
+            "researchId": researchId,
+            "researchIndex": researchIndex
+        }
+
+        metadata = {
+            "Creators": [],
+            "Identifiers": [],
+            "PublicationYear": "",
+            "Publisher": "",
+            "ResourceType": "",
+            "SchemaVersion": "http://datacite.org/schema/kernel-4",
+            "Titles": []
+        }
+
+        ####
+        # at first, try to get metadata, when there are no ports
+
+        pact.given(
+            'A research manager.'
+        ).upon_receiving(
+            'A call to get the research with researchId with empty ports.'
+        ).with_request(
+            'GET', f"/research/id/{researchId}"
+        ).will_respond_with(200, body=research)
+
+        expectedListMetadata = {"researchId": researchId, "length": 0, "list": []}
+
         with pact:
             result = self.client.get(
                 f"/metadata/user/{userId}/research/{researchIndex}").json
 
-        expected = {"researchId": researchId}
-
-        self.assertEqual(result, expected)
+        self.assertEqual(result, expectedListMetadata)
 
     def test_research_get(self):
         """
@@ -106,7 +137,7 @@ class TestMetadata(unittest.TestCase):
         self.assertEqual(result, expectedListMetadata)
 
         ####
-        # try to get metadata, if one port is there
+        # try to get metadata, if one port with projectId is there
         research["portIn"] = [{
             "port": "port-zenodo",
             "properties": [{

@@ -35,7 +35,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Get the corresponding projectId
+      summary: Get all metadata and corresponding research id
       tags: []
       responses:
         '200':
@@ -45,7 +45,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  projectId:
+                  researchId:
                     type: integer
                   length:
                     type: integer
