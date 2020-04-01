@@ -33,7 +33,7 @@ class TestMetadata(unittest.TestCase):
         userId = 0
         researchIndex = 0
         researchId = 1
-        projectId=22
+        projectId = 22
 
         research = {
             "userId": userId,
@@ -82,7 +82,8 @@ class TestMetadata(unittest.TestCase):
             'GET', f"/research/id/{researchId}"
         ).will_respond_with(200, body=research)
 
-        expectedListMetadata = {"researchId": researchId, "length": 0, "list": []}
+        expectedListMetadata = {
+            "researchId": researchId, "length": 0, "list": []}
 
         with pact:
             result = self.client.get(
@@ -98,6 +99,7 @@ class TestMetadata(unittest.TestCase):
         userId = 0
         researchIndex = 0
         researchId = 1
+        projectId = 5
 
         research = {
             "userId": userId,
@@ -145,7 +147,7 @@ class TestMetadata(unittest.TestCase):
             }, {
                 "portType": "customProperties", "value": [{
                     "key": "projectId",
-                    "value": str(1)
+                    "value": str(projectId)
                 }]
             }]
         }]
@@ -162,9 +164,9 @@ class TestMetadata(unittest.TestCase):
         pact.given(
             'A port with metadata informations.'
         ).upon_receiving(
-            f'A call to get the empty metadata from specific researchId {researchId}.'
+            f'A call to get the empty metadata from specific projectId {projectId}.'
         ).with_request(
-            'GET', f"/metadata/research/{researchId}"
+            'GET', f"/metadata/project/{projectId}/metadata"
         ).will_respond_with(200, body=metadata)
 
         with pact:
@@ -200,9 +202,9 @@ class TestMetadata(unittest.TestCase):
         pact.given(
             'A port with metadata informations.'
         ).upon_receiving(
-            f'A call to get the metadata from specific researchId {researchId}.'
+            f'A call to get the metadata from specific projectId {projectId}.'
         ).with_request(
-            'GET', f"/metadata/research/{researchId}"
+            'GET', f"/metadata/project/{projectId}/metadata"
         ).will_respond_with(200, body=metadata)
 
         with pact:
@@ -215,6 +217,7 @@ class TestMetadata(unittest.TestCase):
         userId = 0
         researchIndex = 0
         researchId = 1
+        projectId = 5
 
         research = {
             "userId": userId,
@@ -222,9 +225,16 @@ class TestMetadata(unittest.TestCase):
             "portIn": [],
             "portOut": [{
                 "port": "port-zenodo",
-                "properties": [{
+                "properties": [
+                    {
                         "portType": "metadata", "value": True
-                }]
+                    }, {
+                        "portType": "customProperties", "value": [{
+                            "key": "projectId",
+                            "value": str(projectId)
+                        }]
+                    }
+                ]
             }],
             "researchId": researchId,
             "researchIndex": researchIndex
@@ -262,10 +272,10 @@ class TestMetadata(unittest.TestCase):
         pact.given(
             'A port with metadata informations.'
         ).upon_receiving(
-            f'A call to update the metadata for creators from specific researchId {researchId}.'
+            f'A call to update the metadata for from specific projectId {projectId}.'
         ).with_request(
-            'PATCH', f"/metadata/research/{researchId}/creators"
-        ).will_respond_with(200, body=metadataFull["Creators"])
+            'PATCH', f"/metadata/project/{projectId}/metadata"
+        ).will_respond_with(200, body=metadata)
 
         with pact:
             result = self.client.patch(
@@ -298,26 +308,10 @@ class TestMetadata(unittest.TestCase):
         pact.given(
             'A port with metadata informations.'
         ).upon_receiving(
-            f'A call to update the metadata for creators again from specific researchId {researchId}.'
+            f'A call to update the metadata again from specific projectId {projectId}.'
         ).with_request(
-            'PATCH', f"/metadata/research/{researchId}/creators"
-        ).will_respond_with(200, body=metadataFull["Creators"])
-
-        pact.given(
-            'A port with metadata informations.'
-        ).upon_receiving(
-            f'A call to update the metadata for publisher from specific researchId {researchId}.'
-        ).with_request(
-            'PATCH', f"/metadata/research/{researchId}/publisher"
-        ).will_respond_with(200, body=metadataFull["Publisher"])
-
-        pact.given(
-            'A port with metadata informations.'
-        ).upon_receiving(
-            f'A call to update the metadata for titles from specific researchId {researchId}.'
-        ).with_request(
-            'PATCH', f"/metadata/research/{researchId}/titles"
-        ).will_respond_with(200, body=metadataFull["Titles"])
+            'PATCH', f"/metadata/project/{projectId}/metadata"
+        ).will_respond_with(200, body=metadata)
 
         with pact:
             result = self.client.patch(
@@ -338,7 +332,6 @@ class TestMetadata(unittest.TestCase):
         #   - the port does not support a required property
         #   - the port has a bad implementation (bad request etc.)
 
-    @unittest.skip("Does not fit currently")
     def test_creators_id(self):
         """
         In this unit, we test the endpoint for given creators to get and update a specific entry.
@@ -346,6 +339,7 @@ class TestMetadata(unittest.TestCase):
         userId = 0
         researchIndex = 0
         researchId = 1
+        projectId = 5
 
         research = {
             "userId": userId,
@@ -360,6 +354,11 @@ class TestMetadata(unittest.TestCase):
             "port": "port-zenodo",
             "properties": [{
                     "portType": "metadata", "value": True
+            }, {
+                "portType": "customProperties", "value": [{
+                            "key": "projectId",
+                            "value": str(projectId)
+                }]
             }]
         }]
 
@@ -392,16 +391,16 @@ class TestMetadata(unittest.TestCase):
         pact.given(
             'A port with metadata informations.'
         ).upon_receiving(
-            f'A call to get the metadata for creator from specific researchId {researchId}.'
+            f'A call to get the metadata for creator from specific projectId {projectId}.'
         ).with_request(
-            'GET', f"/metadata/research/{researchId}"
-        ).will_respond_with(200, body=metadata)
+            'GET', f"/metadata/project/{projectId}/metadata"
+        ).will_respond_with(200, body={"Creators": metadata["Creators"]})
 
         expectedMetadata = []
         for port in research["portIn"]:
             expectedMetadata.append({
                 "port": port["port"],
-                "metadata": metadata
+                "metadata": {"Creators": metadata["Creators"]}
             })
 
         expectedMetadata = {
@@ -411,7 +410,7 @@ class TestMetadata(unittest.TestCase):
 
         with pact:
             result = self.client.get(
-                f"/metadata/research/{researchId}/creators").json
+                f"/metadata/research/{researchId}", json={"Creators": ""}).json
 
         self.assertEqual(result, expectedMetadata)
 
@@ -435,14 +434,14 @@ class TestMetadata(unittest.TestCase):
         pact.given(
             'A port with metadata informations.'
         ).upon_receiving(
-            f'A call to get the metadata for creator from specific researchId {researchId}.'
+            f'A call to update the metadata for creator from specific projectId {projectId}.'
         ).with_request(
-            'PATCH', f"/metadata/research/{researchId}/creators/0"
+            'PATCH', f"/metadata/project/{projectId}/metadata"
         ).will_respond_with(200, body=metadata)
 
         with pact:
             result = self.client.patch(
-                f"/metadata/research/{researchId}/creators/0", json=metadata["Creators"][0]).json
+                f"/metadata/research/{researchId}", json=metadata).json
 
         expectedMetadata = []
         for port in research["portIn"]:

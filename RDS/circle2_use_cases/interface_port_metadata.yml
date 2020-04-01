@@ -14,201 +14,6 @@ info:
 servers:
   - url: 'http://port:3000/metadata'
 paths:
-  '/project/{project-id}/titles':
-    get:
-      summary: Get all titles
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: '#/components/schemas/Title'
-                type: array
-      description: |-
-        A name or title by which a resource is known. May be the title of a dataset or the name of a piece of software.
-
-        Free Text
-    parameters:
-      - schema:
-          type: string
-        name: project-id
-        in: path
-        required: true
-    patch:
-      summary: ''
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Title'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Title'
-  '/project/{project-id}/identifiers':
-    get:
-      summary: Get all identifiers
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Identifier'
-      description: 'The Identifier is a unique string that identifies a resource.  For software, determine whether the identifier is for a specific version of a piece of software, (per the Force "Software Citation Principles"), or for all versions.'
-    parameters:
-      - schema:
-          type: string
-        name: project-id
-        in: path
-        required: true
-  '/project/{project-id}/publisher':
-    get:
-      summary: Get Publisher
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Publisher'
-      description: 'The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource. This property will be used to formulate the citation, so consider the prominence of the role. For software, use Publisher for the code repository. If there is an entity other than a code repository, that "holds, archives, publishes, prints, distributes, releases, issues, or produces" the code, use the property Contributor/contributorType/hosting Institution for the code repository.'
-    patch:
-      summary: Update Publisher
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Publisher'
-      description: 'The name of the entitythat holds, archives, publishes prints, distributes, releases, issues, or produces the resource. This property will be used to formulate the citation, so consider the prominence of the role. For software, use Publisher for the code repository. If there is an entity other than a code repository, that "holds, archives, publishes, prints, distributes, releases, issues, or produces" the code, use the property Contributor/contributorType/hosting Institution for the code repository.'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Publisher'
-    parameters:
-      - schema:
-          type: string
-        name: project-id
-        in: path
-        required: true
-  '/project/{project-id}/publicationyear':
-    get:
-      summary: Publication Year
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PublicationYear'
-      description: |-
-        The year when the data was or will be made publicly available.  In the case of resources such as software or dynamic data where there may be multiple releases in one year, include the Date/dateType/dateInformation property and sub-properties to provide more information about the publication or release date details.
-
-        Example:
-        YYYY
-        ***
-
-        If an embargo period has been in effect, use the date when the embargo period ends. In the case of datasets, "publish" is understood to mean making the data available on a specific date to the community of researchers.If there is no standard publication year value, use the date that would be preferred from a citation perspective
-      parameters: []
-    patch:
-      summary: Publication Year
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PublicationYear'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PublicationYear'
-        description: ''
-      description: |-
-        The year when the data was or will be made publicly available.  In the case of resources such as software or dynamic data where there may be multiple releases in one year, include the Date/dateType/dateInformation property and sub-properties to provide more information about the publication or release date details.
-
-        Example:
-        YYYY
-        ***
-
-        If an embargo period has been in effect, use the date when the embargo period ends.In the case of datasets, "publish" is understood to mean making the data available on a specific date to the community of researchers.If there is no standard publication year value, use the date that would be preferred from a citation perspective
-    parameters:
-      - schema:
-          type: string
-        name: project-id
-        in: path
-        required: true
-  '/project/{project-id}/schemaversion':
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SchemaVersion'
-      description: Constant schema version
-    parameters:
-      - schema:
-          type: string
-        name: project-id
-        in: path
-        required: true
-  '/project/{project-id}/type':
-    patch:
-      summary: Update resourcetype
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Type'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Type'
-        description: 'Only the fieds, which should be updated.'
-      description: A description of the resource.
-    get:
-      summary: Get type
-      tags: []
-      description: A description of the resource.
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Type'
-    parameters:
-      - schema:
-          type: string
-        name: project-id
-        in: path
-        required: true
   '/project/{project-id}':
     parameters:
       - schema:
@@ -257,43 +62,6 @@ paths:
       responses:
         '200':
           description: OK
-  '/project/{project-id}/creators':
-    parameters:
-      - schema:
-          type: string
-        name: project-id
-        in: path
-        required: true
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Creator'
-    patch:
-      summary: ''
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Creator'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Creator'
   '/project/{project-id}/files':
     parameters:
       - schema:
@@ -365,6 +133,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Project'
+              examples: {}
     parameters: []
     post:
       summary: Add a new project to the service
@@ -383,185 +152,90 @@ paths:
               properties:
                 projectName:
                   type: string
+  '/project/{project-id}/metadata':
+    parameters:
+      - schema:
+          type: string
+        name: project-id
+        in: path
+        required: true
+    get:
+      summary: Returns all specified metadata
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-1:
+                  value:
+                    titles:
+                      - title: long title
+                        lang: en
+                    publisher: research publisher gmbh
+                    type:
+                      resourceType: ''
+                      resourceTypeGeneral: Poster
+      operationId: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                - type: 'null'
+            examples:
+              example-1:
+                value:
+                  titles: ''
+                  publisher: ''
+                  type: ''
+        description: 'If no keys are given, it returns all metadata.'
+      description: "Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. \n\nSee the examples to see, how to use it."
+    patch:
+      summary: Update metadata fields
+      operationId: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                example-1:
+                  value:
+                    titles:
+                      - title: long title
+                        lang: en
+                    publisher: research publisher gmbh
+                    type:
+                      resourceType: ''
+                      resourceTypeGeneral: Poster
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            examples:
+              example-1:
+                value:
+                  titles:
+                    - title: long title
+                      lang: en
+                  publisher: research publisher gmbh
+                  type:
+                    resourceType: ''
+                    resourceTypeGeneral: Poster
+        description: The given body has to be valid against the datacite jsonschema (without required fields).
+      description: "Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. \n\nSee the examples to see, how to use it."
 components:
   schemas:
-    Creator:
-      title: Creator
-      description: |-
-        The main researchers involved in producing the data, or the authors of the publication, in priority order. To supply multiple creators, repeat this property.
-
-        May be a corporate/institutional or personal name. Note: DataCite infrastructure supports up to 8000-10000 names. For name lists above that size, consider attribution via linking to the related metadata.
-      type: object
-      properties:
-        name:
-          type: string
-          description: The full name of the creator.
-        nameType:
-          type: string
-          description: |-
-            Controlled List Values:
-            Organizational
-            Personal(default)
-        familyName:
-          type: string
-          description: The surname or last name of the creator.
-        givenName:
-          type: string
-          description: The personal or first name of the creator.
-      required:
-        - name
-        - nameType
-        - familyName
-        - givenName
-    Identifier:
-      title: Identifier
-      description: 'The Identifier is a unique string that identifies a resource.  For software, determine whether the identifier is for a specific version of a piece of software, (per the Force11 Software Citation Principles11), or for all versions.'
-      anyOf:
-        - properties:
-            identifier:
-              type: string
-            identifierType:
-              type: string
-      type: object
-    Type:
-      title: Type
-      description: A description of the resource.
-      type: object
-      properties:
-        resourceType:
-          type: string
-          description: |-
-            The format is open, but the preferred format is a singleterm of some detail so that a pair can be formed with the sub-property.Text formats can be free-text OR terms from the CASRAI Publications resource type list.17
-
-            ***
-            Examples: Dataset/Census Data, where 'Dataset' is resourceTypeGeneral value and 'Census Data' is ResourceType value. Text/Conference Abstract, where 'Text' is resourceTypeGeneral value and 'Conference Abstract' is resourceType value aligned with CASRAI Publications term.
-        resourceTypeGeneral:
-          type: string
-          description: |-
-            The general type of a resource.
-
-            Controlled List Values:
-            Audiovisual
-            Collection
-            Data
-            Paper
-            Dataset
-            Event
-            Image
-            InteractiveResource
-            Model
-            Physical
-            Object
-            Service
-            Software
-            Sound
-            Text
-            Workflow
-              Other
-    Publisher:
-      title: Publisher
-      description: "The name of the entitythat holds, archives, publishes prints, distributes, releases, issues, or produces the resource. This property will be used to formulate the citation, so consider the prominence of the role. For software, use Publisher for the code repository. If there is an entity other than a code repository, that \"holds, archives, publishes, prints, distributes, releases, issues, or produces\" the code, use the property Contributor/contributorType/hosting Institution for the code repository.\n\nExamples: World Data Center for Climate (WDCC); GeoForschungsZentrum Potsdam (GFZ); Geological Institute, University of Tokyo, GitHub "
-      type: object
-      properties:
-        publisher:
-          type: string
-    PublicationYear:
-      title: PublicationYear
-      description: |-
-        The year when the data was or will be made publicly available.  In the case of resources such as software or dynamic data where there may be multiple releases in one year, include the Date/dateType/dateInformation property and sub-properties to provide more information about the publication or release date details.
-
-        Example:
-        YYYY
-        ***
-
-        If an embargo period has been in effect, use the date when the embargo period ends.In the case of datasets, "publish" is understood to mean making the data available on a specific date to the community of researchers.If there is no standard publication year value, use the date that would be preferred from a citation perspective
-      anyOf:
-        - properties:
-            PublicationYear:
-              type: string
-      type: object
-    SchemaVersion:
-      title: SchemaVersion
-      x-examples:
-        example-1:
-          scheme: 'http://datacite.org/schema/kernel-4'
-      description: Constant schema version
-      type: object
-      properties:
-        schemaVersion:
-          type: string
-          description: 'Constant: "http://datacite.org/schema/kernel-4"'
-    Title:
-      title: Title
-      description: |-
-        A name or title by which a resource is known. May be the title of a dataset or the name of a piece of software.
-
-        Free Text
-      x-examples:
-        example-1:
-          text: Example Test
-          type: Subtitle
-      type: object
-      properties:
-        title:
-          type: string
-        lang:
-          type: string
-    Property:
-      title: Metadata Service Property
-      description: |-
-        Custom RDS Model.
-
-        This model describes a property of the datacite scheme. View the example to see more.
-        With this model it should be possible to redirect the request to an datacite-compatible endpoint.
-
-        The model has to be datacite kernel 4.3 valid.
-        https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json
-      type: object
-      properties:
-        port:
-          type: string
-        metadata:
-          anyOf:
-            - properties:
-                Creators:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Creator'
-              required:
-                - Creators
-            - properties:
-                Titles:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Title'
-              required:
-                - Titles
-            - properties:
-                Identifiers:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Identifier'
-              required:
-                - Identifiers
-            - properties:
-                Publisher:
-                  $ref: '#/components/schemas/Publisher'
-              required:
-                - Publisher
-            - properties:
-                SchemaVersion:
-                  $ref: '#/components/schemas/SchemaVersion'
-              required:
-                - SchemaVersion
-            - properties:
-                Type:
-                  $ref: '#/components/schemas/Type'
-              required:
-                - Type
-          type: object
-      required:
-        - port
     File:
       title: File
       type: object

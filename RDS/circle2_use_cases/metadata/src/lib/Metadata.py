@@ -32,7 +32,7 @@ class Metadata():
 
         return res
 
-    def getMetadataForResearch(self, userId: str = None, researchIndex: int = None, researchId: int = None):
+    def getMetadataForResearch(self, userId: str = None, researchIndex: int = None, researchId: int = None, metadataFields=None):
         """
         This method returns the metadata from all available ports for specified researchId.
         """
@@ -41,7 +41,7 @@ class Metadata():
         logger.debug("start get metadata method for research")
 
         ports = Research(testing=self.testing,
-                        userId=userId, researchIndex=researchIndex, researchId=researchId).getPortsWithProjectId()
+                         userId=userId, researchIndex=researchIndex, researchId=researchId).getPortsWithProjectId()
 
         logger.debug(f"got ports {ports}")
 
@@ -53,7 +53,8 @@ class Metadata():
 
             logger.debug(f"work on port {port}")
             port = port["port"]
-            metadata = self.getMetadataForProjectFromPort(port, projectId)
+            metadata = self.getMetadataForProjectFromPort(
+                port, projectId, metadataFields=metadataFields)
             d = {
                 "port": port,
                 "metadata": metadata
@@ -62,7 +63,7 @@ class Metadata():
 
         return allMetadata
 
-    def getMetadataForProjectFromPort(self, port: str, projectId: int):
+    def getMetadataForProjectFromPort(self, port: str, projectId: int, metadataFields=None):
         """
         This method returns the metadata from given port for specified projectId.
         Beware that the projectId comes from the service, which is connected throug the port.
@@ -70,8 +71,13 @@ class Metadata():
         """
         # pull all metadata from given port for researchId
 
-        req = requests.get(
-            f"http://{self.getPortString(port)}/metadata/research/{projectId}")
+        if metadataFields is not None:
+            req = requests.get(
+                f"http://{self.getPortString(port)}/metadata/project/{projectId}/metadata", json=metadataFields)
+
+        else:
+            req = requests.get(
+                f"http://{self.getPortString(port)}/metadata/project/{projectId}/metadata")
 
         if req.status_code == 200:
             return req.json()
@@ -88,16 +94,19 @@ class Metadata():
 
         # get all ports registered to researchId
         logger.debug("start update for research method")
-        ports = Research(testing=self.testing, researchId=researchId).ports
+        ports = Research(testing=self.testing, researchId=researchId).getPortsWithProjectId()
         logger.debug("research ports: {}".format(ports))
 
         # FIXME: parallize me
-        for port in ports:
+        for (port, projectId) in ports:
+            if projectId is None:
+                continue
+
             logger.debug("work on port {}".format(port))
             port = port["port"]
 
             metadata = self.updateMetadataForResearchFromPort(
-                port, researchId, updateMetadata)
+                port, projectId, updateMetadata)
             d = {
                 "port": port,
                 "metadata": metadata
@@ -106,9 +115,9 @@ class Metadata():
 
         return allMetadata
 
-    def updateMetadataForResearchFromPort(self, port: str, researchId: int, updateMetadata: dict):
+    def updateMetadataForResearchFromPort(self, port: str, projectId: int, updateMetadata: dict):
         """
-        This method changes the metadata in given port to the given metadata values in given dict for specified researchId.
+        This method changes the metadata in given port to the given metadata values in given dict for specified projectId.
         Returns the current metadata data, so you can check, if the update was successful or not.
 
         The given updateMetadata has to be a dict with the following struct:
@@ -128,18 +137,11 @@ class Metadata():
 
         port = str(port).lower()
 
-        reqMetadata = {}
+        req = requests.patch(
+            f"http://{self.getPortString(port)}/metadata/project/{projectId}/metadata", json=updateMetadata)
 
-        # FIXME: parallize me
-        for key, value in updateMetadata.items():
-            keyL = str(key).lower()
-            req = requests.patch(
-                f"http://{self.getPortString(port)}/metadata/research/{researchId}/{keyL}", json=value)
+        if req.status_code >= 300:
+            logger.exception(
+                Exception(f"Update metadata for \"{updateMetadata}\" failed"))
 
-            if req.status_code >= 300:
-                logger.exception(
-                    Exception(f"Update metadata for \"{keyL}\" failed with value \"{value}\""))
-
-            reqMetadata[key] = req.json()
-
-        return reqMetadata
+        return req.json()
