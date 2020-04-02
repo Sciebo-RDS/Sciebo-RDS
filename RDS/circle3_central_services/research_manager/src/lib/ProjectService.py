@@ -32,7 +32,7 @@ class ProjectService():
             userOrProject = Project(
                 userOrProject, portIn=portIn, portOut=portOut)
 
-        projectId = self.highest_index
+        researchId = self.highest_index
         self.highest_index += 1
 
         if userOrProject.user not in self.projects:
@@ -40,14 +40,14 @@ class ProjectService():
 
         listProject = self.projects[userOrProject.user]
 
-        userOrProject.projectId = projectId
-        userOrProject.projectIndex = len(listProject)
+        userOrProject.researchId = researchId
+        userOrProject.researchIndex = len(listProject)
 
         def getDict():
             nonlocal userOrProject, listProject
             d = userOrProject.dict
-            d["projectId"] = userOrProject.projectId
-            d["projectIndex"] = userOrProject.projectIndex
+            d["researchId"] = userOrProject.researchId
+            d["researchIndex"] = userOrProject.researchIndex
             return d
 
         userOrProject.getDict = getDict
@@ -55,81 +55,81 @@ class ProjectService():
 
         return userOrProject
 
-    def getProject(self, user="", projectIndex: int = None, projectId: int = None):
+    def getProject(self, user="", researchIndex: int = None, researchId: int = None):
         """
         This method returns all projects, if no parameters were set.
         If the parameter `user` is set, it returns all projects, which belongs to the user.
-        If the `projectIndex` is set, it returns the corresponding project.
+        If the `researchIndex` is set, it returns the corresponding project.
         **Beware:** *You start counting at Zero!*
 
-        If you set the parameter `user` and `projectIndex`, it returns the project relative to all user specific projects.
+        If you set the parameter `user` and `researchIndex`, it returns the project relative to all user specific projects.
 
-        Raises ValueError if parameter `user` or `projectIndex` are wrong types and IndexError, when you try to access lists and index is to big.
+        Raises ValueError if parameter `user` or `researchIndex` are wrong types and IndexError, when you try to access lists and index is to big.
         """
 
         if not isinstance(user, str):
             raise ValueError("Parameter `user` is not of type string.")
 
-        if not isinstance(projectIndex, (int, type(None))):
-            raise ValueError("Parameter projectIndex` is not of type int.")
+        if not isinstance(researchIndex, (int, type(None))):
+            raise ValueError("Parameter researchIndex` is not of type int.")
 
         if not user:
-            if projectId is None:
+            if researchId is None:
                 return self.getAllProjects()
-            elif projectId >= 0:
+            elif researchId >= 0:
                 for proj in self.getAllProjects():
-                    if proj.projectId is projectId:
+                    if proj.researchId is researchId:
                         return proj
 
         if user:
             listOfProjects = self.projects.get(user, None)
             if listOfProjects is None:
                 from lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
-                raise NotFoundUserError(user, projectIndex)
+                raise NotFoundUserError(user, researchIndex)
 
-            if projectIndex is None:
+            if researchIndex is None:
                 return listOfProjects
 
-            # this assumes, that projectIndex could also be a projectId
+            # this assumes, that researchIndex could also be a researchId
             # for proj in listOfProjects:
-            #     if proj.projectId == projectIndex:
+            #     if proj.researchId == researchIndex:
             #         return proj
 
-            if projectIndex < len(listOfProjects):
-                return listOfProjects[projectIndex]
+            if researchIndex < len(listOfProjects):
+                return listOfProjects[researchIndex]
 
         from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
-        raise NotFoundIDError(user, projectIndex)
+        raise NotFoundIDError(user, researchIndex)
 
-    def removeProject(self, user: str = None, projectIndex: int = None, projectId: int = None):
+    def removeProject(self, user: str = None, researchIndex: int = None, researchId: int = None):
         """
         This method removes the projects for given user. 
 
-        If projectIndex was given, only the corresponding projectIndex will be removed (no user required, but it is faster).
-        Returns True if it is successful or raise an exception if user or projectIndex not found. Else returns false.
+        If researchIndex was given, only the corresponding researchIndex will be removed (no user required, but it is faster).
+        Returns True if it is successful or raise an exception if user or researchIndex not found. Else returns false.
         """
         if user is not None:
-            if projectIndex is not None:
+            if researchIndex is not None:
                 rmv_id = None
 
                 for index, proj in enumerate(self.getProject(user)):
-                    if proj.projectIndex == projectIndex:
+                    if proj.researchIndex == researchIndex:
                         rmv_id = index
 
                 try:
                     self.projects[user][rmv_id].status = Status.DELETED
                     #del self.projects[user][rmv_id]
                 except:
-                    logger.debug("id {} not found for user {}, try to find projectIndex as index".format(
-                        projectIndex, user))
+                    logger.debug("id {} not found for user {}, try to find researchIndex as index".format(
+                        researchIndex, user))
 
                     try:
-                        self.projects[user][projectIndex].status = Status.DELETED
-                        #del self.projects[user][projectIndex]
+                        self.projects[user][researchIndex].status = Status.DELETED
+                        #del self.projects[user][researchIndex]
                         return True
                     except:
                         from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
-                        raise NotFoundIDError(user, projectIndex)
+                        raise NotFoundIDError(user, researchIndex)
 
             else:
                 try:
@@ -145,14 +145,14 @@ class ProjectService():
                     
                 except:
                     from lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
-                    raise NotFoundUserError(user, projectIndex)
+                    raise NotFoundUserError(user, researchIndex)
             return True
 
-        if projectId is not None:
+        if researchId is not None:
             for user, listOfProjects in self.projects.items():
                 rmv_id = None
                 for index, proj in enumerate(listOfProjects):
-                    if proj.projectId is projectId:
+                    if proj.researchId is researchId:
                         rmv_id = index
 
                 try:
@@ -160,7 +160,7 @@ class ProjectService():
                     #del self.projects[user][rmv_id]
                 except:
                     from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
-                    raise NotFoundIDError(user, projectId)
+                    raise NotFoundIDError(user, researchId)
                 return True
 
         return False
@@ -177,7 +177,7 @@ class ProjectService():
 
     def getDict(self):
         """
-        Returns a dict of all projects with a new attribute "id", which symbolize the project projectIndex in the system.
+        Returns a dict of all projects with a new attribute "id", which symbolize the project researchIndex in the system.
         """
         returnList = []
 

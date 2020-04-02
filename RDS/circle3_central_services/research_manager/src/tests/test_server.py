@@ -24,7 +24,7 @@ class TestProjectService(unittest.TestCase):
         def test_user_creation(userId):
             nonlocal highest_index
 
-            resp = self.client.get(f"/projects/user/{userId}")
+            resp = self.client.get(f"/research/user/{userId}")
             self.assertEqual(resp.status_code, 404)
             self.assertEqual(resp.json, [])
 
@@ -33,18 +33,18 @@ class TestProjectService(unittest.TestCase):
                 "status": 1,
                 "portIn": [],
                 "portOut": [],
-                "projectId": highest_index,
-                "projectIndex": 0
+                "researchId": highest_index,
+                "researchIndex": 0
             }]
 
             highest_index += 1
 
             resp = self.client.post(
-                "/projects/user/{}".format(expected[0]["userId"]))
+                "/research/user/{}".format(expected[0]["userId"]))
             self.assertEqual(resp.status_code, 200)
             self.assertEqual(resp.json, expected[0])
 
-            resp = self.client.get(f"/projects/user/{userId}")
+            resp = self.client.get(f"/research/user/{userId}")
             self.assertEqual(resp.status_code, 200)
             self.assertEqual(resp.json, expected)
 
@@ -53,28 +53,28 @@ class TestProjectService(unittest.TestCase):
         test_user_creation("admin")
         test_user_creation("user")
 
-    def test_add_and_change_projects(self):
+    def test_add_and_change_research(self):
         expected = [{
             "userId": "admin",
             "status": 1,
             "portIn": [],
             "portOut": [],
-            "projectId": 0,
-            "projectIndex": 0
+            "researchId": 0,
+            "researchIndex": 0
         }, {
             "userId": "admin",
             "status": 1,
             "portIn": [],
             "portOut": [],
-            "projectId": 1,
-            "projectIndex": 1
+            "researchId": 1,
+            "researchIndex": 1
         }, {
             "userId": "user",
             "status": 1,
             "portIn": [],
             "portOut": [],
-            "projectId": 2,
-            "projectIndex": 0
+            "researchId": 2,
+            "researchIndex": 0
         }]
 
         portZenodo = {
@@ -99,50 +99,50 @@ class TestProjectService(unittest.TestCase):
 
         for ex in expected:
             resp = self.client.post(
-                "/projects/user/{}".format(ex["userId"]), json=ex)
+                "/research/user/{}".format(ex["userId"]), json=ex)
             self.assertEqual(resp.json, ex)
             self.assertEqual(resp.status_code, 200)
 
             resp = self.client.get(
-                "/projects/user/{}/project/{}".format(ex["userId"], ex["projectIndex"]))
+                "/research/user/{}/research/{}".format(ex["userId"], ex["researchIndex"]))
             self.assertEqual(resp.json, ex)
             self.assertEqual(resp.status_code, 200)
 
-    def test_remove_projects(self):
+    def test_remove_research(self):
         expected = [{
             "userId": "admin",
             "status": 1,
             "portIn": [],
             "portOut": [],
-            "projectId": 0,
-            "projectIndex": 0
+            "researchId": 0,
+            "researchIndex": 0
         }]
 
         # first it should be empty
         resp = self.client.get(
-            "/projects/user/{}".format(expected[0]["userId"]))
+            "/research/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, [])
 
         # add one entry
         resp = self.client.post(
-            "/projects/user/{}".format(expected[0]["userId"]))
+            "/research/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected[0])
         self.assertEqual(resp.status_code, 200)
 
         # is it there?
         resp = self.client.get(
-            "/projects/user/{}".format(expected[0]["userId"]))
+            "/research/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected)
 
         # remove it
-        resp = self.client.delete("/projects/user/{}/project/0".format(
+        resp = self.client.delete("/research/user/{}/research/0".format(
             expected[0]["userId"]))
         self.assertEqual(resp.status_code, 204)
 
         # status should be set to deleted
         expected[0]["status"] = Status.DELETED.value
         resp = self.client.get(
-            "/projects/user/{}".format(expected[0]["userId"]))
+            "/research/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected)
         self.assertEqual(resp.status_code, 200)
 
@@ -152,42 +152,42 @@ class TestProjectService(unittest.TestCase):
             "status": 1,
             "portIn": [],
             "portOut": [],
-            "projectId": 0,
-            "projectIndex": 0
+            "researchId": 0,
+            "researchIndex": 0
         }]
         resp = self.client.post(
-            "/projects/user/{}".format(expected[0]["userId"]))
+            "/research/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected[0])
         self.assertEqual(resp.status_code, 200)
 
         expected[0]["portIn"].append(
             {"port": "port-zenodo", "properties": [{"portType": "metadata", "value": True}]})
-        resp = self.client.post("/projects/user/{}/project/{}/imports".format(
+        resp = self.client.post("/research/user/{}/research/{}/imports".format(
             expected[0]["userId"], 0), json=expected[0]["portIn"][0])
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json, expected[0]["portIn"])
 
         resp = self.client.get(
-            "/projects/user/{}".format(expected[0]["userId"]))
+            "/research/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected)
         self.assertEqual(resp.status_code, 200)
 
         expected[0]["portOut"].append(
             {"port": "port-zenodo", "properties": [{"portType": "metadata", "value": True}]})
-        resp = self.client.post("/projects/user/{}/project/{}/exports".format(
+        resp = self.client.post("/research/user/{}/research/{}/exports".format(
             expected[0]["userId"], 0), json=expected[0]["portOut"][0])
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json, expected[0]["portOut"])
 
         expected[0]["portOut"].append(
             {"port": "port-owncloud", "properties": [{"portType": "fileStorage", "value": True}]})
-        resp = self.client.post("/projects/user/{}/project/{}/exports".format(
+        resp = self.client.post("/research/user/{}/research/{}/exports".format(
             expected[0]["userId"], 0), json=expected[0]["portOut"][1])
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json, expected[0]["portOut"])
 
         resp = self.client.get(
-            "/projects/user/{}".format(expected[0]["userId"]))
+            "/research/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected)
         self.assertEqual(resp.status_code, 200)
 
@@ -197,24 +197,24 @@ class TestProjectService(unittest.TestCase):
             "status": 1,
             "portIn": [],
             "portOut": [],
-            "projectId": 0,
-            "projectIndex": 0
+            "researchId": 0,
+            "researchIndex": 0
         }]
         resp = self.client.post(
-            "/projects/user/{}".format(expected[0]["userId"]))
+            "/research/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected[0])
         self.assertEqual(resp.status_code, 200)
 
         # add one to portIn and remove it
         expected[0]["portIn"].append(
             {"port": "port-zenodo", "properties": [{"portType": "metadata", "value": True}]})
-        resp = self.client.post("/projects/user/{}/project/{}/imports".format(
+        resp = self.client.post("/research/user/{}/research/{}/imports".format(
             expected[0]["userId"], 0), json=expected[0]["portIn"][0])
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json, expected[0]["portIn"])
 
         del expected[0]["portIn"][0]
-        resp = self.client.delete("/projects/user/{}/project/{}/imports/{}".format(
+        resp = self.client.delete("/research/user/{}/research/{}/imports/{}".format(
             expected[0]["userId"], 0, 0))
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json, expected[0]["portIn"])
@@ -222,46 +222,46 @@ class TestProjectService(unittest.TestCase):
         # add one to portOut and remove it
         expected[0]["portOut"].append(
             {"port": "port-owncloud", "properties": [{"portType": "fileStorage", "value": True}]})
-        resp = self.client.post("/projects/user/{}/project/{}/exports".format(
+        resp = self.client.post("/research/user/{}/research/{}/exports".format(
             expected[0]["userId"], 0), json=expected[0]["portOut"][0])
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json, expected[0]["portOut"])
 
         del expected[0]["portOut"][0]
-        resp = self.client.delete("/projects/user/{}/project/{}/exports/{}".format(
+        resp = self.client.delete("/research/user/{}/research/{}/exports/{}".format(
             expected[0]["userId"], 0, 0))
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json, expected[0]["portOut"])
 
         resp = self.client.get(
-            "/projects/user/{}".format(expected[0]["userId"]))
+            "/research/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected)
         self.assertEqual(resp.status_code, 200)
 
-    def test_get_projectIndex_and_user_from_id(self):
+    def test_get_researchIndex_and_user_from_id(self):
         # test the projcetId getter
 
-        projectId = 0
+        researchId = 0
         userId = "admin"
-        projectIndex = 0
+        researchIndex = 0
 
-        project = {
+        research = {
             "userId": userId,
-            "projectIndex": projectIndex,
-            "projectId": projectId,
+            "researchIndex": researchIndex,
+            "researchId": researchId,
             "status": 1,
             "portIn": [],
             "portOut": [],
         }
 
         respProject = self.client.post(
-            "/projects/user/{}".format(userId)).json
+            "/research/user/{}".format(userId)).json
 
-        self.assertEqual(respProject, project)
+        self.assertEqual(respProject, research)
 
         resp = self.client.get(
-            "/projects/user/{}/project/{}".format(userId, projectIndex)).json
-        resp2 = self.client.get("projects/id/{}".format(projectId)).json
+            "/research/user/{}/research/{}".format(userId, researchIndex)).json
+        resp2 = self.client.get("research/id/{}".format(researchId)).json
 
         self.assertEqual(resp, respProject)
         self.assertEqual(resp2, respProject)
@@ -272,32 +272,32 @@ class TestProjectService(unittest.TestCase):
             "status": 1,
             "portIn": [],
             "portOut": [],
-            "projectId": 0,
-            "projectIndex": 0
+            "researchId": 0,
+            "researchIndex": 0
         }]
         resp = self.client.post(
-            "/projects/user/{}".format(expected[0]["userId"]))
+            "/research/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected[0])
         self.assertEqual(resp.status_code, 200)
 
         resp = self.client.get(
-            "/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
+            "/research/user/{}/research/{}/status".format(expected[0]["userId"], expected[0]["researchId"]))
         self.assertEqual(resp.json, {"status": expected[0]["status"]})
         self.assertEqual(resp.status_code, 200)
 
         expected[0]["status"] = 2
         resp = self.client.patch(
-            "/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
+            "/research/user/{}/research/{}/status".format(expected[0]["userId"], expected[0]["researchId"]))
         self.assertEqual(resp.json, {"status": expected[0]["status"]})
         self.assertEqual(resp.status_code, 200)
 
         resp = self.client.get(
-            "/projects/user/{}/project/{}/status".format(expected[0]["userId"], expected[0]["projectId"]))
+            "/research/user/{}/research/{}/status".format(expected[0]["userId"], expected[0]["researchId"]))
         self.assertEqual(resp.json, {"status": expected[0]["status"]})
         self.assertEqual(resp.status_code, 200)
 
         resp = self.client.get(
-            "/projects/user/{}".format(expected[0]["userId"]))
+            "/research/user/{}".format(expected[0]["userId"]))
         self.assertEqual(resp.json, expected)
         self.assertEqual(resp.status_code, 200)
 
@@ -320,13 +320,13 @@ class TestProjectService(unittest.TestCase):
             "status": 1,
             "portIn": [portExpected],
             "portOut": [],
-            "projectId": 0,
-            "projectIndex": 0
+            "researchId": 0,
+            "researchIndex": 0
         }]
         resp = self.client.post(
-            "/projects/user/{}".format(expected[0]["userId"]))
+            "/research/user/{}".format(expected[0]["userId"]))
 
-        resp = self.client.post("/projects/user/{}/project/{}/imports".format(
+        resp = self.client.post("/research/user/{}/research/{}/imports".format(
             expected[0]["userId"], 0), json=expected[0]["portIn"][0])
 
         self.assertEqual(resp.json, expected[0]["portIn"], msg=resp.json)
@@ -334,7 +334,7 @@ class TestProjectService(unittest.TestCase):
 
         expected[0]["portOut"].append(portExpected)
 
-        resp = self.client.post("/projects/user/{}/project/{}/exports".format(
+        resp = self.client.post("/research/user/{}/research/{}/exports".format(
             expected[0]["userId"], 0), json=expected[0]["portOut"][0])
 
         self.assertEqual(resp.json, expected[0]["portOut"])
@@ -359,13 +359,13 @@ class TestProjectService(unittest.TestCase):
             "status": 1,
             "portIn": [portNotExpected],
             "portOut": [],
-            "projectId": 0,
-            "projectIndex": 0
+            "researchId": 0,
+            "researchIndex": 0
         }]
         resp = self.client.post(
-            "/projects/user/{}".format(notExpected[0]["userId"]))
+            "/research/user/{}".format(notExpected[0]["userId"]))
 
-        resp = self.client.post("/projects/user/{}/project/{}/imports".format(
+        resp = self.client.post("/research/user/{}/research/{}/imports".format(
             notExpected[0]["userId"], 0), json=notExpected[0]["portIn"][0])
 
         self.assertNotEqual(resp.json, notExpected[0]["portIn"], msg=resp.json)
@@ -373,7 +373,7 @@ class TestProjectService(unittest.TestCase):
 
         notExpected[0]["portOut"].append(portNotExpected)
 
-        resp = self.client.post("/projects/user/{}/project/{}/exports".format(
+        resp = self.client.post("/research/user/{}/research/{}/exports".format(
             notExpected[0]["userId"], 0), json=notExpected[0]["portOut"][0])
 
         self.assertNotEqual(

@@ -2,13 +2,13 @@ import Singleton
 from flask import jsonify
 
 
-def index(user_id, project_id):
+def index(user_id, research_id):
     result = Singleton.ProjectService.getProject(
-        user_id, int(project_id)).status
+        user_id, int(research_id)).status
     return jsonify({"status": result})
 
 
-def patch(user_id, project_id):
+def patch(user_id, research_id):
     result = Singleton.ProjectService.getProject(
-        user_id, int(project_id)).nextStatus()
+        user_id, int(research_id)).nextStatus()
     return jsonify({"status": result})

@@ -20,8 +20,8 @@ class Test_projectserviceService(unittest.TestCase):
         expected = [
             {
                 "userId": "admin",
-                "projectId": 0,
-                "projectIndex": 0,
+                "researchId": 0,
+                "researchIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
@@ -36,16 +36,16 @@ class Test_projectserviceService(unittest.TestCase):
         expected = [
             {
                 "userId": "admin",
-                "projectId": 0,
-                "projectIndex": 0,
+                "researchId": 0,
+                "researchIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
             },
             {
                 "userId": "user",
-                "projectId": 1,
-                "projectIndex": 0,
+                "researchId": 1,
+                "researchIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
@@ -58,8 +58,8 @@ class Test_projectserviceService(unittest.TestCase):
         expected = [
             {
                 "userId": "admin",
-                "projectId": 0,
-                "projectIndex": 0,
+                "researchId": 0,
+                "researchIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
@@ -72,8 +72,8 @@ class Test_projectserviceService(unittest.TestCase):
         expected = [
             {
                 "userId": "user",
-                "projectId": 1,
-                "projectIndex": 0,
+                "researchId": 1,
+                "researchIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
@@ -84,10 +84,10 @@ class Test_projectserviceService(unittest.TestCase):
                           for proj in md.getProject(user="user")], expected)
 
         with self.assertRaises(ValueError):
-            md.getProject(user="user", projectIndex="0")
+            md.getProject(user="user", researchIndex="0")
 
         self.assertEqual(md.getProject(
-            user="user", projectIndex=0).getDict(), expected[0])
+            user="user", researchIndex=0).getDict(), expected[0])
 
     def test_service_ports(self):
         """
@@ -105,24 +105,24 @@ class Test_projectserviceService(unittest.TestCase):
         expected = [
             {
                 "userId": "admin",
-                "projectId": 0,
-                "projectIndex": 0,
+                "researchId": 0,
+                "researchIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [],
                 "portOut": []
             },
             {
                 "userId": "admin",
-                "projectId": 1,
-                "projectIndex": 1,
+                "researchId": 1,
+                "researchIndex": 1,
                 "status": Status.CREATED.value,
                 "portIn": [portOwncloud.getDict()],
                 "portOut": []
             },
             {
                 "userId": "user",
-                "projectId": 2,
-                "projectIndex": 0,
+                "researchId": 2,
+                "researchIndex": 0,
                 "status": Status.CREATED.value,
                 "portIn": [portOwncloud.getDict()],
                 "portOut": [portInvenio.getDict()]
@@ -146,19 +146,19 @@ class Test_projectserviceService(unittest.TestCase):
                        portOwncloud], portOut=[portInvenio])
         md.addProject(proj)
 
-        self.assertEqual(md.getProject(projectId=0), Project("admin"))
-        # the following is not equal, because the first project comes with a projectId
+        self.assertEqual(md.getProject(researchId=0), Project("admin"))
+        # the following is not equal, because the first project comes with a researchId
         self.assertNotEqual(md.getProject(
-            projectId=0).getDict(), Project("admin").getDict())
-        self.assertEqual(md.getProject(projectId=2), proj)
+            researchId=0).getDict(), Project("admin").getDict())
+        self.assertEqual(md.getProject(researchId=2), proj)
 
         # check if the id is used as index relative to user, if username is set.
-        self.assertEqual(md.getProject(user="admin", projectIndex=1),
+        self.assertEqual(md.getProject(user="admin", researchIndex=1),
                          Project("admin", portIn=[portOwncloud]))
 
         from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
         with self.assertRaises(NotFoundIDError):
-            md.getProject(user="user", projectIndex=2)
+            md.getProject(user="user", researchIndex=2)
 
     def test_projectservice_port_change(self):
         """
@@ -173,7 +173,7 @@ class Test_projectserviceService(unittest.TestCase):
         md.addProject("admin", portIn=[portOwncloud])
         md.addProject("user", portIn=[portOwncloud], portOut=[portInvenio])
 
-        md.getProject(user="admin", projectIndex=1)
+        md.getProject(user="admin", researchIndex=1)
 
     def test_projectservice_remove_project(self):
         """
@@ -184,30 +184,30 @@ class Test_projectserviceService(unittest.TestCase):
         portOwncloud = Port("port-owncloud", fileStorage=True)
         portInvenio = Port("port-invenio", fileStorage=True, metadata=True)
 
-        id1 = md.addProject("admin", portIn=[]).projectId
-        id2 = md.addProject("admin", portIn=[portOwncloud]).projectId
+        id1 = md.addProject("admin", portIn=[]).researchId
+        id2 = md.addProject("admin", portIn=[portOwncloud]).researchId
         id3 = md.addProject("user", portIn=[portOwncloud], portOut=[
-                            portInvenio]).projectId
+                            portInvenio]).researchId
 
         md.removeProject("admin", id1)
         expected = [{
             "userId": "admin",
-            "projectId": 0,
-            "projectIndex": 0,
+            "researchId": 0,
+            "researchIndex": 0,
             "status": Status.DELETED.value,
             "portIn": [],
             "portOut": []
         }, {
             "userId": "admin",
-            "projectId": 1,
-            "projectIndex": 1,
+            "researchId": 1,
+            "researchIndex": 1,
             "status": Status.CREATED.value,
             "portIn": [portOwncloud.getDict()],
             "portOut": []
         }, {
             "userId": "user",
-            "projectId": 2,
-            "projectIndex": 0,
+            "researchId": 2,
+            "researchIndex": 0,
             "status": Status.CREATED.value,
             "portIn": [portOwncloud.getDict()],
             "portOut": [portInvenio.getDict()]
@@ -231,13 +231,13 @@ class Test_projectserviceService(unittest.TestCase):
             md.removeProject("user")
 
         with self.assertRaises(NotFoundIDError):
-            md.removeProject(projectId=2)
+            md.removeProject(researchId=2)
 
         with self.assertRaises(NotFoundUserError):
-            md.removeProject("user", projectId=2)
+            md.removeProject("user", researchId=2)
 
         with self.assertRaises(NotFoundIDError):
-            md.removeProject("user", projectIndex=2)
+            md.removeProject("user", researchIndex=2)
 
     def test_projectservice_get_projectId(self):
         """
@@ -248,19 +248,19 @@ class Test_projectserviceService(unittest.TestCase):
         portOwncloud = Port("port-owncloud", fileStorage=True)
         portInvenio = Port("port-invenio", fileStorage=True, metadata=True)
 
-        id1 = md.addProject("admin", portIn=[]).projectId
-        id2 = md.addProject("admin", portIn=[portOwncloud]).projectId
+        id1 = md.addProject("admin", portIn=[]).researchId
+        id2 = md.addProject("admin", portIn=[portOwncloud]).researchId
         id3 = md.addProject("user", portIn=[portOwncloud], portOut=[
-                            portInvenio]).projectId
+                            portInvenio]).researchId
 
         # we remove the first one, so there are only 2 projects left
-        md.removeProject(projectId=id1)
+        md.removeProject(researchId=id1)
 
         # save for later asserts
         id_old = id1
 
         # now we add one project
-        id1 = md.addProject("admin", portIn=[]).projectId
+        id1 = md.addProject("admin", portIn=[]).researchId
 
         # all id's should be different
         self.assertNotEqual(id1, id2)
@@ -279,7 +279,7 @@ class Test_projectserviceService(unittest.TestCase):
         portOwncloud = Port("port-owncloud", fileStorage=True,
                             customProperties=custom)
 
-        id1 = md.addProject("admin", portIn=[portOwncloud]).projectId
+        id1 = md.addProject("admin", portIn=[portOwncloud]).researchId
 
         # we remove the first one, so there are only 2 projects left
-        self.assertEqual([portOwncloud], md.getProject(projectId=id1).getPortIn())
+        self.assertEqual([portOwncloud], md.getProject(researchId=id1).getPortIn())
