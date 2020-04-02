@@ -33,43 +33,33 @@ class TestPortZenodo(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_home_status_code(self):
-        expected = []
-
-        pact.given(
-            'user admin has a token in rds'
-        ).upon_receiving(
-            'the currently available token'
-        ).with_request(
-            'GET', '/user/admin/service/Zenodo'
-        ) .will_respond_with(200, body={"data": {"access_token": "ASD123GANZSICHA", "service": {"data": {"servicename": "Zenodo"}}}})
-
-        pact.given(
-            'user admin exists in zenodo'
-        ).upon_receiving(
-            'user has no deposit'
-        ).with_request(
-            'GET', '/api/deposit/depositions'
-        ) .will_respond_with(200, body=expected)
-
-        result = None
-        with pact:
-            data = {"userId": "admin"}
-            result = self.client.get("/deposition", data=data)
-
-        self.assertEqual(result.json, expected)
-
-    @unittest.skip
+    @unittest.skip("skip")
     def test_home_status_code_json(self):
         expected = []
 
+        user = "admin"
+        admintoken = {
+            "type": "OAuth2Token",
+            "data": {
+                "access_token": "ASD123GANZSICHA",
+                "user": user,
+                "service": {
+                    "data": {
+                        "servicename": "Zenodo"
+                    }
+                }
+            }
+        }
+
+        projectId = 5
+
         pact.given(
             'user admin has a token in rds'
         ).upon_receiving(
             'the currently available token'
         ).with_request(
             'GET', '/user/admin/service/Zenodo'
-        ) .will_respond_with(200, body={"data": {"access_token": "ASD123GANZSICHA", "service": {"data": {"servicename": "Zenodo"}}}})
+        ) .will_respond_with(200, body=admintoken)
 
         pact.given(
             'user admin exists in zenodo'
@@ -81,9 +71,9 @@ class TestPortZenodo(unittest.TestCase):
 
         result = None
         with pact:
-            import json
-            data = {"userId": "admin"}
-            result = self.client.get("/deposition", data=json.dumps(data))
+            data = {"apiKey": "ASD123GANZSICHA"}
+            result = self.client.get(
+                "/metadata/project", json=data)
 
         self.assertEqual(result.json, expected)
 
@@ -95,7 +85,7 @@ class TestPortZenodo(unittest.TestCase):
             'the currently available token'
         ).with_request(
             'GET', '/user/admin/service/Zenodo'
-        ) .will_respond_with(200, body={"data": {"access_token": "ASD123GANZSICHA", "service": {"data": {"servicename": "Zenodo"}}}})
+        ) .will_respond_with(200, body=admintoken)
 
         pact.given(
             'user admin exists in zenodo'
@@ -107,33 +97,78 @@ class TestPortZenodo(unittest.TestCase):
 
         result = None
         with pact:
-            import json
-            data = {"userId": "admin"}
-            result = self.client.get("/deposition", json=data)
+            data = {"apiKey": "ASD123GANZSICHA"}
+            result = self.client.get(
+                f"/metadata/project/{projectId}", json=data)
 
         self.assertEqual(result.json, expected)
 
-    def test_get_token_for_userid(self):
-        result = None
-        with pact:
-            result = self.client.get("/deposition")
+    def test_without_apikey(self):
+        """
+        This test try to get something without apiKey, but this should be a Bad request.
+        """
 
-        self.assertEqual(result.status_code, 401)
+        expected = {'message': 'The server could not verify that you are authorized to '
+                    'access the URL requested.  You either supplied the wrong '
+                    'credentials (e.g. a bad password), or your browser '
+                    "doesn't understand how to supply the credentials "
+                    'required.',
+                    'status': 401}
 
         pact.given(
-            'user "user" has no token in rds'
+            'user admin not exists in zenodo'
         ).upon_receiving(
-            'error message, no user found'
+            'user has no deposit'
         ).with_request(
-            'GET', '/user/user/service/Zenodo'
-        ) .will_respond_with(500, body={"error": "Exception", "http_code": 500})
+            'GET', '/api/deposit/depositions'
+        ) .will_respond_with(401, body=expected)
 
-        result = None
         with pact:
-            data = {"userId": "user"}
-            result = self.client.get("/deposition", data=data)
+            result = self.client.get("/metadata/project")
+            self.assertEqual(result.status_code, 400, msg=result.json)
 
-        self.assertEqual(result.status_code, 401)
+    def test_with_invalid_apikey(self):
+        expected = {'message': 'The server could not verify that you are authorized to '
+                    'access the URL requested.  You either supplied the wrong '
+                    'credentials (e.g. a bad password), or your browser '
+                    "doesn't understand how to supply the credentials "
+                    'required.',
+                    'status': 401}
+
+        pact.given(
+            'user admin not exists in zenodo'
+        ).upon_receiving(
+            'user has no deposit'
+        ).with_request(
+            'GET', '/api/deposit/depositions'
+        ) .will_respond_with(401, body=expected)
+
+        with pact:
+            data = {"apiKey": "ASD123GANZSICHA"}
+            result = self.client.get("/metadata/project", json=data)
+            self.assertEqual(result.status_code, 401, msg=result.json)
+
+    def test_projectId_not_found(self):
+        expected = {
+            "message": "Deposition not found",
+            "status": 404
+        }
+
+        projectId = 5
+
+        pact.given(
+            'projectId not exists in zenodo'
+        ).upon_receiving(
+            'user has no deposit'
+        ).with_request(
+            'GET', f'/api/deposit/depositions/{projectId}'
+        ) .will_respond_with(404, body=expected)
+
+        with pact:
+            data = {"apiKey": "ASD123GANZSICHA"}
+            result = self.client.get(
+                f"/metadata/project/{projectId}", json=data)
+            self.assertEqual(result.status_code, 404, msg=result.json)
 
     @unittest.skipIf(api_key is None, "no api key were given")
     @unittest.skip
@@ -150,7 +185,7 @@ class TestPortZenodo(unittest.TestCase):
         result = None
         with pact:
             data = {"userId": "admin"}
-            result = self.client.get("/deposition", data=data)
+            result = self.client.get("/metadata/project", data=data)
 
         self.assertEqual(result.json, {"success": True})
 

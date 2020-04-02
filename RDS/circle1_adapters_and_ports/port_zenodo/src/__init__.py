@@ -6,6 +6,8 @@ import json
 from jaeger_client import Config as jConfig
 from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 import requests
+from werkzeug.exceptions import abort
+
 
 log_level = logging.DEBUG
 logger = logging.getLogger('')
@@ -15,8 +17,8 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
 
 def bootstrap(name='MicroService', *args, **kwargs):
     list_openapi = Util.load_oai(os.getenv("OPENAPI_MULTIPLE_FILES",
-                                           "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_metadata.yml;" +
-                                           "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/interface_port_token_storage.yml"))
+                                           "../../circle2_use_cases/interface_port_metadata.yml;" +
+                                           "../../circle3_central_services/interface_port_token_storage.yml"))
 
     zenodo_address = None
     if "address" in kwargs:
@@ -25,7 +27,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
 
     app = App(name, *args, **kwargs)
 
-    app.zenodo_address = zenodo_address
+    app.app.zenodo_address = zenodo_address
 
     from lib.Util import loadAccessToken
     from flask import request, g
@@ -34,30 +36,16 @@ def bootstrap(name='MicroService', *args, **kwargs):
     def load_zenodo_token():
         g.zenodo = None
 
-        logger.debug("get user token from query or form?")
-        userid = request.values.get("userId")
-        if userid is None:
-            logger.debug("no query userId found.")
-            logger.debug("get user token from data?")
-
-            if len(request.data) > 0:
-                import json
-                j = json.loads(request.data.decode("utf-8"))
-                userid = j.get("userId")
-
-        if userid is not None:
-            logger.debug("userId found: {}".format(userid))
-            logger.debug("look for token for userId")
-            token = loadAccessToken(userid, "Zenodo")
-            if token is None:
-                return "No token for userid provided. Unauthorized access", 401
-
-            logger.debug("userId token was found")
-            g.zenodo = Zenodo(token, address=app.zenodo_address)
-            logger.debug("Zenodo object to work with was created")
-
-        else:
-            logger.debug("no userId provided")
+        try:
+            apiKey = request.json.get("apiKey")
+            if apiKey is not None:
+                logger.debug("found apiKey")
+                g.zenodo = Zenodo(apiKey, address=app.app.zenodo_address)
+            else:
+                abort(401)
+        except Exception as e:
+            logger.error(e)
+            abort(400)
 
     for oai in list_openapi:
         app.add_api(oai, resolver=MultipleResourceResolver(
