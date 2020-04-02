@@ -1,6 +1,7 @@
 import requests
 import logging
 from lib.Research import Research
+from lib.Util import loadAccessToken
 
 logger = logging.getLogger()
 
@@ -40,8 +41,10 @@ class Metadata():
 
         logger.debug("start get metadata method for research")
 
-        ports = Research(testing=self.testing,
-                         userId=userId, researchIndex=researchIndex, researchId=researchId).getPortsWithProjectId()
+        research = Research(testing=self.testing,
+                            userId=userId, researchIndex=researchIndex, researchId=researchId)
+
+        ports = research.getPortsWithProjectId()
 
         logger.debug(f"got ports {ports}")
 
@@ -51,10 +54,13 @@ class Metadata():
             if projectId is None:
                 continue
 
+            apiKey = loadAccessToken(
+                research.userId, port["port"].replace("port-", "").capitalize())
+
             logger.debug(f"work on port {port}")
             port = port["port"]
             metadata = self.getMetadataForProjectFromPort(
-                port, projectId, metadataFields=metadataFields)
+                port, projectId, apiKeyMetadata={"apiKey": apiKey, "metadata": metadataFields})
             d = {
                 "port": port,
                 "metadata": metadata
@@ -63,17 +69,19 @@ class Metadata():
 
         return allMetadata
 
-    def getMetadataForProjectFromPort(self, port: str, projectId: int, metadataFields=None):
+    def getMetadataForProjectFromPort(self, port: str, projectId: int, apiKeyMetadata=None):
         """
         This method returns the metadata from given port for specified projectId.
         Beware that the projectId comes from the service, which is connected throug the port.
         Returns a dict, which was described in the metadata api endpoint "/metadata/research/{research-id}" or an empty one.
+
+        Be careful to use apiKeyMetadata only with the struct: {apiKey: userAPIKey, metadata: metadata}
         """
         # pull all metadata from given port for researchId
 
-        if metadataFields is not None:
+        if apiKeyMetadata is not None:
             req = requests.get(
-                f"http://{self.getPortString(port)}/metadata/project/{projectId}", json=metadataFields)
+                f"http://{self.getPortString(port)}/metadata/project/{projectId}", json=apiKeyMetadata)
 
         else:
             req = requests.get(
@@ -94,7 +102,10 @@ class Metadata():
 
         # get all ports registered to researchId
         logger.debug("start update for research method")
-        ports = Research(testing=self.testing, researchId=researchId).getPortsWithProjectId()
+
+        research = Research(testing=self.testing,
+                            researchId=researchId)
+        ports = research.getPortsWithProjectId()
         logger.debug("research ports: {}".format(ports))
 
         # FIXME: parallize me
@@ -102,11 +113,14 @@ class Metadata():
             if projectId is None:
                 continue
 
+            apiKey = loadAccessToken(
+                research.userId, port["port"].replace("port-", "").capitalize())
+
             logger.debug("work on port {}".format(port))
             port = port["port"]
 
             metadata = self.updateMetadataForResearchFromPort(
-                port, projectId, updateMetadata)
+                port, projectId, {"apiKey": apiKey, "metadata": updateMetadata})
             d = {
                 "port": port,
                 "metadata": metadata
@@ -132,7 +146,9 @@ class Metadata():
             ...
         }
 
-        The struct of a metadata model have to be the same as described in the metadata api.
+        The struct of a metadata model have to be the same as described in the metadata api with the following addition.
+
+        Be careful to use updateMetadata only with the struct: {apiKey: userAPIKey, metadata: metadata}
         """
 
         port = str(port).lower()

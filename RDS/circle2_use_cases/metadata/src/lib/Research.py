@@ -107,13 +107,13 @@ class Research():
         userId and researchIndex are only used together. You can provide researchId,
         so you do not need to enter userId and researchIndex for convenience.
         """
-        if userId is None and researchIndex is None:
-            if researchId is not None:
-                req = requests.get(
-                    f"http://{self.researchManager}/research/id/{researchId}")
+        
+        if researchId is not None:
+            req = requests.get(
+                f"http://{self.researchManager}/research/id/{researchId}")
 
-                if req.status_code == 200:
-                    return req.json()
+            if req.status_code == 200:
+                return req.json()
 
         if userId is not None and researchIndex is not None:
             req = requests.get(

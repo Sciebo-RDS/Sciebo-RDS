@@ -223,6 +223,18 @@ class Test_Metadata(unittest.TestCase):
                 continue
 
             port = ports["port"]
+
+            apiKey = "ASDB12345"
+
+            pact.given(
+                'An access token for userid.'
+            ).upon_receiving(
+                f'A call to get the access token for user {userId}.'
+            ).with_request(
+                'GET', "/user/{}/service/{}".format(
+                    userId, port.replace("port-", "").capitalize())
+            ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+
             pact.given(
                 'A port with metadata informations.'
             ).upon_receiving(
@@ -369,6 +381,16 @@ class Test_Metadata(unittest.TestCase):
                 if skip:
                     continue
 
+                apiKey = "ASDB12345"
+
+                pact.given(
+                    'An access token for userid.'
+                ).upon_receiving(
+                    f'A call to get the access token for user {userId}.'
+                ).with_request(
+                    'GET', f"/user/{userId}/service/Zenodo"
+                ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+
                 portname = port["port"]
 
                 pact.given(
@@ -492,6 +514,16 @@ class Test_Metadata(unittest.TestCase):
 
             if skip:
                 continue
+
+            apiKey = "ASDB12345"
+
+            pact.given(
+                'An access token for userid.'
+            ).upon_receiving(
+                f'A call to get the access token for user {userId}.'
+            ).with_request(
+                'GET', f"/user/{userId}/service/Zenodo"
+            ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
             port = ports["port"]
             pact.given(

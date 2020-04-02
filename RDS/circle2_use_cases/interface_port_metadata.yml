@@ -46,20 +46,34 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - type: object
-                - type: 'null'
+              type: object
+              properties:
+                apiKey:
+                  type: string
+                metadata:
+                  oneOf:
+                    - type: object
+                    - type: 'null'
             examples:
               example-1:
                 value:
                   titles: ''
                   publisher: ''
                   type: ''
+        description: ''
     delete:
       summary: Remove a project from this service
       responses:
         '200':
           description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                apiKey:
+                  type: string
     patch:
       summary: ''
       responses:
@@ -85,7 +99,11 @@ paths:
           application/json:
             schema:
               type: object
-              properties: {}
+              properties:
+                apiKey:
+                  type: string
+                metadata:
+                  type: object
             examples:
               example-1:
                 value:
@@ -116,6 +134,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/File'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                apiKey:
+                  type: string
     post:
       summary: Add a file
       responses:
@@ -131,7 +157,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/File'
+              type: object
+              properties:
+                apiKey:
+                  type: string
+                file:
+                  $ref: '#/components/schemas/File'
   '/project/{project-id}/files/{file-id}':
     parameters:
       - schema:
@@ -155,11 +186,43 @@ paths:
               schema:
                 $ref: '#/components/schemas/File'
       description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                apiKey:
+                  type: string
     patch:
       summary: ''
       responses:
         '200':
           description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                apiKey:
+                  type: string
+        description: ''
+    delete:
+      summary: ''
+      operationId: ''
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                apiKey:
+                  type: string
+        description: ''
   /project:
     get:
       summary: Returns all projects available in the corresponding service
@@ -174,6 +237,15 @@ paths:
                 items:
                   $ref: '#/components/schemas/Project'
               examples: {}
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                apiKey:
+                  type: string
     parameters: []
     post:
       summary: Add a new project to the service
@@ -191,6 +263,8 @@ paths:
               type: object
               properties:
                 projectName:
+                  type: string
+                apiKey:
                   type: string
 components:
   schemas:

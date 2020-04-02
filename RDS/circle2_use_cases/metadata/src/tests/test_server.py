@@ -161,6 +161,16 @@ class TestMetadata(unittest.TestCase):
             'GET', f"/research/id/{researchId}"
         ).will_respond_with(200, body=research)
 
+        apiKey = "ASDB12345"
+
+        pact.given(
+            'An access token for userid.'
+        ).upon_receiving(
+            f'A call to get the access token for user {userId}.'
+        ).with_request(
+            'GET', f"/user/{userId}/service/Zenodo"
+        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+
         pact.given(
             'A port with metadata informations.'
         ).upon_receiving(
@@ -198,6 +208,16 @@ class TestMetadata(unittest.TestCase):
         ).with_request(
             'GET', f"/research/id/{researchId}"
         ).will_respond_with(200, body=research)
+
+        apiKey = "ASDB12345"
+
+        pact.given(
+            'An access token for userid.'
+        ).upon_receiving(
+            f'A call to get the access token for user {userId}.'
+        ).with_request(
+            'GET', f"/user/{userId}/service/Zenodo"
+        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
             'A port with metadata informations.'
@@ -265,6 +285,16 @@ class TestMetadata(unittest.TestCase):
             "Titles": [{"title": "This is a test title", "lang": "de"}]
         }
 
+        apiKey = "ASDB12345"
+
+        pact.given(
+            'An access token for userid.'
+        ).upon_receiving(
+            f'A call to get the access token for user {userId}.'
+        ).with_request(
+            'GET', f"/user/{userId}/service/Zenodo"
+        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+
         metadata = {
             "Creators": metadataFull["Creators"]
         }
@@ -304,6 +334,16 @@ class TestMetadata(unittest.TestCase):
         ).with_request(
             'GET', f"/research/id/{researchId}"
         ).will_respond_with(200, body=research)
+
+        apiKey = "ASDB12345"
+
+        pact.given(
+            'An access token for userid.'
+        ).upon_receiving(
+            f'A call to get the access token for user {userId}.'
+        ).with_request(
+            'GET', f"/user/{userId}/service/Zenodo"
+        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
             'A port with metadata informations.'
@@ -388,6 +428,16 @@ class TestMetadata(unittest.TestCase):
             'GET', f"/research/id/{researchId}"
         ).will_respond_with(200, body=research)
 
+        apiKey = "ASDB12345"
+
+        pact.given(
+            'An access token for userid.'
+        ).upon_receiving(
+            f'A call to get the access token for user {userId}.'
+        ).with_request(
+            'GET', f"/user/{userId}/service/Zenodo"
+        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+
         pact.given(
             'A port with metadata informations.'
         ).upon_receiving(
@@ -430,6 +480,16 @@ class TestMetadata(unittest.TestCase):
         ).with_request(
             'GET', f"/research/id/{researchId}"
         ).will_respond_with(200, body=research)
+
+        apiKey = "ASDB12345"
+
+        pact.given(
+            'An access token for userid.'
+        ).upon_receiving(
+            f'A call to get the access token for user {userId}.'
+        ).with_request(
+            'GET', f"/user/{userId}/service/Zenodo"
+        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
             'A port with metadata informations.'
