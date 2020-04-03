@@ -8,38 +8,47 @@ logger = logging.getLogger()
 
 
 def index():
-    depoResponse = g.zenodo.get_deposition(return_response=True)
+    req = request.json.get("metadata")
 
-    if depoResponse.status_code < 300:
-        resp = depoResponse.json()
-
-        # TODO add filter to resp if request.json["metadata"] is set
-        return jsonify(resp)
-    
-    abort(depoResponse.status_code)
+    depoResponse = g.zenodo.get_deposition(metadataFilter=req)
+    return jsonify(depoResponse)
 
 
 def get(project_id):
-    depoResponse = g.zenodo.get_deposition(int(project_id), return_response=True)
+    req = request.json.get("metadata")
 
-    if depoResponse.status_code < 300:
-        resp = depoResponse.json()
+    depoResponse = g.zenodo.get_deposition(
+        id=int(project_id), metadataFilter=req)
 
-        # TODO add filter to resp if request.json["metadata"] is set
-        return jsonify(resp)
-    
-    abort(depoResponse.status_code)
+    return jsonify(depoResponse)
 
 
 def post():
-    pass
+    req = request.json.get("metadata")
+
+    depoResponse = g.zenodo.create_new_deposition_internal(
+        metadata=req, return_response=True)
+
+    if depoResponse.status_code < 300:
+        return jsonify(depoResponse.json().get("metadata"))
+
+    abort(depoResponse.status_code)
 
 
 def delete(project_id):
-    pass
+    if g.zenodo.remove_deposition_internal(int(project_id)):
+        return "", 200
+
+    abort(404)
 
 
 def patch(project_id):
-    #req = request.json
+    req = request.json.get("metadata")
 
-    pass
+    depoResponse = g.zenodo.change_metadata_in_deposition_internal(
+        deposition_id=int(project_id), metadata=req, return_response=True)
+
+    if depoResponse.status_code == 200:
+        return jsonify(depoResponse.json().get("metadata"))
+
+    abort(depoResponse.status_code)

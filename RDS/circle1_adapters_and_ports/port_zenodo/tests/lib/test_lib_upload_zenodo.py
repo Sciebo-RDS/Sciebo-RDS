@@ -6,6 +6,7 @@ from pactman import Consumer, Provider
 
 api_key = os.getenv("ZENODO_API_KEY", default=None)
 
+
 def create_app():
     from src import bootstrap
     # creates a test client
@@ -106,9 +107,75 @@ class TestZenodoMethods(unittest.TestCase):
             'POST', '/api/deposit/depositions'
         ) .will_respond_with(201, body=expected_body)
 
-        expected = True
         with pact:
-            result = Zenodo(api_key, address="http://localhost:3000").create_new_deposition()
+            result = Zenodo(
+                api_key, address="http://localhost:3000").create_new_deposition()
+        self.assertEqual(result, expected_body)
+
+    def test_metadata_filter(self):
+        """
+        Create a new deposition and remove it again.
+        """
+
+        # create new file
+        expected_body = [{
+            "created": "2016-06-15T16:10:03.319363+00:00",
+            "files": [],
+            "id": 1234,
+            "links": {
+                "discard": "https://zenodo.org/api/deposit/depositions/1234/actions/discard",
+                "edit": "https://zenodo.org/api/deposit/depositions/1234/actions/edit",
+                "files": "https://zenodo.org/api/deposit/depositions/1234/files",
+                "publish": "https://zenodo.org/api/deposit/depositions/1234/actions/publish",
+                "newversion": "https://zenodo.org/api/deposit/depositions/1234/actions/newversion",
+                "self": "https://zenodo.org/api/deposit/depositions/1234"
+            },
+            'metadata': {
+                'title': 'My first upload',
+                'upload_type': 'poster',
+                'description': 'This is my first upload',
+                'creators': [{'name': 'Doe, John',
+                              'affiliation': 'Zenodo'}]
+            },
+            "modified": "2016-06-15T16:10:03.319371+00:00",
+            "owner": 1,
+            "record_id": 1234,
+            "state": "unsubmitted",
+            "submitted": False,
+            "title": ""
+        }]
+
+        pact.given(
+            'access token is valid'
+        ).upon_receiving(
+            'the corresponding user has a deposit'
+        ).with_request(
+            'GET', '/api/deposit/depositions'
+        ) .will_respond_with(201, body=expected_body)
+
+        filter = {"title": ""}
+
+        expected = {"title": expected_body[0]["metadata"]["title"]}
+        with pact:
+            result = Zenodo(
+                api_key, address="http://localhost:3000").get_deposition(metadataFilter=filter)
+        self.assertEqual(result, expected)
+
+        filter = {"title": "", "description": ""}
+
+        pact.given(
+            'access token is valid'
+        ).upon_receiving(
+            'the corresponding user has a deposit'
+        ).with_request(
+            'GET', '/api/deposit/depositions'
+        ) .will_respond_with(201, body=expected_body)
+
+        expected = {"title": expected_body[0]["metadata"]["title"],
+                    "description": expected_body[0]["metadata"]["description"]}
+        with pact:
+            result = Zenodo(
+                api_key, address="http://localhost:3000").get_deposition(metadataFilter=filter)
         self.assertEqual(result, expected)
 
     @unittest.skipIf(api_key is None, "no api key were given")
@@ -185,7 +252,8 @@ class TestZenodoMethods(unittest.TestCase):
 
         # add a file to deposition
         filepath = "src/lib/upload_zenodo.py"
-        result = z.upload_new_file_to_deposition(deposition_id=id, path_to_file=filepath, return_response=True)
+        result = z.upload_new_file_to_deposition(
+            deposition_id=id, path_to_file=filepath, return_response=True)
 
         # file was uploaded
         self.assertEqual(result.status_code, 201, msg=f"{result.content}")

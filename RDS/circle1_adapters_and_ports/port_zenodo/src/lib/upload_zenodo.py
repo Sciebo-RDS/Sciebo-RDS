@@ -2,6 +2,7 @@ import requests
 import json
 import os
 import logging
+from flask import abort
 
 
 class Zenodo(object):
@@ -59,7 +60,7 @@ class Zenodo(object):
 
         return r.status_code == 200
 
-    def get_deposition_internal(self, id=-1, return_response=False):
+    def get_deposition_internal(self, id: int = None, return_response: bool = False, metadataFilter: dict = None):
         """ Require: None
                 Optional return_response: For testing purposes, you can set this to True.
 
@@ -67,9 +68,12 @@ class Zenodo(object):
 
             Description: Get all depositions for the account, which owns the api-key."""
 
-        self.log.debug("get depositions from zenodo")
+        self.log.debug(
+            f"get depositions from zenodo, id? {id}, return response? {return_response}, metadata? {metadataFilter}")
         headers = {"Authorization": f"Bearer {self.api_key}"}
-        if id > -1:
+        self.log.debug("set header, now requests")
+
+        if id is not None:
             r = requests.get(f"{self.zenodo_address}/api/deposit/depositions/{id}",
                              headers=headers)
         else:
@@ -78,7 +82,37 @@ class Zenodo(object):
             self.log.debug(
                 "Get Depositions: Status Code: {}".format(r.status_code))
 
-        return r.json() if not return_response else r
+        if return_response:
+            return r
+
+        if r.status_code >= 300:
+            abort(r.status_code)
+
+        result = r.json()
+
+        if id is not None:
+            result = [result]
+        self.log.debug(f"filter only metadata, {result}")
+
+        result = [res["metadata"] for res in result]
+
+        self.log.debug("apply filter")
+        if metadataFilter is not None:
+            result = {
+                key: res[key]
+                for res in result
+                for key in metadataFilter.keys()
+                if key in res
+            }
+
+        self.log.debug("finished applying filter")
+
+        self.log.debug("return results")
+
+        if id is not None:
+            return result[0]
+
+        return result
 
     def create_new_deposition_internal(self, metadata=None, return_response=False):
         """ 
@@ -99,12 +133,12 @@ class Zenodo(object):
             "Create new deposition: Status Code: {}".format(r.status_code))
 
         if r.status_code != 201:
-            return False if not return_response else r
+            return {} if not return_response else r
 
         if metadata is not None and isinstance(metadata, dict):
             return self.change_metadata_in_deposition(r.json()["id"], metadata, return_response=return_response)
 
-        return True if not return_response else r
+        return r.json() if not return_response else r
 
     def remove_deposition_internal(self, id, return_response=False):
         r = requests.delete(f'{self.zenodo_address}/api/deposit/depositions/{id}',
@@ -135,7 +169,8 @@ class Zenodo(object):
         filename = os.path.basename(path_to_file)
         data = {"name": filename}
 
-        self.log.debug("Submit the following informations to zenodo.\nData: {}, Files: {}".format(data, files))
+        self.log.debug(
+            "Submit the following informations to zenodo.\nData: {}, Files: {}".format(data, files))
 
         r = requests.post(
             f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}/files',
@@ -173,7 +208,7 @@ class Zenodo(object):
         data["metadata"] = metadata
 
         r = requests.put(f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}',
-                         data=json.dumps(data), headers=headers)
+                         json=data, headers=headers)
         return r.status_code == 200 if not return_response else r
 
     def publish_deposition_internal(self, deposition_id, return_response=False):

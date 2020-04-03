@@ -138,7 +138,7 @@ class Test_projectserviceService(unittest.TestCase):
         md = ProjectService()
 
         portOwncloud = Port("port-owncloud", fileStorage=True)
-        portInvenio = Port("port-invenio", fileStorage=True, metadata=True)
+        portInvenio = Port("port-zenodo", fileStorage=True, metadata=True)
 
         md.addProject("admin", portIn=[])
         md.addProject("admin", portIn=[portOwncloud])
