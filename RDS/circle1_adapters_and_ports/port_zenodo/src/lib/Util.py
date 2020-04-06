@@ -26,3 +26,4 @@ def loadAccessToken(userId: str, service: str) -> str:
         userId, access_token, service))
 
     return access_token
+

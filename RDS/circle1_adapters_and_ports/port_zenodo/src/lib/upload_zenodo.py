@@ -115,7 +115,7 @@ class Zenodo(object):
         return result
 
     def create_new_deposition_internal(self, metadata=None, return_response=False):
-        """ 
+        """
         Require: None
         Returns: Boolean, Alternative: json if return_response=True
         Description: Creates a new deposition. You can get the id with r.json()['id']
@@ -147,7 +147,7 @@ class Zenodo(object):
         return r.status_code == 201 if not return_response else r
 
     def upload_new_file_to_deposition_internal(self, deposition_id, path_to_file, file=None, return_response=False):
-        """ 
+        """
         Require:
             A deposit id (from get_deposition or create_new_deposition; r.json()['id'])
             A path to a file
@@ -181,8 +181,16 @@ class Zenodo(object):
 
         return r.status_code == 201 if not return_response else r
 
+    def get_files_from_deposition(self, deposition_id):
+        req = requests.get(f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}/files',
+                           headers={'Authorization': f"Bearer {self.api_key}"})
+
+        result = req.json()
+
+        return result
+
     def change_metadata_in_deposition_internal(self, deposition_id, metadata, return_response=False):
-        """ 
+        """
         Require:
             A deposit id (from get_deposition or create_new_deposition; r.json()['id'])
 
