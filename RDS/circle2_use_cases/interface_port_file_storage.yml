@@ -44,11 +44,39 @@ paths:
       responses:
         '200':
           description: OK
-    patch:
-      summary: Updates the file in filepath
+      description: Create the file
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: userId
+          required: true
+    delete:
+      summary: ''
+      operationId: ''
       responses:
         '200':
           description: OK
+      description: Delete the file
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: userId
+          required: true
+    patch:
+      summary: ''
+      operationId: ''
+      responses:
+        '200':
+          description: OK
+      description: Update the file
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: userId
+          required: true
 tags:
   - name: deposit
     description: All about depositions
