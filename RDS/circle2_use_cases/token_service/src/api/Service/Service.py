@@ -1,5 +1,5 @@
 from flask import jsonify
-import src.Util as Util
+import Util as Util
 from connexion_plus import FlaskOptimize
 
 def index():
