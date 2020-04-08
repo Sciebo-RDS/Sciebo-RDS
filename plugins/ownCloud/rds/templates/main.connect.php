@@ -1,7 +1,12 @@
 <?php
-script( 'rds', 'handlebars' );
-script( 'rds', 'research' );
 style( 'rds', 'style' );
+script( 'rds', 'handlebars' );
+
+script( 'rds', 'Studies' );
+script( 'rds', 'Metadata' );
+script( 'rds', 'Services' );
+#script( 'rds', 'Files' );
+script( 'rds', 'Research' );
 ?>
 
 <div id="app">
