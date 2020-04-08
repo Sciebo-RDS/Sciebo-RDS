@@ -33,14 +33,7 @@ class MetadataService {
 
     public function find( $researchId, $port ) {
         try {
-            $metadataList = $this->mapper->find( $researchId );
-
-            foreach ( $metadataList as $metadata ) {
-                if ($metadata->port == $port) {
-                    return $metadata;
-                }
-            }
-            return NULL;
+            return $this->mapper->find( $researchId, $port );
         } catch( Exception $e ) {
             $this->handleException( $e );
         }

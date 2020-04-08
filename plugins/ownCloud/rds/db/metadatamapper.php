@@ -1,7 +1,7 @@
 <?php
 namespace OCA\RDS\Db;
 
-use OCA\RDS\Db\Research;
+use OCA\RDS\Db\Metadata;
 
 class MetadataMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/metadata';
@@ -29,7 +29,7 @@ class MetadataMapper {
         $result = [];
 
         foreach ( $response['list'] as $rdsMetadata ) {
-            $newMetadata = new Research();
+            $newMetadata = new Metadata();
 
             $newMetadata->setResearchId( $metadata->researchId );
             $newMetadata->setMetadata( $rdsMetadata['metadata'] );
@@ -39,6 +39,18 @@ class MetadataMapper {
         }
 
         return $result;
+    }
+
+    public function find( $researchId, $port ) {
+        $metadatas = $this->findAll( $researchId );
+
+        foreach ( $metadatas as $md ) {
+            if ( $md->port == $port ) {
+                return $md;
+            }
+        }
+
+        throw new DoesNotExistException( 'No metadata for '. $port .' found.' )
     }
 
     public function findAll( $researchId ) {
@@ -61,7 +73,7 @@ class MetadataMapper {
         $result = [];
 
         foreach ( $response['list'] as $rdsMetadata ) {
-            $metadata = new Research();
+            $metadata = new Metadata();
 
             $metadata->setResearchId( $researchId );
             $metadata->setMetadata( $rdsMetadata['metadata'] );

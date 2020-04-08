@@ -35,8 +35,7 @@ class PageController extends Controller {
     */
 
     public function index() {
-        return $this->checkUserForRDSActivated( 'main.connect' );
-
+        return $this->checkUserForRDSActivated( 'main.research' );
     }
 
     /**
@@ -44,9 +43,9 @@ class PageController extends Controller {
     * int $id
     */
 
-    public function connectionShow( $id ) {
+    public function researchShow( $id ) {
         $params = ['id' => $id];
-        return $this->checkUserForRDSActivated( 'main.connect', $params );
+        return $this->checkUserForRDSActivated( 'main.research', $params );
     }
 
     /**
@@ -54,9 +53,9 @@ class PageController extends Controller {
     * int $id
     */
 
-    public function connectionEdit( $id ) {
+    public function researchEdit( $id ) {
         $params = ['id' => $id, 'edit' => True];
-        return $this->checkUserForRDSActivated( 'main.connect', $params );
+        return $this->checkUserForRDSActivated( 'main.research', $params );
     }
 
     /**
@@ -85,7 +84,7 @@ class PageController extends Controller {
         return new TemplateResponse( 'rds', $templateIfActivated, $params );
     }
 
-    private function getRegisteredServicesForUser() {
+    public function getRegisteredServicesForUser() {
         $curl = curl_init( $this->rdsURL . '/user/' . $this->userId . '/service' );
         curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
 

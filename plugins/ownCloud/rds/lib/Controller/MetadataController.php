@@ -24,7 +24,7 @@ class MetadataController extends Controller
     /**
      * Returns all metadata for researchId
      *
-     * @param integer $id
+     * @param integer $researchId
      * @return string returns json
      * 
      * @NoAdminRequired
@@ -37,16 +37,16 @@ class MetadataController extends Controller
     /**
      * Returns metadata for resarchId in given port
      *
-     * @param integer $id
+     * @param integer $researchId
      * @param string $port
      * @return string returns json
      *
      * @NoCSRFRequired
      * @NoAdminRequired
      */
-    public function show($id, $port) {
-        return $this->handleNotFound(function () use ($id) {
-            return new JSONResponse($this->service->find($id, $port));
+    public function show($researchId, $port) {
+        return $this->handleNotFound(function () use ($researchId) {
+            return new JSONResponse($this->service->find($researchId, $port));
         });
     }
 

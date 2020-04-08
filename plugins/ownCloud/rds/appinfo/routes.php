@@ -5,18 +5,22 @@ namespace OCA\RDS\AppInfo;
 $application = new Application();
 $application->registerRoutes( $this, [
     'resources' => [
-        # Connection intern API Endpoints
+        # Research resource API Endpoints, full CRUD
         'research' => ['url' => '/research'],
 
-        # Service intern API Endpoints
+        # Service resource API Endpoints, full CRUD
         'service' => ['url' => '/service'],
+
+        # Metadata resource API Endpoints, only index/show/update
+        'metadata' => ['url' => '/metadata'],
     ],
     'routes' => [
-        ['name' => 'page#index',                                'url' => '/research',                             'verb' => 'GET'],
-        ['name' => 'page#connectionShow',                       'url' => '/research/{id}',                        'verb' => 'GET'],
-        ['name' => 'page#connectionEdit',                       'url' => '/research/{id}/edit',                   'verb' => 'GET'],
+        # template endpoints
+        ['name' => 'page#index',                              'url' => '/research',                             'verb' => 'GET'],
+        ['name' => 'page#researchShow',                       'url' => '/research/{id}',                        'verb' => 'GET'],
+        ['name' => 'page#researchEdit',                       'url' => '/research/{id}/edit',                   'verb' => 'GET'],
 
-        # Service API endpoints
-        ['name' => 'service_api#getRegisteredServicesForUser',  'url' => '/user/service',                           'verb' => 'GET'],
+        # Service additional API endpoint
+        ['name' => 'service#getRegisteredServicesForUser',    'url' => '/service/user',                         'verb' => 'GET'],
     ]
 ] );
