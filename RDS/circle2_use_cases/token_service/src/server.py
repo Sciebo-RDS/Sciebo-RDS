@@ -1,4 +1,4 @@
-from src import bootstrap
+from __init__ import bootstrap
 
 if __name__ == "__main__":
     app = bootstrap("UseCaseTokenStorage", all=True)

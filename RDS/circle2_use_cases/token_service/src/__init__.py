@@ -1,4 +1,4 @@
-import src.Util as ServerUtil
+import Util as ServerUtil
 
 
 def monkeypatch():
