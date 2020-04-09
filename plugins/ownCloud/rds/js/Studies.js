@@ -1,14 +1,16 @@
 (function (OC, window, $, undefined) {
   "use strict";
 
-  var Studies = function (baseUrl, metadata) {
+  OC.rds = OC.rds || {};
+
+  OC.rds.Studies = function (baseUrl, metadata) {
     this._baseUrl = baseUrl;
     this._studies = [];
     this._activeResearch = undefined;
     this._metadata = metadata;
   };
 
-  Studies.prototype = {
+  OC.rds.Studies.prototype = {
     load: function (researchIndex) {
       var self = this;
       this._studies.forEach(function (conn) {

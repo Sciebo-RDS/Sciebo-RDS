@@ -2,11 +2,8 @@
 style( 'rds', 'style' );
 script( 'rds', 'handlebars' );
 
-script( 'rds', 'Studies' );
-script( 'rds', 'Metadata' );
-script( 'rds', 'Services' );
+script( 'rds', array('Studies','Metadata', 'Services', 'View', 'main-rds') );
 #script( 'rds', 'Files' );
-script( 'rds', 'Research' );
 ?>
 
 <div id="app">

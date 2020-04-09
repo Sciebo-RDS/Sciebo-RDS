@@ -1,6 +1,9 @@
 (function (OC, window, $, undefined) {
   "use strict";
-  var Files = function (baseUrl) {
+
+  OC.rds = OC.rds || {}
+
+  OC.rds.Files = function (baseUrl) {
     this._baseUrl = baseUrl;
   };
 })(OC, window, jQuery);

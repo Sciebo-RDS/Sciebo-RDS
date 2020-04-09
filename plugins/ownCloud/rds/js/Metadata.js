@@ -1,12 +1,15 @@
 (function (OC, window, $, undefined) {
   "use strict";
-  var Metadata = function (baseUrl) {
+
+  OC.rds = OC.rds || {};
+
+  OC.rds.Metadata = function (baseUrl) {
     this._baseUrl = baseUrl;
     this._metadata = [];
     this._activeResearchId = undefined;
   };
 
-  Metadata.prototype = {
+  OC.rds.Metadata.prototype = {
     load: function (id) {
       var deferred = $.Deferred();
       var self = this;

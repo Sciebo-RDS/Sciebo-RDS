@@ -1,12 +1,14 @@
 (function (OC, window, $, undefined) {
   "use strict";
 
-  var Services = function (baseUrl) {
+  OC.rds = OC.rds || {};
+
+  OC.rds.Services = function (baseUrl) {
     this._baseUrl = baseUrl;
     this._services = [];
   };
 
-  Services.prototype = {
+  OC.rds.Services.prototype = {
     loadAll: function () {
       var deferred = $.Deferred();
       var self = this;
