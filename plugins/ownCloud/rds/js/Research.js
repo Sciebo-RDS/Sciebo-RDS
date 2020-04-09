@@ -3,12 +3,11 @@
   "use strict";
 
   $(document).ready(function () {
-    var studies = new Studies(OC.generateUrl("/apps/rds/research"));
+    var studies = new Studies(OC.generateUrl("/apps/rds/research"), new Metadata(OC.generateUrl("/apps/rds/metadata")));
     var services = new Services(OC.generateUrl("/apps/rds/service"));
-    var metadata = new Metadata(OC.generateUrl("/apps/rds/metadata"));
     var files = new Files(undefined);
 
-    var view = new View(studies, services, metadata, files);
+    var view = new View(studies, services, files);
     view
       .loadAll()
       .done(function () {

@@ -54,13 +54,13 @@ class MetadataController extends Controller
      * Update a single Research in rds system
      *
      * @param integer $researchId
-     * @param array $metadataDict
+     * @param array $metadataArr
      * @return string returns the updated object as json
      *
      * @NoAdminRequired
      */
-    public function update($researchId, $metadataDict) {
-        return new JSONResponse($this->service->update( $researchId, $metadataDict ));
+    public function update($researchId, $metadataArr) {
+        return new JSONResponse($this->service->update( $researchId, $metadataArr ));
     }
 
 }

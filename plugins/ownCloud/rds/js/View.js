@@ -3,13 +3,12 @@
 
   $(document).ready(function () {
     var translations = {
-      newNote: $("#new-research-string").text(),
+      newresearch: $("#new-research-string").text(),
     };
 
-    var View = function (studies, services, metadata, files) {
+    var View = function (studies, services, files) {
       this._studies = studies;
       this._services = services;
-      this._metadata = metadata;
       this._files = files;
       this._stateView = undefined;
     };
@@ -138,7 +137,7 @@
 
         $("#app-navigation ul").html(html);
 
-        // create new note
+        // create new research
         var self = this;
         $("#new-research").click(function () {
           var conn = {};
@@ -149,7 +148,7 @@
               self.render();
             })
             .fail(function () {
-              alert("Could not create note");
+              alert("Could not create research");
             });
         });
 
@@ -161,7 +160,7 @@
           }
         );
 
-        // delete a note
+        // delete a research
         $("#app-navigation .research .delete").click(function () {
           var entry = $(this).closest(".research");
           entry.find(".app-navigation-entry-menu").removeClass("open");
@@ -176,7 +175,7 @@
             });
         });
 
-        // load a note
+        // load a research
         $("#app-navigation .research > a").click(function () {
           var id = parseInt($(this).parent().data("id"), 10);
           self._studies.load(id);
@@ -194,7 +193,6 @@
           self._studies.loadAll(),
           self._services.loadAll()
           // needed later
-          //self._metadata.loadAll(),
           //self._files.loadAll()
         );
       },
