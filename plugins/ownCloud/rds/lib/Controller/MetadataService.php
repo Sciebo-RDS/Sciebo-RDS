@@ -46,4 +46,12 @@ class MetadataService {
             $this->handleException( $e );
         }
     }
+
+    public function jsonschema() {
+        try {
+            return $this->mapper->jsonschema();
+        } catch ( Exception $e ) {
+            $this->handleException( $e );
+        }
+    }
 }

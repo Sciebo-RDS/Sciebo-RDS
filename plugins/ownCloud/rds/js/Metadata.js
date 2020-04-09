@@ -6,10 +6,27 @@
   OC.rds.Metadata = function (baseUrl) {
     this._baseUrl = baseUrl;
     this._metadata = [];
+    this._schema = undefined;
     this._activeResearchId = undefined;
   };
 
   OC.rds.Metadata.prototype = {
+    loadJsonSchema: function () {
+      var deferred = $.Deferred();
+      var self = this;
+      $.get(this._baseUrl + "/jsonschema")
+        .done(function (schema) {
+          this._schema = schema;
+          deferred.resolve();
+        })
+        .fail(function () {
+          deferred.reject();
+        });
+      return deferred.promise();
+    },
+    getSchema: function () {
+      return this._schema;
+    },
     load: function (id) {
       var deferred = $.Deferred();
       var self = this;
@@ -24,10 +41,10 @@
         });
       return deferred.promise();
     },
-    update: function (metadata) {
+    update: function (metadataDict) {
       var self = this;
       var md = {};
-      md.metadataArr = metadata;
+      md.metadataArr = metadataDict;
 
       return $.ajax({
         url: this._baseUrl + "/" + this._activeResearchId,

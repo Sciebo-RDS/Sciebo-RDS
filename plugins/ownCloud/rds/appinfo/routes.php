@@ -22,5 +22,8 @@ $application->registerRoutes( $this, [
 
         # Service additional API endpoint
         ['name' => 'service#getRegisteredServicesForUser',    'url' => '/service/user',                         'verb' => 'GET'],
+
+        # Metadata additional API endpoint
+        ['name' => 'metadata#jsonschema',                     'url' => '/metadata/jsonschema',                  'verb' => 'GET'],
     ]
 ] );

@@ -63,4 +63,15 @@ class MetadataController extends Controller
         return new JSONResponse($this->service->update( $researchId, $metadataArr ));
     }
 
+    /**
+     * Returns the current used jsonschema in rds system for metadata
+     *
+     * @return string returns the jsonschema
+     *
+     * @NoAdminRequired
+     */
+    public function jsonschema() {
+        return new JSONResponse($this->service->jsonschema());
+    }
+
 }

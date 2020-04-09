@@ -39,26 +39,6 @@ class PageController extends Controller {
     }
 
     /**
-    * @NoAdminRequired
-    * int $id
-    */
-
-    public function researchShow( $id ) {
-        $params = ['id' => $id];
-        return $this->checkUserForRDSActivated( 'main.research', $params );
-    }
-
-    /**
-    * @NoAdminRequired
-    * int $id
-    */
-
-    public function researchEdit( $id ) {
-        $params = ['id' => $id, 'edit' => True];
-        return $this->checkUserForRDSActivated( 'main.research', $params );
-    }
-
-    /**
     * Returns a list with all services from rds, which registered for user.
     *
     * @return string a list of strings, which are servicenames

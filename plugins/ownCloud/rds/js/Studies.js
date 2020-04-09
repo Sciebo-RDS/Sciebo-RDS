@@ -26,6 +26,9 @@
     getActive: function () {
       return this._activeResearch;
     },
+    getActiveMetadata: function () {
+      return this._metadata;
+    },
     removeActive: function () {
       var index;
       var deferred = $.Deferred();

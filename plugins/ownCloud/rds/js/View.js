@@ -5,131 +5,202 @@
 
   var translations = {
     newresearch: $("#new-research-string").text(),
+    saveNotFinished: $("#save-not-finished").text(),
+  };
+
+  Template = function (divName) {
+    this._divName = divName;
+
+    // this methods needs to be implemented in your inherited classes
+    // returns a dict
+    this._getParams = undefined;
+    // returns a jquery Differed object
+    this._saveFn = undefined;
+    // returns nothing
+    this._beforeTemplateRenders = undefined;
+    // returns nothing
+    this._afterTemplateRenders = undefined;
+
+    this._loadTemplate = function () {
+      var source = $(loadView).html();
+      var template = Handlebars.compile(source);
+      var html = template(this._getParams());
+
+      $("#app-content").html(html);
+    };
+
+    this.load = function () {
+      this._beforeTemplateRenders();
+      this._loadTemplate();
+      this._afterTemplateRenders();
+    };
+
+    this.save = function () {
+      saveFn()
+        .done(function () {})
+        .fail(function () {
+          alert(saveNotFinished);
+        });
+    };
+  };
+
+  OverviewTemplate = function (divName, services, studies) {
+    Template.call(this, divName);
+
+    var self = this;
+
+    this._beforeTemplateRenders = function () {};
+    this._afterTemplateRenders = function () {};
+    this._getParams() = function () {};
+    this._saveFn = function () {};
+  };
+
+  ServiceTemplate = function (divName, services, studies) {
+    Template.call(this, divName);
+
+    var self = this;
+
+    this._services = services;
+    this._studies = studies;
+
+    this._getParams = function () {
+      return {
+        research: self._studies.getActive(),
+        services: self._services.getAll(),
+      };
+    };
+
+    this._beforeTemplateRenders = function () {};
+
+    this._afterTemplateRenders = function () {
+      $("#app-content button #btn-save-research").click(function () {
+        self.save();
+      });
+
+      $("#app-content button #btn-save-research-and-continue").click(
+        function () {
+          self.save();
+        }
+      );
+    };
+
+    this._saveFn = function () {
+      var portIn = [];
+      var portOut = [];
+
+      self._services.forEach((element) => {
+        var properties = [];
+
+        var value = $(
+          "input[name='radiobutton-" + element.servicename + "']:checked"
+        ).val();
+
+        tempPortIn["port"] = element.servicename;
+        tempPortOut["port"] = element.servicename;
+
+        var propertyProjectInService = {};
+        propertyProjectInService["key"] = "projectName";
+        propertyProjectInService["value"] = value;
+        properties.push(propertyProjectInService);
+
+        $.each(
+          $(
+            "input[name='checkbox-" +
+              element.servicename +
+              "-property']:checked"
+          ),
+          function () {
+            var val = $(this).val();
+
+            var property = {};
+            property["portType"] = val;
+            property["value"] = true;
+            properties.push(property);
+          }
+        );
+
+        tempPortIn["properties"] = properties;
+        tempPortOut["properties"] = properties;
+
+        if (
+          $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
+            "checked"
+          )
+        ) {
+          portIn.push(tempPortIn);
+        }
+
+        if (
+          $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
+            "checked"
+          )
+        ) {
+          portOut.push(tempPortOut);
+        }
+      });
+
+      var projectIndex = self._studies.getActive().projectIndex;
+      var status = self._studies.getActive().status;
+
+      self._studies.updateActive(projectIndex, status, portIn, portOut);
+    };
+  };
+
+  MetadataTemplate = function (divName, studies) {
+    Template.call(this, divName);
+
+    var self = this;
+
+    this._beforeTemplateRenders = function () {};
+    this._afterTemplateRenders = function () {
+      $("#metadata-jsonschema-editor").html(
+        self._studies._metadata.getSchema()
+      );
+    };
+    this._getParams() = function () {};
+    this._saveFn = function () {};
+  };
+
+  FileTemplate = function (divName, services, studies) {
+    Template.call(this, divName);
+
+    var self = this;
+
+    this._beforeTemplateRenders = function () {};
+    this._afterTemplateRenders = function () {};
+    this._getParams() = function () {};
+    this._saveFn = function () {};
   };
 
   OC.rds.View = function (studies, services, files) {
     this._studies = studies;
     this._services = services;
     this._files = files;
-    this._stateView = undefined;
+    this._stateView = 1;
+    this._templates = [
+      new OverviewTemplate(
+        "#research-overview-tpl",
+        this._services,
+        this._studies
+      ),
+      new ServiceTemplate(
+        "#research-edit-service-tpl",
+        this._services,
+        this._studies
+      ),
+      new MetadataTemplate("#research-edit-metadata-tpl", this._studies),
+      new FileTemplate(
+        "#research-edit-file-tpl",
+        this._services,
+        this._studies
+      ),
+    ];
   };
 
   OC.rds.View.prototype = {
     renderContent: function () {
       var self = this;
-
-      saveFunction = function () {
-        console.log("nothing todo in saveFunction");
-        // self.metadata.saveCurrent()
-        return $.when();
-      };
-
-      function saveCurrentServiceInformations() {
-        var portIn = [];
-        var portOut = [];
-
-        this._services.forEach((element) => {
-          var properties = [];
-
-          var value = $(
-            "input[name='radiobutton-" + element.servicename + "']:checked"
-          ).val();
-
-          tempPortIn["port"] = element.servicename;
-          tempPortOut["port"] = element.servicename;
-
-          var propertyProjectInService = {};
-          propertyProjectInService["key"] = "projectName";
-          propertyProjectInService["value"] = value;
-          properties.push(propertyProjectInService);
-
-          $.each(
-            $(
-              "input[name='checkbox-" +
-                element.servicename +
-                "-property']:checked"
-            ),
-            function () {
-              var val = $(this).val();
-
-              var property = {};
-              property["portType"] = val;
-              property["value"] = true;
-              properties.push(property);
-            }
-          );
-
-          tempPortIn["properties"] = properties;
-          tempPortOut["properties"] = properties;
-
-          if (
-            $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
-              "checked"
-            )
-          ) {
-            portIn.push(tempPortIn);
-          }
-
-          if (
-            $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
-              "checked"
-            )
-          ) {
-            portOut.push(tempPortOut);
-          }
-        });
-
-        var projectIndex = self._studies.getActive().projectIndex;
-        var status = self._studies.getActive().status;
-
-        self._studies.updateActive(projectIndex, status, portIn, portOut);
-      }
-
-      loadView = "#research-overview-tpl";
-      if (self._activeResearch !== undefined) {
-        switch (self._stateView) {
-          case 2:
-            loadView = "#research-edit-metadata-tpl";
-            break;
-          case 3:
-            loadView = "#research-edit-file-tpl";
-            break;
-          default:
-            self._stateView = 1;
-            saveFunction = saveCurrentServiceInformations;
-            loadView = "#research-edit-service-tpl";
-        }
-      }
-
-      var source = $(loadView).html();
-      var template = Handlebars.compile(source);
-      var html = template({
-        research: this._studies.getActive(),
-        services: this._services.getAll(),
-      });
-
-      $("#app-content").html(html);
-
-      function saveCurrentState() {
-        saveFunction()
-          .done(function () {
-            self.render();
-          })
-          .fail(function () {
-            alert("Could not update research, not found");
-          });
-      }
-
-      $("#app-content button #btn-save-research").click(function () {
-        saveCurrentState();
-      });
-
-      $("#app-content button #btn-save-research-and-continue").click(
-        function () {
-          self._stateView += 1;
-          saveCurrentState();
-        }
-      );
+      this._templates[self._stateView].load();
     },
     renderNavigation: function () {
       var source = $("#navigation-tpl").html();
@@ -192,7 +263,8 @@
 
       return $.when(
         self._studies.loadAll(),
-        self._services.loadAll()
+        self._services.loadAll(),
+        self._studies._metadata.loadSchema()
         // needed later
         //self._files.loadAll()
       );

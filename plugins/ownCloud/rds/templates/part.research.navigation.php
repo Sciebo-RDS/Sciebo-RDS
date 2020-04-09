@@ -1,5 +1,6 @@
 <!-- translation strings -->
 <div style="display:none" id="new-research-string"><?php p($l->t('New connection')); ?></div>
+<div style="display:none" id="save-not-finished"><?php p($l->t('Your entries could not be saved.')); ?></div>
 
 <script id="navigation-tpl" type="text/x-handlebars-template">
     <li id="new-research"><a href="#"><?php p($l->t('Add connection')); ?></a></li>
