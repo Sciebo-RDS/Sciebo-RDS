@@ -1,11 +1,11 @@
 (function (OC, window, $, undefined) {
   "use strict";
 
+  OC.rds = OC.rds || {};
+
   var translations = {
     newresearch: $("#new-research-string").text(),
   };
-
-  OC.rds = OC.rds || {};
 
   OC.rds.View = function (studies, services, files) {
     this._studies = studies;
