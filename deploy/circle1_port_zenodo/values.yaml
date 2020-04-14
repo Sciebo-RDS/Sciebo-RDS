@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/port_zenodo
-  tag: latest
+  tag: connnectUI
   pullPolicy: Always
 
 imagePullSecrets:
