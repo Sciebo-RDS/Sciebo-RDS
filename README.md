@@ -1,5 +1,5 @@
-[![pipeline status](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/badges/master/pipeline.svg)](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/commits/master)
-[![coverage report](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/badges/master/coverage.svg)](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/commits/master)
+[![pipeline status](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/badges/connnectUI/pipeline.svg)](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/commits/connnectUI)
+[![coverage report](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/badges/connnectUI/coverage.svg)](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/commits/connnectUI)
 
 # Sciebo Research data services
 
