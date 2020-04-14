@@ -16,7 +16,7 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
 def bootstrap(name='MicroService', *args, **kwargs):
     list_openapi = Util.load_oai(os.getenv("OPENAPI_MULTIPLE_FILES",
                                            "../../circle2_use_cases/interface_port_file_storage.yml;" +
-                                           "../../interface_port_token_storage.yml"))
+                                           "../../circle3_central_services/interface_port_token_storage.yml"))
 
     app = App(name, *args, **kwargs)
 
@@ -59,13 +59,3 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
         f"There was an error while registering {servicename} to token storage.\nJSON: {response}")
 
     return False
-
-app = bootstrap("PortOwncloud", all=True)
-
-register_service(
-    "Owncloud",
-    os.getenv("OWNCLOUD_OAUTH_AUTHORIZE_URL", "http://localhost:3000"),
-    os.getenv("OWNCLOUD_OAUTH_ACCESS_TOKEN_URL", "http://localhost:3000"),
-    os.getenv("OWNCLOUD_OAUTH_CLIEND_ID", ""),
-    os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET", "")
-)

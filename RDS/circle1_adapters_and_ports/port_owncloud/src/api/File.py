@@ -9,7 +9,7 @@ logger = logging.getLogger()
 
 @FlaskOptimize.do_not_minify()
 @FlaskOptimize.do_not_compress()
-def index(filepath):
+def get(filepath):
     userId = request.values.get("userId")
     logger.debug(f"userid {userId}")
 
