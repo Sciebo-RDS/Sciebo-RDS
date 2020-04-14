@@ -42,9 +42,6 @@ variables:
 
   stage: build
 
-  only:
-    refs:
-      - master
 
   services:
     - docker:dind
@@ -62,10 +59,10 @@ variables:
     - export DOCKERTAGNAME=$(echo "$CI_JOB_NAME" | cut -d":" -f2)
     - export CI_PROJECT_PATH=$CI_PROJECT_PATH/$DOCKERTAGNAME
     - export CI_IMAGE_LATEST=$CI_PROJECT_PATH:latest
-    - export CI_IMAGE_SHA=$CI_PROJECT_PATH:$CI_COMMIT_SHORT_SHA
+    - export CI_IMAGE_SHA=$CI_PROJECT_PATH:$CI_COMMIT_BRANCH
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker pull $CI_IMAGE_LATEST || true
+    - docker pull $CI_COMMIT_BRANCH || true
     - docker build --cache-from $CI_IMAGE_LATEST --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_SHA --file="dockerfile" .
     - docker push $CI_IMAGE_SHA
     - docker push $CI_IMAGE_LATEST
