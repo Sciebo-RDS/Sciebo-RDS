@@ -24,7 +24,7 @@ class TokenService():
 
     _services = None
 
-    def __init__(self, address=None):
+    def __init__(self, address=None, testing=False):
         if address is not None and isinstance(address, str):
             # overwrite static in this scope
             self.address = address
@@ -34,6 +34,8 @@ class TokenService():
             # load address from oai file
             # https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/token_service/central-service_token-storage.yml
             pass
+
+        self.testing = testing
 
         self._services = []
 
@@ -176,12 +178,29 @@ class TokenService():
                 services.append({
                     "id": index,
                     "servicename": token.servicename,
-                    "access_token": token.access_token
+                    "access_token": token.access_token,
+                    "projects": self.getProjectsForToken(token)
                 })
         except:
             raise UserNotFoundError(user)
 
         return services
+
+    def getProjectsForToken(self, token) -> list:
+        """
+        Returns a `list` with all projects for given service and user.
+        """
+        def get_port_string(name):
+            service = name.replace("port-", "").capitalize()
+            return f"port-{service}"
+
+        port = get_port_string(token.servicename)
+
+        if self.testing:
+            return requests.get(f"{self.address}/metadata/project",
+                                json={"apiKey": token.access_token}).json()
+        return requests.get(f"http://{port}/metadata/project",
+                            json={"apiKey": token.access_token}).json()
 
     def removeService(self, service: Service) -> bool:
         """

@@ -38,7 +38,7 @@ class Test_TokenService(unittest.TestCase):
             super(Test_TokenService, self).run(result)
 
     def setUp(self):
-        self.tokenService = TokenService(address="http://localhost:3000")
+        self.tokenService = TokenService(address="http://localhost:3000", testing=True)
 
         self.url1 = "http://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
             1, "http://localhost:8080")
@@ -152,8 +152,9 @@ class Test_TokenService(unittest.TestCase):
             'GET', f"/user/{self.user1.username}/token"
         ) .will_respond_with(200, body={"length": 0, "list": []})
 
-        self.assertEqual(
-            self.tokenService.getAllServicesForUser(self.user1), [])
+        with pact:
+            self.assertEqual(
+                self.tokenService.getAllServicesForUser(self.user1), [])
 
         # test to get all services from one user, with one service
         pact.given(
@@ -164,10 +165,19 @@ class Test_TokenService(unittest.TestCase):
             'GET', f"/user/{self.user1.username}/token"
         ) .will_respond_with(200, body={"length": 1, "list": [json.dumps(self.token1)]})
 
-        data = self.tokenService.getAllServicesForUser(
-            self.user1)
+        expected_projects=[]
+        pact.given(
+            'Given token to access port'
+        ).upon_receiving(
+            'projects from port taken from token with proj length {}'.format(len(expected_projects))
+        ).with_request(
+            'GET', f"/metadata/project"
+        ) .will_respond_with(200, body=expected_projects)
+
+        with pact:
+            data = self.tokenService.getAllServicesForUser(self.user1)
         self.assertEqual(
-            data, [{"id": 0, "servicename": self.servicename1, "access_token": self.token1.access_token}], msg=str(data[0]))
+            data, [{"id": 0, "servicename": self.servicename1, "access_token": self.token1.access_token, "projects":[]}], msg=str(data[0]))
 
         # test to get all services from one user, with two services
         pact.given(
@@ -178,8 +188,27 @@ class Test_TokenService(unittest.TestCase):
             'GET', f"/user/{self.user1.username}/token"
         ) .will_respond_with(200, body={"length": 2, "list": [json.dumps(self.token1), json.dumps(self.token2)]})
 
-        self.assertEqual(self.tokenService.getAllServicesForUser(
-            self.user1), [{"id": 0, "servicename": self.servicename1, "access_token": self.token1.access_token}, {"id": 1, "servicename": self.servicename2, "access_token": self.token2.access_token}])
+        expected_projects=[]
+        pact.given(
+            'Given token to access port'
+        ).upon_receiving(
+            'projects from port taken from token with proj length {}'.format(len(expected_projects))
+        ).with_request(
+            'GET', f"/metadata/project"
+        ) .will_respond_with(200, body=expected_projects)
+
+        expected_projects=[]
+        pact.given(
+            'Given token to access port 2'
+        ).upon_receiving(
+            'projects from port taken from token with proj length {}'.format(len(expected_projects))
+        ).with_request(
+            'GET', f"/metadata/project"
+        ) .will_respond_with(200, body=expected_projects)
+
+        with pact:
+            self.assertEqual(self.tokenService.getAllServicesForUser(
+                self.user1), [{"id": 0, "servicename": self.servicename1, "access_token": self.token1.access_token, "projects":[]}, {"id": 1, "servicename": self.servicename2, "access_token": self.token2.access_token, "projects":[]}])
 
         pact.given(
             'two services were registered.'
@@ -695,3 +724,44 @@ class Test_TokenService(unittest.TestCase):
         with self.assertRaises(CodeNotExchangeable):
             self.tokenService.exchangeAuthCodeToAccessToken(
                 code, service.servicename)
+
+    def test_serviceprojects(self):
+        proj1 = {"projectId": 0, "projectName": "Project1"}
+        proj2 = {"projectId": 1, "projectName": "Project2"}
+
+        expected_projects = []
+
+        pact.given(
+            'Given token to access port'
+        ).upon_receiving(
+            'projects from port taken from token with proj length {}'.format(len(expected_projects))
+        ).with_request(
+            'GET', f"/metadata/project"
+        ) .will_respond_with(200, body=expected_projects)
+        with pact:
+            projects = self.tokenService.getProjectsForToken(self.token1)
+            self.assertEqual(projects, expected_projects)
+
+        expected_projects = [proj1]
+        pact.given(
+            'Given token to access port'
+        ).upon_receiving(
+            'projects from port taken from token with proj length {}'.format(len(expected_projects))
+        ).with_request(
+            'GET', f"/metadata/project"
+        ) .will_respond_with(200, body=expected_projects)
+        with pact:
+            projects = self.tokenService.getProjectsForToken(self.token1)
+            self.assertEqual(projects, expected_projects)
+
+        expected_projects = [proj1, proj2]
+        pact.given(
+            'Given token to access port'
+        ).upon_receiving(
+            'projects from port taken from token with proj length {}'.format(len(expected_projects))
+        ).with_request(
+            'GET', f"/metadata/project"
+        ) .will_respond_with(200, body=expected_projects)
+        with pact:
+            projects = self.tokenService.getProjectsForToken(self.token1)
+            self.assertEqual(projects, expected_projects)
