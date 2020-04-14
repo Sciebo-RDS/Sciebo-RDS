@@ -18,8 +18,7 @@ variables:
     - cd $FOLDER
     - test -f requirements.txt && pip install -r requirements.txt
     - test -f requirements-dev.txt && pip install -r requirements-dev.txt
-    - pip install pytest # if pytest not installed
-    - python -m pytest
+    - make test
 
   tags:
     - autoscaling
