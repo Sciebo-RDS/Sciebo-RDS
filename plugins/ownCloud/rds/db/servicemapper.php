@@ -72,7 +72,7 @@ class ServiceMapper {
             $svc->setAuthorizeUrl( urldecode( $payload['authorize_url'] ) );
 
             /* FIXME: Level HIGH, Add here security for userid, otherwise a rouge can register his own service account for another user.
-            Any ideas? pub/priv keys, send current oauth token?*/
+            Any ideas? pub/priv keys, send current oauth token to verify the request, that it comes from owncloud? encrypt it with AES with client-secret as password? */
             $svc->setState( base64_encode( json_encode( ['jwt' => $jwt, 'user' => $userId] ) ) );
             $listOfServices[] = $svc;
         }
