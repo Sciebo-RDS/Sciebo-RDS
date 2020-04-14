@@ -6,3 +6,4 @@ openapi.yaml
 *.json
 _build
 .vscode
+.coverage

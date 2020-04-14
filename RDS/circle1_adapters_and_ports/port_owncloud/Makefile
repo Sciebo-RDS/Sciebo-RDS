@@ -10,7 +10,7 @@ update:
 	pipenv lock -r -d > requirements-dev.txt
 
 test:
-	python -m pytest
+	python -m pytest --cov=src
 
 run:
 	python src/server.py
