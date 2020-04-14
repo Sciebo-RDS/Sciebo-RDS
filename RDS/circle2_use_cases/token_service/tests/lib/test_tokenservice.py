@@ -167,7 +167,7 @@ class Test_TokenService(unittest.TestCase):
         data = self.tokenService.getAllServicesForUser(
             self.user1)
         self.assertEqual(
-            data, [{"servicename": self.servicename1}], msg=str(data[0]))
+            data, [{"id": 0, "servicename": self.servicename1, "access_token": self.token1.access_token}], msg=str(data[0]))
 
         # test to get all services from one user, with two services
         pact.given(
@@ -179,7 +179,7 @@ class Test_TokenService(unittest.TestCase):
         ) .will_respond_with(200, body={"length": 2, "list": [json.dumps(self.token1), json.dumps(self.token2)]})
 
         self.assertEqual(self.tokenService.getAllServicesForUser(
-            self.user1), [{"servicename": self.servicename1}, {"servicename": self.servicename2}])
+            self.user1), [{"id": 0, "servicename": self.servicename1, "access_token": self.token1.access_token}, {"id": 1, "servicename": self.servicename2, "access_token": self.token2.access_token}])
 
         pact.given(
             'two services were registered.'

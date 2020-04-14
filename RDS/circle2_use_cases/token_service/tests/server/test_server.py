@@ -9,7 +9,7 @@ from server import bootstrap
 
 from lib.TokenService import TokenService
 from lib.User import User
-import src.Util as Util
+import Util
 import jwt
 import datetime
 from lib.Service import OAuth2Service

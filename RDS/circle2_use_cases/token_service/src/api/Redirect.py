@@ -1,5 +1,5 @@
 from flask import request, redirect
-import src.Util as Util
+import Util
 import jwt
 import os
 import requests

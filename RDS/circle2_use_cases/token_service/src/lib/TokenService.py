@@ -167,11 +167,17 @@ class TokenService():
         response = requests.get(f"{self.address}/user/{user.username}/token")
         data = response.json()
 
+        # TODO: adjust to oai spec
+
         services = []
         try:
-            for l in data["list"]:
+            for index, l in enumerate(data["list"]):
                 token = Token.init(l)
-                services.append({"servicename": token.servicename})
+                services.append({
+                    "id": index,
+                    "servicename": token.servicename,
+                    "access_token": token.access_token
+                })
         except:
             raise UserNotFoundError(user)
 

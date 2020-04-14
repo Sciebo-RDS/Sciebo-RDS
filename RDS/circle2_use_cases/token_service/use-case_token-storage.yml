@@ -201,32 +201,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
       description: Remove the user token for service.
-  '/user/{user-id}/service/{servicename}/projects':
-    parameters:
-      - schema:
-          type: string
-        name: user-id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: servicename
-        in: path
-        required: true
-    get:
-      summary: Returns all projects within service
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/serviceprojects'
-      operationId: ''
-      description: 'This endpoints returns all projects, which are currently registered in the service.'
 components:
   schemas:
     oauth_uri:
