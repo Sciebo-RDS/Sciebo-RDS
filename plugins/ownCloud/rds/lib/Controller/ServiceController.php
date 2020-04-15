@@ -32,7 +32,7 @@ class ServiceController extends Controller {
 
     public function index() {
         return $this->handleNotFound(function () {
-            return new JSONResponse( $this->service->findAll() );
+            return $this->service->findAll();
         });
     }
 
