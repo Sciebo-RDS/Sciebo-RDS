@@ -18,6 +18,10 @@ class ServiceportService {
         $this->mapper = $mapper;
     }
 
+    public function index() {
+        return $this->mapper->getAllServices();
+    }
+
     public function findAll( $userId ) {
         return $this->mapper->findAll( $userId );
     }
