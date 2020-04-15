@@ -260,7 +260,9 @@ components:
       type: object
       properties:
         serviceId:
-          type: string
+          oneOf:
+            - type: integer
+            - type: string
         projectName:
           type: string
     service:
@@ -268,7 +270,7 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
         servicename:
           type: string
         access_token:
