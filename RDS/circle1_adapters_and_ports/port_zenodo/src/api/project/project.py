@@ -3,10 +3,12 @@ import os
 from lib.upload_zenodo import Zenodo
 from flask import jsonify, request, g, current_app
 from werkzeug.exceptions import abort
+from lib.Util import require_api_key
 
 logger = logging.getLogger()
 
 
+@require_api_key
 def index():
     req = request.json.get("metadata")
 
@@ -14,6 +16,7 @@ def index():
     return jsonify(depoResponse)
 
 
+@require_api_key
 def get(project_id):
     req = request.json.get("metadata")
 
@@ -23,6 +26,7 @@ def get(project_id):
     return jsonify(depoResponse)
 
 
+@require_api_key
 def post():
     req = request.json.get("metadata")
 
@@ -35,6 +39,7 @@ def post():
     abort(depoResponse.status_code)
 
 
+@require_api_key
 def delete(project_id):
     if g.zenodo.remove_deposition_internal(int(project_id)):
         return "", 200
@@ -42,6 +47,7 @@ def delete(project_id):
     abort(404)
 
 
+@require_api_key
 def patch(project_id):
     req = request.json.get("metadata")
 

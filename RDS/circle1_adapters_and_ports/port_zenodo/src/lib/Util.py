@@ -1,10 +1,13 @@
+from functools import wraps
+from lib.upload_zenodo import Zenodo
+from flask import request, g, current_app, abort
 import os
 import requests
 import logging
 
 logger = logging.getLogger()
 
-
+"""
 def loadAccessToken(userId: str, service: str) -> str:
     # FIXME make localhost dynamic for pactman
     tokenStorageURL = os.getenv(
@@ -26,4 +29,23 @@ def loadAccessToken(userId: str, service: str) -> str:
         userId, access_token, service))
 
     return access_token
+"""
 
+def require_api_key(api_method):
+    @wraps(api_method)
+    def check_api_key(*args, **kwargs):
+        g.zenodo = None
+
+        req = request.json
+        apiKey = req.get("apiKey") if req is not None else None
+
+        if apiKey is None:
+            logger.error("apiKey not found")
+            abort(401)
+
+        logger.debug("found apiKey")
+        g.zenodo = Zenodo(apiKey, address=current_app.zenodo_address)
+
+        return api_method(*args, **kwargs)
+
+    return check_api_key

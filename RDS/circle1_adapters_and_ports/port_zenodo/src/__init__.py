@@ -29,24 +29,6 @@ def bootstrap(name='MicroService', *args, **kwargs):
 
     app.app.zenodo_address = zenodo_address
 
-    from lib.Util import loadAccessToken
-    from flask import request, g
-    from lib.upload_zenodo import Zenodo
-    @app.app.before_request
-    def load_zenodo_token():
-        g.zenodo = None
-
-        try:
-            apiKey = request.json.get("apiKey")
-            if apiKey is not None:
-                logger.debug("found apiKey")
-                g.zenodo = Zenodo(apiKey, address=app.app.zenodo_address)
-            else:
-                abort(401)
-        except Exception as e:
-            logger.error(e)
-            abort(400)
-
     for oai in list_openapi:
         app.add_api(oai, resolver=MultipleResourceResolver(
             'api', collection_endpoint_name="index"), validate_responses=True)
