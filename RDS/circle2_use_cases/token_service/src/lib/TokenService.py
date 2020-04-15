@@ -191,16 +191,22 @@ class TokenService():
         Returns a `list` with all projects for given service and user.
         """
         def get_port_string(name):
-            service = name.replace("port-", "").capitalize()
-            return f"port-{service}"
+            service = name.replace("port-", "").lower()
+            return f"circle1-port-{service}"
 
         port = get_port_string(token.servicename)
 
         if self.testing:
-            return requests.get(f"{self.address}/metadata/project",
-                                json={"apiKey": token.access_token}).json()
-        return requests.get(f"http://{port}/metadata/project",
-                            json={"apiKey": token.access_token}).json()
+            req = requests.get(f"{self.address}/metadata/project",
+                                json={"apiKey": token.access_token})
+        else:
+            req = requests.get(f"http://{port}/metadata/project",
+                                json={"apiKey": token.access_token})
+
+        if req.status_code >= 300:
+            return []
+
+        return req.json()
 
     def removeService(self, service: Service) -> bool:
         """

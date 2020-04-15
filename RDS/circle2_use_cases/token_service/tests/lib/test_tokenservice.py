@@ -771,3 +771,16 @@ class Test_TokenService(unittest.TestCase):
         with pact:
             projects = self.tokenService.getProjectsForToken(self.token1)
             self.assertEqual(projects, expected_projects)
+
+    def test_serviceprojects_projects_not_supported(self):
+        expected_projects = []
+        pact.given(
+            'Given token to access port'
+        ).upon_receiving(
+            'no projects are there or projects not supported'
+        ).with_request(
+            'GET', f"/metadata/project"
+        ) .will_respond_with(500, body="")
+        with pact:
+            projects = self.tokenService.getProjectsForToken(self.token1)
+            self.assertEqual(projects, expected_projects)
