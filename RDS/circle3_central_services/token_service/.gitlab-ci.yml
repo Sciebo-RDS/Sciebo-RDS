@@ -1,14 +1,14 @@
 .central_service_token_service:
   variables:
-      FOLDER: RDS/circle3_central_services/token_service
+    FOLDER: RDS/circle3_central_services/token_service
 
 .tests_central_service_token_service:
-  extends: 
-  - .tests
-  - .central_service_token_service
+  extends:
+    - .tests
+    - .central_service_token_service
 
   only:
-      changes:
+    changes:
       - RDS/circle3_central_services/token_service/*
       - RDS/circle3_central_services/token_service/**/*
 
@@ -17,10 +17,10 @@
     expire_in: 180 days
     paths:
       - $FOLDER/user_refresh.token
-    
+
   services:
-  - name: selenium/standalone-firefox
-    alias: selenium
+    - name: selenium/standalone-firefox
+      alias: selenium
 
 test:central_service_token_service3.6:
   image: python:3.6
@@ -36,15 +36,20 @@ test:central_service_token_service3.8:
 
 build:central_service_token_service:
   extends:
-  - .builds
-  - .central_service_token_service
+    - .builds
+    - .central_service_token_service
+
+  only:
+    changes:
+      - RDS/circle3_central_services/token_service/*
+      - RDS/circle3_central_services/token_service/**/*
 
 doc:central_service_token_service:
   image: python:3.8
   extends:
-  - .documentation
-  - .central_service_token_service
+    - .documentation
+    - .central_service_token_service
 
   script:
-  - cd $FOLDER
-  - make doc
+    - cd $FOLDER
+    - make doc

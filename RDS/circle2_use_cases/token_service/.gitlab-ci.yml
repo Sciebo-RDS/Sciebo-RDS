@@ -1,14 +1,14 @@
 .use_case_token_service:
   variables:
-      FOLDER: RDS/circle2_use_cases/token_service
+    FOLDER: RDS/circle2_use_cases/token_service
 
 .tests_use_case_token_service:
-  extends: 
-  - .tests
-  - .use_case_token_service
+  extends:
+    - .tests
+    - .use_case_token_service
 
   only:
-      changes:
+    changes:
       - RDS/circle2_use_cases/token_service/*
       - RDS/circle2_use_cases/token_service/**/*
 
@@ -25,6 +25,11 @@ test:use_case_token_service3.8:
   extends: .tests_use_case_token_service
 
 build:use_case_token_service:
-    extends: 
+  extends:
     - .builds
     - .use_case_token_service
+
+  only:
+    changes:
+      - RDS/circle2_use_cases/token_service/*
+      - RDS/circle2_use_cases/token_service/**/*

@@ -28,3 +28,8 @@ build:use_case_exporter:
   extends:
     - .builds
     - .use_case_exporter
+
+  only:
+    changes:
+      - RDS/circle2_use_cases/exporter/*
+      - RDS/circle2_use_cases/exporter/**/*

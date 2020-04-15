@@ -29,6 +29,11 @@ build:central_service_research_manager:
   - .builds
   - .central_service_research_manager
 
+  only:
+    changes:
+    - RDS/circle3_central_services/research_manager/*
+    - RDS/circle3_central_services/research_manager/**/*
+
 doc:central_service_research_manager:
   image: python:3.8
   extends:
