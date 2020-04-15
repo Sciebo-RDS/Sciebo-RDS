@@ -1,20 +1,20 @@
 <?php
 namespace OCA\RDS\AppInfo;
 
-use \OCP\AppFramework\App;
-use \OCA\RDS\Controller\PageController;
+use OCP\AppFramework\App;
+use OCA\RDS\Controller\PageController;
 
-use \OCA\RDS\Controller\ServiceController;
-use \OCA\RDS\Db\ServiceMapper;
-use \OCA\RDS\Service\ServiceportService;
+use OCA\RDS\Controller\ServiceController;
+use OCA\RDS\Db\ServiceMapper;
+use OCA\RDS\Service\ServiceportService;
 
-use \OCA\RDS\Controller\ResearchController;
-use \OCA\RDS\Service\ResearchService;
-use \OCA\RDS\Db\ResearchMapper;
+use OCA\RDS\Controller\ResearchController;
+use OCA\RDS\Service\ResearchService;
+use OCA\RDS\Db\ResearchMapper;
 
-use \OCA\RDS\Controller\MetadataController;
-use \OCA\RDS\Service\MetadataService;
-use \OCA\RDS\Db\MetadataMapper;
+use OCA\RDS\Controller\MetadataController;
+use OCA\RDS\Service\MetadataService;
+use OCA\RDS\Db\MetadataMapper;
 
 
 
