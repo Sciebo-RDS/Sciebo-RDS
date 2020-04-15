@@ -24,13 +24,14 @@ class ServiceMapper {
         $result = curl_exec( $curl );
         $response = json_decode( $result, true );
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
             throw new NotFoundException( [
                 'http_code'=>$httpcode,
                 'json_error_message'=>json_last_error_msg,
-                'curl_error_message'=>curl_getinfo( $curl )
+                'curl_error_message'=>$info
             ] );
         }
 
@@ -68,13 +69,14 @@ class ServiceMapper {
         $result = curl_exec( $curl );
         $response = json_decode( $result, true );
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
             throw new NotFoundException( [
                 'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg,
-                'curl_error_message'=>curl_getinfo( $curl )
+                'json_error_message'=>json_last_error_msg(),
+                'curl_error_message'=>$info
             ] );
         }
 
