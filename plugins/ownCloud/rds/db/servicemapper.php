@@ -71,7 +71,7 @@ class ServiceMapper {
             return NULL;
         }
 
-        $jwt = $element['jwt'];
+        $jwt = $response['jwt'];
         # decode jwt
         $pieces = explode( '.', $jwt );
         $decode = base64_decode( $pieces[1], true );
