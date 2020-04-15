@@ -31,7 +31,9 @@ class UserserviceController extends Controller {
     */
 
     public function index() {
-        return new JSONResponse( $this->service->findAll($this->userId) );
+        return $this->handleNotFound(function () {
+            return new JSONResponse( $this->service->findAll($this->userId) );
+        });
     }
 
     /**
