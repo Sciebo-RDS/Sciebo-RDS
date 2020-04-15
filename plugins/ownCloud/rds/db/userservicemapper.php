@@ -53,11 +53,11 @@ class UserserviceMapper {
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
-            throw new NotFoundException( [
+            throw new NotFoundException( json_encode( [
                 'http_code'=>$httpcode,
                 'json_error_message'=>json_last_error_msg,
                 'curl_error_message'=>$info
-            ] );
+            ] ) );
         }
 
         $listOfServices = [];
@@ -88,11 +88,11 @@ class UserserviceMapper {
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
-            throw new NotFoundException( [
+            throw new NotFoundException( json_encode( [
                 'http_code'=>$httpcode,
                 'json_error_message'=>json_last_error_msg,
                 'curl_error_message'=>$info
-            ] );
+            ] ) );
         }
 
         $svc = new RegisteredService();
