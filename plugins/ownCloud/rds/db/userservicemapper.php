@@ -55,7 +55,7 @@ class UserserviceMapper {
         if ( $httpcode >= 300 ) {
             throw new NotFoundException( json_encode( [
                 'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg,
+                'json_error_message'=>json_last_error_msg(),
                 'curl_error_message'=>$info
             ] ) );
         }
@@ -90,7 +90,7 @@ class UserserviceMapper {
         if ( $httpcode >= 300 ) {
             throw new NotFoundException( json_encode( [
                 'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg,
+                'json_error_message'=>json_last_error_msg(),
                 'curl_error_message'=>$info
             ] ) );
         }
