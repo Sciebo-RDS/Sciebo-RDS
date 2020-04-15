@@ -5,8 +5,7 @@ namespace OCA\RDS\Controller;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
-use OCP\AppFramework\Http\JSONResponse;
-use \OCA\RDS\Service\UserserviceportService;
+use OCP\AppFramework\Httpuse \OCA\RDS\Service\UserserviceportService;
 use OCP\AppFramework\Http\RedirectResponse;
 
 class UserserviceController extends Controller {
@@ -32,7 +31,7 @@ class UserserviceController extends Controller {
 
     public function index() {
         return $this->handleNotFound(function () {
-            return new JSONResponse( $this->service->findAll($this->userId) );
+            return $this->service->findAll($this->userId);
         });
     }
 
@@ -49,7 +48,7 @@ class UserserviceController extends Controller {
 
     public function show( $id ) {
         return $this->handleNotFound(function () use ($id) {
-            return new JSONResponse($this->service->find($id, $this->userId));
+            return $this->service->find($id, $this->userId);
         });
     }
 
@@ -64,7 +63,7 @@ class UserserviceController extends Controller {
 
     public function delete( $id ) {
         return $this->handleNotFound(function () use ($id) {
-             new JSONResponse( $this->service->delete( $id, $this->userId ) );
+             $this->service->delete( $id, $this->userId );
              return new RedirectResponse('index.php/settings/personal?sectionid=additional');
         });
     }
