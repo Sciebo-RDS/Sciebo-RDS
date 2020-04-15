@@ -7,7 +7,7 @@
       success: function(result) {
         if (result.isOk == false) return;
         var state = result["state"];
-        var authorize_url = result["authorize_url"] + "&state=" + state;
+        var authorize_url = result["authorizeUrl"] + "&state=" + state;
 
         var button = document.getElementById("openAuthorizeOwncloud");
 
