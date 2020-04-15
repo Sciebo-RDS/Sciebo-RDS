@@ -13,6 +13,8 @@ class ResearchController extends Controller
 {
     private $userId;
     private $service;
+
+    use Errors;
     
     public function __construct($AppName, IRequest $request, ResearchService $service, $userId)
     {

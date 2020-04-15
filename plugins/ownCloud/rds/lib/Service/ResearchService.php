@@ -14,7 +14,6 @@ use \OCA\RDS\Db\ResearchMapper;
 class ResearchService {
     private $mapper;
 
-    use Errors;
 
     public function __construct( ResearchMapper $mapper ) {
         $this->mapper = $mapper;

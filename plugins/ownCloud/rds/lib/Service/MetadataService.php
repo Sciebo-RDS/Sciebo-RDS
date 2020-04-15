@@ -14,7 +14,6 @@ use \OCA\RDS\Db\MetadataMapper;
 class MetadataService {
     private $mapper;
 
-    use Errors;
 
     public function __construct( MetadataMapper $mapper ) {
         $this->mapper = $mapper;

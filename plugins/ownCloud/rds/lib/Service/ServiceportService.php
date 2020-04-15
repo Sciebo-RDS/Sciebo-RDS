@@ -14,7 +14,6 @@ use \OCA\RDS\Db\ServiceMapper;
 class ServiceportService {
     private $mapper;
 
-    use Errors;
 
     public function __construct( ServiceMapper $mapper ) {
         $this->mapper = $mapper;
