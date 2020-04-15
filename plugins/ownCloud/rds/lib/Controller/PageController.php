@@ -10,8 +10,8 @@ use OCP\AppFramework\ {
 
 use OCP\IRequest;
 use OCP\Template;
-use OCA\OAuth2\Db\Client;
-use OCA\OAuth2\Db\ClientMapper;
+use \OCA\OAuth2\Db\Client;
+use \OCA\OAuth2\Db\ClientMapper;
 
 /**
 - Define a new page controller

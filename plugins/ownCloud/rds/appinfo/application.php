@@ -2,19 +2,19 @@
 namespace OCA\RDS\AppInfo;
 
 use OCP\AppFramework\App;
-use OCA\RDS\Controller\PageController;
+use \OCA\RDS\Controller\PageController;
 
-use OCA\RDS\Controller\ServiceController;
-use OCA\RDS\Db\ServiceMapper;
-use OCA\RDS\Service\ServiceportService;
+use \OCA\RDS\Controller\ServiceController;
+use \OCA\RDS\Db\ServiceMapper;
+use \OCA\RDS\Service\ServiceportService;
 
-use OCA\RDS\Controller\ResearchController;
-use OCA\RDS\Service\ResearchService;
-use OCA\RDS\Db\ResearchMapper;
+use \OCA\RDS\Controller\ResearchController;
+use \OCA\RDS\Service\ResearchService;
+use \OCA\RDS\Db\ResearchMapper;
 
-use OCA\RDS\Controller\MetadataController;
-use OCA\RDS\Service\MetadataService;
-use OCA\RDS\Db\MetadataMapper;
+use \OCA\RDS\Controller\MetadataController;
+use \OCA\RDS\Service\MetadataService;
+use \OCA\RDS\Db\MetadataMapper;
 
 
 
@@ -29,45 +29,55 @@ class Application extends App {
             return new PageController(
                 $c->query('AppName'),
                 $c->query('Request'),
-                $c->query('OCA\OAuth2\Db\ClientMapper'),
+                $c->query('\OCA\OAuth2\Db\ClientMapper'),
                 $c->query('UserId')
             );
         });
 
-        $servicemapper = new ServiceMapper();
-        $serviceportservice = new ServiceportService($servicemapper);
-
+        $container->registerService("ServiceMapper", function($c) {
+            return new ServiceMapper();
+        });
+        $container->registerService("ServiceportService", function($c) {
+            return new ServiceportService($c->query("ServiceMapper"));
+        });
         $container->registerService('ServiceController', function($c) {
             return new ServiceController(
                 $c->query('AppName'),
                 $c->query('Request'),
-                $serviceportservice,
+                $c->query("ServiceportService"),
                 $c->query('UserId')
             );
         });
 
-        $researchmapper = new ResearchMapper();
-        $researchservice = new ResearchService($researchmapper);
-
+        $container->registerService("ResearchMapper", function($c) {
+            return new ResearchMapper();
+        });
+        $container->registerService("ResearchService", function($c) {
+            return new ResearchService($c->query("ResearchMapper"));
+        });
         $container->registerService('ResearchController', function($c) {
-            return new ResearchController(
+            return new ServiceController(
                 $c->query('AppName'),
                 $c->query('Request'),
-                $researchservice,
+                $c->query("ResearchService"),
                 $c->query('UserId')
             );
         });
 
-        $metadatamapper = new MetadataMapper();
-        $metadataservice = new MetadataService($metadatamapper);
-
+        $container->registerService("MetadataMapper", function($c) {
+            return new MetadataMapper();
+        });
+        $container->registerService("MetadataService", function($c) {
+            return new MetadataService($c->query("MetadataMapper"));
+        });
         $container->registerService('MetadataController', function($c) {
-            return new MetadataController(
+            return new ServiceController(
                 $c->query('AppName'),
                 $c->query('Request'),
-                $metadataservice,
+                $c->query("MetadataService"),
                 $c->query('UserId')
             );
         });
+
     }
 }

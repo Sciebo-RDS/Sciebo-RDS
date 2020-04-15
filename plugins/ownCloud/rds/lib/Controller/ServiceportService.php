@@ -8,8 +8,8 @@ use Exception;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
-use OCA\RDS\Db\Service;
-use OCA\RDS\Db\ServiceMapper;
+use \OCA\RDS\Db\Service;
+use \OCA\RDS\Db\ServiceMapper;
 
 class ServiceportService {
     private $mapper;

@@ -1,8 +1,8 @@
 <?php
 namespace OCA\RDS\Db;
 
-use OCA\RDS\Db\Service;
-use OCA\RDS\Db\RegisteredService;
+use \OCA\RDS\Db\Service;
+use \OCA\RDS\Db\RegisteredService;
 
 class ServiceMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/token-service';

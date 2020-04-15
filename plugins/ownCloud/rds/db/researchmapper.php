@@ -1,7 +1,7 @@
 <?php
 namespace OCA\RDS\Db;
 
-use OCA\RDS\Db\Research;
+use \OCA\RDS\Db\Research;
 
 class ConnectionMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/research';

@@ -8,8 +8,8 @@ use Exception;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
-use OCA\RDS\Db\Research;
-use OCA\RDS\Db\ResearchMapper;
+use \OCA\RDS\Db\Research;
+use \OCA\RDS\Db\ResearchMapper;
 
 class ResearchService {
     private $mapper;

@@ -1,7 +1,7 @@
 <?php
 namespace OCA\RDS\Db;
 
-use OCA\RDS\Db\Metadata;
+use \OCA\RDS\Db\Metadata;
 
 class MetadataMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/metadata';

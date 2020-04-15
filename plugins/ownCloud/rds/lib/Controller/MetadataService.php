@@ -8,8 +8,8 @@ use Exception;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
-use OCA\RDS\Db\Metadata;
-use OCA\RDS\Db\MetadataMapper;
+use \OCA\RDS\Db\Metadata;
+use \OCA\RDS\Db\MetadataMapper;
 
 class MetadataService {
     private $mapper;

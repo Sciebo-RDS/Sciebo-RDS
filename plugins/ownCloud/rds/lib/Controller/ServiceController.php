@@ -6,7 +6,7 @@ use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
-use OCA\RDS\Service\ServiceportService;
+use \OCA\RDS\Service\ServiceportService;
 use OCP\AppFramework\Http\RedirectResponse;
 
 class ServiceController extends Controller {
