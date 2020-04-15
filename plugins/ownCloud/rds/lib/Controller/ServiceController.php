@@ -31,7 +31,7 @@ class ServiceController extends Controller {
     */
 
     public function index() {
-        return new JSONResponse( $this->service->index() );
+        return new JSONResponse( $this->service->findAll() );
     }
 
     /**
