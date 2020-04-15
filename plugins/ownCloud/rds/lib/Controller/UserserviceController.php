@@ -6,7 +6,7 @@ use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
-use \OCA\RDS\Service\ServiceportService;
+use \OCA\RDS\Service\UserserviceportService;
 use OCP\AppFramework\Http\RedirectResponse;
 
 class UserserviceController extends Controller {
@@ -15,7 +15,7 @@ class UserserviceController extends Controller {
 
     use Errors;
 
-    public function __construct( $AppName, IRequest $request, ServiceportService $service, $userId ) {
+    public function __construct( $AppName, IRequest $request, UserserviceportService $service, $userId ) {
         parent::__construct( $AppName, $request );
         $this->userId = $userId;
         $this->service = $service;
