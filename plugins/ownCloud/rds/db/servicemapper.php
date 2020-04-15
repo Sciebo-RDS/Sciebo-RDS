@@ -3,6 +3,7 @@ namespace OCA\RDS\Db;
 
 use \OCA\RDS\Db\Service;
 use \OCA\RDS\Db\RegisteredService;
+use \OCA\RDS\Service\NotFoundException;
 
 class ServiceMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/token-service';
@@ -10,8 +11,6 @@ class ServiceMapper {
     public function __construct() {
 
     }
-
-    # this should be the way to add a service to rds
 
     public function findAll() {
         $url = $this->rdsURL . '/service';
@@ -28,7 +27,11 @@ class ServiceMapper {
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
-            return  [];
+            throw new NotFoundException( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg,
+                'curl_error_message'=>curl_getinfo( $curl )
+            ] );
         }
 
         $listOfServices = [];
@@ -68,7 +71,11 @@ class ServiceMapper {
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
-            return NULL;
+            throw new NotFoundException( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg,
+                'curl_error_message'=>curl_getinfo( $curl )
+            ] );
         }
 
         $jwt = $response['jwt'];

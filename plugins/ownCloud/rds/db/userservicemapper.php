@@ -3,6 +3,7 @@ namespace OCA\RDS\Db;
 
 use \OCA\RDS\Db\Service;
 use \OCA\RDS\Db\RegisteredService;
+use \OCA\RDS\Service\NotFoundException;
 
 class UserserviceMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/token-service';
@@ -51,7 +52,11 @@ class UserserviceMapper {
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
-            return NULL;
+            throw new NotFoundException( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg,
+                'curl_error_message'=>curl_getinfo( $curl )
+            ] );
         }
 
         $listOfServices = [];
@@ -81,7 +86,11 @@ class UserserviceMapper {
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
-            return NULL;
+            throw new NotFoundException( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg,
+                'curl_error_message'=>curl_getinfo( $curl )
+            ] );
         }
 
         $svc = new RegisteredService();

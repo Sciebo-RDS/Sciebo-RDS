@@ -31,7 +31,9 @@ class ServiceController extends Controller {
     */
 
     public function index() {
-        return new JSONResponse( $this->service->findAll() );
+        return $this->handleNotFound(function () use ($servicename) {
+            return new JSONResponse( $this->service->findAll() );
+        });
     }
 
     /**
@@ -47,7 +49,7 @@ class ServiceController extends Controller {
 
     public function show( $servicename ) {
         return $this->handleNotFound(function () use ($servicename) {
-            return new JSONResponse($this->service->find($servicename));
+            return $this->service->find($servicename);
         });
     }
 }
