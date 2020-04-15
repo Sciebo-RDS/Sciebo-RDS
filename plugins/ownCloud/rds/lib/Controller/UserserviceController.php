@@ -5,7 +5,7 @@ namespace OCA\RDS\Controller;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
-use OCP\AppFramework\Httpuse \OCA\RDS\Service\UserserviceportService;
+use \OCA\RDS\Service\UserserviceportService;
 use OCP\AppFramework\Http\RedirectResponse;
 
 class UserserviceController extends Controller {
