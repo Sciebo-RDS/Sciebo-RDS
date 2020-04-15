@@ -48,7 +48,7 @@ class Application extends App {
             return new ServiceController(
                 $c->query('AppName'),
                 $c->query('Request'),
-                $c->query("ServiceportService"),
+                $c->query("ServiceportService")
             );
         });
 
