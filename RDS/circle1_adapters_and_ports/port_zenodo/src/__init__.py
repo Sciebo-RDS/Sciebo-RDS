@@ -71,10 +71,3 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
 
 app = bootstrap("PortZenodo", all=True)
 
-register_service(
-    "Zenodo",
-    os.getenv("ZENODO_OAUTH_AUTHORIZE_URL"),
-    os.getenv("ZENODO_OAUTH_ACCESS_TOKEN_URL"),
-    os.getenv("ZENODO_OAUTH_CLIEND_ID"),
-    os.getenv("ZENODO_OAUTH_CLIENT_SECRET")
-)
