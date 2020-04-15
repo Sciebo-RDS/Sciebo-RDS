@@ -61,8 +61,9 @@ class UserserviceMapper {
         }
 
         $listOfServices = [];
+        $res = $response['list'];
 
-        foreach ( ( array )$response['list'] as $element ) {
+        foreach ( ( array ) $res as $element ) {
             $svc = new RegisteredService();
 
             $svc->setServicename( $element['servicename'] );
