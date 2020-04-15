@@ -14,6 +14,8 @@ use \OCA\RDS\Db\ServiceMapper;
 class ServiceportService {
     private $mapper;
 
+    use Errors;
+
     public function __construct( ServiceMapper $mapper ) {
         $this->mapper = $mapper;
     }
@@ -23,7 +25,11 @@ class ServiceportService {
     }
 
     public function findAll( $userId ) {
-        return $this->mapper->findAll( $userId );
+        try {
+            return $this->mapper->findAll( $userId );
+        } catch( Exception $e ) {
+            $this->handleException( $e );
+        }
     }
 
     private function handleException ( $e ) {
