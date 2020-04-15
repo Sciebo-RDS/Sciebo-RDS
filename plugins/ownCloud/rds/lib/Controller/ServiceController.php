@@ -39,17 +39,17 @@ class ServiceController extends Controller {
     /**
     * Returns a single service from RDS to authenticate with.
     *
-    * @param string $servicename
+    * @param string $id
     * @return object an object with jwt encoded object with keys
-    * 'servicename', 'authorize_url', 'date'
+    * 'id', 'authorize_url', 'date'
     *
     * @NoAdminRequired
     * @NoCSRFRequired
     */
 
-    public function show( $servicename ) {
-        return $this->handleNotFound(function () use ($servicename) {
-            return $this->service->find($servicename);
+    public function show( $id ) {
+        return $this->handleNotFound(function () use ($id) {
+            return $this->service->find($id);
         });
     }
 }

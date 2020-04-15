@@ -39,32 +39,32 @@ class UserserviceController extends Controller {
     /**
     * Returns a single service from user in RDS.
     *
-    * @param string $servicename
+    * @param string $id
     * @return object an object with jwt encoded object with keys
-    * 'servicename', 'authorize_url', 'date'
+    * 'id', 'authorize_url', 'date'
     *
     * @NoAdminRequired
     * @NoCSRFRequired
     */
 
-    public function show( $servicename ) {
-        return $this->handleNotFound(function () use ($servicename) {
-            return new JSONResponse($this->service->find($servicename, $this->userId));
+    public function show( $id ) {
+        return $this->handleNotFound(function () use ($id) {
+            return new JSONResponse($this->service->find($id, $this->userId));
         });
     }
 
     /**
     * Removes a single service from the user in RDS.
     *
-    * @param string $servicename
+    * @param string $id
     * @return bool returns true for success, else false
     *
     * @NoAdminRequired
     */
 
-    public function delete( $servicename ) {
-        return $this->handleNotFound(function () use ($servicename) {
-             new JSONResponse( $this->service->delete( $servicename, $this->userId ) );
+    public function delete( $id ) {
+        return $this->handleNotFound(function () use ($id) {
+             new JSONResponse( $this->service->delete( $id, $this->userId ) );
              return new RedirectResponse('index.php/settings/personal?sectionid=additional');
         });
     }
