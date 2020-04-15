@@ -10,7 +10,6 @@ use \OCA\RDS\Service\ServiceportService;
 use OCP\AppFramework\Http\RedirectResponse;
 
 class ServiceController extends Controller {
-    private $userId;
     private $service;
 
     use Errors;

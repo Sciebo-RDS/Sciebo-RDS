@@ -39,7 +39,7 @@ class Application extends App {
         });
 
         $container->registerService("ServiceMapper", function($c) {
-            return new ServiceMapper();
+            return new ServiceMapper($c->query('UserId'));
         });
         $container->registerService("ServiceportService", function($c) {
             return new ServiceportService($c->query("ServiceMapper"));
