@@ -59,3 +59,5 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
         f"There was an error while registering {servicename} to token storage.\nJSON: {response}")
 
     return False
+
+app = bootstrap("PortOwncloud", all=True)
