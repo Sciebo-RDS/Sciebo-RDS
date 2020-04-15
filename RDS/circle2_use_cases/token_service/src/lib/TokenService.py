@@ -32,7 +32,7 @@ class TokenService():
         # TODO: if static and address is None, look up file
         if self.address is None:
             # load address from oai file
-            # https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/token_service/central-service_token-storage.yml
+            # https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/connnectUI/RDS/circle3_central_services/token_service/central-service_token-storage.yml
             pass
 
         self.testing = testing

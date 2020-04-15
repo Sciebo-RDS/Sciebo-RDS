@@ -62,6 +62,6 @@ Bei einem Blick in die OpenAPI-Spezifikation ist ersichtlich, dass es keinen End
 
 ## OpenAPI
 
-{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/token_service/use-case_token-storage.yml"  >}}
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/connnectUI/RDS/circle2_use_cases/token_service/use-case_token-storage.yml"  >}}
 
 {{% code file="doc/impl/use-cases/token-service-docstring.md" %}}
