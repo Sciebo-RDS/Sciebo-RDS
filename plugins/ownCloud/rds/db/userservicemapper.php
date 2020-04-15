@@ -60,7 +60,7 @@ class UserserviceMapper {
         }
 
         $listOfServices = [];
-        $res = $response->list;
+        $res = $response["list"];
 
         foreach ( ( array ) $res as $element ) {
             $svc = new RegisteredService();
