@@ -5,11 +5,11 @@ namespace OCA\RDS\AppInfo;
 $application = new Application();
 $application->registerRoutes( $this, [
     'resources' => [
-        # Research resource API Endpoints, full CRUD
-        'research' => ['url' => '/research'],
-
         # Service resource API Endpoints, only index/show
         'service' => ['url' => '/service'],
+        
+        # Research resource API Endpoints, full CRUD
+        'research' => ['url' => '/research'],
 
         # User Service resource API Endpoints, only index/show/delete
         'userservice' => ['url' => '/userservice'],
