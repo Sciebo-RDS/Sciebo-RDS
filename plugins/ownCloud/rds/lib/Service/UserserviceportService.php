@@ -9,13 +9,13 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
 use \OCA\RDS\Db\Service;
-use \OCA\RDS\Db\UserServiceMapper;
+use \OCA\RDS\Db\UserserviceMapper;
 
-class UserServiceportService {
+class UserserviceportService {
     private $mapper;
 
 
-    public function __construct( UserServiceMapper $mapper ) {
+    public function __construct( UserserviceMapper $mapper ) {
         $this->mapper = $mapper;
     }
 

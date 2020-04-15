@@ -9,7 +9,7 @@ use OCP\AppFramework\Http\JSONResponse;
 use \OCA\RDS\Service\ServiceportService;
 use OCP\AppFramework\Http\RedirectResponse;
 
-class UserServiceController extends Controller {
+class UserserviceController extends Controller {
     private $userId;
     private $service;
 

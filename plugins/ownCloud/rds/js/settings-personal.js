@@ -54,7 +54,7 @@
             deferred.reject();
           });
 
-        this.loadUserServices()
+        this.loadUserservices()
           .done(function() {
             counter -= 1;
             if (counter == 0) {
@@ -83,7 +83,7 @@
         return deferred.promise();
       },
 
-      loadUserServices: function() {
+      loadUserservices: function() {
         var deferred = $.Deferred();
         var self = this;
 

@@ -4,7 +4,7 @@ namespace OCA\RDS\Db;
 use \OCA\RDS\Db\Service;
 use \OCA\RDS\Db\RegisteredService;
 
-class UserServiceMapper {
+class UserserviceMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/token-service';
 
     public function __construct() {

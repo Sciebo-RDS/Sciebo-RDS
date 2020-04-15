@@ -8,9 +8,9 @@ use \OCA\RDS\Db\ServiceMapper;
 use \OCA\RDS\Service\ServiceportService;
 use \OCA\RDS\Controller\ServiceController;
 
-use \OCA\RDS\Db\UserServiceMapper;
-use \OCA\RDS\Service\UserServiceportService;
-use \OCA\RDS\Controller\UserServiceController;
+use \OCA\RDS\Db\UserserviceMapper;
+use \OCA\RDS\Service\UserserviceportService;
+use \OCA\RDS\Controller\UserserviceController;
 
 use \OCA\RDS\Db\ResearchMapper;
 use \OCA\RDS\Service\ResearchService;
@@ -52,17 +52,17 @@ class Application extends App {
             );
         });
 
-        $container->registerService("UserServiceMapper", function($c) {
-            return new UserServiceMapper();
+        $container->registerService("UserserviceMapper", function($c) {
+            return new UserserviceMapper();
         });
-        $container->registerService("UserServiceportService", function($c) {
-            return new UserServiceportService($c->query("UserServiceMapper"));
+        $container->registerService("UserserviceportService", function($c) {
+            return new UserserviceportService($c->query("UserserviceMapper"));
         });
-        $container->registerService('UserServiceController', function($c) {
-            return new UserServiceController(
+        $container->registerService('UserserviceController', function($c) {
+            return new UserserviceController(
                 $c->query('AppName'),
                 $c->query('Request'),
-                $c->query("UserServiceportService"),
+                $c->query("UserserviceportService"),
                 $c->query('UserId')
             );
         });
