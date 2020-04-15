@@ -25,12 +25,18 @@ service_exporter:
 service_token:
 	helm upgrade circle2-token-service circle2_token_service --install
 
-token_storage:
+service_metadata:
+	helm upgrade circle2-metadata-service circle2_metadata_service --install
+
+storage_token:
 	helm upgrade circle3-token-storage circle3_token_storage --install
 
+storage_research:
+	helm upgrade circle3-research-manager circle3_research_manager --install
+
 circle1: port_zenodo port_owncloud
-circle2: service_token service_exporter
-circle3: token_storage
+circle2: service_token service_exporter service_metadata
+circle3: storage_token storage_research
 
 features:
 	helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
@@ -52,18 +58,24 @@ remove_service_exporter:
 remove_service_token:
 	helm delete --purge circle2-token-service || true
 
-remove_token_storage:
+remove_service_metadata:
+	helm delete --purge circle2-metadata-service || true
+
+remove_storage_token:
 	helm delete --purge circle3-token-storage || true
 
+remove_storage_research:
+	helm delete --purge circle3-research-manager || true
+
 uninstall_circle1: remove_port_zenodo remove_port_owncloud
-uninstall_circle2: remove_service_token remove_service_exporter
-uninstall_circle3: remove_token_storage
+uninstall_circle2: remove_service_token remove_service_exporter remove_service_metadata
+uninstall_circle3: remove_storage_token remove_storage_research
 
 install: install_configmaps features circle3 circle2 circle1
 uninstall: uninstall_circle1 uninstall_circle2 uninstall_circle3 remove_features uninstall_configmaps
 clean: uninstall
 reinstall: uninstall install
-clean_install: uninstall_circle1 uninstall_circle2 uninstall_circle3 circle3 circle2 circle1
+reinstall_fast: uninstall_circle1 uninstall_circle2 uninstall_circle3 circle3 circle2 circle1
 
 jaeger:
 	$(eval POD_JAEGER=$(shell kubectl get pods --namespace sciebo-rds -l "app.kubernetes.io/instance=jaeger,app.kubernetes.io/component=query" -o jsonpath="{.items[0].metadata.name}"))
