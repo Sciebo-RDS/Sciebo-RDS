@@ -14,7 +14,6 @@ use \OCA\RDS\Db\ResearchMapper;
 class ResearchService {
     private $mapper;
 
-
     public function __construct( ResearchMapper $mapper ) {
         $this->mapper = $mapper;
     }
@@ -41,8 +40,12 @@ class ResearchService {
     }
 
     public function create( $userId ) {
-        $conn = $this->mapper->insert( $userId );
-        return $conn;
+        try {
+            $conn = $this->mapper->insert( $userId );
+            return $conn;
+        } catch( Exception $e ) {
+            $this->handleException( $e );
+        }
     }
 
     public function update( $userId, $researchIndex, $portIn, $portOut, $status ) {
