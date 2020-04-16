@@ -49,9 +49,18 @@
 
     var self = this;
 
+    this._services = services;
+    this._studies = studies;
+
+    this._getParams = function () {
+      return {
+        research: self._studies.getAll(),
+        services: self._services.getAll(),
+      };
+    };
+
     this._beforeTemplateRenders = function () {};
     this._afterTemplateRenders = function () {};
-    this._getParams = function () {};
     this._saveFn = function () {};
   };
 
