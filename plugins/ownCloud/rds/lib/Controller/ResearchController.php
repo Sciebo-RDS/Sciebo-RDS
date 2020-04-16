@@ -91,9 +91,9 @@ class ResearchController extends Controller
      *
      * @NoAdminRequired
      */
-    public function destroy($researchIndex) {
-        return $this->handleNotFound(function () use ($researchIndex) {
-            return $this->service->delete($researchIndex, $this->userId);
+    public function destroy($id) {
+        return $this->handleNotFound(function () use ($id) {
+            return $this->service->delete($id, $this->userId);
         });
     }
 }
