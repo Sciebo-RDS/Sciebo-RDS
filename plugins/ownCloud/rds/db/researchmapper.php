@@ -111,7 +111,7 @@ class ResearchMapper {
         }
 
         $conn = new Research();
-        $conn->setUserid( $response['userId'] );
+        $conn->setUserId( $response['userId'] );
         $conn->setStatus( $response['status'] );
         $conn->setResearchId( $response['researchId'] );
         $conn->setResearchIndex( $response['researchIndex'] );
@@ -148,7 +148,7 @@ class ResearchMapper {
 
         foreach ( $response as $rdsConn ) {
             $conn = new Research();
-            $conn->setUserid( $rdsConn['userId'] );
+            $conn->setUserId( $rdsConn['userId'] );
             $conn->setStatus( $rdsConn['status'] );
             $conn->setResearchId( $rdsConn['research'] );
             $conn->setResearchIndex( $rdsConn['researchIndex'] );
