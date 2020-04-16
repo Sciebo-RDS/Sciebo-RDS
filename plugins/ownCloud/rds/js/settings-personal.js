@@ -11,7 +11,7 @@
 
     // holds all services
     var Services = function(baseUrl) {
-      this._baseurl = baseUrl;
+      this._baseUrl = baseUrl;
       this._services = []; // holds object with servicename, authorizeUrl, state, date
       this._user_services = []; // holds strings
 
@@ -72,7 +72,7 @@
         var deferred = $.Deferred();
         var self = this;
 
-        $.get(this._baseurl + "/service", "json")
+        $.get(this._baseUrl + "/service", "json")
           .done(function(services) {
             self._services = services;
             deferred.resolve();
@@ -87,7 +87,7 @@
         var deferred = $.Deferred();
         var self = this;
 
-        $.get(this._baseurl + "/userservice", "json")
+        $.get(this._baseUrl + "/userservice", "json")
           .done(function(services) {
             self._user_services = services;
             deferred.resolve();
@@ -101,7 +101,7 @@
       removeServiceFromUser: function(servicename) {
         var deferred = $.Deferred();
         var self = this;
-        $.delete(this._baseurl + "/service/" + servicename, "json")
+        $.delete(this._baseUrl + "/service/" + servicename, "json")
           .done(function(services) {
             self.loadAll().done(function() {
               deferred.resolve();

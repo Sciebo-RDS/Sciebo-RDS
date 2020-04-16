@@ -24,7 +24,7 @@
       return deferred.promise();
     },
     getAll: function () {
-      return self._services;
+      return this._services;
     },
   };
 })(OC, window, jQuery);
