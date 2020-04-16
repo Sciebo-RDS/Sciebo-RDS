@@ -1,11 +1,11 @@
 <!-- translation strings -->
-<div style="display:none" id="new-research-string"><?php p($l->t('New connection')); ?></div>
+<div style="display:none" id="new-research-string"><?php p($l->t('New research')); ?></div>
 <div style="display:none" id="save-not-finished"><?php p($l->t('Your entries could not be saved.')); ?></div>
 
 <script id="navigation-tpl" type="text/x-handlebars-template">
-    <li id="new-research"><a href="#"><?php p($l->t('Add connection')); ?></a></li>
+    <li id="new-research"><a href="#"><?php p($l->t('Add research')); ?></a></li>
     {{#each studies}}
-        <li class="connection with-menu {{#if active}}active{{/if}}"  data-id="{{ researchIndex }}">
+        <li class="research with-menu {{#if active}}active{{/if}}"  data-id="{{ researchIndex }}">
             <a href="#">Project {{ researchIndex }}</a>
             <div class="app-navigation-entry-utils">
                 <ul>
