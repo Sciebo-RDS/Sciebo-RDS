@@ -264,7 +264,7 @@
       return $.when(
         self._studies.loadAll(),
         self._services.loadAll(),
-        self._studies._metadata.loadSchema()
+        self._studies._metadata.loadJsonSchema()
         // needed later
         //self._files.loadAll()
       );
