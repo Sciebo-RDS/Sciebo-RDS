@@ -78,7 +78,7 @@ class ResearchController extends Controller
      * @NoAdminRequired
      */
     public function update($researchIndex, $status, $portIn, $portOut) {
-        return $this->handleNotFound(function () {
+        return $this->handleNotFound(function () use ($researchIndex, $status, $portIn, $portOut) {
             return $this->service->update( $this->userId, $researchIndex, $portIn, $portOut, $status);
         });
     }
@@ -92,7 +92,7 @@ class ResearchController extends Controller
      * @NoAdminRequired
      */
     public function destroy($researchIndex) {
-        return $this->handleNotFound(function () {
+        return $this->handleNotFound(function () use ($researchIndex) {
             return $this->service->delete($researchIndex, $this->userId);
         });
     }
