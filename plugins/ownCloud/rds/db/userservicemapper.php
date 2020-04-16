@@ -80,7 +80,7 @@ class UserserviceMapper {
         $services = $this->findAll( $userId );
 
         foreach ( $services as $element ) {
-            if ( $element->servicename == 'Owncloud' ) {
+            if ( $element->getServicename() == $servicename ) {
                 return $element ;
             }
         }

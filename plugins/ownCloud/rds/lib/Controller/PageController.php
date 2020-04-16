@@ -50,18 +50,11 @@ class PageController extends Controller {
     */
 
     private function checkUserForRDSActivated( $templateIfActivated, $params = [] ) {
-        $found = false;
-
-        $service = $this->userservice->find( 'Owncloud', $this->userId );
-        if ( 'Owncloud' == $service->servicename ) {
-            $found = true;
-        }
-
-        if ( !$found ) {
+        try {
+            $service = $this->userservice->find( 'Owncloud', $this->userId );
+            return new TemplateResponse( 'rds', $templateIfActivated, $params );
+        } catch( Exception $e ) {
             return new TemplateResponse( 'rds', 'not_authorized' );
         }
-
-        return new TemplateResponse( 'rds', $templateIfActivated, $params );
     }
-
 }
