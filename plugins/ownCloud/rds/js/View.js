@@ -157,7 +157,7 @@
         self._studies._metadata.getSchema()
       );
     };
-    this._getParams() = function () {};
+    this._getParams = function () {};
     this._saveFn = function () {};
   };
 
@@ -168,7 +168,7 @@
 
     this._beforeTemplateRenders = function () {};
     this._afterTemplateRenders = function () {};
-    this._getParams() = function () {};
+    this._getParams = function () {};
     this._saveFn = function () {};
   };
 
