@@ -12,7 +12,7 @@ class ResearchMapper {
     }
 
     public function insert( $userId ) {
-        $curl = curl_init( $this->rdsURL . '/user/' . $this->userId );
+        $curl = curl_init( $this->rdsURL . '/user/' . $userId );
         $options = [CURLOPT_RETURNTRANSFER => true];
         curl_setopt_array( $curl, $options );
         curl_setopt( $curl, CURLOPT_POST, TRUE );
@@ -21,6 +21,8 @@ class ResearchMapper {
 
         $response = json_decode( curl_exec( $curl ) );
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
+
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
@@ -31,7 +33,7 @@ class ResearchMapper {
             ] ) );
         }
 
-        return array_slice( $this->findAll( $conn->userId ), -1 );
+        return array_slice( $this->findAll( $userId ), -1 );
     }
 
     public function update( $conn ) {
@@ -44,6 +46,8 @@ class ResearchMapper {
 
         $response = json_decode( curl_exec( $curl ) );
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
+
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
@@ -60,7 +64,7 @@ class ResearchMapper {
     public function delete( $researchIndex, $userId ) {
         $conn = $this->find( $researchIndex, $userId );
 
-        $curl = curl_init( $this->rdsURL . '/user/' . $this->userId . '/research/' . $researchIndex );
+        $curl = curl_init( $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
         curl_setopt_array( $curl, $options );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
@@ -68,6 +72,8 @@ class ResearchMapper {
 
         $response = json_decode( curl_exec( $curl ) );
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
+
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
@@ -92,6 +98,8 @@ class ResearchMapper {
         $result = curl_exec( $curl );
         $response = json_decode( $result, true );
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
+
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
@@ -124,6 +132,8 @@ class ResearchMapper {
         $result = curl_exec( $curl );
         $response = json_decode( $result, true );
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
+
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
