@@ -35,7 +35,7 @@ class ResearchController extends Controller
     public function index() {
         return $this->handleNotFound(function () {
             return $this->service->findAll($this->userId);
-        }
+        });
     }
 
     /**
@@ -63,7 +63,7 @@ class ResearchController extends Controller
     public function create() {
         return $this->handleNotFound(function () {
             return $this->service->create($this->userId);
-        }
+        });
     }
 
     /**
@@ -80,7 +80,7 @@ class ResearchController extends Controller
     public function update($researchIndex, $status, $portIn, $portOut) {
         return $this->handleNotFound(function () {
             return $this->service->update( $this->userId, $researchIndex, $portIn, $portOut, $status);
-        }
+        });
     }
 
     /**
@@ -94,6 +94,6 @@ class ResearchController extends Controller
     public function remove($researchIndex) {
         return $this->handleNotFound(function () {
             return $this->service->remove($researchIndex, $this->userId);
-        }
+        });
     }
 }
