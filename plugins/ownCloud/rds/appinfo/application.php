@@ -65,7 +65,7 @@ class Application extends App {
             return new ResearchService($c->query("ResearchMapper"));
         });
         $container->registerService('ResearchController', function($c) {
-            return new ServiceController(
+            return new ResearchController(
                 $c->query('AppName'),
                 $c->query('Request'),
                 $c->query("ResearchService"),
@@ -80,7 +80,7 @@ class Application extends App {
             return new MetadataService($c->query("MetadataMapper"));
         });
         $container->registerService('MetadataController', function($c) {
-            return new ServiceController(
+            return new MetadataController(
                 $c->query('AppName'),
                 $c->query('Request'),
                 $c->query("MetadataService"),
