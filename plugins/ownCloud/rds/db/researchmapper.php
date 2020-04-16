@@ -29,7 +29,8 @@ class ResearchMapper {
             throw new NotFoundException( json_encode( [
                 'http_code'=>$httpcode,
                 'json_error_message'=>json_last_error_msg(),
-                'curl_error_message'=>$info
+                'curl_error_message'=>$info,
+                'response'=>$response
             ] ) );
         }
 
@@ -46,7 +47,7 @@ class ResearchMapper {
 
     public function update( $conn ) {
         $curl = curl_init( $this->rdsURL . '/user/' . $this->userId . '/research/' . $researchIndex );
-        $options = [CURLOPT_RETURNTRANSFER => true];
+        $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PUT'];
         curl_setopt_array( $curl, $options );
         curl_setopt( $curl, CURLOPT_POSTFIELDS, $conn->jsonSerialize() );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
