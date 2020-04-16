@@ -150,7 +150,7 @@ class ResearchMapper {
             $conn = new Research();
             $conn->setUserId( $rdsConn['userId'] );
             $conn->setStatus( $rdsConn['status'] );
-            $conn->setResearchId( $rdsConn['research'] );
+            $conn->setResearchId( $rdsConn['researchId'] );
             $conn->setResearchIndex( $rdsConn['researchIndex'] );
             $conn->setPortIn( $rdsConn['portIn'] );
             $conn->setPortOut( $rdsConn['portOut'] );
