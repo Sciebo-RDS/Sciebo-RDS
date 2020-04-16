@@ -1,7 +1,7 @@
 <?php
 function getRegisteredServicesForUser($userId)
 {
-    $rdsURL = "http://sciebords-dev.uni-muenster.de/token-service";
+    $rdsURL = "https://sciebords-dev.uni-muenster.de/token-service";
     $curl = curl_init($rdsURL . "/user/" . $userId . "/service");
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -20,6 +20,7 @@ function getRegisteredServicesForUser($userId)
 }
 $found = false;
 $services = getRegisteredServicesForUser($_['user_id']);
+echo $services;
 foreach ($services as $service) {
     if ($service->servicename == "Owncloud") {
         $found = true;
