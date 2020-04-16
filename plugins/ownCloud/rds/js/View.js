@@ -20,28 +20,28 @@
     this._beforeTemplateRenders = undefined;
     // returns nothing
     this._afterTemplateRenders = undefined;
-  };
 
-  OC.rds.Template.prototype = {
-    _loadTemplate: function () {
+    _loadTemplate = function () {
       var source = $(loadView).html();
       var template = Handlebars.compile(source);
       var html = template(this._getParams());
 
       $("#app-content").html(html);
-    },
-    load: function () {
+    };
+
+    load = function () {
       this._beforeTemplateRenders();
       this._loadTemplate();
       this._afterTemplateRenders();
-    },
-    save: function () {
+    };
+
+    save = function () {
       saveFn()
         .done(function () {})
         .fail(function () {
           alert(saveNotFinished);
         });
-    },
+    };
   };
 
   OC.rds.OverviewTemplate = function (divName, services, studies) {
