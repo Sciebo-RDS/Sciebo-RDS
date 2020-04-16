@@ -5,7 +5,7 @@
   $(document).ready(function () {
     var studies = new OC.rds.Studies(
       OC.generateUrl("/apps/rds/research"),
-      new Metadata(OC.generateUrl("/apps/rds/metadata"))
+      new OC.rds.Metadata(OC.generateUrl("/apps/rds/metadata"))
     );
     var services = new OC.rds.Services(OC.generateUrl("/apps/rds/service"));
     var files = new OC.rds.Files(undefined);
