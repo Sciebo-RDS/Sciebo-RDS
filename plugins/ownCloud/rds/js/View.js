@@ -21,7 +21,7 @@
     // returns nothing
     this._afterTemplateRenders = undefined;
 
-    _loadTemplate = function () {
+    this._loadTemplate = function () {
       var source = $(loadView).html();
       var template = Handlebars.compile(source);
       var html = template(this._getParams());
@@ -29,13 +29,13 @@
       $("#app-content").html(html);
     };
 
-    load = function () {
+    this.load = function () {
       this._beforeTemplateRenders();
       this._loadTemplate();
       this._afterTemplateRenders();
     };
 
-    save = function () {
+    this.save = function () {
       saveFn()
         .done(function () {})
         .fail(function () {
