@@ -51,7 +51,7 @@ class ResearchMapper {
         $curl = curl_init( $this->rdsURL . '/user/' . $this->userId . '/research/' . $researchIndex );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PUT'];
         curl_setopt_array( $curl, $options );
-        curl_setopt( $curl, CURLOPT_POSTFIELDS, $conn->jsonSerialize() );
+        curl_setopt( $curl, CURLOPT_POSTFIELDS, json_encode( $conn->jsonSerialize() ) );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
 
