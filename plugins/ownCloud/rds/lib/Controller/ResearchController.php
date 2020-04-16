@@ -93,7 +93,7 @@ class ResearchController extends Controller
      */
     public function destroy($researchIndex) {
         return $this->handleNotFound(function () {
-            return $this->service->remove($researchIndex, $this->userId);
+            return $this->service->delete($researchIndex, $this->userId);
         });
     }
 }
