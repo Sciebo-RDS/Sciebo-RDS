@@ -30,6 +30,7 @@ class ResearchController extends Controller
      * @return string returns json
      * 
      * @NoAdminRequired
+     * @NoCSRFRequired
      */
     public function index() {
         return new JSONResponse($this->service->findAll($this->userId));
