@@ -176,7 +176,7 @@
     this._studies = studies;
     this._services = services;
     this._files = files;
-    this._stateView = 1;
+    this._stateView = 0;
     this._templates = [
       new OC.rds.OverviewTemplate(
         "#research-overview-tpl",
