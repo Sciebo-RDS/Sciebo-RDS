@@ -48,6 +48,7 @@ class ResearchMapper {
     }
 
     public function update( $conn ) {
+        # TODO Split the request into several requests to add in and out ports. and add serviceprojects in research. Take a look into spotlight for this.
         $curl = curl_init( $this->rdsURL . '/user/' . $conn->getUserId() . '/research/' . $conn->getResearchIndex() );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PUT'];
         curl_setopt_array( $curl, $options );
