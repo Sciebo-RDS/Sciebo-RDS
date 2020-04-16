@@ -36,7 +36,7 @@
     };
 
     this.save = function () {
-      saveFn()
+      this.saveFn()
         .done(function () {})
         .fail(function () {
           alert(saveNotFinished);
