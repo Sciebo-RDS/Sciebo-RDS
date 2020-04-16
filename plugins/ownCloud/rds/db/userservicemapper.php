@@ -77,31 +77,14 @@ class UserserviceMapper {
     }
 
     public function find( $servicename, $userId ) {
-        $curl = curl_init( $this->rdsURL . '/user/' . $userId . '/service/' . $servicename );
-        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+        $services = $this->findAll( $userId );
 
-        $response = json_decode( curl_exec( $curl ), true );
-        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-        $info = curl_getinfo( $curl );
-        curl_close( $curl );
-
-        if ( $httpcode >= 300 ) {
-            throw new NotFoundException( json_encode( [
-                'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg(),
-                'curl_error_message'=>$info
-            ] ) );
+        foreach ( $services as $element ) {
+            if ( $element->servicename == 'Owncloud' ) {
+                return $element ;
+            }
         }
 
-        $svc = new RegisteredService();
-
-        $svc->setServicename( $response['servicename'] );
-        $svc->setUserId( $userId );
-        $svc->setAccessToken( $response['access_token'] );
-        $svc->setServiceProjects( $response['projects'] );
-
-        return $svc ;
+        throw new NotFoundException( 'Service '. $servicename . ' not found.' );
     }
 }
