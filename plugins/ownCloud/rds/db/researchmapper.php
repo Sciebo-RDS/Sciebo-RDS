@@ -3,7 +3,7 @@ namespace OCA\RDS\Db;
 
 use \OCA\RDS\Db\Research;
 
-class ConnectionMapper {
+class ResearchMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/research';
 
     public function __construct() {
