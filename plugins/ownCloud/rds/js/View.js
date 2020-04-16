@@ -9,6 +9,7 @@
   };
 
   OC.rds.Template = function (divName) {
+    var self = this;
     this._divName = divName;
 
     // this methods needs to be implemented in your inherited classes
@@ -22,21 +23,22 @@
     this._afterTemplateRenders = undefined;
 
     this._loadTemplate = function () {
-      var source = $(this._divName).html();
+      var source = $(self._divName).html();
       var template = Handlebars.compile(source);
-      var html = template(this._getParams());
+      var html = template(self._getParams());
 
       $("#app-content").html(html);
     };
 
     this.load = function () {
-      this._beforeTemplateRenders();
-      this._loadTemplate();
-      this._afterTemplateRenders();
+      self._beforeTemplateRenders();
+      self._loadTemplate();
+      self._afterTemplateRenders();
     };
 
     this.save = function () {
-      this.saveFn()
+      self
+        ._saveFn()
         .done(function () {})
         .fail(function () {
           alert(saveNotFinished);
@@ -82,6 +84,7 @@
     this._beforeTemplateRenders = function () {};
 
     this._afterTemplateRenders = function () {
+      console.log("Debug save");
       $("#app-content button #btn-save-research").click(function () {
         self.save();
       });
