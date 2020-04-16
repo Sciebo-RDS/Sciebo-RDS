@@ -84,24 +84,23 @@
     this._beforeTemplateRenders = function () {};
 
     this._afterTemplateRenders = function () {
-      console.log("Debug save");
-      $("#app-content button #btn-save-research").click(function () {
+      $("#app-content #btn-save-research").click(function () {
         self.save();
       });
 
-      $("#app-content button #btn-save-research-and-continue").click(
-        function () {
-          self.save();
-        }
-      );
+      $("#app-content #btn-save-research-and-continue").click(function () {
+        self.save();
+      });
     };
 
     this._saveFn = function () {
       var portIn = [];
       var portOut = [];
 
-      self._services.forEach((element) => {
+      self._services.getAll().forEach(function (element) {
         var properties = [];
+        var tempPortIn = {};
+        var tempPortOut = {};
 
         var value = $(
           "input[name='radiobutton-" + element.servicename + "']:checked"
