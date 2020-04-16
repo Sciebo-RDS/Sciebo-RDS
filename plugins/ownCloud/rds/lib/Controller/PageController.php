@@ -23,7 +23,6 @@ class PageController extends Controller {
     private $clientMapper;
     private $userserviceMapper;
     private $userId;
-    private $rdsURL = 'http://sciebords-dev.uni-muenster.de/token-service';
 
     public function __construct( $AppName, IRequest $request, ClientMapper $clientMapper, UserserviceportService $userservice, $userId ) {
         parent::__construct( $AppName, $request );
