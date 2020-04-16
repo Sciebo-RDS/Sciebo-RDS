@@ -8,7 +8,7 @@ This is a nice text in overview
                 <th>Options</th>
             </tr>
         </thead>
-    {{#each researches}}
+    {{#each studies}}
         <tr>
             <td>{{researchIndex}}</td>
             <td><a href="/show/{{researchIndex}}">Show</a></td>

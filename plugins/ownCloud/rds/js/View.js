@@ -54,7 +54,7 @@
 
     this._getParams = function () {
       return {
-        research: self._studies.getAll(),
+        studies: self._studies.getAll(),
         services: self._services.getAll(),
       };
     };
