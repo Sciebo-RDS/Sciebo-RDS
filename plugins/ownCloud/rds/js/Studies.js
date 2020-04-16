@@ -30,7 +30,7 @@
       return this._metadata;
     },
     removeActive: function () {
-      var index;
+      var index = undefined;
       var deferred = $.Deferred();
       var researchIndex = this._activeResearch.researchIndex;
 
