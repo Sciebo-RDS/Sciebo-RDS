@@ -259,7 +259,9 @@
       // load a research
       $("#app-navigation .research > a").click(function () {
         var id = parseInt($(this).parent().data("id"), 10);
+        console.log("Load " + id)
         self._studies.load(id);
+        console.log("Loaded " + self._studies.getActive())
         self.render();
       });
     },
