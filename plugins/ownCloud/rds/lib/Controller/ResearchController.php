@@ -33,7 +33,9 @@ class ResearchController extends Controller
      * @NoCSRFRequired
      */
     public function index() {
-        return new JSONResponse($this->service->findAll($this->userId));
+        return $this->handleNotFound(function () {
+            return $this->service->findAll($this->userId);
+        }
     }
 
     /**
@@ -47,7 +49,7 @@ class ResearchController extends Controller
      */
     public function show($id) {
         return $this->handleNotFound(function () use ($id) {
-            return new JSONResponse($this->service->find($id, $this->userId));
+            return $this->service->find($id, $this->userId);
         });
     }
 
@@ -59,7 +61,9 @@ class ResearchController extends Controller
      * @NoAdminRequired
      */
     public function create() {
-        return new JSONResponse($this->service->create($this->userId));
+        return $this->handleNotFound(function () {
+            return $this->service->create($this->userId);
+        }
     }
 
     /**
@@ -74,7 +78,9 @@ class ResearchController extends Controller
      * @NoAdminRequired
      */
     public function update($researchIndex, $status, $portIn, $portOut) {
-        return new JSONResponse($this->service->update( $this->userId, $researchIndex, $portIn, $portOut, $status));
+        return $this->handleNotFound(function () {
+            return $this->service->update( $this->userId, $researchIndex, $portIn, $portOut, $status);
+        }
     }
 
     /**
@@ -86,6 +92,8 @@ class ResearchController extends Controller
      * @NoAdminRequired
      */
     public function remove($researchIndex) {
-        return new JSONResponse($this->service->remove($researchIndex, $this->userId));
+        return $this->handleNotFound(function () {
+            return $this->service->remove($researchIndex, $this->userId);
+        }
     }
 }

@@ -2,6 +2,7 @@
 namespace OCA\RDS\Db;
 
 use \OCA\RDS\Db\Research;
+use \OCA\RDS\Service\NotFoundException;
 
 class ResearchMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/research';
@@ -23,7 +24,11 @@ class ResearchMapper {
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
-            return NULL;
+            throw new NotFoundException( json_encode( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg(),
+                'curl_error_message'=>$info
+            ] ) );
         }
 
         return array_slice( $this->findAll( $conn->userId ), -1 );
@@ -42,7 +47,11 @@ class ResearchMapper {
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
-            return NULL;
+            throw new NotFoundException( json_encode( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg(),
+                'curl_error_message'=>$info
+            ] ) );
         }
 
         return $this->find( $conn->researchIndex, $conn->userId );
@@ -62,7 +71,11 @@ class ResearchMapper {
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
-            return NULL;
+            throw new NotFoundException( json_encode( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg(),
+                'curl_error_message'=>$info
+            ] ) );
         }
 
         return $conn;
@@ -82,7 +95,11 @@ class ResearchMapper {
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
-            return NULL;
+            throw new NotFoundException( json_encode( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg(),
+                'curl_error_message'=>$info
+            ] ) );
         }
 
         $conn = new Research();
@@ -110,7 +127,11 @@ class ResearchMapper {
         curl_close( $curl );
 
         if ( $httpcode >= 300 ) {
-            return NULL;
+            throw new NotFoundException( json_encode( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg(),
+                'curl_error_message'=>$info
+            ] ) );
         }
 
         $result = [];
