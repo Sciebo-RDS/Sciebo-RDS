@@ -20,8 +20,8 @@ $application->registerRoutes( $this, [
     'routes' => [
         # template endpoints
         ['name' => 'page#index',                              'url' => '/',                             'verb' => 'GET'],
-        ['name' => 'page#researchShow',                       'url' => '/{id}',                        'verb' => 'GET'],
-        ['name' => 'page#researchEdit',                       'url' => '/{id}/edit',                   'verb' => 'GET'],
+        ['name' => 'page#researchShow',                       'url' => '/show/{id}',                        'verb' => 'GET'],
+        ['name' => 'page#researchEdit',                       'url' => '/edit/{id}',                   'verb' => 'GET'],
 
         # Metadata additional API endpoint
         ['name' => 'metadata#jsonschema',                     'url' => '/metadata/jsonschema',                  'verb' => 'GET'],
