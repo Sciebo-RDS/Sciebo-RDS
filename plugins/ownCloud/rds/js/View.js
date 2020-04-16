@@ -8,7 +8,7 @@
     saveNotFinished: $("#save-not-finished").text(),
   };
 
-  Template = function (divName) {
+  OC.rds.Template = function (divName) {
     this._divName = divName;
 
     // this methods needs to be implemented in your inherited classes
@@ -20,32 +20,32 @@
     this._beforeTemplateRenders = undefined;
     // returns nothing
     this._afterTemplateRenders = undefined;
+  };
 
-    this._loadTemplate = function () {
+  OC.rds.Template.prototype = {
+    _loadTemplate: function () {
       var source = $(loadView).html();
       var template = Handlebars.compile(source);
       var html = template(this._getParams());
 
       $("#app-content").html(html);
-    };
-
-    this.load = function () {
+    },
+    load: function () {
       this._beforeTemplateRenders();
       this._loadTemplate();
       this._afterTemplateRenders();
-    };
-
-    this.save = function () {
+    },
+    save: function () {
       saveFn()
         .done(function () {})
         .fail(function () {
           alert(saveNotFinished);
         });
-    };
+    },
   };
 
-  OverviewTemplate = function (divName, services, studies) {
-    Template.call(this, divName);
+  OC.rds.OverviewTemplate = function (divName, services, studies) {
+    OC.rds.Template.call(this, divName);
 
     var self = this;
 
@@ -55,8 +55,8 @@
     this._saveFn = function () {};
   };
 
-  ServiceTemplate = function (divName, services, studies) {
-    Template.call(this, divName);
+  OC.rds.ServiceTemplate = function (divName, services, studies) {
+    OC.rds.Template.call(this, divName);
 
     var self = this;
 
@@ -146,8 +146,8 @@
     };
   };
 
-  MetadataTemplate = function (divName, studies) {
-    Template.call(this, divName);
+  OC.rds.MetadataTemplate = function (divName, studies) {
+    OC.rds.Template.call(this, divName);
 
     var self = this;
 
@@ -161,8 +161,8 @@
     this._saveFn = function () {};
   };
 
-  FileTemplate = function (divName, services, studies) {
-    Template.call(this, divName);
+  OC.rds.FileTemplate = function (divName, services, studies) {
+    OC.rds.Template.call(this, divName);
 
     var self = this;
 
@@ -178,18 +178,18 @@
     this._files = files;
     this._stateView = 1;
     this._templates = [
-      new OverviewTemplate(
+      new OC.rds.OverviewTemplate(
         "#research-overview-tpl",
         this._services,
         this._studies
       ),
-      new ServiceTemplate(
+      new OC.rds.ServiceTemplate(
         "#research-edit-service-tpl",
         this._services,
         this._studies
       ),
-      new MetadataTemplate("#research-edit-metadata-tpl", this._studies),
-      new FileTemplate(
+      new OC.rds.MetadataTemplate("#research-edit-metadata-tpl", this._studies),
+      new OC.rds.FileTemplate(
         "#research-edit-file-tpl",
         this._services,
         this._studies
