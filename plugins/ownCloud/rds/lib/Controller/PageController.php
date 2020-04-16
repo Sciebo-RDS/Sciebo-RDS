@@ -56,4 +56,5 @@ class PageController extends Controller {
             return new TemplateResponse( 'rds', 'not_authorized' );
         }
     }
+
 }
