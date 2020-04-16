@@ -48,7 +48,7 @@ class ResearchMapper {
     }
 
     public function update( $conn ) {
-        $curl = curl_init( $this->rdsURL . '/user/' . $this->userId . '/research/' . $researchIndex );
+        $curl = curl_init( $this->rdsURL . '/user/' . $this->userId . '/research/' . $conn->getResearchIndex() );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PUT'];
         curl_setopt_array( $curl, $options );
         curl_setopt( $curl, CURLOPT_POSTFIELDS, json_encode( $conn->jsonSerialize() ) );
