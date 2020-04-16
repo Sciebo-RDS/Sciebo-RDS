@@ -22,7 +22,7 @@
     this._afterTemplateRenders = undefined;
 
     this._loadTemplate = function () {
-      var source = $(loadView).html();
+      var source = $(this._divName).html();
       var template = Handlebars.compile(source);
       var html = template(this._getParams());
 
