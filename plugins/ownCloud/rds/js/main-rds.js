@@ -14,10 +14,13 @@
     view
       .loadAll()
       .done(function () {
-        view.render();
+        alert("Debug: Load data successful");
       })
       .fail(function () {
-        alert("Could not load informations");
+        alert("Debug: Could not load informations");
+      })
+      .always(function () {
+        view.render();
       });
   });
 })(OC, window, jQuery);
