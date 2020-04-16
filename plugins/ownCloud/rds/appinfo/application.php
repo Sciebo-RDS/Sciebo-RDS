@@ -28,16 +28,7 @@ class Application extends App {
         parent::__construct('rds', $urlParams);
 
         $container = $this->getContainer();
-
-        $container->registerService('PageController', function($c) {
-            return new PageController(
-                $c->query('AppName'),
-                $c->query('Request'),
-                $c->query('\OCA\OAuth2\Db\ClientMapper'),
-                $c->query('UserId')
-            );
-        });
-
+        
         $container->registerService("ServiceMapper", function($c) {
             return new ServiceMapper($c->query('UserId'));
         });
@@ -51,7 +42,7 @@ class Application extends App {
                 $c->query("ServiceportService")
             );
         });
-
+        
         $container->registerService("UserserviceMapper", function($c) {
             return new UserserviceMapper();
         });
@@ -66,7 +57,7 @@ class Application extends App {
                 $c->query('UserId')
             );
         });
-
+        
         $container->registerService("ResearchMapper", function($c) {
             return new ResearchMapper();
         });
@@ -81,7 +72,7 @@ class Application extends App {
                 $c->query('UserId')
             );
         });
-
+        
         $container->registerService("MetadataMapper", function($c) {
             return new MetadataMapper();
         });
@@ -97,5 +88,15 @@ class Application extends App {
             );
         });
 
+        $container->registerService('PageController', function($c) {
+            return new PageController(
+                $c->query('AppName'),
+                $c->query('Request'),
+                $c->query('\OCA\OAuth2\Db\ClientMapper'),
+                $c->query("UserserviceportService"),
+                $c->query('UserId')
+            );
+        });
+        
     }
 }

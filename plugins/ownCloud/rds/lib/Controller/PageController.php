@@ -12,6 +12,7 @@ use OCP\IRequest;
 use OCP\Template;
 use \OCA\OAuth2\Db\Client;
 use \OCA\OAuth2\Db\ClientMapper;
+use \OCA\RDS\Service\UserserviceportService;
 
 /**
 - Define a new page controller
@@ -20,13 +21,15 @@ use \OCA\OAuth2\Db\ClientMapper;
 class PageController extends Controller {
     /** @var ClientMapper */
     private $clientMapper;
+    private $userserviceMapper;
     private $userId;
     private $rdsURL = 'http://sciebords-dev.uni-muenster.de/token-service';
 
-    public function __construct( $AppName, IRequest $request, ClientMapper $clientMapper, $userId ) {
+    public function __construct( $AppName, IRequest $request, ClientMapper $clientMapper, UserserviceportService $userservice, $userId ) {
         parent::__construct( $AppName, $request );
         $this->clientMapper = $clientMapper;
         $this->userId = $userId;
+        $this->userservice = $userservice;
     }
 
     /**
@@ -49,12 +52,9 @@ class PageController extends Controller {
     private function checkUserForRDSActivated( $templateIfActivated, $params = [] ) {
         $found = false;
 
-        $services = $this->getRegisteredServicesForUser();
-        foreach ( $services as $service ) {
-            if ( 'Owncloud' == $service ) {
-                $found = true;
-                break;
-            }
+        $service = $this->userservice->find( 'Owncloud', $this->userId );
+        if ( 'Owncloud' == $service->servicename ) {
+            $found = true;
         }
 
         if ( !$found ) {
@@ -64,18 +64,4 @@ class PageController extends Controller {
         return new TemplateResponse( 'rds', $templateIfActivated, $params );
     }
 
-    public function getRegisteredServicesForUser() {
-        $curl = curl_init( $this->rdsURL . '/user/' . $this->userId . '/service' );
-        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-
-        $response = json_decode( curl_exec( $curl ) );
-        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-        curl_close( $curl );
-
-        if ( $httpcode >= 300 ) {
-            return [];
-        }
-
-        return $response;
-    }
 }
