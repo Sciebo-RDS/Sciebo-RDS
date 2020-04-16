@@ -4,9 +4,9 @@
 
 <script id="navigation-tpl" type="text/x-handlebars-template">
     <li id="new-research"><a href="#"><?php p($l->t('Add connection')); ?></a></li>
-    {{#each connections}}
+    {{#each studies}}
         <li class="connection with-menu {{#if active}}active{{/if}}"  data-id="{{ id }}">
-            <a href="#">{{ title }}</a>
+            <a href="#">Project {{ researchIndex }}</a>
             <div class="app-navigation-entry-utils">
                 <ul>
                     <li class="app-navigation-entry-utils-menu-button svg"><button></button></li>
