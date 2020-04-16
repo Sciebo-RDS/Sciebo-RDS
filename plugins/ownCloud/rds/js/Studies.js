@@ -17,7 +17,7 @@
         if (conn.researchIndex === researchIndex) {
           conn.active = true;
           self._activeResearch = conn;
-          metadata.load(researchIndex);
+          this._metadata.load(researchIndex);
         } else {
           conn.active = false;
         }
