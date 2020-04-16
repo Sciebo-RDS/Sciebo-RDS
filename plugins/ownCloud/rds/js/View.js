@@ -150,10 +150,7 @@
         }
       });
 
-      var projectIndex = self._studies.getActive().projectIndex;
-      var status = self._studies.getActive().status;
-
-      self._studies.updateActive(projectIndex, status, portIn, portOut);
+      self._studies.updateActive(portIn, portOut);
     };
   };
 

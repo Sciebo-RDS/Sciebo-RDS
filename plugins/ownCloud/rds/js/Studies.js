@@ -102,15 +102,14 @@
         });
       return deferred.promise();
     },
-    updateActive: function (researchIndex, status, portIn, portOut) {
+    updateActive: function (portIn, portOut) {
       var conn = this.getActive();
 
-      conn.status = status;
       conn.portIn = portIn;
       conn.portOut = portOut;
 
       return $.ajax({
-        url: this._baseUrl + "/" + researchIndex,
+        url: this._baseUrl + "/" + conn.researchIndex,
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(conn),
