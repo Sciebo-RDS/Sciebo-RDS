@@ -11,16 +11,8 @@
     var files = new OC.rds.Files(OC.generateUrl("/apps/rds/files"));
 
     var view = new OC.rds.View(studies, services, files);
-    view
-      .loadAll()
-      .done(function () {
-        alert("Debug: Load data successful");
-      })
-      .fail(function () {
-        alert("Debug: Could not load informations");
-      })
-      .always(function () {
-        view.render();
-      });
+    view.loadAll().always(function () {
+      view.render();
+    });
   });
 })(OC, window, jQuery);

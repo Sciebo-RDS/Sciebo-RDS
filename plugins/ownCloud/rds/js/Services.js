@@ -13,7 +13,7 @@
       var deferred = $.Deferred();
       var self = this;
 
-      $.get(this._baseurl, "json")
+      $.get(this._baseUrl)
         .done(function (services) {
           self._services = services;
           deferred.resolve();
