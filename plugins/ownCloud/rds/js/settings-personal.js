@@ -12,7 +12,7 @@
     // holds all services
     var Services = function(baseUrl) {
       this._baseurl = baseUrl;
-      this._services = []; // holds object with servicename, authorize_url, state, date
+      this._services = []; // holds object with servicename, authorizeUrl, state, date
       this._user_services = []; // holds strings
 
       var self = this;
@@ -87,7 +87,7 @@
         var deferred = $.Deferred();
         var self = this;
 
-        $.get(this._baseurl + "/user/service", "json")
+        $.get(this._baseurl + "/userservice", "json")
           .done(function(services) {
             self._user_services = services;
             deferred.resolve();
@@ -117,7 +117,7 @@
     // used to update the html
     var View = function(services) {
       this._services = services;
-      this._authorize_url = {};
+      this._authorizeUrl = {};
       this._btn = document.getElementById("svc-button");
       this._btn.disabled = true;
       this._select = document.getElementById("svc-selector");
@@ -185,8 +185,8 @@
         });
 
         notUsedServices.forEach(function(item, index) {
-          self._authorize_url[item.servicename] =
-            item.authorize_url + "&state=" + item.state;
+          self._authorizeUrl[item.servicename] =
+            item.authorizeUrl + "&state=" + item.state;
           var option = document.createElement("option");
           option.text = option.value = item.servicename;
           self._select.add(option, 0);
@@ -201,7 +201,7 @@
         self._btn.onclick = function() {
           var select = self._select;
           var win = window.open(
-            self._authorize_url[select.options[select.selectedIndex].text],
+            self._authorizeUrl[select.options[select.selectedIndex].text],
             "oauth2-service-for-rds",
             "width=100%,height=100%,scrollbars=yes"
           );
