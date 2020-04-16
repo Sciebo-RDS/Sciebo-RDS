@@ -11,7 +11,7 @@ This is a nice text in overview
     {{#each studies}}
         <tr>
             <td>{{researchIndex}}</td>
-            <td><a href="show/{{researchIndex}}">Show</a></td>
+            <td><a href="edit/{{researchIndex}}">Show</a>, <a href="#">Delete</a></td>
         </tr>
     {{/each}}
 </div>

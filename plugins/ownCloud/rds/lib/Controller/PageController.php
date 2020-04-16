@@ -45,15 +45,6 @@ class PageController extends Controller {
     * @NoAdminRequired
     */
 
-    public function researchShow( $id ) {
-        return $this->checkUserForRDSActivated( 'main.research', ['id'=>$id] );
-    }
-
-    /**
-    * @NoCSRFRequired
-    * @NoAdminRequired
-    */
-
     public function researchEdit( $id ) {
         return $this->checkUserForRDSActivated( 'main.research', ['id'=>$id] );
     }
