@@ -89,7 +89,12 @@
       $.get(this._baseUrl)
         .done(function (conns) {
           self._activeResearch = undefined;
-          self._studies = conns;
+          self._studies = [];
+          conns.forEach(function (conn, counter) {
+            if (conn.status !== 4) {
+              self._studies.push(conn);
+            }
+          });
           deferred.resolve();
         })
         .fail(function () {
