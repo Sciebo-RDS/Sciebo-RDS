@@ -19,9 +19,6 @@ class ResearchMapper {
         curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
 
-        # FIXME: remove me, because this is for self signed certs
-        curl_setopt ( $curl, CURLOPT_SSL_VERIFYPEER, false);
-
         $response = json_decode( curl_exec( $curl ), true );
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
         $info = curl_getinfo( $curl );
@@ -55,9 +52,6 @@ class ResearchMapper {
         curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
 
-        # FIXME: remove me, because this is for self signed certs
-        curl_setopt ( $curl, CURLOPT_SSL_VERIFYPEER, false);
-
         $response = json_decode( curl_exec( $curl ) );
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
         $info = curl_getinfo( $curl );
@@ -83,9 +77,6 @@ class ResearchMapper {
         curl_setopt_array( $curl, $options );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
-
-        # FIXME: remove me, because this is for self signed certs
-        curl_setopt ( $curl, CURLOPT_SSL_VERIFYPEER, false);
 
         $response = json_decode( curl_exec( $curl ) );
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
