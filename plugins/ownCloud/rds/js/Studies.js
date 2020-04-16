@@ -93,8 +93,6 @@
           deferred.resolve();
         })
         .fail(function () {
-          self._activeResearch = undefined;
-          self._studies = [];
           deferred.reject();
         });
       return deferred.promise();
