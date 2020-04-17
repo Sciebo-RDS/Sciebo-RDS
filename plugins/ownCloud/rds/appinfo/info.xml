@@ -17,6 +17,9 @@
     <settings>
         <personal>OCA\RDS\Panels\PersonalPanel</personal>
     </settings>
+     <settings-sections>
+        <personal>OCA\RDS\Panels\PersonalSection</personal>
+    </settings-sections>
 </info>
 
 

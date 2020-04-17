@@ -55,7 +55,7 @@ class PersonalPanel implements ISettings
 
     public function getSectionID()
     {
-        return 'additional';
+        return 'RDS';
     }
 
     /**
