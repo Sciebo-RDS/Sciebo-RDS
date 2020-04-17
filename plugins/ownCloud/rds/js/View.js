@@ -13,7 +13,7 @@
     this._view = view;
 
     if (this.constructor === AbstractClass) {
-      throw new Error('Cannot instanciate abstract class');
+      throw new Error("Cannot instanciate abstract class");
     }
   };
 
@@ -75,49 +75,49 @@
 
   OC.rds.OverviewTemplate = function (divName, view, services, studies) {
     OC.rds.Template.apply(this, divName, view);
- 
+
     this._services = services;
     this._studies = studies;
-  }
+  };
 
   OC.rds.OverviewTemplate.prototype = Object.create(OC.rds.Template.prototype, {
-    "constructor": OC.rds.OverviewTemplate
-  })
+    constructor: OC.rds.OverviewTemplate,
+  });
 
-  OC.rds.OverviewTemplate.prototype={
-    _getParams = function () {
+  OC.rds.OverviewTemplate.prototype = {
+    _getParams: function () {
       var self = this;
       return {
         studies: self._studies.getAll(),
         services: self._services.getAll(),
       };
     },
-    _beforeTemplateRenders = function () {},
-    _afterTemplateRenders = function () {},
-    _saveFn = function () {},
+    _beforeTemplateRenders: function () {},
+    _afterTemplateRenders: function () {},
+    _saveFn: function () {},
   };
 
   OC.rds.ServiceTemplate = function (divName, view, services, studies) {
     OC.rds.Template.apply(this, divName, view);
-    
+
     this._services = services;
     this._studies = studies;
   };
-  
+
   OC.rds.ServiceTemplate.prototype = Object.create(OC.rds.Template.prototype, {
-    "constructor": OC.rds.ServiceTemplate
+    constructor: OC.rds.ServiceTemplate,
   });
-  
-  OC.rds.ServiceTemplate.prototype={
-    _getParams = function () {
+
+  OC.rds.ServiceTemplate.prototype = {
+    _getParams: function () {
       var self = this;
       return {
         research: self._studies.getActive(),
         services: self._services.getAll(),
       };
     },
-    _beforeTemplateRenders = function () {},
-    _afterTemplateRenders = function () {
+    _beforeTemplateRenders: function () {},
+    _afterTemplateRenders: function () {
       var self = this;
       $("#app-content #btn-add-new-service").click(function () {
         window.location.href = OC.generateUrl(
@@ -133,7 +133,7 @@
         self.save_next();
       });
     },
-    _saveFn = function () {
+    _saveFn: function () {
       var self = this;
       var portIn = [];
       var portOut = [];
@@ -199,36 +199,34 @@
     OC.rds.Template.apply(this, divName, view);
 
     var self = this;
-
-  }
+  };
 
   OC.rds.MetadataTemplate.prototype = Object.create(OC.rds.Template.prototype, {
-    "constructor": OC.rds.MetadataTemplate
+    constructor: OC.rds.MetadataTemplate,
   });
 
   OC.rds.MetadataTemplate.prototype = {
-    _beforeTemplateRenders = function () {},
-    _afterTemplateRenders = function () {
+    _beforeTemplateRenders: function () {},
+    _afterTemplateRenders: function () {
       $("#metadata-jsonschema-editor").html(
         self._studies._metadata.getSchema()
       );
     },
-    _getParams = function () {},
-    _saveFn = function () {},
+    _getParams: function () {},
+    _saveFn: function () {},
   };
 
   OC.rds.FileTemplate = function (divName, view, services, studies) {
     OC.rds.Template.apply(this, divName, view);
-
-  }
+  };
   OC.rds.MetadataTemplate.prototype = Object.create(OC.rds.Template.prototype, {
-    "constructor": OC.rds.MetadataTemplate
+    constructor: OC.rds.MetadataTemplate,
   });
   OC.rds.MetadataTemplate.prototype = {
-    _beforeTemplateRenders = function () {},
-    _afterTemplateRenders = function () {},
-    _getParams = function () {},
-    _saveFn = function () {},
+    _beforeTemplateRenders: function () {},
+    _afterTemplateRenders: function () {},
+    _getParams: function () {},
+    _saveFn: function () {},
   };
 
   OC.rds.View = function (studies, services, files) {
