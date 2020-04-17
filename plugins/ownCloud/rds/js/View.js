@@ -12,7 +12,7 @@
     this._divName = divName;
     this._view = view;
 
-    if (this.constructor === Template) {
+    if (this.constructor === OC.rds.Template) {
       throw new Error("Cannot instanciate abstract class");
     }
   };
@@ -82,9 +82,6 @@
 
   OC.rds.OverviewTemplate.prototype = Object.create(OC.rds.Template.prototype, {
     constructor: OC.rds.OverviewTemplate,
-  });
-
-  OC.rds.OverviewTemplate.prototype = {
     _getParams: function () {
       var self = this;
       return {
@@ -95,7 +92,7 @@
     _beforeTemplateRenders: function () {},
     _afterTemplateRenders: function () {},
     _saveFn: function () {},
-  };
+  });
 
   OC.rds.ServiceTemplate = function (divName, view, services, studies) {
     OC.rds.Template.call(this, divName, view);
@@ -106,9 +103,6 @@
 
   OC.rds.ServiceTemplate.prototype = Object.create(OC.rds.Template.prototype, {
     constructor: OC.rds.ServiceTemplate,
-  });
-
-  OC.rds.ServiceTemplate.prototype = {
     _getParams: function () {
       var self = this;
       return {
@@ -193,7 +187,7 @@
 
       self._studies.updateActive(portIn, portOut);
     },
-  };
+  });
 
   OC.rds.MetadataTemplate = function (divName, view, studies) {
     OC.rds.Template.call(this, divName, view);
@@ -203,9 +197,6 @@
 
   OC.rds.MetadataTemplate.prototype = Object.create(OC.rds.Template.prototype, {
     constructor: OC.rds.MetadataTemplate,
-  });
-
-  OC.rds.MetadataTemplate.prototype = {
     _beforeTemplateRenders: function () {},
     _afterTemplateRenders: function () {
       $("#metadata-jsonschema-editor").html(
@@ -214,20 +205,18 @@
     },
     _getParams: function () {},
     _saveFn: function () {},
-  };
+  });
 
   OC.rds.FileTemplate = function (divName, view, services, studies) {
     OC.rds.Template.call(this, divName, view);
   };
   OC.rds.MetadataTemplate.prototype = Object.create(OC.rds.Template.prototype, {
     constructor: OC.rds.MetadataTemplate,
-  });
-  OC.rds.MetadataTemplate.prototype = {
     _beforeTemplateRenders: function () {},
     _afterTemplateRenders: function () {},
     _getParams: function () {},
     _saveFn: function () {},
-  };
+  });
 
   OC.rds.View = function (studies, services, files) {
     this._studies = studies;
