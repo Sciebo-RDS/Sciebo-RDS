@@ -11,6 +11,9 @@
     <dependencies>
         <owncloud min-version="10" max-version="10" />
     </dependencies>
+    <website>https://www.research-data-services.org</website>
+    <repository type="git">https://github.com/Sciebo-RDS/Sciebo-RDS</repository>
+    <bugs>https://github.com/Sciebo-RDS/Sciebo-RDS/issues</bugs>
     <settings>
         <personal>OCA\RDS\Panels\PersonalPanel</personal>
     </settings>
