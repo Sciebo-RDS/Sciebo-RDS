@@ -84,6 +84,12 @@
     this._beforeTemplateRenders = function () {};
 
     this._afterTemplateRenders = function () {
+      $("#app-content #btn-add-new-service").click(function () {
+        window.location.href = OC.generateUrl(
+          "index.php/settings/personal?sectionid=additional"
+        );
+      });
+
       $("#app-content #btn-save-research").click(function () {
         self.save();
       });
