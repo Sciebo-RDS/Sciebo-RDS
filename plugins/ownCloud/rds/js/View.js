@@ -43,7 +43,7 @@
     _loadTemplate: function () {
       var source = $(this._divName).html();
       var template = Handlebars.compile(source);
-      var html = template(self._getParams());
+      var html = template(this._getParams());
 
       $("#app-content").html(html);
     },
@@ -86,10 +86,9 @@
   );
 
   OC.rds.OverviewTemplate.prototype._getParams = function () {
-    var self = this;
     return {
-      studies: self._studies.getAll(),
-      services: self._services.getAll(),
+      studies: this._studies.getAll(),
+      services: this._services.getAll(),
     };
   };
   OC.rds.OverviewTemplate.prototype._beforeTemplateRenders = function () {};
@@ -112,10 +111,9 @@
     }
   );
   OC.rds.ServiceTemplate.prototype._getParams = function () {
-    var self = this;
     return {
-      research: self._studies.getActive(),
-      services: self._services.getAll(),
+      research: this._studies.getActive(),
+      services: this._services.getAll(),
     };
   };
   OC.rds.ServiceTemplate.prototype._beforeTemplateRenders = function () {};
