@@ -74,7 +74,7 @@
   };
 
   OC.rds.OverviewTemplate = function (divName, view, services, studies) {
-    OC.rds.Template.apply(this, divName, view);
+    OC.rds.Template.call(this, divName, view);
 
     this._services = services;
     this._studies = studies;
@@ -98,7 +98,7 @@
   };
 
   OC.rds.ServiceTemplate = function (divName, view, services, studies) {
-    OC.rds.Template.apply(this, divName, view);
+    OC.rds.Template.call(this, divName, view);
 
     this._services = services;
     this._studies = studies;
@@ -196,7 +196,7 @@
   };
 
   OC.rds.MetadataTemplate = function (divName, view, studies) {
-    OC.rds.Template.apply(this, divName, view);
+    OC.rds.Template.call(this, divName, view);
 
     var self = this;
   };
@@ -217,7 +217,7 @@
   };
 
   OC.rds.FileTemplate = function (divName, view, services, studies) {
-    OC.rds.Template.apply(this, divName, view);
+    OC.rds.Template.call(this, divName, view);
   };
   OC.rds.MetadataTemplate.prototype = Object.create(OC.rds.Template.prototype, {
     constructor: OC.rds.MetadataTemplate,
