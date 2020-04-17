@@ -12,7 +12,7 @@
     this._divName = divName;
     this._view = view;
 
-    if (this.constructor === AbstractClass) {
+    if (this.constructor === Template) {
       throw new Error("Cannot instanciate abstract class");
     }
   };
