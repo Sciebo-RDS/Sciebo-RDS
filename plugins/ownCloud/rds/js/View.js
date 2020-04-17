@@ -58,7 +58,7 @@
       return this._saveFn()
         .done(function () {})
         .fail(function () {
-          alert(saveNotFinished);
+          alert(translations.saveNotFinished);
         });
     },
 
@@ -117,7 +117,20 @@
     };
   };
   OC.rds.ServiceTemplate.prototype._beforeTemplateRenders = function () {};
+  OC.rds.ServiceTemplate.prototype._afterTemplateRenders = function () {
+    var self = this;
+    $("#app-content #btn-add-new-service").click(function () {
+      window.location.href = OC.generateUrl("settings/personal?sectionid=rds");
+    });
 
+    $("#app-content #btn-save-research").click(function () {
+      self.save();
+    });
+
+    $("#app-content #btn-save-research-and-continue").click(function () {
+      self.save_next();
+    });
+  };
   OC.rds.ServiceTemplate.prototype._saveFn = function () {
     var self = this;
     var portIn = [];
@@ -174,21 +187,7 @@
       }
     });
 
-    self._studies.updateActive(portIn, portOut);
-  };
-  OC.rds.ServiceTemplate.prototype._afterTemplateRenders = function () {
-    var self = this;
-    $("#app-content #btn-add-new-service").click(function () {
-      window.location.href = OC.generateUrl("settings/personal?sectionid=rds");
-    });
-
-    $("#app-content #btn-save-research").click(function () {
-      self.save();
-    });
-
-    $("#app-content #btn-save-research-and-continue").click(function () {
-      self.save_next();
-    });
+    return self._studies.updateActive(portIn, portOut);
   };
 
   OC.rds.MetadataTemplate = function (divName, view, studies) {
@@ -206,7 +205,9 @@
     $("#metadata-jsonschema-editor").html(this._studies._metadata.getSchema());
   };
   OC.rds.MetadataTemplate._getParams = function () {};
-  OC.rds.MetadataTemplate._saveFn = function () {};
+  OC.rds.MetadataTemplate._saveFn = function () {
+    return $.when();
+  };
 
   OC.rds.FileTemplate = function (divName, view, services, studies) {
     OC.rds.AbstractTemplate.call(this, divName, view);
@@ -221,7 +222,9 @@
   OC.rds.FileTemplate.prototype._beforeTemplateRenders = function () {};
   OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {};
   OC.rds.FileTemplate.prototype._getParams = function () {};
-  OC.rds.FileTemplate.prototype._saveFn = function () {};
+  OC.rds.FileTemplate.prototype._saveFn = function () {
+    return $.when();
+  };
 
   OC.rds.View = function (studies, services, files) {
     this._studies = studies;
