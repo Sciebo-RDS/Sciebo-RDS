@@ -86,7 +86,7 @@
     this._afterTemplateRenders = function () {
       $("#app-content #btn-add-new-service").click(function () {
         window.location.href = OC.generateUrl(
-          "settings/personal?sectionid=additional"
+          "settings/personal?sectionid=rds"
         );
       });
 
