@@ -15,13 +15,25 @@
 
     // this methods needs to be implemented in your inherited classes
     // returns a dict
-    this._getParams = undefined;
+    this._getParams = function () {
+      throw new Error("You have to implement the method _getParams!");
+    };
     // returns a jquery Differed object
-    this._saveFn = undefined;
+    this._saveFn = function () {
+      throw new Error("You have to implement the method _saveFn!");
+    };
     // returns nothing
-    this._beforeTemplateRenders = undefined;
+    this._beforeTemplateRenders = function () {
+      throw new Error(
+        "You have to implement the method _beforeTemplateRenders!"
+      );
+    };
     // returns nothing
-    this._afterTemplateRenders = undefined;
+    this._afterTemplateRenders = function () {
+      throw new Error(
+        "You have to implement the method _afterTemplateRenders!"
+      );
+    };
 
     this._loadTemplate = function () {
       var source = $(self._divName).html();
