@@ -3,10 +3,12 @@
 
   OC.rds = OC.rds || {};
 
-  var translations = {
-    newresearch: $("#new-research-string").text(),
-    saveNotFinished: $("#save-not-finished").text(),
-  };
+  $(document).ready(function () {
+    OC.rds.translations = {
+      newresearch: $("#new-research-string").text(),
+      saveNotFinished: $("#save-not-finished").text(),
+    };
+  });
 
   OC.rds.AbstractTemplate = function (divName, view) {
     this._divName = divName;
@@ -58,7 +60,7 @@
       return this._saveFn()
         .done(function () {})
         .fail(function () {
-          alert(translations.saveNotFinished);
+          alert(OC.rds.translations.saveNotFinished);
         });
     },
 
