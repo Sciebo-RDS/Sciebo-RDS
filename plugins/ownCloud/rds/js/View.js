@@ -9,100 +9,116 @@
   };
 
   OC.rds.Template = function (divName, view) {
-    var self = this;
     this._divName = divName;
     this._view = view;
 
+    if (this.constructor === AbstractClass) {
+      throw new Error('Cannot instanciate abstract class');
+    }
+  };
+
+  OC.rds.Template.prototype = {
     // this methods needs to be implemented in your inherited classes
     // returns a dict
-    this._getParams = function () {
+    _getParams: function () {
       throw new Error("You have to implement the method _getParams!");
-    };
+    },
     // returns a jquery Differed object
-    this._saveFn = function () {
+    _saveFn: function () {
       throw new Error("You have to implement the method _saveFn!");
-    };
+    },
     // returns nothing
-    this._beforeTemplateRenders = function () {
+    _beforeTemplateRenders: function () {
       throw new Error(
         "You have to implement the method _beforeTemplateRenders!"
       );
-    };
+    },
     // returns nothing
-    this._afterTemplateRenders = function () {
+    _afterTemplateRenders: function () {
       throw new Error(
         "You have to implement the method _afterTemplateRenders!"
       );
-    };
+    },
 
-    this._loadTemplate = function () {
+    _loadTemplate: function () {
+      var self = this;
       var source = $(self._divName).html();
       var template = Handlebars.compile(source);
       var html = template(self._getParams());
 
       $("#app-content").html(html);
-    };
+    },
 
-    this.load = function () {
+    load: function () {
+      var self = this;
       self._beforeTemplateRenders();
       self._loadTemplate();
       self._afterTemplateRenders();
-    };
+    },
 
-    this.save = function () {
+    save: function () {
+      var self = this;
       return self
         ._saveFn()
         .done(function () {})
         .fail(function () {
           alert(saveNotFinished);
         });
-    };
+    },
 
-    this.save_next = function () {
+    save_next: function () {
       return self.save().done(function () {
         self._view._stateView += 1;
       });
-    };
+    },
   };
 
   OC.rds.OverviewTemplate = function (divName, view, services, studies) {
-    OC.rds.Template.call(this, divName, view);
-
-    var self = this;
-
+    OC.rds.Template.apply(this, divName, view);
+ 
     this._services = services;
     this._studies = studies;
+  }
 
-    this._getParams = function () {
+  OC.rds.OverviewTemplate.prototype = Object.create(OC.rds.Template.prototype, {
+    "constructor": OC.rds.OverviewTemplate
+  })
+
+  OC.rds.OverviewTemplate.prototype={
+    _getParams = function () {
+      var self = this;
       return {
         studies: self._studies.getAll(),
         services: self._services.getAll(),
       };
-    };
-
-    this._beforeTemplateRenders = function () {};
-    this._afterTemplateRenders = function () {};
-    this._saveFn = function () {};
+    },
+    _beforeTemplateRenders = function () {},
+    _afterTemplateRenders = function () {},
+    _saveFn = function () {},
   };
 
   OC.rds.ServiceTemplate = function (divName, view, services, studies) {
-    OC.rds.Template.call(this, divName, view);
-
-    var self = this;
-
+    OC.rds.Template.apply(this, divName, view);
+    
     this._services = services;
     this._studies = studies;
-
-    this._getParams = function () {
+  };
+  
+  OC.rds.ServiceTemplate.prototype = Object.create(OC.rds.Template.prototype, {
+    "constructor": OC.rds.ServiceTemplate
+  });
+  
+  OC.rds.ServiceTemplate.prototype={
+    _getParams = function () {
+      var self = this;
       return {
         research: self._studies.getActive(),
         services: self._services.getAll(),
       };
-    };
-
-    this._beforeTemplateRenders = function () {};
-
-    this._afterTemplateRenders = function () {
+    },
+    _beforeTemplateRenders = function () {},
+    _afterTemplateRenders = function () {
+      var self = this;
       $("#app-content #btn-add-new-service").click(function () {
         window.location.href = OC.generateUrl(
           "settings/personal?sectionid=rds"
@@ -116,9 +132,9 @@
       $("#app-content #btn-save-research-and-continue").click(function () {
         self.save_next();
       });
-    };
-
-    this._saveFn = function () {
+    },
+    _saveFn = function () {
+      var self = this;
       var portIn = [];
       var portOut = [];
 
@@ -176,33 +192,43 @@
       });
 
       self._studies.updateActive(portIn, portOut);
-    };
+    },
   };
 
   OC.rds.MetadataTemplate = function (divName, view, studies) {
-    OC.rds.Template.call(this, divName, view);
+    OC.rds.Template.apply(this, divName, view);
 
     var self = this;
 
-    this._beforeTemplateRenders = function () {};
-    this._afterTemplateRenders = function () {
+  }
+
+  OC.rds.MetadataTemplate.prototype = Object.create(OC.rds.Template.prototype, {
+    "constructor": OC.rds.MetadataTemplate
+  });
+
+  OC.rds.MetadataTemplate.prototype = {
+    _beforeTemplateRenders = function () {},
+    _afterTemplateRenders = function () {
       $("#metadata-jsonschema-editor").html(
         self._studies._metadata.getSchema()
       );
-    };
-    this._getParams = function () {};
-    this._saveFn = function () {};
+    },
+    _getParams = function () {},
+    _saveFn = function () {},
   };
 
   OC.rds.FileTemplate = function (divName, view, services, studies) {
-    OC.rds.Template.call(this, divName, view);
+    OC.rds.Template.apply(this, divName, view);
 
-    var self = this;
-
-    this._beforeTemplateRenders = function () {};
-    this._afterTemplateRenders = function () {};
-    this._getParams = function () {};
-    this._saveFn = function () {};
+  }
+  OC.rds.MetadataTemplate.prototype = Object.create(OC.rds.Template.prototype, {
+    "constructor": OC.rds.MetadataTemplate
+  });
+  OC.rds.MetadataTemplate.prototype = {
+    _beforeTemplateRenders = function () {},
+    _afterTemplateRenders = function () {},
+    _getParams = function () {},
+    _saveFn = function () {},
   };
 
   OC.rds.View = function (studies, services, files) {
