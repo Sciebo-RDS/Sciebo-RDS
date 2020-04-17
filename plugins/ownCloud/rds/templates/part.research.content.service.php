@@ -6,20 +6,21 @@ this are the fields for services
     <b>{{ servicename }}:</b>
     <div id="radiobuttons-list">
       {{#each serviceProjects}}
-      {{#if projectName}}<label>
+      <label>
         <input
           type="radio"
           name="radiobutton-{{ servicename }}"
           id="radiobutton-{{ projectName }}"
           value="{{ projectName }}"
         />
-        {{ projectName }}
-        </label>
+        {{#if projectName}}
+          {{ projectName }}
+        {{else}}
+          <?php p($l->t('Project')); ?> {{prereserve_doi.doi}} (<?php p($l->t('No title found.')); ?>)
+        {{/if}}
+      </label>
       {{else}}
-        <?php p($l->t('No title for this project found.')); ?>
-      {{/if}}
-      {{else}}
-        <?php p($l->t('No projects found.')); ?>
+      <?php p($l->t('No projects found.')); ?>
       {{/each}}
     </div>
     <div id="service-configuration">
