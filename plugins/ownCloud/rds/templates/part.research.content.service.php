@@ -2,6 +2,7 @@
 
 <div id="wrapper-services">
   {{#each services}}
+  <hr />
   <div id="selector-available-services">
     <b>{{ servicename }}:</b>
     <div id="radiobuttons-list">
