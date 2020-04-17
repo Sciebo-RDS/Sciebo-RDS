@@ -1,4 +1,4 @@
-<h1>Project {{research.researchIndex}}</h1>
+<h1><?php p($l->t('Project')); ?> {{research.researchIndex}}</h1>
 
 <div id="wrapper-services">
   {{#each services}}
@@ -25,7 +25,7 @@
     </div>
     <div id="service-configuration">
       <div id="service-configuration-transfergoing">
-        For which transfer, do you want to use this service?
+        <?php p($l->t('For which transfer, do you want to use this service?')); ?>
         <label>
           <input
             type="checkbox"
@@ -33,7 +33,7 @@
             id="checkbox-{{ servicename }}-ingoing"
             value="portIn"
           />
-          Ingoing
+          <?php p($l->t('Ingoing')); ?>
         </label>
         <label>
           <input
@@ -42,11 +42,11 @@
             id="checkbox-{{ servicename }}-outgoing"
             value="portOut"
           />
-          Outgoing
+          <?php p($l->t('Outgoing')); ?>
         </label>
       </div>
       <div id="service-configuration-status">
-        For which storage, do you want to use this service?
+      <?php p($l->t('For which storage, do you want to use this service?')); ?>
         <label>
           <input
             type="checkbox"
@@ -54,7 +54,7 @@
             id="checkbox-{{ servicename }}-filestorage"
             value="fileStorage"
           />
-          File Storage
+          <?php p($l->t('File Storage')); ?>
         </label>
         <label>
           <input
@@ -63,7 +63,7 @@
             id="checkbox-{{ servicename }}-metadata"
             value="metadata"
           />
-          Metadata Storage
+          <?php p($l->t('Metadata Storage')); ?>
         </label>
       </div>
     </div>
@@ -72,8 +72,8 @@
 </div>
 
 <div id="wrapper-custom-buttons">
-  <button id="btn-add-new-service">Add new service</button>
+  <button id="btn-add-new-service"><?php p($l->t('Add new service')); ?></button>
   <div id="spacer"></div>
-  <button id="btn-save-research">Save</button>
-  <button id="btn-save-research-and-continue">Save & continue</button>
+  <button id="btn-save-research"><?php p($l->t('Save')); ?></button>
+  <button id="btn-save-research-and-continue"><?php p($l->t('Save & continue')); ?></button>
 </div>
