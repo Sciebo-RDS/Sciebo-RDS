@@ -40,7 +40,7 @@ class PersonalSection implements ISection {
 	}
 
 	public function getID() {
-		return 'RDS';
+		return 'rds';
 	}
 
 	public function getName() {
