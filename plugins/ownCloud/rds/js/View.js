@@ -8,9 +8,10 @@
     saveNotFinished: $("#save-not-finished").text(),
   };
 
-  OC.rds.Template = function (divName) {
+  OC.rds.Template = function (divName, view) {
     var self = this;
     this._divName = divName;
+    this._view = view;
 
     // this methods needs to be implemented in your inherited classes
     // returns a dict
@@ -37,17 +38,23 @@
     };
 
     this.save = function () {
-      self
+      return self
         ._saveFn()
         .done(function () {})
         .fail(function () {
           alert(saveNotFinished);
         });
     };
+
+    this.save_next = function () {
+      return self.save().done(function () {
+        self._view._stateView += 1;
+      });
+    };
   };
 
-  OC.rds.OverviewTemplate = function (divName, services, studies) {
-    OC.rds.Template.call(this, divName);
+  OC.rds.OverviewTemplate = function (divName, view, services, studies) {
+    OC.rds.Template.call(this, divName, view);
 
     var self = this;
 
@@ -66,8 +73,8 @@
     this._saveFn = function () {};
   };
 
-  OC.rds.ServiceTemplate = function (divName, services, studies) {
-    OC.rds.Template.call(this, divName);
+  OC.rds.ServiceTemplate = function (divName, view, services, studies) {
+    OC.rds.Template.call(this, divName, view);
 
     var self = this;
 
@@ -95,7 +102,7 @@
       });
 
       $("#app-content #btn-save-research-and-continue").click(function () {
-        self.save();
+        self.save_next();
       });
     };
 
@@ -160,8 +167,8 @@
     };
   };
 
-  OC.rds.MetadataTemplate = function (divName, studies) {
-    OC.rds.Template.call(this, divName);
+  OC.rds.MetadataTemplate = function (divName, view, studies) {
+    OC.rds.Template.call(this, divName, view);
 
     var self = this;
 
@@ -175,8 +182,8 @@
     this._saveFn = function () {};
   };
 
-  OC.rds.FileTemplate = function (divName, services, studies) {
-    OC.rds.Template.call(this, divName);
+  OC.rds.FileTemplate = function (divName, view, services, studies) {
+    OC.rds.Template.call(this, divName, view);
 
     var self = this;
 
@@ -194,17 +201,20 @@
     this._templates = [
       new OC.rds.OverviewTemplate(
         "#research-overview-tpl",
+        this._view,
         this._services,
         this._studies
       ),
       new OC.rds.ServiceTemplate(
         "#research-edit-service-tpl",
+        this._view,
         this._services,
         this._studies
       ),
       new OC.rds.MetadataTemplate("#research-edit-metadata-tpl", this._studies),
       new OC.rds.FileTemplate(
         "#research-edit-file-tpl",
+        this._view,
         this._services,
         this._studies
       ),
