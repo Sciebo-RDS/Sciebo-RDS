@@ -6,5 +6,6 @@
 	</div>
 	<div id="app-settings-content">
 		<!-- Your settings in here -->
+		<?php p($l->t('No settings currently available.')); ?>
 	</div>
 </div>

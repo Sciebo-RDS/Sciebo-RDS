@@ -1,4 +1,4 @@
-this are the fields for services
+<h1>Project {{research.researchIndex}}</h1>
 
 <div id="wrapper-services">
   {{#each services}}
