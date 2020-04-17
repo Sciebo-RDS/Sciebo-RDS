@@ -12,6 +12,12 @@
 
     var view = new OC.rds.View(studies, services, files);
     view.loadAll().always(function () {
+      $("#app-content #btn-add-new-service").click(function () {
+        window.location.href = OC.generateUrl(
+          "settings/personal?sectionid=rds"
+        );
+      });
+
       view.render();
     });
   });

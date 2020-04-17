@@ -6,6 +6,6 @@
 	</div>
 	<div id="app-settings-content">
 		<!-- Your settings in here -->
-		<?php p($l->t('No settings currently available.')); ?>
+		<button id="btn-add-new-service"><?php p($l->t('Add new service')); ?></button>
 	</div>
 </div>

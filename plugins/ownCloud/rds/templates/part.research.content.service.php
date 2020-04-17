@@ -79,7 +79,6 @@
 </div>
 
 <div id="wrapper-custom-buttons">
-  <button id="btn-add-new-service"><?php p($l->t('Add new service')); ?></button>
   <div id="spacer"></div>
   <button id="btn-save-research"><?php p($l->t('Save')); ?></button>
   <button id="btn-save-research-and-continue"><?php p($l->t('Save & continue')); ?></button>

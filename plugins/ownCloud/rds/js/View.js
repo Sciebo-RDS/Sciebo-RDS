@@ -121,9 +121,6 @@
   OC.rds.ServiceTemplate.prototype._beforeTemplateRenders = function () {};
   OC.rds.ServiceTemplate.prototype._afterTemplateRenders = function () {
     var self = this;
-    $("#app-content #btn-add-new-service").click(function () {
-      window.location.href = OC.generateUrl("settings/personal?sectionid=rds");
-    });
 
     $("#app-content #btn-save-research").click(function () {
       self.save();
