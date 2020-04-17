@@ -8,16 +8,16 @@
     saveNotFinished: $("#save-not-finished").text(),
   };
 
-  OC.rds.Template = function (divName, view) {
+  OC.rds.AbstractTemplate = function (divName, view) {
     this._divName = divName;
     this._view = view;
 
-    if (this.constructor === OC.rds.Template) {
+    if (this.constructor === OC.rds.AbstractTemplate) {
       throw new Error("Cannot instanciate abstract class");
     }
   };
 
-  OC.rds.Template.prototype = {
+  OC.rds.AbstractTemplate.prototype = {
     // this methods needs to be implemented in your inherited classes
     // returns a dict
     _getParams: function () {
@@ -41,8 +41,7 @@
     },
 
     _loadTemplate: function () {
-      var self = this;
-      var source = $(self._divName).html();
+      var source = $(this._divName).html();
       var template = Handlebars.compile(source);
       var html = template(self._getParams());
 
@@ -50,16 +49,13 @@
     },
 
     load: function () {
-      var self = this;
-      self._beforeTemplateRenders();
-      self._loadTemplate();
-      self._afterTemplateRenders();
+      this._beforeTemplateRenders();
+      this._loadTemplate();
+      this._afterTemplateRenders();
     },
 
     save: function () {
-      var self = this;
-      return self
-        ._saveFn()
+      return this._saveFn()
         .done(function () {})
         .fail(function () {
           alert(saveNotFinished);
@@ -67,6 +63,8 @@
     },
 
     save_next: function () {
+      var self = this;
+
       return self.save().done(function () {
         self._view._stateView += 1;
       });
@@ -74,149 +72,161 @@
   };
 
   OC.rds.OverviewTemplate = function (divName, view, services, studies) {
-    OC.rds.Template.call(this, divName, view);
+    OC.rds.AbstractTemplate.call(this, divName, view);
 
     this._services = services;
     this._studies = studies;
   };
 
-  OC.rds.OverviewTemplate.prototype = Object.create(OC.rds.Template.prototype, {
-    constructor: OC.rds.OverviewTemplate,
-    _getParams: function () {
-      var self = this;
-      return {
-        studies: self._studies.getAll(),
-        services: self._services.getAll(),
-      };
-    },
-    _beforeTemplateRenders: function () {},
-    _afterTemplateRenders: function () {},
-    _saveFn: function () {},
-  });
+  OC.rds.OverviewTemplate.prototype = Object.create(
+    OC.rds.AbstractTemplate.prototype,
+    {
+      constructor: OC.rds.OverviewTemplate,
+      _getParams: function () {
+        var self = this;
+        return {
+          studies: self._studies.getAll(),
+          services: self._services.getAll(),
+        };
+      },
+      _beforeTemplateRenders: function () {},
+      _afterTemplateRenders: function () {},
+      _saveFn: function () {},
+    }
+  );
 
   OC.rds.ServiceTemplate = function (divName, view, services, studies) {
-    OC.rds.Template.call(this, divName, view);
+    OC.rds.AbstractTemplate.call(this, divName, view);
 
     this._services = services;
     this._studies = studies;
   };
 
-  OC.rds.ServiceTemplate.prototype = Object.create(OC.rds.Template.prototype, {
-    constructor: OC.rds.ServiceTemplate,
-    _getParams: function () {
-      var self = this;
-      return {
-        research: self._studies.getActive(),
-        services: self._services.getAll(),
-      };
-    },
-    _beforeTemplateRenders: function () {},
-    _afterTemplateRenders: function () {
-      var self = this;
-      $("#app-content #btn-add-new-service").click(function () {
-        window.location.href = OC.generateUrl(
-          "settings/personal?sectionid=rds"
-        );
-      });
+  OC.rds.ServiceTemplate.prototype = Object.create(
+    OC.rds.AbstractTemplate.prototype,
+    {
+      constructor: OC.rds.ServiceTemplate,
+      _getParams: function () {
+        var self = this;
+        return {
+          research: self._studies.getActive(),
+          services: self._services.getAll(),
+        };
+      },
+      _beforeTemplateRenders: function () {},
+      _afterTemplateRenders: function () {
+        var self = this;
+        $("#app-content #btn-add-new-service").click(function () {
+          window.location.href = OC.generateUrl(
+            "settings/personal?sectionid=rds"
+          );
+        });
 
-      $("#app-content #btn-save-research").click(function () {
-        self.save();
-      });
+        $("#app-content #btn-save-research").click(function () {
+          self.save();
+        });
 
-      $("#app-content #btn-save-research-and-continue").click(function () {
-        self.save_next();
-      });
-    },
-    _saveFn: function () {
-      var self = this;
-      var portIn = [];
-      var portOut = [];
+        $("#app-content #btn-save-research-and-continue").click(function () {
+          self.save_next();
+        });
+      },
+      _saveFn: function () {
+        var self = this;
+        var portIn = [];
+        var portOut = [];
 
-      self._services.getAll().forEach(function (element) {
-        var properties = [];
-        var tempPortIn = {};
-        var tempPortOut = {};
+        self._services.getAll().forEach(function (element) {
+          var properties = [];
+          var tempPortIn = {};
+          var tempPortOut = {};
 
-        var value = $(
-          "input[name='radiobutton-" + element.servicename + "']:checked"
-        ).val();
+          var value = $(
+            "input[name='radiobutton-" + element.servicename + "']:checked"
+          ).val();
 
-        tempPortIn["port"] = element.servicename;
-        tempPortOut["port"] = element.servicename;
+          tempPortIn["port"] = element.servicename;
+          tempPortOut["port"] = element.servicename;
 
-        var propertyProjectInService = {};
-        propertyProjectInService["key"] = "projectName";
-        propertyProjectInService["value"] = value;
-        properties.push(propertyProjectInService);
+          var propertyProjectInService = {};
+          propertyProjectInService["key"] = "projectName";
+          propertyProjectInService["value"] = value;
+          properties.push(propertyProjectInService);
 
-        $.each(
-          $(
-            "input[name='checkbox-" +
-              element.servicename +
-              "-property']:checked"
-          ),
-          function () {
-            var val = $(this).val();
+          $.each(
+            $(
+              "input[name='checkbox-" +
+                element.servicename +
+                "-property']:checked"
+            ),
+            function () {
+              var val = $(this).val();
 
-            var property = {};
-            property["portType"] = val;
-            property["value"] = true;
-            properties.push(property);
+              var property = {};
+              property["portType"] = val;
+              property["value"] = true;
+              properties.push(property);
+            }
+          );
+
+          tempPortIn["properties"] = properties;
+          tempPortOut["properties"] = properties;
+
+          if (
+            $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
+              "checked"
+            )
+          ) {
+            portIn.push(tempPortIn);
           }
-        );
 
-        tempPortIn["properties"] = properties;
-        tempPortOut["properties"] = properties;
+          if (
+            $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
+              "checked"
+            )
+          ) {
+            portOut.push(tempPortOut);
+          }
+        });
 
-        if (
-          $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
-            "checked"
-          )
-        ) {
-          portIn.push(tempPortIn);
-        }
-
-        if (
-          $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
-            "checked"
-          )
-        ) {
-          portOut.push(tempPortOut);
-        }
-      });
-
-      self._studies.updateActive(portIn, portOut);
-    },
-  });
+        self._studies.updateActive(portIn, portOut);
+      },
+    }
+  );
 
   OC.rds.MetadataTemplate = function (divName, view, studies) {
-    OC.rds.Template.call(this, divName, view);
+    OC.rds.AbstractTemplate.call(this, divName, view);
 
     var self = this;
   };
 
-  OC.rds.MetadataTemplate.prototype = Object.create(OC.rds.Template.prototype, {
-    constructor: OC.rds.MetadataTemplate,
-    _beforeTemplateRenders: function () {},
-    _afterTemplateRenders: function () {
-      $("#metadata-jsonschema-editor").html(
-        self._studies._metadata.getSchema()
-      );
-    },
-    _getParams: function () {},
-    _saveFn: function () {},
-  });
+  OC.rds.MetadataTemplate.prototype = Object.create(
+    OC.rds.AbstractTemplate.prototype,
+    {
+      constructor: OC.rds.MetadataTemplate,
+      _beforeTemplateRenders: function () {},
+      _afterTemplateRenders: function () {
+        $("#metadata-jsonschema-editor").html(
+          self._studies._metadata.getSchema()
+        );
+      },
+      _getParams: function () {},
+      _saveFn: function () {},
+    }
+  );
 
   OC.rds.FileTemplate = function (divName, view, services, studies) {
-    OC.rds.Template.call(this, divName, view);
+    OC.rds.AbstractTemplate.call(this, divName, view);
   };
-  OC.rds.MetadataTemplate.prototype = Object.create(OC.rds.Template.prototype, {
-    constructor: OC.rds.MetadataTemplate,
-    _beforeTemplateRenders: function () {},
-    _afterTemplateRenders: function () {},
-    _getParams: function () {},
-    _saveFn: function () {},
-  });
+  OC.rds.MetadataTemplate.prototype = Object.create(
+    OC.rds.AbstractTemplate.prototype,
+    {
+      constructor: OC.rds.MetadataTemplate,
+      _beforeTemplateRenders: function () {},
+      _afterTemplateRenders: function () {},
+      _getParams: function () {},
+      _saveFn: function () {},
+    }
+  );
 
   OC.rds.View = function (studies, services, files) {
     this._studies = studies;
