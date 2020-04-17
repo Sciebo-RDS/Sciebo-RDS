@@ -82,18 +82,21 @@
     OC.rds.AbstractTemplate.prototype,
     {
       constructor: OC.rds.OverviewTemplate,
-      _getParams: function () {
-        var self = this;
-        return {
-          studies: self._studies.getAll(),
-          services: self._services.getAll(),
-        };
-      },
-      _beforeTemplateRenders: function () {},
-      _afterTemplateRenders: function () {},
-      _saveFn: function () {},
     }
   );
+
+  OC.rds.OverviewTemplate.prototype._getParams = function () {
+    var self = this;
+    return {
+      studies: self._studies.getAll(),
+      services: self._services.getAll(),
+    };
+  };
+  OC.rds.OverviewTemplate.prototype._beforeTemplateRenders = function () {};
+  OC.rds.OverviewTemplate.prototype._afterTemplateRenders = function () {};
+  OC.rds.OverviewTemplate.prototype._saveFn = function () {
+    $.when();
+  };
 
   OC.rds.ServiceTemplate = function (divName, view, services, studies) {
     OC.rds.AbstractTemplate.call(this, divName, view);
@@ -106,127 +109,120 @@
     OC.rds.AbstractTemplate.prototype,
     {
       constructor: OC.rds.ServiceTemplate,
-      _getParams: function () {
-        var self = this;
-        return {
-          research: self._studies.getActive(),
-          services: self._services.getAll(),
-        };
-      },
-      _beforeTemplateRenders: function () {},
-      _afterTemplateRenders: function () {
-        var self = this;
-        $("#app-content #btn-add-new-service").click(function () {
-          window.location.href = OC.generateUrl(
-            "settings/personal?sectionid=rds"
-          );
-        });
-
-        $("#app-content #btn-save-research").click(function () {
-          self.save();
-        });
-
-        $("#app-content #btn-save-research-and-continue").click(function () {
-          self.save_next();
-        });
-      },
-      _saveFn: function () {
-        var self = this;
-        var portIn = [];
-        var portOut = [];
-
-        self._services.getAll().forEach(function (element) {
-          var properties = [];
-          var tempPortIn = {};
-          var tempPortOut = {};
-
-          var value = $(
-            "input[name='radiobutton-" + element.servicename + "']:checked"
-          ).val();
-
-          tempPortIn["port"] = element.servicename;
-          tempPortOut["port"] = element.servicename;
-
-          var propertyProjectInService = {};
-          propertyProjectInService["key"] = "projectName";
-          propertyProjectInService["value"] = value;
-          properties.push(propertyProjectInService);
-
-          $.each(
-            $(
-              "input[name='checkbox-" +
-                element.servicename +
-                "-property']:checked"
-            ),
-            function () {
-              var val = $(this).val();
-
-              var property = {};
-              property["portType"] = val;
-              property["value"] = true;
-              properties.push(property);
-            }
-          );
-
-          tempPortIn["properties"] = properties;
-          tempPortOut["properties"] = properties;
-
-          if (
-            $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
-              "checked"
-            )
-          ) {
-            portIn.push(tempPortIn);
-          }
-
-          if (
-            $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
-              "checked"
-            )
-          ) {
-            portOut.push(tempPortOut);
-          }
-        });
-
-        self._studies.updateActive(portIn, portOut);
-      },
     }
   );
+  OC.rds.ServiceTemplate.prototype._getParams = function () {
+    var self = this;
+    return {
+      research: self._studies.getActive(),
+      services: self._services.getAll(),
+    };
+  };
+  OC.rds.ServiceTemplate.prototype._beforeTemplateRenders = function () {};
+  OC.rds.ServiceTemplate.prototype._afterTemplateRenders = function () {
+    var self = this;
+    $("#app-content #btn-add-new-service").click(function () {
+      window.location.href = OC.generateUrl("settings/personal?sectionid=rds");
+    });
+
+    $("#app-content #btn-save-research").click(function () {
+      self.save();
+    });
+
+    $("#app-content #btn-save-research-and-continue").click(function () {
+      self.save_next();
+    });
+  };
+  OC.rds.ServiceTemplate.prototype._saveFn = function () {
+    var self = this;
+    var portIn = [];
+    var portOut = [];
+
+    self._services.getAll().forEach(function (element) {
+      var properties = [];
+      var tempPortIn = {};
+      var tempPortOut = {};
+
+      var value = $(
+        "input[name='radiobutton-" + element.servicename + "']:checked"
+      ).val();
+
+      tempPortIn["port"] = element.servicename;
+      tempPortOut["port"] = element.servicename;
+
+      var propertyProjectInService = {};
+      propertyProjectInService["key"] = "projectName";
+      propertyProjectInService["value"] = value;
+      properties.push(propertyProjectInService);
+
+      $.each(
+        $(
+          "input[name='checkbox-" + element.servicename + "-property']:checked"
+        ),
+        function () {
+          var val = $(this).val();
+
+          var property = {};
+          property["portType"] = val;
+          property["value"] = true;
+          properties.push(property);
+        }
+      );
+
+      tempPortIn["properties"] = properties;
+      tempPortOut["properties"] = properties;
+
+      if (
+        $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
+          "checked"
+        )
+      ) {
+        portIn.push(tempPortIn);
+      }
+
+      if (
+        $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
+          "checked"
+        )
+      ) {
+        portOut.push(tempPortOut);
+      }
+    });
+
+    self._studies.updateActive(portIn, portOut);
+  };
 
   OC.rds.MetadataTemplate = function (divName, view, studies) {
     OC.rds.AbstractTemplate.call(this, divName, view);
-
-    var self = this;
   };
 
   OC.rds.MetadataTemplate.prototype = Object.create(
     OC.rds.AbstractTemplate.prototype,
     {
       constructor: OC.rds.MetadataTemplate,
-      _beforeTemplateRenders: function () {},
-      _afterTemplateRenders: function () {
-        $("#metadata-jsonschema-editor").html(
-          self._studies._metadata.getSchema()
-        );
-      },
-      _getParams: function () {},
-      _saveFn: function () {},
     }
   );
+  OC.rds.MetadataTemplate._beforeTemplateRenders = function () {};
+  OC.rds.MetadataTemplate._afterTemplateRenders = function () {
+    $("#metadata-jsonschema-editor").html(this._studies._metadata.getSchema());
+  };
+  OC.rds.MetadataTemplate._getParams = function () {};
+  OC.rds.MetadataTemplate._saveFn = function () {};
 
   OC.rds.FileTemplate = function (divName, view, services, studies) {
     OC.rds.AbstractTemplate.call(this, divName, view);
   };
-  OC.rds.MetadataTemplate.prototype = Object.create(
+  OC.rds.FileTemplate.prototype = Object.create(
     OC.rds.AbstractTemplate.prototype,
     {
-      constructor: OC.rds.MetadataTemplate,
-      _beforeTemplateRenders: function () {},
-      _afterTemplateRenders: function () {},
-      _getParams: function () {},
-      _saveFn: function () {},
+      constructor: OC.rds.FileTemplate,
     }
   );
+
+  OC.rds.FileTemplate.prototype._beforeTemplateRenders = function () {};
+  OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {};
+  OC.rds.FileTemplate.prototype._getParams = function () {};
+  OC.rds.FileTemplate.prototype._saveFn = function () {};
 
   OC.rds.View = function (studies, services, files) {
     this._studies = studies;
