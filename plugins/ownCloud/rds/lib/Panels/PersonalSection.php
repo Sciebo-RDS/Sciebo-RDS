@@ -36,7 +36,7 @@ class PersonalSection implements ISection {
 	}
 
 	public function getIconName() {
-		return 'research';
+		return 'search';
 	}
 
 	public function getID() {
