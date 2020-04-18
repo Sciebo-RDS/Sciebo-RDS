@@ -6,6 +6,6 @@
 	</div>
 	<div id="app-settings-content">
 		<!-- Your settings in here -->
-		<button id="btn-add-new-service"><?php p($l->t('Add new service')); ?></button>
+		<button id="btn-add-new-service"><?php p($l->t('Add missing service')); ?></button>
 	</div>
 </div>

@@ -48,8 +48,7 @@ class ResearchMapper {
     }
 
     public function update( $conn ) {
-        # TODO Split the request into several requests to add in and out ports. and add serviceprojects in research. Take a look into spotlight for this.
-        $curl = curl_init( $this->rdsURL . '/user/' . $conn->getUserId() . '/research/' . $conn->getResearchIndex() );
+        /*$curl = curl_init( $this->rdsURL . '/user/' . $conn->getUserId() . '/research/' . $conn->getResearchIndex() );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PUT'];
         curl_setopt_array( $curl, $options );
         curl_setopt( $curl, CURLOPT_POSTFIELDS, json_encode( $conn->jsonSerialize() ) );
@@ -69,8 +68,77 @@ class ResearchMapper {
                 'curl_error_message'=>$info
             ] ) );
         }
+        */
+        $current = $this->find( $conn->researchIndex, $conn->userId ).jsonSerialize();
+        $new = $conn.jsonSerialize();
 
-        return $this->find( $conn->researchIndex, $conn->userId );
+        $remove = array_diff_assoc( $current, $new );
+        $add = array_diff_assoc( $new, $current );
+
+        $this->addPort( $add );
+        $this->removePort( $remove );
+        $this->setStatus( $conn );
+
+        return $conn;
+    }
+
+    private function addPort( $conn ) {
+        foreach ( $conn->portIn as $port ) {
+            if ( !$this->addPortIn( $conn->researchIndex, $conn->userId, $port ) ) {
+                throw new Exception( 'Could not add import' );
+            }
+        }
+
+        foreach ( $conn->portOut as $port ) {
+            if ( !$this->addPortOut( $conn->researchIndex, $conn->userId, $port ) ) {
+                throw new Exception( 'Could not add export' );
+            }
+        }
+    }
+
+    private function removePort( $conn ) {
+        foreach ( $conn->portIn as $port ) {
+            if ( !$this->removePortIn( $conn->researchIndex, $conn->userId, $port ) ) {
+                throw new Exception( 'Could not add import' );
+            }
+        }
+
+        foreach ( $conn->portOut as $port ) {
+            if ( !$this->removePortOut( $conn->researchIndex, $conn->userId, $port ) ) {
+                throw new Exception( 'Could not add export' );
+            }
+        }
+    }
+
+    private function removePortIn( $researchIndex, $userId, $port ) {
+        return internalRemovePort( $conn, 'imports' );
+    }
+
+    private function removePortOut( $researchIndex, $userId, $port ) {
+        return internalRemovePort( $conn, 'exports' );
+    }
+
+    private function addPortIn( $researchIndex, $userId, $port ) {
+        return internalAddPort( $researchIndex, $userId, $port, 'imports' );
+    }
+
+    private function addPortOut( $researchIndex, $userId, $port ) {
+        return internalAddPort( $researchIndex, $userId, $port, 'exports' );
+    }
+
+    private function internalRemovePort( $researchIndex, $userId, $port, $where ) {
+        # TODO: implements me
+        throw new Exception( 'Not implemented' );
+    }
+
+    private function internalAddPort( $researchIndex, $userId, $port, $where ) {
+        # TODO: implements me
+        throw new Exception( 'Not implemented' );
+    }
+
+    private function setStatus( $conn ) {
+        # TODO: implements me
+        throw new Exception( 'Not implemented' );
     }
 
     public function delete( $researchIndex, $userId ) {
