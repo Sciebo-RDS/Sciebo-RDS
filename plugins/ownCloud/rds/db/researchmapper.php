@@ -204,11 +204,17 @@ class ResearchMapper {
 
     private function addPort( $researchIndex, $userId, $port, $where ) {
         $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where;
+        $data_string = json_encode( $port->jsonSerialize() );
 
         $curl = curl_init( $url );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'POST'];
+        curl_setopt( $curl, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen( $data_string ) )
+        );
+
         curl_setopt_array( $curl, $options );
-        curl_setopt( $curl, CURLOPT_POSTFIELDS, json_encode( $port->jsonSerialize() ) );
+        curl_setopt( $curl, CURLOPT_POSTFIELDS, $data_string );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
 
