@@ -105,8 +105,8 @@
     updateActive: function (portIn, portOut) {
       var conn = this.getActive();
 
-      conn.portIn = portIn;
-      conn.portOut = portOut;
+      conn.portsIn = portIn;
+      conn.portsOut = portOut;
 
       return $.ajax({
         url: this._baseUrl + "/" + conn.researchIndex,

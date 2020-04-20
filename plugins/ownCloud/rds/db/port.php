@@ -7,7 +7,6 @@ use OCP\AppFramework\Db\Entity;
 
 class Port extends Entity implements JsonSerializable {
 
-    protected $id;
     protected $port;
     protected $properties;
 

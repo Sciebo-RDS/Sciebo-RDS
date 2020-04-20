@@ -150,7 +150,10 @@
       var propertyProjectInService = {};
       propertyProjectInService["key"] = "projectName";
       propertyProjectInService["value"] = value;
-      properties.push(propertyProjectInService);
+      properties.push({
+        portType: "CustomProperties",
+        value: propertyProjectInService,
+      });
 
       $.each(
         $(
