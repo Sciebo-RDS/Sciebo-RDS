@@ -152,7 +152,7 @@
         value: value,
       };
       properties.push({
-        portType: "CustomProperties",
+        portType: "customProperties",
         value: [propertyProjectInService],
       });
 
