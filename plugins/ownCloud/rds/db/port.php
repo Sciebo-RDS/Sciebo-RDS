@@ -48,9 +48,9 @@ class Port extends Entity implements JsonSerializable {
 
     public function propertiesEqual( $port ) {
         foreach ( $port->properties as $prop ) {
-            $index = $this->getIndexOfProperty( $port->properties );
+            $index = $this->getIndexOfProperty( $prop['portType'] );
 
-            if ( $index == NULL || $this->properties[$index]['value'] != $value ) {
+            if ( $index == NULL || $this->properties[$index]['value'] != $prop['value'] ) {
                 return FALSE;
             }
         }
@@ -62,9 +62,9 @@ class Port extends Entity implements JsonSerializable {
         $returnList = [];
 
         foreach ( $port->properties as $prop ) {
-            $index = $this->getIndexOfProperty( $port->properties );
+            $index = $this->getIndexOfProperty( $prop['portType'] );
 
-            if ( $index == NULL || $this->properties[$index]['value'] != $value ) {
+            if ( $index == NULL || $this->properties[$index]['value'] != $prop['value'] ) {
                 $returnList[] = $index;
             }
         }

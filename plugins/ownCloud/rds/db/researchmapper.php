@@ -56,7 +56,7 @@ class ResearchMapper {
 
     private function updateResearch( $currentResearch, $newResearch ) {
         if ( $currentResearch->getStatus() != $newResearch->getStatus() ) {
-            $newResearch->setStatus( $this->nextStatus() );
+            $newResearch->setStatus( $this->nextStatus( $currentResearch ) );
         }
 
         $this->removeDistinctPorts( $currentResearch, $newResearch );
@@ -78,7 +78,7 @@ class ResearchMapper {
     private function removeDistinctPorts( $currentConn, $newConn ) {
         $removeSth = False;
 
-        $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortsIn(), $newPorts->getPortsIn() );
+        $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortsIn(), $newConn->getPortsIn() );
         if ( count( $removeIndices ) > 0 ) {
             foreach ( array_reverse( $removeIndices ) as $index ) {
                 $this->removePortIn( $currentConn, $index );
@@ -86,7 +86,7 @@ class ResearchMapper {
             }
         }
 
-        $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortsOut(), $newPorts->getPortsOut() );
+        $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortsOut(), $newConn->getPortsOut() );
         if ( count( $removeIndices ) > 0 ) {
             foreach ( array_reverse( $removeIndices ) as $index ) {
                 $this->removePortOut( $currentConn, $index );
@@ -155,19 +155,19 @@ class ResearchMapper {
     }
 
     private function removePortIn( $conn, $index ) {
-        return removePort( $conn->getResearchIndex(), $conn->getUserId(), $index, 'imports' );
+        return $this->removePort( $conn->getResearchIndex(), $conn->getUserId(), $index, 'imports' );
     }
 
     private function removePortOut( $conn, $index ) {
-        return removePort( $conn->getResearchIndex(), $conn->getUserId(), $index, 'exports' );
+        return $this->removePort( $conn->getResearchIndex(), $conn->getUserId(), $index, 'exports' );
     }
 
-    private function addPortIn( $researchIndex, $userId, $port ) {
-        return addPort( $researchIndex, $userId, $port, 'imports' );
+    private function addPortIn( $conn, $port ) {
+        return $this->addPort( $conn->getResearchIndex(), $conn->getUserId(), $port, 'imports' );
     }
 
-    private function addPortOut( $researchIndex, $userId, $port ) {
-        return addPort( $researchIndex, $userId, $port, 'exports' );
+    private function addPortOut( $conn, $port ) {
+        return $this->addPort( $conn->getResearchIndex(), $conn->getUserId(), $port, 'exports' );
     }
 
     private function removePort( $researchIndex, $userId, $portIndex, $where ) {
@@ -224,7 +224,7 @@ class ResearchMapper {
     }
 
     private function nextStatus( $conn ) {
-        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/status';
+        $url = $this->rdsURL . '/user/' . $conn->getUserId() . '/research/' . $conn->getResearchIndex() . '/status';
 
         $curl = curl_init( $url );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PATCH'];
@@ -279,10 +279,9 @@ class ResearchMapper {
 
     public function createPort( $port ) {
         $pport = new Port();
-        $pport->setId( $port['id'] );
         $pport->setPort( $port['port'] );
 
-        foreach ( $port["properties"] as $prop ) {
+        foreach ( $port['properties'] as $prop ) {
             $portType = $prop['portType'];
             $value = $prop['value'];
             $pport->addProperty( $portType, $value );
