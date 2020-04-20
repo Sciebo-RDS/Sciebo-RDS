@@ -84,7 +84,7 @@ class ResearchController extends Controller
      * @NoAdminRequired
      */
     public function update($id, $status, $portsIn, $portsOut) {
-        $this->log('userId {userId}, researchIndex {researchIndex}, portsIn {portsOut}, portsOut {portsOut}, status {status}', [
+        $this->log('researchIndex {researchIndex}, portsIn {portsIn}, portsOut {portsOut}, status {status}', [
             'researchIndex' => $id,
             'portsIn' => $portsIn,
             'portsOut'=> $portsOut,

@@ -58,7 +58,7 @@ class ResearchService {
 
     public function update( $userId, $researchIndex, $portsIn, $portsOut, $status ) {
         try {
-            $this->log( 'userId {userId}, researchIndex {researchIndex}, portsIn {portsOut}, portsOut {portsOut}, status {status}', [
+            $this->log( 'userId {userId}, researchIndex {researchIndex}, portsIn {portsIn}, portsOut {portsOut}, status {status}', [
                 'userId' => $userId,
                 'researchIndex' => $researchIndex,
                 'portsIn' => $portsIn,
