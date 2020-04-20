@@ -73,6 +73,7 @@ class Application extends App {
         });
         $container->registerService('ResearchController', function($c) {
             return new ResearchController(
+                $c->query('Logger'), 
                 $c->query('AppName'),
                 $c->query('Request'),
                 $c->query("ResearchService"),

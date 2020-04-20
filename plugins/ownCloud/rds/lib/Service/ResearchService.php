@@ -69,12 +69,12 @@ class ResearchService {
             $conn->setUserId( $userId );
             $conn->setResearchIndex( $researchIndex );
 
-            foreach ( $portsIn as $port ) {
+            foreach ( ( array ) $portsIn as $port ) {
                 $pportsIn = $this->mapper->createPort( $port );
                 $conn->addImport( $pportsIn );
             }
 
-            foreach ( $portsOut as $port ) {
+            foreach ( ( array )$portsOut as $port ) {
                 $pportsOut = $this->mapper->createPort( $port );
                 $conn->addExport( $pportsOut );
             }

@@ -2,6 +2,7 @@
 
 namespace OCA\RDS\Controller;
 
+use OCP\ILogger;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -16,11 +17,16 @@ class ResearchController extends Controller
 
     use Errors;
     
-    public function __construct($AppName, IRequest $request, ResearchService $service, $userId)
+    public function __construct(ILogger $logger, $AppName, IRequest $request, ResearchService $service, $userId)
     {
         parent::__construct($AppName, $request);
+        $this->logger = $logger;
         $this->userId = $userId;
         $this->service = $service;
+    }
+
+    public function log( $message, $arr ) {
+        $this->logger->error( $message, array_merge( ['app' => $this->appName], $arr ) );
     }
 
     /**
@@ -69,15 +75,22 @@ class ResearchController extends Controller
     /**
      * Update a single Research in rds system
      *
-     * @param integer $id
+     * @param integer $researchIndex
      * @param integer $status
-     * @param $portsIn
-     * @param $portsOut
+     * @param array $portsIn
+     * @param array $portsOut
      * @return string returns the updated object as json
-     *
+     * 
      * @NoAdminRequired
      */
     public function update($id, $status, $portsIn, $portsOut) {
+        $this->log('userId {userId}, researchIndex {researchIndex}, portsIn {portsOut}, portsOut {portsOut}, status {status}', [
+            'researchIndex' => $id,
+            'portsIn' => $portsIn,
+            'portsOut'=> $portsOut,
+            'status' => $status
+        ] );
+        
         return $this->handleNotFound(function () use ($id, $status, $portsIn, $portsOut) {
             return $this->service->update( $this->userId, $id, $portsIn, $portsOut, $status);
         });
