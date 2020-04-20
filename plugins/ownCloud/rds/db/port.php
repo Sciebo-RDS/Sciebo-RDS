@@ -10,6 +10,10 @@ class Port extends Entity implements JsonSerializable {
     protected $port;
     protected $properties;
 
+    function __construct() {
+        $this->properties = [];
+    }
+
     /**
     * value can be a boolean or array. The element of value has to be an assoc array with the keys 'key' and 'value'.
     * @param string portType

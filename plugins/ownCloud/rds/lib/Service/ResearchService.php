@@ -61,7 +61,7 @@ class ResearchService {
                 $conn->addImport( $pportsIn );
             }
 
-            foreach ( $portsIn as $port ) {
+            foreach ( $portsOut as $port ) {
                 $pportsOut = $this->mapper->createPort( $port );
                 $conn->addExport( $pportsOut );
             }

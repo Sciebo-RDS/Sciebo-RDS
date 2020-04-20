@@ -14,6 +14,11 @@ class Research extends Entity implements JsonSerializable {
     protected $portsIn;
     protected $portsOut;
 
+    function __construct() {
+        $this->portsIn = [];
+        $this->portsOut = [];
+    }
+
     /**
     * @param OCA\RDS\Db\Port $port
     * @param string $where
@@ -22,9 +27,9 @@ class Research extends Entity implements JsonSerializable {
 
     private function addPort( $port, $where ) {
         if ( $where == 'import' ) {
-            $portsIn[] = $port;
+            $this->portsIn[] = $port;
         } else if ( $where == 'export' ) {
-            $portsOut[] = $port;
+            $this->portsOut[] = $port;
         }
     }
 
