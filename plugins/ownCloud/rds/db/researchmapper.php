@@ -49,27 +49,6 @@ class ResearchMapper {
     }
 
     public function update( $conn ) {
-        /*$curl = curl_init( $this->rdsURL . '/user/' . $conn->getUserId() . '/research/' . $conn->getResearchIndex() );
-        $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PUT'];
-        curl_setopt_array( $curl, $options );
-        curl_setopt( $curl, CURLOPT_POSTFIELDS, json_encode( $conn->jsonSerialize() ) );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
-
-        $response = json_decode( curl_exec( $curl ) );
-        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-        $info = curl_getinfo( $curl );
-
-        curl_close( $curl );
-
-        if ( $httpcode >= 300 ) {
-            throw new NotFoundException( json_encode( [
-                'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg(),
-                'curl_error_message'=>$info
-            ] ) );
-        }
-        */
         $current = $this->find( $conn->getResearchIndex(), $conn->getUserId() );
 
         return $this->updateResearch( $current, $conn );
