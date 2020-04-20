@@ -22,8 +22,8 @@ class ResearchService {
         $this->logger = $logger;
     }
 
-    public function log( $message ) {
-        $this->logger->error( $message, ['app' => $this->appName] );
+    public function log( $message, $arr ) {
+        $this->logger->error( $message, array_merge( ['app' => $this->appName], $arr ) );
     }
 
     public function findAll( $userId ) {
