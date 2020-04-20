@@ -153,7 +153,7 @@
       };
       properties.push({
         portType: "CustomProperties",
-        value: propertyProjectInService,
+        value: [propertyProjectInService],
       });
 
       $.each(
