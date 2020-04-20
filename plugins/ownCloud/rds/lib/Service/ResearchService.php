@@ -7,6 +7,7 @@ use Exception;
 
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\ILogger;
 
 use \OCA\RDS\Db\Port;
 use \OCA\RDS\Db\Research;
@@ -15,8 +16,14 @@ use \OCA\RDS\Db\ResearchMapper;
 class ResearchService {
     private $mapper;
 
-    public function __construct( ResearchMapper $mapper ) {
+    public function __construct( ILogger $logger, $appName, ResearchMapper $mapper ) {
         $this->mapper = $mapper;
+        $this->appName = $appName;
+        $this->logger = $logger;
+    }
+
+    public function log( $message ) {
+        $this->logger->error( $message, ['app' => $this->appName] );
     }
 
     public function findAll( $userId ) {
@@ -51,7 +58,13 @@ class ResearchService {
 
     public function update( $userId, $researchIndex, $portsIn, $portsOut, $status ) {
         try {
-
+            $this->log( 'userId {userId}, researchIndex {researchIndex}, portsIn {portsOut}, portsOut {portsOut}, status {status}', [
+                'userId' => $userId,
+                'researchIndex' => $researchIndex,
+                'portsIn' => $portsIn,
+                'portsOut'=> $portsOut,
+                'status' => $status
+            ] );
             $conn = new Research();
             $conn->setUserId( $userId );
             $conn->setResearchIndex( $researchIndex );

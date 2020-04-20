@@ -28,6 +28,10 @@ class Application extends App {
         parent::__construct('rds', $urlParams);
 
         $container = $this->getContainer();
+
+        $container->registerService('Logger', function($c) {
+            return $c->query('ServerContainer')->getLogger();
+        });
         
         $container->registerService("ServiceMapper", function($c) {
             return new ServiceMapper($c->query('UserId'));
@@ -62,7 +66,10 @@ class Application extends App {
             return new ResearchMapper();
         });
         $container->registerService("ResearchService", function($c) {
-            return new ResearchService($c->query("ResearchMapper"));
+            return new ResearchService(
+                $c->query('Logger'), 
+                $c->query('AppName'),
+                $c->query("ResearchMapper"));
         });
         $container->registerService('ResearchController', function($c) {
             return new ResearchController(
