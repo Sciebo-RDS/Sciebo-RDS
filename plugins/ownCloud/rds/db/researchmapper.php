@@ -320,8 +320,6 @@ class ResearchMapper {
             $portOut[] = $this->createPort( ( $port ) );
         }
 
-        $portOut = $this->createPort( $response['portOut'] );
-
         $conn = new Research();
         $conn->setUserId( $response['userId'] );
         $conn->setStatus( $response['status'] );
