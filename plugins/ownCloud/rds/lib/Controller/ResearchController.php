@@ -86,8 +86,8 @@ class ResearchController extends Controller
     public function update($id, $status, $portsIn, $portsOut) {
         $this->log('researchIndex {researchIndex}, portsIn {portsIn}, portsOut {portsOut}, status {status}', [
             'researchIndex' => $id,
-            'portsIn' => $portsIn,
-            'portsOut'=> $portsOut,
+            'portsIn' => json_decode($portsIn),
+            'portsOut'=> json_decode($portsOut),
             'status' => $status
         ] );
         
