@@ -8,21 +8,15 @@
     <div id="radiobuttons-list">
       {{#each serviceProjects}}
       <label>
-        {{#if title}}
           <input
             type="radio"
             name="radiobutton-{{ ../servicename }}"
-            id="radiobutton-{{ title }}"
-            value="{{ title }}"
+            id="{{ ../servicename }}-{{prereserve_doi.recid}}"
+            value="{{prereserve_doi.recid}}"
           />
+        {{#if title}}
           {{ title }}
         {{else}}
-        <input
-          type="radio"
-          name="radiobutton-{{ ../servicename }}"
-          id="radiobutton- {{prereserve_doi.doi}}"
-          value=" {{prereserve_doi.doi}}"
-        />
           <?php p($l->t('Project DOI')); ?>: {{prereserve_doi.doi}} (<?php p($l->t('No title found.')); ?>)
         {{/if}}
       </label>
