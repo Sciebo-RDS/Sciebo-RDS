@@ -42,8 +42,8 @@ class ResearchMapper {
         $conn->setStatus( $response['status'] );
         $conn->setResearchId( $response['researchId'] );
         $conn->setResearchIndex( $response['researchIndex'] );
-        $conn->setPortIn( $response['portIn'] );
-        $conn->setPortOut( $response['portOut'] );
+        $conn->setPortsIn( $response['portIn'] );
+        $conn->setPortsOut( $response['portOut'] );
 
         return $conn;
     }
