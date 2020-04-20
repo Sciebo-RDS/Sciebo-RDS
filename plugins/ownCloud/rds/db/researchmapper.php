@@ -70,7 +70,7 @@ class ResearchMapper {
             ] ) );
         }
         */
-        $current = $this->find( $conn->getResearchIndex, $conn->getUserId );
+        $current = $this->find( $conn->getResearchIndex(), $conn->getUserId() );
 
         return $this->updateResearch( $current, $conn );
     }
