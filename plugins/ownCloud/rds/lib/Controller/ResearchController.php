@@ -92,7 +92,7 @@ class ResearchController extends Controller
         ] );
 
         return $this->handleNotFound(function () use ($id, $status, $portsIn, $portsOut) {
-            return $this->service->update( $this->userId, $id, json_decode($portsIn), json_decode($portsOut), $status);
+            return $this->service->update( $this->userId, $id, json_decode((string)$portsIn), json_decode((string)$portsOut), $status);
         });
     }
 
