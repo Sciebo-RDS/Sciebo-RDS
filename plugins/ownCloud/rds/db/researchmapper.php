@@ -113,7 +113,7 @@ class ResearchMapper {
         $addIndices = $this->getNotEqualPortIndices( $currentConn->getPortsIn(), $newConn->getPortsIn() );
         if ( count( $addIndices ) > 0 ) {
             foreach ( $addIndices as $index ) {
-                $this->addPortIn( $currentConn, $currentConn[$index] );
+                $this->addPortIn( $currentConn, $currentConn->getPortsIn()[$index] );
                 $addSth = TRUE;
             }
         }
@@ -121,7 +121,7 @@ class ResearchMapper {
         $addIndices = $this->getNotEqualPortIndices( $currentConn->getPortsOut(), $newConn->getPortsOut() );
         if ( count( $addIndices ) > 0 ) {
             foreach ( $addIndices as $index ) {
-                $this->addPortOut( $currentConn, $currentConn[$index] );
+                $this->addPortOut( $currentConn, $currentConn->getPortsOut()[$index] );
                 $addSth = TRUE;
             }
         }
@@ -279,11 +279,11 @@ class ResearchMapper {
 
     public function createPort( $port ) {
         $pport = new Port();
-        $pport->setPort( $port["port"] );
+        $pport->setPort( $port['port'] );
 
-        foreach ( $port["properties"] as $prop ) {
-            $portType = $prop["portType"];
-            $value = $prop["value"];
+        foreach ( $port['properties'] as $prop ) {
+            $portType = $prop['portType'];
+            $value = $prop['value'];
             $pport->addProperty( $portType, $value );
         }
 
@@ -310,7 +310,16 @@ class ResearchMapper {
             ] ) );
         }
 
-        $portIn = $this->createPort( $response['portIn'] );
+        $portIn = [];
+        foreach ( $response['portIn'] as $port ) {
+            $portIn[] = $this->createPort( $port );
+        }
+
+        $portOut = [];
+        foreach ( $response['portIn'] as $port ) {
+            $portOut[] = $this->createPort( ( $port ) );
+        }
+
         $portOut = $this->createPort( $response['portOut'] );
 
         $conn = new Research();
