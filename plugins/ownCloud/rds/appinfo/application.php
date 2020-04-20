@@ -63,7 +63,10 @@ class Application extends App {
         });
         
         $container->registerService("ResearchMapper", function($c) {
-            return new ResearchMapper();
+            return new ResearchMapper(
+                $c->query('Logger'), 
+                $c->query('AppName')
+            );
         });
         $container->registerService("ResearchService", function($c) {
             return new ResearchService(

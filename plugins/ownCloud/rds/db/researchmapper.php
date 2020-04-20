@@ -4,12 +4,18 @@ namespace OCA\RDS\Db;
 use \OCA\RDS\Db\Port;
 use \OCA\RDS\Db\Research;
 use \OCA\RDS\Service\NotFoundException;
+use OCP\ILogger;
 
 class ResearchMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/research';
 
-    public function __construct() {
+    public function __construct( ILogger $logger, $appName ) {
+        $this->logger = $logger;
+        $this->appName = $appName;
+    }
 
+    public function log( $message, $arr ) {
+        $this->logger->error( $message, array_merge( ['app' => $this->appName], $arr ) );
     }
 
     public function insert( $userId ) {
@@ -278,6 +284,8 @@ class ResearchMapper {
     }
 
     public function createPort( $port ) {
+        $this->log( json_decode( $port ), [] );
+
         $pport = new Port();
         $pport->setPort( $port['port'] );
 
