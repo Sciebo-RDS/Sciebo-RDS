@@ -84,13 +84,6 @@ class ResearchController extends Controller
      * @NoAdminRequired
      */
     public function update($id, $status, $portsIn, $portsOut) {
-        $this->log('researchIndex {researchIndex}, portsIn {portsIn}, portsOut {portsOut}, status {status}', [
-            'researchIndex' => $id,
-            'portsIn' => $portsIn,
-            'portsOut'=> $portsOut,
-            'status' => $status
-        ] );
-
         return $this->handleNotFound(function () use ($id, $status, $portsIn, $portsOut) {
             return $this->service->update( $this->userId, $id, $portsIn, $portsOut, $status);
         });

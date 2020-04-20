@@ -84,8 +84,6 @@ class ResearchMapper {
     private function removeDistinctPorts( $currentConn, $newConn ) {
         $removeSth = False;
 
-        $this->log( json_encode( $currentConn->jsonSerialize() ) . ' | ' . json_encode( $currentConn->jsonSerialize() ), [] );
-
         $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortsIn(), $newConn->getPortsIn() );
         if ( count( $removeIndices ) > 0 ) {
             foreach ( array_reverse( $removeIndices ) as $index ) {
