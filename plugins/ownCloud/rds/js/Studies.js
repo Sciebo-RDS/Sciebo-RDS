@@ -107,6 +107,7 @@
 
       conn.portsIn = portIn;
       conn.portsOut = portOut;
+      conn.status = 2;
 
       return $.ajax({
         url: this._baseUrl + "/" + conn.researchIndex,

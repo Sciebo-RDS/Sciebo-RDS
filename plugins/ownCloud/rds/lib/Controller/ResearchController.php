@@ -71,8 +71,8 @@ class ResearchController extends Controller
      *
      * @param integer $id
      * @param integer $status
-     * @param array $portsIn
-     * @param array $portsOut
+     * @param $portsIn
+     * @param $portsOut
      * @return string returns the updated object as json
      *
      * @NoAdminRequired
