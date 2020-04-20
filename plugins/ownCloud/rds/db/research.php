@@ -47,8 +47,8 @@ class Research extends Entity implements JsonSerializable {
             'researchIndex' => $this->researchIndex,
             'researchId' => $this->researchId,
             'status' => $this->status,
-            'portsIn' => $this->portsIn,
-            'portsOut' => $this->portsOut
+            'portIn' => $this->portsIn,
+            'portOut' => $this->portsOut
         ];
     }
 }

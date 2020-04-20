@@ -91,7 +91,6 @@ class Port extends Entity implements JsonSerializable {
 
     public function jsonSerialize() {
         return [
-            'id'=>$this->id,
             'port'=>$this->port,
             'properties'=>$this->properties
         ];
