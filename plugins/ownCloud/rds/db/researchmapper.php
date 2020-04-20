@@ -72,12 +72,14 @@ class ResearchMapper {
         $current = $this->find( $conn->researchIndex, $conn->userId ).jsonSerialize();
         $new = $conn.jsonSerialize();
 
-        $remove = array_diff_assoc( $current, $new );
         $add = array_diff_assoc( $new, $current );
 
         $this->addPort( $add );
-        $this->removePort( $remove );
         $this->setStatus( $conn );
+
+        //TODO: Find out which Index in Ports have to be removed
+        $remove = array_diff_assoc( $current, $new );
+        $this->removePort( $remove );
 
         return $conn;
     }
@@ -126,18 +128,21 @@ class ResearchMapper {
         return internalAddPort( $researchIndex, $userId, $port, 'exports' );
     }
 
-    private function internalRemovePort( $researchIndex, $userId, $port, $where ) {
+    private function internalRemovePort( $researchIndex, $userId, $portIndex, $where ) {
         # TODO: implements me
+        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where.'/'.$portIndex;
         throw new Exception( 'Not implemented' );
     }
 
     private function internalAddPort( $researchIndex, $userId, $port, $where ) {
         # TODO: implements me
+        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where;
         throw new Exception( 'Not implemented' );
     }
 
     private function setStatus( $conn ) {
         # TODO: implements me
+        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/status';
         throw new Exception( 'Not implemented' );
     }
 

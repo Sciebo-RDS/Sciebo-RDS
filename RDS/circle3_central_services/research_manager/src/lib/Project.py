@@ -59,7 +59,7 @@ class Project():
 
         index = None
         for i, current in enumerate(portList):
-            if current is port:
+            if current == port:
                 index = i
                 break
 
