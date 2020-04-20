@@ -279,10 +279,10 @@ class ResearchMapper {
 
     public function createPort( $port ) {
         $pport = new Port();
-        $pport->setId( $portIn['id'] );
-        $pport->setPort( $portIn['port'] );
+        $pport->setId( $port['id'] );
+        $pport->setPort( $port['port'] );
 
-        foreach ( $portIn as $prop ) {
+        foreach ( $port["properties"] as $prop ) {
             $portType = $prop['portType'];
             $value = $prop['value'];
             $pport->addProperty( $portType, $value );
