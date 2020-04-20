@@ -70,7 +70,6 @@ class ResearchService {
             $conn->setResearchIndex( $researchIndex );
 
             foreach ( $portsIn as $port ) {
-                $this->log( $port, [] );
                 $pportsIn = $this->mapper->createPort( $port );
                 $conn->addImport( $pportsIn );
             }
