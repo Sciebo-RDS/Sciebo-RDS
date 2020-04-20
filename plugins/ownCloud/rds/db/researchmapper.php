@@ -374,8 +374,8 @@ class ResearchMapper {
             $conn->setStatus( $rdsConn['status'] );
             $conn->setResearchId( $rdsConn['researchId'] );
             $conn->setResearchIndex( $rdsConn['researchIndex'] );
-            $conn->setPortIn( $rdsConn['portIn'] );
-            $conn->setPortOut( $rdsConn['portOut'] );
+            $conn->setPortsIn( $rdsConn['portIn'] );
+            $conn->setPortsOut( $rdsConn['portOut'] );
 
             $result[] = $conn;
         }
