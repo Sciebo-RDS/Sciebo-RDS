@@ -147,9 +147,10 @@
       tempPortIn["port"] = element.servicename;
       tempPortOut["port"] = element.servicename;
 
-      var propertyProjectInService = {};
-      propertyProjectInService["key"] = "projectName";
-      propertyProjectInService["value"] = value;
+      var propertyProjectInService = {
+        key: "projectName",
+        value: value,
+      };
       properties.push({
         portType: "CustomProperties",
         value: propertyProjectInService,
