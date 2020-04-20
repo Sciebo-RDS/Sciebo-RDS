@@ -67,8 +67,9 @@
     save_next: function () {
       var self = this;
 
-      return self.save().done(function () {
+      return this.save().done(function () {
         self._view._stateView += 1;
+        self._view.render();
       });
     },
   };
@@ -195,6 +196,8 @@
 
   OC.rds.MetadataTemplate = function (divName, view, studies) {
     OC.rds.AbstractTemplate.call(this, divName, view);
+
+    this._studies = studies;
   };
 
   OC.rds.MetadataTemplate.prototype = Object.create(
@@ -203,12 +206,12 @@
       constructor: OC.rds.MetadataTemplate,
     }
   );
-  OC.rds.MetadataTemplate._beforeTemplateRenders = function () {};
-  OC.rds.MetadataTemplate._afterTemplateRenders = function () {
+  OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {};
+  OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
     $("#metadata-jsonschema-editor").html(this._studies._metadata.getSchema());
   };
-  OC.rds.MetadataTemplate._getParams = function () {};
-  OC.rds.MetadataTemplate._saveFn = function () {
+  OC.rds.MetadataTemplate.prototype._getParams = function () {};
+  OC.rds.MetadataTemplate.prototype._saveFn = function () {
     return $.when();
   };
 
@@ -237,20 +240,24 @@
     this._templates = [
       new OC.rds.OverviewTemplate(
         "#research-overview-tpl",
-        this._view,
+        this,
         this._services,
         this._studies
       ),
       new OC.rds.ServiceTemplate(
         "#research-edit-service-tpl",
-        this._view,
+        this,
         this._services,
         this._studies
       ),
-      new OC.rds.MetadataTemplate("#research-edit-metadata-tpl", this._studies),
+      new OC.rds.MetadataTemplate(
+        "#research-edit-metadata-tpl",
+        this,
+        this._studies
+      ),
       new OC.rds.FileTemplate(
         "#research-edit-file-tpl",
-        this._view,
+        this,
         this._services,
         this._studies
       ),
