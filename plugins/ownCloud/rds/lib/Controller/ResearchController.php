@@ -91,21 +91,9 @@ class ResearchController extends Controller
             'status' => $status
         ] );
 
-        $portsIn = $this->convertToArray($portsIn);
-        $portsOut = $this->convertToArray($portsOut);
-        
         return $this->handleNotFound(function () use ($id, $status, $portsIn, $portsOut) {
-            return $this->service->update( $this->userId, $id, $portsIn, $portsOut, $status);
+            return $this->service->update( $this->userId, $id, json_decode($portsIn), json_decode($portsOut), $status);
         });
-    }
-
-    private function convertToArray($port){
-        $pport = [];
-        foreach($pport as $port) {
-            $pport[] = json_decode($port);
-        }
-
-        return $pport;
     }
 
     /**
