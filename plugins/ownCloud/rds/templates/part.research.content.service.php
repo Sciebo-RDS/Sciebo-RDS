@@ -11,7 +11,7 @@
         {{#if title}}
           <input
             type="radio"
-            name="radiobutton-{{ servicename }}"
+            name="radiobutton-{{ ../servicename }}"
             id="radiobutton-{{ title }}"
             value="{{ title }}"
           />
@@ -19,7 +19,7 @@
         {{else}}
         <input
           type="radio"
-          name="radiobutton-{{ servicename }}"
+          name="radiobutton-{{ ../servicename }}"
           id="radiobutton- {{prereserve_doi.doi}}"
           value=" {{prereserve_doi.doi}}"
         />
