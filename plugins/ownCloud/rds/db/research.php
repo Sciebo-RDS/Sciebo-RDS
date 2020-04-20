@@ -11,8 +11,30 @@ class Research extends Entity implements JsonSerializable {
     protected $researchIndex;
     protected $researchId;
     protected $status;
-    protected $portIn;
-    protected $portOut;
+    protected $portsIn;
+    protected $portsOut;
+
+    /**
+    * @param OCA\RDS\Db\Port $port
+    * @param string $where
+    * @return NULL
+    */
+
+    private function addPort( $port, $where ) {
+        if ( $where == 'import' ) {
+            $portsIn[] = $port;
+        } else if ( $where == 'export' ) {
+            $portsOut[] = $port;
+        }
+    }
+
+    public function addImport( $port ) {
+        $this->addPort( $port, 'import' );
+    }
+
+    public function addExport( $port ) {
+        $this->addPort( $port, 'export' );
+    }
 
     public function jsonSerialize() {
         return [
@@ -20,8 +42,8 @@ class Research extends Entity implements JsonSerializable {
             'researchIndex' => $this->researchIndex,
             'researchId' => $this->researchId,
             'status' => $this->status,
-            'portIn' => $this->portIn,
-            'portOut' => $this->portOut
+            'portsIn' => $this->portsIn->jsonSerialize(),
+            'portsOut' => $this->portsOut->jsonSerialize()
         ];
     }
 }

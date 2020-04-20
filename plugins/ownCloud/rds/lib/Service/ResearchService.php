@@ -8,6 +8,7 @@ use Exception;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
+use \OCA\RDS\Db\Port;
 use \OCA\RDS\Db\Research;
 use \OCA\RDS\Db\ResearchMapper;
 
@@ -48,13 +49,16 @@ class ResearchService {
         }
     }
 
-    public function update( $userId, $researchIndex, $portIn, $portOut, $status ) {
+    public function update( $userId, $researchIndex, $portsIn, $portsOut, $status ) {
         try {
+            $pportsIn = $this->mapper->createPort( $portsIn );
+            $pportsOut = $this->mapper->createPort( $portsOut );
+
             $conn = new Research();
             $conn->setUserId( $userId );
             $conn->setResearchIndex( $researchIndex );
-            $conn->setPortIn( $portIn );
-            $conn->setPortOut( $portOut );
+            $conn->addImport( $pportsIn );
+            $conn->addExport( $pportsOut );
             $conn->setStatus( $status );
 
             return $this->mapper->update( $conn );
