@@ -69,24 +69,24 @@ class ResearchController extends Controller
     /**
      * Update a single Research in rds system
      *
-     * @param integer $researchIndex
+     * @param integer $id
      * @param integer $status
-     * @param array $portIn
-     * @param array $portOut
+     * @param array $portsIn
+     * @param array $portsOut
      * @return string returns the updated object as json
      *
      * @NoAdminRequired
      */
-    public function update($researchIndex, $status, $portIn, $portOut) {
-        return $this->handleNotFound(function () use ($researchIndex, $status, $portIn, $portOut) {
-            return $this->service->update( $this->userId, $researchIndex, $portIn, $portOut, $status);
+    public function update($id, $status, $portsIn, $portsOut) {
+        return $this->handleNotFound(function () use ($id, $status, $portsIn, $portsOut) {
+            return $this->service->update( $this->userId, $id, $portsIn, $portsOut, $status);
         });
     }
 
     /**
      * Removes a single research from the user in RDS.
      *
-     * @param integer $researchIndex
+     * @param integer $id
      * @return string returns the removed object as json
      *
      * @NoAdminRequired
