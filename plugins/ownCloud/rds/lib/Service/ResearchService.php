@@ -51,14 +51,21 @@ class ResearchService {
 
     public function update( $userId, $researchIndex, $portsIn, $portsOut, $status ) {
         try {
-            $pportsIn = $this->mapper->createPort( $portsIn );
-            $pportsOut = $this->mapper->createPort( $portsOut );
 
             $conn = new Research();
             $conn->setUserId( $userId );
             $conn->setResearchIndex( $researchIndex );
-            $conn->addImport( $pportsIn );
-            $conn->addExport( $pportsOut );
+
+            foreach ( $portsIn as $port ) {
+                $pportsIn = $this->mapper->createPort( $port );
+                $conn->addImport( $pportsIn );
+            }
+
+            foreach ( $portsIn as $port ) {
+                $pportsOut = $this->mapper->createPort( $port );
+                $conn->addExport( $pportsOut );
+            }
+
             $conn->setStatus( $status );
 
             return $this->mapper->update( $conn );
