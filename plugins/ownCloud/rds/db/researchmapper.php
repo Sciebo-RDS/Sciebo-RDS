@@ -80,11 +80,8 @@ class ResearchMapper {
             $newResearch->setStatus( $this->nextStatus() );
         }
 
-        $this->removeDistinctPorts( $currentResearch, $currentResearch->getPortsIn(), $newResearch->getPortsIn() );
-        $this->removeDistinctPorts( $currentResearch, $currentResearch->getPortsOut(), $newResearch->getPortsOut() );
-
-        $this->addDistinctPorts( $currentResearch, $newResearch->getPortsIn(), $currentResearch->getPortsIn() );
-        $this->addDistinctPorts( $currentResearch, $newResearch->getPortsOut(), $currentResearch->getPortsOut() );
+        $this->removeDistinctPorts( $currentResearch, $newResearch );
+        $this->addDistinctPorts( $newResearch, $currentResearch );
 
         return $newResearch;
     }
@@ -100,13 +97,21 @@ class ResearchMapper {
     * @return boolean
     */
 
-    private function removeDistinctPorts( $conn, $currentPorts, $newPorts ) {
+    private function removeDistinctPorts( $currentConn, $newConn ) {
         $removeSth = False;
 
-        $removeIndices = $this->getNotEqualPortIndices( $currentPorts, $newPorts );
+        $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortsIn(), $newPorts->getPortsIn() );
         if ( count( $removeIndices ) > 0 ) {
             foreach ( array_reverse( $removeIndices ) as $index ) {
-                $this->removePort( $conn, $index );
+                $this->removePortIn( $conn, $index );
+                $removeSth = TRUE;
+            }
+        }
+
+        $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortsOut(), $newPorts->getPortsOut() );
+        if ( count( $removeIndices ) > 0 ) {
+            foreach ( array_reverse( $removeIndices ) as $index ) {
+                $this->removePortOut( $conn, $index );
                 $removeSth = TRUE;
             }
         }
@@ -125,13 +130,26 @@ class ResearchMapper {
     * @return boolean
     */
 
-    private function addDistinctPorts( $conn, $currentPorts, $newPorts ) {
-        $addIndices = $this->getNotEqualPortIndices( $currentPorts, $newPorts );
+    private function addDistinctPorts( $conn, $currentConn, $newConn ) {
+        $addSth = False;
+
+        $addIndices = $this->getNotEqualPortIndices( $currentConn->getPortsIn(), $newConn->getPortsIn() );
         if ( count( $addIndices ) > 0 ) {
-            foreach ( array_reverse( $addIndices ) as $index ) {
-                $this->addPort( $conn, $currentPorts[$index] );
+            foreach ( $addIndices as $index ) {
+                $this->addPortIn( $conn, $currentConn[$index] );
+                $addSth = TRUE;
             }
         }
+
+        $addIndices = $this->getNotEqualPortIndices( $currentConn->getPortsOut(), $newConn->getPortsOut() );
+        if ( count( $addIndices ) > 0 ) {
+            foreach ( $addIndices as $index ) {
+                $this->addPortOut( $conn, $currentConn[$index] );
+                $addSth = TRUE;
+            }
+        }
+
+        return $addSth;
     }
 
     private function getNotEqualPortIndices( $currentPorts, $newPorts ) {
@@ -159,53 +177,99 @@ class ResearchMapper {
         return $returnList;
     }
 
-    private function nextStatus( $conn ) {
-        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/status';
-        throw new Exception( 'Not implemented' );
-
-        return 0;
+    private function removePortIn( $conn, $index ) {
+        return removePort( $conn->getResearchIndex(), $conn->getUserId(), $index, 'imports' );
     }
 
-    private function addPort( $conn, $port ) {
-        
-    }
-
-    private function removePort( $conn, $index ) {
-        
-    }
-
-    private function removePortIn( $researchIndex, $userId, $port ) {
-        return internalRemovePort( $conn, 'imports' );
-    }
-
-    private function removePortOut( $researchIndex, $userId, $port ) {
-        return internalRemovePort( $conn, 'exports' );
+    private function removePortOut( $conn, $index ) {
+        return removePort( $conn->getResearchIndex(), $conn->getUserId(), $index, 'exports' );
     }
 
     private function addPortIn( $researchIndex, $userId, $port ) {
-        return internalAddPort( $researchIndex, $userId, $port, 'imports' );
+        return addPort( $researchIndex, $userId, $port, 'imports' );
     }
 
     private function addPortOut( $researchIndex, $userId, $port ) {
-        return internalAddPort( $researchIndex, $userId, $port, 'exports' );
+        return addPort( $researchIndex, $userId, $port, 'exports' );
     }
 
-    private function internalRemovePort( $researchIndex, $userId, $portIndex, $where ) {
-        # TODO: implements me
+    private function removePort( $researchIndex, $userId, $portIndex, $where ) {
         $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where.'/'.$portIndex;
-        throw new Exception( 'Not implemented' );
+
+        $curl = curl_init( $url );
+        $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
+        curl_setopt_array( $curl, $options );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+
+        $response = json_decode( curl_exec( $curl ) );
+        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
+
+        curl_close( $curl );
+
+        if ( $httpcode >= 300 ) {
+            throw new NotFoundException( json_encode( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg(),
+                'curl_error_message'=>$info
+            ] ) );
+        }
+
+        return TRUE;
     }
 
-    private function internalAddPort( $researchIndex, $userId, $port, $where ) {
-        # TODO: implements me
+    private function addPort( $researchIndex, $userId, $port, $where ) {
         $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where;
-        throw new Exception( 'Not implemented' );
+
+        $curl = curl_init( $url );
+        $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'POST'];
+        curl_setopt_array( $curl, $options );
+        curl_setopt( $curl, CURLOPT_POSTFIELDS, json_encode( $port->jsonSerialize() ) );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+
+        $response = json_decode( curl_exec( $curl ) );
+        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
+
+        curl_close( $curl );
+
+        if ( $httpcode >= 300 ) {
+            throw new NotFoundException( json_encode( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg(),
+                'curl_error_message'=>$info
+            ] ) );
+        }
+
+        return TRUE;
     }
 
-    private function setStatus( $conn ) {
-        # TODO: implements me
+    private function nextStatus( $conn ) {
         $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/status';
-        throw new Exception( 'Not implemented' );
+
+        $curl = curl_init( $url );
+        $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PATCH'];
+        curl_setopt_array( $curl, $options );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+
+        $response = json_decode( curl_exec( $curl ) );
+        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
+
+        curl_close( $curl );
+
+        if ( $httpcode >= 300 ) {
+            throw new NotFoundException( json_encode( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg(),
+                'curl_error_message'=>$info
+            ] ) );
+        }
+
+        return $response['status'];
     }
 
     public function delete( $researchIndex, $userId ) {
