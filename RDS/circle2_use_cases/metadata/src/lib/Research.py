@@ -19,7 +19,7 @@ class Research():
 
         self.researchManager = "circle3-research-manager"
 
-        if testing is not None or testing is not False:
+        if testing is not None and testing is not False:
             self.researchManager = testing
 
         self.researchObj = self.reload(
