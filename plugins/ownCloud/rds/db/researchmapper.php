@@ -84,20 +84,17 @@ class ResearchMapper {
     private function removeDistinctPorts( $currentConn, $newConn ) {
         $removeSth = False;
 
-        $removeIndices = $this->getNotEqualPortIndices( $currentConn->getportIn(), $newConn->getportIn() );
-        if ( count( $removeIndices ) > 0 ) {
-            foreach ( array_reverse( $removeIndices ) as $index ) {
-                $this->removePortIn( $currentConn, $index );
-                $removeSth = TRUE;
-            }
+        $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortIn(), $newConn->getPortIn() );
+        foreach ( array_reverse( $removeIndices ) as $index ) {
+            $this->removePortIn( $currentConn, $index );
+            $removeSth = TRUE;
+
         }
 
-        $removeIndices = $this->getNotEqualPortIndices( $currentConn->getportOut(), $newConn->getportOut() );
-        if ( count( $removeIndices ) > 0 ) {
-            foreach ( array_reverse( $removeIndices ) as $index ) {
-                $this->removePortOut( $currentConn, $index );
-                $removeSth = TRUE;
-            }
+        $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortOut(), $newConn->getPortOut() );
+        foreach ( array_reverse( $removeIndices ) as $index ) {
+            $this->removePortOut( $currentConn, $index );
+            $removeSth = TRUE;
         }
 
         return $removeSth;
@@ -116,20 +113,16 @@ class ResearchMapper {
     private function addDistinctPorts( $currentConn, $newConn ) {
         $addSth = False;
 
-        $addIndices = $this->getNotEqualPortIndices( $currentConn->getportIn(), $newConn->getportIn() );
-        if ( count( $addIndices ) > 0 ) {
-            foreach ( $addIndices as $index ) {
-                $this->addPortIn( $currentConn, $currentConn->getportIn()[$index] );
-                $addSth = TRUE;
-            }
+        $addIndices = $this->getNotEqualPortIndices( $currentConn->getPortIn(), $newConn->getPortIn() );
+        foreach ( $addIndices as $index ) {
+            $this->addPortIn( $currentConn, $currentConn->getPortIn()[$index] );
+            $addSth = TRUE;
         }
 
-        $addIndices = $this->getNotEqualPortIndices( $currentConn->getportOut(), $newConn->getportOut() );
-        if ( count( $addIndices ) > 0 ) {
-            foreach ( $addIndices as $index ) {
-                $this->addPortOut( $currentConn, $currentConn->getportOut()[$index] );
-                $addSth = TRUE;
-            }
+        $addIndices = $this->getNotEqualPortIndices( $currentConn->getPortOut(), $newConn->getPortOut() );
+        foreach ( $addIndices as $index ) {
+            $this->addPortOut( $currentConn, $currentConn->getPortOut()[$index] );
+            $addSth = TRUE;
         }
 
         return $addSth;
@@ -142,11 +135,17 @@ class ResearchMapper {
         foreach ( $currentPorts as $i ) {
             $found = FALSE;
             foreach ( $newPorts as $j ) {
-                if ( ! $i->propertiesEqual( $j ) ) {
-                    $returnList[] = $index;
+                if ( $i->getPort() == $j->getPort() ) {
+                    if ( ! $i->equal( $j ) ) {
+                        $returnList[] = $index;
+                    }
+                    $found = TRUE;
                 }
             }
-            $index++;
+
+            if ( !$found ) {
+                $returnList[] = $index;
+            }
         }
 
         return $returnList;
