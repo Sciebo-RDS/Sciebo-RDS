@@ -242,7 +242,7 @@ class ResearchMapper {
         curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
 
-        $response = json_decode( curl_exec( $curl ) );
+        $response = json_decode( curl_exec( $curl ), true );
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
         $info = curl_getinfo( $curl );
 
