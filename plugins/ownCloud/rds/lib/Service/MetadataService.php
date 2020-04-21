@@ -18,8 +18,8 @@ class MetadataService {
         $this->mapper = $mapper;
     }
 
-    public function findAll( $userId ) {
-        return $this->mapper->findAll( $userId );
+    public function findAll( $userId, $researchIndex ) {
+        return $this->mapper->findAll( $userId, $researchIndex );
     }
 
     private function handleException ( $e ) {

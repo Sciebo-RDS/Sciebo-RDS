@@ -95,6 +95,7 @@ class Application extends App {
                 $c->query('AppName'),
                 $c->query('Request'),
                 $c->query("MetadataService"),
+                $c->query("ResearchService"),
                 $c->query('UserId')
             );
         });

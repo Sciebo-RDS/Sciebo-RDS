@@ -7,6 +7,7 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 use \OCA\RDS\Service\MetadataService;
+use \OCA\RDS\Service\ResearchService;
 
 
 class MetadataController extends Controller
@@ -16,11 +17,12 @@ class MetadataController extends Controller
     
     use Errors;
     
-    public function __construct($AppName, IRequest $request, MetadataService $service, $userId)
+    public function __construct($AppName, IRequest $request, MetadataService $service, ResearchService $research, $userId)
     {
         parent::__construct($AppName, $request);
         $this->userId = $userId;
         $this->service = $service;
+        $this->researchService = $research;
     }
 
     /**
@@ -34,7 +36,13 @@ class MetadataController extends Controller
      */
     public function index() {
         return $this->handleNotFound(function () {
-            return new JSONResponse($this->service->findAll($his->$userId));
+            $list = [];
+
+            foreach ($this->researchService->findAll($this->userId) as $research) {
+                $list[] = $this->service->findAll($this->userId, $research->getResearchIndex());
+            }
+
+            return new JSONResponse($list);
         });
     }
 
@@ -51,11 +59,11 @@ class MetadataController extends Controller
     public function show($id, $port) {
         if(empty($port)){
             return $this->handleNotFound(function () use ($id) {
-                return new JSONResponse($this->service->findAll($id));
+                return new JSONResponse($this->service->findAll($this->userId, $id));
             });
         }
         return $this->handleNotFound(function () use ($id, $port) {
-            return new JSONResponse($this->service->find($id, $port));
+            return new JSONResponse($this->service->find($this->userId, $id, $port));
         });
     }
 
@@ -69,7 +77,9 @@ class MetadataController extends Controller
      * @NoAdminRequired
      */
     public function update($id, $metadataArr) {
-        return new JSONResponse($this->service->update( $id, $metadataArr ));
+        return $this->handleNotFound(function () use ($id, $metadataArr) {
+            return new JSONResponse($this->service->update($this->userId, $id, $metadataArr ));
+        });
     }
 
     /**
