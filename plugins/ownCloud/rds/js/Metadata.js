@@ -16,7 +16,7 @@
       var self = this;
       $.get(this._baseUrl + "/jsonschema")
         .done(function (schema) {
-          self._schema = schema;
+          self._schema = JSON.parse(schema);
           deferred.resolve();
         })
         .fail(function () {
