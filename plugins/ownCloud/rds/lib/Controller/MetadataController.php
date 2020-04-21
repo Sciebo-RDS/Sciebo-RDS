@@ -42,7 +42,7 @@ class MetadataController extends Controller
                 $list[] = $this->service->findAll($this->userId, $research->getResearchIndex());
             }
 
-            return new JSONResponse($list);
+            return $list;
         });
     }
 
@@ -59,11 +59,11 @@ class MetadataController extends Controller
     public function show($id, $port) {
         if(empty($port)){
             return $this->handleNotFound(function () use ($id) {
-                return new JSONResponse($this->service->findAll($this->userId, $id));
+                return $this->service->findAll($this->userId, $id);
             });
         }
         return $this->handleNotFound(function () use ($id, $port) {
-            return new JSONResponse($this->service->find($this->userId, $id, $port));
+            return $this->service->find($this->userId, $id, $port);
         });
     }
 
@@ -78,7 +78,7 @@ class MetadataController extends Controller
      */
     public function update($id, $metadataArr) {
         return $this->handleNotFound(function () use ($id, $metadataArr) {
-            return new JSONResponse($this->service->update($this->userId, $id, $metadataArr ));
+            return $this->service->update($this->userId, $id, $metadataArr );
         });
     }
 
@@ -91,7 +91,7 @@ class MetadataController extends Controller
      * @NoAdminRequired
      */
     public function jsonschema() {
-        return new JSONResponse($this->service->jsonschema());
+        return $this->service->jsonschema();
     }
 
 }

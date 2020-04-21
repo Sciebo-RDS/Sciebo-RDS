@@ -97,10 +97,10 @@ class MetadataMapper {
         foreach ( $response['list'] as $rdsMetadata ) {
             $metadata = new Metadata();
 
-            $metadata->setUserId($userId);
+            $metadata->setUserId( $userId );
             $metadata->setResearchIndex( $researchIndex );
-            $metadata->setMetadata( $rdsMetadata['metadata'] );
             $metadata->setPort( $rdsMetadata['port'] );
+            $metadata->setMetadata( $rdsMetadata['metadata'] );
 
             $result[] = $metadata;
         }
