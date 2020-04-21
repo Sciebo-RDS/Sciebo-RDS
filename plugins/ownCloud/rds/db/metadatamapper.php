@@ -12,7 +12,7 @@ class MetadataMapper {
     }
 
     public function update( $metadata ) {
-        $curl = curl_init( $this->rdsURL . '/research/' . $metadata->researchId );
+        $curl = curl_init( $this->rdsURL . '/user/' . $metadata->getUserId(). '/research/' . $metadata->getResearchIndex() );
         $options = [CURLOPT_RETURNTRANSFER => true];
         curl_setopt_array( $curl, $options );
         curl_setopt( $curl, CURLOPT_POSTFIELDS, $metadata->jsonSerialize() );
@@ -32,7 +32,8 @@ class MetadataMapper {
         foreach ( $response['list'] as $rdsMetadata ) {
             $newMetadata = new Metadata();
 
-            $newMetadata->setResearchId( $metadata->researchId );
+            $newMetadata->setUserId( $metadata->getUserId() );
+            $newMetadata->setResearchIndex( $metadata->getResearchIndex() );
             $newMetadata->setMetadata( $rdsMetadata['metadata'] );
             $newMetadata->setPort( $rdsMetadata['port'] );
 
@@ -42,8 +43,8 @@ class MetadataMapper {
         return $result;
     }
 
-    public function find( $researchId, $port ) {
-        $metadatas = $this->findAll( $researchId );
+    public function find( $userId, $researchIndex, $port ) {
+        $metadatas = $this->findAll( $userId, $researchIndex );
 
         foreach ( $metadatas as $md ) {
             if ( $md->port == $port ) {
@@ -74,8 +75,8 @@ class MetadataMapper {
         return $result;
     }
 
-    public function findAll( $researchId ) {
-        $url = $this->rdsURL . '/research/' . $researchId;
+    public function findAll( $userId, $researchIndex ) {
+        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex;
 
         $curl = curl_init();
         curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
@@ -96,7 +97,8 @@ class MetadataMapper {
         foreach ( $response['list'] as $rdsMetadata ) {
             $metadata = new Metadata();
 
-            $metadata->setResearchId( $researchId );
+            $metadata->setUserId($userId);
+            $metadata->setResearchIndex( $researchIndex );
             $metadata->setMetadata( $rdsMetadata['metadata'] );
             $metadata->setPort( $rdsMetadata['port'] );
 

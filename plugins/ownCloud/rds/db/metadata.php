@@ -7,13 +7,15 @@ use OCP\AppFramework\Db\Entity;
 
 class Metadata extends Entity implements JsonSerializable {
 
-    protected $researchId;
+    protected $userId;
+    protected $researchIndex;
     protected $port;
     protected $metadata;
 
     public function jsonSerialize() {
         return [
-            'researchId' => $this->researchId,
+            'userId'=>$this->userId,
+            'researchIndex' => $this->researchIndex,
             'port' => $this->port,
             'metadata' => $this->metadata
         ];

@@ -32,9 +32,9 @@ class MetadataController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function index($id) {
-        return $this->handleNotFound(function () use ($id) {
-            return new JSONResponse($this->service->findAll($id));
+    public function index() {
+        return $this->handleNotFound(function () {
+            return new JSONResponse($this->service->findAll($his->$userId));
         });
     }
 
@@ -49,6 +49,11 @@ class MetadataController extends Controller
      * @NoAdminRequired
      */
     public function show($id, $port) {
+        if(empty($port)){
+            return $this->handleNotFound(function () use ($id) {
+                return new JSONResponse($this->service->findAll($id));
+            });
+        }
         return $this->handleNotFound(function () use ($id, $port) {
             return new JSONResponse($this->service->find($id, $port));
         });

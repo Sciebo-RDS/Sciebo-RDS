@@ -14,7 +14,6 @@ use \OCA\RDS\Db\MetadataMapper;
 class MetadataService {
     private $mapper;
 
-
     public function __construct( MetadataMapper $mapper ) {
         $this->mapper = $mapper;
     }
@@ -32,17 +31,17 @@ class MetadataService {
         }
     }
 
-    public function find( $researchId, $port ) {
+    public function find( $userId, $researchIndex, $port ) {
         try {
-            return $this->mapper->find( $researchId, $port );
+            return $this->mapper->find( $userId, $researchIndex, $port );
         } catch( Exception $e ) {
             $this->handleException( $e );
         }
     }
 
-    public function update( $researchId, $metadataDict ) {
+    public function update( $userId, $researchIndex, $metadataDict ) {
         try {
-            return $this->mapper->update( $metadataDict );
+            return $this->mapper->update( $userId, $researchIndex, $metadataDict );
         } catch ( Exception $e ) {
             $this->handleException( $e );
         }
