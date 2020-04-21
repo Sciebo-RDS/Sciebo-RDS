@@ -25,7 +25,7 @@
       return deferred.promise();
     },
     getSchema: function () {
-      return this._schema;
+      return this._schema["schema"];
     },
     load: function (id) {
       var deferred = $.Deferred();
