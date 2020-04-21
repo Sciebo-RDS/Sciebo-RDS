@@ -208,12 +208,9 @@
   );
   OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {};
   OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
-    console.log(this._studies._metadata.getSchema());
-    console.log(this._studies._metadata.getMetadata());
-
     var BrutusinForms = brutusin["json-forms"];
     var bf = BrutusinForms.create(this._studies._metadata.getSchema());
-    var container = $("#metadata-jsonschema-editor");
+    var container = document.getElementById("metadata-jsonschema-editor");
     bf.render(container, this._studies._metadata.getMetadata());
   };
   OC.rds.MetadataTemplate.prototype._getParams = function () {};

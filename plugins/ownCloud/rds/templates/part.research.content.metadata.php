@@ -3,7 +3,7 @@ This are the fields for metadata.
 <?php
 
 style( 'rds', array('brutusin-json-forms.min') );
-script( 'rds', array("brutusin-json-forms.min", "brutusin-json-forms-bootstrap.min") );
+script( 'rds', array("brutusin-json-forms.min") );
 
 ?>
 
