@@ -17,7 +17,7 @@
       var self = this;
       $.get(this._baseUrl + "/jsonschema")
         .done(function (schema) {
-          rdsJSON = JSON.parse(schema);
+          var rdsJSON = JSON.parse(schema);
 
           self._version = rdsJSON.kernelversion;
           self._schema = JSON.parse(rdsJSON.schema);
