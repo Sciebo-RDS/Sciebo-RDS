@@ -17,11 +17,10 @@ class Research():
         The parameter testing enables the unittest to make requests to a mock server.
         """
 
-        self.testing = testing
         self.researchManager = "circle3-research-manager"
 
-        if self.testing is not None:
-            self.researchManager = self.testing
+        if testing is not None or testing is not False:
+            self.researchManager = testing
 
         self.researchObj = self.reload(
             userId=userId, researchIndex=researchIndex, researchId=researchId)
@@ -107,7 +106,7 @@ class Research():
         userId and researchIndex are only used together. You can provide researchId,
         so you do not need to enter userId and researchIndex for convenience.
         """
-        
+
         if researchId is not None:
             req = requests.get(
                 f"http://{self.researchManager}/research/id/{researchId}")
@@ -124,6 +123,6 @@ class Research():
 
             logger.debug(req.content)
             return {}
-        
+
         raise ValueError(
             "userId and researchIndex or researchId are needed parameters.")
