@@ -216,6 +216,16 @@
     this._bf = BrutusinForms.create(this._studies._metadata.getSchema());
     var container = document.getElementById("metadata-jsonschema-editor");
     this._bf.render(container, data);
+
+    var self = this;
+
+    $("#app-content #btn-save-metadata").click(function () {
+      self.save();
+    });
+
+    $("#app-content #btn-save-metadata-and-continue").click(function () {
+      self.save_next();
+    });
   };
   OC.rds.MetadataTemplate.prototype._getParams = function () {};
   OC.rds.MetadataTemplate.prototype._saveFn = function () {
