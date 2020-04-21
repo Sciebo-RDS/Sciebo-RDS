@@ -32,6 +32,11 @@ spec:
               configMapKeyRef:
                 name: mservice
                 key: CENTRAL_SERVICE_TOKEN_STORAGE
+          - name: USE_CASE_SERVICE_TOKEN_SERVICE
+            valueFrom:
+              configMapKeyRef:
+                name: mservice
+                key: USE_CASE_SERVICE_TOKEN_SERVICE
           - name: HTTP_PROXY
             valueFrom:
               configMapKeyRef:
