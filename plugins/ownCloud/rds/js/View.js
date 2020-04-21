@@ -208,7 +208,7 @@
   );
   OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {};
   OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
-    //$("#metadata-jsonschema-editor").html(this._studies._metadata.getSchema());
+    console.log(this._studies._metadata.getSchema());
     $("#metadata-jsonschema-editor").alpaca({
       schema: this._studies._metadata.getSchema(),
     });
