@@ -38,7 +38,7 @@
     load: function (id) {
       var deferred = $.Deferred();
       var self = this;
-      $.get(this._baseUrl)
+      $.get(this._baseUrl + "/" + id)
         .done(function (metadatas) {
           self._metadata = metadatas;
           self._activeResearchId = id;
