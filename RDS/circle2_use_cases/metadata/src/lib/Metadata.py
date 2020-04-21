@@ -16,7 +16,7 @@ class Metadata():
         """
         self.testing = None
 
-        if testing is not None:
+        if testing is not None or testing is not False:
             self.testing = testing
 
     def getResearchId(self, userId, researchIndex):
