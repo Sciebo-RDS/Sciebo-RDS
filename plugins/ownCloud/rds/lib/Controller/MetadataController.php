@@ -24,45 +24,47 @@ class MetadataController extends Controller
     }
 
     /**
-     * Returns all metadata for researchId
+     * Returns all metadata for id
      *
-     * @param integer $researchId
+     * @param integer $id
      * @return string returns json
      * 
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function index($researchId) {
-        return new JSONResponse($this->service->findAll($researchId));
+    public function index($id) {
+        return $this->handleNotFound(function () use ($id) {
+            return new JSONResponse($this->service->findAll($id));
+        });
     }
 
     /**
      * Returns metadata for resarchId in given port
      *
-     * @param integer $researchId
+     * @param integer $id
      * @param string $port
      * @return string returns json
      *
      * @NoCSRFRequired
      * @NoAdminRequired
      */
-    public function show($researchId, $port) {
-        return $this->handleNotFound(function () use ($researchId, $port) {
-            return new JSONResponse($this->service->find($researchId, $port));
+    public function show($id, $port) {
+        return $this->handleNotFound(function () use ($id, $port) {
+            return new JSONResponse($this->service->find($id, $port));
         });
     }
 
     /**
      * Update a single Research in rds system
      *
-     * @param integer $researchId
+     * @param integer $id
      * @param array $metadataArr
      * @return string returns the updated object as json
      *
      * @NoAdminRequired
      */
-    public function update($researchId, $metadataArr) {
-        return new JSONResponse($this->service->update( $researchId, $metadataArr ));
+    public function update($id, $metadataArr) {
+        return new JSONResponse($this->service->update( $id, $metadataArr ));
     }
 
     /**
