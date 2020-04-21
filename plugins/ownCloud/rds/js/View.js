@@ -206,9 +206,27 @@
       constructor: OC.rds.MetadataTemplate,
     }
   );
-  OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {};
+  OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {
+    $("#metadata-jsonschema-editor").alpaca({
+      schema: {
+        title: "What do you think of Alpaca?",
+        type: "object",
+        properties: {
+          name: {
+            type: "string",
+            title: "Name",
+          },
+          ranking: {
+            type: "string",
+            title: "Ranking",
+            enum: ["excellent", "not too shabby", "alpaca built my hotrod"],
+          },
+        },
+      },
+    });
+  };
   OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
-    $("#metadata-jsonschema-editor").html(this._studies._metadata.getSchema());
+    //$("#metadata-jsonschema-editor").html(this._studies._metadata.getSchema());
   };
   OC.rds.MetadataTemplate.prototype._getParams = function () {};
   OC.rds.MetadataTemplate.prototype._saveFn = function () {
