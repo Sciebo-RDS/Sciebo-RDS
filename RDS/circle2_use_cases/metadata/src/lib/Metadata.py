@@ -57,7 +57,7 @@ class Metadata():
             apiKey = loadAccessToken(
                 research.userId, port["port"].replace("port-", "").capitalize())
 
-            logger.debug(f"work on port {port}")
+            logger.debug(f"work on port {port} with apiKey {apiKey}")
             port = port["port"]
             metadata = self.getMetadataForProjectFromPort(
                 port, projectId, apiKeyMetadata={"apiKey": apiKey, "metadata": metadataFields})
