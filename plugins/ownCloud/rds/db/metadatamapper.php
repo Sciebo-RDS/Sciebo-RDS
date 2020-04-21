@@ -2,6 +2,7 @@
 namespace OCA\RDS\Db;
 
 use \OCA\RDS\Db\Metadata;
+use \OCA\RDS\Service\NotFoundException;
 
 class MetadataMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/metadata';
@@ -50,7 +51,7 @@ class MetadataMapper {
             }
         }
 
-        throw new DoesNotExistException( 'No metadata for '. $port .' found.' );
+        throw new NotFoundException( 'No metadata for '. $port .' found.' );
     }
 
     public function jsonschema() {

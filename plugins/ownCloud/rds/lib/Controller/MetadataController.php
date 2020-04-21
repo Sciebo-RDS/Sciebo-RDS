@@ -47,7 +47,7 @@ class MetadataController extends Controller
      * @NoAdminRequired
      */
     public function show($researchId, $port) {
-        return $this->handleNotFound(function () use ($researchId) {
+        return $this->handleNotFound(function () use ($researchId, $port) {
             return new JSONResponse($this->service->find($researchId, $port));
         });
     }
