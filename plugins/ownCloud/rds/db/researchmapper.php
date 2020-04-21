@@ -170,7 +170,7 @@ class ResearchMapper {
     private function removePort( $researchIndex, $userId, $portIndex, $where ) {
         $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where.'/'.$portIndex;
 
-        $this->log( 'remove port {port} from researchindex {researchIndex} and user {userId}.', ['userId'=>$userId, 'researchIndex'=>$researchIndex, 'port'=>$portIndex] );
+        $this->log( 'remove port {port} as where {where} from researchindex {researchIndex} and user {userId}.', ['userId'=>$userId, 'researchIndex'=>$researchIndex, 'port'=>$portIndex, 'where'=>$where] );
 
         $curl = curl_init( $url );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
@@ -199,7 +199,7 @@ class ResearchMapper {
         $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where;
         $data_string = json_encode( $port->jsonSerialize() );
 
-        $this->log( 'add port {port} for user {userId} and {researchIndex}.', ['userId'=>$userId, 'researchIndex'=>$researchIndex, 'port'=>$data_string] );
+        $this->log( 'add port {port} as where {where} for user {userId} and {researchIndex}.', ['userId'=>$userId, 'researchIndex'=>$researchIndex, 'port'=>$data_string, 'where'=>$where] );
 
         $curl = curl_init( $url );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'POST'];
