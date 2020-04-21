@@ -29,6 +29,9 @@
         });
       return deferred.promise();
     },
+    getMetadata: function () {
+      return this._metadata;
+    },
     getSchema: function () {
       return this._schema;
     },
