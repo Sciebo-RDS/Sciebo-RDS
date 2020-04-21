@@ -7,6 +7,7 @@
     this._baseUrl = baseUrl;
     this._metadata = [];
     this._schema = undefined;
+    this._version = undefined;
     this._activeResearchId = undefined;
   };
 
@@ -16,7 +17,11 @@
       var self = this;
       $.get(this._baseUrl + "/jsonschema")
         .done(function (schema) {
-          self._schema = JSON.parse(schema);
+          rdsJSON = JSON.parse(schema);
+
+          self._version = rdsJSON.kernelversion;
+          self._schema = JSON.parse(rdsJSON.schema);
+
           deferred.resolve();
         })
         .fail(function () {
@@ -25,7 +30,7 @@
       return deferred.promise();
     },
     getSchema: function () {
-      return this._schema["schema"];
+      return this._schema;
     },
     load: function (id) {
       var deferred = $.Deferred();
