@@ -3,7 +3,7 @@ style( 'rds', 'style' );
 script( 'rds', 'handlebars' );
 
 script( 'rds', array( 'Studies', 'Metadata', 'Services', 'View', 'Files', 'main-rds' ) );
-#script( 'rds', 'Files' );
+
 ?>
 
 <div id = 'app'>

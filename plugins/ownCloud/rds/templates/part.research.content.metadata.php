@@ -2,8 +2,8 @@ This are the fields for metadata.
 
 <?php
 
-style( 'rds', array('alpaca.min.css', "bootstrap.min.css") );
-script( 'rds', array("alpaca.min.js", "bootstrap.min.js") );
+style( 'rds', array('alpaca.min', "bootstrap.min") );
+script( 'rds', array("alpaca.min", "bootstrap.min") );
 
 ?>
 
