@@ -90,7 +90,7 @@ class Metadata():
         if req.status_code == 200:
             return req.json()
 
-        logger.exception(Exception(f"Metadata model req: {req.content()}"))
+        logger.exception(Exception(f"Metadata model req: {req.content}"))
         return {}
 
     def updateMetadataForResearch(self, researchId: int, updateMetadata: dict):
