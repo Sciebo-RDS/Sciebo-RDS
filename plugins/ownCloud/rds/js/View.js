@@ -206,13 +206,12 @@
       constructor: OC.rds.MetadataTemplate,
     }
   );
-  OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {
+  OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {};
+  OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
+    //$("#metadata-jsonschema-editor").html(this._studies._metadata.getSchema());
     $("#metadata-jsonschema-editor").alpaca({
       schema: this._studies._metadata.getSchema(),
     });
-  };
-  OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
-    //$("#metadata-jsonschema-editor").html(this._studies._metadata.getSchema());
   };
   OC.rds.MetadataTemplate.prototype._getParams = function () {};
   OC.rds.MetadataTemplate.prototype._saveFn = function () {
