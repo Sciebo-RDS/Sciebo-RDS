@@ -5,7 +5,7 @@ from flask import jsonify, current_app, request
 def get(user_id, research_index):
     req = request.json
 
-    md = Metadata(testing=current_app.config.get("TESTING"))
+    md = Metadata()
     
     researchId = md.getResearchId(
         userId=user_id, researchIndex=research_index)

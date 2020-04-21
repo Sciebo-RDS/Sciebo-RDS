@@ -124,6 +124,6 @@ class Research():
 
             logger.debug(req.content)
             return {}
-        else:
-            raise ValueError(
-                "userId and researchIndex or researchId are needed parameters.")
+        
+        raise ValueError(
+            "userId and researchIndex or researchId are needed parameters.")
