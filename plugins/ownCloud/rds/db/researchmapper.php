@@ -82,6 +82,7 @@ class ResearchMapper {
     */
 
     private function removeDistinctPorts( $currentConn, $newConn ) {
+        $this->log("remove ports", []);
         $removeSth = False;
 
         $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortIn(), $newConn->getPortIn() );
@@ -111,6 +112,7 @@ class ResearchMapper {
     */
 
     private function addDistinctPorts( $currentConn, $newConn ) {
+        $this->log("add ports", []);
         $addSth = False;
 
         $addIndices = $this->getNotEqualPortIndices( $currentConn->getPortIn(), $newConn->getPortIn() );
