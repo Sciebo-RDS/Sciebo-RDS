@@ -70,6 +70,7 @@ class MetadataController extends Controller
      *
      * @return string returns the jsonschema
      *
+     * @NoCSRFRequired
      * @NoAdminRequired
      */
     public function jsonschema() {
