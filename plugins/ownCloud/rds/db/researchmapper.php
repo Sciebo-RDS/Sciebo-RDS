@@ -171,7 +171,7 @@ class ResearchMapper {
     private function removePort( $researchIndex, $userId, $portIndex, $where ) {
         $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where.'/'.$portIndex;
 
-        $this->log( 'remove port {port} from researchindex {researchIndex} and user {userId}.', ['userId'=>$userId, 'researchIndex'=>$researchIndex, 'port'=>$portIndex] )
+        $this->log( 'remove port {port} from researchindex {researchIndex} and user {userId}.', ['userId'=>$userId, 'researchIndex'=>$researchIndex, 'port'=>$portIndex] );
 
         $curl = curl_init( $url );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
