@@ -212,7 +212,7 @@
     var BrutusinForms = brutusin["json-forms"];
     this._bf = BrutusinForms.create(this._studies._metadata.getSchema());
     var container = document.getElementById("metadata-jsonschema-editor");
-    bf.render(container, this._studies._metadata.getMetadata());
+    bf.render(container, this._studies._metadata.getMetadata()[0]);
   };
   OC.rds.MetadataTemplate.prototype._getParams = function () {};
   OC.rds.MetadataTemplate.prototype._saveFn = function () {
