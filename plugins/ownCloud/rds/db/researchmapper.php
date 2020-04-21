@@ -142,18 +142,10 @@ class ResearchMapper {
         foreach ( $currentPorts as $i ) {
             $found = FALSE;
             foreach ( $newPorts as $j ) {
-                if ( $i->getPort() == $j->getPort() ) {
-                    if ( ! $i->propertiesEqual( $j ) ) {
-                        $returnList[] = $index;
-                    }
-                    $found = TRUE;
+                if ( ! $i->propertiesEqual( $j ) ) {
+                    $returnList[] = $index;
                 }
             }
-
-            if ( !$found ) {
-                $returnList[] = $index;
-            }
-
             $index++;
         }
 
