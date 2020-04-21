@@ -77,15 +77,15 @@ class ResearchController extends Controller
      *
      * @param integer $researchIndex
      * @param integer $status
-     * @param array $portsIn
-     * @param array $portsOut
+     * @param array $portIn
+     * @param array $portOut
      * @return string returns the updated object as json
      * 
      * @NoAdminRequired
      */
-    public function update($id, $status, $portsIn, $portsOut) {
-        return $this->handleNotFound(function () use ($id, $status, $portsIn, $portsOut) {
-            return $this->service->update( $this->userId, $id, $portsIn, $portsOut, $status);
+    public function update($id, $status, $portIn, $portOut) {
+        return $this->handleNotFound(function () use ($id, $status, $portIn, $portOut) {
+            return $this->service->update( $this->userId, $id, $portIn, $portOut, $status);
         });
     }
 

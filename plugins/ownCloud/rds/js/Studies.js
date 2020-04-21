@@ -105,8 +105,8 @@
     updateActive: function (portIn, portOut) {
       var conn = this.getActive();
 
-      conn.portsIn = portIn;
-      conn.portsOut = portOut;
+      conn.portIn = portIn;
+      conn.portOut = portOut;
       conn.status = 2;
 
       return $.ajax({

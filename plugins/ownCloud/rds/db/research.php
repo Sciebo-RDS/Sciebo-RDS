@@ -11,20 +11,20 @@ class Research extends Entity implements JsonSerializable {
     protected $researchIndex;
     protected $researchId;
     protected $status;
-    protected $portsIn;
-    protected $portsOut;
+    protected $portIn;
+    protected $portOut;
 
     function __construct() {
-        $this->portsIn = [];
-        $this->portsOut = [];
+        $this->portIn = [];
+        $this->portOut = [];
     }
-
+   
     public function addImport( $port ) {
-        $this->portsIn[] = $port;
+        $this->portIn[] = $port;
     }
-
+    
     public function addExport( $port ) {
-        $this->portsOut[] = $port;
+        $this->portOut[] = $port;
     }
 
     public function jsonSerialize() {
@@ -33,8 +33,8 @@ class Research extends Entity implements JsonSerializable {
             'researchIndex' => $this->researchIndex,
             'researchId' => $this->researchId,
             'status' => $this->status,
-            'portIn' => $this->portsIn,
-            'portOut' => $this->portsOut
+            'portIn' => $this->portIn,
+            'portOut' => $this->portOut
         ];
     }
 }

@@ -56,20 +56,20 @@ class ResearchService {
         }
     }
 
-    public function update( $userId, $researchIndex, $portsIn, $portsOut, $status ) {
+    public function update( $userId, $researchIndex, $portIn, $portOut, $status ) {
         try {
             $conn = new Research();
             $conn->setUserId( $userId );
             $conn->setResearchIndex( $researchIndex );
 
-            foreach ( $portsIn as $port ) {
-                $pportsIn = $this->mapper->createPort( $port );
-                $conn->addImport( $pportsIn );
+            foreach ( $portIn as $port ) {
+                $pportIn = $this->mapper->createPort( $port );
+                $conn->addImport( $pportIn );
             }
 
-            foreach ( $portsOut as $port ) {
-                $pportsOut = $this->mapper->createPort( $port );
-                $conn->addExport( $pportsOut );
+            foreach ( $portOut as $port ) {
+                $pportOut = $this->mapper->createPort( $port );
+                $conn->addExport( $pportOut );
             }
 
             $conn->setStatus( $status );
