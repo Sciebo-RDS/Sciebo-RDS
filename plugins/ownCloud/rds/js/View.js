@@ -209,7 +209,7 @@
   );
   OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {};
   OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
-    var data = this._studies._metadata.getMetadata()[0];
+    var data = this._studies._metadata.getMetadata()[0]["metadata"];
     console.log(data);
 
     var BrutusinForms = brutusin["json-forms"];
@@ -219,7 +219,7 @@
   };
   OC.rds.MetadataTemplate.prototype._getParams = function () {};
   OC.rds.MetadataTemplate.prototype._saveFn = function () {
-    if (this._bf === undefined || !bf.validate()) {
+    if (this._bf === undefined || !this._bf.validate()) {
       var deferred = $.Deferred();
       deferred.reject();
       return deferred.promise();
