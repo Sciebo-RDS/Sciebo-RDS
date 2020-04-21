@@ -51,7 +51,15 @@ class Port extends Entity implements JsonSerializable {
     }
 
     public function propertiesEqual( $port ) {
-        return ( $this->jsonSerialize() == $port->jsonSerialize() );
+        foreach ( $port->properties as $prop ) {
+            $index = $this->getIndexOfProperty( $prop['portType'] );
+
+            if ( $index == NULL || $this->properties[$index]['value'] != $prop['value'] ) {
+                return FALSE;
+            }
+        }
+
+        return TRUE;
     }
 
     public function notEqualPropertyIndices( $port ) {
