@@ -82,7 +82,6 @@ class ResearchMapper {
     */
 
     private function removeDistinctPorts( $currentConn, $newConn ) {
-        $this->log("remove ports", []);
         $removeSth = False;
 
         $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortIn(), $newConn->getPortIn() );
@@ -112,7 +111,6 @@ class ResearchMapper {
     */
 
     private function addDistinctPorts( $currentConn, $newConn ) {
-        $this->log("add ports", []);
         $addSth = False;
 
         $addIndices = $this->getNotEqualPortIndices( $currentConn->getPortIn(), $newConn->getPortIn() );
@@ -150,8 +148,6 @@ class ResearchMapper {
             }
         }
 
-        $this->log( 'getNotEqual: 1 {current}, 2 {new} return {return}', ['current'=>$currentPorts, 'new'=>$newPorts, 'return'=>$returnList] );
-
         return $returnList;
     }
 
@@ -173,8 +169,6 @@ class ResearchMapper {
 
     private function removePort( $researchIndex, $userId, $portIndex, $where ) {
         $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where.'/'.$portIndex;
-
-        $this->log( 'remove port {port} as where {where} from researchindex {researchIndex} and user {userId}.', ['userId'=>$userId, 'researchIndex'=>$researchIndex, 'port'=>$portIndex, 'where'=>$where] );
 
         $curl = curl_init( $url );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
@@ -202,8 +196,6 @@ class ResearchMapper {
     private function addPort( $researchIndex, $userId, $port, $where ) {
         $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where;
         $data_string = json_encode( $port->jsonSerialize() );
-
-        $this->log( 'add port {port} as where {where} for user {userId} and {researchIndex}.', ['userId'=>$userId, 'researchIndex'=>$researchIndex, 'port'=>$data_string, 'where'=>$where] );
 
         $curl = curl_init( $url );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'POST'];
@@ -329,7 +321,7 @@ class ResearchMapper {
         }
 
         $portOut = [];
-        foreach ( $response['portIn'] as $port ) {
+        foreach ( $response['portOut'] as $port ) {
             $portOut[] = $this->createPort( ( $port ) );
         }
 
