@@ -148,6 +148,8 @@ class ResearchMapper {
             }
         }
 
+        $this->log( 'getNotEqual: 1 {current}, 2 {new} return {return}', ['current'=>$currentPorts, 'new'=>$newPorts, 'return'=>$returnList] );
+
         return $returnList;
     }
 
