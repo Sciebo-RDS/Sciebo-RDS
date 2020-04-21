@@ -177,7 +177,7 @@
       if (
         $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
           "checked"
-        )
+        ) === true
       ) {
         portIn.push(tempPortIn);
       }
@@ -185,7 +185,7 @@
       if (
         $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
           "checked"
-        )
+        ) === true
       ) {
         portOut.push(tempPortOut);
       }
