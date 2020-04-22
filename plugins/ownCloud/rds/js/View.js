@@ -151,14 +151,14 @@
                 prop.value.forEach(function (val) {
                   if (
                     val.key === "projectId" &&
-                    val.value === proj.prereserve_doi.recid
+                    val.value === proj.prereserve_doi.recid.toString()
                   ) {
                     this[index].checked = "checked";
                   }
                 });
               }, this[index].serviceProjects);
             }
-          });
+          }, newServices);
         }
 
         port = findPort(service.servicename, research.portOut);
@@ -180,14 +180,14 @@
                 prop.value.forEach(function (val) {
                   if (
                     val.key === "projectId" &&
-                    val.value === proj.prereserve_doi.recid
+                    val.value === proj.prereserve_doi.recid.toString()
                   ) {
                     this[index].checked = "checked";
                   }
                 });
               }, this[index].serviceProjects);
             }
-          });
+          }, newServices);
         }
       }, newServices);
 
