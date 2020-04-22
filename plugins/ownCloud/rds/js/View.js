@@ -136,6 +136,8 @@
           service.properties.forEach(function (prop) {
             if (prop.portType === "metadata" && prop.value === true) {
               this[index].metadataChecked = "checked";
+              console.log("metadata checked?");
+              console.log(this[index].metadataChecked);
             }
             if (prop.portType === "fileStorage" && prop.value === true) {
               this[index].fileStorageChecked = "checked";
