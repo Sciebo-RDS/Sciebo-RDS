@@ -114,9 +114,20 @@
     }
   );
   OC.rds.ServiceTemplate.prototype._getParams = function () {
+    var patchService = function (service, research) {
+      // TODO: this function add the parameter "checked" to serviceProjects and ingoing and outgoing to make the template easier to use.
+      // in _services müssen die properties importChecked, exportChecked, fileStorageChecked, metadataChecked mit dem Wert "checked" angelegt werden.
+      console.log(service);
+      console.log(research);
+      return newService;
+    };
+
+    var studies = this._studies.getActive();
+    var services = patchService(this._services.getAll(), studies);
+
     return {
-      research: this._studies.getActive(),
-      services: this._services.getAll(),
+      research: studies,
+      services: services,
     };
   };
   OC.rds.ServiceTemplate.prototype._beforeTemplateRenders = function () {};

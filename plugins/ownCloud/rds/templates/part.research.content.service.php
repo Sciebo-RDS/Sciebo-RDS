@@ -13,6 +13,7 @@
             name="radiobutton-{{ ../servicename }}"
             id="{{ ../servicename }}-{{prereserve_doi.recid}}"
             value="{{prereserve_doi.recid}}"
+            {{ checked }}
           />
         {{#if title}}
           {{ title }}
@@ -33,6 +34,7 @@
             name="checkbox-{{ servicename }}-going"
             id="checkbox-{{ servicename }}-ingoing"
             value="portIn"
+            {{ importChecked }}
           />
           <?php p($l->t('Ingoing')); ?>
         </label>
@@ -42,6 +44,7 @@
             name="checkbox-{{ servicename }}-going"
             id="checkbox-{{ servicename }}-outgoing"
             value="portOut"
+            {{ exportChecked }}
           />
           <?php p($l->t('Outgoing')); ?>
         </label>
@@ -54,6 +57,7 @@
             name="checkbox-{{ servicename }}-property"
             id="checkbox-{{ servicename }}-filestorage"
             value="fileStorage"
+            {{ fileStorageChecked }}
           />
           <?php p($l->t('File Storage')); ?>
         </label>
@@ -63,6 +67,7 @@
             name="checkbox-{{ servicename }}-property"
             id="checkbox-{{ servicename }}-metadata"
             value="metadata"
+            {{ metadataChecked }}
           />
           <?php p($l->t('Metadata Storage')); ?>
         </label>
