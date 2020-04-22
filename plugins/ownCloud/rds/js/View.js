@@ -114,10 +114,8 @@
     }
   );
   OC.rds.ServiceTemplate.prototype._getParams = function () {
-    var patchService = function (service, research) {
-      var newService = service;
-      console.log(newService);
-      console.log(research);
+    var patchServices = function (services, research) {
+      var newServices = services;
 
       var findPort = function (portName, portList) {
         var searchName = "port-" + portName.toLowerCase();
@@ -128,59 +126,61 @@
         return undefined;
       };
 
-      port = findPort(service.servicename, research.portIn);
-      if (port !== undefined) {
-        newService.importChecked = "checked";
+      newServices.forEach(function (service, index) {
+        port = findPort(service.servicename, research.portIn);
+        if (port !== undefined) {
+          this[index].importChecked = "checked";
 
-        newService.properties.forEach(function (prop) {
-          if (prop.portType === "metadata" && prop.value === true) {
-            newService.metadataChecked = "checked";
-          }
-          if (prop.portType === "fileStorage" && prop.value === true) {
-            newService.fileStorageChecked = "checked";
-          }
+          service.properties.forEach(function (prop) {
+            if (prop.portType === "metadata" && prop.value === true) {
+              this[index].metadataChecked = "checked";
+            }
+            if (prop.portType === "fileStorage" && prop.value === true) {
+              this[index].fileStorageChecked = "checked";
+            }
 
-          if (prop.portType === "customProperties") {
-            service.serviceProjects.forEach(function (proj, index) {
-              prop.value.forEach(function (val) {
-                if (
-                  val.key === "projectId" &&
-                  val.value === proj.prereserve_doi.recid
-                ) {
-                  this[index].checked = "checked";
-                }
-              });
-            }, service.serviceProjects);
-          }
-        });
-      }
+            if (prop.portType === "customProperties") {
+              service.serviceProjects.forEach(function (proj, index) {
+                prop.value.forEach(function (val) {
+                  if (
+                    val.key === "projectId" &&
+                    val.value === proj.prereserve_doi.recid
+                  ) {
+                    this[index].checked = "checked";
+                  }
+                });
+              }, this[index].serviceProjects);
+            }
+          });
+        }
 
-      port = findPort(service.servicename, research.portOut);
-      if (port !== undefined) {
-        newService.exportChecked = "checked";
+        port = findPort(service.servicename, research.portOut);
+        if (port !== undefined) {
+          this[index].importChecked = "checked";
 
-        newService.properties.forEach(function (prop) {
-          if (prop.portType === "metadata" && prop.value === true) {
-            newService.metadataChecked = "checked";
-          }
-          if (prop.portType === "fileStorage" && prop.value === true) {
-            newService.fileStorageChecked = "checked";
-          }
+          service.properties.forEach(function (prop) {
+            if (prop.portType === "metadata" && prop.value === true) {
+              this[index].metadataChecked = "checked";
+            }
+            if (prop.portType === "fileStorage" && prop.value === true) {
+              this[index].fileStorageChecked = "checked";
+            }
 
-          if (prop.portType === "customProperties") {
-            service.serviceProjects.forEach(function (proj, index) {
-              prop.value.forEach(function (val) {
-                if (
-                  val.key === "projectId" &&
-                  val.value === proj.prereserve_doi.recid
-                ) {
-                  this[index].checked = "checked";
-                }
-              });
-            }, service.serviceProjects);
-          }
-        });
-      }
+            if (prop.portType === "customProperties") {
+              service.serviceProjects.forEach(function (proj, index) {
+                prop.value.forEach(function (val) {
+                  if (
+                    val.key === "projectId" &&
+                    val.value === proj.prereserve_doi.recid
+                  ) {
+                    this[index].checked = "checked";
+                  }
+                });
+              }, this[index].serviceProjects);
+            }
+          });
+        }
+      }, newServices);
 
       return newService;
     };
