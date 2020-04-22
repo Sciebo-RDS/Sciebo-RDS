@@ -120,9 +120,9 @@
       var findPort = function (portName, portList) {
         var searchName = "port-" + portName.toLowerCase();
 
-        var port;
+        var port = {};
         portList.forEach(function (elem) {
-          if (elem.port === searchName) {
+          if (elem.port === searchNa(me) {
             this.port = port;
           }
         }, port);
