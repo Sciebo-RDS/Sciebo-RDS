@@ -123,28 +123,24 @@
         var port = {};
         portList.forEach(function (elem) {
           if (elem.port === searchName) {
-            this.port = port;
+            this.port = elem;
           }
         }, port);
-        if (port !== undefined) {
-          return port.port;
-        }
-        return undefined;
+        return port.port;
       };
 
       newServices.forEach(function (service, index) {
         var port;
-        console.log(service);
 
         port = findPort(service.servicename, research.portIn);
         if (port !== undefined) {
           this[index].importChecked = "checked";
 
-          research.properties.forEach(function (prop) {
+          port.properties.forEach(function (prop) {
             if (prop.portType === "metadata" && prop.value === true) {
-              this[index].metadataChecked = "checked";
               console.log("metadata checked?");
-              console.log(this[index].metadataChecked);
+              console.log(this);
+              this[index].metadataChecked = "checked";
             }
             if (prop.portType === "fileStorage" && prop.value === true) {
               this[index].fileStorageChecked = "checked";
@@ -169,8 +165,10 @@
         if (port !== undefined) {
           this[index].exportChecked = "checked";
 
-          research.properties.forEach(function (prop) {
+          port.properties.forEach(function (prop) {
             if (prop.portType === "metadata" && prop.value === true) {
+              console.log("metadata checked?");
+              console.log(this);
               this[index].metadataChecked = "checked";
             }
             if (prop.portType === "fileStorage" && prop.value === true) {
