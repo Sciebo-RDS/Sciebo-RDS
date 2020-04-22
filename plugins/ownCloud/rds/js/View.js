@@ -126,7 +126,10 @@
             this.port = port;
           }
         }, port);
-        return port.port;
+        if (port !== undefined) {
+          return port.port;
+        }
+        return undefined;
       };
 
       newServices.forEach(function (service, index) {
