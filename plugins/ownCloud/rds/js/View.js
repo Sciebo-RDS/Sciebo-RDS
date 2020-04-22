@@ -186,7 +186,7 @@
     };
 
     var studies = this._studies.getActive();
-    var services = patchService(this._services.getAll(), studies);
+    var services = patchServices(this._services.getAll(), studies);
 
     console.log(studies);
     console.log(services);
