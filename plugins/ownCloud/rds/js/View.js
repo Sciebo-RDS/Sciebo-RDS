@@ -122,7 +122,7 @@
 
         var port = {};
         portList.forEach(function (elem) {
-          if (elem.port === searchNa(me) {
+          if (elem.port === searchName) {
             this.port = port;
           }
         }, port);
