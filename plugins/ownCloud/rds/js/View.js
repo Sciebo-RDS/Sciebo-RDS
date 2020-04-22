@@ -128,7 +128,7 @@
 
       newServices.forEach(function (service, index) {
         var port;
-        
+
         port = findPort(service.servicename, research.portIn);
         if (port !== undefined) {
           this[index].importChecked = "checked";
@@ -184,7 +184,7 @@
         }
       }, newServices);
 
-      return newService;
+      return newServices;
     };
 
     var studies = this._studies.getActive();
