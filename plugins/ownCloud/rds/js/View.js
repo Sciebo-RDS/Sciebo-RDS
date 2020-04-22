@@ -115,16 +115,81 @@
   );
   OC.rds.ServiceTemplate.prototype._getParams = function () {
     var patchService = function (service, research) {
-      // TODO: this function add the parameter "checked" to serviceProjects and ingoing and outgoing to make the template easier to use.
-      // in _services müssen die properties importChecked, exportChecked, fileStorageChecked, metadataChecked mit dem Wert "checked" angelegt werden.
       var newService = service;
-      console.log(service);
+      console.log(newService);
       console.log(research);
+
+      var findPort = function (portName, portList) {
+        var searchName = "port-" + portName.toLowerCase();
+
+        portList.forEach(function (elem) {
+          if (elem.port === searchName) return elem;
+        });
+        return undefined;
+      };
+
+      port = findPort(service.servicename, research.portIn);
+      if (port !== undefined) {
+        newService.importChecked = "checked";
+
+        newService.properties.forEach(function (prop) {
+          if (prop.portType === "metadata" && prop.value === true) {
+            newService.metadataChecked = "checked";
+          }
+          if (prop.portType === "fileStorage" && prop.value === true) {
+            newService.fileStorageChecked = "checked";
+          }
+
+          if (prop.portType === "customProperties") {
+            service.serviceProjects.forEach(function (proj, index) {
+              prop.value.forEach(function (val) {
+                if (
+                  val.key === "projectId" &&
+                  val.value === proj.prereserve_doi.recid
+                ) {
+                  this[index].checked = "checked";
+                }
+              });
+            }, service.serviceProjects);
+          }
+        });
+      }
+
+      port = findPort(service.servicename, research.portOut);
+      if (port !== undefined) {
+        newService.exportChecked = "checked";
+
+        newService.properties.forEach(function (prop) {
+          if (prop.portType === "metadata" && prop.value === true) {
+            newService.metadataChecked = "checked";
+          }
+          if (prop.portType === "fileStorage" && prop.value === true) {
+            newService.fileStorageChecked = "checked";
+          }
+
+          if (prop.portType === "customProperties") {
+            service.serviceProjects.forEach(function (proj, index) {
+              prop.value.forEach(function (val) {
+                if (
+                  val.key === "projectId" &&
+                  val.value === proj.prereserve_doi.recid
+                ) {
+                  this[index].checked = "checked";
+                }
+              });
+            }, service.serviceProjects);
+          }
+        });
+      }
+
       return newService;
     };
 
     var studies = this._studies.getActive();
     var services = patchService(this._services.getAll(), studies);
+
+    console.log(studies);
+    console.log(services);
 
     return {
       research: studies,
