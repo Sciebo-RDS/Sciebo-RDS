@@ -120,10 +120,11 @@
       var findPort = function (portName, portList) {
         var searchName = "port-" + portName.toLowerCase();
 
+        var port;
         portList.forEach(function (elem) {
-          if (elem.port === searchName) return elem;
-        });
-        return undefined;
+          if (elem.port === searchName) this = port;
+        }, port);
+        return port;
       };
 
       newServices.forEach(function (service, index) {
