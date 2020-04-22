@@ -138,8 +138,6 @@
 
           port.properties.forEach(function (prop) {
             if (prop.portType === "metadata" && prop.value === true) {
-              console.log("metadata checked?");
-              console.log(this);
               this[index].metadataChecked = "checked";
             }
             if (prop.portType === "fileStorage" && prop.value === true) {
@@ -155,7 +153,7 @@
                   ) {
                     this[index].checked = "checked";
                   }
-                }, this[index].serviceProjects);
+                }, this);
               }, this[index].serviceProjects);
             }
           }, newServices);
@@ -167,8 +165,6 @@
 
           port.properties.forEach(function (prop) {
             if (prop.portType === "metadata" && prop.value === true) {
-              console.log("metadata checked?");
-              console.log(this);
               this[index].metadataChecked = "checked";
             }
             if (prop.portType === "fileStorage" && prop.value === true) {
@@ -184,7 +180,7 @@
                   ) {
                     this[index].checked = "checked";
                   }
-                }, this[index].serviceProjects);
+                }, this);
               }, this[index].serviceProjects);
             }
           }, newServices);
