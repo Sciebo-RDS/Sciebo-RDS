@@ -123,10 +123,10 @@
         var port;
         portList.forEach(function (elem) {
           if (elem.port === searchName) {
-            this = port;
+            this.port = port;
           }
         }, port);
-        return port;
+        return port.port;
       };
 
       newServices.forEach(function (service, index) {
