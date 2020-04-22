@@ -114,7 +114,6 @@
     }
   );
   OC.rds.ServiceTemplate.prototype._getParams = function () {
-    //FIXME: Refactor this.
     var patchServices = function (services, research) {
       var newServices = JSON.parse(JSON.stringify(services));
 
@@ -159,13 +158,13 @@
         if (port !== undefined) {
           this[index].importChecked = "checked";
 
-          port.properties.forEach(patchProperty, newServices);
+          port.properties.forEach(patchProperty, this);
         }
 
         port = findPort(service.servicename, research.portOut);
         if (port !== undefined) {
           this[index].exportChecked = "checked";
-          port.properties.forEach(patchProperty, newServices);
+          port.properties.forEach(patchProperty, this);
         }
       }, newServices);
 
