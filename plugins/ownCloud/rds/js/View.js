@@ -133,58 +133,39 @@
       newServices.forEach(function (service, index) {
         var port;
 
+        function patchProperty(prop) {
+          if (prop.portType === "metadata" && prop.value === true) {
+            this[index].metadataChecked = "checked";
+          }
+          if (prop.portType === "fileStorage" && prop.value === true) {
+            this[index].fileStorageChecked = "checked";
+          }
+
+          if (prop.portType === "customProperties") {
+            service.serviceProjects.forEach(function (proj, index) {
+              prop.value.forEach(function (val) {
+                if (
+                  val.key === "projectId" &&
+                  val.value === proj.prereserve_doi.recid.toString()
+                ) {
+                  this[index].checked = "checked";
+                }
+              }, this);
+            }, this[index].serviceProjects);
+          }
+        }
+
         port = findPort(service.servicename, research.portIn);
         if (port !== undefined) {
           this[index].importChecked = "checked";
 
-          port.properties.forEach(function (prop) {
-            if (prop.portType === "metadata" && prop.value === true) {
-              this[index].metadataChecked = "checked";
-            }
-            if (prop.portType === "fileStorage" && prop.value === true) {
-              this[index].fileStorageChecked = "checked";
-            }
-
-            if (prop.portType === "customProperties") {
-              service.serviceProjects.forEach(function (proj, index) {
-                prop.value.forEach(function (val) {
-                  if (
-                    val.key === "projectId" &&
-                    val.value === proj.prereserve_doi.recid.toString()
-                  ) {
-                    this[index].checked = "checked";
-                  }
-                }, this);
-              }, this[index].serviceProjects);
-            }
-          }, newServices);
+          port.properties.forEach(patchProperty, newServices);
         }
 
         port = findPort(service.servicename, research.portOut);
         if (port !== undefined) {
           this[index].exportChecked = "checked";
-
-          port.properties.forEach(function (prop) {
-            if (prop.portType === "metadata" && prop.value === true) {
-              this[index].metadataChecked = "checked";
-            }
-            if (prop.portType === "fileStorage" && prop.value === true) {
-              this[index].fileStorageChecked = "checked";
-            }
-
-            if (prop.portType === "customProperties") {
-              service.serviceProjects.forEach(function (proj, index) {
-                prop.value.forEach(function (val) {
-                  if (
-                    val.key === "projectId" &&
-                    val.value === proj.prereserve_doi.recid.toString()
-                  ) {
-                    this[index].checked = "checked";
-                  }
-                }, this);
-              }, this[index].serviceProjects);
-            }
-          }, newServices);
+          port.properties.forEach(patchProperty, newServices);
         }
       }, newServices);
 
