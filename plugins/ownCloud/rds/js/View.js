@@ -134,12 +134,13 @@
 
       newServices.forEach(function (service, index) {
         var port;
+        console.log(service);
 
         port = findPort(service.servicename, research.portIn);
         if (port !== undefined) {
           this[index].importChecked = "checked";
 
-          service.properties.forEach(function (prop) {
+          research.properties.forEach(function (prop) {
             if (prop.portType === "metadata" && prop.value === true) {
               this[index].metadataChecked = "checked";
               console.log("metadata checked?");
@@ -166,9 +167,9 @@
 
         port = findPort(service.servicename, research.portOut);
         if (port !== undefined) {
-          this[index].importChecked = "checked";
+          this[index].exportChecked = "checked";
 
-          service.properties.forEach(function (prop) {
+          research.properties.forEach(function (prop) {
             if (prop.portType === "metadata" && prop.value === true) {
               this[index].metadataChecked = "checked";
             }
