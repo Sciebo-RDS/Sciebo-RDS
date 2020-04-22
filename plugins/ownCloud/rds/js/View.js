@@ -114,8 +114,9 @@
     }
   );
   OC.rds.ServiceTemplate.prototype._getParams = function () {
+    //FIXME: Refactor this.
     var patchServices = function (services, research) {
-      var newServices = services;
+      var newServices = JSON.parse(JSON.stringify(services));
 
       var findPort = function (portName, portList) {
         var searchName = "port-" + portName.toLowerCase();
@@ -192,9 +193,6 @@
 
     var studies = this._studies.getActive();
     var services = patchServices(this._services.getAll(), studies);
-
-    console.log(studies);
-    console.log(services);
 
     return {
       research: studies,
