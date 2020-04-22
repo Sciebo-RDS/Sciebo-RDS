@@ -127,6 +127,8 @@
       };
 
       newServices.forEach(function (service, index) {
+        var port;
+        
         port = findPort(service.servicename, research.portIn);
         if (port !== undefined) {
           this[index].importChecked = "checked";
