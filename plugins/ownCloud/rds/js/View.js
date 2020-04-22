@@ -117,6 +117,7 @@
     var patchService = function (service, research) {
       // TODO: this function add the parameter "checked" to serviceProjects and ingoing and outgoing to make the template easier to use.
       // in _services müssen die properties importChecked, exportChecked, fileStorageChecked, metadataChecked mit dem Wert "checked" angelegt werden.
+      var newService = service;
       console.log(service);
       console.log(research);
       return newService;
