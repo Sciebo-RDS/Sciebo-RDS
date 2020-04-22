@@ -155,7 +155,7 @@
                   ) {
                     this[index].checked = "checked";
                   }
-                });
+                }, this[index].serviceProjects);
               }, this[index].serviceProjects);
             }
           }, newServices);
@@ -184,7 +184,7 @@
                   ) {
                     this[index].checked = "checked";
                   }
-                });
+                }, this[index].serviceProjects);
               }, this[index].serviceProjects);
             }
           }, newServices);
