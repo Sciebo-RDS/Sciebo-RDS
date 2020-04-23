@@ -20,10 +20,5 @@
 
       view.render();
     });
-
-    $(".tooltip").tooltipster({
-      theme: "tooltipster-noir",
-      side: ["right", "top"],
-    });
   });
 })(OC, window, jQuery);
