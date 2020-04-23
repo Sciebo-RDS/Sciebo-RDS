@@ -1,6 +1,6 @@
 <?php
-style( 'rds', 'style' );
-script( 'rds', 'handlebars' );
+style( 'rds', 'style', 'tooltips' );
+script( 'rds', 'handlebars', 'tooltips' );
 
 script( 'rds', array( 'Studies', 'Metadata', 'Services', 'View', 'Files', 'main-rds' ) );
 
