@@ -13,7 +13,6 @@ pydoc-markdown = "*"
 requests = "*"
 jaeger-client = "*"
 gevent = "*"
-python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 flask-cors = "*"
