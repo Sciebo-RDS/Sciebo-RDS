@@ -16,6 +16,7 @@ gevent = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 flask-cors = "*"
+jsonschema = "*"
 
 [requires]
 python_version = "3.6"
