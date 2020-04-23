@@ -1,11 +1,18 @@
 #app-content-wrapper {
-    height: 100%;
+  height: 100%;
 }
 
 #research-overview {
-    visibility: visible;
+  visibility: visible;
 }
 
-#research-edit-service, #research-edit-file, #research-edit-metadata {
-    visibility: hidden;
+#research-edit-service,
+#research-edit-file,
+#research-edit-metadata {
+  visibility: hidden;
+}
+
+.icon-info {
+  padding: 11px 20px;
+  vertical-align: text-bottom;
 }
