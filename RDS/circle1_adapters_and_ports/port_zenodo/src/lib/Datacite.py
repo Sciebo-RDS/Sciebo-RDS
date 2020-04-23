@@ -3,23 +3,40 @@ import requests
 import json
 
 schema = requests.get(
-    "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/connnectUI/RDS/circle2_use_cases/metadata/datacite_4.3_schema.json").json()
+    "https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.2/datacite_4.2_schema.json").json()
 
+"""
+This class represents a valid datacite metadata collection.
 
+Initialization:
+    `dc = Datacite(dataciteMetadata)`
+    dataciteMetadata needs to be a valid datacite schema, because otherwise it will throw a validation exception, because we validates it.
+
+    When you have a zenodo api metadata schema, you can initialize the corresponding datacite model:
+    `dc = Datacite.fromZenodoApi(zenodoMetadata)`
+
+Access Creators Attribute:
+    `dc.creators`
+
+Get ZenodoApi Metadata schema:
+    `dc.toZenodoApi()`
+"""
 class Datacite:
     def __init__(self, dataciteMetadata):
         validate(instance=dataciteMetadata, schema=schema)
-        self.data = dataciteMetadata
+
+        for key, value in dataciteMetadata.items():
+            setattr(self, key, value)
 
     def toJson(self):
-        return json.dumps(self.data)
+        return json.dumps(self.__dict__)
 
     def toDict(self):
-        return self.data
+        return self.__dict__
 
     def toZenodoApi(self):
         # TODO: implement here the transformation from datacite to zenodo api
-        newZenodoDict = self.data
+        newZenodoDict = self.toDict()
         return newZenodoDict
 
     @classmethod
