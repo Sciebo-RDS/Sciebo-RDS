@@ -413,6 +413,7 @@
     render: function () {
       this.renderNavigation();
       this.renderContent();
+      $(".icon-info").tipsy({ gravity: "w" });
     },
     loadAll: function () {
       var self = this;
