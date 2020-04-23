@@ -286,6 +286,11 @@
     $("#app-content #btn-save-metadata-and-continue").click(function () {
       self.save_next();
     });
+
+    $("#app-content #btn-skip").click(function () {
+      self._view._stateView += 1;
+      self._view.render();
+    });
   };
   OC.rds.MetadataTemplate.prototype._getParams = function () {};
   OC.rds.MetadataTemplate.prototype._saveFn = function () {
