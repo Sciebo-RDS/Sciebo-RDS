@@ -1,6 +1,6 @@
 <?php
-style( 'rds', array( 'style', 'tooltips' ) );
-script( 'rds', array( 'handlebars', 'tooltips' ) );
+style( 'rds', array( 'style', 'tooltipster.bundle.min' ) );
+script( 'rds', array( 'handlebars', 'tooltipster.bundle.min' ) );
 
 script( 'rds', array( 'Studies', 'Metadata', 'Services', 'View', 'Files', 'main-rds' ) );
 
