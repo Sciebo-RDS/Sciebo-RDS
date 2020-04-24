@@ -25,4 +25,5 @@ use OCP\Util;
 $eventDispatcher = \OC::$server->getEventDispatcher();
 $eventDispatcher->addListener('OCA\Files::loadAdditionalScripts', function(){
     Util::addScript('rds', 'fileActions' );
+    Util::addStyle("rds", "style");
 });
