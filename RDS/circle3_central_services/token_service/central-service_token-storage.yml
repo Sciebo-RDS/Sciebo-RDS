@@ -349,7 +349,7 @@ components:
       properties:
         servicename:
           type: string
-        type:
+        implements:
           type: array
           description: 'ex. ["fileStorage", "metadata"]'
           items:
@@ -379,7 +379,7 @@ components:
           type: string
         client_secret:
           type: string
-        type:
+        implements:
           type: array
           description: 'ex. ["fileStorage", "metadata"]'
           items:
