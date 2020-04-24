@@ -6,8 +6,8 @@ $(document).ready(function () {
     init: function (mimetype) {
       var self = this;
       OCA.Files.fileActions.registerAction({
-        name: "pdf2Zenodo",
-        displayName: t("upload_zenodo", "Push this file to Zenodo"),
+        name: "addFolderToResearch",
+        displayName: t("upload_zenodo", "Add folder to RDS"),
         mime: mimetype,
         permissions: OC.PERMISSION_UPDATE,
         type: OCA.Files.FileActions.TYPE_DROPDOWN,
@@ -24,8 +24,8 @@ $(document).ready(function () {
     init: function (mimetype) {
       var self = this;
       OCA.Files.fileActions.registerAction({
-        name: "pdf2Zenodo",
-        displayName: t("upload_zenodo", "Push this file to Zenodo"),
+        name: "pushFileToResearch",
+        displayName: t("upload_zenodo", "Update RDS file"),
         mime: mimetype,
         permissions: OC.PERMISSION_UPDATE,
         type: OCA.Files.FileActions.TYPE_DROPDOWN,
@@ -63,7 +63,7 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
     attach: function (menu) {
       menu.addMenuEntry({
         id: "createRdsResearch",
-        displayName: "Create rds research project",
+        displayName: "RDS research project",
         templateName: "templateName.ext",
         iconClass: "icon-filetype-text",
         fileType: "file",
