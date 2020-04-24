@@ -154,7 +154,8 @@ class TokenService():
         data = {
             "servicename": service.servicename,
             "authorize_url": service.authorize_url,
-            "date": date
+            "date": date,
+            "implements": service.implements
         }
         state = jwt.encode(data, self.secret, algorithm='HS256')
 
@@ -179,7 +180,8 @@ class TokenService():
                     "id": index,
                     "servicename": token.servicename,
                     "access_token": token.access_token,
-                    "projects": self.getProjectsForToken(token)
+                    "projects": self.getProjectsForToken(token),
+                    "implements": token._service.implements
                 })
         except:
             raise UserNotFoundError(user)
@@ -198,10 +200,10 @@ class TokenService():
 
         if self.testing:
             req = requests.get(f"{self.address}/metadata/project",
-                                json={"apiKey": token.access_token})
+                               json={"apiKey": token.access_token})
         else:
             req = requests.get(f"http://{port}/metadata/project",
-                                json={"apiKey": token.access_token})
+                               json={"apiKey": token.access_token})
 
         if req.status_code >= 300:
             return []
