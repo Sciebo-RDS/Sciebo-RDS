@@ -61,6 +61,7 @@
       <div id="service-configuration-status">
       <?php p($l->t('For which storage, do you want to use this service?')); ?>
       <a target="_blank" rel="noreferrer" class="icon-info"  href="#" title="<?php p($l->t('Informations about storage for metadata and fileStorage.')); ?>"></a>
+      {{#if type.fileStorage}}
         <label>
           <input
             type="checkbox"
@@ -71,6 +72,8 @@
           />
           <?php p($l->t('File Storage')); ?>
         </label>
+        {{/if}}
+        {{#if type.metadata}}
         <label>
           <input
             type="checkbox"
@@ -81,6 +84,7 @@
           />
           <?php p($l->t('Metadata Storage')); ?>
         </label>
+        {{/if}}
       </div>
     </div>
   </div>

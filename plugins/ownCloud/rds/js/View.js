@@ -264,8 +264,6 @@
       }
     });
 
-    this._studies.load(this._studies.getActive().researchIndex);
-
     return self._studies.updateActive(portIn, portOut);
   };
 
