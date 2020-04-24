@@ -14,6 +14,8 @@ use \OCA\OAuth2\Db\Client;
 use \OCA\OAuth2\Db\ClientMapper;
 use \OCA\RDS\Service\UserserviceportService;
 
+use Exception;
+
 /**
 - Define a new page controller
 */
