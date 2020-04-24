@@ -16,6 +16,10 @@
   width: 100%;
 }
 
+.icon-rds-research-small {
+  background-image: url("../img/research-black-small.svg");
+}
+
 .icon-rds-research {
   background-image: url("../img/research-black.svg");
 }

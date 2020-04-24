@@ -11,7 +11,7 @@ $(document).ready(function () {
         mime: mimetype,
         permissions: OC.PERMISSION_UPDATE,
         type: OCA.Files.FileActions.TYPE_DROPDOWN,
-        iconClass: "icon-rds-research",
+        iconClass: "icon-rds-research-small",
         actionHandler: function (filename, context) {
           //TODO: implement here the stuff
           console.log("add here the folder to a research project");
@@ -29,7 +29,7 @@ $(document).ready(function () {
         mime: mimetype,
         permissions: OC.PERMISSION_UPDATE,
         type: OCA.Files.FileActions.TYPE_DROPDOWN,
-        iconClass: "icon-rds-research",
+        iconClass: "icon-rds-research-small",
         actionHandler: function (filename, context) {
           console.log("push this file")
           // TODO push this file in the corresponding research project
@@ -65,7 +65,7 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
         id: "createRdsResearch",
         displayName: "RDS research project",
         templateName: "templateName.ext",
-        iconClass: "icon-rds-research",
+        iconClass: "icon-rds-research-small",
         fileType: "file",
         actionHandler: function () {
           console.log("go to rds and create a research project");
