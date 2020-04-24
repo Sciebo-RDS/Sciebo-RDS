@@ -1,6 +1,25 @@
 // inspired by https://github.com/PaulLereverend/NextcloudExtract/blob/master/js/extraction.js
 $(document).ready(function () {
-  var addFolderToResearch = {};
+  //TODO: check, if rds is activated, because all of this is only then possible.
+
+  var addFolderToResearch = {
+    init: function (mimetype) {
+      var self = this;
+      OCA.Files.fileActions.registerAction({
+        name: "pdf2Zenodo",
+        displayName: t("upload_zenodo", "Push this file to Zenodo"),
+        mime: mimetype,
+        permissions: OC.PERMISSION_UPDATE,
+        type: OCA.Files.FileActions.TYPE_DROPDOWN,
+        iconClass: "icon-extract",
+        actionHandler: function (filename, context) {
+          //TODO: implement here the stuff
+          console.log("add here the folder to a research project");
+        },
+      });
+    },
+  };
+
   var pushFileToResearch = {
     init: function (mimetype) {
       var self = this;
@@ -12,9 +31,11 @@ $(document).ready(function () {
         type: OCA.Files.FileActions.TYPE_DROPDOWN,
         iconClass: "icon-extract",
         actionHandler: function (filename, context) {
+          console.log("push this file")
+          // TODO push this file in the corresponding research project
           /*curl -X POST -d '{"user_id": "admin", "from_service":"Owncloud", "filename":"features.txt"}' https://sciebords-│
 dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:application/json"     */
-          var data = `user_id=${OC.currentUser}&from_service=Owncloud&filename=${filename}`;
+          /*var data = `user_id=${OC.currentUser}&from_service=Owncloud&filename=${filename}`;
           console.log("send data:", data);
           $.ajax({
             type: "POST",
@@ -32,36 +53,40 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
                 OC.dialogs.alert(text, t("rds", t("rds", "Upload to Zenodo")));
               },
             },
-          });
+          });*/
         },
       });
     },
   };
 
-  /*
-  var importZenodo = {
-    attach: function(menu) {
+  var createRdsResearch = {
+    attach: function (menu) {
       menu.addMenuEntry({
-        id: "importZenodo",
-        displayName: "Import file from zenodo",
+        id: "createRdsResearch",
+        displayName: "Create rds research project",
         templateName: "templateName.ext",
         iconClass: "icon-filetype-text",
         fileType: "file",
-        actionHandler: function() {
-          console.log("do something here");
-        }
+        actionHandler: function () {
+          console.log("go to rds and create a research project");
+        },
       });
-    }
-  };*/
+    },
+  };
 
   // TODO: add checks, if the files are in a research folder
-  mimes = ["text/plain", "application/pdf"];
+  mimes = "all";
   mimes.forEach((item) => {
     pushFileToResearch.init(item);
   });
 
   //TODO: check, if a folder was selected and it is not in a research folder
-  //TODO: create research project in newFileMenu, if rds is activated
+  mimes = ["httpd/unix-directory"];
+  mimes.forEach((item) => {
+    addFolderToResearch.init(item);
+  });
 
-  //OC.Plugins.register("OCA.Files.NewFileMenu", importZenodo);
+  //TODO: create research project in newFileMenu
+
+  OC.Plugins.register("OCA.Files.NewFileMenu", createRdsResearch);
 });
