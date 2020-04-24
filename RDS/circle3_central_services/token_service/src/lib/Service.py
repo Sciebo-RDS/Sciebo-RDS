@@ -9,6 +9,7 @@ import logging
 
 logger = logging.getLogger()
 
+
 class Service():
     """
     Represents a service, which can be used in RDS.
@@ -16,15 +17,24 @@ class Service():
     """
 
     _servicename = None
+    _implements = None
 
-    def __init__(self, servicename: str):
+    def __init__(self, servicename: str, implements: list = None):
         self.check_string(servicename, "servicename")
 
         self._servicename = servicename
 
+        self._implements = implements
+        if implements is None:
+            self._implements = []
+
     @property
     def servicename(self):
         return self._servicename
+
+    @property
+    def implements(self):
+        return self._implements
 
     def check_string(self, obj: str, string: str):
         if not obj:
@@ -59,7 +69,8 @@ class Service():
         """
 
         data = {
-            "servicename": self._servicename
+            "servicename": self._servicename,
+            "implements": self._implements
         }
 
         return data
@@ -88,7 +99,7 @@ class Service():
         """
 
         try:
-            return Service(serviceDict["servicename"])
+            return Service(serviceDict["servicename"], serviceDict.get("implements"))
         except:
             raise ValueError("not a valid service dict")
 
@@ -121,8 +132,8 @@ class OAuth2Service(Service):
     _client_id = None
     _client_secret = None
 
-    def __init__(self, servicename: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
-        super(OAuth2Service, self).__init__(servicename)
+    def __init__(self, servicename: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str, implements: list = None):
+        super(OAuth2Service, self).__init__(servicename, implements)
 
         self.check_string(authorize_url, "authorize_url")
         self.check_string(refresh_url, "refresh_url")
@@ -151,7 +162,6 @@ class OAuth2Service(Service):
         Refresh the given oauth2 token for specified user.
         """
 
-
         if not isinstance(token, OAuth2Token):
             logger.debug("call refresh on non oauth token.")
             raise ValueError("parameter token is not an oauthtoken.")
@@ -168,7 +178,6 @@ class OAuth2Service(Service):
 
         logger.debug(f"send data {data}")
 
-        
         req = requests.post(self.refresh_url, data=data,
                             auth=(self.client_id, self.client_secret))
 
@@ -211,7 +220,8 @@ class OAuth2Service(Service):
         """
 
         date = datetime.now() + timedelta(seconds=data["expires_in"])
-        new_token = OAuth2Token(token.user, token.service, data["access_token"], data["refresh_token"], date)
+        new_token = OAuth2Token(token.user, token.service,
+                                data["access_token"], data["refresh_token"], date)
         logger.debug(f"new token {new_token}")
         return new_token
 
@@ -236,7 +246,7 @@ class OAuth2Service(Service):
         """
         Converts the given Service to an oauth2service.
         """
-        return cls(service.servicename, authorize_url, refresh_url, client_id, client_secret)
+        return cls(service.servicename, authorize_url, refresh_url, client_id, client_secret, service.implements)
 
     def __eq__(self, obj):
         return (
@@ -286,12 +296,11 @@ class OAuth2Service(Service):
 
         service = super(OAuth2Service, cls).from_json(serviceStr)
 
-        if "type" in data and str(data["type"]).endswith("OAuth2Service"):
+        try:
             data = data["data"]
-            if "authorize_url" in data and "refresh_url" in data and "client_id" in data and "client_secret" in data:
-                return cls.from_service(service, data["authorize_url"], data["refresh_url"], data["client_id"], data["client_secret"])
-
-        raise ValueError("not a valid service json string.")
+            return cls.from_service(service, data["authorize_url"], data["refresh_url"], data["client_id"], data["client_secret"])
+        except:
+            raise ValueError("not a valid oauthservice json string.")
 
     @classmethod
     def from_dict(cls, serviceDict: dict):

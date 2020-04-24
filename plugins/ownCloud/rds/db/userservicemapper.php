@@ -70,6 +70,20 @@ class UserserviceMapper {
             $svc->setAccessToken( $element['access_token'] );
             $svc->setServiceProjects( $element['projects'] );
 
+            $type = [];
+            foreach ( $element['implements'] as $value ) {
+                switch ( $value ) {
+                    case 'fileStorage':
+                    $type['fileStorage'] = true;
+                    break;
+                    case 'metadata':
+                    $type['metadata'] = true;
+                    break;
+                }
+            }
+            
+            $svc->setType( $type );
+
             $listOfServices[] = $svc;
         }
 

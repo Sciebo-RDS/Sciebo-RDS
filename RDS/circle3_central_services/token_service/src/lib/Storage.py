@@ -130,19 +130,15 @@ class Storage():
         if not isinstance(service, (str, Service)):
             raise ValueError("given parameter not string or service.")
 
-        serviceStr = service.servicename if isinstance(service,
-                                                       (Service)) else service
+        if not isinstance(service, (Service)):
+            service = Service(service)
 
-        logger.debug("Start searching service {}".format(service))
-        for k, svc in enumerate(self._services):
-            if svc.servicename == serviceStr:
-                logger.debug("Found service {}".format(svc))
-                logger.debug("Return index? {}, index: {}".format(
-                    index is not None, k))
-
-                return (svc, k) if index is True else svc
-
-        return (None, None) if index is True else None
+        try:
+            k = self.internal_find_service(service.servicename, self._services)
+            svc = self._services[k]
+            return (svc, k) if index is True else svc
+        except:
+            return (None, None) if index is True else None
 
     def addService(self, service: Service, Force=False):
         """

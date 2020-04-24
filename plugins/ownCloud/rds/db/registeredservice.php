@@ -10,6 +10,7 @@ class RegisteredService extends Entity implements JsonSerializable {
     protected $userId;
     protected $serviceProjects;
     protected $accessToken;
+    protected $type;
 
     public function jsonSerialize() {
         return [
@@ -17,6 +18,7 @@ class RegisteredService extends Entity implements JsonSerializable {
             'userId' => $this->userId,
             'accessToken' => $this->accessToken,
             'serviceProjects' => $this->serviceProjects,
+            'type' => $this->type,
         ];
     }
 }

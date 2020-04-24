@@ -349,6 +349,11 @@ components:
       properties:
         servicename:
           type: string
+        type:
+          type: array
+          description: 'ex. ["fileStorage", "metadata"]'
+          items:
+            type: string
     JSONService:
       title: JSONService
       type: object
@@ -374,6 +379,11 @@ components:
           type: string
         client_secret:
           type: string
+        type:
+          type: array
+          description: 'ex. ["fileStorage", "metadata"]'
+          items:
+            type: string
     JSONToken:
       title: JSONToken
       type: object

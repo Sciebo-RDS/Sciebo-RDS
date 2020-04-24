@@ -279,3 +279,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/serviceprojects'
+        implements:
+          type: array
+          description: 'ex. ["fileStorage", "metadata"]'
+          items:
+            type: string

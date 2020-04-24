@@ -5,12 +5,12 @@
   <hr />
   <div id="selector-available-services">
     <b>{{ servicename }}:</b>
-    {{#if fileStorage}}
+    {{#if type.fileStorage}}
     <div id="fileStorage-wrapper">
       <button id="btn-open-folderpicker">Select folder</button>
     </div>
     {{/if}}
-    {{#if metadata}}
+    {{#if type.fileStorage}}
     <div id="radiobuttons-list">
       {{#each serviceProjects}}
       <label>

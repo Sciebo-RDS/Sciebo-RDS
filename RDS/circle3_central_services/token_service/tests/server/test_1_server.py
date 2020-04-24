@@ -42,7 +42,7 @@ class TestTokenService(unittest.TestCase):
         self.user3 = User("Karla Kolumda")
 
         self.service1 = Service("MusterService")
-        self.service2 = Service("BetonService")
+        self.service2 = Service("BetonService", ["metadata"])
         self.service3 = Service("FahrService")
 
         self.oauthservice1 = OAuth2Service.from_service(

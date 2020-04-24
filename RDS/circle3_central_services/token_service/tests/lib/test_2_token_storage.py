@@ -31,9 +31,12 @@ class Test_TokenStorage(unittest.TestCase):
         self.token_like_token1 = Token(self.user1, self.service1, "DEF")
         self.token2 = Token(self.user1, self.oauthservice1, "XYZ")
 
-        self.oauthtoken1 = OAuth2Token(self.user1, self.oauthservice1, "ABC", "X_ABC")
-        self.oauthtoken_like_token1 = OAuth2Token(self.user1, self.oauthservice1, "ABC", "X_DEF")
-        self.oauthtoken2 = OAuth2Token(self.user1, self.oauthservice1, "XYZ", "X_XYZ")
+        self.oauthtoken1 = OAuth2Token(
+            self.user1, self.oauthservice1, "ABC", "X_ABC")
+        self.oauthtoken_like_token1 = OAuth2Token(
+            self.user1, self.oauthservice1, "ABC", "X_DEF")
+        self.oauthtoken2 = OAuth2Token(
+            self.user1, self.oauthservice1, "XYZ", "X_XYZ")
 
     def test_storage_listUser(self):
         empty_storage = Storage()
@@ -228,11 +231,13 @@ class Test_TokenStorage(unittest.TestCase):
                          msg=f"\nStorage: {self.empty_storage._storage}\n expected: {expected}")
 
     def test_tokenstorage_tokens_under_user(self):
-        oauthtoken1 = OAuth2Token(self.user1, self.oauthservice1, "ABC", "X_ABC")
+        oauthtoken1 = OAuth2Token(
+            self.user1, self.oauthservice1, "ABC", "X_ABC")
         self.empty_storage.addTokenToUser(
             oauthtoken1, self.user1, Force=True)
 
-        oauthtoken2 = OAuth2Token(self.user1, self.oauthservice2, "XYZ", "X_XYZ")
+        oauthtoken2 = OAuth2Token(
+            self.user1, self.oauthservice2, "XYZ", "X_XYZ")
         self.empty_storage.addTokenToUser(
             oauthtoken2, self.user1, Force=True)
 
@@ -244,6 +249,21 @@ class Test_TokenStorage(unittest.TestCase):
         self.empty_storage.addTokenToUser(
             self.token1, self.user1, Force=True)
 
-        
+    def test_tokenstorage_service_implementstype(self):
+        empty_storage = Storage()
+        service = Service("longname", ["fileStorage", "metadata"])
 
-        
+        empty_storage.addUser(self.user1)
+        token1 = Token(self.user1, service, "ISADF")
+        #  test the exception raise
+        with self.assertRaises(ServiceNotExistsError):
+            empty_storage.addTokenToUser(token1, self.user1)
+
+        # now should work
+        self.assertTrue(empty_storage.addService(service))
+        self.assertTrue(empty_storage.addTokenToUser(token1, self.user1))
+
+        self.assertEqual(empty_storage.getTokens(self.user1), [token1])
+
+        with self.assertRaises(ServiceExistsAlreadyError):
+            empty_storage.addService(service)

@@ -46,12 +46,13 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
         "authorize_url": authorize_url,
         "refresh_url": refresh_url,
         "client_id": client_id,
-        "client_secret": client_secret
+        "client_secret": client_secret,
+        "type": ["fileStorage", "metadata"]
     }
     headers = {"Content-Type": "application/json"}
 
     response = requests.post(
-        f"{tokenStorage}/service", data=json.dumps(data), headers=headers)
+        f"{tokenStorage}/service", json=data, headers=headers)
 
     if response.status_code is not 200:
         raise Exception(
@@ -70,4 +71,3 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
 
 
 app = bootstrap("PortZenodo", all=True)
-
