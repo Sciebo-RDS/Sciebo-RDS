@@ -8,7 +8,12 @@
     {{#unless type.metadata}}
       {{#if type.fileStorage}}
       <div id="fileStorage-wrapper">
-        <button id="btn-open-folderpicker">Select folder</button>
+        <label><button id="btn-open-folderpicker">Select folder</button>
+        {{#if filepath }}
+          <?php p($l->t('Current path:')); ?>{{filepath}}
+        {{else}}
+        <?php p($l->t('No path currently selected.')); ?>
+        {{/if}}</label>
       </div>
       {{/if}}
     {{else}}
