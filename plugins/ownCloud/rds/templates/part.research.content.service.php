@@ -12,7 +12,7 @@
         {{#if filepath }}
           <?php p($l->t('Current path:')); ?>{{filepath}}
         {{else}}
-        <?php p($l->t('No path currently selected.')); ?>
+          <?php p($l->t('No path currently selected.')); ?>
         {{/if}}</label>
       </div>
       {{/if}}
