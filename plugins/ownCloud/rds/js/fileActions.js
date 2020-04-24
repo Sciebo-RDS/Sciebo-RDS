@@ -74,16 +74,15 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
     },
   };
 
-  // TODO: add checks, if the files are in a research folder
-  pushFileToResearch.init("all");
-
   //TODO: check, if a folder was selected and it is not in a research folder
   mimes = ["httpd/unix-directory"];
   mimes.forEach((item) => {
     addFolderToResearch.init(item);
   });
+  // TODO: else: the files and folder are in a research folder, so it can be updated through rds
+  pushFileToResearch.init("all");
+
 
   //TODO: create research project in newFileMenu
-
   OC.Plugins.register("OCA.Files.NewFileMenu", createRdsResearch);
 });
