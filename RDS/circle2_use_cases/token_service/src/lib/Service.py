@@ -88,7 +88,7 @@ class Service():
         if "type" in data and str(data["type"]).endswith("Service") and "data" in data:
             data = data["data"]
             if "servicename" in data:
-                return Service(data["servicename"])
+                return Service(data["servicename"], data.get("implements"))
 
         raise ValueError("not a valid service json string.")
 
