@@ -16,3 +16,7 @@
   padding: 11px 10px;
   vertical-align: text-bottom;
 }
+
+#btn-add-new-service {
+  width: 100%;
+}
