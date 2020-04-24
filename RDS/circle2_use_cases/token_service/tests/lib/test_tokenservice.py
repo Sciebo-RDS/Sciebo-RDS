@@ -179,7 +179,7 @@ class Test_TokenService(unittest.TestCase):
         with pact:
             data = self.tokenService.getAllServicesForUser(self.user1)
         self.assertEqual(
-            data, [{"id": 0, "servicename": self.servicename1, "access_token": self.token1.access_token, "projects": []}], msg=str(data[0]))
+            data, [{"id": 0, "servicename": self.servicename1, "access_token": self.token1.access_token, "projects": [], "implements":[]}], msg=str(data[0]))
 
         # test to get all services from one user, with two services
         pact.given(
@@ -212,7 +212,7 @@ class Test_TokenService(unittest.TestCase):
 
         with pact:
             self.assertEqual(self.tokenService.getAllServicesForUser(
-                self.user1), [{"id": 0, "servicename": self.servicename1, "access_token": self.token1.access_token, "projects": []}, {"id": 1, "servicename": self.servicename2, "access_token": self.token2.access_token, "projects": []}])
+                self.user1), [{"id": 0, "servicename": self.servicename1, "access_token": self.token1.access_token, "projects": [], "implements":[]}, {"id": 1, "servicename": self.servicename2, "access_token": self.token2.access_token, "projects": [], "implements":[]}])
 
         pact.given(
             'two services were registered.'
@@ -482,7 +482,8 @@ class Test_TokenService(unittest.TestCase):
         data = {
             "servicename": self.service1.servicename,
             "authorize_url": self.service1.authorize_url,
-            "date": req["date"]
+            "date": req["date"], 
+            "implements": []
         }
 
         state = jwt.encode(data, key, algorithm='HS256')
@@ -510,7 +511,8 @@ class Test_TokenService(unittest.TestCase):
         data = {
             "servicename": self.service1.servicename,
             "authorize_url": self.service1.authorize_url,
-            "date": req["date"]
+            "date": req["date"], 
+            "implements": []
         }
 
         state = jwt.encode(data, key, algorithm='HS256')
