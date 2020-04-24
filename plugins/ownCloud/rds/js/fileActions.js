@@ -1,7 +1,8 @@
 // inspired by https://github.com/PaulLereverend/NextcloudExtract/blob/master/js/extraction.js
-$(document).ready(function() {
-  var pushZenodo = {
-    init: function(mimetype) {
+$(document).ready(function () {
+  var addFolderToResearch = {};
+  var pushFileToResearch = {
+    init: function (mimetype) {
       var self = this;
       OCA.Files.fileActions.registerAction({
         name: "pdf2Zenodo",
@@ -10,10 +11,10 @@ $(document).ready(function() {
         permissions: OC.PERMISSION_UPDATE,
         type: OCA.Files.FileActions.TYPE_DROPDOWN,
         iconClass: "icon-extract",
-        actionHandler: function(filename, context) {
+        actionHandler: function (filename, context) {
           /*curl -X POST -d '{"user_id": "admin", "from_service":"Owncloud", "filename":"features.txt"}' https://sciebords-│
 dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:application/json"     */
-          var data = `user_id=${OC.currentUser}&from_service=Owncloud&filename=${filename}`
+          var data = `user_id=${OC.currentUser}&from_service=Owncloud&filename=${filename}`;
           console.log("send data:", data);
           $.ajax({
             type: "POST",
@@ -22,19 +23,19 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
             data: data,
             dataType: "json",
             statusCode: {
-              200: function(element) {
+              200: function (element) {
                 response = element;
-                text = t("rds","No success.");
+                text = t("rds", "No success.");
                 if (response.success) {
-                  text = t("rds",`Upload ${filename} to Zenodo sucessfully.`);
+                  text = t("rds", `Upload ${filename} to Zenodo sucessfully.`);
                 }
                 OC.dialogs.alert(text, t("rds", t("rds", "Upload to Zenodo")));
-              }
-            }
+              },
+            },
           });
-        }
+        },
       });
-    }
+    },
   };
 
   /*
@@ -52,11 +53,15 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
       });
     }
   };*/
-  
-  mimes = ["text/plain", "application/pdf"]
-  mimes.forEach(item => {
-    pushZenodo.init(item);
+
+  // TODO: add checks, if the files are in a research folder
+  mimes = ["text/plain", "application/pdf"];
+  mimes.forEach((item) => {
+    pushFileToResearch.init(item);
   });
-  
+
+  //TODO: check, if a folder was selected and it is not in a research folder
+  //TODO: create research project in newFileMenu, if rds is activated
+
   //OC.Plugins.register("OCA.Files.NewFileMenu", importZenodo);
 });
