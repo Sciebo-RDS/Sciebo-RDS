@@ -185,7 +185,7 @@
 
     $("#btn-open-folderpicker").click(function () {
       OC.dialogs.filepicker(
-        t("files", "Choose source / target folder"),
+        t("files", "Choose source and / or target folder"),
         function (targetPath, type) {
           //TODO: implement here the stuff for owncloud port
           alert("Selected:" + targetPath + ", type: " + type);
@@ -263,6 +263,8 @@
         portOut.push(tempPortOut);
       }
     });
+
+    this._studies.load(this._studies.getActive().researchIndex);
 
     return self._studies.updateActive(portIn, portOut);
   };
