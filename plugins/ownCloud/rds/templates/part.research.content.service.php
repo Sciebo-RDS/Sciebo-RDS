@@ -5,6 +5,12 @@
   <hr />
   <div id="selector-available-services">
     <b>{{ servicename }}:</b>
+    {{#if fileStorage}}
+    <div id="fileStorage-wrapper">
+      <button id="btn-open-folderpicker">Select folder</button>
+    </div>
+    {{/if}}
+    {{#if metadata}}
     <div id="radiobuttons-list">
       {{#each serviceProjects}}
       <label>
@@ -25,9 +31,11 @@
       <?php p($l->t('No projects found.')); ?>
       {{/each}}
     </div>
+    {{/if}}
     <div id="service-configuration">
       <div id="service-configuration-transfergoing">
-        <?php p($l->t('For which transfer, do you want to use this service?')); ?>
+        <?php p($l->t('For which transfer, do you want to use this service?')); ?> 
+        <a target="_blank" rel="noreferrer" class="icon-info"  href="#" title="<?php p($l->t('Informations about ingoing and outgoing traffic.')); ?>"></a>
         <label>
           <input
             type="checkbox"
@@ -51,6 +59,7 @@
       </div>
       <div id="service-configuration-status">
       <?php p($l->t('For which storage, do you want to use this service?')); ?>
+      <a target="_blank" rel="noreferrer" class="icon-info"  href="#" title="<?php p($l->t('Informations about storage for metadata and fileStorage.')); ?>"></a>
         <label>
           <input
             type="checkbox"

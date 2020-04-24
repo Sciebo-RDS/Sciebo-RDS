@@ -183,6 +183,19 @@
   OC.rds.ServiceTemplate.prototype._afterTemplateRenders = function () {
     var self = this;
 
+    $("#btn-open-folderpicker").click(function () {
+      OC.dialogs.filepicker(
+        t("files", "Choose source / target folder"),
+        function (targetPath, type) {
+          //TODO: implement here the stuff for owncloud port
+          alert("Selected:" + targetPath + ", type: " + type);
+        },
+        false,
+        "httpd/unix-directory",
+        true
+      );
+    });
+
     $("#app-content #btn-save-research").click(function () {
       self.save();
     });
