@@ -3,13 +3,6 @@
 
   OC.rds = OC.rds || {};
 
-  $(document).ready(function () {
-    OC.rds.translations = {
-      newresearch: $("#new-research-string").text(),
-      saveNotFinished: $("#save-not-finished").text(),
-    };
-  });
-
   OC.rds.AbstractTemplate = function (divName, view) {
     this._divName = divName;
     this._view = view;
@@ -60,7 +53,7 @@
       return this._saveFn()
         .done(function () {})
         .fail(function () {
-          alert(OC.rds.translations.saveNotFinished);
+          alert(t("rds", "Your entries could not be saved."));
         });
     },
 
