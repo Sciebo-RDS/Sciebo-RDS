@@ -191,11 +191,11 @@
         t("files", "Choose source and / or target folder"),
         function (targetPath, type) {
           $("#fileStorage-path").html(targetPath);
-          this.getAll().forEach(function (element, index) {
+          this.forEach(function (element, index) {
             if (element.servicename === servicename) {
               this[index].filepath = filepath;
             }
-          }, self._services);
+          }, self._services.getAll());
           self._view.render();
         },
         false,
