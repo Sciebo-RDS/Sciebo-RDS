@@ -131,31 +131,30 @@
         return port.port;
       };
 
-      newServices.forEach(function (service, index) {
+      newServices.forEach(function (service, indexSvc) {
         var port;
 
         function patchProperty(prop) {
           if (prop.portType === "metadata" && prop.value === true) {
-            this[index].metadataChecked = "checked";
+            this[indexSvc].metadataChecked = "checked";
           }
           if (prop.portType === "fileStorage" && prop.value === true) {
-            this[index].fileStorageChecked = "checked";
+            this[indexSvc].fileStorageChecked = "checked";
           }
 
           if (prop.portType === "customProperties") {
             service.serviceProjects.forEach(function (proj, indexProj) {
-              var svc = this;
-              prop.value.forEach(function (val, indexProp) {
+              prop.value.forEach(function (val) {
                 if (
                   val.key === "projectId" &&
                   val.value === proj.prereserve_doi.recid.toString()
                 ) {
-                  this[indexProj].checked = "checked";
+                  this[indexSvc].serviceProjects[indexProj].checked = "checked";
                 }
                 if (val.key === "filepath") {
-                  svc[indexProj].filepath = val.value;
+                  this[indexSvc].filepath = val.value;
                 }
-              }, this[indexProj].serviceProjects);
+              }, this);
             }, this);
           }
         }
@@ -179,8 +178,6 @@
 
     var studies = this._studies.getActive();
     var services = patchServices(this._services.getAll(), studies);
-
-    console.log(services);
 
     return {
       research: studies,
