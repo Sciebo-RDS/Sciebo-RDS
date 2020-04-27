@@ -143,19 +143,20 @@
           }
 
           if (prop.portType === "customProperties") {
-            service.serviceProjects.forEach(function (proj, index) {
-              prop.value.forEach(function (val) {
+            service.serviceProjects.forEach(function (proj, indexProj) {
+              var svc = this;
+              prop.value.forEach(function (val, indexProp) {
                 if (
                   val.key === "projectId" &&
                   val.value === proj.prereserve_doi.recid.toString()
                 ) {
-                  this[index].checked = "checked";
+                  this[indexProj].checked = "checked";
                 }
                 if (val.key === "filepath") {
-                  service.filepath = val.value;
+                  svc[indexProj].filepath = val.value;
                 }
-              }, this);
-            }, this[index].serviceProjects);
+              }, this[indexProj].serviceProjects);
+            }, this);
           }
         }
 
@@ -179,7 +180,7 @@
     var studies = this._studies.getActive();
     var services = patchServices(this._services.getAll(), studies);
 
-    console.log(services)
+    console.log(services);
 
     return {
       research: studies,
