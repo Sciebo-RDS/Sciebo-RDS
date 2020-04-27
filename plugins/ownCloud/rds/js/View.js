@@ -161,14 +161,14 @@
 
         port = findPort(service.servicename, research.portIn);
         if (port !== undefined) {
-          this[index].importChecked = "checked";
+          this[indexSvc].importChecked = "checked";
 
           port.properties.forEach(patchProperty, this);
         }
 
         port = findPort(service.servicename, research.portOut);
         if (port !== undefined) {
-          this[index].exportChecked = "checked";
+          this[indexSvc].exportChecked = "checked";
           port.properties.forEach(patchProperty, this);
         }
       }, newServices);
