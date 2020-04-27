@@ -193,7 +193,7 @@
           $("#fileStorage-path").html(targetPath);
           self._services.getAll().forEach(function (element, index) {
             if (element.servicename === servicename) {
-              this[index].filepath = targetPath;
+              this[index].filepath = targetPath.trim();
             }
           }, self._services.getAll());
           self._view.render();
