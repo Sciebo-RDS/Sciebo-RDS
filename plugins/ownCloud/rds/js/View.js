@@ -191,7 +191,7 @@
         t("files", "Choose source and / or target folder"),
         function (targetPath, type) {
           $("#fileStorage-path").html(targetPath);
-          this.forEach(function (element, index) {
+          self._services.getAll().forEach(function (element, index) {
             if (element.servicename === servicename) {
               this[index].filepath = filepath;
             }
