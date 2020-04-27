@@ -225,33 +225,32 @@
       tempPortIn["port"] = element.servicename;
       tempPortOut["port"] = element.servicename;
 
+      var valProp = [];
+
       var projectId = $(
         "input[name='radiobutton-" + element.servicename + "']:checked"
       ).val();
 
       if (projectId !== undefined) {
-        var propertyProjectInService = {
+        valProp.push({
           key: "projectId",
           value: projectId,
-        };
-        properties.push({
-          portType: "customProperties",
-          value: [propertyProjectInService],
         });
       }
 
       var filePath = $("#fileStorage-path").html();
 
       if (filePath !== undefined) {
-        var propertyProjectInService = {
+        valProp.push({
           key: "filepath",
           value: filePath,
-        };
-        properties.push({
-          portType: "customProperties",
-          value: [propertyProjectInService],
         });
       }
+
+      properties.push({
+        portType: "customProperties",
+        value: valProp,
+      });
 
       $.each(
         $(
