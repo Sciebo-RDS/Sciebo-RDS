@@ -8,12 +8,16 @@
     {{#unless type.metadata}}
       {{#if type.fileStorage}}
       <div id="fileStorage-wrapper">
-        <label><button id="btn-open-folderpicker">Select folder</button>
-        {{#if filepath }}
-          <?php p($l->t('Current path:')); ?>{{filepath}}
-        {{else}}
-          <?php p($l->t('No path currently selected.')); ?>
-        {{/if}}</label>
+        <label><button id="btn-open-folderpicker" data-service="{{servicename}}">Select folder</button>
+          {{#if filepath }}
+            <?php p($l->t('Current path:')); ?>
+            <span id="fileStorage-path">
+                {{filepath}}
+            </span>
+          {{else}}
+            <?php p($l->t('No path currently selected.')); ?>
+          {{/if}}
+        </label>
       </div>
       {{/if}}
     {{else}}

@@ -183,12 +183,20 @@
   OC.rds.ServiceTemplate.prototype._afterTemplateRenders = function () {
     var self = this;
 
-    $("#btn-open-folderpicker").click(function () {
+    var btn = $("#btn-open-folderpicker");
+    var servicename = btn.data("service");
+
+    btn.click(function () {
       OC.dialogs.filepicker(
         t("files", "Choose source and / or target folder"),
         function (targetPath, type) {
-          //TODO: implement here the stuff for owncloud port
-          alert("Selected:" + targetPath + ", type: " + type);
+          $("#fileStorage-path").html(targetPath);
+          this.getAll().forEach(function (element, index) {
+            if (element.servicename === servicename) {
+              this[index].filepath = filepath;
+            }
+          }, self._services);
+          self._view.render();
         },
         false,
         "httpd/unix-directory",
@@ -214,21 +222,36 @@
       var tempPortIn = {};
       var tempPortOut = {};
 
-      var value = $(
-        "input[name='radiobutton-" + element.servicename + "']:checked"
-      ).val();
-
       tempPortIn["port"] = element.servicename;
       tempPortOut["port"] = element.servicename;
 
-      var propertyProjectInService = {
-        key: "projectId",
-        value: value,
-      };
-      properties.push({
-        portType: "customProperties",
-        value: [propertyProjectInService],
-      });
+      var projectId = $(
+        "input[name='radiobutton-" + element.servicename + "']:checked"
+      ).val();
+
+      if (projectId !== undefined) {
+        var propertyProjectInService = {
+          key: "projectId",
+          value: projectId,
+        };
+        properties.push({
+          portType: "customProperties",
+          value: [propertyProjectInService],
+        });
+      }
+
+      var filePath = $("#fileStorage-path").html();
+
+      if (filePath !== undefined) {
+        var propertyProjectInService = {
+          key: "filepath",
+          value: filePath,
+        };
+        properties.push({
+          portType: "customProperties",
+          value: [propertyProjectInService],
+        });
+      }
 
       $.each(
         $(
