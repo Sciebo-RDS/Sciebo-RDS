@@ -241,7 +241,7 @@
         });
       }
 
-      var filePath = $("#fileStorage-path").html();
+      var filePath = $("#fileStorage-path").html().trim();
 
       if (filePath !== undefined) {
         valProp.push({
