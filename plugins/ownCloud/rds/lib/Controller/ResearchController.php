@@ -103,6 +103,12 @@ class ResearchController extends Controller
         });
     }
 
+     /**
+     * Returns all filepaths in researches.
+     * 
+     * @NoCSRFRequired
+     * @NoAdminRequired
+     */
     public function files() {
         return $this->handleNotFound(function () {
             return $this->service->files($this->userId);
