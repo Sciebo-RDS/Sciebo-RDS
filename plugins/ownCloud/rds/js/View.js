@@ -143,16 +143,19 @@
           }
 
           if (prop.portType === "customProperties") {
-            service.serviceProjects.forEach(function (proj, indexProj) {
-              prop.value.forEach(function (val) {
+            prop.value.forEach(function (val) {
+              if (val.key === "filepath") {
+                this[indexSvc].filepath = val.value;
+              }
+
+              console.log(val)
+
+              service.serviceProjects.forEach(function (proj, indexProj) {
                 if (
                   val.key === "projectId" &&
                   val.value === proj.prereserve_doi.recid.toString()
                 ) {
                   this[indexSvc].serviceProjects[indexProj].checked = "checked";
-                }
-                if (val.key === "filepath") {
-                  this[indexSvc].filepath = val.value;
                 }
               }, this);
             }, this);
