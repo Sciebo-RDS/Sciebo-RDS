@@ -152,7 +152,7 @@
                   this[index].checked = "checked";
                 }
                 if (val.key === "filepath") {
-                  self.filepath = val.value;
+                  service.filepath = val.value;
                 }
               }, this);
             }, this[index].serviceProjects);
@@ -178,6 +178,8 @@
 
     var studies = this._studies.getActive();
     var services = patchServices(this._services.getAll(), studies);
+
+    console.log(services)
 
     return {
       research: studies,
