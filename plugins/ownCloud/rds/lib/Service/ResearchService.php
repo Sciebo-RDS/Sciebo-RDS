@@ -87,4 +87,29 @@ class ResearchService {
             $this->handleException( $e );
         }
     }
+
+    public function files( $userId ) {
+        try {
+            $allResearch = $this->mapper->findAll( $userId );
+            $folders = [];
+            
+            foreach ( $allResearch as $research ) {
+                foreach ( array_merge( $research->getPortIn(), $research->getPortOut() ) as $port ) {
+                    foreach ( $port['properties'] as $prop ) {
+                        if ( $prop['portType'] == 'customProperties' ) {
+                            foreach ( $prop['value'] as $val ) {
+                                if ( $val['key'] == 'filepath' ) {
+                                    $folders[] = $val['value'];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return $folders;
+        } catch( Exception $e ) {
+            $this->handleException( $e );
+        }
+    }
 }

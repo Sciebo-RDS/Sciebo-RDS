@@ -102,4 +102,10 @@ class ResearchController extends Controller
             return $this->service->delete($id, $this->userId);
         });
     }
+
+    public function files() {
+        return $this->handleNotFound(function () {
+            return $this->service->files($this->userId);
+        });
+    }
 }

@@ -24,5 +24,8 @@ $application->registerRoutes( $this, [
 
         # Metadata additional API endpoint
         ['name' => 'metadata#jsonschema',                     'url' => '/metadata/jsonschema',                  'verb' => 'GET'],
+
+        # Research additional API endpoint
+        ['name' => 'research#files',                          'url' => '/research/files',                  'verb' => 'GET'],
     ]
 ] );
