@@ -148,8 +148,6 @@
                 this[indexSvc].filepath = val.value;
               }
 
-              console.log(val)
-
               service.serviceProjects.forEach(function (proj, indexProj) {
                 if (
                   val.key === "projectId" &&
