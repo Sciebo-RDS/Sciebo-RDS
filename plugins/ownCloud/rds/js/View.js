@@ -193,7 +193,7 @@
       OC.dialogs.filepicker(
         t("files", "Choose source and / or target folder"),
         function (targetPath, type) {
-          $("#fileStorage-path").html(targetPath);
+          $("#fileStorage-path-" + servicename).html(targetPath);
           self._services.getAll().forEach(function (element, index) {
             if (element.servicename === servicename) {
               this[index].filepath = targetPath.trim();
@@ -241,7 +241,9 @@
         });
       }
 
-      var filePath = $("#fileStorage-path").html().trim();
+      var filePath = $("#fileStorage-path-" + element.servicename)
+        .html()
+        .trim();
 
       if (filePath !== undefined) {
         valProp.push({

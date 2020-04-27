@@ -11,7 +11,7 @@
         <label><button id="btn-open-folderpicker" data-service="{{servicename}}">Select folder</button>
           {{#if filepath }}
             <?php p($l->t('Current path:')); ?>
-            <span id="fileStorage-path">
+            <span id="fileStorage-path-{{servicename}}">
                 {{filepath}}
             </span>
           {{else}}
