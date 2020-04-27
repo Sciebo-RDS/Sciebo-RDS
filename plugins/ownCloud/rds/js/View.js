@@ -114,6 +114,8 @@
     }
   );
   OC.rds.ServiceTemplate.prototype._getParams = function () {
+    var self = this;
+
     var patchServices = function (services, research) {
       var newServices = JSON.parse(JSON.stringify(services));
 
@@ -150,7 +152,7 @@
                   this[index].checked = "checked";
                 }
                 if (val.key === "filepath") {
-                  this[index].filepath = val.value;
+                  self.filepath = val.value;
                 }
               }, this);
             }, this[index].serviceProjects);
