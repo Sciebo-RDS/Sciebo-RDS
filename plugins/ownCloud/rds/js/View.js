@@ -243,11 +243,11 @@
 
       var filePathObj = $("#fileStorage-path-" + element.servicename);
       if (filePathObj.length) {
-        filePathObj.html().trim();
-        if (filePath !== undefined) {
+        var filepath = filePathObj.html().trim();
+        if (filepath !== undefined) {
           valProp.push({
             key: "filepath",
-            value: filePath,
+            value: filepath,
           });
         }
       }
