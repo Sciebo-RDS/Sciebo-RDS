@@ -149,6 +149,9 @@
                 ) {
                   this[index].checked = "checked";
                 }
+                if (val.key === "filepath") {
+                  this[index].filepath = val.value;
+                }
               }, this);
             }, this[index].serviceProjects);
           }
