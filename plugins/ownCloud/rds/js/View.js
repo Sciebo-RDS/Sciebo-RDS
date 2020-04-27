@@ -241,15 +241,15 @@
         });
       }
 
-      var filePath = $("#fileStorage-path-" + element.servicename)
-        .html()
-        .trim();
-
-      if (filePath !== undefined) {
-        valProp.push({
-          key: "filepath",
-          value: filePath,
-        });
+      var filePathObj = $("#fileStorage-path-" + element.servicename);
+      if (filePathObj.length) {
+        filePathObj.html().trim();
+        if (filePath !== undefined) {
+          valProp.push({
+            key: "filepath",
+            value: filePath,
+          });
+        }
       }
 
       properties.push({
