@@ -110,13 +110,14 @@
       conn.status = 2;
 
       this._activeResearch = conn;
-      this._metadata.load(conn.researchIndex);
 
       return $.ajax({
         url: this._baseUrl + "/" + conn.researchIndex,
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(conn),
+      }).done(function () {
+        this._metadata.load(conn.researchIndex);
       });
     },
   };
