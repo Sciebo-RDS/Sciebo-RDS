@@ -2,10 +2,12 @@
 (function (OC, window, $, undefined) {
   "use strict";
 
+  var fileActions = OCA.Files.fileActions;
+
   var addFolderToResearch = {
     init: function (mimetype) {
       var self = this;
-      OCA.Files.fileActions.registerAction({
+      fileActions.registerAction({
         name: "addFolderToResearch",
         displayName: t("upload_zenodo", "Add folder to RDS"),
         mime: mimetype,
@@ -23,7 +25,7 @@
   var pushFileToResearch = {
     init: function (mimetype) {
       var self = this;
-      OCA.Files.fileActions.registerAction({
+      fileActions.registerAction({
         name: "pushFileToResearch",
         displayName: t("upload_zenodo", "Update RDS file"),
         mime: mimetype,
@@ -79,7 +81,7 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
   $.get(OC.generateUrl("/apps/rds/research") + "/files").done(function (
     directories
   ) {
-    OCA.Files.fileActions.addAdvancedFilter(function (actions, context) {
+    fileActions.addAdvancedFilter(function (actions, context) {
       var fileName = context.$file.data("file");
       var mimetype = context.$file.data("mime");
       var dir = context.fileList.getCurrentDirectory();
