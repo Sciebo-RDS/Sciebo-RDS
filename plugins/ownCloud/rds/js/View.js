@@ -397,6 +397,9 @@
   OC.rds.View.prototype = {
     renderContent: function () {
       var self = this;
+      if (self._studies.getActive === undefined) {
+        self._stateView = 0;
+      }
       this._templates[self._stateView].render();
     },
     renderNavigation: function () {
