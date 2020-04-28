@@ -79,14 +79,9 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
   $.get(OC.generateUrl("/apps/rds/research") + "/files").done(function (
     directories
   ) {
-    var mimes = ["httpd/unix-directory"];
-    mimes.forEach((item) => {
-      addFolderToResearch.init(item);
-    });
-    pushFileToResearch.init("all");
+    var rdsDirectories = JSON.parse(directories);
 
     OCA.Files.fileActions.addAdvancedFilter(function (actions, context) {
-      var rdsDirectories = JSON.parse(directories);
       var fileName = context.$file.data("file");
       var mimetype = context.$file.data("mime");
       var dir = context.fileList.getCurrentDirectory();
@@ -108,5 +103,11 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
 
       return actions;
     });
+
+    var mimes = ["httpd/unix-directory"];
+    mimes.forEach((item) => {
+      addFolderToResearch.init(item);
+    });
+    pushFileToResearch.init("all");
   });
 })(OC, window, jQuery);
