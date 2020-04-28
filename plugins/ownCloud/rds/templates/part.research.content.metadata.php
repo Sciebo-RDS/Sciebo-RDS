@@ -1,4 +1,3 @@
-This are the fields for metadata.
 
 <?php
 

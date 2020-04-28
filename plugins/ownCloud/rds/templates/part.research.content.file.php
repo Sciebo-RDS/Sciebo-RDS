@@ -1,4 +1,3 @@
-this are the fields of files
 
 <div id="wrapper-auto-upload">
     <label>
