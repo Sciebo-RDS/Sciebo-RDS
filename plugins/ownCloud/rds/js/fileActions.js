@@ -78,36 +78,60 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
 
   OC.Plugins.register("OCA.Files.NewFileMenu", createRdsResearch);
 
-  $.get(OC.generateUrl("/apps/rds/research") + "/files").done(function (
-    directories
-  ) {
-    fileActions.addAdvancedFilter(function (actions, context) {
-      var fileName = context.$file.data("file");
-      var mimetype = context.$file.data("mime");
-      var dir = context.fileList.getCurrentDirectory();
+  OC.rds.ResearchDirectories = function () {
+    this._folders = [];
+  };
 
-      found = false;
-      directories.forEach(function (item) {
-        if (item === dir) {
-          found = true;
-        }
-      });
+  OC.rds.ResearchDirectories.prototype = {
+    getFolders: function () {
+      return this._folders;
+    },
+    load: function () {
+      var self = this;
+      var deferred = $.Deferred();
+      $.get(OC.generateUrl("/apps/rds/research") + "/files")
+        .done(function (directories) {
+          self._folders = directories;
+          deferred.resolve();
+        })
+        .fail(function () {
+          deferred.reject();
+        });
+      return deferred.promise();
+    },
+  };
 
-      if (found) {
-        if (mimetype === "httpd/unix-directory") {
-          delete actions.addFolderToResearch;
-        }
-      } else {
-        delete actions.pushFileToResearch;
+  var directories = new OC.rds.ResearchDirectories();
+  directories
+    .load()
+    .fail(alert(t("rds", "Research folders could not be loaded.")));
+
+  fileActions.addAdvancedFilter(function (actions, context) {
+    var fileName = context.$file.data("file");
+    var mimetype = context.$file.data("mime");
+    var dir = context.fileList.getCurrentDirectory();
+
+    found = false;
+    directories.getFolders().forEach(function (item) {
+      if (item === dir) {
+        found = true;
       }
-
-      return actions;
     });
 
-    var mimes = ["httpd/unix-directory"];
-    mimes.forEach((item) => {
-      addFolderToResearch.init(item);
-    });
-    pushFileToResearch.init("all");
+    if (found) {
+      if (mimetype === "httpd/unix-directory") {
+        delete actions.addFolderToResearch;
+      }
+    } else {
+      delete actions.pushFileToResearch;
+    }
+
+    return actions;
   });
+
+  var mimes = ["httpd/unix-directory"];
+  mimes.forEach((item) => {
+    addFolderToResearch.init(item);
+  });
+  pushFileToResearch.init("all");
 })(OC, window, jQuery);
