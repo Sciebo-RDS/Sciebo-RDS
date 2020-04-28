@@ -114,4 +114,17 @@ class ResearchController extends Controller
             return $this->service->files($this->userId);
         });
     }
+
+
+     /**
+     * Make an update request to exporter func in RDS
+     * 
+     * @NoCSRFRequired
+     * @NoAdminRequired
+     */
+    public function updateFiles($id, $force) {
+        return $this->handleNotFound(function () use($id, $force) {
+            return $this->service->updateFiles($this->userId, $id, $force);
+        });
+    }
 }

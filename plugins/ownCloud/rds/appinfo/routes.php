@@ -19,13 +19,14 @@ $application->registerRoutes( $this, [
     ],
     'routes' => [
         # template endpoints
-        ['name' => 'page#index',                              'url' => '/',                             'verb' => 'GET'],
-        ['name' => 'page#researchEdit',                       'url' => '/edit/{id}',                   'verb' => 'GET'],
+        ['name' => 'page#index',                              'url' => '/',                                 'verb' => 'GET'],
+        ['name' => 'page#researchEdit',                       'url' => '/edit/{id}',                        'verb' => 'GET'],
 
         # Metadata additional API endpoint
-        ['name' => 'metadata#jsonschema',                     'url' => '/metadata/jsonschema',                  'verb' => 'GET'],
+        ['name' => 'metadata#jsonschema',                     'url' => '/metadata/jsonschema',             'verb' => 'GET'],
 
         # Research additional API endpoint
         ['name' => 'research#files',                          'url' => '/research/files',                  'verb' => 'GET'],
+        ['name' => 'research#updateFiles',                    'url' => '/research/files',                  'verb' => 'POST'],
     ]
 ] );

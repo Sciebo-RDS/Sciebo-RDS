@@ -31,7 +31,7 @@ $(document).ready(function () {
         type: OCA.Files.FileActions.TYPE_DROPDOWN,
         iconClass: "icon-rds-research-small",
         actionHandler: function (filename, context) {
-          console.log("push this file")
+          console.log("push this file");
           // TODO push this file in the corresponding research project
           /*curl -X POST -d '{"user_id": "admin", "from_service":"Owncloud", "filename":"features.txt"}' https://sciebords-│
 dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:application/json"     */
@@ -82,7 +82,35 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
   // TODO: else: the files and folder are in a research folder, so it can be updated through rds
   pushFileToResearch.init("all");
 
-
   //TODO: create research project in newFileMenu
   OC.Plugins.register("OCA.Files.NewFileMenu", createRdsResearch);
+
+  OCA.Files.FileActions.addAdvancedFilter(function (actions, context) {
+    //TODO Add filter to actions
+    // Examples:
+    //https://github.com/owncloud/core/blob/d65e3c8dbd80f84f8d1cfe09ac90bfa4112b7eb3/apps/files_sharing/js/app.js#L287
+    //https://github.com/owncloud/core/blob/bd3df85448af0e32bf199d6772b5b5eaf8c02091/apps/files/tests/js/fileactionsSpec.js#L696
+
+    var fileName = context.$file.data("file");
+    var mimetype = context.$file.data("mime");
+    var dir = context.fileList.getCurrentDirectory();
+    var rdsDirectories = JSON.parse(
+      $.get(OC.generateUrl("/apps/rds/research") + "/files")
+    );
+
+    found = false;
+    rdsDirectories.forEach(function (item) {
+      if (item === dir) {
+        found = true;
+      }
+    });
+    
+    if (found) {
+      if (mimetype === "httpd/unix-directory") {
+        delete actions.addFolderToResearch;
+      }
+    } else {
+      delete actions.pushFileToResearch;
+    }
+  });
 });

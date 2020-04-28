@@ -92,7 +92,7 @@ class ResearchService {
         try {
             $allResearch = $this->mapper->findAll( $userId );
             $folders = [];
-            
+
             foreach ( $allResearch as $research ) {
                 foreach ( array_merge( $research->getPortIn(), $research->getPortOut() ) as $port ) {
                     foreach ( $port['properties'] as $prop ) {
@@ -108,6 +108,14 @@ class ResearchService {
             }
 
             return $folders;
+        } catch( Exception $e ) {
+            $this->handleException( $e );
+        }
+    }
+
+    public function updateFiles( $userId, $researchId, $force = null ) {
+        try {
+            // TODO: execute exporter in RDS, force removes all files and add them anew
         } catch( Exception $e ) {
             $this->handleException( $e );
         }
