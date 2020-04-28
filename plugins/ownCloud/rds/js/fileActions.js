@@ -3,7 +3,7 @@
   "use strict";
 
   OC.rds = OC.rds || {};
-  
+
   var fileActions = OCA.Files.fileActions;
 
   var addFolderToResearch = {
@@ -104,9 +104,9 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
   };
 
   var directories = new OC.rds.ResearchDirectories();
-  directories
-    .load()
-    .fail(alert(t("rds", "Research folders could not be loaded.")));
+  directories.load().fail(function () {
+    alert(t("rds", "Research folders could not be loaded."));
+  });
 
   fileActions.addAdvancedFilter(function (actions, context) {
     var fileName = context.$file.data("file");
