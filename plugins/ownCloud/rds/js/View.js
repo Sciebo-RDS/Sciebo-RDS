@@ -417,6 +417,7 @@
         self._studies
           .create()
           .done(function () {
+            self._stateView = 1;
             self.render();
           })
           .fail(function () {
