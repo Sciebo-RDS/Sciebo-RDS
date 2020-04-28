@@ -79,28 +79,29 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
   $.get(OC.generateUrl("/apps/rds/research") + "/files").done(function (
     directories
   ) {
+    $(document).ready(function () {
+      OCA.Files.fileActions.addAdvancedFilter(function (actions, context) {
+        var fileName = context.$file.data("file");
+        var mimetype = context.$file.data("mime");
+        var dir = context.fileList.getCurrentDirectory();
 
-    OCA.Files.fileActions.addAdvancedFilter(function (actions, context) {
-      var fileName = context.$file.data("file");
-      var mimetype = context.$file.data("mime");
-      var dir = context.fileList.getCurrentDirectory();
+        found = false;
+        directories.forEach(function (item) {
+          if (item === dir) {
+            found = true;
+          }
+        });
 
-      found = false;
-      directories.forEach(function (item) {
-        if (item === dir) {
-          found = true;
+        if (found) {
+          if (mimetype === "httpd/unix-directory") {
+            delete actions.addFolderToResearch;
+          }
+        } else {
+          delete actions.pushFileToResearch;
         }
+
+        return actions;
       });
-
-      if (found) {
-        if (mimetype === "httpd/unix-directory") {
-          delete actions.addFolderToResearch;
-        }
-      } else {
-        delete actions.pushFileToResearch;
-      }
-
-      return actions;
     });
 
     var mimes = ["httpd/unix-directory"];
