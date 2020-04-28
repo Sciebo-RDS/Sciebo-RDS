@@ -74,21 +74,18 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
     },
   };
 
-  //TODO: check, if a folder was selected and it is not in a research folder
-  var mimes = ["httpd/unix-directory"];
-  mimes.forEach((item) => {
-    addFolderToResearch.init(item);
-  });
-  // TODO: else: the files and folder are in a research folder, so it can be updated through rds
-  pushFileToResearch.init("all");
-
-  //TODO: create research project in newFileMenu
   OC.Plugins.register("OCA.Files.NewFileMenu", createRdsResearch);
 
-  OCA.Files.fileActions.addAdvancedFilter(function (actions, context) {
-    $.get(OC.generateUrl("/apps/rds/research") + "/files").done(function (
-      directories
-    ) {
+  $.get(OC.generateUrl("/apps/rds/research") + "/files").done(function (
+    directories
+  ) {
+    var mimes = ["httpd/unix-directory"];
+    mimes.forEach((item) => {
+      addFolderToResearch.init(item);
+    });
+    pushFileToResearch.init("all");
+
+    OCA.Files.fileActions.addAdvancedFilter(function (actions, context) {
       var rdsDirectories = JSON.parse(directories);
       var fileName = context.$file.data("file");
       var mimetype = context.$file.data("mime");
