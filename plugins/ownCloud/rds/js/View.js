@@ -171,7 +171,13 @@
     };
 
     var studies = this._studies.getActive();
-    var services = patchServices(this._services.getAll(), studies);
+    var services;
+
+    if (studies === undefined) {
+      services = [];
+    } else {
+      services = patchServices(this._services.getAll(), studies);
+    }
 
     return {
       research: studies,
