@@ -112,14 +112,31 @@
 
       this._activeResearch = conn;
 
-      return $.ajax({
+      var deferred = $.Deferred();
+      function reject() {
+        deferred.reject();
+      }
+
+      $.ajax({
         url: this._baseUrl + "/" + conn.researchIndex,
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(conn),
-      }).done(function () {
-        return self._metadata.load(conn.researchIndex);
-      });
+      })
+        .done(function () {
+          self._metadata
+            .load(conn.researchIndex)
+            .done(function () {
+              deferred.resolve();
+            })
+            .fail(function () {
+              reject();
+            });
+        })
+        .fail(function () {
+          reject();
+        });
+      return deferred.promise();
     },
   };
 })(OC, window, jQuery);
