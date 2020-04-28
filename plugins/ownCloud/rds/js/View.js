@@ -43,7 +43,7 @@
       $("#app-content").html(html);
     },
 
-    load: function () {
+    render: function () {
       this._beforeTemplateRenders();
       this._loadTemplate();
       this._afterTemplateRenders();
@@ -391,7 +391,7 @@
   OC.rds.View.prototype = {
     renderContent: function () {
       var self = this;
-      this._templates[self._stateView].load();
+      this._templates[self._stateView].render();
     },
     renderNavigation: function () {
       var source = $("#navigation-tpl").html();
