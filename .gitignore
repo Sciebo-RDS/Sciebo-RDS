@@ -3,7 +3,7 @@ config.sh
 __pycache__
 .pytest_cache
 openapi.yaml
-*.json
+*-pact.json
 _build
 .vscode
 .coverage
