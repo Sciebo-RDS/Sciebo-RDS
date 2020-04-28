@@ -103,6 +103,7 @@
       return deferred.promise();
     },
     updateActive: function (portIn, portOut) {
+      var self = this;
       var conn = this.getActive();
 
       conn.portIn = portIn;
@@ -117,7 +118,7 @@
         contentType: "application/json",
         data: JSON.stringify(conn),
       }).done(function () {
-        return this._metadata.load(conn.researchIndex);
+        return self._metadata.load(conn.researchIndex);
       });
     },
   };
