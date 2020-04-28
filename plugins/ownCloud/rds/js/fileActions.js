@@ -105,6 +105,8 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
       } else {
         delete actions.pushFileToResearch;
       }
+
+      return actions;
     });
   });
 })(OC, window, jQuery);
