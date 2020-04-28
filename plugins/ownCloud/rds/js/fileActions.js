@@ -2,6 +2,8 @@
 (function (OC, window, $, undefined) {
   "use strict";
 
+  OC.rds = OC.rds || {};
+  
   var fileActions = OCA.Files.fileActions;
 
   var addFolderToResearch = {
