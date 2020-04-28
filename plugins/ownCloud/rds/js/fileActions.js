@@ -79,7 +79,6 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
   $.get(OC.generateUrl("/apps/rds/research") + "/files").done(function (
     directories
   ) {
-    var rdsDirectories = JSON.parse(directories);
 
     OCA.Files.fileActions.addAdvancedFilter(function (actions, context) {
       var fileName = context.$file.data("file");
@@ -87,7 +86,7 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
       var dir = context.fileList.getCurrentDirectory();
 
       found = false;
-      rdsDirectories.forEach(function (item) {
+      directories.forEach(function (item) {
         if (item === dir) {
           found = true;
         }
