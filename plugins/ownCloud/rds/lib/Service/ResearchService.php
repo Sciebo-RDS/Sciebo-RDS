@@ -94,6 +94,9 @@ class ResearchService {
             $folders = [];
 
             foreach ( $allResearch as $research ) {
+                if ( $research->getStatus() == 4 ) {
+                    continue;
+                }
                 foreach ( array_merge( $research->getPortIn(), $research->getPortOut() ) as $port ) {
                     foreach ( $port['properties'] as $prop ) {
                         if ( $prop['portType'] == 'customProperties' ) {
