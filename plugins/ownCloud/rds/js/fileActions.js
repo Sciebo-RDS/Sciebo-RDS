@@ -75,7 +75,7 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
   };
 
   //TODO: check, if a folder was selected and it is not in a research folder
-  mimes = ["httpd/unix-directory"];
+  var mimes = ["httpd/unix-directory"];
   mimes.forEach((item) => {
     addFolderToResearch.init(item);
   });
@@ -111,3 +111,4 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
     });
   });
 })(OC, window, jQuery);
+y;
