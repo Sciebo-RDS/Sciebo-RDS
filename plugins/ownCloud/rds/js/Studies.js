@@ -117,7 +117,7 @@
         contentType: "application/json",
         data: JSON.stringify(conn),
       }).done(function () {
-        this._metadata.load(conn.researchIndex);
+        return this._metadata.load(conn.researchIndex);
       });
     },
   };
