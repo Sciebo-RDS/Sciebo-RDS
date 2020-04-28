@@ -85,12 +85,7 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
   //TODO: create research project in newFileMenu
   OC.Plugins.register("OCA.Files.NewFileMenu", createRdsResearch);
 
-  OCA.Files.FileActions.addAdvancedFilter(function (actions, context) {
-    //TODO Add filter to actions
-    // Examples:
-    //https://github.com/owncloud/core/blob/d65e3c8dbd80f84f8d1cfe09ac90bfa4112b7eb3/apps/files_sharing/js/app.js#L287
-    //https://github.com/owncloud/core/blob/bd3df85448af0e32bf199d6772b5b5eaf8c02091/apps/files/tests/js/fileactionsSpec.js#L696
-
+  OCA.Files.fileActions.addAdvancedFilter(function (actions, context) {
     var fileName = context.$file.data("file");
     var mimetype = context.$file.data("mime");
     var dir = context.fileList.getCurrentDirectory();
@@ -104,7 +99,7 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
         found = true;
       }
     });
-    
+
     if (found) {
       if (mimetype === "httpd/unix-directory") {
         delete actions.addFolderToResearch;
