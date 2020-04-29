@@ -1,21 +1,11 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the ownCloud Core package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ownCloud Core 8.0.0\n"
-"Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2020-04-28 17:38+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Sciebo RDS\n"
+"Language: en\n"
 
 #: not_authorized.php:3
 msgid "Go to settings now."
@@ -34,9 +24,7 @@ msgid "Apply file changes"
 msgstr ""
 
 #: part.research.content.file.php:15
-msgid ""
-"Otherwise deletions or file changes are not synchronized to the given "
-"services."
+msgid "Otherwise deletions or file changes are not synchronized to the given services."
 msgstr ""
 
 #: part.research.content.file.php:21
@@ -158,3 +146,36 @@ msgstr ""
 #: settings-personal.php:95 settings-personal.php:95
 msgid "Authorize Sciebo RDS now."
 msgstr ""
+
+#: app.php:20
+msgid "RDS App"
+msgstr ""
+
+#: View.js:56
+msgid "Your entries could not be saved."
+msgstr ""
+
+#: View.js:190
+msgid "Choose source and / or target folder"
+msgstr ""
+
+#: fileActions.js:10
+msgid "Add folder to RDS"
+msgstr ""
+
+#: fileActions.js:28
+msgid "Update RDS file"
+msgstr ""
+
+#: settings-personal.js:136 settings-personal.js:136
+msgid "Are you sure, that you want to delete "
+msgstr ""
+
+#: settings-personal.js:181 settings-personal.js:181
+msgid "Authorize "
+msgstr ""
+
+#: PersonalSection.php:47 PersonalSection.php:47
+msgid "Research data services"
+msgstr ""
+
