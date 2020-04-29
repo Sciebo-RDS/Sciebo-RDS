@@ -7,7 +7,7 @@ script( 'rds', array("brutusin-json-forms.min") );
 ?>
 
 <!-- Load the metadata editor -->
-<div id="metadata-jsonschema-editor"></div>
+<div id="metadata-jsonschema-editor"><div class="icon-loading"></div></div>
 
 <div id="wrapper-custom-buttons">
   <div id="spacer"></div>
