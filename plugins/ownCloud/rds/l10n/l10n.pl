@@ -92,7 +92,7 @@ sub init() {
 init();
 
 my $task = shift( @ARGV );
-my $place = '..';
+my $place = '../..';
 
 die( "Usage: l10n.pl task\ntask: read, write\n" ) unless $task && $place;
 
