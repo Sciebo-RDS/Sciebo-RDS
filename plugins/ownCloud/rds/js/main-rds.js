@@ -8,7 +8,7 @@
       new OC.rds.Metadata(OC.generateUrl("/apps/rds/metadata"))
     );
     var services = new OC.rds.Services(OC.generateUrl("/apps/rds/userservice"));
-    var files = new OC.rds.Files(OC.generateUrl("/apps/rds/files"));
+    var files = new OC.rds.Files(OC.generateUrl("/apps/rds/research/files"));
 
     var view = new OC.rds.View(studies, services, files);
     view.loadAll().always(function () {

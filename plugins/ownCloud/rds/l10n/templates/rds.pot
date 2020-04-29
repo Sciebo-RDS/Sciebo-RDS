@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud Core 8.0.0\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2020-04-29 11:36+0200\n"
+"POT-Creation-Date: 2020-04-29 16:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,20 @@ msgstr ""
 msgid "RDS App"
 msgstr ""
 
-#: js/View.js:56
+#: js/View.js:57
 msgid "Your entries could not be saved."
 msgstr ""
 
-#: js/View.js:196
+#: js/View.js:58 js/View.js:437 js/View.js:463 js/fileActions.js:112
+msgid "RDS Update project"
+msgstr ""
+
+#: js/View.js:199
 msgid "Choose source and / or target folder"
+msgstr ""
+
+#: js/View.js:436
+msgid "Could not create research"
 msgstr ""
 
 #: js/fileActions.js:14
@@ -37,16 +45,45 @@ msgstr ""
 msgid "Update RDS file"
 msgstr ""
 
-#: js/fileActions.js:108
+#: js/fileActions.js:52
+msgid "File was successfully uploaded to outgoing services."
+msgstr ""
+
+#: js/fileActions.js:54 js/fileActions.js:60
+msgid "RDS upload directly through Files app"
+msgstr ""
+
+#: js/fileActions.js:59
+msgid "File upload to outgoing services failed."
+msgstr ""
+
+#: js/fileActions.js:111
 msgid "Research folders could not be loaded."
 msgstr ""
 
-#: js/settings-personal.js:136
-msgid "Are you sure, that you want to delete "
+#: js/settings-personal.js:54
+msgid "Could not load all services"
 msgstr ""
 
-#: js/settings-personal.js:181
-msgid "Authorize "
+#: js/settings-personal.js:55 js/settings-personal.js:70
+#: js/settings-personal.js:155
+msgid "RDS Settings services"
+msgstr ""
+
+#: js/settings-personal.js:69
+msgid "Could not load user services"
+msgstr ""
+
+#: js/settings-personal.js:140
+msgid "Are you sure, that you want to delete {servicename}?"
+msgstr ""
+
+#: js/settings-personal.js:152
+msgid "Could not remove the service {servicename}"
+msgstr ""
+
+#: js/settings-personal.js:189
+msgid "Authorize {servicename} now"
 msgstr ""
 
 #: lib/Panels/PersonalSection.php:47
