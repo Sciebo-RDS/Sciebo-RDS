@@ -20,6 +20,31 @@
         this._currentResearch = researchIndex;
       });
     },
+    triggerSync: function () {
+      var deferred = $.Deferred();
+
+      var data = { filename: filename };
+
+      if (this._currentResearch === undefined) {
+        deferred.reject();
+        return deferred.promise();
+      }
+
+      $.ajax({
+        type: "POST",
+        url: OC.generateUrl(
+          "/apps/rds/research/" + this._currentResearch + "/files"
+        ),
+        dataType: "json",
+      })
+        .done(function () {
+          deferred.resolve();
+        })
+        .fail(function () {
+          deferred.reject();
+        });
+      return deferred.promise();
+    },
     triggerUpload: function (filename) {
       var deferred = $.Deferred();
 

@@ -27,6 +27,7 @@ $application->registerRoutes( $this, [
 
         # Research additional API endpoint
         ['name' => 'research#filesIndex',                     'url' => '/research/files',                  'verb' => 'GET'],
+        ['name' => 'research#filesIndexUpload',               'url' => '/research/files',                  'verb' => 'POST'],
         ['name' => 'research#filesGet',                       'url' => '/research/{id}/files',             'verb' => 'GET'],
         ['name' => 'research#filesTrigger',                   'url' => '/research/{id}/files',             'verb' => 'POST'],
         ['name' => 'research#filesSettingsGet',               'url' => '/research/{id}/settings',          'verb' => 'GET'],

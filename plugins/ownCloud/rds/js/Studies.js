@@ -29,6 +29,9 @@
     getActiveMetadata: function () {
       return this._metadata;
     },
+    loadMetadata: function () {
+      this._metadata.load(this._activeResearch.researchIndex);
+    },
     removeActive: function () {
       var index = undefined;
       var deferred = $.Deferred();
@@ -102,20 +105,15 @@
         });
       return deferred.promise();
     },
-    updateActive: function (portIn, portOut) {
+    save: function () {
       var self = this;
-      var conn = this.getActive();
-
-      conn.portIn = portIn;
-      conn.portOut = portOut;
-      conn.status = 2;
-
-      this._activeResearch = conn;
-
       var deferred = $.Deferred();
+
       function reject() {
         deferred.reject();
       }
+
+      var conn = this._activeResearch;
 
       $.ajax({
         url: this._baseUrl + "/" + conn.researchIndex,
@@ -133,6 +131,17 @@
         })
         .fail(reject);
       return deferred.promise();
+    },
+    updateActive: function (portIn, portOut) {
+      var conn = this._activeResearch;
+
+      conn.portIn = portIn;
+      conn.portOut = portOut;
+      conn.status = 2;
+
+      this._activeResearch = conn;
+
+      return this.save();
     },
   };
 })(OC, window, jQuery);

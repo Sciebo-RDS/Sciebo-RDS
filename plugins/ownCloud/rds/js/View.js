@@ -312,7 +312,9 @@
       constructor: OC.rds.MetadataTemplate,
     }
   );
-  OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {};
+  OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {
+    this._studies.loadMetadata();
+  };
   OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
     var data = this._studies._metadata.getMetadata()[0]["metadata"];
     console.log(data);
@@ -348,8 +350,11 @@
     return this._studies._metadata.update(this._bf.getData());
   };
 
-  OC.rds.FileTemplate = function (divName, view, services, studies) {
+  OC.rds.FileTemplate = function (divName, view, services, studies, files) {
     OC.rds.AbstractTemplate.call(this, divName, view);
+    this._services = services;
+    this._studies = studies;
+    this._files = files;
   };
   OC.rds.FileTemplate.prototype = Object.create(
     OC.rds.AbstractTemplate.prototype,
@@ -358,7 +363,9 @@
     }
   );
 
-  OC.rds.FileTemplate.prototype._beforeTemplateRenders = function () {};
+  OC.rds.FileTemplate.prototype._beforeTemplateRenders = function () {
+    this._files.load(this._studies.getActive().researchIndex);
+  };
   OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {
     var self = this;
 
@@ -366,9 +373,23 @@
       self.save();
     });
 
-    $("#btn-sync-files").click(function () {});
+    $("#btn-sync-files").click(function () {
+      self._files.triggerSync();
+    });
 
-    $("#btn-finish-research").click(function () {});
+    $("#btn-finish-research").click(function () {
+      self._studies
+        .removeActive()
+        .done(function () {
+          self.render();
+        })
+        .fail(function () {
+          OC.dialogs.alert(
+            "Could not close this research.",
+            t("rds", "RDS Update project")
+          );
+        });
+    });
   };
   OC.rds.FileTemplate.prototype._getParams = function () {};
   OC.rds.FileTemplate.prototype._saveFn = function () {
@@ -402,7 +423,8 @@
         "#research-edit-file-tpl",
         this,
         this._services,
-        this._studies
+        this._studies,
+        this._files
       ),
     ];
   };

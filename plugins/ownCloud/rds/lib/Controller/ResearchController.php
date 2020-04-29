@@ -128,7 +128,7 @@ class ResearchController extends Controller
 
 
      /**
-     * Trigger an update request to exporter func in RDS
+     * Trigger an update request for research project to exporter func in RDS
      * 
      * @return boolean True, if Trigger was successful. False otherwise.
      * @NoAdminRequired
@@ -138,6 +138,18 @@ class ResearchController extends Controller
             return $this->service->updateFiles($this->userId, $id);
         });
     }
+
+    /**
+     * Trigger an update request for given filename to exporter func in RDS
+     * 
+     * @return boolean True, if Trigger was successful. False otherwise.
+     * @NoAdminRequired
+     */
+    public function filesIndexUpload( $filename ) {
+        return $this->handleNotFound(function () use( $filename ) {
+            return $this->service->updateFiles($this->userId, null, $filename);
+        });
+    }    
 
     /**
      * Returns all settings for rds exporter.

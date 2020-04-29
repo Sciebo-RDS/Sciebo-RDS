@@ -131,19 +131,36 @@ class ResearchService {
         return $folders;
     }
 
-    public function updateFiles( $userId, $filename ) {
+    public function updateFiles( $userId, $id = null, $filename = null ) {
         function startsWith ( $string, $startString ) {
             $len = strlen( $startString );
             return ( substr( $string, 0, $len ) === $startString );
         }
 
         try {
-            $folders = $this->getFolders( $userId );
-            foreach ( $folders as $folder ) {
-                startsWith( $filename, $folder['path'] );
-                // TODO: execute exporter in RDS, force removes all files and add them anew
+            if ( $id == null && $filename == null ) {
+                throw new Exception( 'no researchIndex or filename were given' );
+            }
+
+            if ( $filename != null ) {
+                $folders = $this->getFolders( $userId );
+                foreach ( $folders as $folder ) {
+                    if ( startsWith( $filename, $folder['path'] ) ) {
+                        $id = $folder['researchIndex'];
+                        $settings = $this->getSettings( $userId, $id );
+                        break;
+                    }
+                }
+            }
+            $settings = $this->getSettings( $userId, $id );
+
+            if ( $filename != null ) {
+                // TODO: trigger export for specific file in research for userId and researchIndex
                 return ;
             }
+            // TODO: trigger export for all files in research for userId and researchIndex
+            return ;
+
         } catch( Exception $e ) {
             $this->handleException( $e );
         }
