@@ -124,7 +124,6 @@
       $.ajax({
         type: "GET",
         url: OC.generateUrl("/apps/rds/research/" + researchIndex + "/files"),
-        data: JSON.stringify(data),
         dataType: "json",
       })
         .done(function (files) {
