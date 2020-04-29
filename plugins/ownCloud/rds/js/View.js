@@ -53,7 +53,10 @@
       return this._saveFn()
         .done(function () {})
         .fail(function () {
-          alert(t("rds", "Your entries could not be saved."));
+          OC.dialogs.alert(
+            t("rds", "Your entries could not be saved."),
+            t("rds", "RDS Update project")
+          );
         });
     },
 
@@ -356,7 +359,15 @@
   );
 
   OC.rds.FileTemplate.prototype._beforeTemplateRenders = function () {};
-  OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {};
+  OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {
+    $("#btn-save-files").click(function () {
+      self.save();
+    });
+
+    $("#btn-sync-files").click(function () {});
+
+    $("#btn-finish-research").click(function () {});
+  };
   OC.rds.FileTemplate.prototype._getParams = function () {};
   OC.rds.FileTemplate.prototype._saveFn = function () {
     return $.when();
@@ -421,7 +432,10 @@
             self.render();
           })
           .fail(function () {
-            alert("Could not create research");
+            OC.dialogs.alert(
+              t("rds", "Could not create research"),
+              t("rds", "RDS Update project")
+            );
           });
       });
 
@@ -444,7 +458,10 @@
             self.render();
           })
           .fail(function () {
-            alert("Could not delete research, not found");
+            OC.dialogs.alert(
+              "Could not delete research, not found",
+              t("rds", "RDS Update project")
+            );
           });
       });
 

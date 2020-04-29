@@ -35,29 +35,31 @@
         type: OCA.Files.FileActions.TYPE_DROPDOWN,
         iconClass: "icon-rds-research-small",
         actionHandler: function (filename, context) {
-          console.log("push this file");
-          // TODO push this file in the corresponding research project
-          /*curl -X POST -d '{"user_id": "admin", "from_service":"Owncloud", "filename":"features.txt"}' https://sciebords-│
-dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:application/json"     */
-          /*var data = `user_id=${OC.currentUser}&from_service=Owncloud&filename=${filename}`;
-          console.log("send data:", data);
+          var data = {
+            filename: filename,
+          };
+
           $.ajax({
             type: "POST",
-            async: "false",
-            url: "https://sciebords-dev.uni-muenster.de/exporter/export/Zenodo",
-            data: data,
+            url: OC.generateUrl("/apps/rds/research/files"),
+            data: JSON.stringify(data),
             dataType: "json",
-            statusCode: {
-              200: function (element) {
-                response = element;
-                text = t("rds", "No success.");
-                if (response.success) {
-                  text = t("rds", `Upload ${filename} to Zenodo sucessfully.`);
-                }
-                OC.dialogs.alert(text, t("rds", t("rds", "Upload to Zenodo")));
-              },
-            },
-          });*/
+          })
+            .done(function () {
+              OC.dialogs.alert(
+                t(
+                  "rds",
+                  "File was successfully uploaded to outgoing services."
+                ),
+                t("rds", "RDS upload directly through Files app")
+              );
+            })
+            .fail(function () {
+              OC.dialogs.alert(
+                t("rds", "File upload to outgoing services failed."),
+                t("rds", "RDS upload directly through Files app")
+              );
+            });
         },
       });
     },
@@ -105,7 +107,10 @@ dev.uni-muenster.de/exporter/export/Zenodo --insecure -H "Content-Type:applicati
 
   var directories = new OC.rds.ResearchDirectories();
   directories.load().fail(function () {
-    alert(t("rds", "Research folders could not be loaded."));
+    OC.dialogs.alert(
+      t("rds", "Research folders could not be loaded."),
+      t("rds", "RDS Update project")
+    );
   });
 
   fileActions.addAdvancedFilter(function (actions, context) {

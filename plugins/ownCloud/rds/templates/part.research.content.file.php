@@ -18,6 +18,7 @@
 
 <div id="wrapper-custom-buttons">
   <div id="spacer"></div>
+  <button id="btn-save-files"><?php p($l->t('Save')); ?></button>
   <button id="btn-sync-files"><?php p($l->t('Synchronize files')); ?></button>
   <button id="btn-finish-research"><?php p($l->t('Finish research')); ?></button>
 </div>
