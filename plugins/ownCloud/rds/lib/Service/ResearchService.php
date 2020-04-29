@@ -120,7 +120,7 @@ class ResearchService {
                             if ( $val['key'] == 'filepath' ) {
                                 $folders[] = [
                                     'path'=>$val['value'],
-                                    'researchIndex'=>$research['researchIndex']
+                                    'researchIndex'=>$research->getResearchIndex()
                                 ];
                             }
                         }
