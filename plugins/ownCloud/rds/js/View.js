@@ -356,7 +356,17 @@
   );
 
   OC.rds.FileTemplate.prototype._beforeTemplateRenders = function () {};
-  OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {};
+  OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {
+    $("#btn-save-files").click(function () {
+      self.save();
+    });
+
+    $("#btn-sync-files").click(function () {
+      
+    });
+
+    $("#btn-finish-research").click(function () {});
+  };
   OC.rds.FileTemplate.prototype._getParams = function () {};
   OC.rds.FileTemplate.prototype._saveFn = function () {
     return $.when();
