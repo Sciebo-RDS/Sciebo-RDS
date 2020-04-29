@@ -88,39 +88,74 @@ class ResearchService {
         }
     }
 
-    public function files( $userId ) {
+    public function files( $userId, $id = null ) {
         try {
-            $allResearch = $this->mapper->findAll( $userId );
-            $folders = [];
-
-            foreach ( $allResearch as $research ) {
-                if ( $research->getStatus() == 4 ) {
-                    continue;
+            $folders = $this->getFolders( $userId );
+            $ret = [];
+            foreach ( $folders as $folder ) {
+                if ( $id != null && $id == $folder['researchIndex'] ) {
+                    return $folder;
                 }
-                foreach ( array_merge( $research->getPortIn(), $research->getPortOut() ) as $port ) {
-                    foreach ( $port['properties'] as $prop ) {
-                        if ( $prop['portType'] == 'customProperties' ) {
-                            foreach ( $prop['value'] as $val ) {
-                                if ( $val['key'] == 'filepath' ) {
-                                    $folders[] = $val['value'];
-                                }
-                            }
-                        }
-                    }
-                }
+                $ret[] = $folder['path'];
             }
 
-            return $folders;
+            return $ret;
         } catch( Exception $e ) {
             $this->handleException( $e );
         }
     }
 
-    public function updateFiles( $userId, $researchId, $force = null ) {
+    private function getFolders( $userId ) {
+        $allResearch = $this->mapper->findAll( $userId );
+        $folders = [];
+
+        foreach ( $allResearch as $research ) {
+            if ( $research->getStatus() == 4 ) {
+                continue;
+            }
+            foreach ( array_merge( $research->getPortIn(), $research->getPortOut() ) as $port ) {
+                foreach ( $port['properties'] as $prop ) {
+                    if ( $prop['portType'] == 'customProperties' ) {
+                        foreach ( $prop['value'] as $val ) {
+                            if ( $val['key'] == 'filepath' ) {
+                                $folders[] = [
+                                    'path'=>$val['value'],
+                                    'researchIndex'=>$research['researchIndex']
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $folders;
+    }
+
+    public function updateFiles( $userId, $filename ) {
+        function startsWith ( $string, $startString ) {
+            $len = strlen( $startString );
+            return ( substr( $string, 0, $len ) === $startString );
+        }
+
         try {
-            // TODO: execute exporter in RDS, force removes all files and add them anew
+            $folders = $this->getFolders( $userId );
+            foreach ( $folders as $folder ) {
+                startsWith( $filename, $folder['path'] );
+                // TODO: execute exporter in RDS, force removes all files and add them anew
+                return ;
+            }
         } catch( Exception $e ) {
             $this->handleException( $e );
         }
+    }
+
+    public function getSettings( $userId, $researchIndex ) {
+        // TODO: get settings from owncloud or rds
+        return null;
+    }
+
+    public function updateSettings( $userId, $researchIndex ) {
+        // TODO: set settings from owncloud or rds
+        return null;
     }
 }

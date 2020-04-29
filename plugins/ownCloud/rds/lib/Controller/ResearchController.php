@@ -35,7 +35,6 @@ class ResearchController extends Controller
      * @param integer $id
      * @return string returns json
      * 
-     * @NoAdminRequired
      * @NoCSRFRequired
      */
     public function index() {
@@ -50,7 +49,6 @@ class ResearchController extends Controller
      * @param integer $id
      * @return string returns json
      *
-     * @NoCSRFRequired
      * @NoAdminRequired
      */
     public function show($id) {
@@ -104,27 +102,69 @@ class ResearchController extends Controller
     }
 
      /**
-     * Returns all filepaths in researches.
+     * Returns all folders in all studies.
      * 
-     * @NoCSRFRequired
      * @NoAdminRequired
      */
-    public function files() {
+    public function filesIndex() {
         return $this->handleNotFound(function () {
             return $this->service->files($this->userId);
         });
     }
 
-
-     /**
-     * Make an update request to exporter func in RDS
+    /**
+     * Returns all filepaths for given research.
      * 
-     * @NoCSRFRequired
+     * @param integer $id have to be a researchIndex
+     * @return array returns an assoc array
+     * 
      * @NoAdminRequired
      */
-    public function updateFiles($id, $force) {
-        return $this->handleNotFound(function () use($id, $force) {
-            return $this->service->updateFiles($this->userId, $id, $force);
+    public function filesGet( $id ) {
+        return $this->handleNotFound(function () use( $id ) {
+            return $this->service->files($this->userId, $id);
+        });
+    }
+
+
+     /**
+     * Trigger an update request to exporter func in RDS
+     * 
+     * @return boolean True, if Trigger was successful. False otherwise.
+     * @NoAdminRequired
+     */
+    public function filesTrigger( $id ) {
+        return $this->handleNotFound(function () use( $id ) {
+            return $this->service->updateFiles($this->userId, $id);
+        });
+    }
+
+    /**
+     * Returns all settings for rds exporter.
+     * 
+     * @param integer $id have to be a researchIndex
+     * @return array returns an assoc array
+     * 
+     * @NoAdminRequired
+     */
+    public function filesSettingsGet( $id ) {
+        return $this->handleNotFound(function () use( $id ) {
+            return $this->service->getSettings($this->userId, $id);
+        });
+    }
+
+    /**
+     * Updates the settings for rds exporter.
+     * 
+     * @param integer $id have to be a researchIndex
+     * @param array $settings have to be an assoc array
+     * @return array returns an assoc array
+     * 
+     * @NoAdminRequired
+     */
+    public function filesSettingsUpdate( $id, $settings ) {
+        return $this->handleNotFound(function () use( $id, $settings ) {
+            return $this->service->updateSettings($this->userId, $id, $settings);
         });
     }
 }
