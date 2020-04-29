@@ -360,6 +360,8 @@
 
   OC.rds.FileTemplate.prototype._beforeTemplateRenders = function () {};
   OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {
+    var self = this;
+
     $("#btn-save-files").click(function () {
       self.save();
     });
