@@ -316,7 +316,7 @@
   OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
     var self = this;
 
-    this._studies.loadMetadata().done(function () {
+    this._studies.getActive().loadMetadata().done(function () {
       var data = self._studies._metadata.getMetadata()[0]["metadata"];
       console.log(data);
 
