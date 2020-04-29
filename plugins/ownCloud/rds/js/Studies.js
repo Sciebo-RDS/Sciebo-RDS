@@ -105,12 +105,7 @@
       return deferred.promise();
     },
     save: function () {
-      var self = this;
       var deferred = $.Deferred();
-
-      function reject() {
-        deferred.reject();
-      }
 
       var conn = this._activeResearch;
 
@@ -121,14 +116,11 @@
         data: JSON.stringify(conn),
       })
         .done(function () {
-          self._metadata
-            .load(conn.researchIndex)
-            .done(function () {
-              deferred.resolve();
-            })
-            .fail(reject);
+          deferred.resolve();
         })
-        .fail(reject);
+        .fail(function () {
+          deferred.reject();
+        });
       return deferred.promise();
     },
     updateActive: function (portIn, portOut) {
