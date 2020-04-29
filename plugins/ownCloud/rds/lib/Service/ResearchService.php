@@ -168,11 +168,11 @@ class ResearchService {
 
     public function getSettings( $userId, $researchIndex ) {
         // TODO: get settings from owncloud or rds
-        return null;
+        return [];
     }
 
     public function updateSettings( $userId, $researchIndex ) {
         // TODO: set settings from owncloud or rds
-        return null;
+        return [];
     }
 }
