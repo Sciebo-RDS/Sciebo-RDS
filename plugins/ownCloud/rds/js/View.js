@@ -115,8 +115,12 @@
     var patchServices = function (services, research) {
       var newServices = JSON.parse(JSON.stringify(services));
 
-      var findPort = function (portName, portList) {
-        var searchName = "port-" + portName.toLowerCase();
+      function findPort(portName, portList) {
+        var searchName = portName;
+
+        if (!searchName.startsWith("port-")) {
+          searchName = "port-" + searchName.toLowerCase();
+        }
 
         var port = {};
         portList.forEach(function (elem) {
@@ -125,11 +129,9 @@
           }
         }, port);
         return port.port;
-      };
+      }
 
       newServices.forEach(function (service, indexSvc) {
-        var port;
-
         function patchProperty(prop) {
           if (prop.portType === "metadata" && prop.value === true) {
             this[indexSvc].metadataChecked = "checked";
@@ -156,7 +158,7 @@
           }
         }
 
-        port = findPort(service.servicename, research.portIn);
+        var port = findPort(service.servicename, research.portIn);
         if (port !== undefined) {
           this[indexSvc].importChecked = "checked";
 
@@ -230,8 +232,13 @@
       var tempPortIn = {};
       var tempPortOut = {};
 
-      tempPortIn["port"] = element.servicename;
-      tempPortOut["port"] = element.servicename;
+      var portName = element.servicename;
+      if (!portName.startsWith("port-")) {
+        portName = "port-" + portName.toLowerCase();
+      }
+
+      tempPortIn["port"] = portName;
+      tempPortOut["port"] = portName;
 
       var valProp = [];
 
