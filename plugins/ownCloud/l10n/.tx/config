@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+lang_map = ja_JP: ja
+
+[owncloud.RDS]
+file_filter = <lang>/rds.po
+source_file = templates/rds.pot
+source_lang = en
+type = PO

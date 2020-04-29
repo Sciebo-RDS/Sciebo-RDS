@@ -16,13 +16,11 @@ sub crawlPrograms{
 
 	foreach my $i ( @files ){
 		next if substr( $i, 0, 1 ) eq '.';
-		if( $i eq 'l10n' && !$ignore ){
+		if( !($i eq 'l10n') && !$ignore ){
 			push( @found, $dir );
 		}
 		elsif( -d $dir.'/'.$i ){
 			push( @found, crawlPrograms( $dir.'/'.$i ));
-		} else {
-			push( @found, $dir );
 		}
 	}
 
