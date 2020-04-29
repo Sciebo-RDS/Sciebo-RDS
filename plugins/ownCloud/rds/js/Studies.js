@@ -129,9 +129,9 @@
             .done(function () {
               deferred.resolve();
             })
-            .fail(reject());
+            .fail(reject);
         })
-        .fail(reject());
+        .fail(reject);
       return deferred.promise();
     },
   };
