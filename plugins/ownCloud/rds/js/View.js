@@ -312,19 +312,19 @@
       constructor: OC.rds.MetadataTemplate,
     }
   );
-  OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {
-    this._studies.loadMetadata();
-  };
+  OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {};
   OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
-    var data = this._studies._metadata.getMetadata()[0]["metadata"];
-    console.log(data);
-
-    var BrutusinForms = brutusin["json-forms"];
-    this._bf = BrutusinForms.create(this._studies._metadata.getSchema());
-    var container = document.getElementById("metadata-jsonschema-editor");
-    this._bf.render(container, data);
-
     var self = this;
+
+    this._studies.loadMetadata().done(function () {
+      var data = self._studies._metadata.getMetadata()[0]["metadata"];
+      console.log(data);
+
+      var BrutusinForms = brutusin["json-forms"];
+      self._bf = BrutusinForms.create(self._studies._metadata.getSchema());
+      var container = document.getElementById("metadata-jsonschema-editor");
+      self._bf.render(container, data);
+    });
 
     $("#app-content #btn-save-metadata").click(function () {
       self.save();
