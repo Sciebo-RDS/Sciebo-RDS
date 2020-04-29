@@ -80,7 +80,6 @@
         url: OC.generateUrl(
           "/apps/rds/research/" + researchIndex + "/settings"
         ),
-        data: JSON.stringify(data),
         dataType: "json",
       })
         .done(function (settings) {
