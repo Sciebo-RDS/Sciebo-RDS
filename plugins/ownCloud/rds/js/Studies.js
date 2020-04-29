@@ -29,7 +29,7 @@
       return this._metadata;
     },
     loadMetadata: function () {
-      this._metadata.load(this._activeResearch.researchIndex);
+      return this._metadata.load(this._activeResearch.researchIndex);
     },
     removeActive: function () {
       var index = undefined;
