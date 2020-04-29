@@ -1,5 +1,5 @@
 OC.L10N.register(
-    "de",
+    "templates",
     {
     "Go to settings now." : "Gehen Sie jetzt zu den Einstellungen.",
     "Files auto upload" : "Dateien werden automatisch hochgeladen",

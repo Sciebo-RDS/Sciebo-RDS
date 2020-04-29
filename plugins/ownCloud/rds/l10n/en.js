@@ -1,5 +1,5 @@
 OC.L10N.register(
-    "en",
+    "templates",
     {
     "Go to settings now." : "Go to settings now.",
     "Files auto upload" : "Files auto upload",
