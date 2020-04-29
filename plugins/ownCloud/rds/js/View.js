@@ -323,6 +323,7 @@
       var BrutusinForms = brutusin["json-forms"];
       self._bf = BrutusinForms.create(self._studies._metadata.getSchema());
       var container = document.getElementById("metadata-jsonschema-editor");
+      container.html("");
       self._bf.render(container, data);
     });
 
