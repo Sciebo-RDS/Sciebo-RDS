@@ -373,4 +373,18 @@ class ResearchMapper {
         return $result;
     }
 
+    public function getSettings( $userId, $researchIndex ) {
+        $result = [];
+        return $result;
+    }
+
+    public function updateSettings( $userId, $researchIndex, $settings ) {
+        $result = [];
+        return $result;
+    }
+
+    public function triggerExport( $userId, $researchIndex, $files = null ) {
+        return false;
+    }
+
 }

@@ -1,14 +1,19 @@
 openapi: 3.0.0
 paths:
-  '/export/{toService}':
+  '/user/{user-id}/research/{research-id}':
     parameters:
       - schema:
           type: string
-        name: toService
+        name: research-id
         in: path
         required: true
-    post:
-      summary: Export a file to the given service
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+    get:
+      summary: Returns all research files
       tags: []
       responses:
         '200':
@@ -16,28 +21,226 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-      operationId: ''
-      parameters: []
+                $ref: '#/components/schemas/Research'
+    post:
+      summary: Push all files in ingoing file ports to all outgoing file ports.
+      responses:
+        '200':
+          description: OK
+    delete:
+      summary: Removes all files in all outgoing files port.
+      responses:
+        '200':
+          description: OK
+  '/user/{user-id}/research/{research-id}/services/{servicename}':
+    parameters:
+      - schema:
+          type: string
+        name: research-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: servicename
+        in: path
+        required: true
+    get:
+      summary: Returns all files in ingoing ports.
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+      description: ''
+    post:
+      summary: Push all files from specified ingoing file ports to all outgoing file ports.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+      description: |-
+        If the setting "applyChanges" is not set for this research, then the following flow will be executed:
+        If a file already exists in the outgoing file ports, the new file will be uploaded with a hash value (appended to the filename, ex. filename.txt -> filename.has245.txt).
+    delete:
+      summary: Removes all files in outgoing files port from given ingoing files port.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+  '/user/{user-id}/research/{research-id}/services/{servicename}/files/{files-id}':
+    parameters:
+      - schema:
+          type: string
+        name: research-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: files-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: servicename
+        in: path
+        required: true
+    get:
+      summary: Returns the file with id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+    post:
+      summary: Push the given file-id to all outgoing file ports.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+      description: |-
+        If the setting "applyChanges" is not set for this research, then the following flow will be executed:
+        If a file already exists in the outgoing file ports, the new file will be uploaded with a hash value (appended to the filename, ex. filename.txt -> filename.has245.txt).
+    delete:
+      summary: Removes specified file in outgoing files port from given ingoing files port.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+  '/user/{user-id}/research/{research-id}/settings':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settings'
+    put:
+      summary: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settings'
       requestBody:
         content:
-          application/x-www-form-urlencoded:
+          application/json:
             schema:
-              type: object
-              properties:
-                filename:
-                  type: string
-                  description: 'The string for the file / folder, which should be export.'
-                from_service:
-                  type: string
-                  description: 'the service, which holds the filename.'
-                user_id:
-                  type: string
-        description: ''
-      description: ''
+              $ref: '#/components/schemas/Settings'
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: research-id
+        in: path
+        required: true
+  '/user/{user-id}/research/{research-id}/services/{servicename}/files':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: research-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: servicename
+        in: path
+        required: true
+    get:
+      summary: Returns all files for given research in given port
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/File'
+  '/user/{user-id}/research/{research-id}/services':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: research-id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+  '/user/{user-id}/research':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Research'
 info:
   version: '1.0'
   title: Exporter
@@ -49,3 +252,49 @@ info:
 servers:
   - url: 'http://use-case_exporter/exporter'
     description: ''
+components:
+  schemas:
+    Research:
+      title: Research
+      type: object
+      properties:
+        researchId:
+          type: string
+        researchIndex:
+          type: string
+        services:
+          $ref: '#/components/schemas/Service'
+        userId:
+          type: string
+    File:
+      title: File
+      type: object
+      properties:
+        id:
+          type: string
+        path:
+          type: string
+    Settings:
+      title: Settings
+      type: object
+      properties:
+        applyChanges:
+          type: boolean
+        autoSync:
+          type: boolean
+    Success:
+      title: Success
+      type: object
+      properties:
+        success:
+          type: boolean
+    Service:
+      title: Service
+      type: object
+      properties:
+        servicename:
+          type: string
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
