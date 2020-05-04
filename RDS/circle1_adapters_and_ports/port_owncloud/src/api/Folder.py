@@ -18,4 +18,4 @@ def index():
 
     files = OwncloudUser(userId, apiKey).getFolder(filepath)
 
-    return jsonify(files)
+    return jsonify({"files": files})
