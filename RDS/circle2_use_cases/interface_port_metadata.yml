@@ -54,6 +54,8 @@ paths:
                   oneOf:
                     - type: object
                     - type: 'null'
+                userId:
+                  type: string
             examples:
               example-1:
                 value:
@@ -73,6 +75,8 @@ paths:
               type: object
               properties:
                 apiKey:
+                  type: string
+                userId:
                   type: string
     patch:
       summary: ''
@@ -104,6 +108,8 @@ paths:
                   type: string
                 metadata:
                   type: object
+                userId:
+                  type: string
             examples:
               example-1:
                 value:
@@ -140,7 +146,7 @@ paths:
             schema:
               type: object
               properties:
-                apiKey:
+                userId:
                   type: string
     post:
       summary: Add a file
@@ -163,6 +169,8 @@ paths:
                   type: string
                 file:
                   $ref: '#/components/schemas/File'
+                userId:
+                  type: string
   '/project/{project-id}/files/{file-id}':
     parameters:
       - schema:
@@ -194,6 +202,8 @@ paths:
               properties:
                 apiKey:
                   type: string
+                userId:
+                  type: string
     patch:
       summary: ''
       responses:
@@ -206,6 +216,8 @@ paths:
               type: object
               properties:
                 apiKey:
+                  type: string
+                userId:
                   type: string
         description: ''
     delete:
@@ -221,6 +233,8 @@ paths:
               type: object
               properties:
                 apiKey:
+                  type: string
+                userId:
                   type: string
         description: ''
   /project:
@@ -246,6 +260,8 @@ paths:
               properties:
                 apiKey:
                   type: string
+                userId:
+                  type: string
     parameters: []
     post:
       summary: Add a new project to the service
@@ -265,6 +281,8 @@ paths:
                 projectName:
                   type: string
                 apiKey:
+                  type: string
+                userId:
                   type: string
 components:
   schemas:

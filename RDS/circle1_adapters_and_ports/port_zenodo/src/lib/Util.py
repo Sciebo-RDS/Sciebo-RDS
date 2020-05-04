@@ -7,7 +7,7 @@ import logging
 
 logger = logging.getLogger()
 
-"""
+
 def loadAccessToken(userId: str, service: str) -> str:
     # FIXME make localhost dynamic for pactman
     tokenStorageURL = os.getenv(
@@ -29,7 +29,7 @@ def loadAccessToken(userId: str, service: str) -> str:
         userId, access_token, service))
 
     return access_token
-"""
+
 
 def require_api_key(api_method):
     @wraps(api_method)
@@ -37,10 +37,17 @@ def require_api_key(api_method):
         g.zenodo = None
 
         req = request.json
-        apiKey = req.get("apiKey") if req is not None else None
+        try:
+            apiKey = req.get("apiKey")
+
+            if apiKey is None:
+                apiKey = loadAccessToken(req.get["userId"], "Zenodo")
+
+        except:
+            apiKey = None
 
         if apiKey is None:
-            logger.error("apiKey not found")
+            logger.error("apiKey or userId not found.")
             abort(401)
 
         logger.debug("found apiKey")
