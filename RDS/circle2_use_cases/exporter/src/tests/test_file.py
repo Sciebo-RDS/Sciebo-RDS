@@ -11,19 +11,9 @@ class Test_File(unittest.TestCase):
 
     def test_init(self):
         expected = {
-            "id": 1,
             "path": "/test folder/testdatei.txt"
         }
 
-        f = File(expected["id"], expected["path"])
+        f = File(expected["path"])
         self.assertEqual(f.to_dict(), expected)
         self.assertEqual(f.to_json(), json.dumps(expected))
-
-    def test_isFolderOrFile(self):
-        f = File(1, "/test folder/testdatei.txt")
-        self.assertTrue(f.isFile())
-        self.assertFalse(f.isFolder())
-
-        f = File(1, "/test folder/")
-        self.assertFalse(f.isFile())
-        self.assertTrue(f.isFolder())
