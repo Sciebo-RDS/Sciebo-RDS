@@ -65,7 +65,6 @@ paths:
                 - filepath
     delete:
       summary: ''
-      operationId: ''
       responses:
         '200':
           description: OK
@@ -87,7 +86,6 @@ paths:
                 - filepath
     patch:
       summary: ''
-      operationId: ''
       responses:
         '200':
           description: OK
@@ -120,7 +118,6 @@ paths:
                 type: array
                 items:
                   type: string
-      operationId: ''
       requestBody:
         content:
           application/json:
