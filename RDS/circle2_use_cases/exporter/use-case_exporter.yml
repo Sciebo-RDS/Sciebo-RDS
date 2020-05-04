@@ -133,42 +133,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Success'
-  '/user/{user-id}/research/{research-id}/settings':
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Settings'
-    put:
-      summary: ''
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Settings'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Settings'
-    parameters:
-      - schema:
-          type: string
-        name: user-id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: research-id
-        in: path
-        required: true
   '/user/{user-id}/research/{research-id}/services/{servicename}/files':
     parameters:
       - schema:
