@@ -17,6 +17,7 @@ python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 flask-cors = "*"
+webdavclient3 = "*"
 
 [requires]
 python_version = "3.6"

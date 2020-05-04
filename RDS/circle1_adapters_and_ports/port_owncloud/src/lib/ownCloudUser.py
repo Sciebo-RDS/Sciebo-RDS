@@ -1,6 +1,7 @@
 import os
 import requests
 import logging
+from webdav3.client import Client
 
 logger = logging.getLogger()
 
@@ -40,6 +41,21 @@ class OwncloudUser():
         self._access_token = apiKey if apiKey is not None else loadAccessToken(
             userId, "Owncloud")
 
+        options = {
+            'webdav_hostname': "{}/remote.php/webdav".format(os.getenv("OWNCLOUD_INSTALLATION_URL", "http://localhost:3000")),
+            'webdav_token': self._access_token
+        }
+        self.client = Client(options)
+
+    def getFolder(self, foldername):
+        logger.debug("foldername {}".format(foldername))
+
+        from urllib.parse import quote, unquote
+        if unquote(foldername) is foldername:
+            foldername = quote(foldername)
+
+        return self.client.list(foldername)
+
     def getFile(self, filename):
         """
         Returns the given filename from specified owncloud. The path does not start with /.
@@ -54,19 +70,10 @@ class OwncloudUser():
         if unquote(filename) is filename:
             filename = quote(filename)
 
-        # TODO chunk download https://stackoverflow.com/questions/34503412/download-and-save-pdf-file-with-python-requests-module/34503421
-        headers = {
-            "Authorization": f"Bearer {self._access_token}"
-        }
-        url = "{}/remote.php/webdav/{}".format(os.getenv("OWNCLOUD_INSTALLATION_URL",
-                                                         "http://localhost:3000"), filename)
-        file = requests.get(url, headers=headers)
-
-        # FIXME: if its utf-8, then we should return text
-        # if file.encoding is "UTF-8":
-        #    return file.text
-
-        logger.debug("File is None? {}".format(file is None))
         from io import BytesIO
+        buffer = BytesIO()
 
-        return BytesIO(file.content)
+        res1 = self.client.resource(filename)
+        res1.write_to(buffer)
+
+        return buffer

@@ -107,6 +107,34 @@ paths:
                   type: string
               required:
                 - filepath
+  /folder:
+    get:
+      summary: Returns all filenames in filepath
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      operationId: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filepath:
+                  type: string
+                userId:
+                  type: string
+                apiKey:
+                  type: string
+      description: 'Returns all files within filepath, if it is a folder. Otherwise the array is empty.'
+    parameters: []
 tags:
   - name: deposit
     description: All about depositions
