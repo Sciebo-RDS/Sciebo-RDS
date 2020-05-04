@@ -21,7 +21,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Research'
+                type: array
+                items:
+                  $ref: '#/components/schemas/File'
     post:
       summary: Push all files in ingoing file ports to all outgoing file ports.
       responses:
@@ -50,7 +52,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Returns all files in ingoing ports.
+      summary: Returns all files in ingoing port.
       tags: []
       responses:
         '200':
@@ -58,7 +60,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Service'
+                $ref: '#/components/schemas/File'
       description: ''
     post:
       summary: Push all files from specified ingoing file ports to all outgoing file ports.
@@ -133,78 +135,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Success'
-  '/user/{user-id}/research/{research-id}/services/{servicename}/files':
-    parameters:
-      - schema:
-          type: string
-        name: user-id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: research-id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: servicename
-        in: path
-        required: true
-    get:
-      summary: Returns all files for given research in given port
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/File'
-  '/user/{user-id}/research/{research-id}/services':
-    parameters:
-      - schema:
-          type: string
-        name: user-id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: research-id
-        in: path
-        required: true
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Service'
-  '/user/{user-id}/research':
-    parameters:
-      - schema:
-          type: string
-        name: user-id
-        in: path
-        required: true
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Research'
 info:
   version: '1.0'
   title: Exporter
@@ -232,12 +162,7 @@ components:
           type: string
     File:
       title: File
-      type: object
-      properties:
-        id:
-          type: string
-        path:
-          type: string
+      type: string
     Settings:
       title: Settings
       type: object

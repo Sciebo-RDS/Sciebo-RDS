@@ -2,19 +2,17 @@ import json
 
 
 class File:
-    def __init__(self, id, path):
-        self.id = id
+    def __init__(self, path):
         self.path = path
 
     def to_dict(self):
         return {
-            "id": self.id,
             "path": self.path
         }
 
     @classmethod
     def from_dict(cls, fileDict):
-        return cls(fileDict.id, fileDict.path)
+        return cls(**fileDict)
 
     def to_json(self):
         return json.dumps(self.to_dict())
