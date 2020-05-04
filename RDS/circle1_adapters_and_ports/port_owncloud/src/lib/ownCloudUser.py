@@ -35,9 +35,10 @@ class OwncloudUser():
     _access_token = None
     _user_id = None
 
-    def __init__(self, userId):
+    def __init__(self, userId, apiKey=None):
         self._user_id = userId
-        self._access_token = loadAccessToken(userId, "Owncloud")
+        self._access_token = apiKey if apiKey is not None else loadAccessToken(
+            userId, "Owncloud")
 
     def getFile(self, filename):
         """

@@ -10,14 +10,8 @@ info:
 servers:
   - url: 'http://port:3000/storage'
 paths:
-  '/file/{filepath}':
-    parameters:
-      - schema:
-          type: string
-        name: filepath
-        in: path
-        required: true
-        description: url-encoded
+  /file:
+    parameters: []
     get:
       summary: Get file
       tags: []
@@ -32,25 +26,43 @@ paths:
               schema:
                 type: string
       description: Returns the file
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: userId
-          description: ''
-          required: true
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filepath:
+                  type: string
+                userId:
+                  type: string
+                apiKey:
+                  type: string
+                  description: ''
+              required:
+                - filepath
     post:
       summary: Create the file in filepath
       responses:
         '200':
           description: OK
       description: Create the file
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: userId
-          required: true
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filepath:
+                  type: string
+                userId:
+                  type: string
+                apiKey:
+                  type: string
+              required:
+                - filepath
     delete:
       summary: ''
       operationId: ''
@@ -58,12 +70,21 @@ paths:
         '200':
           description: OK
       description: Delete the file
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: userId
-          required: true
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filepath:
+                  type: string
+                userId:
+                  type: string
+                apiKey:
+                  type: string
+              required:
+                - filepath
     patch:
       summary: ''
       operationId: ''
@@ -71,12 +92,21 @@ paths:
         '200':
           description: OK
       description: Update the file
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: userId
-          required: true
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filepath:
+                  type: string
+                userId:
+                  type: string
+                apiKey:
+                  type: string
+              required:
+                - filepath
 tags:
   - name: deposit
     description: All about depositions

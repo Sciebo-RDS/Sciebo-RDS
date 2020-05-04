@@ -9,12 +9,15 @@ logger = logging.getLogger()
 
 @FlaskOptimize.do_not_minify()
 @FlaskOptimize.do_not_compress()
-def get(filepath):
-    userId = request.values.get("userId")
+def index():
+    json = request.json
+    userId = json.get("userId")
+    apiKey = json.get("apiKey")
+    filepath = json.get("filepath")
     logger.debug(f"userid {userId}")
 
     import os
-    file = OwncloudUser(userId).getFile(filepath)
+    file = OwncloudUser(userId, apiKey).getFile(filepath)
 
     rv = send_file(file, attachment_filename=os.path.basename(
         filepath), as_attachment=True, mimetype="application/octet-stream")
@@ -26,15 +29,15 @@ def get(filepath):
 
 @FlaskOptimize.do_not_minify()
 @FlaskOptimize.do_not_compress()
-def patch(filepath):
+def patch():
     raise NotImplementedError()
 
 
 @FlaskOptimize.do_not_minify()
 @FlaskOptimize.do_not_compress()
-def post(filepath):
+def post():
     raise NotImplementedError()
 
 
-def delete(filepath):
+def delete():
     raise NotImplementedError()

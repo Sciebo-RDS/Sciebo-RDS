@@ -9,6 +9,7 @@ pact_host_fqdn = f"http://localhost:{pact_host_port}"
 pact = Consumer('PortOwncloud').has_pact_with(
     Provider('CentralTokenStorage'), port=pact_host_port)
 
+
 def create_app():
     from src import bootstrap
     # creates a test client
@@ -69,7 +70,8 @@ class Test_OwncloudUser(unittest.TestCase):
             file = user.getFile(expected_filename).read()
 
         import json
-        self.assertEqual(json.dumps(expected_file).encode("utf-8"), file, msg=file)
+        self.assertEqual(json.dumps(expected_file).encode(
+            "utf-8"), file, msg=file)
 
         expected_filename = "test%20datei.txt"
 
@@ -85,7 +87,8 @@ class Test_OwncloudUser(unittest.TestCase):
             file = user.getFile(expected_filename).read()
 
         import json
-        self.assertEqual(json.dumps(expected_file).encode("utf-8"), file, msg=file)
+        self.assertEqual(json.dumps(expected_file).encode(
+            "utf-8"), file, msg=file)
 
     def test_serverGetFileWithoutSpace(self):
         expected_user = "testuser"
@@ -129,13 +132,16 @@ class Test_OwncloudUser(unittest.TestCase):
 
         with pact:
             data = {
-                "userId" : expected_user
+                "userId": expected_user,
+                "filepath": expected_filename
             }
 
-            file = self.client.get(f"/storage/file/{expected_filename}", query_string=data).get_data()
+            file = self.client.get(
+                f"/storage/file", json=data).get_data()
 
         import json
-        self.assertEqual(json.dumps(expected_file).encode("utf-8"), file, msg=file)
+        self.assertEqual(json.dumps(expected_file).encode(
+            "utf-8"), file, msg=file)
 
     def test_serverGetFileWithSpaces(self):
         expected_user = "testuser"
@@ -179,10 +185,13 @@ class Test_OwncloudUser(unittest.TestCase):
 
         with pact:
             data = {
-                "userId" : expected_user
+                "userId": expected_user,
+                "filepath": expected_filename
             }
 
-            file = self.client.get(f"/storage/file/{expected_filename}", query_string=data).get_data()
+            file = self.client.get(
+                f"/storage/file", json=data).get_data()
 
         import json
-        self.assertEqual(json.dumps(expected_file).encode("utf-8"), file, msg=file)
+        self.assertEqual(json.dumps(expected_file).encode(
+            "utf-8"), file, msg=file)
