@@ -163,16 +163,16 @@ paths:
                   $ref: '#/components/schemas/File'
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
                 apiKey:
                   type: string
-                file:
-                  $ref: '#/components/schemas/File'
                 userId:
                   type: string
+                files:
+                  type: object
   '/project/{project-id}/files/{file-id}':
     parameters:
       - schema:
