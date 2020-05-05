@@ -176,7 +176,7 @@ msgstr "Informations about ingoing and outgoing traffic."
 
 #: templates/part.research.content.service.php:57
 msgid "Ingoing"
-msgstr "Ingoing"
+msgstr "take files from"
 
 #: templates/part.research.content.service.php:67
 msgid "Outgoing"
