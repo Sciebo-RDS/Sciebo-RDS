@@ -180,7 +180,7 @@ msgstr "Ingoing"
 
 #: templates/part.research.content.service.php:67
 msgid "Outgoing"
-msgstr "Outgoing"
+msgstr "publish to"
 
 #: templates/part.research.content.service.php:71
 msgid "For which storage, do you want to use this service?"
