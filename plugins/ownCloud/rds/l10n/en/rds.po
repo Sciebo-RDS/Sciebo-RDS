@@ -220,7 +220,7 @@ msgstr "Please select a service."
 
 #: templates/settings-personal.php:68 templates/settings-personal.php:68
 msgid "Servicename"
-msgstr "Servicename"
+msgstr "Accounts"
 
 #: templates/settings-personal.php:70 templates/settings-personal.php:70
 msgid "Actions"
