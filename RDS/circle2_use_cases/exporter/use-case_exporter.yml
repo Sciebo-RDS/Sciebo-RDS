@@ -52,7 +52,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Returns all files in ingoing port.
+      summary: Returns all files in given port.
       tags: []
       responses:
         '200':
@@ -60,7 +60,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/File'
+                type: array
+                items:
+                  $ref: '#/components/schemas/File'
       description: ''
     post:
       summary: Push all files from specified ingoing file ports to all outgoing file ports.
