@@ -40,6 +40,7 @@ class Service():
             }
             json = requests.get(
                 f"{self.portaddress}/storage/folder", json=data).json()
+
             self.files = json
 
         if self.metadata:
@@ -52,14 +53,17 @@ class Service():
     def getProjectId(self):
         return self.getProperty("projectId")
 
-    def getFiles(self):
+    def getFiles(self, getContent=False):
         """
         Returns a generator to iterate over.
 
         Returns the filepath string and the content of the file in the current used service.
         """
         for index, file in enumerate(self.files):
-            yield file, self.getFile(index)
+            if getContent:
+                yield file, self.getFile(index)
+            else:
+                yield file
 
     def getProperty(self, key):
         for prop in self.customProperties:
@@ -71,10 +75,17 @@ class Service():
     def getFile(self, file_id):
         def getContent(file):
             if self.fileStorage:
-                data = {"userId": self.userId, "filepath": file}
+                data = {
+                    "userId": self.userId,
+                    "filepath": file
+                }
+
                 response_to = requests.get(
-                    f"{self.portaddress}/storage/file", data=data)
-                return response_to.content
+                    f"{self.portaddress}/storage/file", json=data)
+
+                from io import BytesIO
+
+                return BytesIO(response_to.content).read()
 
             if self.metadata:
                 # TODO: metadata can respond with files too.
@@ -102,14 +113,28 @@ class Service():
         return True
 
     def removeFile(self, file_id):
-        def removeFile(file):
-            for file in self.files:
-                req = requests.delete(
-                    f"{self.portaddress}/{file}")
-                if req.status_code >= 300:
-                    return False
+        found = False
 
-        if removeFile(self.files[file_id]):
+        for file in self.files:
+            if self.fileStorage:
+                data = {
+                    "filepath": file,
+                    "userId": self.userId
+                }
+                req = requests.delete(
+                    f"{self.portaddress}/storage/file", json=data)
+
+                if req.status_code < 300:
+                    found = True
+
+            if self.metadata:
+                req = requests.delete(
+                    f"{self.portaddress}/metadata/project/{self.getProjectId()}/file/{file}")
+
+                if req.status_code < 300:
+                    found = True
+
+        if found:
             del self.files[file_id]
             return True
 

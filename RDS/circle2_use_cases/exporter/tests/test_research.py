@@ -5,7 +5,7 @@ from lib.Service import Service
 from pactman import Consumer, Provider
 from .test_service import Test_Service
 
-pact = Consumer('PortZenodo').has_pact_with(Provider('Zenodo'), port=3000)
+pact = Consumer('ServiceExporter').has_pact_with(Provider('Zenodo'), port=3000)
 testingaddress = "http://localhost:3000"
 
 
@@ -63,12 +63,12 @@ class Test_Research(unittest.TestCase):
         }
 
         self.requestResearchGET(pact, userId, researchIndex, research)
-        Test_Service.requestFolderGET(
+        Test_Service.requestStorageFolderGET(
             pact, "/", userId, files)
 
         with pact:
             Research(userId=userId, researchIndex=researchIndex,
-                     testing_address=testingaddress)
+                     testing=testingaddress)
 
     def test_getFiles(self):
         userId = "admin"
@@ -85,12 +85,12 @@ class Test_Research(unittest.TestCase):
         }
 
         self.requestResearchGET(pact, userId, researchIndex, research)
-        Test_Service.requestFolderGET(
+        Test_Service.requestStorageFolderGET(
             pact, "/", userId, expected_files)
 
         with pact:
             files = Research(userId=userId, researchIndex=researchIndex,
-                             testing_address=testingaddress).getFiles()
+                             testing=testingaddress).getFiles()
 
         self.assertEqual(files, expected_files)
 

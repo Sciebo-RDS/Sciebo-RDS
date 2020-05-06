@@ -1,5 +1,5 @@
 from lib.Research import Research
-from flask import jsonify
+from flask import jsonify, current_app
 
 
 def index(user_id):
@@ -7,12 +7,16 @@ def index(user_id):
 
 
 def get(user_id, research_id):
-    return jsonify({"files": Research(userId=user_id, researchIndex=research_id)})
+    return jsonify(Research(userId=user_id, researchIndex=research_id, testing=current_app.config.get("TESTING")).getFiles())
 
 
 def post(user_id, research_id):
-    return jsonify({"succ": Research(userId=user_id, researchIndex=research_id).synchronization()})
+    return jsonify({
+        "succ": Research(userId=user_id, researchIndex=research_id, testing=current_app.config.get("TESTING")).synchronization()
+    })
 
 
 def delete(user_id, research_id):
-    return jsonify({"succ": Research(userId=user_id, researchIndex=research_id).removeAllFiles()})
+    return jsonify({
+        "succ": Research(userId=user_id, researchIndex=research_id, testing=current_app.config.get("TESTING")).removeAllFiles()
+    })
