@@ -53,8 +53,10 @@ class OwncloudUser():
         from urllib.parse import quote, unquote
         if unquote(foldername) is not foldername:
             foldername = unquote(foldername)
+        files = self.client.list(foldername)
 
-        return self.client.list(foldername)
+        logger.debug("found files: {}".format(files))
+        return files
 
     def getFile(self, filename):
         """
@@ -75,5 +77,7 @@ class OwncloudUser():
 
         res1 = self.client.resource(filename)
         res1.write_to(buffer)
+
+        logger.debug("file content: {}".format(buffer.read()))
 
         return buffer
