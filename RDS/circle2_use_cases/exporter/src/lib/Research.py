@@ -77,7 +77,7 @@ class Research():
             self.removeAllFiles()
 
         for svc in self.importServices:
-            self.addFile(svc.getFiles(getContent=True))
+            self.addFile(*svc.getFiles(getContent=True))
 
     def addFile(self, *args, **kwargs):
         """
