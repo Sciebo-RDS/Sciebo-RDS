@@ -13,11 +13,12 @@
 
   OC.rds.Files.prototype = {
     load: function (researchIndex) {
+      var self = this;
       $.when(
         this.loadSettings(researchIndex),
         this.loadFiles(researchIndex)
       ).then(function () {
-        this._currentResearch = researchIndex;
+        self._currentResearch = researchIndex;
       });
     },
     triggerSync: function () {
@@ -72,6 +73,7 @@
     triggerRemove: function (filename) {},
     loadSettings: function (researchIndex) {
       var deferred = $.Deferred();
+      var self = this;
 
       $.ajax({
         type: "GET",
@@ -81,7 +83,7 @@
         dataType: "json",
       })
         .done(function (settings) {
-          this._settings = settings;
+          self._settings = settings;
           deferred.resolve();
         })
         .fail(function () {
@@ -118,6 +120,7 @@
     },
     loadFiles: function (researchIndex) {
       var deferred = $.Deferred();
+      var self = this;
 
       $.ajax({
         type: "GET",
@@ -125,7 +128,7 @@
         dataType: "json",
       })
         .done(function (files) {
-          this._currentFiles = files;
+          self._currentFiles = files;
           deferred.resolve();
         })
         .fail(function () {
