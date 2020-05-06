@@ -117,9 +117,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
+                type: object
+                properties:
+                  files:
+                    type: array
+                    items:
+                      type: string
       requestBody:
         content:
           application/json:

@@ -56,6 +56,9 @@ class OwncloudUser():
         files = self.client.list(foldername)
 
         logger.debug("found files: {}".format(files))
+        
+        # remove the first element, because this is the searched folder.
+        del files[0]
         return files
 
     def getFile(self, filename):

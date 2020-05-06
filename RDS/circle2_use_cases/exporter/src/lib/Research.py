@@ -119,4 +119,4 @@ class Research():
     def getFiles(self):
         from functools import reduce
 
-        return list(set(reduce(lambda x, y: x + y, [svc.files for svc in self.importServices])))
+        return list(set(reduce(lambda x, y: x + y, [svc.getFiles() for svc in self.importServices])))
