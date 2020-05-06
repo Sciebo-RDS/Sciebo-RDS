@@ -51,8 +51,8 @@ class OwncloudUser():
         logger.debug("foldername {}".format(foldername))
 
         from urllib.parse import quote, unquote
-        if unquote(foldername) is foldername:
-            foldername = quote(foldername)
+        if unquote(foldername) is not foldername:
+            foldername = unquote(foldername)
 
         return self.client.list(foldername)
 
