@@ -77,7 +77,7 @@ class Research():
             self.removeAllFiles()
 
         for svc in self.importServices:
-            self.addFile(svc.getFiles())
+            self.addFile(svc.getFiles(getContent=True))
 
     def addFile(self, *args, **kwargs):
         """
@@ -118,7 +118,7 @@ class Research():
         """
         Remove file with id in export service.
         """
-        #TODO
+        # TODO
         raise NotImplementedError()
 
     def getFiles(self):
