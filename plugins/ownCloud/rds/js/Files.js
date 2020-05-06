@@ -16,7 +16,7 @@
       $.when(
         this.loadSettings(researchIndex),
         this.loadFiles(researchIndex)
-      ).done(function () {
+      ).then(function () {
         this._currentResearch = researchIndex;
       });
     },
