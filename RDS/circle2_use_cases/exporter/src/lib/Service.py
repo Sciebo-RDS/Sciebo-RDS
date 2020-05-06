@@ -77,7 +77,7 @@ class Service():
             if self.fileStorage:
                 data = {
                     "userId": self.userId,
-                    "filepath": file
+                    "filepath": "{}/{}".format(self.getFilepath(), file)
                 }
 
                 response_to = requests.get(
