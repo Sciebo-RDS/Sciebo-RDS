@@ -84,13 +84,8 @@ class Research():
         Wrapper function to call addFile in all export services objects with parameters.
         """
 
-        def wrapper(*args, **kwargs):
-            def func(svc):
-                return svc.addFile(args, kwargs)
-            return func
-
         with multiprocessing.Pool() as pool:
-            pool.map(wrapper(args, kwargs), self.exportServices)
+            pool.map(Service.addFile(args, kwargs), self.exportServices)
 
     def removeAllFiles(self):
         """
