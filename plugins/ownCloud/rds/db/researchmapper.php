@@ -8,6 +8,7 @@ use OCP\ILogger;
 
 class ResearchMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/research';
+    private $exporterURL = 'https://sciebords-dev.uni-muenster.de/exporter';
 
     public function __construct( ILogger $logger, $appName ) {
         $this->logger = $logger;
@@ -384,7 +385,32 @@ class ResearchMapper {
     }
 
     public function triggerExport( $userId, $researchIndex, $files = null ) {
-        return false;
+        $curl = curl_init( $this->exporterURL . '/user/' . $userId . '/research/' . $researchIndex );
+        $options = [CURLOPT_RETURNTRANSFER => true];
+        curl_setopt_array( $curl, $options );
+        curl_setopt( $curl, CURLOPT_POST, TRUE );
+        curl_setopt( $curl, CURLOPT_POSTFIELDS, [] );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+
+        $request = curl_exec( $curl );
+        $response = json_decode( $request, true );
+        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
+
+        curl_close( $curl );
+
+        if ( $httpcode >= 300 ) {
+            throw new NotFoundException( json_encode( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg(),
+                'curl_error_message'=>$info,
+                'response'=>$request
+            ] ) );
+        }
+
+        return true;
+
     }
 
 }

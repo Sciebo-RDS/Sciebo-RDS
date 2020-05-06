@@ -156,10 +156,9 @@ class ResearchService {
 
             if ( $filename != null ) {
                 // TODO: trigger export for specific file in research for userId and researchIndex
-                return ;
             }
             // TODO: trigger export for all files in research for userId and researchIndex
-            return ;
+            return $this->mapper->triggerExport($userId, $id);
 
         } catch( Exception $e ) {
             $this->handleException( $e );
