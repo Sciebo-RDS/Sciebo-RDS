@@ -1,4 +1,3 @@
-from lib.File import File
 import requests
 import os
 import logging
@@ -7,10 +6,18 @@ logger = logging.getLogger()
 
 
 class Service():
-    def __init__(self, servicename, userId, researchIndex, fileStorage=False, metadata=False, customProperties: list = None):
+    def __init__(self, servicename, userId, researchIndex, fileStorage=False, metadata=False, customProperties: list = None, testing=None):
         self.files = []
 
-        self.portaddress = "circle1-port-" + servicename.lower()
+        self.servicename = servicename
+
+        if not servicename.startswith("port-"):
+            servicename = "port-" + servicename.lower()
+
+        self.portaddress = f"http://circle1-{servicename.lower()}"
+
+        if testing is not None:
+            self.portaddress = testing
 
         self.userId = userId
         self.researchIndex = researchIndex
@@ -32,32 +39,46 @@ class Service():
                 "userId": self.userId
             }
             json = requests.get(
-                f"{self.portaddress}/folder", json=data).json()
-            self.files = json.get("files", [])
+                f"{self.portaddress}/storage/folder", json=data).json()
+            self.files = json
 
-        # TODO: metadata ports can also be response with files
+        if self.metadata:
+            # TODO: metadata ports can also response with files
+            pass
 
     def getFilepath(self):
-        filepath = ""
+        return self.getProperty("filepath")
 
-        for prop in self.customProperties:
-            if prop["key"] == "filepath":
-                return prop["filepath"]
-
-        return filepath
+    def getProjectId(self):
+        return self.getProperty("projectId")
 
     def getFiles(self):
         """
         Returns a generator to iterate over.
 
-        Returns the file object and the content of the file in the current used service.
+        Returns the filepath string and the content of the file in the current used service.
         """
         for index, file in enumerate(self.files):
             yield file, self.getFile(index)
 
+    def getProperty(self, key):
+        for prop in self.customProperties:
+            if prop["key"] == key:
+                return prop["value"]
+
+        return None
+
     def getFile(self, file_id):
         def getContent(file):
-            pass
+            if self.fileStorage:
+                data = {"userId": self.userId, "filepath": file}
+                response_to = requests.get(
+                    f"{self.portaddress}/storage/file", data=data)
+                return response_to.content
+
+            if self.metadata:
+                # TODO: metadata can respond with files too.
+                pass
 
         return getContent(self.files[file_id])
 
@@ -66,12 +87,17 @@ class Service():
             "file": (os.path.basename(filepath), fileContent, "multipart/form-data")
         }
 
-        response_to = requests.post(
-            f"{self.portaddress}/{file}", files=file, data={"userId": self.userId})
+        if self.metadata:
+            response_to = requests.post(
+                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files", files=file, data={"userId": self.userId})
 
-        if response_to.status_code >= 300:
-            logger.error(response_to.json())
-            return False
+            if response_to.status_code >= 300:
+                logger.error(response_to.json())
+                return False
+
+        if self.fileStorage:
+            # TODO: fileStorage can also add files
+            pass
 
         return True
 
@@ -80,15 +106,14 @@ class Service():
             for file in self.files:
                 req = requests.delete(
                     f"{self.portaddress}/{file}")
-                if req.status_code != 200:
+                if req.status_code >= 300:
                     return False
 
-        b = removeFile(self.files[file_id])
-
-        if b:
+        if removeFile(self.files[file_id]):
             del self.files[file_id]
+            return True
 
-        return b
+        return False
 
     def removeAllFiles(self):
         for index, _ in enumerate(self.files):
@@ -103,33 +128,16 @@ class Service():
         return json.dumps(self.getDict())
 
     def getDict(self):
+
         obj = {
-            "port": self.port,
-            "properties": []
+            "servicename": self.servicename,
+            "files": [x for x in self.getFiles()]
         }
-
-        if self.fileStorage:
-            obj["properties"].append({
-                "portType": "fileStorage",
-                "value": self.fileStorage
-            })
-
-        if self.metadata:
-            obj["properties"].append({
-                "portType": "metadata",
-                "value": self.metadata
-            })
-
-        if self.customProperties is not None:
-            obj["properties"].append({
-                "portType": "customProperties",
-                "value": self.customProperties
-            })
 
         return obj
 
     @classmethod
-    def fromDict(cls, portDict, userId=None, researchIndex=None):
+    def fromDict(cls, portDict, userId=None, researchIndex=None, testing=None):
         portName = portDict["port"]
         fileStorage = False
         metadata = False
@@ -143,7 +151,7 @@ class Service():
             elif prop["portType"] == "customProperties":
                 customProperties = prop["value"]
 
-        return cls(portName, userId=userId, researchIndex=researchIndex, fileStorage=fileStorage, metadata=metadata, customProperties=customProperties)
+        return cls(portName, userId=userId, researchIndex=researchIndex, fileStorage=fileStorage, metadata=metadata, customProperties=customProperties, testing=testing)
 
     def __eq__(self, obj):
         if not isinstance(obj, Service):

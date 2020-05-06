@@ -1,13 +1,82 @@
 import unittest
 from lib.Service import Service
-from lib.File import File
 from pactman import Consumer, Provider
 import json
 
 pact = Consumer('PortZenodo').has_pact_with(Provider('Zenodo'), port=3000)
+testingaddress = "http://localhost:3000"
 
 
 class Test_Service(unittest.TestCase):
+    @staticmethod
+    def requestFolderGET(pact, folderpath: str, userId: str, files: list):
+        pact.given(
+            f'user {userId} has {len(files)} files in folderpath {folderpath}'
+        ).upon_receiving(
+            'the filepaths for files in folder with folderpath'
+        ).with_request(
+            'GET', f'/storage/folder'
+        ) .will_respond_with(200, body=files)
+
+    @staticmethod
+    def requestFileGET(pact, filepath: str, userId: str, fileContent: bytes):
+        pact.given(
+            f'user {userId} has a file in filepath {filepath}'
+        ).upon_receiving(
+            'the filecontent of the given filepath'
+        ).with_request(
+            'GET', f'/storage/file'
+        ) .will_respond_with(200, body=fileContent)
+
+    @staticmethod
+    def requestFilePOST(pact, userId: str, projectId: int, files: list):
+        pact.given(
+            f'projectId {projectId} exists in metadata'
+        ).upon_receiving(
+            'a file was added'
+        ).with_request(
+            'POST', f'/metadata/project/{projectId}/files'
+        ) .will_respond_with(200, body=files)
+
+    @staticmethod
+    def getOwncloudPort(id):
+        return [{
+            "id": id,
+            "port": "port-owncloud",
+            "properties": [
+                {
+                    "portType": "customProperties",
+                    "value": [{
+                        "key": "filepath",
+                        "value": "/test folder"
+                    }]
+                },
+                {
+                    "portType": "fileStorage",
+                    "value": True
+                }
+            ],
+        }]
+
+    @staticmethod
+    def getZenodoPort(id):
+        return [{
+            "id": id,
+            "port": "port-zenodo",
+            "properties": [
+                {
+                    "portType": "customProperties",
+                    "value": [{
+                        "key": "projectId",
+                        "value": 123
+                    }]
+                },
+                {
+                    "portType": "metadata",
+                    "value": True
+                }
+            ],
+        }]
 
     def test_init(self):
         expected = {
@@ -15,115 +84,36 @@ class Test_Service(unittest.TestCase):
             "files": []
         }
 
-        s = Service(expected["servicename"])
-        self.assertEqual(s.to_dict(), expected)
-        self.assertEqual(s.to_json(), json.dumps(expected))
+        self.requestFileGET(pact, "/test folder", "admin", "Lorem ipsum")
+        with pact:
+            s = Service(expected["servicename"], "admin", 1, metadata=True,
+                        customProperties=self.getZenodoPort(1)[0]["properties"][0]["value"], testing=testingaddress)
+        self.assertEqual(s.getDict(), expected)
+        self.assertEqual(s.getJSON(), json.dumps(expected))
 
+    @unittest.skip("Unhandled body content type with post files")
     def test_addFile(self):
+        userId = "admin"
         expected = {
             "servicename": "Owncloud",
             "folder": "/test folder/",
             "files": []
         }
 
-        s = Service(expected["servicename"])
-
-        f = File(1, "/test folder/testFile.txt")
-        s.addFile(f)
-        expected["files"].append(f.to_dict())
-        self.assertEqual(s.to_dict(), expected)
-        self.assertEqual(s.to_json(), json.dumps(expected))
-
-    def test_getPortName(self):
-        servicename = "Owncloud"
-        expected = "circle1-port-owncloud"
-        s = Service(servicename)
-        self.assertEqual(s.getPortName(), expected)
-
-    def test_loadFileFromService(self):
-        userId = "admin"
-        files = []
-        servicename = "Owncloud"
-        filepath = "test folder"
-
-        pact.given(
-            'no files in service'
-        ).upon_receiving(
-            'the files in service'
-        ).with_request(
-            'GET', f'/storage/file/{filepath}?userId={userId}'
-        ) .will_respond_with(200, body=files)
-
-        s = Service(servicename)
-        s.addFolder(filepath)
+        self.requestFolderGET(pact, "/", userId,
+                              [])
         with pact:
-            s.loadFiles()
-        self.assertEqual(s.getFiles(), files)
+            s = Service(expected["servicename"], userId, 1, metadata=True,
+                        customProperties=self.getZenodoPort(1)[0]["properties"][0]["value"], testing=testingaddress)
 
-        files.append(f"{filepath}testfile.txt")
+        f = "/test folder/testFile.txt"
+        fcontent = "Lorem Ipsum"
 
-        pact.given(
-            'one file in service'
-        ).upon_receiving(
-            'the files in service'
-        ).with_request(
-            'GET', f'/storage/file/{filepath}?userId={userId}'
-        ) .will_respond_with(200, body=files)
+        expected["files"].append(f)
+        self.requestFilePOST(pact, "admin", 5, expected["files"])
 
-        s = Service(servicename)
-        s.addFolder(filepath)
         with pact:
-            s.loadFiles()
-        self.assertEqual(s.getFiles(), files)
+            s.addFile(f, fcontent)
 
-        files.append(f"{filepath}/test file.txt")
-
-        pact.given(
-            'two files in service'
-        ).upon_receiving(
-            'the files in service'
-        ).with_request(
-            'GET', f'/storage/file/{filepath}?userId={userId}'
-        ) .will_respond_with(200, body=files)
-
-        s = Service(servicename)
-        s.addFolder(filepath)
-        with pact:
-            s.loadFiles()
-        self.assertEqual(s.getFiles(), files)
-
-    def test_triggerUpload(self):
-        servicename = "Owncloud"
-        s = Service(servicename)
-
-    def test_addFolder(self):
-        servicename = "Owncloud"
-        expected_folders = []
-        folders = []
-
-        s = Service(servicename)
-        self.assertEqual(s.getFolders(), folders)
-
-        folders.append("test folder")
-        expected_folders.append("/test folder")
-
-        s.addFolder(folders[-1])
-        self.assertEqual(s.getFolders(), expected_folders)
-
-        folders.append("/test folder123")
-        expected_folders.append("/test folder123")
-
-        s.addFolder(folders[-1])
-        self.assertEqual(s.getFolders(), expected_folders)
-
-        folders.append("/test 123 folder/")
-        expected_folders.append("/test 123 folder")
-
-        s.addFolder(folders[-1])
-        self.assertEqual(s.getFolders(), expected_folders)
-
-        folders.append("testfolder")
-        expected_folders.append("/testfolder")
-
-        s.addFolder(folders[-1])
-        self.assertEqual(s.getFolders(), expected_folders)
+        self.assertEqual(s.getDict(), expected)
+        self.assertEqual(s.getJSON(), json.dumps(expected))

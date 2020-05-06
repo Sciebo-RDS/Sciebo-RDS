@@ -21,26 +21,27 @@ class Research():
         self.autoSync = False
         self.applyChanges = True
 
-        self.address = "circle3-research-manager" if testing_address is None else testing_address
+        self.testing = testing_address
+        self.address = "http://circle3-research-manager" if testing_address is None else testing_address
 
         self.reload()
 
     def reload(self):
         req = requests.get(
-            f"{self.address}/user/{self.userId}/research/{self.researchIndex}")
+            f"{self.address}/research/user/{self.userId}/research/{self.researchIndex}")
 
-        json = req.json
+        json = req.json()
 
         self.importServices = []
         for port in json.get("portIn"):
             svc = Service.fromDict(port, userId=self.userId,
-                                   researchIndex=self.researchIndex)
+                                   researchIndex=self.researchIndex, testing=self.testing)
             self.importServices.append(svc)
 
         self.exportServices = []
         for port in json.get("portOut"):
             svc = Service.fromDict(port, userId=self.userId,
-                                   researchIndex=self.researchIndex)
+                                   researchIndex=self.researchIndex, testing=self.testing)
             self.exportServices.append(svc)
 
         self.status = json.get("status")
@@ -117,9 +118,10 @@ class Research():
         """
         Remove file with id in export service.
         """
-        pass
+        #TODO
+        raise NotImplementedError()
 
     def getFiles(self):
         from functools import reduce
 
-        return set(reduce((lambda x, y: x + y, [svc.files for svc in self.importServices])))
+        return list(set(reduce(lambda x, y: x + y, [svc.files for svc in self.importServices])))
