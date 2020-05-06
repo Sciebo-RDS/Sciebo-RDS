@@ -23,8 +23,6 @@
     triggerSync: function () {
       var deferred = $.Deferred();
 
-      var data = { filename: filename };
-
       if (this._currentResearch === undefined) {
         deferred.reject();
         return deferred.promise();
