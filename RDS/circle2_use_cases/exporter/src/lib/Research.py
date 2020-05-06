@@ -4,7 +4,7 @@ import requests
 
 
 class Research():
-    def __init__(self, userId=None, researchIndex=None, researchId=None, testing=None):
+    def __init__(self, userId=None, researchIndex=None, researchId=None, testing=False):
         if (userId is None or researchIndex is None) and researchId is None:
             raise ValueError(
                 "(userId or researchIndex) and researchId are None.")
@@ -22,7 +22,7 @@ class Research():
         self.applyChanges = True
 
         self.testing = testing
-        self.address = "http://circle3-research-manager" if testing is None else testing
+        self.address = "http://circle3-research-manager" if testing is False else testing
 
         self.reload()
 

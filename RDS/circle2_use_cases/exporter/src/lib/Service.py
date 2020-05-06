@@ -6,7 +6,7 @@ logger = logging.getLogger()
 
 
 class Service():
-    def __init__(self, servicename, userId, researchIndex, fileStorage=False, metadata=False, customProperties: list = None, testing=None):
+    def __init__(self, servicename, userId, researchIndex, fileStorage=False, metadata=False, customProperties: list = None, testing=False):
         self.files = []
 
         self.servicename = servicename
@@ -16,7 +16,7 @@ class Service():
 
         self.portaddress = f"http://circle1-{servicename.lower()}"
 
-        if testing is not None:
+        if testing is not False:
             self.portaddress = testing
 
         self.userId = userId
