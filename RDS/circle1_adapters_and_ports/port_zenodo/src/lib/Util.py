@@ -36,7 +36,9 @@ def require_api_key(api_method):
     def check_api_key(*args, **kwargs):
         g.zenodo = None
 
-        req = request.json
+        req = request.get_json(force=True)
+        logger.debug("req data: {}".format(req))
+        
         try:
             apiKey = req.get("apiKey")
 
