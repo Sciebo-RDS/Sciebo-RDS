@@ -67,11 +67,11 @@ class Service():
         for index, file in enumerate(self.files):
             if getContent:
                 logger.debug(
-                    "get file from service {}".format(self.servicename))
+                    "get file {} from service {}".format(file, self.servicename))
                 content = self.getFile(index)
 
-                logger.debug("file: {}, content: {}".format(
-                    file, content.getvalue().decode()))
+                logger.debug("got content: {}".format(
+                    content.getvalue().decode()))
 
                 yield file, content
             else:
