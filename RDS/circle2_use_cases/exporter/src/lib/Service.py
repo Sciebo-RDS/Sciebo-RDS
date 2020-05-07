@@ -98,7 +98,10 @@ class Service():
             response_to = requests.get(
                 f"{self.portaddress}/storage/file", json=data)
 
-            return BytesIO(response_to.content)
+            cnt = response_to.content
+            logger.debug("got bytes {}".format(cnt))
+
+            return BytesIO(cnt)
 
         if self.metadata:
             # TODO: metadata can respond with files too.
