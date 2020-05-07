@@ -56,7 +56,7 @@ class OwncloudUser():
         files = self.client.list(foldername)
 
         logger.debug("found files: {}".format(files))
-        
+
         # remove the first element, because this is the searched folder.
         del files[0]
         return files
@@ -72,8 +72,8 @@ class OwncloudUser():
 
         # check if string is already urlencoded
         # if unquote is equal to string, then it is not urlencoded (unquote respects plus sign)
-        if unquote(filename) is filename:
-            filename = quote(filename)
+        if unquote(filename) != filename:
+            filename = unquote(filename)
 
         from io import BytesIO
         buffer = BytesIO()
