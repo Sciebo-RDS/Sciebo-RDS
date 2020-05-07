@@ -48,7 +48,12 @@ class Service():
             pass
 
     def getFilepath(self):
-        return self.getProperty("filepath")
+        filepath = self.getProperty("filepath")
+
+        if str(filepath).endswith("/"):
+            filepath = filepath[:-1]
+
+        return filepath
 
     def getProjectId(self):
         return self.getProperty("projectId")

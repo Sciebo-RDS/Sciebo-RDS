@@ -22,11 +22,11 @@ def get(project_id, file_id):
 def post(project_id):
     logger.debug("Read file from request")
     file = request.files['file']
+    logger.debug("file: {}".format(file))
 
     logger.debug("Start file upload")
-    from urllib.parse import unquote
     resp = g.zenodo.upload_new_file_to_deposition(
-        project_id, unquote(file.filename), file)
+        project_id, file.filename, file)
     logger.debug("Finished file upload")
 
     if resp:
