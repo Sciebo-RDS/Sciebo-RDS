@@ -122,24 +122,25 @@ class Service():
     def removeFile(self, file_id):
         found = False
 
-        for file in self.files:
-            if self.fileStorage:
-                data = {
-                    "filepath": file,
-                    "userId": self.userId
-                }
-                req = requests.delete(
-                    f"{self.portaddress}/storage/file", json=data)
+        file = self.files[file_id]
 
-                if req.status_code < 300:
-                    found = True
+        if self.fileStorage:
+            data = {
+                "filepath": "{}/{}".format(self.getFilepath(), file),
+                "userId": self.userId
+            }
+            req = requests.delete(
+                f"{self.portaddress}/storage/file", json=data)
 
-            if self.metadata:
-                req = requests.delete(
-                    f"{self.portaddress}/metadata/project/{self.getProjectId()}/file/{file}")
+            if req.status_code < 300:
+                found = True
 
-                if req.status_code < 300:
-                    found = True
+        if self.metadata:
+            req = requests.delete(
+                f"{self.portaddress}/metadata/project/{self.getProjectId()}/file/{file}")
+
+            if req.status_code < 300:
+                found = True
 
         if found:
             del self.files[file_id]
