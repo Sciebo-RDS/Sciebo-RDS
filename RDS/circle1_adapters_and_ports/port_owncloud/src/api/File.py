@@ -2,7 +2,6 @@ from lib.ownCloudUser import OwncloudUser
 from flask import request, send_file
 import logging
 from connexion_plus import FlaskOptimize
-from werkzeug.wsgi import FileWrapper
 
 logger = logging.getLogger()
 
@@ -17,11 +16,11 @@ def index():
     logger.debug(f"userid {userId}")
 
     import os
-    file = FileWrapper(OwncloudUser(userId, apiKey).getFile(filepath))
+    file = OwncloudUser(userId, apiKey).getFile(filepath)
 
     rv = send_file(file, attachment_filename=os.path.basename(
         filepath), as_attachment=True, mimetype="application/octet-stream")
-        
+
     rv.direct_passthrough = False
     logger.debug("send response")
     return rv
