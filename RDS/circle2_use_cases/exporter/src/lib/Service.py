@@ -149,6 +149,7 @@ class Service():
         return False
 
     def removeAllFiles(self):
+        logger.debug("remove files in service {}".format(self.servicename))
         for index, _ in enumerate(self.files):
             if not self.removeFile(index):
                 return False

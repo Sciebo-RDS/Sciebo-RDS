@@ -116,6 +116,8 @@ class Research():
         Remove file with given filepath in all export services.
         """
 
+        logger.debug("remove file {}".format(filepath))
+
         with Pool() as pool:
             pool.map(Service.removeFile, self.exportServices, filepath)
 

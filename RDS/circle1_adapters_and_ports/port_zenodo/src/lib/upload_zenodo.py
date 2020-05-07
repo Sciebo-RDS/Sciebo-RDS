@@ -157,10 +157,10 @@ class Zenodo(object):
         (More: https://developers.zenodo.org/#deposition-files)
         """
 
-        import werkzeug
+        from werkzeug.utils import secure_filename
 
         from io import IOBase
-        filename = werkzeug.secure_filename(os.path.basename(path_to_file))
+        filename = secure_filename(os.path.basename(path_to_file))
         data = {"name": filename}
 
         try:
