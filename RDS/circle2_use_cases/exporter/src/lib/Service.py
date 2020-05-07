@@ -120,7 +120,8 @@ class Service():
             "filename": filename
         }
 
-        logger.debug("add file {} in service {}".format(files, self.getJSON()))
+        logger.debug("add file {} with data {} in service {}".format(
+            files, data, self.getJSON()))
 
         if self.metadata:
             response_to = requests.post(
