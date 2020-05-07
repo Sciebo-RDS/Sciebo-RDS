@@ -113,7 +113,7 @@ class Service():
 
     def addFile(self, filename, fileContent):
         files = {
-            "file": (filename, fileContent, "multipart/form-data")
+            "file": (filename, fileContent.getvalue())
         }
         data = {
             "userId": self.userId,
