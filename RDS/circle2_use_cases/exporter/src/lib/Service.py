@@ -137,7 +137,7 @@ class Service():
 
         if self.metadata:
             req = requests.delete(
-                f"{self.portaddress}/metadata/project/{self.getProjectId()}/file/{file}")
+                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files/{file_id}")
 
             if req.status_code < 300:
                 found = True

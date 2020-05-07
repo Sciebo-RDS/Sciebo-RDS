@@ -157,17 +157,20 @@ class Zenodo(object):
         (More: https://developers.zenodo.org/#deposition-files)
         """
 
+        from werkzeug import secure_filename
+
         from io import IOBase
+        filename = secure_filename(os.path.basename(path_to_file))
+        data = {"name": filename}
+
         try:
             self.log.debug("Try read the file content.")
-            files = {'file': file.read()}
+            files = {'file': (filename, file.read())}
         except Exception:
             self.log.debug("Cannot read the content. So maybe it is in cache?")
             # for temporary files
-            files = {'file': open(os.path.expanduser(path_to_file), 'rb')}
-
-        filename = os.path.basename(path_to_file)
-        data = {"name": filename}
+            files = {'file': (filename, open(
+                os.path.expanduser(path_to_file), 'rb'))}
 
         self.log.debug(
             "Submit the following informations to zenodo.\nData: {}, Files: {}".format(data, files))
