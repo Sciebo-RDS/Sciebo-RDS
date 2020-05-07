@@ -97,8 +97,12 @@ class Research():
         """
         logger.debug("args: {}, kwargs: {}".format(args, kwargs))
 
+        argLeft = [args[0]]
+        argRight = [args[1]]
+
         with Pool() as pool:
-            pool.map(Service.addFile, self.exportServices, [*args]*len(self.exportServices), [**kwargs]*len(self.exportServices))
+            pool.map(Service.addFile, self.exportServices, argLeft *
+                     len(self.exportServices), argRight*len(self.exportServices))
 
     def removeAllFiles(self):
         """
