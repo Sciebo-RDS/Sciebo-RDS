@@ -1,5 +1,5 @@
 from lib.Service import Service
-import multiprocessing
+from pathos.multiprocessing import ProcessingPool as Pool
 import requests
 import logging
 
@@ -95,8 +95,8 @@ class Research():
         """
         logger.debug("args: {}, kwargs: {}".format(args, kwargs))
 
-        with multiprocessing.Pool() as pool:
-            pool.map(Service.addFile(*args, **kwargs), self.exportServices)
+        with Pool() as pool:
+            pool.map(Service.addFile, self.exportServices, *args, **kwargs)
 
     def removeAllFiles(self):
         """
@@ -105,20 +105,16 @@ class Research():
         Returns a boolean.
         """
 
-        with multiprocessing.Pool() as pool:
+        with Pool() as pool:
             return not (False in pool.map(Service.removeAllFiles, self.exportServices))
 
     def removeFile(self, filepath):
         """
         Remove file with given filepath in all export services.
         """
-        def wrapper(*args, **kwargs):
-            def func(svc):
-                return svc.removeFile(args, kwargs)
-            return func
 
-        with multiprocessing.Pool() as pool:
-            pool.map(wrapper(filepath), self.exportServices)
+        with Pool() as pool:
+            pool.map(Service.removeFile, self.exportServices, filepath)
 
     def removeFileFromService(self, file_id, service):
         """
