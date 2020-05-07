@@ -76,11 +76,11 @@ class OwncloudUser():
             filename = unquote(filename)
 
         from io import BytesIO
-        buffer = BytesIO()
+        buffer = BytesIO(b'')
 
         res1 = self.client.resource(filename)
         res1.write_to(buffer)
 
-        logger.debug("file content: {}".format(buffer.read()))
+        logger.debug("file content: {}".format(buffer.getvalue().decode()))
 
         return buffer
