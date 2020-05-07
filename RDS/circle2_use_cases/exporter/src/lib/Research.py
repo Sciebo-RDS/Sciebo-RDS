@@ -86,15 +86,18 @@ class Research():
             logger.debug("import service: {}".format(svc.getJSON()))
 
             for fileTuple in svc.getFiles(getContent=True):
+                logger.debug("fileTuple: {}".format(fileTuple))
                 self.addFile(*fileTuple)
 
-    def addFile(self, *args, **kwargs):
+    def addFile(self, file, fileContent):
         """
         Wrapper function to call addFile in all export services objects with parameters.
         """
 
+        logger.debug("file: {}, contnt: {}".format(file, fileContent))
+
         with multiprocessing.Pool() as pool:
-            pool.map(Service.addFile(args, kwargs), self.exportServices)
+            pool.map(Service.addFile(file, fileContent), self.exportServices)
 
     def removeAllFiles(self):
         """
