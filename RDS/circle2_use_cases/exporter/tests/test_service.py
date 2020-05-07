@@ -147,7 +147,8 @@ class Test_Service(unittest.TestCase):
         with pact:
             s = Service(expected["servicename"], "admin", 1, fileStorage=True,
                         customProperties=self.getOwncloudPort(1)[0]["properties"][0]["value"], testing=testingaddress)
-            files = [x for x in s.getFiles(getContent=True)]
+            files = [(x, y.getvalue())
+                     for x, y in s.getFiles(getContent=True)]
         self.assertEqual(files, expected_content)
 
     def test_removeFile(self):
