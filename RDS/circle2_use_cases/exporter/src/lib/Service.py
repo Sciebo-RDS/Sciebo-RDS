@@ -137,11 +137,11 @@ class Service():
 
         file = self.files[file_id]
 
+        data = {
+            "filepath": "{}/{}".format(self.getFilepath(), file),
+            "userId": self.userId
+        }
         if self.fileStorage:
-            data = {
-                "filepath": "{}/{}".format(self.getFilepath(), file),
-                "userId": self.userId
-            }
             req = requests.delete(
                 f"{self.portaddress}/storage/file", json=data)
 
@@ -150,7 +150,7 @@ class Service():
 
         if self.metadata:
             req = requests.delete(
-                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files/{file_id}")
+                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files/{file_id}", json=data)
 
             if req.status_code < 300:
                 found = True
