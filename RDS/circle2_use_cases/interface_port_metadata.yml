@@ -172,6 +172,8 @@ paths:
                   type: string
                 files:
                   type: object
+                filename:
+                  type: string
   '/project/{project-id}/files/{file-id}':
     parameters:
       - schema:

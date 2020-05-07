@@ -111,16 +111,20 @@ class Service():
 
         return BytesIO(b'')
 
-    def addFile(self, filepath, fileContent):
+    def addFile(self, filename, fileContent):
         files = {
-            "file": (os.path.basename(filepath), fileContent, "multipart/form-data")
+            "file": (filename, fileContent, "multipart/form-data")
+        }
+        data = {
+            "userId": self.userId,
+            "filename": filename
         }
 
         logger.debug("add file {} in service {}".format(files, self.getJSON()))
 
         if self.metadata:
             response_to = requests.post(
-                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files", files=files, data={"userId": self.userId})
+                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files", files=files, data=data)
 
             if response_to.status_code >= 300:
                 logger.error(response_to.json())

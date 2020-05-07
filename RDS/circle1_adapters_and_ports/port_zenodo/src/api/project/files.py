@@ -24,9 +24,13 @@ def post(project_id):
     file = request.files['file']
     logger.debug("file: {}".format(file))
 
+    req = request.form.to_dict()
+
+    filename = req["filename"]
+
     logger.debug("Start file upload")
     resp = g.zenodo.upload_new_file_to_deposition(
-        project_id, file.filename, file)
+        project_id, filename, file)
     logger.debug("Finished file upload")
 
     if resp:
