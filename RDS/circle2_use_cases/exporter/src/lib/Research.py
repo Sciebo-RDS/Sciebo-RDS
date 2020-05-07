@@ -89,15 +89,14 @@ class Research():
                 logger.debug("fileTuple: {}".format(fileTuple))
                 self.addFile(*fileTuple)
 
-    def addFile(self, file, fileContent):
+    def addFile(self, *args, **kwargs):
         """
         Wrapper function to call addFile in all export services objects with parameters.
         """
-
-        logger.debug("file: {}, contnt: {}".format(file, fileContent))
+        logger.debug("args: {}, kwargs: {}".format(args, kwargs))
 
         with multiprocessing.Pool() as pool:
-            pool.map(Service.addFile(file, fileContent), self.exportServices)
+            pool.map(Service.addFile(*args, **kwargs), self.exportServices)
 
     def removeAllFiles(self):
         """
