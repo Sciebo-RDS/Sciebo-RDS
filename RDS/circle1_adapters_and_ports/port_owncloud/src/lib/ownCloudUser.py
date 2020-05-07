@@ -80,6 +80,7 @@ class OwncloudUser():
 
         res1 = self.client.resource(filename)
         res1.write_to(buffer)
+        buffer.seek(0)
 
         logger.debug("file content: {}".format(buffer.getvalue().decode()))
 
