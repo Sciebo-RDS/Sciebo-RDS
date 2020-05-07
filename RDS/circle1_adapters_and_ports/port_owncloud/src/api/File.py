@@ -19,9 +19,9 @@ def index():
     file = OwncloudUser(userId, apiKey).getFile(filepath)
 
     rv = send_file(file, attachment_filename=os.path.basename(
-        filepath), as_attachment=True, mimetype="application/octet-stream", conditional=True)
+        filepath), as_attachment=True, mimetype="multipart/form-data")
 
-    rv.direct_passthrough = True
+    rv.direct_passthrough = False
     logger.debug("send response")
     return rv
 

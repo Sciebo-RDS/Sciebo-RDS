@@ -63,7 +63,7 @@ class OwncloudUser():
 
     def getFile(self, filename):
         """
-        Returns the given filename from specified owncloud. The path does not start with /.
+        Returns bytesIO content from specified owncloud filepath. The path does not start with /.
         """
 
         logger.debug("filename {}".format(filename))
