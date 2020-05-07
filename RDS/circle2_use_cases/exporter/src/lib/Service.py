@@ -66,7 +66,12 @@ class Service():
         """
         for index, file in enumerate(self.files):
             if getContent:
-                yield file, self.getFile(index)
+                content = self.getFile(index)
+
+                logger.debug("file: {}, content: {}".format(
+                    file, content.getvalue().decode()))
+
+                yield file, content
             else:
                 yield file
 
@@ -78,25 +83,26 @@ class Service():
         return None
 
     def getFile(self, file_id):
-        def getContent(file):
-            if self.fileStorage:
-                data = {
-                    "userId": self.userId,
-                    "filepath": "{}/{}".format(self.getFilepath(), file)
-                }
+        from io import BytesIO
 
-                response_to = requests.get(
-                    f"{self.portaddress}/storage/file", json=data)
+        file = self.files[file_id]
 
-                from io import BytesIO
+        if self.fileStorage:
+            data = {
+                "userId": self.userId,
+                "filepath": "{}/{}".format(self.getFilepath(), file)
+            }
 
-                return BytesIO(response_to.content)
+            response_to = requests.get(
+                f"{self.portaddress}/storage/file", json=data)
 
-            if self.metadata:
-                # TODO: metadata can respond with files too.
-                pass
+            return BytesIO(response_to.content)
 
-        return getContent(self.files[file_id])
+        if self.metadata:
+            # TODO: metadata can respond with files too.
+            pass
+
+        return BytesIO(b'')
 
     def addFile(self, filepath, fileContent):
         files = {

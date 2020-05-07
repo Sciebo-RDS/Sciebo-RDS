@@ -50,7 +50,7 @@ class Research():
         self.status = json.get("status")
 
         logger.debug("import: {},\nexport: {}".format([x.getJSON(
-        ) for x in self.exportServices], [x.getJSON() for x in self.exportServices]))
+        ) for x in self.importServices], [x.getJSON() for x in self.exportServices]))
 
         return True
 
