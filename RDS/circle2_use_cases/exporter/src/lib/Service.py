@@ -90,7 +90,7 @@ class Service():
 
                 from io import BytesIO
 
-                return BytesIO(response_to.content).read()
+                return BytesIO(response_to.content)
 
             if self.metadata:
                 # TODO: metadata can respond with files too.
