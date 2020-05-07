@@ -21,6 +21,7 @@ def index():
 
     rv = send_file(file, attachment_filename=os.path.basename(
         filepath), as_attachment=True, mimetype="application/octet-stream")
+        
     rv.direct_passthrough = False
     logger.debug("send response")
     return rv
