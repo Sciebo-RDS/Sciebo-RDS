@@ -99,15 +99,15 @@ class Service():
         return getContent(self.files[file_id])
 
     def addFile(self, filepath, fileContent):
-        file = {
+        files = {
             "file": (os.path.basename(filepath), fileContent, "multipart/form-data")
         }
 
-        logger.debug("add file {} in service {}".format(file, self.getJSON()))
+        logger.debug("add file {} in service {}".format(files, self.getJSON()))
 
         if self.metadata:
             response_to = requests.post(
-                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files", files=file, data={"userId": self.userId})
+                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files", files=files, data={"userId": self.userId})
 
             if response_to.status_code >= 300:
                 logger.error(response_to.json())

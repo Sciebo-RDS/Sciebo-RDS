@@ -87,7 +87,7 @@ class Research():
             logger.debug("import service: {}".format(svc.getJSON()))
 
             for fileTuple in svc.getFiles(getContent=True):
-                logger.debug("fileTuple: {}".format(fileTuple))
+                logger.debug("file: {}, content: {}".format(fileTuple[0], fileTuple[1].getvalue().decode()))
                 self.addFile(*fileTuple)
 
     def addFile(self, *args, **kwargs):
