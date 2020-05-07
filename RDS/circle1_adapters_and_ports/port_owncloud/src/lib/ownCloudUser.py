@@ -82,6 +82,6 @@ class OwncloudUser():
         res1.write_to(buffer)
         buffer.seek(0)
 
-        logger.debug("file content: {}".format(buffer.getvalue().decode()))
+        logger.debug("file content: {}".format(buffer.getvalue()))
 
         return buffer

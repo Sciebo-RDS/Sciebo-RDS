@@ -71,7 +71,7 @@ class Service():
                 content = self.getFile(index)
 
                 logger.debug("got content: {}".format(
-                    content.getvalue().decode()))
+                    content.getvalue()))
 
                 yield file, content
             else:

@@ -88,7 +88,7 @@ class Research():
 
             for fileTuple in svc.getFiles(getContent=True):
                 logger.debug("file: {}, content: {}".format(
-                    fileTuple[0], fileTuple[1].getvalue().decode()))
+                    fileTuple[0], fileTuple[1].getvalue()))
                 self.addFile(*fileTuple)
 
     def addFile(self, *args, **kwargs):
