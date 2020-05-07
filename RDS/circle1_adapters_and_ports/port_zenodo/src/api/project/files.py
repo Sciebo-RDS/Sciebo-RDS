@@ -22,11 +22,10 @@ def get(project_id, file_id):
 def post(project_id):
     logger.debug("Read file from request")
     file = request.files['file']
-    logger.debug("file: {}".format(file))
-
+    
     req = request.form.to_dict()
-
     filename = req["filename"]
+    logger.debug("file: {}, filename: {}".format(file, filename))
 
     logger.debug("Start file upload")
     resp = g.zenodo.upload_new_file_to_deposition(
