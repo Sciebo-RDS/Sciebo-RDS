@@ -41,7 +41,7 @@ class Service():
             json = requests.get(
                 f"{self.portaddress}/storage/folder", json=data).json()
 
-            self.files = json
+            self.files = json.get("files")
 
         if self.metadata:
             # TODO: metadata ports can also response with files
@@ -97,6 +97,8 @@ class Service():
         file = {
             "file": (os.path.basename(filepath), fileContent, "multipart/form-data")
         }
+
+        logger.debug("add file {} in service {}".format(file, self.getJSON()))
 
         if self.metadata:
             response_to = requests.post(

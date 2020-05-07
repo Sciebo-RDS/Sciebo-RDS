@@ -16,7 +16,7 @@ class Test_Service(unittest.TestCase):
             'the filepaths for files in folder with folderpath'
         ).with_request(
             'GET', f'/storage/folder'
-        ) .will_respond_with(200, body=files)
+        ) .will_respond_with(200, body={"files": files})
 
     @staticmethod
     def requestStorageFileGET(pact, filepath: str, userId: str, fileContent: str, code=200):

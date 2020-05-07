@@ -1,6 +1,9 @@
 from lib.Service import Service
 import multiprocessing
 import requests
+import logging
+
+logger = logging.getLogger()
 
 
 class Research():
@@ -46,6 +49,9 @@ class Research():
 
         self.status = json.get("status")
 
+        logger.debug("import: {},\nexport: {}".format([x.getJSON(
+        ) for x in self.exportServices], [x.getJSON() for x in self.exportServices]))
+
         return True
 
     def getServices(self):
@@ -77,6 +83,7 @@ class Research():
             self.removeAllFiles()
 
         for svc in self.importServices:
+            logger.debug("import service: {}".format(svc.getJSON()))
             self.addFile(*svc.getFiles(getContent=True))
 
     def addFile(self, *args, **kwargs):
