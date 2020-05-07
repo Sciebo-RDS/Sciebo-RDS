@@ -87,7 +87,8 @@ class Research():
             logger.debug("import service: {}".format(svc.getJSON()))
 
             for fileTuple in svc.getFiles(getContent=True):
-                logger.debug("file: {}, content: {}".format(fileTuple[0], fileTuple[1].getvalue().decode()))
+                logger.debug("file: {}, content: {}".format(
+                    fileTuple[0], fileTuple[1].getvalue().decode()))
                 self.addFile(*fileTuple)
 
     def addFile(self, *args, **kwargs):
@@ -97,7 +98,7 @@ class Research():
         logger.debug("args: {}, kwargs: {}".format(args, kwargs))
 
         with Pool() as pool:
-            pool.map(Service.addFile, self.exportServices, *args, **kwargs)
+            pool.map(Service.addFile, self.exportServices, [*args]*len(self.exportServices), [**kwargs]*len(self.exportServices))
 
     def removeAllFiles(self):
         """
