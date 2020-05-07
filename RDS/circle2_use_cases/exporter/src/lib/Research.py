@@ -80,7 +80,8 @@ class Research():
         """
 
         if self.applyChanges:
-            self.removeAllFiles()
+            b = self.removeAllFiles()
+            logger.debug("Removed all files? {}".format(b))
 
         for svc in self.importServices:
             logger.debug("import service: {}".format(svc.getJSON()))
@@ -104,6 +105,8 @@ class Research():
 
         Returns a boolean.
         """
+
+        logger.debug("remove all files in export files")
 
         with Pool() as pool:
             return not (False in pool.map(Service.removeAllFiles, self.exportServices))
