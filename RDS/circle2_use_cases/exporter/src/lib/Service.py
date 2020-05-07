@@ -95,6 +95,8 @@ class Service():
                 "filepath": "{}/{}".format(self.getFilepath(), file)
             }
 
+            logger.debug("data {}".format(data))
+
             response_to = requests.get(
                 f"{self.portaddress}/storage/file", json=data)
 
