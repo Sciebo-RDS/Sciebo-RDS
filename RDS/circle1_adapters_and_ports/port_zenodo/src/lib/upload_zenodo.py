@@ -234,13 +234,12 @@ class Zenodo(object):
         return r.status_code == 202 if not return_response else r
 
     def delete_all_files_from_deposition_internal(self, deposition_id):
-        r = requests.get(
-            "{}/api/deposit/depositions/{}/files".format(self.zenodo_address, deposition_id))
-        files = r.json()
-
-        for file in files:
+        for file in self.get_files_from_deposition(deposition_id):
+            self.log.debug("found file: {}".format(file))
+            
             if not self.delete_file_from_deposition_internal(deposition_id, file["id"]):
                 return False
+
         return True
 
     def delete_file_from_deposition_internal(self, deposition_id, file_id):
