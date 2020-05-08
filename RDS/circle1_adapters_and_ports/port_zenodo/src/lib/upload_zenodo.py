@@ -236,7 +236,7 @@ class Zenodo(object):
     def delete_all_files_from_deposition_internal(self, deposition_id):
         for file in self.get_files_from_deposition(deposition_id):
             self.log.debug("found file: {}".format(file))
-            
+
             if not self.delete_file_from_deposition_internal(deposition_id, file["id"]):
                 return False
 
@@ -244,7 +244,7 @@ class Zenodo(object):
 
     def delete_file_from_deposition_internal(self, deposition_id, file_id):
         r = requests.delete("{}/api/deposit/depositions/{}/files/{}".format(
-            self.zenodo_address, deposition_id, file_id))
+            self.zenodo_address, deposition_id, file_id), headers={'Authorization': f"Bearer {self.api_key}"})
 
         if r.status_code > 204:
             return False
