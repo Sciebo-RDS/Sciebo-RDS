@@ -486,10 +486,6 @@
       var html = template({ studies: patch(this._studies.getAll()) });
 
       $("#app-navigation ul").html(html);
-      
-      $("#app-navigation .research .upload").click(function () {
-        self._files.triggerSync();
-      });
 
       // create new research
       var self = this;
@@ -518,6 +514,10 @@
         }
       );
 
+      $("#app-navigation .research .upload").click(function () {
+        self._files.triggerSync();
+      });
+      
       // delete a research
       $("#app-navigation .research .delete").click(function () {
         var entry = $(this).closest(".research");
