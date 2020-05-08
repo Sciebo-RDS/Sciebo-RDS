@@ -515,9 +515,19 @@
       );
 
       $("#app-navigation .research .upload").click(function () {
-        self._files.triggerSync();
+        self._files
+          .triggerSync()
+          .done(function () {
+            self.render();
+          })
+          .fail(function () {
+            OC.dialogs.alert(
+              "Could not sync research, not found",
+              t("rds", "RDS Update project")
+            );
+          });
       });
-      
+
       // delete a research
       $("#app-navigation .research .delete").click(function () {
         var entry = $(this).closest(".research");
