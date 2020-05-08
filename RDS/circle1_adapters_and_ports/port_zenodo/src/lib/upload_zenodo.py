@@ -169,6 +169,9 @@ class Zenodo(object):
         data = {"name": filename}
 
         try:
+            if file is None: 
+                raise Exception("File is none.")
+
             self.log.debug("Try read the file content.")
             files = {'file': (filename, file)}
         except Exception as e:
