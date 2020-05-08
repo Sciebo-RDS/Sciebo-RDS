@@ -36,22 +36,20 @@ def require_api_key(api_method):
     def check_api_key(*args, **kwargs):
         g.zenodo = None
 
-        try:
-                req = request.get_json(force=True)
-                apiKey = req["apiKey"]
-        except:
+        apiKey = None
+        userId = None
+
+        req = request.get_json(force=True)
+        if "apiKey" not in req and "userId" not in req:
             req = request.form.to_dict()
+
+        apiKey = req.get("apiKey")
+        userId = req.get("userId")
 
         logger.debug("req data: {}".format(req))
 
-        try:
-            apiKey = req.get("apiKey")
-
-            if apiKey is None:
-                apiKey = loadAccessToken(req.get("userId"), "Zenodo")
-
-        except:
-            apiKey = None
+        if apiKey is None and userId is not None:
+            apiKey = loadAccessToken(userId, "Zenodo")
 
         if apiKey is None:
             logger.error("apiKey or userId not found.")

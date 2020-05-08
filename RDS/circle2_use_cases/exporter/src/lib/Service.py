@@ -70,8 +70,8 @@ class Service():
                     "get file {} from service {}".format(file, self.servicename))
                 content = self.getFile(index)
 
-                logger.debug("got content: {}".format(
-                    content.getvalue()))
+                logger.debug("got content size: {}".format(
+                    len(content.getvalue())))
 
                 yield file, content
             else:
