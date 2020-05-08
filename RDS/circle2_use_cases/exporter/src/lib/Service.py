@@ -71,7 +71,7 @@ class Service():
                 content = self.getFile(index)
 
                 logger.debug("got content size: {}".format(
-                    len(content.read())))
+                    len(content.getvalue())))
 
                 yield file, content
             else:
@@ -113,7 +113,7 @@ class Service():
 
     def addFile(self, filename, fileContent):
         files = {
-            "file": (filename, fileContent.read())
+            "file": (filename, fileContent.getvalue())
         }
         data = {
             "userId": self.userId,
