@@ -346,7 +346,7 @@ class TestZenodoMethods(unittest.TestCase):
         # add a file to deposition
         filepath = "src/lib/upload_zenodo.py"
         result = z.upload_new_file_to_deposition(
-            deposition_id=id, path_to_file=open(filepath), return_response=True)
+            deposition_id=id, path_to_file=filepath, return_response=True)
 
         # file was uploaded
         self.assertEqual(result.status_code, 201, msg=f"{result.content}")
