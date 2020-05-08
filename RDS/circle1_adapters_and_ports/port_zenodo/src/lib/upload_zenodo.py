@@ -23,6 +23,7 @@ class Zenodo(object):
         self.upload_new_file_to_deposition = self.upload_new_file_to_deposition_internal
         self.change_metadata_in_deposition = self.change_metadata_in_deposition_internal
         self.publish_deposition = self.publish_deposition_internal
+        self.delete_all_files_from_deposition = self.delete_all_files_from_deposition_internal
 
     @classmethod
     def get_deposition(cls, api_key, *args, **kwargs):
@@ -47,6 +48,10 @@ class Zenodo(object):
     @classmethod
     def publish_deposition(cls, api_key, *args, **kwargs):
         return cls(api_key).publish_deposition(*args, **kwargs)
+
+    @classmethod
+    def delete_all_files_from_deposition(cls, api_key, *args, **kwargs):
+        return cls(api_key).delete_all_files_from_deposition_internal(*args, **kwargs)
 
     @classmethod
     def check_token(cls, api_key, *args, **kwargs):
@@ -227,6 +232,25 @@ class Zenodo(object):
                           headers={'Authorization': f"Bearer {self.api_key}"})
 
         return r.status_code == 202 if not return_response else r
+
+    def delete_all_files_from_deposition_internal(self, deposition_id):
+        r = requests.get(
+            "{}/api/deposit/depositions/{}/files".format(self.zenodo_address, deposition_id))
+        files = r.json()
+
+        for file in files:
+            if not self.delete_file_from_deposition_internal(deposition_id, file["id"]):
+                return False
+        return True
+
+    def delete_file_from_deposition_internal(self, deposition_id, file_id):
+        r = requests.delete("{}/api/deposit/depositions/{}/files/{}".format(
+            self.zenodo_address, deposition_id, file_id))
+
+        if r.status_code > 204:
+            return False
+
+        return True
 
 
 if __name__ == "__main__":

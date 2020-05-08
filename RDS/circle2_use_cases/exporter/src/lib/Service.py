@@ -143,10 +143,10 @@ class Service():
         file = self.files[file_id]
 
         data = {
-            "filepath": "{}/{}".format(self.getFilepath(), file),
             "userId": self.userId
         }
         if self.fileStorage:
+            data["filepath"] = "{}/{}".format(self.getFilepath(), file)
             req = requests.delete(
                 f"{self.portaddress}/storage/file", json=data)
 
@@ -168,12 +168,27 @@ class Service():
 
     def removeAllFiles(self):
         logger.debug("remove files in service {}".format(self.servicename))
-        for index, _ in enumerate(self.files):
-            if not self.removeFile(index):
-                return False
+        data = {
+            "userId": self.userId
+        }
 
-        self.reload()
-        return True
+        found = False
+
+        if self.fileStorage:
+            # todo: implements me
+            pass
+
+        if self.metadata:
+            req = requests.delete(
+                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files", json=data)
+
+            if req.status_code < 300:
+                found = True
+
+        if found:
+            self.reload()
+
+        return found
 
     def getJSON(self):
         import json

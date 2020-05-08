@@ -22,7 +22,7 @@ def get(project_id, file_id):
 def post(project_id):
     logger.debug("Read file from request")
     file = request.files['file']
-    
+
     req = request.form.to_dict()
     filename = req["filename"]
     logger.debug("file: {}, filename: {}".format(file, filename))
@@ -44,5 +44,8 @@ def patch(project_id, file_id):
 
 
 @require_api_key
-def delete(project_id, file_id):
+def delete(project_id, file_id=None):
+    if file_id is None:
+        return g.zenodo.delete_all_files_from_deposition(project_id)
+
     raise NotImplementedError()
