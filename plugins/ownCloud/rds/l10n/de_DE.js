@@ -7,8 +7,6 @@ OC.L10N.register(
     "Add folder to RDS" : "Ordner zu RDS hinzufügen",
     "Update RDS file" : "RDS-Datei aktualisieren",
     "Research folders could not be loaded." : "Forschungsordner konnte nicht geladen werden.",
-    "Are you sure, that you want to delete " : "Sind Sie sicher, dass Sie löschen möchten ",
-    "Authorize " : "Autorisieren ",
     "Research data services" : "Forschungsdatendienste",
     "Go to settings now." : "Gehen Sie jetzt zu den Einstellungen.",
     "Files auto upload" : "Dateien werden automatisch hochgeladen",
