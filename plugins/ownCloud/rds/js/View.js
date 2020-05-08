@@ -196,13 +196,6 @@
 
       newServices.forEach(function (service, indexSvc) {
         function patchProperty(prop) {
-          if (prop.portType === "metadata") {
-            this[indexSvc].metadataChecked = "checked";
-          }
-          if (prop.portType === "fileStorage") {
-            this[indexSvc].fileStorageChecked = "checked";
-          }
-
           if (prop.portType === "customProperties") {
             prop.value.forEach(function (val) {
               if (val.key === "filepath") {
@@ -221,16 +214,16 @@
           }
         }
 
-        var port = findPort(service.servicename, research.portIn);
-        if (port !== undefined) {
+        if (service.servicename === "Owncloud") {
           this[indexSvc].importChecked = "checked";
+          this[indexSvc].metadataChecked = "checked";
 
           port.properties.forEach(patchProperty, this);
         }
 
-        port = findPort(service.servicename, research.portOut);
-        if (port !== undefined) {
+        if (service.servicename === "Zenodo") {
           this[indexSvc].exportChecked = "checked";
+          this[indexSvc].fileStorageChecked = "checked";
           port.properties.forEach(patchProperty, this);
         }
       }, newServices);
