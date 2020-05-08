@@ -168,14 +168,8 @@ class Zenodo(object):
         filename = secure_filename(os.path.basename(path_to_file))
         data = {"name": filename}
 
-        try:
-            self.log.debug("Try read the file content.")
-            files = {'file': (filename, file.getvalue())}
-        except Exception:
-            self.log.debug("Cannot read the content. So maybe it is in cache?")
-            # for temporary files
-            files = {'file': (filename, open(
-                os.path.expanduser(path_to_file), 'rb'))}
+        self.log.debug("Try read the file content.")
+        files = {'file': (filename, file.getvalue())}
 
         self.log.debug(
             "Submit the following informations to zenodo.\nData: {}, Files: {}".format(data, files))
