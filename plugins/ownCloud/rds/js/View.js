@@ -180,13 +180,13 @@
 
       newServices.forEach(function (service, indexSvc) {
         if (service.servicename === "Owncloud") {
+          this[indexSvc].fileStorageChecked = "checked";
           this[indexSvc].importChecked = "checked";
-          this[indexSvc].metadataChecked = "checked";
         }
 
         if (service.servicename === "Zenodo") {
+          this[indexSvc].metadataChecked = "checked";
           this[indexSvc].exportChecked = "checked";
-          this[indexSvc].fileStorageChecked = "checked";
         }
       }, newServices);
 
@@ -214,6 +214,8 @@
 
     var btn = $("#btn-open-folderpicker");
     var servicename = btn.data("service");
+
+    $("[id=service-configuration]").hide()
 
     btn.click(function () {
       OC.dialogs.filepicker(
