@@ -399,6 +399,9 @@
   OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {
     var self = this;
 
+    $("#wrapper-auto-upload").hide()
+    $("#wrapper-apply-changes").hide()
+
     $("#btn-save-files").click(function () {
       self.save();
     });
