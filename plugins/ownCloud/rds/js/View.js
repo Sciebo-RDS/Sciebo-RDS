@@ -232,6 +232,7 @@
     });
 
     $("#app-content #btn-save-research").click(function () {
+      self._view._stateView += 1; // skip metadata
       self.save();
     });
 
