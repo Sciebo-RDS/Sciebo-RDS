@@ -485,6 +485,10 @@
       }
       var html = template({ studies: patch(this._studies.getAll()) });
 
+      $("#app-navigation .research .upload").click(function () {
+        self._files.triggerSync();
+      });
+
       $("#app-navigation ul").html(html);
 
       // create new research
