@@ -475,11 +475,13 @@
       var source = $("#navigation-tpl").html();
       var template = Handlebars.compile(source);
       function patch(studies) {
-        studies.forEach(function (research) {
+        studies.forEach(function (research, index) {
           if (research.status === 2) {
-            research.showSync = true;
+            this[index].showSync = true;
           }
-        });
+        }, studies);
+
+        return studies;
       }
       var html = template({ studies: patch(this._studies.getAll()) });
 
