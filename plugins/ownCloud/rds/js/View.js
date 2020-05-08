@@ -218,12 +218,14 @@
           this[indexSvc].importChecked = "checked";
           this[indexSvc].metadataChecked = "checked";
 
+          var port = findPort(service.servicename, research.portIn);
           port.properties.forEach(patchProperty, this);
         }
 
         if (service.servicename === "Zenodo") {
           this[indexSvc].exportChecked = "checked";
           this[indexSvc].fileStorageChecked = "checked";
+          var port = findPort(service.servicename, research.portOut);
           port.properties.forEach(patchProperty, this);
         }
       }, newServices);
@@ -253,7 +255,7 @@
     var btn = $("#btn-open-folderpicker");
     var servicename = btn.data("service");
 
-    $("[id=service-configuration]").hide()
+    $("[id=service-configuration]").hide();
 
     btn.click(function () {
       OC.dialogs.filepicker(
