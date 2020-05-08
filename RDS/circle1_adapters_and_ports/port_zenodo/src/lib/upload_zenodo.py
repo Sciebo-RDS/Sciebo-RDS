@@ -170,7 +170,7 @@ class Zenodo(object):
 
         try:
             self.log.debug("Try read the file content.")
-            files = {'file': (filename, file.read())}
+            files = {'file': (filename, file)}
         except Exception as e:
             self.log.error(e)
             self.log.debug("Cannot read the content. So maybe it is in cache?")
