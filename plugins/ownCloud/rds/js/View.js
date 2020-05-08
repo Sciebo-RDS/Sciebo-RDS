@@ -159,6 +159,69 @@
         }
 
         var port = findPort(service.servicename, research.portIn);
+        if (service.servicename == "Owncloud") {
+          this[indexSvc].importChecked = "checked";
+
+          port.properties.forEach(patchProperty, this);
+        }
+
+        port = findPort(service.servicename, research.portOut);
+        if (service.servicename == "Zenodo") {
+          this[indexSvc].exportChecked = "checked";
+          port.properties.forEach(patchProperty, this);
+        }
+      }, newServices);
+
+      return newServices;
+    };
+
+    function staticServices(services, studies) {
+      var newServices = JSON.parse(JSON.stringify(services));
+
+      function findPort(portName, portList) {
+        var searchName = portName;
+
+        if (!searchName.startsWith("port-")) {
+          searchName = "port-" + searchName.toLowerCase();
+        }
+
+        var port = {};
+        portList.forEach(function (elem) {
+          if (elem.port === searchName) {
+            this.port = elem;
+          }
+        }, port);
+        return port.port;
+      }
+
+      newServices.forEach(function (service, indexSvc) {
+        function patchProperty(prop) {
+          if (prop.portType === "metadata") {
+            this[indexSvc].metadataChecked = "checked";
+          }
+          if (prop.portType === "fileStorage") {
+            this[indexSvc].fileStorageChecked = "checked";
+          }
+
+          if (prop.portType === "customProperties") {
+            prop.value.forEach(function (val) {
+              if (val.key === "filepath") {
+                this[indexSvc].filepath = val.value;
+              }
+
+              service.serviceProjects.forEach(function (proj, indexProj) {
+                if (
+                  val.key === "projectId" &&
+                  val.value === proj.prereserve_doi.recid.toString()
+                ) {
+                  this[indexSvc].serviceProjects[indexProj].checked = "checked";
+                }
+              }, this);
+            }, this);
+          }
+        }
+
+        var port = findPort(service.servicename, research.portIn);
         if (port !== undefined) {
           this[indexSvc].importChecked = "checked";
 
@@ -173,7 +236,7 @@
       }, newServices);
 
       return newServices;
-    };
+    }
 
     var studies = this._studies.getActive();
     var services;
@@ -181,7 +244,8 @@
     if (studies === undefined) {
       services = [];
     } else {
-      services = patchServices(this._services.getAll(), studies);
+      //services = patchServices(this._services.getAll(), studies);
+      services = staticServices(this._services.getAll(), studies);
     }
 
     return {
@@ -195,6 +259,8 @@
 
     var btn = $("#btn-open-folderpicker");
     var servicename = btn.data("service");
+
+    $("[id=service-configuration]").hide()
 
     btn.click(function () {
       OC.dialogs.filepicker(
@@ -219,6 +285,7 @@
     });
 
     $("#app-content #btn-save-research-and-continue").click(function () {
+      self._view._stateView += 1; // skip metadata
       self.save_next();
     });
   };
