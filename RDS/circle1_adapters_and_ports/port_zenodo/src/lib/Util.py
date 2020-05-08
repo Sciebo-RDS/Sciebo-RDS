@@ -36,9 +36,6 @@ def require_api_key(api_method):
     def check_api_key(*args, **kwargs):
         g.zenodo = None
 
-        apiKey = None
-        userId = None
-
         req = request.get_json(force=True)
         if "apiKey" not in req and "userId" not in req:
             req = request.form.to_dict()
