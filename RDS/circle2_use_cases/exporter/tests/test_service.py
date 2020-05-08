@@ -161,7 +161,7 @@ class Test_Service(unittest.TestCase):
                      for x, y in s.getFiles(getContent=True)]
         self.assertEqual(files, expected_content)
 
-    @unittest.skip("needs to be fixed")
+    @unittest.skip("needs to be fixed, because delete is not currently tested")
     def test_removeFile(self):
         expected = {
             "servicename": "Owncloud",

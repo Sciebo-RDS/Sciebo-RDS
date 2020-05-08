@@ -176,7 +176,6 @@ paths:
                   type: string
     delete:
       summary: ''
-      operationId: delete-project-project-id-files
       responses:
         '200':
           description: OK
@@ -231,7 +230,6 @@ paths:
         description: ''
     delete:
       summary: ''
-      operationId: ''
       responses:
         '200':
           description: OK
