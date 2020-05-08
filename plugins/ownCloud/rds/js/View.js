@@ -159,14 +159,14 @@
         }
 
         var port = findPort(service.servicename, research.portIn);
-        if (service.servicename == "Owncloud") {
+        if (port !== undefined) {
           this[indexSvc].importChecked = "checked";
 
           port.properties.forEach(patchProperty, this);
         }
 
         port = findPort(service.servicename, research.portOut);
-        if (service.servicename == "Zenodo") {
+        if (port !== undefined) {
           this[indexSvc].exportChecked = "checked";
           port.properties.forEach(patchProperty, this);
         }
@@ -213,8 +213,6 @@
     var btn = $("#btn-open-folderpicker");
     var servicename = btn.data("service");
 
-    $("[id=service-configuration]").hide();
-
     btn.click(function () {
       OC.dialogs.filepicker(
         t("files", "Choose source and / or target folder"),
@@ -238,8 +236,7 @@
     });
 
     $("#app-content #btn-save-research-and-continue").click(function () {
-      self._view._stateView += 1; // skip metadata
-      self.save_next();
+      zself.save_next();
     });
   };
   OC.rds.ServiceTemplate.prototype._saveFn = function () {
