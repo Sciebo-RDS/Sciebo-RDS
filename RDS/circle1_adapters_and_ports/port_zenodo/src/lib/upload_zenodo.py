@@ -169,11 +169,12 @@ class Zenodo(object):
         data = {"name": filename}
 
         try:
-            if file is None: 
+            if file is None:
                 raise Exception("File is none.")
 
             self.log.debug("Try read the file content.")
             files = {'file': (filename, file)}
+            self.log.debug("size: {}".format(len(file.read())))
         except Exception as e:
             self.log.error(e)
             self.log.debug("Cannot read the content. So maybe it is in cache?")
