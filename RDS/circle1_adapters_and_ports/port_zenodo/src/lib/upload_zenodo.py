@@ -246,10 +246,10 @@ class Zenodo(object):
         r = requests.delete("{}/api/deposit/depositions/{}/files/{}".format(
             self.zenodo_address, deposition_id, file_id), headers={'Authorization': f"Bearer {self.api_key}"})
 
-        if r.status_code > 204:
-            return False
+        if r.status_code < 300:
+            return True
 
-        return True
+        return False
 
 
 if __name__ == "__main__":
