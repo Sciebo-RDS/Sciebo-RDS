@@ -176,6 +176,8 @@
     };
 
     function staticServices(services, research) {
+      var newServices = JSON.parse(JSON.stringify(services));
+
       newServices.forEach(function (service, indexSvc) {
         if (service.servicename === "Owncloud") {
           this[indexSvc].importChecked = "checked";
