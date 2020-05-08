@@ -232,12 +232,12 @@
     });
 
     $("#app-content #btn-save-research").click(function () {
-      self._view._stateView += 1; // skip metadata
       self.save();
     });
 
     $("#app-content #btn-save-research-and-continue").click(function () {
-      zself.save_next();
+      self._view._stateView += 1; // skip metadata
+      self.save_next();
     });
   };
   OC.rds.ServiceTemplate.prototype._saveFn = function () {
