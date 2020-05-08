@@ -97,12 +97,16 @@ class Research():
         """
         logger.debug("args: {}, kwargs: {}".format(args, kwargs))
 
+        """
         argLeft = [args[0]]
         argRight = [args[1]]
 
         with Pool() as pool:
             pool.map(Service.addFile, self.exportServices, argLeft *
                      len(self.exportServices), argRight*len(self.exportServices))
+        """
+
+        return [svc.addFile(args, kwargs) for svc in self.exportServices]
 
     def removeAllFiles(self):
         """
@@ -113,8 +117,11 @@ class Research():
 
         logger.debug("remove all files in export files")
 
+        """
         with Pool() as pool:
             return not (False in pool.map(Service.removeAllFiles, self.exportServices))
+        """
+        return not (False in [svc.removeAllFiles() for svc in self.exportServices])
 
     def removeFile(self, filepath):
         """
@@ -123,8 +130,12 @@ class Research():
 
         logger.debug("remove file {}".format(filepath))
 
+        """
         with Pool() as pool:
             pool.map(Service.removeFile, self.exportServices, filepath)
+        """
+
+        return [svc.removeFile(filepath) for svc in self.exportServices]
 
     def removeFileFromService(self, file_id, service):
         """
