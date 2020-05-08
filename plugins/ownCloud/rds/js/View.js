@@ -478,7 +478,6 @@
       function patch(studies) {
         studies.forEach(function (research, index) {
           if (research.status === 2) {
-            self._files.load(self._studies.getActive().researchIndex);
             this[index].showSync = true;
           }
         }, studies);
@@ -552,6 +551,11 @@
       $("#app-navigation .research > a").click(function () {
         var id = parseInt($(this).parent().data("id"), 10);
         self._studies.load(id);
+
+        if (self._studies.getActive().status > 1) {
+          self._files.load(self._studies.getActive().researchIndex);
+        }
+        
         self._stateView = 1;
         self.render();
       });
