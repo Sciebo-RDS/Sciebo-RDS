@@ -472,11 +472,13 @@
       this._templates[self._stateView].render();
     },
     renderNavigation: function () {
+      var self = this;
       var source = $("#navigation-tpl").html();
       var template = Handlebars.compile(source);
       function patch(studies) {
         studies.forEach(function (research, index) {
           if (research.status === 2) {
+            self._files.load(self._studies.getActive().researchIndex);
             this[index].showSync = true;
           }
         }, studies);
