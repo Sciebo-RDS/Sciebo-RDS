@@ -215,7 +215,7 @@
     var btn = $("#btn-open-folderpicker");
     var servicename = btn.data("service");
 
-    $("[id=service-configuration]").hide()
+    $("[id=service-configuration]").hide();
 
     btn.click(function () {
       OC.dialogs.filepicker(
@@ -399,8 +399,9 @@
   OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {
     var self = this;
 
-    $("#wrapper-auto-upload").hide()
-    $("#wrapper-apply-changes").hide()
+    $("#wrapper-auto-upload").hide();
+    $("#wrapper-apply-changes").hide();
+    $("#btn-save-files").hide();
 
     $("#btn-save-files").click(function () {
       self.save();
