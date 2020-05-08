@@ -106,7 +106,7 @@ class Research():
                      len(self.exportServices), argRight*len(self.exportServices))
         """
 
-        return [svc.addFile(args, kwargs) for svc in self.exportServices]
+        return [svc.addFile(*args, **kwargs) for svc in self.exportServices]
 
     def removeAllFiles(self):
         """
