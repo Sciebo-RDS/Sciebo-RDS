@@ -113,7 +113,7 @@ class Service():
 
     def addFile(self, filename, fileContent):
         files = {
-            "file": (filename, fileContent)
+            "file": (filename, fileContent.read())
         }
         data = {
             "userId": self.userId,
