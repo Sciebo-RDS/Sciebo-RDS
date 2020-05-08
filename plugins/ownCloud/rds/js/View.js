@@ -176,57 +176,15 @@
     };
 
     function staticServices(services, research) {
-      var newServices = JSON.parse(JSON.stringify(services));
-
-      function findPort(portName, portList) {
-        var searchName = portName;
-
-        if (!searchName.startsWith("port-")) {
-          searchName = "port-" + searchName.toLowerCase();
-        }
-
-        var port = {};
-        portList.forEach(function (elem) {
-          if (elem.port === searchName) {
-            this.port = elem;
-          }
-        }, port);
-        return port.port;
-      }
-
       newServices.forEach(function (service, indexSvc) {
-        function patchProperty(prop) {
-          if (prop.portType === "customProperties") {
-            prop.value.forEach(function (val) {
-              if (val.key === "filepath") {
-                this[indexSvc].filepath = val.value;
-              }
-
-              service.serviceProjects.forEach(function (proj, indexProj) {
-                if (
-                  val.key === "projectId" &&
-                  val.value === proj.prereserve_doi.recid.toString()
-                ) {
-                  this[indexSvc].serviceProjects[indexProj].checked = "checked";
-                }
-              }, this);
-            }, this);
-          }
-        }
-
         if (service.servicename === "Owncloud") {
           this[indexSvc].importChecked = "checked";
           this[indexSvc].metadataChecked = "checked";
-
-          var port = findPort(service.servicename, research.portIn);
-          port.properties.forEach(patchProperty, this);
         }
 
         if (service.servicename === "Zenodo") {
           this[indexSvc].exportChecked = "checked";
           this[indexSvc].fileStorageChecked = "checked";
-          var port = findPort(service.servicename, research.portOut);
-          port.properties.forEach(patchProperty, this);
         }
       }, newServices);
 
@@ -239,8 +197,8 @@
     if (studies === undefined) {
       services = [];
     } else {
-      //services = patchServices(this._services.getAll(), studies);
-      services = staticServices(this._services.getAll(), studies);
+      services = patchServices(this._services.getAll(), studies);
+      services = staticServices(services, studies);
     }
 
     return {
