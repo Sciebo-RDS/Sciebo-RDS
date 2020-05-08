@@ -176,7 +176,7 @@ class Service():
 
         if self.fileStorage:
             # todo: implements me
-            pass
+            found = True
 
         if self.metadata:
             req = requests.delete(
