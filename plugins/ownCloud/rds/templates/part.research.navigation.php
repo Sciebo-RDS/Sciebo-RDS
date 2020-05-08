@@ -11,6 +11,9 @@
 
             <div class="app-navigation-entry-menu">
                 <ul>
+                    {{# if showSync}}
+                    <li><button class="upload icon-upload svg" title="sync"></button></li>
+                    {{/if}}
                     <li><button class="delete icon-delete svg" title="delete"></button></li>
                 </ul>
             </div>

@@ -474,7 +474,14 @@
     renderNavigation: function () {
       var source = $("#navigation-tpl").html();
       var template = Handlebars.compile(source);
-      var html = template({ studies: this._studies.getAll() });
+      function patch(studies) {
+        studies.forEach(function (research) {
+          if (research.status === 2) {
+            research.showSync = true;
+          }
+        });
+      }
+      var html = template({ studies: patch(this._studies.getAll()) });
 
       $("#app-navigation ul").html(html);
 
