@@ -34,6 +34,7 @@ def post(project_id):
 
     if resp:
         return jsonify({"success": True})
+
     else:
         raise ValueError("Upload failed.")
 
