@@ -175,7 +175,7 @@
       return newServices;
     };
 
-    function staticServices(services, studies) {
+    function staticServices(services, research) {
       var newServices = JSON.parse(JSON.stringify(services));
 
       function findPort(portName, portList) {
