@@ -7,6 +7,10 @@ script( 'rds', array( 'Services', 'FirstWizard' ) );
 ?>
 
 <div class="section" id="rds">
+    <p>
+        <?php p( $l->t( 'Welcome. To use this app, you need to authenticate services to perform actions with RDS on files in the services. Please follow this steps.'
+        ) ); ?>
+      </p>
   <div class="service" id="rdsOwncloud">
     <p>
       <?php p( $l->t( 'Step 1: Authorize RDS to authenticate against ownCloud.'

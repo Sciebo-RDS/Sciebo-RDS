@@ -36,7 +36,7 @@
           clearInterval(timer);
 
           if (
-            window.location.href.startsWith(
+            win.location.href.startsWith(
               "https://sciebords-dev.uni-muenster.de/token-service/"
             )
           ) {
