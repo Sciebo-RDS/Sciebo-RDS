@@ -254,8 +254,8 @@ class Storage():
         try:
             self._storage[user.username]["tokens"].remove(token)
         except ValueError:
-            from .Exceptions.StorageException import TokenNotExists
-            raise TokenNotExists(self, user, token)
+            from .Exceptions.StorageException import TokenNotExistsError
+            raise TokenNotExistsError(self, user, token)
 
     def internal_addUser(self, user: User):
         """
