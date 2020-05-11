@@ -1,6 +1,8 @@
 (function (OC, window, $, undefined) {
   "use strict";
 
+  OC.rds = OC.rds || {};
+
   var state = 0;
 
   function reload() {

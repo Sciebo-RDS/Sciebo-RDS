@@ -2,7 +2,7 @@
 style( 'rds', array( 'style' ) );
 script( 'rds', array( 'handlebars' ) );
 
-script( 'rds', array( 'FirstWizard' ) );
+script( 'rds', array( 'Services', 'FirstWizard' ) );
 
 ?>
 
