@@ -145,14 +145,10 @@
 
         if (
           OC.dialogs.confirm(
-            t(
-              "rds",
-              "Are you sure, that you want to delete {servicename}?",
-              {
-                servicename: servicename,
-              },
-              t("rds", "RDS Settings services")
-            )
+            t("rds", "Are you sure, that you want to delete {servicename}?", {
+              servicename: servicename,
+            }),
+            t("rds", "RDS Settings services")
           )
         ) {
           self._services
