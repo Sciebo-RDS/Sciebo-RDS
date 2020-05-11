@@ -71,10 +71,12 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
+                oneOf:
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                  - type: string
       description: 'Like ownclouds: index.php/apps/oauth2/authorization-successful'
     parameters: []
   /authorization-cancel:
@@ -87,12 +89,14 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  error:
-                    type: string
+                oneOf:
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                      error:
+                        type: string
+                  - type: string
       description: This endpoint represents an invalid oauth2 process.
     parameters: []
   /service:
