@@ -168,6 +168,7 @@
       },
       renderContent: function () {
         var self = this;
+        $("#serviceStable > tbody").html("");
         var source = $("#serviceStable > tbody:last-child");
 
         this._services._user_services.forEach(function (item, index) {
