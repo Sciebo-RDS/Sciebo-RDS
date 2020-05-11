@@ -143,28 +143,32 @@
       removeServiceFromUser: function (servicename) {
         var self = this;
 
-        if (
-          OC.dialogs.confirm(
-            t("rds", "Are you sure, that you want to delete {servicename}?", {
-              servicename: servicename,
-            }),
-            t("rds", "RDS Settings services")
-          )
-        ) {
-          self._services
-            .removeServiceFromUser(servicename)
-            .done(function () {
-              self.render();
-            })
-            .fail(function () {
-              OC.dialogs.alert(
-                t("rds", "Could not remove the service {servicename}", {
-                  servicename: servicename,
-                }),
-                t("rds", "RDS Settings services")
-              );
-            });
-        }
+        OC.dialogs.confirm(
+          t("rds", "Are you sure, that you want to delete {servicename}?", {
+            servicename: servicename,
+          }),
+          t("rds", "RDS Settings services"),
+          function (confirmation) {
+            {
+              if (confirmation == false) {
+                return;
+              }
+              self._services
+                .removeServiceFromUser(servicename)
+                .done(function () {
+                  self.render();
+                })
+                .fail(function () {
+                  OC.dialogs.alert(
+                    t("rds", "Could not remove the service {servicename}", {
+                      servicename: servicename,
+                    }),
+                    t("rds", "RDS Settings services")
+                  );
+                });
+            }
+          }
+        );
       },
       renderContent: function () {
         var self = this;
