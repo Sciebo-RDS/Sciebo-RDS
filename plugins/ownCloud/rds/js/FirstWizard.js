@@ -7,10 +7,10 @@
   var services;
 
   function reload() {
-    var btn = $(".service button");
-    btn.each(function (index, elem) {
-      this[index].disabled = true;
-    }, btn);
+    var btns = $(".service button");
+    btns.each(function (index, elem) {
+      btns[index].disabled = true;
+    });
 
     if (state === 1) {
       $("#activateOwncloud").prop("disabled", false);
