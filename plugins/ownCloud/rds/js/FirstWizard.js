@@ -71,7 +71,7 @@
     $("#activateOwncloud").click(openPopup(owncloud));
     $("#activateZenodo").click(openPopup(zenodo));
     $("#activateResearch").click(function () {
-      console.log("Create research and open it.");
+      window.location.replace(OC.generateUrl("/apps/rds?createResearch"));
     });
 
     reload();

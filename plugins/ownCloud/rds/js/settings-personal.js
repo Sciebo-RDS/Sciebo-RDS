@@ -153,6 +153,7 @@
               if (confirmation == false) {
                 return;
               }
+              
               self._services
                 .removeServiceFromUser(servicename)
                 .done(function () {

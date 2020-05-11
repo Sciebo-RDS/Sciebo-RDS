@@ -16,6 +16,13 @@
         );
       });
 
+      var params = new window.URLSearchParams(window.location.search);
+      if (params.has("createResearch")) {
+        studies.create().done(function () {
+          view._stateView = 1;
+        });
+      }
+
       view.render();
     });
   });
