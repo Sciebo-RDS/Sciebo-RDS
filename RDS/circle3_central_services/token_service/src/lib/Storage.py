@@ -247,14 +247,16 @@ class Storage():
         This is an internal function. Please look at the external one.
         """
 
+        logger.debug("remove token: user {}, token {}".format(user, token))
+
         if not user.username in self._storage:
             from .Exceptions.StorageException import UserNotExistsError
             raise UserNotExistsError(self, user)
 
         try:
-
             for index, crnt in enumerate(self._storage[user.username]["tokens"]):
                 if token.servicename == crnt.servicename:
+                    logger.debug("found")
                     del self._storage[user.username]["tokens"][index]
                     break
         except ValueError:
