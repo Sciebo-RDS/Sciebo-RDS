@@ -26,13 +26,14 @@
   function openPopup(service) {
     return function () {
       var win = window.open(
-        service.authorizeUrl,
+        service.authorizeUrl + "&state=" + service.state,
         "oauth2-service-for-rds",
         "width=100%,height=100%,scrollbars=yes"
       );
 
       var timer = setInterval(function () {
         var loc = win.location.href;
+
         if (win.closed) {
           clearInterval(timer);
 
