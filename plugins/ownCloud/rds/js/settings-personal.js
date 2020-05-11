@@ -35,29 +35,6 @@
       };
     };
 
-    function removeService(servicename) {
-      if (
-        OC.dialogs.confirm(
-          t("rds", "Are you sure, that you want to delete {servicename}?", {
-            servicename: servicename,
-          })
-        )
-      ) {
-        Services.removeServiceFromUser(servicename)
-          .done(function () {
-            self.render();
-          })
-          .fail(function () {
-            OC.dialogs.alert(
-              t("rds", "Could not remove the service {servicename}", {
-                servicename: servicename,
-              }),
-              t("rds", "RDS Settings services")
-            );
-          });
-      }
-    }
-
     Services.prototype = {
       loadAll: function () {
         var deferred = $.Deferred();
@@ -130,7 +107,7 @@
       removeServiceFromUser: function (servicename) {
         var deferred = $.Deferred();
         var self = this;
-        $.delete(this._baseUrl + "/userseservice/" + servicename, "json")
+        $.delete(this._baseUrl + "/userservice/" + servicename, "json")
           .done(function (services) {
             self.loadAll().done(function () {
               deferred.resolve();
@@ -157,18 +134,48 @@
         var self = this;
         var source = $("#serviceStable > tbody:last-child");
 
+        function removeService() {
+          var $this = $(this);
+          var servicename = $this.data("servicename");
+          
+          if (
+            OC.dialogs.confirm(
+              t("rds", "Are you sure, that you want to delete {servicename}?", {
+                servicename: servicename,
+              })
+            )
+          ) {
+            self._services
+              .removeServiceFromUser(servicename)
+              .done(function () {
+                self.render();
+              })
+              .fail(function () {
+                OC.dialogs.alert(
+                  t("rds", "Could not remove the service {servicename}", {
+                    servicename: servicename,
+                  }),
+                  t("rds", "RDS Settings services")
+                );
+              });
+          }
+        }
+
         this._services._user_services.forEach(function (item, index) {
           source.append(
             "<tr><td>" +
               item["servicename"] +
               "</td><td>" +
-              '<button onclick="removeService(' +
+              '<button data-servicename="' +
               item["servicename"] +
-              '); return false;" ' +
-              'class="button icon-delete"></button>' +
+              '" class="button icon-delete"></button>' +
               "</td></tr>"
           );
         }, this);
+
+        $(".serviceStable :button").forEach(function (item, index) {
+          item.click(removeService);
+        });
 
         if (this._services._user_services.length > 0) {
           var serviceDiv = document.getElementById("services");
