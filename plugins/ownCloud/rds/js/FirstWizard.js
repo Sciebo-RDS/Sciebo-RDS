@@ -7,7 +7,7 @@
   var services;
 
   function reload() {
-    var btns = $(".service button");
+    var btns = $(".service :button");
     btns.each(function (index, elem) {
       btns[index].disabled = true;
     });
@@ -62,9 +62,9 @@
       }
     });
 
-    $("#activateOwncloud").addEventListener("click", openPopup(owncloud));
-    $("#activateZenodo").addEventListener("click", openPopup(zenodo));
-    $("#activateResearch").addEventListener("click", function () {
+    $("#activateOwncloud")[0].click(openPopup(owncloud));
+    $("#activateZenodo")[0].click(openPopup(zenodo));
+    $("#activateResearch")[0].click(function () {
       console.log("Create research and open it.");
     });
 
