@@ -18,9 +18,17 @@
 
       var params = new window.URLSearchParams(window.location.search);
       if (params.has("createResearch")) {
-        studies.create().done(function () {
-          view._stateView = 1;
-        });
+        studies
+          .create()
+          .done(function () {
+            view._stateView = 1;
+          })
+          .fail(function () {
+            OC.dialogs.alert(
+              t("rds", "Could not create research"),
+              t("rds", "RDS Update project")
+            );
+          });
       }
 
       view.render();
