@@ -111,16 +111,20 @@
         $.ajax({
           type: "DELETE",
           url: this._baseUrl + "/userservice/" + servicename,
-          dataType: "json",
-        })
-          .done(function (services) {
-            self.loadAll().done(function () {
-              deferred.resolve();
-            });
-          })
-          .fail(function () {
+          success: function (result) {
+            self
+              .loadAll()
+              .done(function () {
+                deferred.resolve();
+              })
+              .fail(function () {
+                deferred.reject();
+              });
+          },
+          error: function (result) {
             deferred.reject();
-          });
+          },
+        });
 
         return deferred.promise();
       },
