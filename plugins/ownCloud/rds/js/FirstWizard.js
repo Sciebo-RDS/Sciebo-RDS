@@ -32,19 +32,23 @@
       );
 
       var timer = setInterval(function () {
-        var loc = win.location.href;
-
         if (win.closed) {
           clearInterval(timer);
 
-          if (
-            loc.startsWith(
-              "https://sciebords-dev.uni-muenster.de/token-service/"
-            )
-          ) {
-            state += 1;
-            reload();
-          }
+          services.loadUser().done(function () {
+            var found = false;
+
+            services.getAll().forEach(function (svc) {
+              if (service.servicename == svc.servicename) {
+                found = true;
+              }
+            });
+
+            if (found) {
+              state += 1;
+              reload();
+            }
+          });
         }
       }, 300);
     };
