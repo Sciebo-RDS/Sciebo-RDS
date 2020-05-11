@@ -50,7 +50,7 @@
     var owncloud = undefined;
     var zenodo = undefined;
 
-    services.getServices().foreach(function (service) {
+    services.getServices().forEach(function (service) {
       if (service.servicename === "Owncloud") {
         owncloud = service;
       }
