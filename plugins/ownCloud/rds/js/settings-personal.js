@@ -107,7 +107,12 @@
       removeServiceFromUser: function (servicename) {
         var deferred = $.Deferred();
         var self = this;
-        $.delete(this._baseUrl + "/userservice/" + servicename, "json")
+
+        $.ajax({
+          type: "DELETE",
+          url: this._baseUrl + "/userservice/" + servicename,
+          dataType: "json",
+        })
           .done(function (services) {
             self.loadAll().done(function () {
               deferred.resolve();
@@ -116,6 +121,7 @@
           .fail(function () {
             deferred.reject();
           });
+
         return deferred.promise();
       },
     };
