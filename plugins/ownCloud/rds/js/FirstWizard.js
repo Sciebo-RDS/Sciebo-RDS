@@ -24,26 +24,28 @@
   }
 
   function openPopup(service) {
-    var win = window.open(
-      service.authorize_url,
-      "oauth2-service-for-rds",
-      "width=100%,height=100%,scrollbars=yes"
-    );
+    return function () {
+      var win = window.open(
+        service.authorize_url,
+        "oauth2-service-for-rds",
+        "width=100%,height=100%,scrollbars=yes"
+      );
 
-    var timer = setInterval(function () {
-      if (win.closed) {
-        clearInterval(timer);
+      var timer = setInterval(function () {
+        if (win.closed) {
+          clearInterval(timer);
 
-        if (
-          window.location.href.startsWith(
-            "https://sciebords-dev.uni-muenster.de/token-service/"
-          )
-        ) {
-          state += 1;
-          reload();
+          if (
+            window.location.href.startsWith(
+              "https://sciebords-dev.uni-muenster.de/token-service/"
+            )
+          ) {
+            state += 1;
+            reload();
+          }
         }
-      }
-    }, 300);
+      }, 300);
+    };
   }
 
   function render() {
