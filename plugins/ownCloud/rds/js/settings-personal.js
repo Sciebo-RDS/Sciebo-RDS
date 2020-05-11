@@ -153,11 +153,15 @@
               if (confirmation == false) {
                 return;
               }
-              
+
               self._services
                 .removeServiceFromUser(servicename)
                 .done(function () {
-                  self.render();
+                  if (servicename === "Owncloud") {
+                    location.reload();
+                  } else {
+                    self.render();
+                  }
                 })
                 .fail(function () {
                   OC.dialogs.alert(
