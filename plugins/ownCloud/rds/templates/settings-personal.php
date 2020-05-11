@@ -62,7 +62,7 @@ if ( $logged_in ) {
     </div>
 
     <div class = 'section' id = 'services' style = 'display: none;'>
-    <table id = 'serviceStable' data-preview-x = '32' data-preview-y = '32'>
+    <table id = 'serviceStable' data-preview-x = '32' data-preview-y = '32' width = '100%'>
     <thead>
     <tr>
     <th id = 'servicename'><?php p( $l->t( 'Servicename' ) );
