@@ -35,6 +35,29 @@
       };
     };
 
+    function removeService(servicename) {
+      if (
+        OC.dialogs.confirm(
+          t("rds", "Are you sure, that you want to delete {servicename}?", {
+            servicename: servicename,
+          })
+        )
+      ) {
+        Services.removeServiceFromUser(servicename)
+          .done(function () {
+            self.render();
+          })
+          .fail(function () {
+            OC.dialogs.alert(
+              t("rds", "Could not remove the service {servicename}", {
+                servicename: servicename,
+              }),
+              t("rds", "RDS Settings services")
+            );
+          });
+      }
+    }
+
     Services.prototype = {
       loadAll: function () {
         var deferred = $.Deferred();
@@ -107,7 +130,7 @@
       removeServiceFromUser: function (servicename) {
         var deferred = $.Deferred();
         var self = this;
-        $.delete(this._baseUrl + "/userservice/" + servicename, "json")
+        $.delete(this._baseUrl + "/userseservice/" + servicename, "json")
           .done(function (services) {
             self.loadAll().done(function () {
               deferred.resolve();
@@ -133,30 +156,6 @@
       renderContent: function () {
         var self = this;
         var source = $("#serviceStable > tbody:last-child");
-
-        function removeService(servicename) {
-          if (
-            OC.dialogs.confirm(
-              t("rds", "Are you sure, that you want to delete {servicename}?", {
-                servicename: servicename,
-              })
-            )
-          ) {
-            self._services
-              .removeServiceFromUser(servicename)
-              .done(function () {
-                self.render();
-              })
-              .fail(function () {
-                OC.dialogs.alert(
-                  t("rds", "Could not remove the service {servicename}", {
-                    servicename: servicename,
-                  }),
-                  t("rds", "RDS Settings services")
-                );
-              });
-          }
-        }
 
         this._services._user_services.forEach(function (item, index) {
           source.append(
