@@ -63,8 +63,7 @@ class UserserviceController extends Controller {
 
     public function destroy( $id ) {
         return $this->handleNotFound(function () use ($id) {
-             $this->service->delete( $id, $this->userId );
-             return new RedirectResponse('index.php/settings/personal?sectionid=rds');
+             return $this->service->delete( $id, $this->userId );
         });
     }
 }
