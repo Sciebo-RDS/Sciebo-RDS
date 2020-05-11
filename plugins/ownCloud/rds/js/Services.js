@@ -10,7 +10,7 @@
 
   OC.rds.Services.prototype = {
     loadAll: function () {
-      return $.when(this.loadUser, this.loadService);
+      return $.when(this.loadUser(), this.loadService());
     },
     loadUser: function () {
       var deferred = $.Deferred();
