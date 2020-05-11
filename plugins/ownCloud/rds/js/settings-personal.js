@@ -181,15 +181,17 @@
         var source = $("#serviceStable > tbody:last-child");
 
         this._services._user_services.forEach(function (item, index) {
-          source.append(
-            "<tr><td>" +
-              item["servicename"] +
-              "</td><td>" +
-              '<button data-servicename="' +
-              item["servicename"] +
-              '" class="button icon-delete"></button>' +
-              "</td></tr>"
-          );
+          if (item["servicename"] !== "Owncloud") {
+            source.append(
+              "<tr><td>" +
+                item["servicename"] +
+                "</td><td>" +
+                '<button data-servicename="' +
+                item["servicename"] +
+                '" class="button icon-delete"></button>' +
+                "</td></tr>"
+            );
+          }
         }, this);
 
         var btns = $("#serviceStable :button");
