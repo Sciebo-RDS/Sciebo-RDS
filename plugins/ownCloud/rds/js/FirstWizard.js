@@ -7,7 +7,11 @@
   var services;
 
   function reload() {
-    $('div[id^="activate"]').prop("disabled", true);
+    var btn = $(".service button");
+    btn.each(function (index, elem) {
+      btn[index].prop("disabled", true);
+    });
+
     if (state === 1) {
       $("#activateOwncloud").prop("disabled", false);
     }
@@ -62,7 +66,7 @@
     services = new OC.rds.Services();
     reload();
 
-    services.loadAll().done(function () {
+    services.loadService().done(function () {
       state += 1;
       render();
       reload();
