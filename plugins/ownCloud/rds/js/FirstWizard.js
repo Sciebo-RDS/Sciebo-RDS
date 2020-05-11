@@ -32,11 +32,12 @@
       );
 
       var timer = setInterval(function () {
+        var loc = win.location.href;
         if (win.closed) {
           clearInterval(timer);
 
           if (
-            win.location.href.startsWith(
+            loc.startsWith(
               "https://sciebords-dev.uni-muenster.de/token-service/"
             )
           ) {
