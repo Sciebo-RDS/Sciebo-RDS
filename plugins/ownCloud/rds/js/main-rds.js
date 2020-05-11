@@ -9,13 +9,14 @@
     var files = new OC.rds.Files();
 
     var view = new OC.rds.View(studies, services, files);
-    
+
     var params = new window.URLSearchParams(window.location.search);
     if (params.has("createResearch")) {
       studies
         .create()
         .done(function () {
           view._stateView = 1;
+          view.render();
         })
         .fail(function () {
           OC.dialogs.alert(
