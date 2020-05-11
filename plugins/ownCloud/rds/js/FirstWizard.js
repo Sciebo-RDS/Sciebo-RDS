@@ -4,16 +4,17 @@
   OC.rds = OC.rds || {};
 
   var state = 0;
+  var services;
 
   function reload() {
     $('div[id^="activate"]').prop("disabled", true);
-    if (state === 0) {
+    if (state === 1) {
       $("#activateOwncloud").prop("disabled", false);
     }
-    if (state === 1) {
+    if (state === 2) {
       $("#activateZenodo").prop("disabled", false);
     }
-    if (state === 2) {
+    if (state === 3) {
       $("#activateResearch").prop("disabled", false);
     }
   }
@@ -34,10 +35,7 @@
     }, 300);
   }
 
-  $(document).ready(function () {
-    var services = new OC.rds.Services();
-    services.loadAll();
-
+  function render() {
     var owncloud = undefined;
     var zenodo = undefined;
 
@@ -58,5 +56,16 @@
     });
 
     reload();
+  }
+
+  $(document).ready(function () {
+    services = new OC.rds.Services();
+    reload();
+
+    services.loadAll().done(function () {
+      state += 1;
+      render();
+      reload();
+    });
   });
 })(OC, window, jQuery);
