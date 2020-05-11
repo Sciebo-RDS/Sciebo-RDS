@@ -23,6 +23,31 @@
     }
   }
 
+  function openPopup(service) {
+    return function () {
+      var win = window.open(
+        service.authorize_url,
+        "oauth2-service-for-rds",
+        "width=100%,height=100%,scrollbars=yes"
+      );
+
+      var timer = setInterval(function () {
+        if (win.closed) {
+          clearInterval(timer);
+
+          if (
+            window.location.href.startsWith(
+              "https://sciebords-dev.uni-muenster.de/token-service/"
+            )
+          ) {
+            state += 1;
+            reload();
+          }
+        }
+      }, 300);
+    };
+  }
+
   function render() {
     var owncloud = undefined;
     var zenodo = undefined;
@@ -37,52 +62,8 @@
       }
     });
 
-    $("#activateOwncloud").click(function () {
-      var win = window.open(
-        owncloud.authorize_url,
-        "oauth2-service-for-rds",
-        "width=100%,height=100%,scrollbars=yes"
-      );
-
-      var timer = setInterval(function () {
-        if (win.closed) {
-          clearInterval(timer);
-
-          if (
-            window.location.href.startsWith(
-              "https://sciebords-dev.uni-muenster.de/token-service/"
-            )
-          ) {
-            state += 1;
-            reload();
-          }
-        }
-      }, 300);
-    });
-
-    $("#activateZenodo").click(function () {
-      var win = window.open(
-        zenodo.authorize_url,
-        "oauth2-service-for-rds",
-        "width=100%,height=100%,scrollbars=yes"
-      );
-
-      var timer = setInterval(function () {
-        if (win.closed) {
-          clearInterval(timer);
-
-          if (
-            window.location.href.startsWith(
-              "https://sciebords-dev.uni-muenster.de/token-service/"
-            )
-          ) {
-            state += 1;
-            reload();
-          }
-        }
-      }, 300);
-    });
-
+    $("#activateOwncloud").click(openPopup(owncloud));
+    $("#activateZenodo").click(openPopup(zenodo));
     $("#activateResearch").click(function () {
       console.log("Create research and open it.");
     });
