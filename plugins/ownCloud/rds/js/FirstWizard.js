@@ -23,10 +23,23 @@
     }
   }
 
-  function openPopup(service) {
-    return function () {
+  function render() {
+    var owncloud = undefined;
+    var zenodo = undefined;
+
+    services.getServices().forEach(function (service) {
+      if (service.servicename === "Owncloud") {
+        owncloud = service;
+      }
+
+      if (service.servicename === "Zenodo") {
+        zenodo = service;
+      }
+    });
+
+    $("#activateOwncloud")[0].click(function () {
       var win = window.open(
-        service.authorize_url,
+        owncloud.authorize_url,
         "oauth2-service-for-rds",
         "width=100%,height=100%,scrollbars=yes"
       );
@@ -45,25 +58,31 @@
           }
         }
       }, 300);
-    };
-  }
+    });
+    
+    $("#activateZenodo")[0].click(function () {
+      var win = window.open(
+        zenodo.authorize_url,
+        "oauth2-service-for-rds",
+        "width=100%,height=100%,scrollbars=yes"
+      );
 
-  function render() {
-    var owncloud = undefined;
-    var zenodo = undefined;
+      var timer = setInterval(function () {
+        if (win.closed) {
+          clearInterval(timer);
 
-    services.getServices().forEach(function (service) {
-      if (service.servicename === "Owncloud") {
-        owncloud = service;
-      }
-
-      if (service.servicename === "Zenodo") {
-        zenodo = service;
-      }
+          if (
+            window.location.href.startsWith(
+              "https://sciebords-dev.uni-muenster.de/token-service/"
+            )
+          ) {
+            state += 1;
+            reload();
+          }
+        }
+      }, 300);
     });
 
-    $("#activateOwncloud")[0].click(openPopup(owncloud));
-    $("#activateZenodo")[0].click(openPopup(zenodo));
     $("#activateResearch")[0].click(function () {
       console.log("Create research and open it.");
     });
