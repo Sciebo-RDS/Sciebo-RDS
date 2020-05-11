@@ -104,4 +104,5 @@
   <div id="spacer"></div>
   <button id="btn-save-research"><?php p($l->t('Save')); ?></button>
   <button id="btn-save-research-and-continue"><?php p($l->t('Save & continue')); ?></button>
+  <button id="btn-sync-files-in-research"><?php p($l->t('Sync files')); ?></button>
 </div>

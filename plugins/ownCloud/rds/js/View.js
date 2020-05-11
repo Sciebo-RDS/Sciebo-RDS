@@ -216,6 +216,17 @@
     var servicename = btn.data("service");
 
     $("[id=service-configuration]").hide();
+    $("#btn-save-research-and-continue").hide();
+    $("#btn-sync-files-in-research").hide();
+
+    $("#btn-sync-files-in-research").click(function () {
+      self._view._files.load(this._studies.getActive().researchIndex);
+      self._view._files.triggerSync();
+    });
+
+    if (self._studies.getActive().status > 1) {
+      $("#btn-sync-files-in-research").show();
+    }
 
     btn.click(function () {
       OC.dialogs.filepicker(
@@ -555,7 +566,7 @@
         if (self._studies.getActive().status > 1) {
           self._files.load(self._studies.getActive().researchIndex);
         }
-        
+
         self._stateView = 1;
         self.render();
       });
