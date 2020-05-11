@@ -22,9 +22,39 @@ class Test_TokenStorage(unittest.TestCase):
         self.oauthservice2 = OAuth2Service(
             "BetonService", "http://owncloud/oauth/authorize", "http://owncloud/oauth/token", "UVP", "OMN")
 
-        self.oauthtoken1 = OAuth2Token(self.user1, self.oauthservice1, "ABC", "XYZ")
-        self.oauthtoken2 = OAuth2Token(self.user1, self.oauthservice2, "DEF", "UVW")
+        self.oauthtoken1 = OAuth2Token(
+            self.user1, self.oauthservice1, "ABC", "XYZ")
+        self.oauthtoken2 = OAuth2Token(
+            self.user1, self.oauthservice2, "DEF", "UVW")
 
+    def test_compare_tokens(self):
+        t1 = Token(self.user1, self.service1, "ABC")
+        t2 = Token(self.user1, self.service1, "ABC")
+        t3 = Token(self.user1, self.service2, "ABC")
+        t4 = Token(self.user1, self.service1, "QWERT")
+        t5 = Token(self.user2, self.service2, "ABC")
+
+        ot1 = OAuth2Token(
+            self.user1, self.oauthservice1, "ABC", "XYZ")
+        ot2 = OAuth2Token(
+            self.user1, self.oauthservice1, "ABC", "XYZ")
+        ot3 = self.oauthtoken2 = OAuth2Token(
+            self.user1, self.oauthservice2, "DEF", "UVW")
+        ot4 = OAuth2Token(
+            self.user1, self.oauthservice1, "QWE", "RTZ")
+
+        self.assertEqual(t1, t2)
+        self.assertNotEqual(t3, t2)
+        self.assertEqual(t1, t4)
+        self.assertNotEqual(t1, t5)
+
+        self.assertFalse(t1 is t2)
+
+        self.assertEqual(ot1, ot2)
+        self.assertNotEqual(ot3, ot2)
+        self.assertEqual(ot1, ot4)
+
+        self.assertEqual(t1, ot1)
 
     def test_token_empty_string(self):
         with self.assertRaises(ValueError):
@@ -40,8 +70,10 @@ class Test_TokenStorage(unittest.TestCase):
             OAuth2Token(self.user1, None, "", "")
 
         # refresh_token is the only parameter, which can be empty
-        self.assertIsInstance(OAuth2Token(self.user1, self.oauthservice1, "ABC"), OAuth2Token)
-        self.assertIsInstance(OAuth2Token(self.user1, self.oauthservice2, "ABC"), Token)
+        self.assertIsInstance(OAuth2Token(
+            self.user1, self.oauthservice1, "ABC"), OAuth2Token)
+        self.assertIsInstance(OAuth2Token(
+            self.user1, self.oauthservice2, "ABC"), Token)
 
         with self.assertRaises(ValueError):
             OAuth2Token(self.user1, self.oauthservice1, "")
@@ -69,7 +101,7 @@ class Test_TokenStorage(unittest.TestCase):
         self.assertEqual(self.oauthtoken2, self.oauthtoken2)
 
         self.assertEqual(self.token1, self.oauthtoken1,
-                            msg=f"\n{self.token1}\n {self.oauthtoken1}")
+                         msg=f"\n{self.token1}\n {self.oauthtoken1}")
         self.assertEqual(self.oauthtoken1, self.token1)
 
         self.assertIsInstance(self.oauthtoken1, Token)

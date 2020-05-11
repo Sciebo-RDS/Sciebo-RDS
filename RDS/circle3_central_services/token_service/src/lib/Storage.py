@@ -252,7 +252,11 @@ class Storage():
             raise UserNotExistsError(self, user)
 
         try:
-            self._storage[user.username]["tokens"].remove(token)
+
+            for index, crnt in enumerate(self._storage[user.username]["tokens"]):
+                if token.servicename == crnt.servicename:
+                    del self._storage[user.username]["tokens"][index]
+                    break
         except ValueError:
             from .Exceptions.StorageException import TokenNotExistsError
             raise TokenNotExistsError(self, user, token)

@@ -15,6 +15,30 @@ class TestService(unittest.TestCase):
         self.oauthservice3 = OAuth2Service.from_service(
             self.service3, "http://localhost:5001/api/authorize", "http://localhost:5001/api/refresh", "GHI", "MNO")
 
+    def test_compare_service(self):
+        s1 = Service("BetonService")
+        s2 = Service("BetonService")
+        s3 = Service("FahrService")
+
+        os1 = OAuth2Service.from_service(
+            s1, "http://localhost:5000/oauth/authorize", "http://localhost:5000/oauth/refresh", "ABC", "XYZ")
+        os2 = OAuth2Service.from_service(
+            s1, "http://localhost:5000/oauth/authorize", "http://localhost:5000/oauth/refresh", "ABC", "XYZ")
+        os3 = OAuth2Service.from_service(
+            s3, "http://localhost123:5000/oauth/authorize", "http://localhost123:5000/oauth/refresh", "WER", "DA")
+        os4 = OAuth2Service.from_service(
+            s1, "http://localhost:5000/oauth/authorize", "http://localhost:5000/oauth/refresh", "QWE", "RTZ")
+
+        self.assertEqual(s1, s2)
+        self.assertNotEqual(s1, s3)
+        self.assertFalse(s1 is s2)
+
+        self.assertEqual(os1, os2)
+        self.assertEqual(os1, os4)
+        self.assertNotEqual(os1, os3)
+
+        self.assertEqual(s1, os1)
+
     def test_service(self):
         with self.assertRaises(ValueError):
             Service("")

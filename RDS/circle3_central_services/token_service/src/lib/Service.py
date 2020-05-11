@@ -260,6 +260,9 @@ class OAuth2Service(Service):
             )
         )
 
+    def __repr__(self):
+        return json.dumps(self.to_dict())
+
     def to_json(self):
         """
         Returns this object as a json string.

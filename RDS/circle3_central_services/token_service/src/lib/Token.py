@@ -79,6 +79,9 @@ class Token():
         }
 
         return data
+    
+    def __repr__(self):
+        return json.dumps(self.to_dict())
 
     @classmethod
     def from_json(cls, tokenStr: str):
