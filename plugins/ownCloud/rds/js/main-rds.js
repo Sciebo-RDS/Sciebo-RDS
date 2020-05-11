@@ -11,19 +11,9 @@
     var view = new OC.rds.View(studies, services, files);
 
     var params = new window.URLSearchParams(window.location.search);
+    var create = false;
     if (params.has("createResearch")) {
-      studies
-        .create()
-        .done(function () {
-          view._stateView = 1;
-          view.render();
-        })
-        .fail(function () {
-          OC.dialogs.alert(
-            t("rds", "Could not create research"),
-            t("rds", "RDS Update project")
-          );
-        });
+      create = true;
     }
 
     view.loadAll().always(function () {
@@ -33,7 +23,24 @@
         );
       });
 
-      view.render();
+      if (create) {
+        studies
+          .create()
+          .done(function () {
+            view._stateView = 1;
+          })
+          .fail(function () {
+            OC.dialogs.alert(
+              t("rds", "Could not create research"),
+              t("rds", "RDS Update project")
+            );
+          })
+          .always(function () {
+            view.render();
+          });
+      } else {
+        view.render();
+      }
     });
   });
 })(OC, window, jQuery);
