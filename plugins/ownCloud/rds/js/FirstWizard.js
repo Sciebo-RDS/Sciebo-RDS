@@ -26,7 +26,7 @@
   function openPopup(service) {
     return function () {
       var win = window.open(
-        service.authorize_url,
+        service.authorizeUrl,
         "oauth2-service-for-rds",
         "width=100%,height=100%,scrollbars=yes"
       );
