@@ -173,7 +173,7 @@
           );
         }, this);
 
-        $("#serviceStable :button").each(function (item, index) {
+        $("#serviceStable :button").each(function (index, item) {
           item.click(removeService);
         });
 
