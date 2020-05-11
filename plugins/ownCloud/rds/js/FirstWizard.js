@@ -1,6 +1,8 @@
 (function (OC, window, $, undefined) {
   "use strict";
 
+  var state = 0;
+
   function reload() {
     $('div[id^="activate"]').prop("disabled", true);
     if (state === 0) {
@@ -30,14 +32,12 @@
     }, 300);
   }
 
-  var services = new OC.rds.Services();
-  services.loadAll();
-
   $(document).ready(function () {
+    var services = new OC.rds.Services();
+    services.loadAll();
+
     var owncloud = undefined;
     var zenodo = undefined;
-    var self = this;
-    var state = 0;
 
     services.getServices().foreach(function (service) {
       if (service.servicename === "Owncloud") {
