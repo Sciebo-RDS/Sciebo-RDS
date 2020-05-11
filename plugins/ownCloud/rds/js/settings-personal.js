@@ -135,9 +135,14 @@
 
         if (
           OC.dialogs.confirm(
-            t("rds", "Are you sure, that you want to delete {servicename}?", {
-              servicename: servicename,
-            })
+            t(
+              "rds",
+              "Are you sure, that you want to delete {servicename}?",
+              {
+                servicename: servicename,
+              },
+              t("rds", "RDS Settings services")
+            )
           )
         ) {
           self._services
@@ -172,13 +177,11 @@
         }, this);
 
         var btns = $("#serviceStable :button");
-        btns.each(function (index, item) {
-          btns[index].click(function () {
-            var $this = $(this);
-            var servicename = $this.data("servicename");
+        btns.click(function () {
+          var $this = $(this);
+          var servicename = $this.data("servicename");
 
-            self.removeServiceFromUser(servicename);
-          });
+          self.removeServiceFromUser(servicename);
         });
 
         if (this._services._user_services.length > 0) {
