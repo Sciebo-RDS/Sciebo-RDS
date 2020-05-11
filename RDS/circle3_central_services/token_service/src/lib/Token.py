@@ -53,7 +53,6 @@ class Token():
         Returns True, if this object and other object have the same servicename and user. Otherwise false.
         """
         return (
-            isinstance(other, (Token)) and
             self.service == other.service and
             self.user == other.user
         )
@@ -115,7 +114,8 @@ class Token():
 
         from Util import try_function_on_dict
 
-        load = try_function_on_dict([OAuth2Token.from_json, Token.from_json, OAuth2Token.from_dict, Token.from_dict])
+        load = try_function_on_dict(
+            [OAuth2Token.from_json, Token.from_json, OAuth2Token.from_dict, Token.from_dict])
         return load(obj)
 
 
@@ -209,5 +209,5 @@ class OAuth2Token(Token):
         Returns an oauthtoken object from dict.
         """
         token = super(OAuth2Token, cls).from_dict(tokenDict)
-        
+
         return OAuth2Token(token.user, token.service, token.access_token, tokenDict["refresh_token"], tokenDict["expiration_date"])
