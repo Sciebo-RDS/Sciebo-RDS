@@ -220,7 +220,7 @@
     $("#btn-sync-files-in-research").hide();
 
     $("#btn-sync-files-in-research").click(function () {
-      self._view._files.load(this._studies.getActive().researchIndex);
+      self._view._files.load(self._studies.getActive().researchIndex);
       self._view._files.triggerSync();
     });
 
