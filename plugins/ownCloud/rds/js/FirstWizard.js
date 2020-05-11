@@ -9,8 +9,8 @@
   function reload() {
     var btn = $(".service button");
     btn.each(function (index, elem) {
-      btn[index].prop("disabled", true);
-    });
+      this[index].disabled = true;
+    }, btn);
 
     if (state === 1) {
       $("#activateOwncloud").prop("disabled", false);
@@ -33,8 +33,15 @@
     var timer = setInterval(function () {
       if (win.closed) {
         clearInterval(timer);
-        state += 1;
-        reload();
+
+        if (
+          window.location.href.startsWith(
+            "https://sciebords-dev.uni-muenster.de/token-service/"
+          )
+        ) {
+          state += 1;
+          reload();
+        }
       }
     }, 300);
   }
