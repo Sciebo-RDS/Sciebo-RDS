@@ -7,7 +7,7 @@ script( 'rds', array( 'Services', 'FirstWizard' ) );
 ?>
 
 <div class="section" id="rds">
-  <div class="service" id="owncloud">
+  <div class="service" id="rdsOwncloud">
     <p>
       <?php p( $l->t( 'Step 1: Authorize RDS to authenticate against ownCloud.'
       ) ); ?>
@@ -16,7 +16,7 @@ script( 'rds', array( 'Services', 'FirstWizard' ) );
       <?php p( $l->t( 'Authorize ownCloud.' ) ); ?>
     </button>
   </div>
-  <div class="service" id="zenodo">
+  <div class="service" id="rdsZenodo">
     <p>
       <?php p( $l->t( 'Step 2: Authorize RDS to authenticate against Zenodo.' )
       ); ?>
