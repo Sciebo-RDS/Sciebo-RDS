@@ -248,6 +248,7 @@
 
     $("#app-content #btn-save-research").click(function () {
       self.save();
+      self._view.render();
     });
 
     $("#app-content #btn-save-research-and-continue").click(function () {
