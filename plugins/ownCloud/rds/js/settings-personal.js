@@ -130,36 +130,34 @@
     };
 
     View.prototype = {
+      removeServiceFromUser: function (servicename) {
+        var self = this;
+
+        if (
+          OC.dialogs.confirm(
+            t("rds", "Are you sure, that you want to delete {servicename}?", {
+              servicename: servicename,
+            })
+          )
+        ) {
+          self._services
+            .removeServiceFromUser(servicename)
+            .done(function () {
+              self.render();
+            })
+            .fail(function () {
+              OC.dialogs.alert(
+                t("rds", "Could not remove the service {servicename}", {
+                  servicename: servicename,
+                }),
+                t("rds", "RDS Settings services")
+              );
+            });
+        }
+      },
       renderContent: function () {
         var self = this;
         var source = $("#serviceStable > tbody:last-child");
-
-        function removeService() {
-          var $this = $(this);
-          var servicename = $this.data("servicename");
-
-          if (
-            OC.dialogs.confirm(
-              t("rds", "Are you sure, that you want to delete {servicename}?", {
-                servicename: servicename,
-              })
-            )
-          ) {
-            self._services
-              .removeServiceFromUser(servicename)
-              .done(function () {
-                self.render();
-              })
-              .fail(function () {
-                OC.dialogs.alert(
-                  t("rds", "Could not remove the service {servicename}", {
-                    servicename: servicename,
-                  }),
-                  t("rds", "RDS Settings services")
-                );
-              });
-          }
-        }
 
         this._services._user_services.forEach(function (item, index) {
           source.append(
@@ -173,8 +171,14 @@
           );
         }, this);
 
-        $("#serviceStable :button").each(function (index, item) {
-          item.click(removeService);
+        var btns = $("#serviceStable :button");
+        btns.each(function (index, item) {
+          btns[index].click(function () {
+            var $this = $(this);
+            var servicename = $this.data("servicename");
+
+            self.removeServiceFromUser(servicename);
+          });
         });
 
         if (this._services._user_services.length > 0) {
@@ -183,6 +187,11 @@
             serviceDiv.style.display = "block";
           }
         }
+
+        $("#owncloud-button-removal").click(function () {
+          self.removeServiceFromUser("Owncloud");
+          return false;
+        });
       },
       renderSelect: function () {
         var self = this;
