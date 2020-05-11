@@ -68,6 +68,11 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+                properties: {}
       description: 'Like ownclouds: index.php/apps/oauth2/authorization-successful'
     parameters: []
   /authorization-cancel:
@@ -77,6 +82,11 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+                properties: {}
       description: This endpoint represents an invalid oauth2 process.
     parameters: []
   /service:
