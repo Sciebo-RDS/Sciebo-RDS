@@ -3,8 +3,8 @@
 
   OC.rds = OC.rds || {};
 
-  OC.rds.Studies = function (baseUrl, metadata) {
-    this._baseUrl = baseUrl;
+  OC.rds.Studies = function (metadata) {
+    this._baseUrl = OC.generateUrl("/apps/rds/research");
     this._studies = [];
     this._activeResearch = undefined;
     this._metadata = metadata;

@@ -1,4 +1,37 @@
+<?php
+style( 'rds', array( 'style' ) );
+script( 'rds', array( 'handlebars' ) );
+
+script( 'rds', array( 'FirstWizard' ) );
+
+?>
+
 <div class="section" id="rds">
-    Sciebo RDS is not authorized yet. Please take a look at your settings to provide the necassary permissions.<br>
-    <button onclick="window.location.href=OC.generateUrl('/settings/personal?sectionid=rds')" class="button"><?php p($l->t('Go to settings now.')); ?></button>
+  <div class="service" id="owncloud">
+    <p>
+      <?php p( $l->t( 'Step 1: Authorize RDS to authenticate against ownCloud.'
+      ) ); ?>
+    </p>
+    <button class="button" id="activateOwncloud">
+      <?php p( $l->t( 'Authorize ownCloud.' ) ); ?>
+    </button>
+  </div>
+  <div class="service" id="zenodo">
+    <p>
+      <?php p( $l->t( 'Step 2: Authorize RDS to authenticate against Zenodo.' )
+      ); ?>
+    </p>
+    <button class="button" id="activateZenodo" disabled>
+      <?php p( $l->t( 'Authorize Zenodo.' ) ); ?>
+    </button>
+  </div>
+  <div class="service" id="reload">
+    <p>
+      <?php p( $l->t( 'Step 3: Create a research in RDS and configure it.' ) );
+      ?>
+    </p>
+    <button class="button" id="activateResearch">
+      <?php p( $l->t( 'Create a research in RDS.' ) ); ?>
+    </button>
+  </div>
 </div>

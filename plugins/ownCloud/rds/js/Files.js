@@ -3,8 +3,8 @@
 
   OC.rds = OC.rds || {};
 
-  OC.rds.Files = function (baseUrl) {
-    this._baseUrl = baseUrl;
+  OC.rds.Files = function () {
+    this._baseUrl = OC.generateUrl("/apps/rds/research/files");
     this._userId = OC.currentUser;
     this._settings = undefined;
     this._currentFiles = [];

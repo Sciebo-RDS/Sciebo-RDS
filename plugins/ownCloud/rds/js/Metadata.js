@@ -3,8 +3,8 @@
 
   OC.rds = OC.rds || {};
 
-  OC.rds.Metadata = function (baseUrl) {
-    this._baseUrl = baseUrl;
+  OC.rds.Metadata = function () {
+    this._baseUrl = OC.generateUrl("/apps/rds/metadata");
     this._metadata = [];
     this._schema = undefined;
     this._version = undefined;
