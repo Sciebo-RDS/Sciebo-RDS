@@ -5,7 +5,7 @@ def index():
     return """
     <html>
     <body>
-    <center>All wents fine. You can close this window now. <button click=\"close();\">Close</button></center>
+    <center>You are good to go. You can close this window now. <button click=\"close();\">Close</button></center>
     </body>
     </html>
     """
