@@ -3,6 +3,7 @@ from lib.Service import Service
 from lib.User import User
 from flask import jsonify
 
+
 def index(user_id):
     listOfServices = Util.tokenService.getAllServicesForUser(User(user_id))
     data = {
@@ -18,5 +19,5 @@ def get(user_id, servicename):
 
 
 def delete(user_id, servicename):
-    return jsonify(Util.tokenService.removeTokenForServiceFromUser(
-        Service(servicename), User(user_id)))
+    return jsonify({"success": Util.tokenService.removeTokenForServiceFromUser(
+        Service(servicename), User(user_id))})
