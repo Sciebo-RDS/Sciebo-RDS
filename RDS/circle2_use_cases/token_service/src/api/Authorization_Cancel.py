@@ -1,6 +1,8 @@
 from flask import jsonify
+from connexion_plus.Optimizer import FlaskOptimize
 
 
+@FlaskOptimize.do_not_minify()
 def index():
     return """
     <html>
