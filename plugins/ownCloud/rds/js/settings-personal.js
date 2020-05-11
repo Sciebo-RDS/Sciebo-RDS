@@ -137,7 +137,7 @@
         function removeService() {
           var $this = $(this);
           var servicename = $this.data("servicename");
-          
+
           if (
             OC.dialogs.confirm(
               t("rds", "Are you sure, that you want to delete {servicename}?", {
@@ -173,7 +173,7 @@
           );
         }, this);
 
-        $(".serviceStable :button").forEach(function (item, index) {
+        $("#serviceStable :button").forEach(function (item, index) {
           item.click(removeService);
         });
 
