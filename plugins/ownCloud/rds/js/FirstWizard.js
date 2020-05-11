@@ -37,7 +37,7 @@
       }
     });
 
-    $("#activateOwncloud")[0].click(function () {
+    $("#activateOwncloud").click(function () {
       var win = window.open(
         owncloud.authorize_url,
         "oauth2-service-for-rds",
@@ -59,8 +59,8 @@
         }
       }, 300);
     });
-    
-    $("#activateZenodo")[0].click(function () {
+
+    $("#activateZenodo").click(function () {
       var win = window.open(
         zenodo.authorize_url,
         "oauth2-service-for-rds",
@@ -83,7 +83,7 @@
       }, 300);
     });
 
-    $("#activateResearch")[0].click(function () {
+    $("#activateResearch").click(function () {
       console.log("Create research and open it.");
     });
 
