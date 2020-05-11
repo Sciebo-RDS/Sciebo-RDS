@@ -107,7 +107,7 @@
       removeServiceFromUser: function (servicename) {
         var deferred = $.Deferred();
         var self = this;
-        $.delete(this._baseUrl + "/service/" + servicename, "json")
+        $.delete(this._baseUrl + "/userservice/" + servicename, "json")
           .done(function (services) {
             self.loadAll().done(function () {
               deferred.resolve();
