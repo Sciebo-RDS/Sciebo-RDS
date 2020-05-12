@@ -64,8 +64,8 @@ paths:
     delete:
       summary: Remove a project from this service
       responses:
-        '200':
-          description: OK
+        '204':
+          description: No Content
       requestBody:
         content:
           application/json:
@@ -246,7 +246,7 @@ paths:
         description: ''
   /project:
     get:
-      summary: Returns all projects available in the corresponding service
+      summary: Returns all projects available in the service for user
       tags: []
       responses:
         '200':
@@ -285,8 +285,8 @@ paths:
             schema:
               type: object
               properties:
-                projectName:
-                  type: string
+                metadata:
+                  type: object
                 apiKey:
                   type: string
                 userId:
@@ -306,12 +306,13 @@ components:
     Project:
       title: Project
       type: object
+      description: 'Represents a project in the service, which will be connected through the implementation of this port.'
       properties:
         projectId:
           type: string
-        projectName:
-          type: string
-      description: 'Represents a project in the service, which will be connected through the implementation of this port.'
+        metadata:
+          type: object
+          description: This have to be a valid datacite model.
   securitySchemes:
     oauth-key:
       type: oauth2

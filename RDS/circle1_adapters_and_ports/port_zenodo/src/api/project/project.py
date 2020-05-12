@@ -23,7 +23,7 @@ def get(project_id):
     depoResponse = g.zenodo.get_deposition(
         id=int(project_id), metadataFilter=req)
 
-    return jsonify(depoResponse)
+    return jsonify({"projectId": project_id, "metadata": depoResponse})
 
 
 @require_api_key
@@ -34,7 +34,8 @@ def post():
         metadata=req, return_response=True)
 
     if depoResponse.status_code < 300:
-        return jsonify(depoResponse.json().get("metadata"))
+        depoResponse = depoResponse.json()
+        return jsonify({"projectId": depoResponse.get("id"), "metadata": depoResponse.get("metadata")})
 
     abort(depoResponse.status_code)
 
@@ -42,7 +43,7 @@ def post():
 @require_api_key
 def delete(project_id):
     if g.zenodo.remove_deposition_internal(int(project_id)):
-        return "", 200
+        return "", 204
 
     abort(404)
 
