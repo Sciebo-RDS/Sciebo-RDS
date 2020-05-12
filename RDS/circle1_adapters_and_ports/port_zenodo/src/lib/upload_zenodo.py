@@ -172,8 +172,10 @@ class Zenodo(object):
             if file is None:
                 raise Exception("File is none.")
 
+            from io import BytesIO
+
             self.log.debug("Try read the file content.")
-            files = {'file': (filename, file)}
+            files = {'file': (filename, BytesIO(file.read()))}
             self.log.debug("size: {}".format(len(file.read())))
         except Exception as e:
             self.log.error(e)
