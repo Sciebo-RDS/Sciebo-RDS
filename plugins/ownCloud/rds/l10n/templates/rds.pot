@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud Core 8.0.0\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2020-05-11 20:37+0200\n"
+"POT-Creation-Date: 2020-05-12 10:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,16 +25,20 @@ msgstr ""
 msgid "Your entries could not be saved."
 msgstr ""
 
-#: js/View.js:58 js/View.js:435 js/View.js:518 js/View.js:540 js/View.js:558
-#: js/fileActions.js:112 js/main-rds.js:24
+#: js/View.js:58 js/View.js:227 js/View.js:439 js/View.js:522 js/View.js:544
+#: js/View.js:562 js/fileActions.js:112 js/main-rds.js:35
 msgid "RDS Update project"
 msgstr ""
 
-#: js/View.js:233
+#: js/View.js:226
+msgid "Your files will be synchronize within 2 minutes."
+msgstr ""
+
+#: js/View.js:237
 msgid "Choose source and / or target folder"
 msgstr ""
 
-#: js/View.js:517 js/main-rds.js:23
+#: js/View.js:521 js/main-rds.js:34
 msgid "Could not create research"
 msgstr ""
 
@@ -67,7 +71,7 @@ msgid "Could not load all services"
 msgstr ""
 
 #: js/settings-personal.js:55 js/settings-personal.js:70
-#: js/settings-personal.js:150 js/settings-personal.js:167
+#: js/settings-personal.js:150 js/settings-personal.js:171
 msgid "RDS Settings services"
 msgstr ""
 
@@ -79,11 +83,11 @@ msgstr ""
 msgid "Are you sure, that you want to delete {servicename}?"
 msgstr ""
 
-#: js/settings-personal.js:164
+#: js/settings-personal.js:168
 msgid "Could not remove the service {servicename}"
 msgstr ""
 
-#: js/settings-personal.js:219
+#: js/settings-personal.js:225
 msgid "Authorize {servicename} now"
 msgstr ""
 

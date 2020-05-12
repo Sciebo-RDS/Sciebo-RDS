@@ -222,6 +222,10 @@
     $("#btn-sync-files-in-research").click(function () {
       self._view._files.load(self._studies.getActive().researchIndex);
       self._view._files.triggerSync();
+      OC.dialogs.alert(
+        t("rds", "Your files will be synchronize within 2 minutes."),
+        t("rds", "RDS Update project")
+      );
     });
 
     if (self._studies.getActive().status > 1) {
@@ -431,7 +435,7 @@
         })
         .fail(function () {
           OC.dialogs.alert(
-            "Could not close this research.",
+            t("Could not close this research."),
             t("rds", "RDS Update project")
           );
         });
@@ -536,7 +540,7 @@
           })
           .fail(function () {
             OC.dialogs.alert(
-              "Could not sync research, not found",
+              t("Could not sync research, not found"),
               t("rds", "RDS Update project")
             );
           });
@@ -554,7 +558,7 @@
           })
           .fail(function () {
             OC.dialogs.alert(
-              "Could not delete research, not found",
+              t("Could not delete research, not found"),
               t("rds", "RDS Update project")
             );
           });
