@@ -14,6 +14,9 @@
     var create = false;
     if (params.has("createResearch")) {
       create = true;
+      
+      var newURL = location.href.split("?")[0];
+      window.history.pushState('object', document.title, newURL);
     }
 
     view.loadAll().always(function () {
