@@ -14,7 +14,7 @@ use \OCA\RDS\Db\ProjectsMapper;
 class ProjectsService {
     private $mapper;
 
-    public function __construct( ProjectMapper $mapper ) {
+    public function __construct( ProjectsMapper $mapper ) {
         $this->mapper = $mapper;
     }
 
