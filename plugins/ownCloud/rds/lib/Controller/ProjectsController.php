@@ -63,7 +63,7 @@ class ProjectsController extends Controller {
     * @NoCSRFRequired
     */
 
-    public function insert( $servicename, $id ) {
+    public function create( $servicename, $id ) {
         return $this->handleNotFound(function () use ($servicename, $id) {
             return $this->service->insert($this->userId, $servicename, $id );
         });
