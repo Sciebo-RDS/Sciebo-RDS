@@ -207,9 +207,9 @@ class TokenService():
         Returns the id for the new created project. If something went wrong, raise an ProjectNotCreated
         """
 
-        apiKey = self.getTokenForServiceFromUser(service, user)
+        token = self.getTokenForServiceFromUser(service, user)
         data = {
-            "apiKey": apiKey
+            "apiKey": token.access_token
         }
 
         port = get_port_string(service.servicename)
@@ -230,9 +230,9 @@ class TokenService():
         Remove the project with id for user in service.
         Returns True when success. Otherwise False.
         """
-        apiKey = self.getTokenForServiceFromUser(service, user)
+        token = self.getTokenForServiceFromUser(service, user)
         data = {
-            "apiKey": apiKey
+            "apiKey": token.access_token
         }
 
         port = get_port_string(service.servicename)
