@@ -8,7 +8,7 @@ use OCP\AppFramework\Http;
 use \OCA\RDS\Service\ProjectService;
 use OCP\AppFramework\Http\RedirectResponse;
 
-class ProjectController extends Controller {
+class ProjectsController extends Controller {
     private $userId;
     private $service;
 
