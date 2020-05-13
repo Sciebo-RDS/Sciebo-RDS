@@ -218,29 +218,32 @@ class TestPortZenodo(unittest.TestCase):
         projectId = 5
 
         expected_body = {
-            "created": "2016-06-15T16:10:03.319363+00:00",
-            "files": [],
-            "id": 1234,
-            "links": {
-                "discard": "https://zenodo.org/api/deposit/depositions/1234/actions/discard",
-                "edit": "https://zenodo.org/api/deposit/depositions/1234/actions/edit",
-                "files": "https://zenodo.org/api/deposit/depositions/1234/files",
-                "publish": "https://zenodo.org/api/deposit/depositions/1234/actions/publish",
-                "newversion": "https://zenodo.org/api/deposit/depositions/1234/actions/newversion",
-                "self": "https://zenodo.org/api/deposit/depositions/1234"
-            },
+            "projectId": projectId,
             "metadata": {
-                "prereserve_doi": {
-                    "doi": "10.5072/zenodo.1234",
-                    "recid": 1234
-                }
-            },
-            "modified": "2016-06-15T16:10:03.319371+00:00",
-            "owner": 1,
-            "record_id": 1234,
-            "state": "unsubmitted",
-            "submitted": False,
-            "title": ""
+                "created": "2016-06-15T16:10:03.319363+00:00",
+                "files": [],
+                "id": 1234,
+                "links": {
+                    "discard": "https://zenodo.org/api/deposit/depositions/1234/actions/discard",
+                    "edit": "https://zenodo.org/api/deposit/depositions/1234/actions/edit",
+                    "files": "https://zenodo.org/api/deposit/depositions/1234/files",
+                    "publish": "https://zenodo.org/api/deposit/depositions/1234/actions/publish",
+                    "newversion": "https://zenodo.org/api/deposit/depositions/1234/actions/newversion",
+                    "self": "https://zenodo.org/api/deposit/depositions/1234"
+                },
+                "metadata": {
+                    "prereserve_doi": {
+                        "doi": "10.5072/zenodo.1234",
+                        "recid": 1234
+                    }
+                },
+                "modified": "2016-06-15T16:10:03.319371+00:00",
+                "owner": 1,
+                "record_id": 1234,
+                "state": "unsubmitted",
+                "submitted": False,
+                "title": ""
+            }
         }
 
         pact.given(
@@ -256,7 +259,8 @@ class TestPortZenodo(unittest.TestCase):
             result = self.client.get(
                 f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
-            self.assertEqual(result.json, expected_body["metadata"])
+            self.assertEqual(
+                result.json, {"projectId": str(projectId), "metadata": expected_body["metadata"]})
 
     def test_patch_metadata(self):
         projectId = 5
@@ -342,7 +346,7 @@ class TestPortZenodo(unittest.TestCase):
             data = {"apiKey": "ASD123GANZSICHA"}
             result = self.client.delete(
                 f"/metadata/project/{projectId}", json=data)
-            self.assertEqual(result.status_code, 200)
+            self.assertEqual(result.status_code, 204)
 
     def test_create_metadata(self):
         expected_body = {

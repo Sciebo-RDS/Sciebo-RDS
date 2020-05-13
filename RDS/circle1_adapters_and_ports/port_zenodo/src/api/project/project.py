@@ -35,7 +35,7 @@ def post():
 
     if depoResponse.status_code < 300:
         depoResponse = depoResponse.json()
-        return jsonify({"projectId": depoResponse.get("id"), "metadata": depoResponse.get("metadata")})
+        return jsonify({"projectId": str(depoResponse.get("id")), "metadata": depoResponse.get("metadata")})
 
     abort(depoResponse.status_code)
 

@@ -256,7 +256,6 @@
 
         if ($this.checked) {
           var servicename = $this.data("servicename");
-          //TODO: make call to create a project in servicename port
           function createProject() {
             var deferred = $.Deferred();
             var self = this;
