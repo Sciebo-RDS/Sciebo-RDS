@@ -36,6 +36,7 @@ class ResearchController extends Controller
      * @return string returns json
      * 
      * @NoCSRFRequired
+     * @NoAdminRequired
      */
     public function index() {
         return $this->handleNotFound(function () {
