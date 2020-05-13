@@ -40,6 +40,16 @@
       {{else}}
       <?php p($l->t('No projects found.')); ?>
       {{/each}}
+      <label>
+          <input
+            type="radio"
+            name="radiobutton-{{ servicename }}"
+            class="radiobutton-new-project"
+            id="new-project-{{ servicename }}"
+            data-servicename="{{ servicename }}"
+          />
+          <?php p($l->t('Create new project.')); ?>
+      </label>
     </div>
     {{/unless}}
     <div id="service-configuration">

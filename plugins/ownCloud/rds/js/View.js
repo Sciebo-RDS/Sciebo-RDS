@@ -251,8 +251,37 @@
     });
 
     $("#app-content #btn-save-research").click(function () {
-      self.save();
-      self._view.render();
+      $("radiobutton-new-project").each(function () {
+        var $this = $(this);
+
+        if ($this.checked) {
+          var servicename = $this.data("servicename");
+          //TODO: make call to create a project in servicename port
+          function createProject() {
+            var deferred = $.Deferred();
+            var self = this;
+            $.ajax({
+              url: OC.generateUrl(
+                "/apps/rds/userservice/" + servicename + "/projects"
+              ),
+              method: "POST",
+            })
+              .done(function (proj) {
+                $this.val(proj);
+                deferred.resolve();
+              })
+              .fail(function () {
+                deferred.reject();
+              });
+            return deferred.promise();
+          }
+        }
+      });
+
+      createProject().always(function () {
+        self.save();
+        self._view.render();
+      });
     });
 
     $("#app-content #btn-save-research-and-continue").click(function () {
