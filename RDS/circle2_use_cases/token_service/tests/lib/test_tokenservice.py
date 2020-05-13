@@ -38,8 +38,7 @@ class Test_TokenService(unittest.TestCase):
             super(Test_TokenService, self).run(result)
 
     def setUp(self):
-        self.tokenService = TokenService(
-            address="http://localhost:3000", testing=True)
+        self.tokenService = TokenService(testing="http://localhost:3000")
 
         self.url1 = "http://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
             1, "http://localhost:8080")
@@ -482,7 +481,7 @@ class Test_TokenService(unittest.TestCase):
         data = {
             "servicename": self.service1.servicename,
             "authorize_url": self.service1.authorize_url,
-            "date": req["date"], 
+            "date": req["date"],
             "implements": []
         }
 
@@ -511,7 +510,7 @@ class Test_TokenService(unittest.TestCase):
         data = {
             "servicename": self.service1.servicename,
             "authorize_url": self.service1.authorize_url,
-            "date": req["date"], 
+            "date": req["date"],
             "implements": []
         }
 
@@ -786,3 +785,61 @@ class Test_TokenService(unittest.TestCase):
         with pact:
             projects = self.tokenService.getProjectsForToken(self.token1)
             self.assertEqual(projects, expected_projects)
+
+    def test_createProjectForUserInService(self):
+        expected_projectId = 0
+        expected_project = {"projectId": expected_projectId, "metadata": {}}
+
+        pact.given(
+            'service without projects'
+        ).upon_receiving(
+            'try to create a project'
+        ).with_request(
+            'POST', f"/metadata/project"
+        ) .will_respond_with(500, body="")
+
+        with self.assertRaises(ProjectNotCreatedError):
+            with pact:
+                self.tokenService.createProjectForUserInService(
+                    self.user1, self.service1)
+
+        pact.given(
+            'service with project support'
+        ).upon_receiving(
+            'try to create a project'
+        ).with_request(
+            'POST', f"/metadata/project"
+        ) .will_respond_with(200, body=expected_project)
+
+        with pact:
+            projectid, project = self.tokenService.createProjectForUserInService(
+                self.user1, self.service1)
+            self.assertEqual(project, expected_project)
+            self.assertEqual(projectid, expected_projectId)
+
+    def test_removeProjectForUserInService(self):
+        expected_projectId = 0
+        pact.given(
+            'service with project support'
+        ).upon_receiving(
+            'try to remove a project which exists'
+        ).with_request(
+            'DELETE', f"/metadata/project/{expected_projectId}"
+        ) .will_respond_with(204, body="")
+
+        with pact:
+            b = self.tokenService.removeProjectForUserInService(
+                self.user1, self.service1, expected_projectId)
+            self.assertTrue(b)
+
+        pact.given(
+            'service with project support'
+        ).upon_receiving(
+            'try to remove a project which does not exist'
+        ).with_request(
+            'DELETE', f"/metadata/project/{expected_projectId}"
+        ) .will_respond_with(404, body="")
+        with pact:
+            b = self.tokenService.removeProjectForUserInService(
+                self.user1, self.service1, expected_projectId)
+            self.assertFalse(b)

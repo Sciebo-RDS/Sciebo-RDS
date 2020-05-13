@@ -16,6 +16,11 @@ from typing import Union
 logger = logging.getLogger()
 
 
+def get_port_string(name):
+    service = name.replace("port-", "").lower()
+    return f"http://circle1-port-{service}"
+
+
 class TokenService():
     # static
     secret = os.getenv("TOKENSERVICE_STATE_SECRET") if os.getenv(
@@ -24,18 +29,9 @@ class TokenService():
 
     _services = None
 
-    def __init__(self, address=None, testing=False):
-        if address is not None and isinstance(address, str):
-            # overwrite static in this scope
-            self.address = address
-
-        # TODO: if static and address is None, look up file
-        if self.address is None:
-            # load address from oai file
-            # https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/connnectUI/RDS/circle3_central_services/token_service/central-service_token-storage.yml
-            pass
-
-        self.testing = testing
+    def __init__(self, testing=False):
+        if testing:
+            self.address = testing
 
         self._services = []
 
@@ -192,23 +188,59 @@ class TokenService():
         """
         Returns a `list` with all projects for given service and user.
         """
-        def get_port_string(name):
-            service = name.replace("port-", "").lower()
-            return f"circle1-port-{service}"
 
         port = get_port_string(token.servicename)
+        if self.address.startswith("http://localhost"):
+            port = self.address
 
-        if self.testing:
-            req = requests.get(f"{self.address}/metadata/project",
-                               json={"apiKey": token.access_token})
-        else:
-            req = requests.get(f"http://{port}/metadata/project",
-                               json={"apiKey": token.access_token})
+        req = requests.get(f"{port}/metadata/project",
+                           json={"apiKey": token.access_token})
 
         if req.status_code >= 300:
             return []
 
         return req.json()
+
+    def createProjectForUserInService(self, user: User, service: Service) -> int:
+        """
+        Create a project in service, which the token is for.
+        Returns the id for the new created project. If something went wrong, raise an ProjectNotCreated
+        """
+
+        data = {
+            "userId": user.username
+        }
+
+        port = get_port_string(service.servicename)
+        if self.address.startswith("http://localhost"):
+            port = self.address
+
+        req = requests.post(
+            "{}/metadata/project".format(port), json=data)
+
+        if req.status_code < 300:
+            project = req.json()
+            return project.get("projectId"), project
+
+        raise ProjectNotCreatedError(service)
+
+    def removeProjectForUserInService(self, user: User, service: Service, project_id: int) -> bool:
+        """
+        Remove the project with id for user in service.
+        Returns True when success. Otherwise False.
+        """
+        data = {
+            "userId": user.username
+        }
+
+        port = get_port_string(service.servicename)
+        if self.address.startswith("http://localhost"):
+            port = self.address
+
+        req = requests.delete(
+            "{}/metadata/project/{}".format(port, project_id), json=data)
+
+        return req.status_code == 204
 
     def removeService(self, service: Service) -> bool:
         """

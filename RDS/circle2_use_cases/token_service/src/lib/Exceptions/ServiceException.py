@@ -15,6 +15,18 @@ class ServiceNotFoundError(Exception):
         super(ServiceNotFoundError, self).__init__(msg)
         self.service = service
 
+class ProjectNotCreatedError(Exception):
+    """
+    Represents an error, when a project in service could not created.
+    """
+
+    def __init__(self, service: Service, msg=None):
+        if msg is None:
+            msg = f"project in {service} could not be created."
+
+        super(ProjectNotCreatedError, self).__init__(msg)
+        self.service = service
+
 
 class TokenNotFoundError(Exception):
     """

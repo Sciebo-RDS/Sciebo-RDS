@@ -25,9 +25,9 @@ def bootstrap(name='MicroService', *args, **kwargs):
     list_openapi = Util.load_oai(
         os.getenv("OPENAPI_FILEPATH", "use-case_token-storage.yml"))
 
-    if "storage_address" in kwargs:
-        ServerUtil.tokenService = TokenService(kwargs["storage_address"])
-        del kwargs["storage_address"]
+    if "testing" in kwargs:
+        ServerUtil.tokenService = TokenService(kwargs["testing"])
+        del kwargs["testing"]
     else:
         ServerUtil.tokenService = TokenService()
 

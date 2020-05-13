@@ -24,10 +24,9 @@ logger = logging.getLogger()
 
 
 def create_app():
-    # set var for mock service
-    os.environ["CENTRAL-SERVICE_TOKEN-STORAGE"] = address
     # creates a test client
-    app = bootstrap(use_optimizer={"compress":False, "minify": False}, use_default_error=True, storage_address=address).app
+    app = bootstrap(use_optimizer={"compress": False, "minify": False},
+                    use_default_error=True, testing=address).app
     # propagate the exceptions to the test client
     app.config.update({"TESTING": True})
 
@@ -73,7 +72,8 @@ class Test_TokenServiceServer(unittest.TestCase):
             'GET', f"/service/{service.servicename}"
         ) .will_respond_with(200, body=service.to_json())
 
-        response = self.client.get(f"/token-service/service/{service.servicename}")
+        response = self.client.get(
+            f"/token-service/service/{service.servicename}")
         self.assertEqual(response.status_code, 200,
                          msg=response.get_data(as_text=True))
 
@@ -87,7 +87,8 @@ class Test_TokenServiceServer(unittest.TestCase):
         date = resp_state["date"]
 
         # following request should not be needed a new pact, because its cached and date shuld be the same.
-        response = self.client.get(f"/token-service/service/{service.servicename}")
+        response = self.client.get(
+            f"/token-service/service/{service.servicename}")
         self.assertEqual(response.status_code, 200,
                          msg=response.get_data(as_text=True))
 
@@ -106,9 +107,11 @@ class Test_TokenServiceServer(unittest.TestCase):
             "authorize_url": service.authorize_url,
             "date": str(datetime.datetime.now())
         }
-        import base64, json
+        import base64
+        import json
         state = jwt.encode(data, key, algorithm="HS256")
-        state = base64.b64encode(json.dumps({"jwt": state.decode("utf-8"), "user": user.username}).encode("utf-8"))
+        state = base64.b64encode(json.dumps(
+            {"jwt": state.decode("utf-8"), "user": user.username}).encode("utf-8"))
 
         # need pact for service from Token Storage
         pact.given(
@@ -129,8 +132,8 @@ class Test_TokenServiceServer(unittest.TestCase):
         ) .will_respond_with(200, body=body)
 
         # currently not needed
-        #expected = OAuth2Token(user, service, body["access_token"], body["refresh_token"], datetime.datetime.now(
-        #) + datetime.timedelta(seconds=body["expires_in"]))
+        # expected = OAuth2Token(user, service, body["access_token"], body["refresh_token"], datetime.datetime.now(
+        # ) + datetime.timedelta(seconds=body["expires_in"]))
 
         # need pact for save the access and refresh token in Token Storage
         pact.given(
@@ -140,14 +143,14 @@ class Test_TokenServiceServer(unittest.TestCase):
         ).with_request(
             'POST', f"/user/{user.username}/token"
         ) .will_respond_with(201, body={"success": True})
-        
-        response = self.client.get(
-            "/token-service/redirect", query_string={"code": code, "state": state})
+
+        with pact:
+            response = self.client.get(
+                "/token-service/redirect", query_string={"code": code, "state": state})
 
         self.assertEqual(response.status_code, 302, msg=response.get_data())
         self.assertEqual(
             response.headers["location"], "http://localhost/token-service/authorization-success", msg=response.get_data())
-
 
         # TODO: add tests here for redirects to cancel page
         # test for no service found
@@ -163,13 +166,93 @@ class Test_TokenServiceServer(unittest.TestCase):
     def test_user_service(self):
         # TODO test /user/{user-id}/service
         pass
-    
+
     @unittest.skip
     def test_service_all(self):
         # TODO test /service (do not test /service/{servicename}, because its tested in redirect)
         pass
 
+    @unittest.skip
+    def test_serviceprojects_index(self):
+        # TODO test /user/{user-id}/service/{servicename}/projects
+        pass
 
+    @unittest.skip
+    def test_serviceprojects_get(self):
+        # TODO test /user/{user-id}/service/{servicename}/projects/{projects-id}
+
+        self.assertFalse(True)
+
+    def test_serviceprojects_add(self):
+        proj1 = {"projectId": 0, "metadata": {}}
+        proj2 = {"projectId": 1, "metadata": {}}
+
+        userId = "admin"
+        servicename = "Zenodo"
+
+        expected_project = proj1
+
+        pact.given(
+            'service with project support'
+        ).upon_receiving(
+            'try to create a project'
+        ).with_request(
+            'POST', f"/metadata/project"
+        ) .will_respond_with(200, body=expected_project)
+
+        with pact:
+            code = self.client.post(
+                "/token-service/user/{}/service/{}/projects".format(userId, servicename)).status_code
+
+        self.assertEqual(code, 204)
+
+        pact.given(
+            'Given token to access port'
+        ).upon_receiving(
+            'invalid request'
+        ).with_request(
+            'POST', "/metadata/project"
+        ) .will_respond_with(500, body="")
+
+        with pact:
+            code = self.client.post(
+                "/token-service/user/{}/service/{}/projects".format(userId, servicename)).status_code
+
+        self.assertEqual(code, 500)
+
+    def test_serviceprojects_delete(self):
+        proj1 = {"projectId": 0, "metadata": {}}
+
+        userId = "admin"
+        servicename = "Zenodo"
+
+        pact.given(
+            'Given token to access port'
+        ).upon_receiving(
+            'try to delete {}'.format(proj1["projectId"])
+        ).with_request(
+            'DELETE', "/metadata/project/{}".format(proj1["projectId"])
+        ) .will_respond_with(404, body="")
+
+        with pact:
+            code = self.client.delete(
+                "/token-service/user/{}/service/{}/projects/{}".format(userId, servicename, proj1["projectId"])).status_code
+
+        self.assertGreaterEqual(code, 404)
+
+        pact.given(
+            'Given token to access port'
+        ).upon_receiving(
+            'a call to delete {}'.format(proj1["projectId"])
+        ).with_request(
+            'DELETE', "/metadata/project/{}".format(proj1["projectId"])
+        ) .will_respond_with(204, body="")
+
+        with pact:
+            code = self.client.delete(
+                "/token-service/user/{}/service/{}/projects/{}".format(userId, servicename, proj1["projectId"])).status_code
+
+        self.assertEqual(code, 204)
 
 
 if __name__ == '__main__':

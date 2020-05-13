@@ -145,7 +145,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-      operationId: ''
       description: Returns all services which the user is registered for.
   '/user/{user-id}/service/{servicename}':
     parameters:
@@ -173,11 +172,9 @@ paths:
           description: Not Found
         '500':
           description: Internal Server Error
-      operationId: ''
       description: Get current access token for service.
     delete:
       summary: Delete the service from user
-      operationId: ''
       responses:
         '200':
           description: OK
@@ -195,6 +192,71 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
       description: Remove the user token for service.
+  '/user/{user-id}/service/{servicename}/projects':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: servicename
+        in: path
+        required: true
+    get:
+      summary: Returns all serviceprojects from given service for given user
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/serviceprojects'
+        '404':
+          description: Not Found
+    post:
+      summary: Creates a new project in given service for given user
+      responses:
+        '204':
+          description: No Content
+  '/user/{user-id}/service/{servicename}/projects/{projects-id}':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: servicename
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: projects-id
+        in: path
+        required: true
+    get:
+      summary: Returns specified project in given service for given user
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serviceprojects'
+        '404':
+          description: Not Found
+    delete:
+      summary: Removes given project in given service for given user
+      responses:
+        '204':
+          description: No Content
 components:
   schemas:
     oauth_uri:
