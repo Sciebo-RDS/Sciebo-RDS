@@ -8,12 +8,13 @@ from pactman import Consumer, Provider
 from server import bootstrap
 
 from lib.TokenService import TokenService
+
 from lib.User import User
 import Util
 import jwt
 import datetime
-from lib.Service import OAuth2Service
-from lib.Token import OAuth2Token
+from lib.Service import OAuth2Service, Service
+from lib.Token import OAuth2Token, Token
 
 func = [Util.initialize_object_from_json, Util.initialize_object_from_dict]
 load_object = Util.try_function_on_dict(func)
@@ -193,6 +194,14 @@ class Test_TokenServiceServer(unittest.TestCase):
         expected_project = proj1
 
         pact.given(
+            'one searched token was registered.'
+        ).upon_receiving(
+            'a request to get a specific token for service from user.'
+        ).with_request(
+            'GET', f"/user/{userId}/token/{servicename}"
+        ) .will_respond_with(200, body=json.dumps(Token(User(userId), Service(servicename), "ABC")))
+
+        pact.given(
             'service with project support'
         ).upon_receiving(
             'try to create a project'
@@ -205,6 +214,14 @@ class Test_TokenServiceServer(unittest.TestCase):
                 "/token-service/user/{}/service/{}/projects".format(userId, servicename)).status_code
 
         self.assertEqual(code, 204)
+
+        pact.given(
+            'one searched token was registered.'
+        ).upon_receiving(
+            'a request to get a specific token for service from user.'
+        ).with_request(
+            'GET', f"/user/{userId}/token/{servicename}"
+        ) .will_respond_with(200, body=json.dumps(Token(User(userId), Service(servicename), "ABC")))
 
         pact.given(
             'Given token to access port'
@@ -227,6 +244,14 @@ class Test_TokenServiceServer(unittest.TestCase):
         servicename = "Zenodo"
 
         pact.given(
+            'one searched token was registered.'
+        ).upon_receiving(
+            'a request to get a specific token for service from user.'
+        ).with_request(
+            'GET', f"/user/{userId}/token/{servicename}"
+        ) .will_respond_with(200, body=json.dumps(Token(User(userId), Service(servicename), "ABC")))
+
+        pact.given(
             'Given token to access port'
         ).upon_receiving(
             'try to delete {}'.format(proj1["projectId"])
@@ -239,6 +264,14 @@ class Test_TokenServiceServer(unittest.TestCase):
                 "/token-service/user/{}/service/{}/projects/{}".format(userId, servicename, proj1["projectId"])).status_code
 
         self.assertGreaterEqual(code, 404)
+
+        pact.given(
+            'one searched token was registered.'
+        ).upon_receiving(
+            'a request to get a specific token for service from user.'
+        ).with_request(
+            'GET', f"/user/{userId}/token/{servicename}"
+        ) .will_respond_with(200, body=json.dumps(Token(User(userId), Service(servicename), "ABC")))
 
         pact.given(
             'Given token to access port'

@@ -791,6 +791,14 @@ class Test_TokenService(unittest.TestCase):
         expected_project = {"projectId": expected_projectId, "metadata": {}}
 
         pact.given(
+            'one searched token was registered.'
+        ).upon_receiving(
+            'a request to get a specific token for service from user.'
+        ).with_request(
+            'GET', f"/user/{self.user1.username}/token/{self.service1.servicename}"
+        ) .will_respond_with(200, body=json.dumps(self.token1))
+
+        pact.given(
             'service without projects'
         ).upon_receiving(
             'try to create a project'
@@ -802,6 +810,14 @@ class Test_TokenService(unittest.TestCase):
             with pact:
                 self.tokenService.createProjectForUserInService(
                     self.user1, self.service1)
+
+        pact.given(
+            'one searched token was registered.'
+        ).upon_receiving(
+            'a request to get a specific token for service from user.'
+        ).with_request(
+            'GET', f"/user/{self.user1.username}/token/{self.service1.servicename}"
+        ) .will_respond_with(200, body=json.dumps(self.token1))
 
         pact.given(
             'service with project support'
@@ -818,6 +834,15 @@ class Test_TokenService(unittest.TestCase):
             self.assertEqual(projectid, expected_projectId)
 
     def test_removeProjectForUserInService(self):
+
+        pact.given(
+            'one searched token was registered.'
+        ).upon_receiving(
+            'a request to get a specific token for service from user.'
+        ).with_request(
+            'GET', f"/user/{self.user1.username}/token/{self.service1.servicename}"
+        ) .will_respond_with(200, body=json.dumps(self.token1))
+
         expected_projectId = 0
         pact.given(
             'service with project support'
@@ -831,6 +856,14 @@ class Test_TokenService(unittest.TestCase):
             b = self.tokenService.removeProjectForUserInService(
                 self.user1, self.service1, expected_projectId)
             self.assertTrue(b)
+
+        pact.given(
+            'one searched token was registered.'
+        ).upon_receiving(
+            'a request to get a specific token for service from user.'
+        ).with_request(
+            'GET', f"/user/{self.user1.username}/token/{self.service1.servicename}"
+        ) .will_respond_with(200, body=json.dumps(self.token1))
 
         pact.given(
             'service with project support'
