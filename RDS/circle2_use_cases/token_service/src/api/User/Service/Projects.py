@@ -19,8 +19,9 @@ def get(user_id, servicename, projects_id):
     listOfServices = Util.tokenService.getAllServicesForUser(User(user_id))
 
     for svc in listOfServices:
-        if svc.get("servicename", "") == servicename and projects_id < len(svc.projects):
-            return jsonify(svc.get("projects", [])[projects_id])
+        projects = svc.get("projects", [])
+        if svc.get("servicename", "") == servicename and projects_id < len(projects):
+            return jsonify(projects[projects_id])
     abort(404)
 
 
