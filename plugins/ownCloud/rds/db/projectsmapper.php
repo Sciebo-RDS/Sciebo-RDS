@@ -11,7 +11,7 @@ class ProjectsMapper {
 
     }
 
-    public function findAll ( $servicename, $userId ) {
+    public function findAll ( $userId, $servicename ) {
         $curl = curl_init( $this->rdsURL . '/user/' . $userId . '/service/'. $servicename . '/projects' );
         curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
@@ -43,7 +43,7 @@ class ProjectsMapper {
         return $listOfProj;
     }
 
-    public function find( $servicename, $userId, $projectId ) {
+    public function find( $userId, $servicename, $projectId ) {
         $curl = curl_init( $this->rdsURL . '/user/' . $userId . '/service/'. $servicename . '/projects/' . $projectId );
         curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
         curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
@@ -69,7 +69,7 @@ class ProjectsMapper {
         return $project;
     }
 
-    public function insert( $servicename, $userId ) {
+    public function insert( $userId, $servicename ) {
         $curl = curl_init( $this->rdsURL . '/user/' . $userId . '/service/' . $servicename . '/projects' );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'POST'];
         curl_setopt_array( $curl, $options );
@@ -80,12 +80,12 @@ class ProjectsMapper {
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
         curl_close( $curl );
 
-        $projs = $this->findAll( $servicename, $userId );
+        $projs = $this->findAll( $userId, $servicename );
         $proj = end( ( array_values( $projs ) ) );
         return $proj;
     }
 
-    public function delete( $servicename, $userId, $projectId ) {
+    public function delete( $userId, $servicename, $projectId ) {
         $curl = curl_init( $this->rdsURL . '/user/' . $userId . '/service/' . $servicename . '/projects/' . $projectId );
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
         curl_setopt_array( $curl, $options );
