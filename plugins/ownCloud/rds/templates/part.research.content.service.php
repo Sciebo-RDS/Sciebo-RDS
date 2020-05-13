@@ -27,14 +27,14 @@
           <input
             type="radio"
             name="radiobutton-{{ ../servicename }}"
-            id="{{ ../servicename }}-{{metadata.prereserve_doi.recid}}"
-            value="{{metadata.prereserve_doi.recid}}"
+            id="{{ ../servicename }}-{{prereserve_doi.recid}}"
+            value="{{prereserve_doi.recid}}"
             {{ checked }}
           />
         {{#if title}}
           {{ title }}
         {{else}}
-          <?php p($l->t('Project DOI')); ?>: {{metadata.prereserve_doi.doi}} (<?php p($l->t('No title found.')); ?>)
+          <?php p($l->t('Project DOI')); ?>: {{prereserve_doi.doi}} (<?php p($l->t('No title found.')); ?>)
         {{/if}}
       </label>
       {{else}}
