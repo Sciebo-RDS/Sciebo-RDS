@@ -251,38 +251,42 @@
     });
 
     $("#app-content #btn-save-research").click(function () {
-      $("radiobutton-new-project").each(function () {
+      var btns = $(".radiobutton-new-project");
+      var deferreds = [];
+      console.log(btns);
+
+      function createProject(servicename, radio) {
+        var deferred = $.Deferred();
+        var self = this;
+        $.ajax({
+          url: OC.generateUrl(
+            "/apps/rds/userservice/" + servicename + "/projects"
+          ),
+          method: "POST",
+        })
+          .done(function (proj) {
+            radio.val(proj);
+            deferred.resolve();
+          })
+          .fail(function () {
+            deferred.reject();
+          });
+        return deferred.promise();
+      }
+
+      btns.each(function () {
         var $this = $(this);
 
         if ($this.checked) {
           var servicename = $this.data("servicename");
-          function createProject() {
-            var deferred = $.Deferred();
-            var self = this;
-            $.ajax({
-              url: OC.generateUrl(
-                "/apps/rds/userservice/" + servicename + "/projects"
-              ),
-              method: "POST",
-            })
-              .done(function (proj) {
-                $this.val(proj);
-                deferred.resolve();
-              })
-              .fail(function () {
-                deferred.reject();
-              });
-            return deferred.promise();
-          }
-
-          createProject().always(function () {
-            self.save();
-            self._view.render();
-          });
-        } else {
-          self.save();
-          self._view.render();
+          console.log(servicename);
+          deferreds.push(createProject(servicename, $this));
         }
+      });
+
+      $.when.apply($, deferreds).always(function () {
+        self.save();
+        self._view.render();
       });
     });
 
