@@ -83,7 +83,7 @@ class Storage():
 
     def getToken(self, user_id: Union[str, User], token_id: Union[str, int]):
         """
-        Returns only the token with token_id (str or int) from user_id (String or User).
+        Returns only the token with token_id (str or int) from user_id (Username as string or User).
 
         token_id should be the servicename or the id for token in list.
 
@@ -93,21 +93,35 @@ class Storage():
         if not isinstance(user_id, (str, User)):
             raise ValueError("user_id is not string or User.")
 
+        logger.debug("got user {}, token {}".format(user_id, token_id))
+
         if isinstance(user_id, User):
             user = user_id
         else:
             user = self.getUser(user_id)
 
         try:
+            logger.debug("try to convert")
             token_id = int(token_id)
-        except:
-            for i, t in enumerate(self.tokens):
-                if t.servicename == token_id:
-                    token_id = i
-                    break
 
-        if len(self.tokens) > token_id:
-            return self.tokens[token_id]
+            logger.debug("use user {}, token {}".format(user, token_id))
+            logger.debug("length token {}".format(len(self.tokens)))
+
+            if len(self.tokens) > token_id:
+                token = self.storage[user.username]["tokens"][token_id]
+                logger.debug("found token {}".format(token))
+                return token
+
+        except:
+            logger.debug("try to find id by bruteforce")
+            for key, val in self.storage.items():
+                if not key == user.username:
+                    continue
+
+                for token in val["tokens"]:
+                    if token.servicename == token_id:
+                        logger.debug("found token {}".format(token))
+                        return token
 
         from .Exceptions.StorageException import UserNotExistsError
         raise UserNotExistsError(self, user)

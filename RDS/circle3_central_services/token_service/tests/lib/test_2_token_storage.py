@@ -30,6 +30,8 @@ class Test_TokenStorage(unittest.TestCase):
         self.token1 = Token(self.user1, self.service1, "ABC")
         self.token_like_token1 = Token(self.user1, self.service1, "DEF")
         self.token2 = Token(self.user1, self.oauthservice1, "XYZ")
+        self.token3 = Token(self.user2, self.service2, "XASD")
+        self.token4 = Token(self.user2, self.service1, "IOAJSD")
 
         self.oauthtoken1 = OAuth2Token(
             self.user1, self.oauthservice1, "ABC", "X_ABC")
@@ -86,6 +88,28 @@ class Test_TokenStorage(unittest.TestCase):
         self.assertEqual(empty_storage.getToken(
             self.user1.username, 0), self.token1)
         self.assertEqual(empty_storage.getTokens(self.user1), [self.token1])
+
+        empty_storage.addUser(self.user2)
+        empty_storage.addService(self.service2)
+        empty_storage.addTokenToUser(self.token3, self.user2)
+
+        self.assertEqual(empty_storage.getUser(
+            self.user2.username), self.user2)
+
+        self.assertEqual(empty_storage.getUser(
+            self.user1.username), self.user1)
+
+        self.assertEqual(empty_storage.getToken(
+            self.user2.username, 0), self.token3)
+
+        self.assertEqual(empty_storage.getToken(
+            self.user1.username, self.token1.servicename), self.token1)
+        self.assertEqual(empty_storage.getToken(
+            self.user2.username, self.token3.servicename), self.token3)
+
+        empty_storage.addTokenToUser(self.token4, self.user2)
+        self.assertEqual(empty_storage.getToken(
+            self.user2.username, self.token4.servicename), self.token4)
 
     def test_tokenstorage_add_user(self):
         # raise an exception, if a user not exist for token

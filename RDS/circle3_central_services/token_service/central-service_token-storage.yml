@@ -287,6 +287,7 @@ paths:
         name: token-id
         in: path
         required: true
+        description: can be a string or int.
     get:
       summary: Returns the specified token
       tags:
@@ -302,7 +303,10 @@ paths:
         '404':
           description: Not Found
       operationId: ''
-      description: Returns the specified token from the specified user.
+      description: |-
+        Returns the specified token from the specified user.
+
+        If the token-id is a string, it will returns the corresponding token for the given servicename. Otherwise it needs to be an int and it returns the token in the given position.
     delete:
       summary: Remove token
       operationId: ''

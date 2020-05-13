@@ -351,7 +351,7 @@ class TestTokenService(unittest.TestCase):
             "list": [self.token1, self.token2]
         }
 
-        self.client.post(f"/user/{self.user1.username}/token",
+        self.client.post(f"/user/{self.user2.username}/token",
                          data=json.dumps(self.oauthtoken2), content_type='application/json')
 
         for k, v in enumerate(self.get("/token")):
@@ -361,7 +361,7 @@ class TestTokenService(unittest.TestCase):
         # check, if we can find a token by its servicename
         index = self.oauthtoken2.servicename
 
-        result = self.client.get(f"/user/{self.user1.username}/token/{index}")
+        result = self.client.get(f"/user/{self.user2.username}/token/{index}")
         self.assertEqual(result.status_code, 200,
                          msg=f"token id: {index} - {result.json}")
         token = Util.initialize_object_from_json(result.get_data(as_text=True))
