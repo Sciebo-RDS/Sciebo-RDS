@@ -14,9 +14,6 @@ $application->registerRoutes( $this, [
         # User Service resource API Endpoints, only index/show/delete
         'userservice' => ['url' => '/userservice'],
 
-        # User Service resource API Endpoints, only index/show/delete
-        'projects' => ['url' => '/userservice/{servicename}/projects'],
-
         # Metadata resource API Endpoints, only index/show/update
         'metadata' => ['url' => '/metadata'],
     ],
@@ -35,5 +32,12 @@ $application->registerRoutes( $this, [
         ['name' => 'research#filesTrigger',                   'url' => '/research/{id}/files',             'verb' => 'POST'],
         ['name' => 'research#filesSettingsGet',               'url' => '/research/{id}/settings',          'verb' => 'GET'],
         ['name' => 'research#filesSettingsUpdate',            'url' => '/research/{id}/settings',          'verb' => 'PUT'],
+
+        # User Service resource API Endpoints, only index/show/delete
+        ['name' => 'projects#index',            'url' => '/userservice/{servicename}/projects',          'verb' => 'GET'],
+        ['name' => 'projects#show',            'url' => '/userservice/{servicename}/projects/{id}',          'verb' => 'GET'],
+        ['name' => 'projects#create',            'url' => '/userservice/{servicename}/projects',          'verb' => 'POST'],
+        ['name' => 'projects#destroy',            'url' => '/userservice/{servicename}/projects/{id}',          'verb' => 'DELETE'],
+
     ]
 ] );
