@@ -277,7 +277,7 @@
       btns.each(function () {
         var $this = $(this);
 
-        if ($this.checked) {
+        if ($this.is(":checked")) {
           var servicename = $this.data("servicename");
           console.log(servicename);
           deferreds.push(createProject(servicename, $this));
