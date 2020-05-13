@@ -80,7 +80,7 @@ class ProjectsMapper {
         $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
         curl_close( $curl );
 
-        $projs = $this->getProjects( $servicename, $userId );
+        $projs = $this->findAll( $servicename, $userId );
         $proj = end( ( array_values( $projs ) ) );
         return $proj;
     }
