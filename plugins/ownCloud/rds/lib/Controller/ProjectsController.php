@@ -26,7 +26,6 @@ class ProjectsController extends Controller {
     * @return array a list with object with key 'jwt', see $this->show()
     *
     * @NoAdminRequired
-    * @NoCSRFRequired
     */
 
     public function index($servicename) {
@@ -43,7 +42,6 @@ class ProjectsController extends Controller {
     * 'id', 'authorize_url', 'date'
     *
     * @NoAdminRequired
-    * @NoCSRFRequired
     */
 
     public function show( $servicename, $id ) {
@@ -60,7 +58,6 @@ class ProjectsController extends Controller {
     * 'id', 'authorize_url', 'date'
     *
     * @NoAdminRequired
-    * @NoCSRFRequired
     */
 
     public function create( $servicename, $id ) {
