@@ -14,6 +14,9 @@ $application->registerRoutes( $this, [
         # User Service resource API Endpoints, only index/show/delete
         'userservice' => ['url' => '/userservice'],
 
+        # User Service resource API Endpoints, only index/show/delete
+        'projects' => ['url' => '/userservice/{servicename}/projects'],
+
         # Metadata resource API Endpoints, only index/show/update
         'metadata' => ['url' => '/metadata'],
     ],

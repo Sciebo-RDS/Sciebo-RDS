@@ -2,6 +2,7 @@
 namespace OCA\RDS\Db;
 
 use \OCA\RDS\Db\RegisteredService;
+use \OCA\RDS\Db\Project;
 use \OCA\RDS\Service\NotFoundException;
 
 class UserserviceMapper {
@@ -81,7 +82,7 @@ class UserserviceMapper {
                     break;
                 }
             }
-            
+
             $svc->setType( $type );
 
             $listOfServices[] = $svc;

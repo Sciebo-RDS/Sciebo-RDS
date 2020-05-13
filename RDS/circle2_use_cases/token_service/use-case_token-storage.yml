@@ -315,12 +315,10 @@ components:
       title: serviceprojects
       type: object
       properties:
-        serviceId:
-          oneOf:
-            - type: integer
-            - type: string
-        projectName:
+        projectId:
           type: string
+        metadata:
+          type: object
     service:
       title: service
       type: object
