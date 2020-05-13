@@ -19,7 +19,7 @@
               var win = window.open(
                 authorize_url,
                 "oauth2-service-for-rds",
-                "width=100%,height=100%,scrollbars=yes"
+                "width=800,height=600,scrollbars=yes"
               );
 
               var timer = setInterval(function () {
