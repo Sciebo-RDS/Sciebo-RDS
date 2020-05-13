@@ -5,7 +5,7 @@ namespace OCA\RDS\Controller;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
-use \OCA\RDS\Service\ProjectService;
+use \OCA\RDS\Service\ProjectsService;
 use OCP\AppFramework\Http\RedirectResponse;
 
 class ProjectsController extends Controller {

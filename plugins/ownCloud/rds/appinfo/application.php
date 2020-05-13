@@ -21,6 +21,9 @@ use \OCA\RDS\Service\MetadataService;
 use \OCA\RDS\Controller\MetadataController;
 
 
+use \OCA\RDS\Db\ProjectsMapper;
+use \OCA\RDS\Service\ProjectsService;
+use \OCA\RDS\Controller\ProjectsController;
 
 
 class Application extends App {
@@ -80,6 +83,21 @@ class Application extends App {
                 $c->query('AppName'),
                 $c->query('Request'),
                 $c->query("ResearchService"),
+                $c->query('UserId')
+            );
+        });
+
+        $container->registerService("ProjectsMapper", function($c) {
+            return new ProjectsMapper();
+        });
+        $container->registerService("ProjectsService", function($c) {
+            return new ProjectsService($c->query("ProjectsMapper"));
+        });
+        $container->registerService('ProjectsController', function($c) {
+            return new ProjectsController(
+                $c->query('AppName'),
+                $c->query('Request'),
+                $c->query("ProjectsService"),
                 $c->query('UserId')
             );
         });

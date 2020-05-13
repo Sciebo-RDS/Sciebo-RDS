@@ -9,9 +9,9 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
 use \OCA\RDS\Db\Project;
-use \OCA\RDS\Db\ProjectMapper;
+use \OCA\RDS\Db\ProjectsMapper;
 
-class ProjectService {
+class ProjectsService {
     private $mapper;
 
     public function __construct( ProjectMapper $mapper ) {

@@ -1,11 +1,10 @@
 <?php
 namespace OCA\RDS\Db;
 
-use \OCA\RDS\Db\RegisteredService;
 use \OCA\RDS\Db\Project;
 use \OCA\RDS\Service\NotFoundException;
 
-class ProjectMapper {
+class ProjectsMapper {
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/token-service';
 
     public function __construct() {
