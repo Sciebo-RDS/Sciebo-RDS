@@ -274,12 +274,15 @@
               });
             return deferred.promise();
           }
-        }
-      });
 
-      createProject().always(function () {
-        self.save();
-        self._view.render();
+          createProject().always(function () {
+            self.save();
+            self._view.render();
+          });
+        } else {
+          self.save();
+          self._view.render();
+        }
       });
     });
 
