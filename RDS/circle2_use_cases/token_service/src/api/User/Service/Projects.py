@@ -9,17 +9,18 @@ def index(user_id, servicename):
     listOfServices = Util.tokenService.getAllServicesForUser(User(user_id))
 
     for svc in listOfServices:
-        if svc.get(servicename, "") == servicename:
+        if svc.get("servicename", "") == servicename:
             return jsonify(svc)
     abort(404)
 
 
 def get(user_id, servicename, projects_id):
+    projects_id = int(projects_id)
     listOfServices = Util.tokenService.getAllServicesForUser(User(user_id))
 
     for svc in listOfServices:
-        if svc.get(servicename, "") == servicename and projects_id < len(svc.projects):
-            return jsonify(svc.projects[projects_id])
+        if svc.get("servicename", "") == servicename and projects_id < len(svc.projects):
+            return jsonify(svc.get("projects", [])[projects_id])
     abort(404)
 
 
