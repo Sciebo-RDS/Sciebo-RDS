@@ -9,7 +9,7 @@ def index(user_id, servicename):
     listOfServices = Util.tokenService.getAllServicesForUser(User(user_id))
 
     for svc in listOfServices:
-        if svc.servicename == servicename:
+        if svc.get(servicename, "") == servicename:
             return jsonify(svc)
     abort(404)
 
