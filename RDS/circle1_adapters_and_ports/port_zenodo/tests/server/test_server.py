@@ -260,7 +260,7 @@ class TestPortZenodo(unittest.TestCase):
                 f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(
-                result.json, {"projectId": str(projectId), "metadata": expected_body["metadata"]})
+                result.json, expected_body["metadata"])
 
     def test_patch_metadata(self):
         projectId = 5
