@@ -81,8 +81,8 @@ class ProjectsMapper {
         curl_close( $curl );
 
         $projs = $this->findAll( $userId, $servicename );
-        $proj = end( ( array_values( $projs ) ) );
-        return $proj;
+        #        $proj = end( ( array_values( $projs ) ) );
+        return $projs[0];
     }
 
     public function delete( $userId, $servicename, $projectId ) {
