@@ -31,8 +31,8 @@
             value="{{metadata.prereserve_doi.recid}}"
             {{ checked }}
           />
-        {{#if title}}
-          {{ title }}
+        {{#if metadata.title}}
+          {{ metadata.title }}
         {{else}}
           <?php p($l->t('Project DOI')); ?>: {{metadata.prereserve_doi.doi}} (<?php p($l->t('No title found.')); ?>)
         {{/if}}
