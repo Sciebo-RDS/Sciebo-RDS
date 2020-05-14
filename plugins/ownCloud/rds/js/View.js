@@ -286,7 +286,7 @@
       });
 
       $.when.apply($, deferreds).always(function () {
-        self._studies.loadUser().always(function () {
+        self._services.loadUser().always(function () {
           self.save();
           self._view.render();
         });
