@@ -284,10 +284,15 @@
         }
       });
 
-      $.when.apply($, deferreds).always(function () {
-        self.save();
-        self._view.render();
-      });
+      $.when
+        .apply($, deferreds)
+        .done(function () {
+          self._studies.load(self._studies.getActive().researchIndex);
+        })
+        .always(function () {
+          self.save();
+          self._view.render();
+        });
     });
 
     $("#app-content #btn-save-research-and-continue").click(function () {
