@@ -82,7 +82,18 @@ class ProjectsMapper {
 
         $projs = $this->findAll( $userId, $servicename );
         #        $proj = end( ( array_values( $projs ) ) );
-        return $projs[0];
+        $index = 0;
+        $max = 0;
+        $i = 0;
+        foreach ( $projs as $proj ) {
+            if ( $proj->projectId > $max ) {
+                $max = $proj->projectId;
+                $index = $i;
+            }
+
+            $i++;
+        }
+        return $projs[$index];
     }
 
     public function delete( $userId, $servicename, $projectId ) {
