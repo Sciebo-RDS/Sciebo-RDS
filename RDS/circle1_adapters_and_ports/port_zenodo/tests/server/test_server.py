@@ -173,10 +173,11 @@ class TestPortZenodo(unittest.TestCase):
             self.assertEqual(result.status_code, 404, msg=result.json)
 
     def test_index_metadata(self):
+        projectId = 1234
         expected_body = {
             "created": "2016-06-15T16:10:03.319363+00:00",
             "files": [],
-            "id": 1234,
+            "id": projectId,
             "links": {
                 "discard": "https://zenodo.org/api/deposit/depositions/1234/actions/discard",
                 "edit": "https://zenodo.org/api/deposit/depositions/1234/actions/edit",
@@ -188,12 +189,12 @@ class TestPortZenodo(unittest.TestCase):
             "metadata": {
                 "prereserve_doi": {
                     "doi": "10.5072/zenodo.1234",
-                    "recid": 1234
+                    "recid": projectId
                 }
             },
             "modified": "2016-06-15T16:10:03.319371+00:00",
             "owner": 1,
-            "record_id": 1234,
+            "record_id": projectId,
             "state": "unsubmitted",
             "submitted": False,
             "title": ""
@@ -212,7 +213,8 @@ class TestPortZenodo(unittest.TestCase):
             result = self.client.get(
                 "/metadata/project", json=data)
             self.assertEqual(result.status_code, 200)
-            self.assertEqual(result.json, [expected_body["metadata"]])
+            self.assertEqual(
+                result.json, [{"projectId": str(projectId), "metadata": expected_body["metadata"]}])
 
     def test_get_metadata(self):
         projectId = 5
