@@ -13,7 +13,7 @@ def index():
     req = request.json.get("metadata")
 
     depoResponse = g.zenodo.get_deposition(metadataFilter=req)
-    return jsonify(depoResponse)
+    return jsonify([{"projectId": depo["prereserve_doi"]["recid"], "metadata": depo} for depo in depoResponse])
 
 
 @require_api_key
