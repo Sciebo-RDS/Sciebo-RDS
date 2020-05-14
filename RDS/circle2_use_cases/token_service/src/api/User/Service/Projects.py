@@ -10,7 +10,7 @@ def index(user_id, servicename):
 
     for svc in listOfServices:
         if svc.get("servicename", "") == servicename:
-            return jsonify(svc)
+            return jsonify(svc.get("projects", []))
     abort(404)
 
 

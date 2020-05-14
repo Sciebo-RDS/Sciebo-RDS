@@ -184,7 +184,7 @@ class TokenService():
 
         return services
 
-    def getProjectsForToken(self, token) -> list:
+    def getProjectsForToken(self, token: Token) -> list:
         """
         Returns a `list` with all projects for given service and user.
         """
