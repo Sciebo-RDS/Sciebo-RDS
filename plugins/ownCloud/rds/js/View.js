@@ -149,7 +149,7 @@
               service.serviceProjects.forEach(function (proj, indexProj) {
                 if (
                   val.key === "projectId" &&
-                  val.value === proj.prereserve_doi.recid.toString()
+                  val.value === proj.metadata.prereserve_doi.recid.toString()
                 ) {
                   this[indexSvc].serviceProjects[indexProj].checked = "checked";
                 }
