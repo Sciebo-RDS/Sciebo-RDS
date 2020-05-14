@@ -30,7 +30,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Metadata'
               examples:
                 example-1:
                   value:
@@ -84,8 +84,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties: {}
+                $ref: '#/components/schemas/Project'
               examples:
                 example-1:
                   value:
@@ -311,8 +310,10 @@ components:
         projectId:
           type: string
         metadata:
-          type: object
-          description: This have to be a valid datacite model.
+          $ref: '#/components/schemas/Metadata'
+    Metadata:
+      title: Metadata
+      type: object
   securitySchemes:
     oauth-key:
       type: oauth2

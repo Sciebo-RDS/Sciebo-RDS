@@ -23,7 +23,7 @@ def get(project_id):
     depoResponse = g.zenodo.get_deposition(
         id=int(project_id), metadataFilter=req)
 
-    return jsonify({"projectId": project_id, "metadata": depoResponse})
+    return jsonify(depoResponse)
 
 
 @require_api_key
@@ -56,6 +56,6 @@ def patch(project_id):
         deposition_id=int(project_id), metadata=req, return_response=True)
 
     if depoResponse.status_code == 200:
-        return jsonify(depoResponse.json().get("metadata"))
+        return jsonify({"projectId": project_id, "metadata": depoResponse.json().get("metadata")})
 
     abort(depoResponse.status_code)
