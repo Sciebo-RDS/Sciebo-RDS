@@ -175,8 +175,8 @@ class Zenodo(object):
             from io import BytesIO
 
             self.log.debug("Try read the file content.")
-            files = {'file': (filename, BytesIO(file.read()))}
-            self.log.debug("size: {}".format(len(file.read())))
+            files = file
+            #self.log.debug("size: {}".format(len(file.read())))
         except Exception as e:
             self.log.error(e)
             self.log.debug("Cannot read the content. So maybe it is in cache?")
