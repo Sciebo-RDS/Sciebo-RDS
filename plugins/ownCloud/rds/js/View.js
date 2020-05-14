@@ -265,7 +265,8 @@
           method: "POST",
         })
           .done(function (proj) {
-            radio.val(proj);
+            console.log(proj);
+            radio.val(proj.projectId);
             deferred.resolve();
           })
           .fail(function () {
