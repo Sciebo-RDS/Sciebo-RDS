@@ -34,8 +34,8 @@ class ProjectsMapper {
 
         foreach ( ( array ) $response as $element ) {
             $project = new Project();
-            $project->setProjectId( $response['projectId'] );
-            $project->setMetadata( $response['metadata'] );
+            $project->setProjectId( $element['projectId'] );
+            $project->setMetadata( $element['metadata'] );
 
             $listOfProj[] = $project;
         }
