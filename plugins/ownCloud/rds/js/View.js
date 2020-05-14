@@ -286,16 +286,10 @@
       });
 
       $.when.apply($, deferreds).always(function () {
-        var active = self._studies.getActive();
-        self._studies
-          .loadAll()
-          .done(function () {
-            self._studies.load(active.researchIndex);
-          })
-          .always(function () {
-            self.save();
-            self._view.render();
-          });
+        self._studies.loadUser().always(function () {
+          self.save();
+          self._view.render();
+        });
       });
     });
 
