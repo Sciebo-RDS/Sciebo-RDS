@@ -86,8 +86,8 @@ class ProjectsMapper {
         $max = 0;
         $i = 0;
         foreach ( $projs as $proj ) {
-            if ( $proj->projectId > $max ) {
-                $max = $proj->projectId;
+            if ( $proj->getProjectId() > $max ) {
+                $max = $proj->getProjectId();
                 $index = $i;
             }
 
