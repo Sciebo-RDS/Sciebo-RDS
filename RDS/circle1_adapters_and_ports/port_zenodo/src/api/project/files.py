@@ -21,7 +21,7 @@ def get(project_id, file_id):
 @require_api_key
 def post(project_id):
     logger.debug("Read file from request")
-    file = request.files
+    file = request.files['file']
 
     req = request.form.to_dict()
     filename = req["filename"]
