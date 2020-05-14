@@ -80,8 +80,6 @@
     },
   };
 
-  OC.Plugins.register("OCA.Files.NewFileMenu", createRdsResearch);
-
   OC.rds.ResearchDirectories = function () {
     this._folders = [];
   };
@@ -93,7 +91,7 @@
     load: function () {
       var self = this;
       var deferred = $.Deferred();
-      $.get(OC.generateUrl("/apps/rds/research") + "/files")
+      $.get(OC.generateUrl("/apps/rds/research/files"))
         .done(function (directories) {
           self._folders = directories;
           deferred.resolve();
@@ -107,41 +105,45 @@
 
   var directories = new OC.rds.ResearchDirectories();
   var activate = true;
-  directories.load().fail(function () {
-    console.log(
-      "cannot find directories. Could be possible, that rds is not activated?"
-    );
-    activate = false;
-  });
+  directories
+    .load()
+    .fail(function () {
+      console.log(
+        "cannot find directories. Could be possible, that rds is not activated?"
+      );
+      activate = false;
+    })
+    .always(function () {
+      if (activate) {
+        OC.Plugins.register("OCA.Files.NewFileMenu", createRdsResearch);
+        fileActions.addAdvancedFilter(function (actions, context) {
+          var fileName = context.$file.data("file");
+          var mimetype = context.$file.data("mime");
+          var dir = context.fileList.getCurrentDirectory();
 
-  if (activate) {
-    fileActions.addAdvancedFilter(function (actions, context) {
-      var fileName = context.$file.data("file");
-      var mimetype = context.$file.data("mime");
-      var dir = context.fileList.getCurrentDirectory();
+          found = false;
+          directories.getFolders().forEach(function (item) {
+            if (item === dir) {
+              found = true;
+            }
+          });
 
-      found = false;
-      directories.getFolders().forEach(function (item) {
-        if (item === dir) {
-          found = true;
-        }
-      });
+          if (found) {
+            if (mimetype === "httpd/unix-directory") {
+              delete actions.addFolderToResearch;
+            }
+          } else {
+            delete actions.pushFileToResearch;
+          }
 
-      if (found) {
-        if (mimetype === "httpd/unix-directory") {
-          delete actions.addFolderToResearch;
-        }
-      } else {
-        delete actions.pushFileToResearch;
+          return actions;
+        });
+
+        var mimes = ["httpd/unix-directory"];
+        mimes.forEach((item) => {
+          addFolderToResearch.init(item);
+        });
+        pushFileToResearch.init("all");
       }
-
-      return actions;
     });
-
-    var mimes = ["httpd/unix-directory"];
-    mimes.forEach((item) => {
-      addFolderToResearch.init(item);
-    });
-    pushFileToResearch.init("all");
-  }
 })(OC, window, jQuery);
