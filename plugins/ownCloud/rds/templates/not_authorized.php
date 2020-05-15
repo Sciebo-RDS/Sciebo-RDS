@@ -14,21 +14,21 @@ script( 'rds', array( 'Services', 'FirstWizard' ) );
       follow this steps.' ) ); ?>
     </p>
   </div>
-  <div class="service" id="rdsOwncloud" data-servicename="Owncloud">
+  <div class="service" id="rdsOwncloud" >
     <p>
       <?php p( $l->t( 'Step 1: Authorize RDS to authenticate against ownCloud.'
       ) ); ?>
     </p>
-    <button class="button" id="activateOwncloud">
+    <button class="button" id="activateOwncloud" data-servicename="Owncloud">
       <?php p( $l->t( 'Authorize ownCloud.' ) ); ?>
     </button>
   </div>
-  <div class="service" id="rdsZenodo" data-servicename="Zenodo">
+  <div class="service" id="rdsZenodo">
     <p>
       <?php p( $l->t( 'Step 2: Authorize RDS to authenticate against Zenodo.' )
       ); ?>
     </p>
-    <button class="button" id="activateZenodo" disabled>
+    <button class="button" id="activateZenodo"  data-servicename="Zenodo" disabled>
       <?php p( $l->t( 'Authorize Zenodo.' ) ); ?>
     </button>
   </div>
