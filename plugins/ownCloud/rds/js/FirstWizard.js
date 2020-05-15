@@ -3,27 +3,32 @@
 
   OC.rds = OC.rds || {};
 
-  var state = 0;
   var services;
 
   function reload() {
+    var state = 0;
     var btns = $(".service :button");
     btns.each(function (index, elem) {
-      btns[index].disabled = true;
-    });
+      var $this = $(this);
+      $this.prop("disabled") = true;
 
-    if (state === 1) {
-      $("#activateOwncloud").prop("disabled", false);
-    }
-    if (state === 2) {
-      $("#activateZenodo").prop("disabled", false);
-    }
-    if (state === 3) {
-      $("#activateResearch").prop("disabled", false);
-    }
+      var found = false;
+      services.getAll().forEach(function (val, index) {
+        found = val.servicename === $this.data("servicename");
+      });
+
+      if (!found && index === state) {
+        $this.prop("disabled") = false;
+      }
+
+      if (found) {
+        state += 1;
+      }
+    });
   }
 
   function openPopup(service) {
+    var $this = $(this);
     return function () {
       var win = window.open(
         service.authorizeUrl + "&state=" + service.state,
@@ -34,20 +39,8 @@
       var timer = setInterval(function () {
         if (win.closed) {
           clearInterval(timer);
-
           services.loadUser().done(function () {
-            var found = false;
-
-            services.getAll().forEach(function (svc) {
-              if (service.servicename == svc.servicename) {
-                found = true;
-              }
-            });
-
-            if (found) {
-              state += 1;
-              reload();
-            }
+            reload();
           });
         }
       }, 300);
@@ -73,18 +66,21 @@
     $("#activateResearch").click(function () {
       window.location.replace(OC.generateUrl("/apps/rds?createResearch"));
     });
-
-    reload();
   }
 
   $(document).ready(function () {
     services = new OC.rds.Services();
-    reload();
 
-    services.loadService().done(function () {
-      state += 1;
-      render();
-      reload();
-    });
+    $.when(services.loadService(), services.loadUser())
+      .done(function () {
+        render();
+        reload();
+      })
+      .fail(function () {
+        OC.dialogs.alert(
+          t("Could not load services."),
+          t("rds", "RDS Update project")
+        );
+      });
   });
 })(OC, window, jQuery);

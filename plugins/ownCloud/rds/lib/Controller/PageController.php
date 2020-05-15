@@ -62,6 +62,7 @@ class PageController extends Controller {
     private function checkUserForRDSActivated( $templateIfActivated, $params = [] ) {
         try {
             $service = $this->userservice->find( 'Owncloud', $this->userId );
+            $service = $this->userservice->find( 'Zenodo', $this->userId );
             return new TemplateResponse( 'rds', $templateIfActivated, $params );
         } catch( Exception $e ) {
             return new TemplateResponse( 'rds', 'not_authorized' );
