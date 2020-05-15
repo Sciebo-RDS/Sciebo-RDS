@@ -18,7 +18,7 @@
       });
 
       if (
-        (!found || $this.attr("id") === activateResearch) &&
+        (!found || $this.attr("id") === "activateResearch") &&
         index === state
       ) {
         $this.prop("disabled", false);
