@@ -10,7 +10,7 @@
     var btns = $(".service :button");
     btns.each(function (index, elem) {
       var $this = $(this);
-      $this.prop("disabled") = true;
+      $this.prop("disabled", true);
 
       var found = false;
       services.getAll().forEach(function (val, index) {
@@ -18,7 +18,7 @@
       });
 
       if (!found && index === state) {
-        $this.prop("disabled") = false;
+        $this.prop("disabled", false);
       }
 
       if (found) {
