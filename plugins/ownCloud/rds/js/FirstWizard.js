@@ -17,7 +17,10 @@
         found = val.servicename === $this.data("servicename");
       });
 
-      if (!found && index === state) {
+      if (
+        (!found || $this.attr("id") === activateResearch) &&
+        index === state
+      ) {
         $this.prop("disabled", false);
       }
 
@@ -29,8 +32,8 @@
 
   function openPopup(service) {
     var $this = $(this);
-    var servicename = $this.data("servicename")
-    
+    var servicename = $this.data("servicename");
+
     return function () {
       var win = window.open(
         service.authorizeUrl + "&state=" + service.state,
