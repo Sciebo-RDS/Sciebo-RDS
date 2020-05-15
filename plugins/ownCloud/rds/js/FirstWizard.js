@@ -29,11 +29,13 @@
 
   function openPopup(service) {
     var $this = $(this);
+    var servicename = $this.data("servicename")
+    
     return function () {
       var win = window.open(
         service.authorizeUrl + "&state=" + service.state,
         "oauth2-service-for-rds",
-        "min-width=1024,min-height=768,width=100%,height=100%,scrollbars=yes,resizable=1,toolbar=no,location=no"
+        "innerWidth=1024,innerHeight=768"
       );
 
       var timer = setInterval(function () {
@@ -44,6 +46,8 @@
           });
         }
       }, 300);
+
+      return false;
     };
   }
 
