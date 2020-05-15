@@ -19,7 +19,7 @@ script( 'rds', array( 'Services', 'FirstWizard' ) );
       <?php p( $l->t( 'Step 1: Authorize RDS to authenticate against ownCloud.'
       ) ); ?>
     </p>
-    <button class="button" id="activateOwncloud" data-servicename="Owncloud">
+    <button class="button" id="activateOwncloud" data-servicename="Owncloud" disabled>
       <?php p( $l->t( 'Authorize ownCloud.' ) ); ?>
     </button>
   </div>
@@ -37,7 +37,7 @@ script( 'rds', array( 'Services', 'FirstWizard' ) );
       <?php p( $l->t( 'Step 3: Create a research in RDS and configure it.' ) );
       ?>
     </p>
-    <button class="button" id="activateResearch">
+    <button class="button" id="activateResearch" disabled>
       <?php p( $l->t( 'Create a research in RDS.' ) ); ?>
     </button>
   </div>
