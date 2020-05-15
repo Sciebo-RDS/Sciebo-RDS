@@ -50,10 +50,6 @@
             }
           })
           .fail(function () {
-            OC.dialogs.alert(
-              t("rds", "Could not load all services"),
-              t("rds", "RDS Settings services")
-            );
             deferred.reject();
           });
 
@@ -65,10 +61,6 @@
             }
           })
           .fail(function () {
-            OC.dialogs.alert(
-              t("rds", "Could not load user services"),
-              t("rds", "RDS Settings services")
-            );
             deferred.reject();
           });
         return deferred.promise();
@@ -157,11 +149,7 @@
               self._services
                 .removeServiceFromUser(servicename)
                 .done(function () {
-                  if (servicename === "Owncloud") {
-                    location.reload();
-                  } else {
-                    self.render();
-                  }
+                  self.render();
                 })
                 .fail(function () {
                   OC.dialogs.alert(
@@ -170,6 +158,11 @@
                     }),
                     t("rds", "RDS Settings services")
                   );
+                })
+                .always(function () {
+                  if (servicename === "Owncloud") {
+                    location.reload();
+                  }
                 });
             }
           }
@@ -248,7 +241,7 @@
           var win = window.open(
             self._authorizeUrl[select.options[select.selectedIndex].text],
             "oauth2-service-for-rds",
-            "width=800,height=600,scrollbars=yes"
+            "width=100%,height=100%,scrollbars=yes"
           );
 
           var timer = setInterval(function () {
