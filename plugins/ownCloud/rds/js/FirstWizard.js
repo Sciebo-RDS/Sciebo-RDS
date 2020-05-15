@@ -14,7 +14,9 @@
 
       var found = false;
       services.getAll().forEach(function (val, index) {
-        found = val.servicename === $this.data("servicename");
+        if (val.servicename === $this.data("servicename")) {
+          found = true;
+        }
       });
 
       if (
