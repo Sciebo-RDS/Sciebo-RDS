@@ -40,6 +40,9 @@ class Test_TokenStorage(unittest.TestCase):
         self.oauthtoken2 = OAuth2Token(
             self.user1, self.oauthservice1, "XYZ", "X_XYZ")
 
+        self.oauthtoken3 = OAuth2Token(
+            self.user1, self.oauthservice2, "XYZ", "X_XYZ")
+
     def test_storage_listUser(self):
         empty_storage = Storage()
         self.assertEqual(empty_storage.getUsers(), [])
@@ -291,3 +294,49 @@ class Test_TokenStorage(unittest.TestCase):
 
         with self.assertRaises(ServiceExistsAlreadyError):
             empty_storage.addService(service)
+
+    def test_tokenstorage_remove_mastertoken(self):
+        expected = {
+            self.user1.username: {
+                "data": self.user1,
+                "tokens": [self.oauthtoken1]
+            }
+        }
+
+        self.empty_storage.addTokenToUser(
+            self.oauthtoken1, self.user1, Force=True)
+        self.assertEqual(self.empty_storage._storage, expected,
+                         msg=f"Storage {self.empty_storage}")
+
+        expected[self.user1.username]["tokens"].append(self.oauthtoken3)
+        self.empty_storage.addTokenToUser(self.oauthtoken3, self.user1)
+
+        self.assertEqual(self.empty_storage._storage, expected,
+                         msg=f"Storage {self.empty_storage}")
+
+        self.empty_storage.removeToken(self.user1, self.oauthtoken1)
+        self.assertEqual(self.empty_storage.storage, {})
+
+    def test_tokenstorage_remove_token(self):
+        expected = {
+            self.user1.username: {
+                "data": self.user1,
+                "tokens": [self.oauthtoken1]
+            }
+        }
+
+        self.empty_storage.addTokenToUser(
+            self.oauthtoken1, self.user1, Force=True)
+        self.assertEqual(self.empty_storage._storage, expected,
+                         msg=f"Storage {self.empty_storage}")
+
+        expected[self.user1.username]["tokens"].append(self.oauthtoken3)
+        self.empty_storage.addTokenToUser(self.oauthtoken3, self.user1)
+
+        self.assertEqual(self.empty_storage._storage, expected,
+                         msg=f"Storage {self.empty_storage}")
+
+        del expected[self.user1.username]["tokens"][1]
+
+        self.empty_storage.removeToken(self.user1, self.oauthtoken3)
+        self.assertEqual(self.empty_storage.storage, expected)

@@ -259,6 +259,11 @@ class Storage():
         Remove a token from user.
 
         This is an internal function. Please look at the external one.
+
+        If the first token will be deleted, it is the master token / login token, 
+        which was used to enable and RDS use this token for frontend actions. 
+        So we can assume, that the user wants to revoke all access through RDS.
+        To accomplish this, we remove all data for this user in token storage.
         """
 
         logger.debug("remove token: user {}, token {}".format(user, token))
@@ -271,7 +276,10 @@ class Storage():
             for index, crnt in enumerate(self._storage[user.username]["tokens"]):
                 if token.servicename == crnt.servicename:
                     logger.debug("found")
-                    del self._storage[user.username]["tokens"][index]
+                    if index == 0:
+                        del self._storage[user.username]
+                    else:
+                        del self._storage[user.username]["tokens"][index]
                     break
         except ValueError:
             from .Exceptions.StorageException import TokenNotExistsError
