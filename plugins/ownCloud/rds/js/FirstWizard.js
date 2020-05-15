@@ -39,7 +39,7 @@
       var timer = setInterval(function () {
         if (win.closed) {
           clearInterval(timer);
-          services.loadUser().done(function () {
+          services.loadUser().always(function () {
             reload();
           });
         }
