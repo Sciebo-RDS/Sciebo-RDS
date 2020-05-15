@@ -1,5 +1,7 @@
 <h1><?php p($l->t('Project')); ?> {{research.researchIndex}}</h1>
 
+<p class="section-text"><h1><?php p($l->t('Please select a folder in Owncloud and select a zenodo project.')); ?></p>
+
 <div id="wrapper-services">
   {{#each services}}
   <hr />
