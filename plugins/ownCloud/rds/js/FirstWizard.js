@@ -33,7 +33,7 @@
       var win = window.open(
         service.authorizeUrl + "&state=" + service.state,
         "oauth2-service-for-rds",
-        "min-width=800,min-height=600, width=100%, height=100%,scrollbars=yes"
+        "min-width=1024,min-height=768, width=100%, height=100%,scrollbars=yes"
       );
 
       var timer = setInterval(function () {
