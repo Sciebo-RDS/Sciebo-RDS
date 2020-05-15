@@ -1,4 +1,4 @@
-<h1><?php p($l->t('Project')); ?> {{research.researchIndex}}</h1>
+<h2><?php p($l->t('Project')); ?> {{research.researchIndex}}</h2>
 
 <p class="section-text"><h1><?php p($l->t('Here you can enter all informations about your research synchronization.')); ?></p>
 
@@ -6,7 +6,7 @@
   {{#each services}}
   <hr />
   <div id="selector-available-services">
-    <h2>{{ servicename }}:</h2>
+    <h3>{{ servicename }}:</h3>
     {{#unless type.metadata}}
       {{#if type.fileStorage}}
       <p class="section-service">
