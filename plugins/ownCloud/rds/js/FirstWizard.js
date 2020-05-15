@@ -71,16 +71,9 @@
   $(document).ready(function () {
     services = new OC.rds.Services();
 
-    $.when(services.loadService(), services.loadUser())
-      .done(function () {
-        render();
-        reload();
-      })
-      .fail(function () {
-        OC.dialogs.alert(
-          t("Could not load services."),
-          t("rds", "RDS Update project")
-        );
-      });
+    $.when(services.loadService(), services.loadUser()).always(function () {
+      render();
+      reload();
+    });
   });
 })(OC, window, jQuery);
