@@ -1,14 +1,17 @@
 <h1><?php p($l->t('Project')); ?> {{research.researchIndex}}</h1>
 
-<p class="section-text"><h1><?php p($l->t('Please select a folder in Owncloud and select a zenodo project.')); ?></p>
+<p class="section-text"><h1><?php p($l->t('Here you can enter all informations about your research synchronization.')); ?></p>
 
 <div id="wrapper-services">
   {{#each services}}
   <hr />
   <div id="selector-available-services">
-    <b>{{ servicename }}:</b>
+    <h2>{{ servicename }}:</h2>
     {{#unless type.metadata}}
       {{#if type.fileStorage}}
+      <p class="section-service">
+      <?php p($l->t('Please select a folder where you want to take your files from.')); ?>
+      </p>
       <div id="fileStorage-wrapper">
         <label><button id="btn-open-folderpicker" data-service="{{servicename}}">Select folder</button>
           {{#if filepath }}
@@ -23,6 +26,9 @@
       </div>
       {{/if}}
     {{else}}
+    <p class="section-service">
+      <?php p($l->t('Please select a project where you want to take your files to.')); ?>
+    </p>
     <div id="radiobuttons-list">
       {{#each serviceProjects}}
       <label>

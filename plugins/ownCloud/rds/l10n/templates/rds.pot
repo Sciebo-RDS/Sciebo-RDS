@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud Core 8.0.0\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2020-05-12 10:39+0200\n"
+"POT-Creation-Date: 2020-05-15 16:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,8 +25,8 @@ msgstr ""
 msgid "Your entries could not be saved."
 msgstr ""
 
-#: js/View.js:58 js/View.js:227 js/View.js:439 js/View.js:522 js/View.js:544
-#: js/View.js:562 js/fileActions.js:112 js/main-rds.js:35
+#: js/View.js:58 js/View.js:227 js/View.js:477 js/View.js:560 js/View.js:582
+#: js/View.js:600 js/main-rds.js:38
 msgid "RDS Update project"
 msgstr ""
 
@@ -38,7 +38,7 @@ msgstr ""
 msgid "Choose source and / or target folder"
 msgstr ""
 
-#: js/View.js:521 js/main-rds.js:34
+#: js/View.js:559 js/main-rds.js:37
 msgid "Could not create research"
 msgstr ""
 
@@ -62,32 +62,19 @@ msgstr ""
 msgid "File upload to outgoing services failed."
 msgstr ""
 
-#: js/fileActions.js:111
-msgid "Research folders could not be loaded."
-msgstr ""
-
-#: js/settings-personal.js:54
-msgid "Could not load all services"
-msgstr ""
-
-#: js/settings-personal.js:55 js/settings-personal.js:70
-#: js/settings-personal.js:150 js/settings-personal.js:171
-msgid "RDS Settings services"
-msgstr ""
-
-#: js/settings-personal.js:69
-msgid "Could not load user services"
-msgstr ""
-
-#: js/settings-personal.js:147
+#: js/settings-personal.js:139
 msgid "Are you sure, that you want to delete {servicename}?"
 msgstr ""
 
-#: js/settings-personal.js:168
+#: js/settings-personal.js:142 js/settings-personal.js:159
+msgid "RDS Settings services"
+msgstr ""
+
+#: js/settings-personal.js:156
 msgid "Could not remove the service {servicename}"
 msgstr ""
 
-#: js/settings-personal.js:225
+#: js/settings-personal.js:218
 msgid "Authorize {servicename} now"
 msgstr ""
 
@@ -146,7 +133,7 @@ msgstr ""
 
 #: templates/part.research.content.file.php:21
 #: templates/part.research.content.metadata.php:14
-#: templates/part.research.content.service.php:105
+#: templates/part.research.content.service.php:123
 msgid "Save"
 msgstr ""
 
@@ -159,8 +146,12 @@ msgid "Finish research"
 msgstr ""
 
 #: templates/part.research.content.metadata.php:15
-#: templates/part.research.content.service.php:106
+#: templates/part.research.content.service.php:124
 msgid "Save & continue"
+msgstr ""
+
+#: templates/part.research.content.overview.php:1
+msgid "This is a nice text in overview"
 msgstr ""
 
 #: templates/part.research.content.overview.php:1
@@ -172,59 +163,76 @@ msgstr ""
 msgid "Project"
 msgstr ""
 
+#: templates/part.research.content.service.php:3
+msgid ""
+"Here you can enter all informations about your research synchronization."
+msgstr ""
+
 #: templates/part.research.content.service.php:13
-msgid "Current path:"
+msgid "Please select a folder where you want to take your files from."
 msgstr ""
 
 #: templates/part.research.content.service.php:18
+msgid "Current path:"
+msgstr ""
+
+#: templates/part.research.content.service.php:23
 msgid "No path currently selected."
 msgstr ""
 
-#: templates/part.research.content.service.php:37
+#: templates/part.research.content.service.php:30
+msgid "Please select a project where you want to take your files to."
+msgstr ""
+
+#: templates/part.research.content.service.php:45
 msgid "Project DOI"
 msgstr ""
 
-#: templates/part.research.content.service.php:37
+#: templates/part.research.content.service.php:45
 msgid "No title found."
 msgstr ""
 
-#: templates/part.research.content.service.php:41
+#: templates/part.research.content.service.php:49
 msgid "No projects found."
 msgstr ""
 
-#: templates/part.research.content.service.php:47
+#: templates/part.research.content.service.php:59
+msgid "Create new project."
+msgstr ""
+
+#: templates/part.research.content.service.php:65
 msgid "For which transfer, do you want to use this service?"
 msgstr ""
 
-#: templates/part.research.content.service.php:48
+#: templates/part.research.content.service.php:66
 msgid "Informations about ingoing and outgoing traffic."
 msgstr ""
 
-#: templates/part.research.content.service.php:57
+#: templates/part.research.content.service.php:75
 msgid "Ingoing"
 msgstr ""
 
-#: templates/part.research.content.service.php:67
+#: templates/part.research.content.service.php:85
 msgid "Outgoing"
 msgstr ""
 
-#: templates/part.research.content.service.php:71
+#: templates/part.research.content.service.php:89
 msgid "For which storage, do you want to use this service?"
 msgstr ""
 
-#: templates/part.research.content.service.php:72
+#: templates/part.research.content.service.php:90
 msgid "Informations about storage for metadata and fileStorage."
 msgstr ""
 
-#: templates/part.research.content.service.php:82
+#: templates/part.research.content.service.php:100
 msgid "File Storage"
 msgstr ""
 
-#: templates/part.research.content.service.php:94
+#: templates/part.research.content.service.php:112
 msgid "Metadata Storage"
 msgstr ""
 
-#: templates/part.research.content.service.php:107
+#: templates/part.research.content.service.php:125
 msgid "Sync files"
 msgstr ""
 
