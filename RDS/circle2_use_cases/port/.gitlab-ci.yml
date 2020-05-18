@@ -26,5 +26,5 @@ build:use_case_port_service:
 
   only:
     changes:
-      - RDS/circle2_use_cases/port_service/*
-      - RDS/circle2_use_cases/port_service/**/*
+      - RDS/circle2_use_cases/port/*
+      - RDS/circle2_use_cases/port/**/*
