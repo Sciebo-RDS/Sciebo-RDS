@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/central_service_token_service
+  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/central_service_token_storage
   tag: connnectUI
   pullPolicy: Always
 
