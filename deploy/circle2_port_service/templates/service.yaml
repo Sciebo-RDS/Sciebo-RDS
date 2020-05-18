@@ -5,9 +5,9 @@ metadata:
   annotations:
   {{ toYaml . | indent 4 }}
   {{- end }}
-  name: {{ include "circle2_token_service.fullname" . }}
+  name: {{ include "circle2_port_service.fullname" . }}
   labels:
-{{ include "circle2_token_service.labels" . | indent 4 }}
+{{ include "circle2_port_service.labels" . | indent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -16,5 +16,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "circle2_token_service.name" . }}
+    app.kubernetes.io/name: {{ include "circle2_port_service.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

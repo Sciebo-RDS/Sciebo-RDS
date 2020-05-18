@@ -74,7 +74,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         ) .will_respond_with(200, body=service.to_json())
 
         response = self.client.get(
-            f"/token-service/service/{service.servicename}")
+            f"/port-service/service/{service.servicename}")
         self.assertEqual(response.status_code, 200,
                          msg=response.get_data(as_text=True))
 
@@ -89,7 +89,7 @@ class Test_TokenServiceServer(unittest.TestCase):
 
         # following request should not be needed a new pact, because its cached and date shuld be the same.
         response = self.client.get(
-            f"/token-service/service/{service.servicename}")
+            f"/port-service/service/{service.servicename}")
         self.assertEqual(response.status_code, 200,
                          msg=response.get_data(as_text=True))
 
@@ -147,11 +147,11 @@ class Test_TokenServiceServer(unittest.TestCase):
 
         with pact:
             response = self.client.get(
-                "/token-service/redirect", query_string={"code": code, "state": state})
+                "/port-service/redirect", query_string={"code": code, "state": state})
 
         self.assertEqual(response.status_code, 302, msg=response.get_data())
         self.assertEqual(
-            response.headers["location"], "http://localhost/token-service/authorization-success", msg=response.get_data())
+            response.headers["location"], "http://localhost/port-service/authorization-success", msg=response.get_data())
 
         # TODO: add tests here for redirects to cancel page
         # test for no service found
@@ -211,7 +211,7 @@ class Test_TokenServiceServer(unittest.TestCase):
 
         with pact:
             code = self.client.post(
-                "/token-service/user/{}/service/{}/projects".format(userId, servicename)).status_code
+                "/port-service/user/{}/service/{}/projects".format(userId, servicename)).status_code
 
         self.assertEqual(code, 204)
 
@@ -233,7 +233,7 @@ class Test_TokenServiceServer(unittest.TestCase):
 
         with pact:
             code = self.client.post(
-                "/token-service/user/{}/service/{}/projects".format(userId, servicename)).status_code
+                "/port-service/user/{}/service/{}/projects".format(userId, servicename)).status_code
 
         self.assertEqual(code, 500)
 
@@ -261,7 +261,7 @@ class Test_TokenServiceServer(unittest.TestCase):
 
         with pact:
             code = self.client.delete(
-                "/token-service/user/{}/service/{}/projects/{}".format(userId, servicename, proj1["projectId"])).status_code
+                "/port-service/user/{}/service/{}/projects/{}".format(userId, servicename, proj1["projectId"])).status_code
 
         self.assertGreaterEqual(code, 404)
 
@@ -283,7 +283,7 @@ class Test_TokenServiceServer(unittest.TestCase):
 
         with pact:
             code = self.client.delete(
-                "/token-service/user/{}/service/{}/projects/{}".format(userId, servicename, proj1["projectId"])).status_code
+                "/port-service/user/{}/service/{}/projects/{}".format(userId, servicename, proj1["projectId"])).status_code
 
         self.assertEqual(code, 204)
 

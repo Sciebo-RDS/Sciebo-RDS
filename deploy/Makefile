@@ -23,7 +23,7 @@ service_exporter:
 	helm upgrade circle2-exporter-service circle2_exporter_service --install
 
 service_token:
-	helm upgrade circle2-token-service circle2_token_service --install
+	helm upgrade circle2-port-service circle2_port_service --install
 
 service_metadata:
 	helm upgrade circle2-metadata-service circle2_metadata_service --install
@@ -56,7 +56,7 @@ remove_service_exporter:
 	helm delete --purge circle2-exporter-service || true
 
 remove_service_token:
-	helm delete --purge circle2-token-service || true
+	helm delete --purge circle2-port-service || true
 
 remove_service_metadata:
 	helm delete --purge circle2-metadata-service || true

@@ -26,7 +26,7 @@ loc: dev
 
 doc: dev
 	pydocmd build
-	mv _build/pydocmd/token-service.md ../../../docs/content/doc/impl/use-cases/token-service-docstring.md
+	mv _build/pydocmd/port-service.md ../../../docs/content/doc/impl/use-cases/port-service-docstring.md
 	rm -r _build
 
 

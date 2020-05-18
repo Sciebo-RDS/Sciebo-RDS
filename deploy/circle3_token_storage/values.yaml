@@ -54,4 +54,4 @@ tolerations: []
 affinity: {}
 
 environment:
-  FLASK_HOST_ADDRESS: https://sciebords-dev.uni-muenster.de/token-service
+  FLASK_HOST_ADDRESS: https://sciebords-dev.uni-muenster.de/port-service

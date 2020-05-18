@@ -45,11 +45,11 @@ spec:
               configMapKeyRef:
                 name: mservice
                 key: OWNCLOUD_INSTALLATION_URL
-          - name: USE_CASE_SERVICE_TOKEN_SERVICE
+          - name: USE_CASE_SERVICE_PORT_SERVICE
             valueFrom:
               configMapKeyRef:
                 name: mservice
-                key: USE_CASE_SERVICE_TOKEN_SERVICE
+                key: USE_CASE_SERVICE_PORT_SERVICE
           - name: HTTP_PROXY
             valueFrom:
               configMapKeyRef:

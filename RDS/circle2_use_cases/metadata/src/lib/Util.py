@@ -6,7 +6,7 @@ logger = logging.getLogger()
 
 def loadAccessToken(userId: str, service: str):
     tokenStorageURL = os.getenv(
-        "USE_CASE_SERVICE_TOKEN_SERVICE", "http://localhost:3000")
+        "USE_CASE_SERVICE_PORT_SERVICE", "http://localhost:3000")
     # load access token from token-storage
     result = requests.get(
         f"{tokenStorageURL}/user/{userId}/service/{service}")

@@ -1,11 +1,11 @@
-.central_service_token_service:
+.central_service_port_service:
   variables:
     FOLDER: RDS/circle3_central_services/token_storage
 
 .tests_central_service_token_storage:
   extends:
     - .tests
-    - .central_service_token_service
+    - .central_service_port_service
 
   artifacts:
     untracked: true
@@ -17,33 +17,33 @@
     - name: selenium/standalone-firefox
       alias: selenium
 
-test:central_service_token_service3.6:
+test:central_service_port_service3.6:
   image: python:3.6
   extends: .tests_central_service_token_storage
 
-test:central_service_token_service3.7:
+test:central_service_port_service3.7:
   image: python:3.7
   extends: .tests_central_service_token_storage
 
-test:central_service_token_service3.8:
+test:central_service_port_service3.8:
   image: python:3.8
   extends: .tests_central_service_token_storage
 
-build:central_service_token_service:
+build:central_service_port_service:
   extends:
     - .builds
-    - .central_service_token_service
+    - .central_service_port_service
 
   only:
     changes:
       - RDS/circle3_central_services/token_storage/*
       - RDS/circle3_central_services/token_storage/**/*
 
-doc:central_service_token_service:
+doc:central_service_port_service:
   image: python:3.8
   extends:
     - .documentation
-    - .central_service_token_service
+    - .central_service_port_service
 
   script:
     - cd $FOLDER

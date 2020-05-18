@@ -30,7 +30,7 @@ def index():
     # state is base64 for dict:
     # {
     #   "user": <user id for logged user account in interface>, 
-    #   "jwt": <state jwt from token-service system>
+    #   "jwt": <state jwt from port-service system>
     # }
 
     if code is None or state is None:

@@ -22,7 +22,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
 
     from lib.TokenService import TokenService
 
-    list_openapi = Util.load_oai("use-case_token-storage.yml")
+    list_openapi = Util.load_oai("use-case_port.yml")
 
     if "testing" in kwargs:
         ServerUtil.tokenService = TokenService(kwargs["testing"])

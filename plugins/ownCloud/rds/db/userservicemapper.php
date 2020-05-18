@@ -6,7 +6,7 @@ use \OCA\RDS\Db\Project;
 use \OCA\RDS\Service\NotFoundException;
 
 class UserserviceMapper {
-    private $rdsURL = 'https://sciebords-dev.uni-muenster.de/token-service';
+    private $rdsURL = 'https://sciebords-dev.uni-muenster.de/port-service';
 
     public function __construct() {
 

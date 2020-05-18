@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/use_case_token_service
+  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/use_case_port_service
   tag: connnectUI
   pullPolicy: Always
 
@@ -29,7 +29,7 @@ ingress:
   hosts:
     - host: sciebords-dev.uni-muenster.de
       paths:
-      - /token-service
+      - /port-service
 
   tls:
     - secretName: sciebords-tls-public
@@ -55,4 +55,4 @@ tolerations: []
 affinity: {}
 
 environment:
-  FLASK_HOST_ADDRESS: https://sciebords-dev.uni-muenster.de/token-service
+  FLASK_HOST_ADDRESS: https://sciebords-dev.uni-muenster.de/port-service
