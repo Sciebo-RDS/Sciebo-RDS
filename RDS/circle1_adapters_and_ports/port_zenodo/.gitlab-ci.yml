@@ -8,13 +8,6 @@
     - .tests
     - .port_zenodo
 
-  only:
-    changes:
-      - RDS/circle1_adapters_and_ports/port_zenodo/*
-      - RDS/circle1_adapters_and_ports/port_zenodo/**/*
-      - RDS/circle2_use_cases/interface_port_metadata.yml
-      - RDS/circle3_central_services/interface_port_token_storage.yml
-
 test:port_zenodo3.6:
   extends: .tests_port_zenodo
   image: python:3.6

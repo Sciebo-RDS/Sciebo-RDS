@@ -8,7 +8,6 @@ from jaeger_client import Config as jConfig
 import os
 import logging
 from connexion_plus import App, MultipleResourceResolver, Util
-from json import JSONEncoder, JSONDecoder
 import Singleton
 from lib.ProjectService import ProjectService
 
@@ -34,8 +33,7 @@ def monkeypatch():
 
 
 def bootstrap(name='MicroService', *args, **kwargs):
-    list_openapi = Util.load_oai(
-        os.getenv("OPENAPI_FILEPATH", "central-service_research-manager.yml"))
+    list_openapi = Util.load_oai("central-service_research-manager.yml")
 
     app = App(name, *args, **kwargs)
 

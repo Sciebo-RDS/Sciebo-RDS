@@ -8,20 +8,6 @@ WORKDIR /app
 ADD ./requirements.txt ./
 RUN pip install -r requirements.txt
 
-# download yaml file for better usability and reproducable behaviour
-RUN apk add curl
-
-ENV OPENAPI_FILEPATH_EXTERNAL   "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/connnectUI/RDS/circle2_use_cases/interface_port_file_storage.yml"
-ENV OPENAPI_FILEPATH            "c2_owncloud.yml"
-RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
-
-ENV OPENAPI_FILEPATH_EXTERNAL   "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/connnectUI/RDS/circle3_central_services/interface_port_token_storage.yml"
-ENV OPENAPI_FILEPATH            "c3_owncloud.yml"
-RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
-
-# comma separated
-ENV OPENAPI_MULTIPLE_FILES      "c2_owncloud.yml;c3_owncloud.yml"
-
 # this has to be set separatley and safely
 ENV CENTRAL_SERVICE_TOKEN_STORAGE "http://circle3-token-storage"
 ENV OWNCLOUD_INSTALLATION_URL "http://owncloud"
@@ -30,6 +16,11 @@ ENV OWNCLOUD_OAUTH_ACCESS_TOKEN_URL "https://owncloud/index.php/apps/oauth2/api/
 ENV OWNCLOUD_OAUTH_CLIEND_ID "XY"
 ENV OWNCLOUD_OAUTH_CLIENT_SECRET "ABC"
 
+# comma separated
+ENV OPENAPI_MULTIPLE_FILES "interface_port_file_storage.yml;interface_port_token_storage.yml"
+
+ADD "../../circle2_use_cases/interface_port_file_storage.yml" ./
+ADD "../../circle3_central_services/interface_port_token_storage.yml" ./
 
 # now add everything else, which changes often
 ADD src ./

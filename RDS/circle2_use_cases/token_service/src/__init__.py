@@ -22,8 +22,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
 
     from lib.TokenService import TokenService
 
-    list_openapi = Util.load_oai(
-        os.getenv("OPENAPI_FILEPATH", "use-case_token-storage.yml"))
+    list_openapi = Util.load_oai("use-case_token-storage.yml")
 
     if "testing" in kwargs:
         ServerUtil.tokenService = TokenService(kwargs["testing"])
@@ -38,5 +37,6 @@ def bootstrap(name='MicroService', *args, **kwargs):
             'api', collection_endpoint_name="index"), validate_responses=True)
 
     return app
+
 
 monkeypatch()

@@ -7,11 +7,6 @@
   - .tests
   - .central_service_research_manager
 
-  only:
-      changes:
-      - RDS/circle3_central_services/research_manager/*
-      - RDS/circle3_central_services/research_manager/**/*
-
 test:central_service_research_manager3.6:
   image: python:3.6
   extends: .tests_central_service_research_manager

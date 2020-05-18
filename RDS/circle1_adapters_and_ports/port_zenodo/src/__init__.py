@@ -47,7 +47,7 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
         "refresh_url": refresh_url,
         "client_id": client_id,
         "client_secret": client_secret,
-        "implements": ["fileStorage", "metadata"]
+        "implements": ["metadata"]
     }
     headers = {"Content-Type": "application/json"}
 

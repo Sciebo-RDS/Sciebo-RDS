@@ -7,11 +7,6 @@
     - .tests
     - .use_case_token_service
 
-  only:
-    changes:
-      - RDS/circle2_use_cases/token_service/*
-      - RDS/circle2_use_cases/token_service/**/*
-
 test:use_case_token_service3.6:
   image: python:3.6
   extends: .tests_use_case_token_service

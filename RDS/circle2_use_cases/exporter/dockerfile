@@ -8,12 +8,7 @@ WORKDIR /app
 ADD ./requirements.txt ./
 RUN pip install -r requirements.txt
 
-# download yaml file for better usability and reproducable behaviour
-RUN apk add curl
-
-ENV OPENAPI_FILEPATH_EXTERNAL   "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/connnectUI/RDS/circle2_use_cases/exporter/use-case_exporter.yml"
-ENV OPENAPI_FILEPATH            "exporter.yml"
-RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
+ADD "../../circle2_use_cases/exporter/use-case_exporter.yml" ./
 
 # now add everything else, which changes often
 ADD src ./

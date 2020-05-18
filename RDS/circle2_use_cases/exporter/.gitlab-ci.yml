@@ -7,11 +7,6 @@
     - .tests
     - .use_case_exporter
 
-  only:
-    changes:
-      - RDS/circle2_use_cases/exporter/*
-      - RDS/circle2_use_cases/exporter/**/*
-
 test:use_case_exporter3.6:
   image: python:3.6
   extends: .tests_use_case_exporter

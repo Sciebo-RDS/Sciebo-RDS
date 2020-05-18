@@ -4,7 +4,6 @@ import sys
 import os
 import json
 from pactman import Consumer, Provider
-from server import bootstrap
 from lib.Storage import Storage
 from lib.Token import Token, OAuth2Token
 from lib.User import User
@@ -13,6 +12,7 @@ import Util
 
 
 def create_app():
+    from src import bootstrap
     # creates a test client
     app = bootstrap(use_default_error=True).app
     # propagate the exceptions to the test client

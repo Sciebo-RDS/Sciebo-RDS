@@ -1,13 +1,13 @@
 
+from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
+from jaeger_client import Config as jConfig
+import os
+import logging
+from connexion_plus import App, MultipleResourceResolver, Util
+from json import JSONEncoder, JSONDecoder
 from gevent import monkey
 monkey.patch_all()
 
-from json import JSONEncoder, JSONDecoder
-from connexion_plus import App, MultipleResourceResolver, Util
-import logging
-import os
-from jaeger_client import Config as jConfig
-from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 
 log_level = logging.DEBUG
 logger = logging.getLogger('')
@@ -31,8 +31,7 @@ def monkeypatch():
 
 
 def bootstrap(name='MicroService', *args, **kwargs):
-    list_openapi = Util.load_oai(
-        os.getenv("OPENAPI_FILEPATH", "use-case_metadata.yml"))
+    list_openapi = Util.load_oai("use-case_metadata.yml")
 
     app = App(name, *args, **kwargs)
 
