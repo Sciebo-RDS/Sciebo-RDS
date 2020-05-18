@@ -118,7 +118,7 @@ class test_end_to_end(unittest.TestCase):
         try:
             headers = {"JOB-TOKEN": os.getenv("CI_JOB_TOKEN")}
             req = requests.get(filepath, headers=headers)
-            if req.status_code is not 200:
+            if req.status_code != 200:
                 raise Exception(
                     "Artifact not found, filepath: {filepath}, headers: {headers}")
 
