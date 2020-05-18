@@ -56,4 +56,12 @@ class UserserviceportService {
             $this->handleException( $e );
         }
     }
+
+    public function register($servicename, $code, $state, $userId) {
+        try {
+            return $this->mapper->register( $servicename, $code, $state, $userId );
+        } catch( Exception $e ) {
+            $this->handleException( $e );
+        }
+    }
 }

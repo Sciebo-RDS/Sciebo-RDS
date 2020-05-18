@@ -102,4 +102,30 @@ class UserserviceMapper {
 
         throw new NotFoundException( 'Service '. $servicename . ' not found.' );
     }
+
+    public function register( $servicename, $code, $state, $userId ) {
+        $url = $this->rdsURL . '/exchange?code=' . $code . '&state=' . $state . '&userId=' . $userId;
+
+        $curl = curl_init();
+        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $curl, CURLOPT_URL, $url );
+        curl_setopt( $curl, CURLOPT_ENCODING, 'gzip' );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+        $result = curl_exec( $curl );
+        $response = json_decode( $result, true );
+        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
+        curl_close( $curl );
+
+        if ( $httpcode >= 300 ) {
+            throw new NotFoundException( json_encode( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg(),
+                'curl_error_message'=>$info
+            ] ) );
+        }
+
+        return true;
+    }
 }

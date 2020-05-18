@@ -66,4 +66,20 @@ class UserserviceController extends Controller {
              return $this->service->delete( $id, $this->userId );
         });
     }
+
+    /**
+    * Register a new service for the user in RDS.
+    *
+    * @param string $id
+    * @return bool returns true for success, else false
+    *
+    * @NoAdminRequired
+    */
+
+    public function register( $code, $state ) {
+        $service = null;
+        return $this->handleNotFound(function () use ($service, $code, $state) {
+             return $this->service->register( $service, $code, $state, $this->userId );
+        });
+    }
 }
