@@ -14,10 +14,11 @@ class UserserviceController extends Controller {
 
     use Errors;
 
-    public function __construct( $AppName, IRequest $request, UserserviceportService $service, $userId ) {
+    public function __construct( $AppName, IRequest $request, UserserviceportService $service, $userId, $secret ) {
         parent::__construct( $AppName, $request );
         $this->userId = $userId;
         $this->service = $service;
+        $this->secret = $secret;
     }
 
     /**
@@ -74,12 +75,18 @@ class UserserviceController extends Controller {
     * @return bool returns true for success, else false
     *
     * @NoAdminRequired
+    * @NoCSRFRequired
     */
 
     public function register( $code, $state ) {
         $service = null;
-        return $this->handleNotFound(function () use ($service, $code, $state) {
-             return $this->service->register( $service, $code, $state, $this->userId );
+        return $this->handleNotFound(function () use ($code, $state) {
+            $result = $this->service->register( "Owncloud", $code, $state, $this->userId, $this->service );
+            $params = [];
+             if($result ){
+                return new TemplateResponse( 'rds', "code.done", $params );
+             }
+             return new TemplateResponse( 'rds', "code.failure", $params );
         });
     }
 }
