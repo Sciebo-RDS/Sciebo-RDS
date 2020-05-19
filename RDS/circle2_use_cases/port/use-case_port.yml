@@ -257,6 +257,35 @@ paths:
       responses:
         '204':
           description: No Content
+  /exchange:
+    post:
+      summary: Exchange the oauth2 code
+      tags: []
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                jwt:
+                  type: string
+        description: |-
+          JWT holds the following object with keys:
+
+          state, code, userId, servicename
+
+          state holds all informations from rds.
+          code holds the code, which needs to be exchanged.
+          userId holds the name of the user, which get the exchanged token. If the userId is not known as master account in token storage, it will be created as master account associated with servicename.
+          servicename holds the name of the service, which client secret was used to sign the jwt.
+
+          The jwt has to be signed with the oauth2 client secret for rds from service.
+      description: ''
 components:
   schemas:
     oauth_uri:
