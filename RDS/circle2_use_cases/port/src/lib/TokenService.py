@@ -96,7 +96,7 @@ class TokenService():
                 svc = service
                 break
 
-        if not svc:
+        if svc is None:
             svc = self.refreshService(servicename)
 
         if clean:

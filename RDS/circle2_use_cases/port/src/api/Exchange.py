@@ -9,11 +9,11 @@ logger = logging.getLogger()
 
 def post():
     try:
-        master_jwt = request.json().get("jwt")
+        master_jwt = request.json.get("jwt")
         unverified = jwt.decode(master_jwt, verify=False)
 
         servicename = unverified.get("servicename")
-        service = Util.tokenService.getService(servicename)
+        service = Util.tokenService.getService(servicename, clean=True)
 
         master_data = jwt.decode(
             master_jwt, service.client_secret, algorithms="HS256")
