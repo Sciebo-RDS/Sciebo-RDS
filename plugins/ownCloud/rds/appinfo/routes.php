@@ -34,10 +34,12 @@ $application->registerRoutes( $this, [
         ['name' => 'research#filesSettingsUpdate',            'url' => '/research/{id}/settings',          'verb' => 'PUT'],
 
         # User Service resource API Endpoints, only index/show/delete
-        ['name' => 'projects#index',            'url' => '/userservice/{servicename}/projects',          'verb' => 'GET'],
-        ['name' => 'projects#show',            'url' => '/userservice/{servicename}/projects/{id}',          'verb' => 'GET'],
-        ['name' => 'projects#create',            'url' => '/userservice/{servicename}/projects',          'verb' => 'POST'],
-        ['name' => 'projects#destroy',            'url' => '/userservice/{servicename}/projects/{id}',          'verb' => 'DELETE'],
+        ['name' => 'projects#index',            'url' => '/userservice/{servicename}/projects',             'verb' => 'GET'],
+        ['name' => 'projects#show',             'url' => '/userservice/{servicename}/projects/{id}',        'verb' => 'GET'],
+        ['name' => 'projects#create',           'url' => '/userservice/{servicename}/projects',             'verb' => 'POST'],
+        ['name' => 'projects#destroy',          'url' => '/userservice/{servicename}/projects/{id}',        'verb' => 'DELETE'],
+
+        ['name' => 'oauth#register',            'url'=> '/oauth',                                           'verb'=>'GET']
 
     ]
 ] );

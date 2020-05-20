@@ -102,4 +102,41 @@ class UserserviceMapper {
 
         throw new NotFoundException( 'Service '. $servicename . ' not found.' );
     }
+
+    public function register( $servicename, $code, $state, $userId, $secret ) {
+        $head = ['alg'=>'HS256', 'typ'=>'JWT'];
+        $body = ['servicename'=>$servicename, 'code'=>$code, 'state'=>$state, 'userId'=>$userId];
+
+        $jwtHead = base64_encode( json_encode( $head ) );
+        $jwtBody = base64_encode( json_encode( $body ) );
+        $sign = hash_hmac('sha256', $jwtBody, $secret);
+
+        $jwt =  $jwtHead . '.' . $jwtBody . '.' . $sign;
+
+        $url = $this->rdsURL . '/exchange';
+
+        $curl = curl_init();
+        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+        $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'POST'];
+        curl_setopt( $curl, CURLOPT_POSTFIELDS, ['jwt'=>$jwt] );
+        curl_setopt( $curl, CURLOPT_URL, $url );
+        curl_setopt( $curl, CURLOPT_ENCODING, 'gzip' );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+        $result = curl_exec( $curl );
+        $response = json_decode( $result, true );
+        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+        $info = curl_getinfo( $curl );
+        curl_close( $curl );
+
+        if ( $httpcode >= 300 ) {
+            throw new NotFoundException( json_encode( [
+                'http_code'=>$httpcode,
+                'json_error_message'=>json_last_error_msg(),
+                'curl_error_message'=>$info
+            ] ) );
+        }
+
+        return true;
+    }
 }

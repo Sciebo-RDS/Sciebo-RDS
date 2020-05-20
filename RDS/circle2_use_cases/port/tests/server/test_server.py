@@ -73,8 +73,9 @@ class Test_TokenServiceServer(unittest.TestCase):
             'GET', f"/service/{service.servicename}"
         ) .will_respond_with(200, body=service.to_json())
 
-        response = self.client.get(
-            f"/port-service/service/{service.servicename}")
+        with pact:
+            response = self.client.get(
+                f"/port-service/service/{service.servicename}")
         self.assertEqual(response.status_code, 200,
                          msg=response.get_data(as_text=True))
 
@@ -110,13 +111,30 @@ class Test_TokenServiceServer(unittest.TestCase):
         }
         import base64
         import json
-        state = jwt.encode(data, key, algorithm="HS256")
+        stateReal = jwt.encode(data, key, algorithm="HS256")
         state = base64.b64encode(json.dumps(
-            {"jwt": state.decode("utf-8"), "user": user.username}).encode("utf-8"))
+            {"jwt": stateReal.decode("utf-8"), "user": user.username}).encode("utf-8"))
+
+        pluginDict = {
+            "servicename": service.servicename,
+            "state": stateReal.decode("utf-8"),
+            "userId": user.username,
+            "code": code
+        }
+        jwtEncode = jwt.encode(
+            pluginDict, service.client_secret, algorithm="HS256")
 
         # need pact for service from Token Storage
         pact.given(
-            'An oauthservice was registered.'
+            'An oauthservice was registered again.'
+        ).upon_receiving(
+            'A request to get this oauthservice.'
+        ).with_request(
+            'GET', f"/service/{service.servicename}"
+        ) .will_respond_with(200, body=service.to_json())
+
+        pact.given(
+            'An oauthservice was registered again 2.'
         ).upon_receiving(
             'A request to get this oauthservice.'
         ).with_request(
@@ -146,12 +164,10 @@ class Test_TokenServiceServer(unittest.TestCase):
         ) .will_respond_with(201, body={"success": True})
 
         with pact:
-            response = self.client.get(
-                "/port-service/redirect", query_string={"code": code, "state": state})
+            response = self.client.post(
+                "/port-service/exchange", json={"jwt": jwtEncode.decode("utf-8")})
 
-        self.assertEqual(response.status_code, 302, msg=response.get_data())
-        self.assertEqual(
-            response.headers["location"], "http://localhost/port-service/authorization-success", msg=response.get_data())
+        self.assertEqual(response.status_code, 204, msg=response.get_data())
 
         # TODO: add tests here for redirects to cancel page
         # test for no service found

@@ -36,7 +36,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
         app.add_api(oai, resolver=MultipleResourceResolver(
             'api', collection_endpoint_name="index"), validate_responses=True)
 
+    monkeypatch()
     return app
 
 
-monkeypatch()
