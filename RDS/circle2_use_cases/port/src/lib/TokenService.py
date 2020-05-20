@@ -409,7 +409,7 @@ class TokenService():
             "code": code,
             "client_id": service.client_id,
             "client_secret": service.client_secret,
-            "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:8080"))
+            "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:3000"))
         }
 
         logger.info(f"request body: {body}")

@@ -171,7 +171,7 @@ class OAuth2Service(Service):
         data = {
             "grant_type": "refresh_token",
             "refresh_token": token.refresh_token,
-            "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:8080")),
+            "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:3000")),
             "client_id": self.client_id,
             "client_secret": self.client_secret,
         }
