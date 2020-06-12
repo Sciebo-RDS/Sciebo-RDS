@@ -71,12 +71,18 @@ uninstall_circle1: remove_port_zenodo remove_port_owncloud
 uninstall_circle2: remove_service_token remove_service_exporter remove_service_metadata
 uninstall_circle3: remove_storage_token remove_storage_research
 
+install_tls:
+	chmod +x create_certs.sh && ./create_certs.sh
+
+uninstall_tls:
+	kubectl delete secret sciebords-tls-public
+
 install_secets: 
 	kubectl apply -k .
 
 uninstall_secrets:
-	kubectl delete secrets owncloud-oauth-client-secret
-	kubectl delete secrets zenodo-oauth-client-secret
+	kubectl delete secret owncloud-oauth-client-secret
+	kubectl delete secret zenodo-oauth-client-secret
 
 install: install_secrets install_configmaps features circle3 circle2 circle1
 uninstall: uninstall_circle1 uninstall_circle2 uninstall_circle3 remove_features uninstall_configmaps uninstall_secrets
