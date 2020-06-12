@@ -9,8 +9,7 @@ image:
   tag: connnectUI
   pullPolicy: Always
 
-imagePullSecrets:
-  - name: gitlab-registry
+
 nameOverride: ""
 fullnameOverride: ""
 
