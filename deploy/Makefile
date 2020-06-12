@@ -77,7 +77,7 @@ install_tls:
 uninstall_tls:
 	kubectl delete secret sciebords-tls-public
 
-install_secets: 
+install_secrets: 
 	kubectl apply -k .
 
 uninstall_secrets:

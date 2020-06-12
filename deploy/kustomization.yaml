@@ -1,0 +1,7 @@
+secretGenerator:
+- name: owncloud-oauth-client-secret
+  literals:
+  - secret=4Q6qwSDxiU9qAkd9gScxjG3Kw9QuVjz7RNSGSYQ5xrKfI5GIuSdb3aX3oRaMlGyA
+- name: zenodo-oauth-client-secret
+  literals:
+  - secret=ktsrnc67vDCQ6KD8PnlKkXBfxapSstiSMbcyXwFcDKlJQV40YpshrvCu1sPo
