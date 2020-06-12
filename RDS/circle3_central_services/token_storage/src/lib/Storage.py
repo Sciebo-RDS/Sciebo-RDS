@@ -418,6 +418,8 @@ class Storage():
                 logging.getLogger().error(e)
             except requests.exceptions.RequestException as e:
                 logging.getLogger().error(e)
+            except Exception as e:
+                return False
 
         return found
 
