@@ -44,28 +44,28 @@ features:
 	helm upgrade jaeger jaegertracing/jaeger --install --values jaeger.yaml
 
 remove_features:
-	helm delete --purge jaeger || true
+	helm uninstall jaeger || true
 
 remove_port_zenodo:
-	helm delete --purge circle1-port-zenodo || true
+	helm uninstall circle1-port-zenodo || true
 
 remove_port_owncloud:
-	helm delete --purge circle1-port-owncloud || true
+	helm uninstall circle1-port-owncloud || true
 
 remove_service_exporter:
-	helm delete --purge circle2-exporter-service || true
+	helm uninstall circle2-exporter-service || true
 
 remove_service_token:
-	helm delete --purge circle2-port-service || true
+	helm uninstall circle2-port-service || true
 
 remove_service_metadata:
-	helm delete --purge circle2-metadata-service || true
+	helm uninstall circle2-metadata-service || true
 
 remove_storage_token:
-	helm delete --purge circle3-token-storage || true
+	helm uninstall circle3-token-storage || true
 
 remove_storage_research:
-	helm delete --purge circle3-research-manager || true
+	helm uninstall circle3-research-manager || true
 
 uninstall_circle1: remove_port_zenodo remove_port_owncloud
 uninstall_circle2: remove_service_token remove_service_exporter remove_service_metadata
