@@ -21,10 +21,13 @@ def get_port_string(name):
     return f"http://circle1-port-{service}"
 
 
-class TokenService():
+class TokenService:
     # static
-    secret = os.getenv("TOKENSERVICE_STATE_SECRET") if os.getenv(
-        "TOKENSERVICE_STATE_SECRET") is not None else secrets.token_urlsafe()
+    secret = (
+        os.getenv("TOKENSERVICE_STATE_SECRET")
+        if os.getenv("TOKENSERVICE_STATE_SECRET") is not None
+        else secrets.token_urlsafe()
+    )
     address = os.getenv("CENTRAL_SERVICE_TOKEN_STORAGE")
 
     _services = None
@@ -62,8 +65,7 @@ class TokenService():
         if isinstance(service, Service):
             service = service.servicename
 
-        response = requests.get(
-            f"{self.address}/service/{service}")
+        response = requests.get(f"{self.address}/service/{service}")
 
         if response.status_code is not 200:
             raise ServiceNotFoundError(Service(service))
@@ -151,11 +153,13 @@ class TokenService():
             "servicename": service.servicename,
             "authorize_url": service.authorize_url,
             "date": date,
-            "implements": service.implements
+            "implements": service.implements,
         }
-        state = jwt.encode(data, self.secret, algorithm='HS256')
+        state = jwt.encode(data, self.secret, algorithm="HS256")
+        logger.info("state: {}, data: {}".format(state, data))
 
-        new_obj["jwt"] = state
+        new_obj["jwt"] = state.decode("utf-8")
+        logger.info("return: {}".format(new_obj))
 
         return new_obj
 
@@ -172,13 +176,15 @@ class TokenService():
         try:
             for index, l in enumerate(data["list"]):
                 token = Token.init(l)
-                services.append({
-                    "id": index,
-                    "servicename": token.servicename,
-                    "access_token": token.access_token,
-                    "projects": self.getProjectsForToken(token),
-                    "implements": token._service.implements
-                })
+                services.append(
+                    {
+                        "id": index,
+                        "servicename": token.servicename,
+                        "access_token": token.access_token,
+                        "projects": self.getProjectsForToken(token),
+                        "implements": token._service.implements,
+                    }
+                )
         except:
             raise UserNotFoundError(user)
 
@@ -193,8 +199,9 @@ class TokenService():
         if self.address.startswith("http://localhost"):
             port = self.address
 
-        req = requests.get(f"{port}/metadata/project",
-                           json={"apiKey": token.access_token})
+        req = requests.get(
+            f"{port}/metadata/project", json={"apiKey": token.access_token}
+        )
 
         if req.status_code >= 300:
             return []
@@ -208,16 +215,13 @@ class TokenService():
         """
 
         token = self.getTokenForServiceFromUser(service, user)
-        data = {
-            "apiKey": token.access_token
-        }
+        data = {"apiKey": token.access_token}
 
         port = get_port_string(service.servicename)
         if self.address.startswith("http://localhost"):
             port = self.address
 
-        req = requests.post(
-            "{}/metadata/project".format(port), json=data)
+        req = requests.post("{}/metadata/project".format(port), json=data)
 
         if req.status_code < 300:
             project = req.json()
@@ -225,22 +229,23 @@ class TokenService():
 
         raise ProjectNotCreatedError(service)
 
-    def removeProjectForUserInService(self, user: User, service: Service, project_id: int) -> bool:
+    def removeProjectForUserInService(
+        self, user: User, service: Service, project_id: int
+    ) -> bool:
         """
         Remove the project with id for user in service.
         Returns True when success. Otherwise False.
         """
         token = self.getTokenForServiceFromUser(service, user)
-        data = {
-            "apiKey": token.access_token
-        }
+        data = {"apiKey": token.access_token}
 
         port = get_port_string(service.servicename)
         if self.address.startswith("http://localhost"):
             port = self.address
 
         req = requests.delete(
-            "{}/metadata/project/{}".format(port, project_id), json=data)
+            "{}/metadata/project/{}".format(port, project_id), json=data
+        )
 
         return req.status_code == 204
 
@@ -298,7 +303,8 @@ class TokenService():
         """
 
         response = requests.post(
-            f"{self.address}/user/{user.username}/token", data=json.dumps(token))
+            f"{self.address}/user/{user.username}/token", data=json.dumps(token)
+        )
         data = response.json()
 
         if response.status_code is not 200:
@@ -328,9 +334,12 @@ class TokenService():
 
         return self.internal_removeTokenForStringFromUser(token.service, user)
 
-    def internal_removeTokenForStringFromUser(self, service: Service, user: User) -> bool:
+    def internal_removeTokenForStringFromUser(
+        self, service: Service, user: User
+    ) -> bool:
         response = requests.delete(
-            f"{self.address}/user/{user.username}/token/{service.servicename}")
+            f"{self.address}/user/{user.username}/token/{service.servicename}"
+        )
         data = response.json()
         if response.status_code is not 200:
             if "error" in data:
@@ -352,7 +361,8 @@ class TokenService():
         Raise ServiceNotExistsError, if no token for service was found.
         """
         response = requests.get(
-            f"{self.address}/user/{user.username}/token/{service.servicename}")
+            f"{self.address}/user/{user.username}/token/{service.servicename}"
+        )
 
         data = response.json()
         while type(data) is not dict:
@@ -361,8 +371,7 @@ class TokenService():
         if response.status_code is not 200:
             if "error" in data:
                 if data["error"] == "TokenNotExistsError":
-                    raise TokenNotFoundError(
-                        Token(user, service, "NOT_USED"))
+                    raise TokenNotFoundError(Token(user, service, "NOT_USED"))
                 if data["error"] == "UserNotExistsError":
                     raise UserNotFoundError(user)
                 if data["error"] == "ServiceNotExistsError":
@@ -387,21 +396,26 @@ class TokenService():
         except TokenNotFoundError:
             raise ServiceNotFoundError(service)
 
-    def exchangeAuthCodeToAccessToken(self, code: str, service: Union[str, OAuth2Service], user=None) -> OAuth2Token:
+    def exchangeAuthCodeToAccessToken(
+        self, code: str, service: Union[str, OAuth2Service], user=None
+    ) -> OAuth2Token:
         """
         Exchanges the given `code` by the given `service`
         """
 
         if not isinstance(service, (str, OAuth2Service)):
             raise ValueError(
-                f"Given service argument {service} is not a valid string or OAuth2Service.")
+                f"Given service argument {service} is not a valid string or OAuth2Service."
+            )
 
         if type(service) is str:
             service = self.getService(service, clean=True)
 
             if not isinstance(service, OAuth2Service):
                 raise ServiceNotFoundError(
-                    service, msg=f"No oauthservice for {service} found, so we cannot exchange code.")
+                    service,
+                    msg=f"No oauthservice for {service} found, so we cannot exchange code.",
+                )
 
         # FIXME: FLASK_HOST_ADDRESS needs to be set in dockerfile
         body = {
@@ -409,13 +423,18 @@ class TokenService():
             "code": code,
             "client_id": service.client_id,
             "client_secret": service.client_secret,
-            "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:3000"))
+            "redirect_uri": "{}/redirect".format(
+                os.getenv("FLASK_HOST_ADDRESS", "http://localhost:3000")
+            ),
         }
 
         logger.info(f"request body: {body}")
 
-        response = requests.post(f"{service.refresh_url}", data=body, auth=(
-            service.client_id, service.client_secret))
+        response = requests.post(
+            f"{service.refresh_url}",
+            data=body,
+            auth=(service.client_id, service.client_secret),
+        )
 
         logger.info(f"response body: {response.text}")
 
@@ -438,24 +457,30 @@ class TokenService():
 
         access_token = response_with_access_token["access_token"]
         refresh_token = response_with_access_token["refresh_token"]
-        exp_date = datetime.datetime.now(
-        ) + datetime.timedelta(seconds=response_with_access_token["expires_in"])
+        exp_date = datetime.datetime.now() + datetime.timedelta(
+            seconds=response_with_access_token["expires_in"]
+        )
 
-        oauthtoken = OAuth2Token(User(user_id),
-                                 service, access_token, refresh_token, exp_date)
+        oauthtoken = OAuth2Token(
+            User(user_id), service, access_token, refresh_token, exp_date
+        )
 
         # save the access_token in tokenStorage
         logger.info(f"request oauthtoken body: {oauthtoken}")
-        headers = {'Content-type': 'application/json'}
+        headers = {"Content-type": "application/json"}
 
         # adjustment to new model in c3 token storage
 
         response = requests.post(
-            f"{self.address}/user/{user}/token", data=json.dumps(oauthtoken), headers=headers)
+            f"{self.address}/user/{user}/token",
+            data=json.dumps(oauthtoken),
+            headers=headers,
+        )
         logger.info(f"response oauthtoken body: {response.text}")
 
         if response.status_code >= 300:
             raise CodeNotExchangeable(
-                response.status_code, Service(service.servicename), msg=response.text)
+                response.status_code, Service(service.servicename), msg=response.text
+            )
 
         return oauthtoken
