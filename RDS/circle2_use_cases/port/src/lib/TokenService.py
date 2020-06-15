@@ -155,7 +155,7 @@ class TokenService():
         }
         state = jwt.encode(data, self.secret, algorithm='HS256')
 
-        new_obj["jwt"] = state.decode("utf-8")
+        new_obj["jwt"] = state
 
         return new_obj
 
