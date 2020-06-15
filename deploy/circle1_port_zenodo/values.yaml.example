@@ -53,8 +53,8 @@ tolerations: []
 affinity: {}
 
 environment: 
-  ZENODO_OAUTH_AUTHORIZE_URL: https://sandbox.zenodo.org%2Foauth%2Fauthorize%3Fscope%3Ddeposit%253Awrite%2520deposit%253Aactions%26redirect_uri%3Dhttps%253A%252F%252Fsciebords-dev.uni-muenster.de%252Fport-service%252Fredirect%26response_type%3Dcode%26client_id%3DfeYfqBVCfNDJTQyQRXWiJ8eoga99GxKzXYAZXvbm
   ZENODO_OAUTH_ACCESS_TOKEN_URL: https://sandbox.zenodo.org/oauth/token
+  RDS_OAUTH_REDIRECT_URI: https://sciebords-dev.uni-muenster.de/port-service/redirect
   ZENODO_OAUTH_CLIEND_ID: ABC
   ZENODO_OAUTH_CLIENT_SECRET: XYZ
   ZENODO_ADDRESS: https://sandbox.zenodo.org

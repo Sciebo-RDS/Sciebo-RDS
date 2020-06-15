@@ -30,7 +30,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: "ZENODO_OAUTH_AUTHORIZE_URL"
-            value: "{{ .Values.environment.ZENODO_OAUTH_AUTHORIZE_URL }}"
+            value: {{ .Values.environment.ZENODO_ADDRESS }}/oauth/authorize?scope=deposit%3Awrite%20deposit%3Aactions&redirect_uri={{ .Values.environment.RDS_OAUTH_REDIRECT_URI }}&response_type=code&client_id={{ .Values.environment.ZENODO_OAUTH_CLIEND_ID }}
           - name: "ZENODO_OAUTH_ACCESS_TOKEN_URL"
             value: "{{ .Values.environment.ZENODO_OAUTH_ACCESS_TOKEN_URL }}"
           - name: "ZENODO_OAUTH_CLIEND_ID"
