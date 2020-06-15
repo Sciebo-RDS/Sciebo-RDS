@@ -4,9 +4,6 @@ install_configmap_proxy:
 install_configmap_mserviceurl:
 	kubectl apply -f configmaps/mserviceurl.yaml
 
-remove_configmap_proxy:
-	kubectl delete -f configmaps/httpproxy.yaml
-
 remove_configmap_mserviceurl:
 	kubectl delete -f configmaps/mserviceurl.yaml
 
@@ -77,15 +74,14 @@ install_tls:
 uninstall_tls:
 	kubectl delete secret sciebords-tls-public
 
-install_secrets: 
+install_kustomization: 
 	kubectl apply -k .
 
-uninstall_secrets:
-	kubectl delete secret owncloud-oauth-client-secret
-	kubectl delete secret zenodo-oauth-client-secret
+uninstall_kustomization:
+	kubectl delete -k .
 
-install: install_secrets install_configmaps features circle3 circle2 circle1
-uninstall: uninstall_circle1 uninstall_circle2 uninstall_circle3 remove_features uninstall_configmaps uninstall_secrets
+install: install_kustomization install_configmaps features circle3 circle2 circle1
+uninstall: uninstall_circle1 uninstall_circle2 uninstall_circle3 remove_features uninstall_kustomization
 clean: uninstall
 reinstall: uninstall install
 reinstall_fast: uninstall_circle1 uninstall_circle2 uninstall_circle3 circle3 circle2 circle1

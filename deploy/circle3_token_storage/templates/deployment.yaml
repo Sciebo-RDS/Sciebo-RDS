@@ -25,36 +25,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-          - name: HTTP_PROXY
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: http
-          - name: HTTPS_PROXY
-            valueFrom:
-            configMapKeyRef:
-              name: proxy
-              key: http
-          - name: http_proxy
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: http
-          - name: https_proxy
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: http
-          - name: no_proxy
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: no_http_proxy
-          - name: NO_PROXY
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: no_http_proxy
+          - configMapRef:
+            name: proxy
           ports:
             - name: http
               containerPort: 8080

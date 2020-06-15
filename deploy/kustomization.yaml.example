@@ -1,7 +1,9 @@
-secretGenerator:
-- name: owncloud-oauth-client-secret
-  literals:
-  - secret=xyzABC
-- name: zenodo-oauth-client-secret
-  literals:
-  - secret=xyzABC
+configMapGenerator:
+  - name: proxy
+    literals:
+      - http_proxy=http://wwwproxy.uni-muenster.de:3128
+      - HTTP_PROXY=http://wwwproxy.uni-muenster.de:3128
+      - https_proxy=http://wwwproxy.uni-muenster.de:3128
+      - HTTPS_PROXY=http://wwwproxy.uni-muenster.de:3128
+      - no_proxy=10.14.28.90,circle1-port-owncloud,circle1-port-zenodo,circle2-port-service,circle3-token-storage,circle3-research-manager
+      - NO_PROXY=10.14.28.90,circle1-port-owncloud,circle1-port-zenodo,circle2-port-service,circle3-token-storage,circle3-research-manager
