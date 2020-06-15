@@ -26,11 +26,11 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: "OWNCLOUD_OAUTH_AUTHORIZE_URL"
-            value: "{{ .Values.environment.OWNCLOUD_INSTALLATION_URL }}/index.php/apps/oauth2/authorize?redirect_uri={{ .Values.environment.RDS_OAUTH_REDIRECT_URI }}&response_type=code&client_id={{ .Values.environment.OWNCLOUD_OAUTH_CLIEND_ID }}"
+            value: "{{ .Values.environment.OWNCLOUD_INSTALLATION_URL }}/index.php/apps/oauth2/authorize?redirect_uri={{ .Values.environment.RDS_OAUTH_REDIRECT_URI }}&response_type=code&client_id={{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_ID }}"
           - name: "OWNCLOUD_OAUTH_ACCESS_TOKEN_URL"
             value: "{{ .Values.environment.OWNCLOUD_OAUTH_ACCESS_TOKEN_URL }}"
-          - name: "OWNCLOUD_OAUTH_CLIEND_ID"
-            value: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIEND_ID }}"
+          - name: "OWNCLOUD_OAUTH_CLIENT_ID"
+            value: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_ID }}"
           - name: OWNCLOUD_INSTALLATION_URL
             value: "{{ .Values.environment.OWNCLOUD_INSTALLATION_URL }}"
           - name: "OWNCLOUD_OAUTH_CLIENT_SECRET"

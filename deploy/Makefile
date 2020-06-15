@@ -80,7 +80,7 @@ install_kustomization:
 uninstall_kustomization:
 	kubectl delete -k .
 
-install: install_kustomization install_configmaps features circle3 circle2 circle1
+install: install_kustomization features circle3 circle2 circle1
 uninstall: uninstall_circle1 uninstall_circle2 uninstall_circle3 remove_features uninstall_kustomization
 clean: uninstall
 reinstall: uninstall install

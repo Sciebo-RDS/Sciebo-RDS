@@ -161,9 +161,9 @@ class test_end_to_end(unittest.TestCase):
         zenodo = OAuth2Service(
             "sandbox.zenodo.org",
             "https://sandbox.zenodo.org/oauth/authorize?scope=deposit%3Awrite+deposit%3Aactions&state=CHANGEME&redirect_uri=http%3A%2F%2Flocalhost%3A8080&response_type=code&client_id={}".format(
-                os.getenv("ZENODO_OAUTH_CLIEND_ID")),
+                os.getenv("ZENODO_OAUTH_CLIENT_ID")),
             "https://sandbox.zenodo.org/oauth/token",
-            os.getenv("ZENODO_OAUTH_CLIEND_ID"),
+            os.getenv("ZENODO_OAUTH_CLIENT_ID"),
             os.getenv("ZENODO_OAUTH_CLIENT_SECRET")
         )
 

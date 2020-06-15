@@ -6,7 +6,7 @@ zenodo_oauth_authorize = os.getenv(
     "ZENODO_OAUTH_AUTHORIZE_URL", "https://sandbox.zenodo.org/oauth/authorize")
 zenodo_oauth_token_url = os.getenv(
     "ZENODO_OAUTH_ACCESS_TOKEN_URL", "https://sandbox.zenodo.org/oauth/token")
-zenodo_oauth_id = os.getenv("ZENODO_OAUTH_CLIEND_ID", "XY")
+zenodo_oauth_id = os.getenv("ZENODO_OAUTH_CLIENT_ID", "XY")
 zenodo_oauth_secret = os.getenv("ZENODO_OAUTH_CLIENT_SECRET", "ABC")
 
 

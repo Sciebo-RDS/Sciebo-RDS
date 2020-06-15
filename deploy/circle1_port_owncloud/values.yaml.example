@@ -57,5 +57,5 @@ environment:
   OWNCLOUD_INSTALLATION_URL: http://10.14.28.90/owncloud
   OWNCLOUD_OAUTH_REDIRECT_URI: https://sciebords-dev.uni-muenster.de/port-service/redirect
   OWNCLOUD_OAUTH_ACCESS_TOKEN_URL: http://10.14.28.90/owncloud/index.php/apps/oauth2/api/v1/token
-  OWNCLOUD_OAUTH_CLIEND_ID: ABC
+  OWNCLOUD_OAUTH_CLIENT_ID: ABC
   OWNCLOUD_OAUTH_CLIENT_SECRET: XYZ
