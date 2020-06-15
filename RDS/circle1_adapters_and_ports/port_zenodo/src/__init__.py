@@ -37,7 +37,7 @@ def bootstrap(name='MicroService', *args, **kwargs):
 
 
 def register_service(servicename: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
-    tokenStorage = os.getenv("CENTRAL-SERVICE_TOKEN-STORAGE")
+    tokenStorage = os.getenv("CENTRAL_SERVICE_TOKEN_STORAGE")
     if tokenStorage is None:
         return False
 

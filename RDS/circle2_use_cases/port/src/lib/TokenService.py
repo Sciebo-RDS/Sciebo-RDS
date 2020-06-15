@@ -25,7 +25,7 @@ class TokenService():
     # static
     secret = os.getenv("TOKENSERVICE_STATE_SECRET") if os.getenv(
         "TOKENSERVICE_STATE_SECRET") is not None else secrets.token_urlsafe()
-    address = os.getenv("CENTRAL-SERVICE_TOKEN-STORAGE")
+    address = os.getenv("CENTRAL_SERVICE_TOKEN_STORAGE")
 
     _services = None
 

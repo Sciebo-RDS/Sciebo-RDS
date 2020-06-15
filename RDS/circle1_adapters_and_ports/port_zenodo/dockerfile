@@ -9,7 +9,7 @@ ADD ./requirements.txt ./
 RUN pip install -r requirements.txt
 
 # this has to be set separatley and safely
-ENV CENTRAL-SERVICE_TOKEN-STORAGE "http://circle3-token-storage"
+ENV CENTRAL_SERVICE_TOKEN_STORAGE "http://circle3-token-storage"
 ENV ZENODO_OAUTH_AUTHORIZE_URL "https://sandbox.zenodo.org/oauth/authorize"
 ENV ZENODO_OAUTH_ACCESS_TOKEN_URL "https://sandbox.zenodo.org/oauth/token"
 ENV ZENODO_OAUTH_CLIEND_ID "XY"
