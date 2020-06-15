@@ -14,11 +14,10 @@ class UserserviceController extends Controller {
 
     use Errors;
 
-    public function __construct( $AppName, IRequest $request, UserserviceportService $service, $userId, $secret ) {
+    public function __construct( $AppName, IRequest $request, UserserviceportService $service, $userId) {
         parent::__construct( $AppName, $request );
         $this->userId = $userId;
         $this->service = $service;
-        $this->secret = $secret;
     }
 
     /**
