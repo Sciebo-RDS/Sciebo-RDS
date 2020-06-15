@@ -16,10 +16,6 @@ spec:
         app.kubernetes.io/name: {{ include "circle1_port_zenodo.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-      initContainers:
-        - name: init-mysql
-          image: busybox
-          command: ['sh', '-c', 'until nslookup circle3-token-storage; do echo waiting for mysql; sleep 2; done;']
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -30,7 +26,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: "ZENODO_OAUTH_AUTHORIZE_URL"
-            value: {{ .Values.environment.ZENODO_ADDRESS }}/oauth/authorize?scope=deposit%3Awrite%20deposit%3Aactions&redirect_uri={{ .Values.environment.RDS_OAUTH_REDIRECT_URI }}&response_type=code&client_id={{ .Values.environment.ZENODO_OAUTH_CLIEND_ID }}
+            value: "{{ .Values.environment.ZENODO_ADDRESS }}/oauth/authorize?scope=deposit%3Awrite%20deposit%3Aactions&redirect_uri={{ .Values.environment.RDS_OAUTH_REDIRECT_URI }}&response_type=code&client_id={{ .Values.environment.ZENODO_OAUTH_CLIEND_ID }}"
           - name: "ZENODO_OAUTH_ACCESS_TOKEN_URL"
             value: "{{ .Values.environment.ZENODO_OAUTH_ACCESS_TOKEN_URL }}"
           - name: "ZENODO_OAUTH_CLIEND_ID"
