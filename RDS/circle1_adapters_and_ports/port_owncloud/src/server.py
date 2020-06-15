@@ -7,7 +7,7 @@ register_service(
     "Owncloud",
     os.getenv("OWNCLOUD_OAUTH_AUTHORIZE_URL", "http://localhost:3000"),
     os.getenv("OWNCLOUD_OAUTH_ACCESS_TOKEN_URL", "http://localhost:3000"),
-    os.getenv("OWNCLOUD_OAUTH_CLIEND_ID", ""),
+    os.getenv("OWNCLOUD_OAUTH_CLIENT_ID", ""),
     os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET", "")
 )
 

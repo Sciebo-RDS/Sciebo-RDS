@@ -8,7 +8,7 @@ register_service(
     "Zenodo",
     os.getenv("ZENODO_OAUTH_AUTHORIZE_URL"),
     os.getenv("ZENODO_OAUTH_ACCESS_TOKEN_URL"),
-    os.getenv("ZENODO_OAUTH_CLIEND_ID"),
+    os.getenv("ZENODO_OAUTH_CLIENT_ID"),
     os.getenv("ZENODO_OAUTH_CLIENT_SECRET")
 )
 
