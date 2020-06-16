@@ -31,3 +31,13 @@ build:port_owncloud:
         - RDS/circle1_adapters_and_ports/port_owncloud/**/*
         - RDS/circle2_use_cases/interface_port_file_storage.yml
         - RDS/circle3_central_services/interface_port_token_storage.yml
+
+doc:port_owncloud:
+  image: python:3.8
+  extends:
+  - .documentation
+  - .port_owncloud
+
+  script:
+  - cd $FOLDER
+  - make doc

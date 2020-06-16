@@ -28,3 +28,13 @@ build:use_case_metadata:
     changes:
       - RDS/circle2_use_cases/metadata/*
       - RDS/circle2_use_cases/metadata/**/*
+
+doc:use_case_metadata:
+  image: python:3.8
+  extends:
+  - .documentation
+  - .use_case_metadata
+
+  script:
+  - cd $FOLDER
+  - make doc

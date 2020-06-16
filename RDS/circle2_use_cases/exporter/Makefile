@@ -26,7 +26,7 @@ loc: dev
 
 doc: dev
 	pydocmd build
-	mv _build/pydocmd/port-service.md ../../../docs/content/doc/impl/use-cases/port-service-docstring.md
+	mv _build/pydocmd/exporter.md ../../../docs/content/doc/impl/use-cases/exporter-service-docstring.md
 	rm -r _build
 
 

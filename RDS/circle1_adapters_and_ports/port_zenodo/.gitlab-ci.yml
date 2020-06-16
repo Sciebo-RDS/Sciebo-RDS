@@ -31,3 +31,13 @@ build:port_zenodo:
       - RDS/circle1_adapters_and_ports/port_zenodo/**/*
       - RDS/circle2_use_cases/interface_port_metadata.yml
       - RDS/circle3_central_services/interface_port_token_storage.yml
+
+doc:port_zenodo:
+  image: python:3.8
+  extends:
+  - .documentation
+  - .port_zenodo
+
+  script:
+  - cd $FOLDER
+  - make doc

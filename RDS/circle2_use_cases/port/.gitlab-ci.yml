@@ -28,3 +28,13 @@ build:use_case_port_service:
     changes:
       - RDS/circle2_use_cases/port/*
       - RDS/circle2_use_cases/port/**/*
+
+doc:use_case_port_service:
+  image: python:3.8
+  extends:
+  - .documentation
+  - .use_case_port_service
+
+  script:
+  - cd $FOLDER
+  - make doc

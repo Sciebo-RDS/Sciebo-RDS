@@ -28,3 +28,14 @@ build:use_case_exporter:
     changes:
       - RDS/circle2_use_cases/exporter/*
       - RDS/circle2_use_cases/exporter/**/*
+
+
+doc:use_case_exporter:
+  image: python:3.8
+  extends:
+  - .documentation
+  - .use_case_exporter
+
+  script:
+  - cd $FOLDER
+  - make doc
