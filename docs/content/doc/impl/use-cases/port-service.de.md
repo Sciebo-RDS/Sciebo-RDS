@@ -11,7 +11,7 @@ mermaid: True
 
 # Kommunikation mit den Plugins
 
-Aufgrund der hohen Relevanz des zentralen Dienstes *Token Storage*, soll eine direkte Kommunikation zwischen diesen und der Außenwelt verhindert werden. Dafür kann der Anwender den TokenStorage Dienst im zweiten Zirkel verwenden, welcher die Funktionen für den Nutzer des zentralen Dienstes im dritten Zirkel anspricht. Für die Bequemlichkeit werden viele Konzepte erneut wegabstrahiert, sodass die Handhabung sehr bequem und einfach bleibt.
+Aufgrund der hohen Relevanz des zentralen Dienstes *Token Storage*, soll eine direkte Kommunikation zwischen diesen und der Außenwelt verhindert werden. Dafür kann der Anwender den *Port* Dienst im zweiten Zirkel verwenden, welcher die Funktionen für den Nutzer des zentralen Dienstes im dritten Zirkel anspricht. Für die Bequemlichkeit werden viele Konzepte erneut wegabstrahiert, sodass die Handhabung sehr bequem und einfach bleibt. Außerdem übernimmt der Dienst den gesamten Serverteil des OAuth-Workflows.
 
 Die Plugins müssen folgendes Sequenzdiagramm befolgen, sodass es Zugangsdaten eines Nutzers für einen anzuschließenden Dienst im RDS-System hinterlegen kann.
 

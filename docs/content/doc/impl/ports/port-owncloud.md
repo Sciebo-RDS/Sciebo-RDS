@@ -1,6 +1,6 @@
 ---
 title: Port Owncloud
-subtitle: Arbeite auf deinen Owncloud Dateien in RDS.
+subtitle: Work on your files from owncloud within RDS
 
 menu:
   doc:
@@ -8,12 +8,12 @@ menu:
 weight: 1000
 ---
 
-## OpenAPI v3
+# OpenAPI v3
 
 {{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/connnectUI/RDS/circle2_use_cases/interface_port_file_storage.yml"  >}}
 
-## Implementierung
+# Implementation
 
-Die folgende Klasse implementiert eine Bibliothek, um eine Owncloud-Installation verwenden zu können.
+The following classes implements a library to work easier with an owncloud installation.
 
 {{% code file="doc/impl/ports/port-owncloud-docstring.md" %}}

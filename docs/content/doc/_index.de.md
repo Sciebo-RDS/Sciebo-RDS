@@ -6,42 +6,4 @@ weight: -999
 
 ## Arbeitsablauf
 
-`#TODO:` Alles über den Arbeitsablauf von Github, zu Gitlab über das Deployment auf Kubernetes in Sciebo.
-
-## Definition of Done
-
-`#TODO:` Aktualisieren
-
-### Für einen Microservice existiert
-
-- einen eigenen Ordner im (Mono-)Repo
-- eine gitlab-ci-Datei, welche ein
-    - Testen der nachfolgenden Anforderungen,
-    - erfolgreiches Kompilieren und
-    - Bauen eines Docker-Images ermöglicht.
-        - Das Docker-Image wird in der Gitlab-Registry abgelegt
-        - Das Docker-Image wird anhand des jeweiligen JobID anhand eines Tags markiert
-        - Das Docker-Image wird im Master bei einem Merge zusätzlich anhand eines Tags als latest markiert
-- eine funktionierende Kubernetes-Konfiguration in Form von Helm-Charts zum Deployen des Microservices in desselbigen
-    - mit einer Ingress-,
-    - einer Deployment- (mit einer Liveness- und/oder Readiness-Probe) und
-    - einer Service-Konfiguration
-
-### Für das Testen existiert
-
-- für jede komplexere Funktion mindestens ein Unit-Test mit einem sprachenspezifischen Testframework (PHPUnit, JUnit, PyTest, Jest etc), welcher folgende Fälle beinhaltet
-    - eine Standardeingabe mit erwarteten Parametern
-    - eine Null-Eingabe bei einem Parameter oder Null-Eingaben bei allen Parametern
-    - für sämtliche Randfälle, welche beim Sprint Planning identifiziert und in der Implementation geprüft werden
-- für jede extern anzubindende Funktion (meist fremde API-Endpunkte) ein Contract-Unit-Test mittels Pact
-    - die dabei entstehende Pact-Datei wird im dafür entsprechenden Gitlab-Projekt automatisch abgelegt
-
-### Für den Betrieb werden folgende Aspekte berücksichtigt:
-
-- Der Microservice bietet Prometheus-typische Metriken über ein API-Endpunkt an
-    - Zusätzliche Metriken wurden beim Sprint Planning entschieden und in einem entsprechenden Sprint Backlog festgehalten
-- Die Dokumentation der Software ist mindestens für extern verfügbaren Funktionen (sind als public deklariert oder API-Endpunkte) vorhanden und beinhaltet
-    - die API-Endpunkte sind durch OpenAPI v3 dokumentiert
-    - Funktionen sind mittels DocString-Kommentare dokumentiert
-        - eine Webseiten-Dokumentation nach etablierten Standard wird generiert und entsprechend der Projektstandards abgelegt
-- Der Microservice nutzt die Tracing-Technologie von Jaeger und greift entsprechende IDs auf und erstellt selbst eigene Spans und liefert diese zurück
+Wir benutzen Github als Ablage für den Quelltext. Als CI/CD Platform nutzen wir Gitlab und dessen eigene Runner, welche auch externen Personen zur Verfügung stehen durch eine Anbindung an das Github Repositorium. Diese werden automatisiert verwendet und dessen definierte Aufgaben angestoßen, sobald eine relevante Codezeile geändert wird. Dabei entstehen in Folge von erfolgreichen Testfällen ein Container (aktuell verwenden wir dafür Docker), welche im Gitlab-internen Paketeordner abgelegt wird, sodass von dort aus Kubernetes die erzeugten Container herunterladen und verwenden kann. Diese Pakete sind öffentlich zugänglich.

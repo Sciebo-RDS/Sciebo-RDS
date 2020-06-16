@@ -11,7 +11,7 @@ mermaid: true
 
 ## Diagramm
 
-Das folgende Diagramm zeigt den Datenfluss innerhalb des Service Ökosystems. Jeder Service ist verlinkt, sodass man von hier aus sehr schnell in die entsprechende Dokumentation schauen kann.
+Das folgende Diagramm zeigt den Datenfluss innerhalb des Service Ökosystems. Jeder Service ist verlinkt, sodass man von hier aus sehr schnell in die entsprechende Dokumentation schauen kann, indem man auf den jeweiligen Knoten drückt.
 
 ```mermaid
 graph TD;
@@ -28,11 +28,10 @@ graph TD;
 
       PInvenio[Port Invenio]
       POwncloud[Port Owncloud]
-      ARegister[Adapter Register]
 
       subgraph Use Cases
         UCExporter[Exporter Service]
-        %% UCToken[Token Service]
+        UCPort[Port Service]
         UCMetadata[Metadata Service]
         %% UCProject[Project Service]
 
@@ -49,7 +48,7 @@ graph TD;
   click SPAEx "/de/doc/impl/adapters/spa-exporter/"
   click SPATS "/de/doc/impl/adapters/spa-token-storage"
   click UCExporter "/de/doc/impl/use-cases/exporter"
-  click UCToken "/de/doc/impl/use-cases/port-service"
+  click UCPort "/de/doc/impl/use-cases/port-service"
   click CSProject "/de/doc/impl/central/research-manager"
   click PInvenio "/de/doc/impl/ports/port-invenio"
   click POwncloud "/de/doc/impl/ports/port-storage"
@@ -59,14 +58,12 @@ graph TD;
 
   %% Ingress --> SPAEx --> UCExporter
   %% Ingress --> SPATS --> CSToken
-  Ingress -->|Nur für die Registration von neuen Tokens| ARegister
-  Ingress --> CSProject & UCExporter & UCMetadata
-
-  ARegister --> CSToken
+  %% Ingress -->|Nur für die Registration von neuen Tokens| ARegister
+  Ingress --> CSProject & UCExporter & UCMetadata & UCPort
 
   %% UCExporter --> UCProject
   %% UCProject --> CSProject
-  %% UCToken --> CSToken
+  UCPort --> CSToken
 
   CSToken --- PInvenio & POwncloud
   UCExporter & UCMetadata --> PInvenio & POwncloud & CSProject
