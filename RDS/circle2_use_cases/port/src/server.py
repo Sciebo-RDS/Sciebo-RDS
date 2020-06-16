@@ -1,5 +1,5 @@
 from __init__ import bootstrap
-import logging
+import logging, os
 
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "DEBUG"))
 
@@ -8,4 +8,4 @@ if __name__ == "__main__":
 
     # set the WSGI application callable to allow using uWSGI:
     # uwsgi --http :8080 -w app
-    app.run(port=8080, server='gevent')
+    app.run(port=8080, server="gevent")
