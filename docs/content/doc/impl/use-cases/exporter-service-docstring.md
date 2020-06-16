@@ -1,0 +1,108 @@
+
+# lib.ExporterService
+
+
+# lib.Research
+
+
+## Research
+```python
+Research(self,
+         userId=None,
+         researchIndex=None,
+         researchId=None,
+         testing=False)
+```
+
+
+### getServices
+```python
+Research.getServices()
+```
+
+Returns all services, which are currently configured in the research project.
+
+
+### getServicesImport
+```python
+Research.getServicesImport()
+```
+
+Returns all services, which are currently configured as import in the research project.
+
+
+### getServicesExport
+```python
+Research.getServicesExport()
+```
+
+Returns all services, which are currently configured as export in the research project.
+
+
+### synchronization
+```python
+Research.synchronization()
+```
+
+Synchronize all files between import services and export services.
+
+
+### addFile
+```python
+Research.addFile(*args, **kwargs)
+```
+
+Wrapper function to call addFile in all export services objects with parameters.
+
+
+### removeAllFiles
+```python
+Research.removeAllFiles()
+```
+
+Remove all files in export services.
+
+Returns a boolean.
+
+
+### removeFile
+```python
+Research.removeFile(filepath)
+```
+
+Remove file with given filepath in all export services.
+
+
+### removeFileFromService
+```python
+Research.removeFileFromService(file_id, service)
+```
+
+Remove file with id in export service.
+
+
+# lib.Service
+
+
+## Service
+```python
+Service(self,
+        servicename,
+        userId,
+        researchIndex,
+        fileStorage=False,
+        metadata=False,
+        customProperties: list = None,
+        testing=False)
+```
+
+
+### getFiles
+```python
+Service.getFiles(getContent=False)
+```
+
+Returns a generator to iterate over.
+
+Returns the filepath string and the content of the file in the current used service.
+

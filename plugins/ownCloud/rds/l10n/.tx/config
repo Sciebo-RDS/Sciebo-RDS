@@ -5,6 +5,6 @@ lang_map = ja_JP: ja
 [sciebo-rds.plugins-owncloud-rds-l10n-templates-rds-pot--master]
 file_filter = <lang>/rds.po
 source_file = templates/rds.pot
-source_lang = en
+source_lang = en_US
 type = PO
 

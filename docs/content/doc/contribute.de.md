@@ -4,9 +4,6 @@ subtitle: Wie kannst Du bei diesem Projekt beitragen?
 weight: 10000
 ---
 
-Schau auf [dieser Seite](/de/page/contrib) nach, wenn Du ohne Programmierung mithelfen möchtest.
-
-
 Wir nutzen Github als Plattform für sämtliche Quelltextänderungen. Falls Du beitragen möchtest, kannst Du also den Github-Workflow nutzen, um einen Pull Request auf der Plattform abzusetzen. Anschließend werden wir uns deine Änderungen anschauen und akzeptieren, falls es den folgenden Kriterien entspricht.
 
 

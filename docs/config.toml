@@ -33,7 +33,7 @@ pygmentCodeFences = true
 
 [[languages.de.menu.main]]
     name = "Mithelfen"
-    url = "/de/page/contrib/"
+    url = "/de/doc/contribute/"
     weight = 25
     
 [[languages.de.menu.main]]
@@ -205,7 +205,7 @@ pygmentCodeFences = true
 
 [[menu.main]]
     name = "Contribute"
-    url = "page/contrib/"
+    url = "/doc/contribute/"
     weight = 25
     
 [[menu.main]]

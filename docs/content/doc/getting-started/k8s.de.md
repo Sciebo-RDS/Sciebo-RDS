@@ -8,7 +8,7 @@ menu:
 weight: 102
 ---
 
-Voraussetzung: Konfiguration getätigt
+Voraussetzung: [Konfiguration getätigt](/de/doc/getting-started/config/)
 
 Im "deploy"-Ordner ist eine Makefile, welche mit dem Programm *make* benutzt wird.
 
@@ -45,3 +45,7 @@ Das System installiert automatisch eine Jaeger-Instanz für das Verfolgen von Lo
 ```bash
 make jaeger
 ```
+
+Jaeger eignet sich besonders gut für die Identifizierung von Fehlern oder Problemen innerhalb des Ökosystems.
+
+Wird ein Prometheus-System verwendet, so werden automatisch sämtliche Metriken abgegriffen und im jeweiligen System angeboten. Eine standardisierte Sicht wird in Zukunft angeboten (siehe [Issue 39](https://github.com/Sciebo-RDS/Sciebo-RDS/issues/39)).

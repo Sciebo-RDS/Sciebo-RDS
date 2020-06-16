@@ -11,7 +11,9 @@ mermaid: true
 
 ## Diagramm
 
-Das folgende Diagramm zeigt den Datenfluss innerhalb des Service Ökosystems. Jeder Service ist verlinkt, sodass man von hier aus sehr schnell in die entsprechende Dokumentation schauen kann, indem man auf den jeweiligen Knoten drückt.
+Das folgende Diagramm zeigt den Datenfluss innerhalb des RDS Ökosystems. Jeder Service ist verlinkt, sodass man von hier aus sehr schnell in die entsprechende Dokumentation schauen kann, indem man auf den jeweiligen Knoten drückt.
+
+Hereinkommende Verbindungen werden u.a. von den Plugins aufgebaut (aktuell Owncloud). Weitere Integrationen sind möglich. (Informationen hierzu werden noch nachgetragen.)
 
 ```mermaid
 graph TD;
@@ -45,13 +47,15 @@ graph TD;
 
   WWWO[ausgehende Verbindungen]
 
-  click SPAEx "/de/doc/impl/adapters/spa-exporter/"
-  click SPATS "/de/doc/impl/adapters/spa-token-storage"
-  click UCExporter "/de/doc/impl/use-cases/exporter"
-  click UCPort "/de/doc/impl/use-cases/port-service"
-  click CSProject "/de/doc/impl/central/research-manager"
   click PInvenio "/de/doc/impl/ports/port-invenio"
   click POwncloud "/de/doc/impl/ports/port-storage"
+
+  click UCPort "/de/doc/impl/use-cases/port-service"
+  click UCExporter "/de/doc/impl/use-cases/exporter"
+  click UCMetadata "/de/doc/impl/use-cases/metadata"
+
+  click CSProject "/de/doc/impl/central/research-manager"
+  click CSToken ""/de/doc/impl/central/token-storage""
 
   %% define connections
   WWWI --> Ingress

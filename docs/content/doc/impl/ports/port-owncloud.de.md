@@ -1,6 +1,6 @@
 ---
-title: Port Zenodo
-subtitle: Exportiere deine Dateien zu einem Zenodo Repositorium.
+title: Port Owncloud
+subtitle: Arbeite auf deinen Owncloud Dateien in RDS.
 
 menu:
   doc:
@@ -8,12 +8,18 @@ menu:
 weight: 1000
 ---
 
+# Aufgabe
+
+Dieser Service übernimmt sämtliche Kommunikation mit der konfigurierten Owncloud-Instanz und stellt dessen Dateien dem RDS-System zur Verfügung.
+
+Aktuell kann dieser Service bei der Konfiguration von Forschungsprojekten lediglich als Quelldienst verwendet werden, da aktuell nur der Download von Dateien implementiert ist.
+
 ## OpenAPI v3
 
-{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_metadata.yml"  >}}
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_file_storage.yml"  >}}
 
 ## Implementierung
 
-Die folgende Klasse implementiert eine Bibliothek, um die Invenio-Installation "Zenodo" verwenden zu können.
+Die folgende Klasse implementiert eine Bibliothek, um eine Owncloud-Installation verwenden zu können.
 
-{{% code file="doc/impl/ports/port-invenio-docstring.md" %}}
+{{% code file="doc/impl/ports/port-owncloud-docstring.md" %}}

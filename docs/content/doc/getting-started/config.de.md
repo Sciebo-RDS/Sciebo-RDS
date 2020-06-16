@@ -37,4 +37,4 @@ cp values.yaml.example values.yaml
 nano values.yaml
 ```
 
-Sobald diese Anpassungen getätigt wurden, kann nun der Cluster installiert werden. (Mehr dazu unter Kubernetes)
+Sobald diese Anpassungen getätigt wurden, kann nun der Cluster installiert werden.

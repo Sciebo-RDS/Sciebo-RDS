@@ -9,9 +9,7 @@ weight: 1200
 mermaid: true
 ---
 
-## aktueller Stand
-
-(Oauth) Tokens lassen sich hinterlegen und löschen. Als nächstes müssen Projekte erstellt werden, um die Tokens auch in einem Workflow verwenden zu können.
+Dieser Plugin stellt die erste Integration von RDS in ein anderes Ökosystem dar. Um die Bedienbarkeit zu gewährleisten und möglichst niedrigschwellig zu gestalten, wird darauf geachtet, möglichst sämtliche Funktionsmöglichkeiten der Plattform zu verwenden und durch RDS zu erweitern.
 
 ## Einstellungen
 
