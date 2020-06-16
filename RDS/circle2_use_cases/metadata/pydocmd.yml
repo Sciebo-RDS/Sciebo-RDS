@@ -7,7 +7,7 @@ site_name: "My Documentation"
 generate:
 - metadata.md:
   - lib.Metadata++
-  - lib.Project++     # (+ to include members)
+  - lib.Research++     # (+ to include members)
 
 # MkDocs pages configuration. The `<<` operator is sugar added by pydocmd
 # that allows you to use an external Markdown file (eg. your project's README)

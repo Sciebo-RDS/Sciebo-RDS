@@ -9,3 +9,4 @@ _build
 .coverage
 deploy/secrets.yaml
 values.yaml
+kustomization.yaml
