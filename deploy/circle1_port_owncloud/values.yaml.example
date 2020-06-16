@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/port_owncloud
-  tag: connnectUI
+  tag: master
   pullPolicy: Always
 
 nameOverride: ""

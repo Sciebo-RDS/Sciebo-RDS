@@ -10,7 +10,7 @@ weight: 1000
 
 ## OpenAPI v3
 
-{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/connnectUI/RDS/circle2_use_cases/interface_port_metadata.yml"  >}}
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_metadata.yml"  >}}
 
 ## Implementierung
 
