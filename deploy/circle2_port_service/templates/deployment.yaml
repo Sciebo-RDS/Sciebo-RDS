@@ -27,10 +27,11 @@ spec:
           env:
           - name: "FLASK_HOST_ADDRESS"
             value: "{{ .Values.environment.FLASK_HOST_ADDRESS }}"
+          envFrom:
           - configMapRef:
-            name: mservice
+              name: mservice
           - configMapRef:
-            name: proxy
+              name: proxy
           ports:
             - name: http
               containerPort: 8080

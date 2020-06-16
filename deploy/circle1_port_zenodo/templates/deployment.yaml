@@ -26,7 +26,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: "ZENODO_OAUTH_AUTHORIZE_URL"
-            value: "{{ .Values.environment.ZENODO_ADDRESS }}/oauth/authorize%3Fredirect_uri={{ .Values.environment.RDS_OAUTH_REDIRECT_URI }}&response_type=code&scope=deposit%3Awrite%2520deposit%3Aactions&client_id={{ .Values.environment.ZENODO_OAUTH_CLIENT_ID }}"
+            value: "{{ .Values.environment.ZENODO_ADDRESS }}/oauth/authorize%3Fredirect_uri={{ .Values.environment.RDS_OAUTH_REDIRECT_URI }}&response_type=code&scope=deposit%3Awrite+deposit%3Aactions&client_id={{ .Values.environment.ZENODO_OAUTH_CLIENT_ID }}"
           - name: "ZENODO_OAUTH_ACCESS_TOKEN_URL"
             value: "{{ .Values.environment.ZENODO_OAUTH_ACCESS_TOKEN_URL }}"
           - name: "ZENODO_OAUTH_CLIENT_ID"
@@ -35,10 +35,11 @@ spec:
             value: "{{ .Values.environment.ZENODO_ADDRESS }}"
           - name: "ZENODO_OAUTH_CLIENT_SECRET"
             value: "{{ .Values.environment.ZENODO_OAUTH_CLIENT_SECRET }}"
+          envFrom:
           - configMapRef:
-            name: mservice
+              name: mservice
           - configMapRef:
-            name: proxy
+              name: proxy
           ports:
             - name: http
               containerPort: 8080

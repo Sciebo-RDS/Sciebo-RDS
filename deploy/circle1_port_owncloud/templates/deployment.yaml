@@ -35,10 +35,11 @@ spec:
             value: "{{ .Values.environment.OWNCLOUD_INSTALLATION_URL }}"
           - name: "OWNCLOUD_OAUTH_CLIENT_SECRET"
             value: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_SECRET }}"
+          envFrom:
           - configMapRef:
-            name: mservice
+              name: mservice
           - configMapRef:
-            name: proxy
+              name: proxy
           ports:
             - name: http
               containerPort: 8080
