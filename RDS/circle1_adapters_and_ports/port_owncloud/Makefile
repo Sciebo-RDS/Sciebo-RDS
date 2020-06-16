@@ -14,3 +14,8 @@ test:
 
 run:
 	python src/server.py
+
+doc: dev
+	pydocmd build
+	mv _build/pydocmd/port-owncloud.md ../../../docs/content/doc/impl/ports/port-owncloud-docstring.md
+	rm -r _build
