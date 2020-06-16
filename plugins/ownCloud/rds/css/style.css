@@ -1,0 +1,38 @@
+#app-content-wrapper {
+  height: 100%;
+}
+
+#research-overview {
+  visibility: visible;
+}
+
+#research-edit-service,
+#research-edit-file,
+#research-edit-metadata {
+  visibility: hidden;
+}
+
+#btn-add-new-service {
+  width: 100%;
+}
+
+.icon-rds-research-small {
+  background-image: url("../img/research-black-small.svg");
+}
+
+.icon-rds-research {
+  background-image: url("../img/research-black.svg");
+}
+
+.icon-rds-research-white {
+  background-image: url("../img/research-white.svg");
+}
+
+.icon-info {
+  padding: 8px;
+}
+
+.welcome {
+  padding: 10px;
+  border: 1px;
+}

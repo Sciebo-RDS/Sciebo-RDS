@@ -6,11 +6,10 @@ replicaCount: 1
 
 image:
   repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/use_case_metadata
-  tag: latest
+  tag: master
   pullPolicy: Always
 
-imagePullSecrets:
-  - name: gitlab-registry
+
 nameOverride: ""
 fullnameOverride: ""
 

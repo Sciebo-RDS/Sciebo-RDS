@@ -1,13 +1,14 @@
 import os
 import requests
 import logging
+from webdav3.client import Client
 
 logger = logging.getLogger()
 
 
 def loadAccessToken(userId: str, service: str):
     tokenStorageURL = os.getenv(
-        "USE_CASE_SERVICE_TOKEN_SERVICE", "http://localhost:3000")
+        "USE_CASE_SERVICE_PORT_SERVICE", "http://localhost:3000")
     # load access token from token-storage
     result = requests.get(
         f"{tokenStorageURL}/user/{userId}/service/{service}")
@@ -35,13 +36,34 @@ class OwncloudUser():
     _access_token = None
     _user_id = None
 
-    def __init__(self, userId):
+    def __init__(self, userId, apiKey=None):
         self._user_id = userId
-        self._access_token = loadAccessToken(userId, "Owncloud")
+        self._access_token = apiKey if apiKey is not None else loadAccessToken(
+            userId, "Owncloud")
+
+        options = {
+            'webdav_hostname': "{}/remote.php/webdav".format(os.getenv("OWNCLOUD_INSTALLATION_URL", "http://localhost:3000")),
+            'webdav_token': self._access_token
+        }
+        self.client = Client(options)
+
+    def getFolder(self, foldername):
+        logger.debug("foldername {}".format(foldername))
+
+        from urllib.parse import quote, unquote
+        if unquote(foldername) is not foldername:
+            foldername = unquote(foldername)
+        files = self.client.list(foldername)
+
+        logger.debug("found files: {}".format(files))
+
+        # remove the first element, because this is the searched folder.
+        del files[0]
+        return files
 
     def getFile(self, filename):
         """
-        Returns the given filename from specified owncloud. The path does not start with /.
+        Returns bytesIO content from specified owncloud filepath. The path does not start with /.
         """
 
         logger.debug("filename {}".format(filename))
@@ -50,22 +72,16 @@ class OwncloudUser():
 
         # check if string is already urlencoded
         # if unquote is equal to string, then it is not urlencoded (unquote respects plus sign)
-        if unquote(filename) is filename:
-            filename = quote(filename)
+        if unquote(filename) != filename:
+            filename = unquote(filename)
 
-        # TODO chunk download https://stackoverflow.com/questions/34503412/download-and-save-pdf-file-with-python-requests-module/34503421
-        headers = {
-            "Authorization": f"Bearer {self._access_token}"
-        }
-        url = "{}/remote.php/webdav/{}".format(os.getenv("OWNCLOUD_INSTALLATION_URL",
-                                                         "http://localhost:3000"), filename)
-        file = requests.get(url, headers=headers)
-
-        # FIXME: if its utf-8, then we should return text
-        # if file.encoding is "UTF-8":
-        #    return file.text
-
-        logger.debug("File is None? {}".format(file is None))
         from io import BytesIO
+        buffer = BytesIO(b'')
 
-        return BytesIO(file.content)
+        res1 = self.client.resource(filename)
+        res1.write_to(buffer)
+        buffer.seek(0)
+
+        logger.debug("file content: {}".format(buffer.getvalue()))
+
+        return buffer

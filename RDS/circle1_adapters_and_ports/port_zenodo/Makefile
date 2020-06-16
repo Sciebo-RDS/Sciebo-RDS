@@ -1,5 +1,6 @@
 # updates the pipfiles
 install:
+	@pip install pipenv | grep -v 'already satisfied' || true
 	@pipenv shell > /dev/null 2>&1 || true
 	@pip install -r requirements.txt | grep -v 'already satisfied' || true
 
@@ -13,7 +14,7 @@ update:
 
 test: dev
 	@#docker run -d --network host --privileged --name server docker.io/selenium/standalone-firefox || true
-	python -m pytest
+	python -m pytest --cov=src
 	@#docker stop server || true
 
 run: install
@@ -26,5 +27,5 @@ loc: dev
 
 doc: dev
 	pydocmd build
-	mv _build/pydocmd/token-service.md ../../../docs/content/doc/impl/use-cases/token-service-docstring.md
+	mv _build/pydocmd/port-zenodo.md ../../../docs/content/doc/impl/ports/port-invenio-docstring.md
 	rm -r _build

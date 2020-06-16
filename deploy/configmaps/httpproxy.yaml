@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: proxy
-data:
-  http: http://wwwproxy.uni-muenster.de:3128
-  no_http_proxy: "10.14.28.90,circle1-port-owncloud,circle1-port-zenodo,circle2-token-service,circle3-token-storage"

@@ -8,6 +8,7 @@ pytest = "*"
 pactman = "*"
 pygount = "*"
 pydoc-markdown = "*"
+pytest-cov = "*"
 
 [packages]
 requests = "*"
@@ -16,6 +17,7 @@ python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 pyjwt = "*"
+pathos = "*"
 
 [requires]
 python_version = "3.6"

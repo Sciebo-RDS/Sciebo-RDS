@@ -48,9 +48,9 @@ graph TD;
   click SPAEx "/doc/impl/adapters/spa-exporter/"
   click SPATS "/doc/impl/adapters/spa-token-storage"
   click UCExporter "/doc/impl/use-cases/exporter"
-  click UCToken "/doc/impl/use-cases/token-service"
+  click UCToken "/doc/impl/use-cases/port-service"
   click CSToken "/doc/impl/central/token-storage"
-  click CSProject "/doc/impl/central/project-manager"
+  click CSProject "/doc/impl/central/research-manager"
   click PInvenio "/doc/impl/ports/port-invenio"
   click POwncloud "/doc/impl/ports/port-storage"
 

@@ -9,94 +9,97 @@ pact = Consumer('UseCaseMetadata').has_pact_with(
 
 testing_address = "localhost:3000"
 
+unittest.TestCase.maxDiff = None
+
 
 class Test_Metadata(unittest.TestCase):
+
     def test_metadata_init(self):
         """
         This unit tests the metadata object constructor.
         """
 
+        Metadata(testing=testing_address)
+
+    def test_metadata_get_researchid(self):
+        """
+        This unit tests ability of metadata object to get the researchId for corresponding userId and research index.
+        """
         md = Metadata(testing=testing_address)
 
-    def test_metadata_get_projectid(self):
-        """
-        This unit tests ability of metadata object to get the projectId for corresponding userId and project index.
-        """
-        md = Metadata(testing=testing_address)
-
-        def test_projectId(userId, projectIndex, projectId):
+        def test_researchId(userId, researchIndex, researchId):
             nonlocal md
 
-            project = {
+            research = {
                 "userId": userId,
                 "status": 1,
                 "portIn": [],
                 "portOut": [],
-                "projectIndex": projectIndex,
-                "projectId": projectId
+                "researchIndex": researchIndex,
+                "researchId": researchId
             }
 
             pact.given(
-                'A project service with projects.'
+                'A research service with research.'
             ).upon_receiving(
-                f'A call to get the projectId from userId {userId} and projectIndex {projectIndex}.'
+                f'A call to get the researchId from userId {userId} and researchIndex {researchIndex}.'
             ).with_request(
-                'GET', f"/projects/user/{userId}/project/{projectIndex}"
-            ).will_respond_with(200, body=project)
+                'GET', f"/research/user/{userId}/research/{researchIndex}"
+            ).will_respond_with(200, body=research)
 
-            # should be the same as projectIndex, because there are no other projects
+            # should be the same as researchIndex, because there are no other research
             with pact:
-                result = md.getProjectId(userId, projectIndex)
-            self.assertEqual(result, projectId)
+                result = md.getResearchId(userId, researchIndex)
+            self.assertEqual(result, researchId)
 
         userId = "admin"
-        projectIndex = 0
-        projectId = 0
-        test_projectId(userId, projectIndex, projectId)
-        projectIndex = 1
-        projectId = 4
-        test_projectId(userId, projectIndex, projectId)
+        researchIndex = 0
+        researchId = 0
+        test_researchId(userId, researchIndex, researchId)
+        researchIndex = 1
+        researchId = 4
+        test_researchId(userId, researchIndex, researchId)
 
     @unittest.skip("This test is currently not needed, because getPort is tested in Project")
     def test_metadata_get_connector(self):
         """
-        This unit tests the ability of metadata object to get connector from a projectId.
+        This unit tests the ability of metadata object to get connector from a researchId.
         """
         md = Metadata(testing=testing_address)
 
-        def test_getPorts(func, userId, projectId, portIn, portOut):
-            project = {
+        def test_getPorts(func, userId, researchId, portIn, portOut):
+            research = {
                 "userId": userId,
                 "status": 1,
                 "portIn": portIn,
                 "portOut": portOut,
-                "projectId": projectIndex
+                "researchId": researchIndex
             }
 
             pact.given(
-                'A project service with projects.'
+                'A research service with research.'
             ).upon_receiving(
-                'A call to get the projectId from userId and projectIndex.'
+                'A call to get the researchId from userId and researchIndex.'
             ).with_request(
-                'GET', f"/projects/user/{userId}/project/{projectIndex}"
-            ).will_respond_with(200, body=project)
+                'GET', f"/research/user/{userId}/research/{researchIndex}"
+            ).will_respond_with(200, body=research)
 
             with pact:
-                result = func(userId, projectIndex)
+                result = func(userId, researchIndex)
             return result
 
         userId = "admin"
-        projectIndex = 0
+        researchIndex = 0
 
         for portIn in [[], ["port-owncloud"], ["port-owncloud", "port-zenodo"]]:
             for portOut in [[], ["port-owncloud"], ["port-owncloud", "port-zenodo"]]:
                 with self.subTest(portIn=portIn, portOut=portOut):
                     result = test_getPorts(md.getPortIn, userId,
-                                           projectIndex, portIn, portOut)
+                                           researchIndex, portIn, portOut)
                     self.assertEqual(result, portIn)
 
                     result = test_getPorts(md.getPortOut, userId,
-                                           projectIndex, portIn, portOut)
+                                           researchIndex, portIn, portOut)
                     self.assertEqual(result, portOut)
 
     def test_metadata_get_metadata_from_connector(self):
@@ -106,8 +109,9 @@ class Test_Metadata(unittest.TestCase):
         """
         md = Metadata(testing=testing_address)
 
-        projectId = 0
         port = "localhost:3000"
+        projectId = 5
+
         metadata = {
             "Creators": [{
                 "name":  "Mustermann, Max",
@@ -127,7 +131,7 @@ class Test_Metadata(unittest.TestCase):
         pact.given(
             'A port with metadata informations.'
         ).upon_receiving(
-            'A call to get the metadata from specific projectId.'
+            'A call to get the metadata from specific researchId.'
         ).with_request(
             'GET', f"/metadata/project/{projectId}"
         ).will_respond_with(200, body=metadata)
@@ -136,17 +140,18 @@ class Test_Metadata(unittest.TestCase):
             result = md.getMetadataForProjectFromPort(port, projectId)
         self.assertEqual(result, metadata)
 
-    def test_metadata_get_metadata_from_projectId(self):
+    def test_metadata_get_metadata_from_researchId(self):
         """
-        This unit tests the ability of metadata object to get metadata from a given projectId. 
-        This is the handy way with projectId.
+        This unit tests the ability of metadata object to get metadata from a given researchId.
+        This is the handy way with researchId.
         Notice: Should be very similar to `test_metadata_get_metadata_from_connector`
         """
         md = Metadata(testing=testing_address)
 
         userId = 20
-        projectIndex = 21
-        projectId = 22
+        researchIndex = 21
+        researchId = 22
+        projectId = 5
 
         metadata = {
             "Creators": [{
@@ -164,16 +169,21 @@ class Test_Metadata(unittest.TestCase):
             "Titles": [{"title": "This is a test title", "lang": "de"}]
         }
 
-        expected_project = {
+        expected_research = {
             "userId": userId,
-            "projectIndex": projectIndex
+            "researchIndex": researchIndex
         }
 
-        expected_project["projectId"] = projectId
-        expected_project["portIn"] = [{
+        expected_research["researchId"] = researchId
+        expected_research["portIn"] = [{
             "port": "port-zenodo",
             "properties": [{
                     "portType": "metadata", "value": True
+            }, {
+                "portType": "customProperties", "value": [{
+                    "key": "projectId",
+                    "value": str(projectId)
+                }]
             }]
         },
             {
@@ -183,7 +193,7 @@ class Test_Metadata(unittest.TestCase):
             }]
         }]
 
-        expected_project["portOut"] = [{
+        expected_research["portOut"] = [{
             "port": "port-zenodo",
             "properties": [{
                     "portType": "metadata", "value": True
@@ -191,18 +201,18 @@ class Test_Metadata(unittest.TestCase):
         }]
 
         pact.given(
-            'The project manager.'
+            'The research manager.'
         ).upon_receiving(
-            f'A call to get the projectIndex {projectIndex} and user {userId}.'
+            f'A call to get the researchIndex {researchIndex} and user {userId}.'
         ).with_request(
-            'GET', f"/projects/id/{projectId}"
-        ).will_respond_with(200, body=expected_project)
+            'GET', f"/research/id/{researchId}"
+        ).will_respond_with(200, body=expected_research)
 
         expected_metadata = []
 
         # only portOut, because it has a duplicate from portIn and portIn has port-owncloud,
         # which should be out in results, because it is not of type `metadata`.
-        for ports in expected_project["portOut"]:
+        for ports in expected_research["portOut"]:
             skip = True
 
             for prop in ports["properties"]:
@@ -213,10 +223,22 @@ class Test_Metadata(unittest.TestCase):
                 continue
 
             port = ports["port"]
+
+            apiKey = "ASDB12345"
+
+            pact.given(
+                'An access token for userid.'
+            ).upon_receiving(
+                f'A call to get the access token for user {userId}.'
+            ).with_request(
+                'GET', "/user/{}/service/{}".format(
+                    userId, port.replace("port-", "").capitalize())
+            ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+
             pact.given(
                 'A port with metadata informations.'
             ).upon_receiving(
-                f'A call to get the metadata from specific projectId {projectId} and port {port}.'
+                f'A call to get the metadata from specific researchId {projectId} and port {port}.'
             ).with_request(
                 'GET', f"/metadata/project/{projectId}"
             ).will_respond_with(200, body=metadata)
@@ -227,7 +249,7 @@ class Test_Metadata(unittest.TestCase):
             })
 
         with pact:
-            result = md.getMetadataForProject(projectId=projectId)
+            result = md.getMetadataForResearch(researchId=researchId)
         self.assertEqual(result, expected_metadata)
 
     def test_metadata_update_metadata_from_connector(self):
@@ -253,19 +275,16 @@ class Test_Metadata(unittest.TestCase):
             metadata = dict(list(metadata.items()) +
                             list(updateMetadata.items()))
 
-            for key, value in updateMetadata.items():
-                key = str(key).lower()
-
-                pact.given(
-                    'A port with metadata informations.'
-                ).upon_receiving(
-                    f'A call to update the metadata from specific projectId {projectId} for key {key}.'
-                ).with_request(
-                    'PATCH', f"/metadata/project/{projectId}/{key}"
-                ).will_respond_with(200, body=value)
+            pact.given(
+                'A port with metadata informations.'
+            ).upon_receiving(
+                f'A call to update the metadata from specific projectId {projectId}.'
+            ).with_request(
+                'PATCH', f"/metadata/project/{projectId}"
+            ).will_respond_with(200, body=updateMetadata)
 
             with pact:
-                result = md.updateMetadataForProjectFromPort(
+                result = md.updateMetadataForResearchFromPort(
                     port, projectId, updateMetadata)
             self.assertEqual(result, updateMetadata)
 
@@ -283,7 +302,7 @@ class Test_Metadata(unittest.TestCase):
 
     def test_metadata_update_metadata_from_projectId(self):
         """
-        This unit tests the ability of metadata object to update metadata from a given projectId. 
+        This unit tests the ability of metadata object to update metadata from a given researchId.
         This is the handy way.
         Notice: Should be very similar to `test_metadata_get_metadata_from_connector`
         """
@@ -291,8 +310,9 @@ class Test_Metadata(unittest.TestCase):
 
         def test_metadata_response(updateMetadata):
             userId = 0
-            projectIndex = 0
-            projectId = 2
+            researchIndex = 0
+            researchId = 2
+            projectId = 5
 
             metadata = {
                 "Creators": [],
@@ -309,17 +329,19 @@ class Test_Metadata(unittest.TestCase):
 
             expected_pid = {
                 "userId": userId,
-                "projectIndex": projectIndex
+                "researchIndex": researchIndex
             }
 
-            expected_project = expected_pid.copy()
-            expected_project["status"] = 1
-            expected_project["projectId"] = projectId
-            expected_project["portIn"] = [{
+            expected_research = expected_pid.copy()
+            expected_research["status"] = 1
+            expected_research["researchId"] = researchId
+            expected_research["portIn"] = [{
                 "port": "port-zenodo",
-                "properties": [{
+                "properties": [
+                    {
                         "portType": "metadata", "value": True
-                }]
+                    }
+                ]
             }, {
                 "port": "port-owncloud",
                 "properties": [{
@@ -327,54 +349,67 @@ class Test_Metadata(unittest.TestCase):
                 }]
             }]
 
-            expected_project["portOut"] = [{
+            expected_research["portOut"] = [{
                 "port": "port-zenodo",
                 "properties": [{
-                        "portType": "metadata", "value": True
+                    "portType": "metadata", "value": True
+                }, {
+                    "portType": "customProperties", "value": [{
+                        "key": "projectId",
+                        "value": str(projectId)
+                    }]
                 }]
             }]
 
             pact.given(
-                'The project manager.'
+                'The research manager.'
             ).upon_receiving(
-                'A call to get the projectIndex and user.'
+                'A call to get the researchIndex and user.'
             ).with_request(
-                'GET', f"/projects/id/{projectId}"
-            ).will_respond_with(200, body=expected_project)
+                'GET', f"/research/id/{researchId}"
+            ).will_respond_with(200, body=expected_research)
 
             expected_metadata = []
             # add patch requests for all given example ports, which are portType `metadata`
-            for key, value in updateMetadata.items():
-                for ports in expected_project["portOut"]:
-                    skip = True
+            for port in expected_research["portOut"]:
+                skip = True
 
-                    for prop in ports["properties"]:
-                        if prop["portType"] == "metadata":
-                            skip = False
+                for prop in port["properties"]:
+                    if prop["portType"] == "metadata":
+                        skip = False
 
-                    if skip:
-                        continue
+                if skip:
+                    continue
 
-                    port = ports["port"]
-                    key = str(key).lower()
+                apiKey = "ASDB12345"
 
-                    pact.given(
-                        'A port with metadata informations.'
-                    ).upon_receiving(
-                        f'A call to update the metadata from specific projectId {projectId} for key {key} and port {port}.'
-                    ).with_request(
-                        'PATCH', f"/metadata/project/{projectId}/{key}"
-                    ).will_respond_with(200, body=value)
+                pact.given(
+                    'An access token for userid.'
+                ).upon_receiving(
+                    f'A call to get the access token for user {userId}.'
+                ).with_request(
+                    'GET', f"/user/{userId}/service/Zenodo"
+                ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
-            expected_metadata.append({
-                "port": port,
-                "metadata": updateMetadata
-            })
+                portname = port["port"]
+
+                pact.given(
+                    'A port with metadata informations.'
+                ).upon_receiving(
+                    f'A call to update the metadata from specific projectId {projectId} for port {portname} with update {updateMetadata.keys()}.'
+                ).with_request(
+                    'PATCH', f"/metadata/project/{projectId}"
+                ).will_respond_with(200, body=updateMetadata)
+
+                expected_metadata.append({
+                    "port": portname,
+                    "metadata": updateMetadata
+                })
 
             with pact:
-                result = md.updateMetadataForProject(
-                    projectId, updateMetadata)
-            self.assertEqual(result, expected_metadata, msg="{} \n- {}".format(result, expected_metadata))
+                result = md.updateMetadataForResearch(
+                    researchId, updateMetadata)
+            self.assertEqual(result, expected_metadata)
 
         updateMetadata = {}
         updateMetadata["Creators"] = [{
@@ -387,3 +422,124 @@ class Test_Metadata(unittest.TestCase):
 
         updateMetadata["PublicationYear"] = "2021"
         test_metadata_response(updateMetadata)
+
+    def test_metadata_get_metadata_from_researchId_filtered(self):
+        """
+        This unit tests the ability of metadata object to get metadata from a given researchId.
+        This is the handy way with researchId.
+        Notice: Should be very similar to `test_metadata_get_metadata_from_connector`
+        """
+        md = Metadata(testing=testing_address)
+
+        userId = 20
+        researchIndex = 21
+        researchId = 22
+        projectId = 5
+
+        metadata = {
+            "Creators": [{
+                "name":  "Mustermann, Max",
+                "nameType": "Personal",
+                "familyName": "Mustermann",
+                "givenName": "Max",
+            }],
+            "Identifiers": [{"identifierType": "DOI",
+                             "identifier": "10.5072/example"}],
+            "PublicationYear": "2020",
+            "Publisher": "University of Münster",
+            "ResourceType": "Poster",
+            "SchemaVersion": "http://datacite.org/schema/kernel-4",
+            "Titles": [{"title": "This is a test title", "lang": "de"}]
+        }
+
+        wanted_metadata = {
+            "Titles": "",
+            "Publisher": ""
+        }
+
+        expected_metadata_from_port = {
+            "Titles": metadata["Titles"],
+            "Publisher": metadata["Publisher"]
+        }
+
+        expected_research = {
+            "userId": userId,
+            "researchIndex": researchIndex
+        }
+
+        expected_research["researchId"] = researchId
+        expected_research["portIn"] = [{
+            "port": "port-zenodo",
+            "properties": [{
+                    "portType": "metadata", "value": True
+            }, {
+                "portType": "customProperties", "value": [{
+                    "key": "projectId",
+                    "value": str(projectId)
+                }]
+            }]
+        },
+            {
+            "port": "port-owncloud",
+            "properties": [{
+                "portType": "fileStorage", "value": True
+            }]
+        }]
+
+        expected_research["portOut"] = [{
+            "port": "port-zenodo",
+            "properties": [{
+                    "portType": "metadata", "value": True
+            }]
+        }]
+
+        pact.given(
+            'The research manager.'
+        ).upon_receiving(
+            f'A call to get the researchIndex {researchIndex} and user {userId}.'
+        ).with_request(
+            'GET', f"/research/id/{researchId}"
+        ).will_respond_with(200, body=expected_research)
+
+        expected_metadata = []
+
+        # only portOut, because it has a duplicate from portIn and portIn has port-owncloud,
+        # which should be out in results, because it is not of type `metadata`.
+        for ports in expected_research["portOut"]:
+            skip = True
+
+            for prop in ports["properties"]:
+                if prop["portType"] == "metadata":
+                    skip = False
+
+            if skip:
+                continue
+
+            apiKey = "ASDB12345"
+
+            pact.given(
+                'An access token for userid.'
+            ).upon_receiving(
+                f'A call to get the access token for user {userId}.'
+            ).with_request(
+                'GET', f"/user/{userId}/service/Zenodo"
+            ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+
+            port = ports["port"]
+            pact.given(
+                'A port with metadata informations.'
+            ).upon_receiving(
+                f'A call to get the metadata from specific projectId {projectId} and port {port} for {expected_metadata_from_port}.'
+            ).with_request(
+                'GET', f"/metadata/project/{projectId}"
+            ).will_respond_with(200, body=expected_metadata_from_port)
+
+            expected_metadata.append({
+                "port": port,
+                "metadata": expected_metadata_from_port
+            })
+
+        with pact:
+            result = md.getMetadataForResearch(
+                researchId=researchId, metadataFields=wanted_metadata)
+        self.assertEqual(result, expected_metadata)

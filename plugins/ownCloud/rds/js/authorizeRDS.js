@@ -1,27 +1,39 @@
-(function(OC, window, $, undefined) {
+(function (OC, window, $, undefined) {
   "use strict";
 
-  $(document).ready(function() {
+  $(document).ready(function () {
     $.ajax({
-      url: OC.generateUrl("apps/rds/api/v1") + "/service/Owncloud",
-      success: function(result) {
+      url: OC.generateUrl("apps/rds") + "/service/Owncloud",
+      success: function (result) {
         if (result.isOk == false) return;
         var state = result["state"];
-        var authorize_url = result["authorize_url"] + "&state=" + state;
+        var authorize_url = result["authorizeUrl"] + "&state=" + state;
 
         var button = document.getElementById("openAuthorizeOwncloud");
 
         if (button) {
           button.addEventListener(
             "click",
-            function() {
-              window.location.href = authorize_url;
+            function () {
+              var select = self._select;
+              var win = window.open(
+                authorize_url,
+                "oauth2-service-for-rds",
+                "width=800,height=600,scrollbars=yes"
+              );
+
+              var timer = setInterval(function () {
+                if (win.closed) {
+                  clearInterval(timer);
+                  location.reload();
+                }
+              }, 300);
             }.bind(this)
           );
         }
       },
       dataType: "json",
-      async: false
+      async: false,
     });
   });
 })(OC, window, jQuery);

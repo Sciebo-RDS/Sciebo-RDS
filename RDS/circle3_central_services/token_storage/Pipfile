@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+pactman = "*"
+pygount = "*"
+pydoc-markdown = "*"
+pytest-cov = "*"
+selenium = "*"
+
+[packages]
+requests = "*"
+gevent = "*"
+python-jsonschema-objects = "*"
+connexion = {extras = ["swagger-ui"],version = "*"}
+connexion-plus = "*"
+apscheduler = "*"
+
+[requires]
+python_version = "3.6"

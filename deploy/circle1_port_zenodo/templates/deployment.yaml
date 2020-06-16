@@ -16,10 +16,6 @@ spec:
         app.kubernetes.io/name: {{ include "circle1_port_zenodo.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-      initContainers:
-        - name: init-mysql
-          image: busybox
-          command: ['sh', '-c', 'until nslookup circle3-token-storage; do echo waiting for mysql; sleep 2; done;']
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -30,53 +26,20 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: "ZENODO_OAUTH_AUTHORIZE_URL"
-            value: "{{ .Values.environment.ZENODO_OAUTH_AUTHORIZE_URL }}"
+            value: "{{ .Values.environment.ZENODO_ADDRESS }}/oauth/authorize%3Fredirect_uri={{ .Values.environment.RDS_OAUTH_REDIRECT_URI }}&response_type=code&scope=deposit%3Awrite+deposit%3Aactions&client_id={{ .Values.environment.ZENODO_OAUTH_CLIENT_ID }}"
           - name: "ZENODO_OAUTH_ACCESS_TOKEN_URL"
             value: "{{ .Values.environment.ZENODO_OAUTH_ACCESS_TOKEN_URL }}"
-          - name: "ZENODO_OAUTH_CLIEND_ID"
-            value: "{{ .Values.environment.ZENODO_OAUTH_CLIEND_ID }}"
+          - name: "ZENODO_OAUTH_CLIENT_ID"
+            value: "{{ .Values.environment.ZENODO_OAUTH_CLIENT_ID }}"
           - name: "ZENODO_ADDRESS"
             value: "{{ .Values.environment.ZENODO_ADDRESS }}"
           - name: "ZENODO_OAUTH_CLIENT_SECRET"
-            valueFrom:
-              secretKeyRef:
-                name: zenodo-oauth-client-secret
-                key: secret
-          - name: USE_CASE_SERVICE_TOKEN_SERVICE
-            valueFrom:
-              configMapKeyRef:
-                name: mservice
-                key: USE_CASE_SERVICE_TOKEN_SERVICE
-          - name: HTTP_PROXY
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: http
-          - name: HTTPS_PROXY
-            valueFrom:
-            configMapKeyRef:
+            value: "{{ .Values.environment.ZENODO_OAUTH_CLIENT_SECRET }}"
+          envFrom:
+          - configMapRef:
+              name: mservice
+          - configMapRef:
               name: proxy
-              key: http
-          - name: http_proxy
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: http
-          - name: https_proxy
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: http
-          - name: no_proxy
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: no_http_proxy
-          - name: NO_PROXY
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: no_http_proxy
           ports:
             - name: http
               containerPort: 8080

@@ -5,12 +5,11 @@
 replicaCount: 1
 
 image:
-  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/central_service_token_service
-  tag: latest
+  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/central_service_token_storage
+  tag: master
   pullPolicy: Always
 
-imagePullSecrets:
-  - name: gitlab-registry
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -54,4 +53,4 @@ tolerations: []
 affinity: {}
 
 environment:
-  FLASK_HOST_ADDRESS: https://sciebords-dev.uni-muenster.de/token-service
+  FLASK_HOST_ADDRESS: https://sciebords-dev.uni-muenster.de/port-service

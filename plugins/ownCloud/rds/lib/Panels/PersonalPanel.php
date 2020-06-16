@@ -20,7 +20,7 @@
 
 namespace OCA\RDS\Panels;
 
-use OCA\OAuth2\Db\ClientMapper;
+use \OCA\OAuth2\Db\ClientMapper;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
 use OCP\Settings\ISettings;
@@ -55,7 +55,7 @@ class PersonalPanel implements ISettings
 
     public function getSectionID()
     {
-        return 'additional';
+        return 'rds';
     }
 
     /**

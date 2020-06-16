@@ -2,19 +2,14 @@ FROM python:3.6-alpine
 EXPOSE 8080
 
 # set the base installation, requirements are not changed often
-RUN apk update && apk add build-base
+RUN apk update && apk add --no-cache --virtual .build-deps build-base g++ python3-dev libffi-dev openssl-dev
 
 WORKDIR /app
 ADD ./requirements.txt ./
 ADD ./datacite_4.3_schema.json ./
 RUN pip install -r requirements.txt
 
-# download yaml file for better usability and reproducable behaviour
-RUN apk add curl
-
-ENV OPENAPI_FILEPATH_EXTERNAL   "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/metadata/use-case_metadata.yml"
-ENV OPENAPI_FILEPATH            "metadata.yml"
-RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
+ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/metadata/use-case_metadata.yml" ./
 
 # now add everything else, which changes often
 ADD src ./

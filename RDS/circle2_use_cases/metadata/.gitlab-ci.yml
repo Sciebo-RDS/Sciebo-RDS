@@ -7,11 +7,6 @@
     - .tests
     - .use_case_metadata
 
-  only:
-    changes:
-      - RDS/circle2_use_cases/metadata/*
-      - RDS/circle2_use_cases/metadata/**/*
-
 test:use_case_metadata3.6:
   image: python:3.6
   extends: .tests_use_case_metadata
@@ -28,3 +23,8 @@ build:use_case_metadata:
   extends:
     - .builds
     - .use_case_metadata
+  
+  only:
+    changes:
+      - RDS/circle2_use_cases/metadata/*
+      - RDS/circle2_use_cases/metadata/**/*

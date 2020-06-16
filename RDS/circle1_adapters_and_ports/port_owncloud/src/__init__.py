@@ -15,8 +15,8 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
 
 def bootstrap(name='MicroService', *args, **kwargs):
     list_openapi = Util.load_oai(os.getenv("OPENAPI_MULTIPLE_FILES",
-                                           "../../circle2_use_cases/port_owncloud.yml;" +
-                                           "../../circle3_central_services/port_owncloud.yml"))
+                                           "../../circle2_use_cases/interface_port_file_storage.yml;" +
+                                           "../../circle3_central_services/interface_port_token_storage.yml"))
 
     app = App(name, *args, **kwargs)
 
@@ -38,12 +38,13 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
         "authorize_url": authorize_url,
         "refresh_url": refresh_url,
         "client_id": client_id,
-        "client_secret": client_secret
+        "client_secret": client_secret,
+        "implements": ["fileStorage"]
     }
     headers = {"Content-Type": "application/json"}
 
     response = requests.post(
-        f"{tokenStorage}/service", data=json.dumps(data), headers=headers)
+        f"{tokenStorage}/service", json=data, headers=headers)
 
     if response.status_code is not 200:
         raise Exception(
@@ -60,12 +61,5 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
 
     return False
 
-app = bootstrap("PortOwncloud", all=True)
 
-register_service(
-    "Owncloud",
-    os.getenv("OWNCLOUD_OAUTH_AUTHORIZE_URL", "http://localhost:3000"),
-    os.getenv("OWNCLOUD_OAUTH_ACCESS_TOKEN_URL", "http://localhost:3000"),
-    os.getenv("OWNCLOUD_OAUTH_CLIEND_ID", ""),
-    os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET", "")
-)
+app = bootstrap("PortOwncloud", all=True)

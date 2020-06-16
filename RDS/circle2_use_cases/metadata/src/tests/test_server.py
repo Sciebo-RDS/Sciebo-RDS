@@ -27,54 +27,38 @@ class TestMetadata(unittest.TestCase):
 
     def test_userProject(self):
         """
-        In this unit, we test the endpoint to get the corresponding projectId
+        In this unit, we test the endpoint to get the corresponding researchId
         """
 
         userId = 0
-        projectIndex = 0
-        projectId = 1
+        researchIndex = 0
+        researchId = 1
+        projectId = 22
 
-        project = {
+        research = {
             "userId": userId,
             "status": 1,
             "portIn": [],
             "portOut": [],
-            "projectId": projectId,
-            "projectIndex": projectIndex
+            "researchId": researchId,
+            "researchIndex": researchIndex
         }
 
         pact.given(
-            'A project manager.'
+            'A research manager.'
         ).upon_receiving(
-            'A call to get the project with projectId.'
+            'A call to get the research with researchId.'
         ).with_request(
-            'GET', f"/projects/user/{userId}/project/{projectIndex}"
-        ).will_respond_with(200, body=project)
+            'GET', f"/research/user/{userId}/research/{researchIndex}"
+        ).will_respond_with(200, body=research)
 
-        with pact:
-            result = self.client.get(
-                f"/metadata/user/{userId}/project/{projectIndex}").json
-
-        expected = {"projectId": projectId}
-
-        self.assertEqual(result, expected)
-
-    def test_project_get(self):
-        """
-        In this unit, we test the endpoint for creators to get and update entries.
-        """
-
-        userId = 0
-        projectIndex = 0
-        projectId = 1
-
-        project = {
+        research = {
             "userId": userId,
             "status": 1,
             "portIn": [],
             "portOut": [],
-            "projectId": projectId,
-            "projectIndex": projectIndex
+            "researchId": researchId,
+            "researchIndex": researchIndex
         }
 
         metadata = {
@@ -91,37 +75,101 @@ class TestMetadata(unittest.TestCase):
         # at first, try to get metadata, when there are no ports
 
         pact.given(
-            'A project manager.'
+            'A research manager.'
         ).upon_receiving(
-            'A call to get the project with projectId with empty ports.'
+            'A call to get the research with researchId with empty ports.'
         ).with_request(
-            'GET', f"/projects/id/{projectId}"
-        ).will_respond_with(200, body=project)
+            'GET', f"/research/id/{researchId}"
+        ).will_respond_with(200, body=research)
+
+        expectedListMetadata = {
+            "researchId": researchId, "length": 0, "list": []}
 
         with pact:
             result = self.client.get(
-                f"/metadata/project/{projectId}").json
+                f"/metadata/user/{userId}/research/{researchIndex}").json
+
+        self.assertEqual(result, expectedListMetadata)
+
+    def test_research_get(self):
+        """
+        In this unit, we test the endpoint for creators to get and update entries.
+        """
+
+        userId = 0
+        researchIndex = 0
+        researchId = 1
+        projectId = 5
+
+        research = {
+            "userId": userId,
+            "status": 1,
+            "portIn": [],
+            "portOut": [],
+            "researchId": researchId,
+            "researchIndex": researchIndex
+        }
+
+        metadata = {
+            "Creators": [],
+            "Identifiers": [],
+            "PublicationYear": "",
+            "Publisher": "",
+            "ResourceType": "",
+            "SchemaVersion": "http://datacite.org/schema/kernel-4",
+            "Titles": []
+        }
+
+        ####
+        # at first, try to get metadata, when there are no ports
+
+        pact.given(
+            'A research manager.'
+        ).upon_receiving(
+            'A call to get the research with researchId with empty ports.'
+        ).with_request(
+            'GET', f"/research/id/{researchId}"
+        ).will_respond_with(200, body=research)
+
+        with pact:
+            result = self.client.get(
+                f"/metadata/research/{researchId}").json
 
         expectedListMetadata = {"list": [], "length": 0}
         self.assertEqual(result, expectedListMetadata)
 
         ####
-        # try to get metadata, if one port is there
-        project["portIn"] = [{
+        # try to get metadata, if one port with projectId is there
+        research["portIn"] = [{
             "port": "port-zenodo",
             "properties": [{
                     "portType": "metadata", "value": True
+            }, {
+                "portType": "customProperties", "value": [{
+                    "key": "projectId",
+                    "value": str(projectId)
+                }]
             }]
         }]
 
         pact.given(
-            'A project manager.'
+            'A research manager.'
         ).upon_receiving(
-            'A call to get the project with port {}.'.format(
-                project["portIn"] + project["portOut"])
+            'A call to get the research with port {}.'.format(
+                research["portIn"] + research["portOut"])
         ).with_request(
-            'GET', f"/projects/id/{projectId}"
-        ).will_respond_with(200, body=project)
+            'GET', f"/research/id/{researchId}"
+        ).will_respond_with(200, body=research)
+
+        apiKey = "ASDB12345"
+
+        pact.given(
+            'An access token for userid.'
+        ).upon_receiving(
+            f'A call to get the access token for user {userId}.'
+        ).with_request(
+            'GET', f"/user/{userId}/service/Zenodo"
+        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
             'A port with metadata informations.'
@@ -133,10 +181,10 @@ class TestMetadata(unittest.TestCase):
 
         with pact:
             result = self.client.get(
-                f"/metadata/project/{projectId}").json
+                f"/metadata/research/{researchId}").json
 
         expectedListMetadata["list"].append({
-            "port": project["portIn"][0]["port"],
+            "port": research["portIn"][0]["port"],
             "metadata": metadata
         })
         expectedListMetadata["length"] = 1
@@ -145,7 +193,7 @@ class TestMetadata(unittest.TestCase):
         ####
         # try to get metadata, if there is a port, which is used as in- and output
 
-        project["portOut"] = [{
+        research["portOut"] = [{
             "port": "port-zenodo",
             "properties": [{
                     "portType": "metadata", "value": True
@@ -153,13 +201,23 @@ class TestMetadata(unittest.TestCase):
         }]
 
         pact.given(
-            'A project manager.'
+            'A research manager.'
         ).upon_receiving(
-            'A call to get the project with port {}.'.format(
-                project["portIn"] + project["portOut"])
+            'A call to get the research with port {}.'.format(
+                research["portIn"] + research["portOut"])
         ).with_request(
-            'GET', f"/projects/id/{projectId}"
-        ).will_respond_with(200, body=project)
+            'GET', f"/research/id/{researchId}"
+        ).will_respond_with(200, body=research)
+
+        apiKey = "ASDB12345"
+
+        pact.given(
+            'An access token for userid.'
+        ).upon_receiving(
+            f'A call to get the access token for user {userId}.'
+        ).with_request(
+            'GET', f"/user/{userId}/service/Zenodo"
+        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
             'A port with metadata informations.'
@@ -171,37 +229,45 @@ class TestMetadata(unittest.TestCase):
 
         with pact:
             result = self.client.get(
-                f"/metadata/project/{projectId}").json
+                f"/metadata/research/{researchId}").json
 
         self.assertEqual(result, expectedListMetadata)
 
-    def test_project_update_metadata(self):
+    def test_research_update_metadata(self):
         userId = 0
-        projectIndex = 0
-        projectId = 1
+        researchIndex = 0
+        researchId = 1
+        projectId = 5
 
-        project = {
+        research = {
             "userId": userId,
             "status": 1,
             "portIn": [],
             "portOut": [{
                 "port": "port-zenodo",
-                "properties": [{
+                "properties": [
+                    {
                         "portType": "metadata", "value": True
-                }]
+                    }, {
+                        "portType": "customProperties", "value": [{
+                            "key": "projectId",
+                            "value": str(projectId)
+                        }]
+                    }
+                ]
             }],
-            "projectId": projectId,
-            "projectIndex": projectIndex
+            "researchId": researchId,
+            "researchIndex": researchIndex
         }
 
         pact.given(
-            'A project manager.'
+            'A research manager.'
         ).upon_receiving(
-            'A call to get the project with port {} to update creators.'.format(
-                project["portIn"] + project["portOut"])
+            'A call to get the research with port {} to update creators.'.format(
+                research["portIn"] + research["portOut"])
         ).with_request(
-            'GET', f"/projects/id/{projectId}"
-        ).will_respond_with(200, body=project)
+            'GET', f"/research/id/{researchId}"
+        ).will_respond_with(200, body=research)
 
         metadataFull = {
             "Creators": [{
@@ -219,6 +285,16 @@ class TestMetadata(unittest.TestCase):
             "Titles": [{"title": "This is a test title", "lang": "de"}]
         }
 
+        apiKey = "ASDB12345"
+
+        pact.given(
+            'An access token for userid.'
+        ).upon_receiving(
+            f'A call to get the access token for user {userId}.'
+        ).with_request(
+            'GET', f"/user/{userId}/service/Zenodo"
+        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+
         metadata = {
             "Creators": metadataFull["Creators"]
         }
@@ -226,18 +302,18 @@ class TestMetadata(unittest.TestCase):
         pact.given(
             'A port with metadata informations.'
         ).upon_receiving(
-            f'A call to update the metadata for creators from specific projectId {projectId}.'
+            f'A call to update the metadata for from specific projectId {projectId}.'
         ).with_request(
-            'PATCH', f"/metadata/project/{projectId}/creators"
-        ).will_respond_with(200, body=metadataFull["Creators"])
+            'PATCH', f"/metadata/project/{projectId}"
+        ).will_respond_with(200, body=metadata)
 
         with pact:
             result = self.client.patch(
-                f"/metadata/project/{projectId}", json=metadata).json
+                f"/metadata/research/{researchId}", json=metadata).json
 
         expectedListMetadata = {}
         expectedListMetadata["list"] = [{
-            "port": project["portOut"][0]["port"],
+            "port": research["portOut"][0]["port"],
             "metadata": metadata
         }]
         expectedListMetadata["length"] = 1
@@ -251,45 +327,39 @@ class TestMetadata(unittest.TestCase):
         }
 
         pact.given(
-            'A project manager.'
+            'A research manager.'
         ).upon_receiving(
-            'A call to get the project with port {} to update creators.'.format(
-                project["portIn"] + project["portOut"])
+            'A call to get the research with port {} to update creators.'.format(
+                research["portIn"] + research["portOut"])
         ).with_request(
-            'GET', f"/projects/id/{projectId}"
-        ).will_respond_with(200, body=project)
+            'GET', f"/research/id/{researchId}"
+        ).will_respond_with(200, body=research)
+
+        apiKey = "ASDB12345"
+
+        pact.given(
+            'An access token for userid.'
+        ).upon_receiving(
+            f'A call to get the access token for user {userId}.'
+        ).with_request(
+            'GET', f"/user/{userId}/service/Zenodo"
+        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
             'A port with metadata informations.'
         ).upon_receiving(
-            f'A call to update the metadata for creators again from specific projectId {projectId}.'
+            f'A call to update the metadata again from specific projectId {projectId}.'
         ).with_request(
-            'PATCH', f"/metadata/project/{projectId}/creators"
-        ).will_respond_with(200, body=metadataFull["Creators"])
-
-        pact.given(
-            'A port with metadata informations.'
-        ).upon_receiving(
-            f'A call to update the metadata for publisher from specific projectId {projectId}.'
-        ).with_request(
-            'PATCH', f"/metadata/project/{projectId}/publisher"
-        ).will_respond_with(200, body=metadataFull["Publisher"])
-
-        pact.given(
-            'A port with metadata informations.'
-        ).upon_receiving(
-            f'A call to update the metadata for titles from specific projectId {projectId}.'
-        ).with_request(
-            'PATCH', f"/metadata/project/{projectId}/titles"
-        ).will_respond_with(200, body=metadataFull["Titles"])
+            'PATCH', f"/metadata/project/{projectId}"
+        ).will_respond_with(200, body=metadata)
 
         with pact:
             result = self.client.patch(
-                f"/metadata/project/{projectId}", json=metadata).json
+                f"/metadata/research/{researchId}", json=metadata).json
 
         expectedListMetadata = {}
         expectedListMetadata["list"] = [{
-            "port": project["portOut"][0]["port"],
+            "port": research["portOut"][0]["port"],
             "metadata": metadata
         }]
         expectedListMetadata["length"] = 1
@@ -302,28 +372,33 @@ class TestMetadata(unittest.TestCase):
         #   - the port does not support a required property
         #   - the port has a bad implementation (bad request etc.)
 
-    @unittest.skip("Does not fit currently")
     def test_creators_id(self):
         """
         In this unit, we test the endpoint for given creators to get and update a specific entry.
         """
         userId = 0
-        projectIndex = 0
-        projectId = 1
+        researchIndex = 0
+        researchId = 1
+        projectId = 5
 
-        project = {
+        research = {
             "userId": userId,
             "status": 1,
             "portIn": [],
             "portOut": [],
-            "projectId": projectId,
-            "projectIndex": projectIndex
+            "researchId": researchId,
+            "researchIndex": researchIndex
         }
 
-        project["portIn"] = [{
+        research["portIn"] = [{
             "port": "port-zenodo",
             "properties": [{
                     "portType": "metadata", "value": True
+            }, {
+                "portType": "customProperties", "value": [{
+                            "key": "projectId",
+                            "value": str(projectId)
+                }]
             }]
         }]
 
@@ -345,13 +420,23 @@ class TestMetadata(unittest.TestCase):
 
         # check, if there are creators
         pact.given(
-            'A project manager.'
+            'A research manager.'
         ).upon_receiving(
-            'A call to get the project with port {} for creators.'.format(
-                project["portIn"] + project["portOut"])
+            'A call to get the research with port {} for creators.'.format(
+                research["portIn"] + research["portOut"])
         ).with_request(
-            'GET', f"/projects/id/{projectId}"
-        ).will_respond_with(200, body=project)
+            'GET', f"/research/id/{researchId}"
+        ).will_respond_with(200, body=research)
+
+        apiKey = "ASDB12345"
+
+        pact.given(
+            'An access token for userid.'
+        ).upon_receiving(
+            f'A call to get the access token for user {userId}.'
+        ).with_request(
+            'GET', f"/user/{userId}/service/Zenodo"
+        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
             'A port with metadata informations.'
@@ -359,13 +444,13 @@ class TestMetadata(unittest.TestCase):
             f'A call to get the metadata for creator from specific projectId {projectId}.'
         ).with_request(
             'GET', f"/metadata/project/{projectId}"
-        ).will_respond_with(200, body=metadata)
+        ).will_respond_with(200, body={"Creators": metadata["Creators"]})
 
         expectedMetadata = []
-        for port in project["portIn"]:
+        for port in research["portIn"]:
             expectedMetadata.append({
                 "port": port["port"],
-                "metadata": metadata
+                "metadata": {"Creators": metadata["Creators"]}
             })
 
         expectedMetadata = {
@@ -375,7 +460,7 @@ class TestMetadata(unittest.TestCase):
 
         with pact:
             result = self.client.get(
-                f"/metadata/project/{projectId}/creators").json
+                f"/metadata/research/{researchId}", json={"Creators": ""}).json
 
         self.assertEqual(result, expectedMetadata)
 
@@ -388,28 +473,38 @@ class TestMetadata(unittest.TestCase):
         }]
 
         pact.given(
-            'A project manager.'
+            'A research manager.'
         ).upon_receiving(
-            'A call to get the project with port {} for creators to update.'.format(
-                project["portIn"] + project["portOut"])
+            'A call to get the research with port {} for creators to update.'.format(
+                research["portIn"] + research["portOut"])
         ).with_request(
-            'GET', f"/projects/id/{projectId}"
-        ).will_respond_with(200, body=project)
+            'GET', f"/research/id/{researchId}"
+        ).will_respond_with(200, body=research)
+
+        apiKey = "ASDB12345"
+
+        pact.given(
+            'An access token for userid.'
+        ).upon_receiving(
+            f'A call to get the access token for user {userId}.'
+        ).with_request(
+            'GET', f"/user/{userId}/service/Zenodo"
+        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
             'A port with metadata informations.'
         ).upon_receiving(
-            f'A call to get the metadata for creator from specific projectId {projectId}.'
+            f'A call to update the metadata for creator from specific projectId {projectId}.'
         ).with_request(
-            'PATCH', f"/metadata/project/{projectId}/creators/0"
+            'PATCH', f"/metadata/project/{projectId}"
         ).will_respond_with(200, body=metadata)
 
         with pact:
             result = self.client.patch(
-                f"/metadata/project/{projectId}/creators/0", json=metadata["Creators"][0]).json
+                f"/metadata/research/{researchId}", json=metadata).json
 
         expectedMetadata = []
-        for port in project["portIn"]:
+        for port in research["portIn"]:
             expectedMetadata.append({
                 "port": port["port"],
                 "metadata": metadata

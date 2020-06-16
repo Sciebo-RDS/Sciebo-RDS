@@ -18,8 +18,7 @@ variables:
     - cd $FOLDER
     - test -f requirements.txt && pip install -r requirements.txt
     - test -f requirements-dev.txt && pip install -r requirements-dev.txt
-    - pip install pytest # if pytest not installed
-    - python -m pytest
+    - make test
 
   tags:
     - autoscaling
@@ -42,7 +41,6 @@ variables:
 
   stage: build
 
-
   services:
     - docker:dind
 
@@ -62,8 +60,8 @@ variables:
     - export CI_IMAGE_SHA=$CI_PROJECT_PATH:$CI_COMMIT_BRANCH
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker pull $CI_COMMIT_BRANCH || true
-    - docker build --cache-from $CI_IMAGE_LATEST --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_SHA --file="dockerfile" .
+    - docker pull $CI_IMAGE_SHA || true
+    - docker build --cache-from $CI_IMAGE_SHA --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_SHA --file="dockerfile" .
     - docker push $CI_IMAGE_SHA
     - docker push $CI_IMAGE_LATEST
 
@@ -71,10 +69,10 @@ include:
   - "RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
   - "RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml"
   - "RDS/circle2_use_cases/exporter/.gitlab-ci.yml"
-  - "RDS/circle2_use_cases/token_service/.gitlab-ci.yml"
+  - "RDS/circle2_use_cases/port/.gitlab-ci.yml"
   - "RDS/circle2_use_cases/metadata/.gitlab-ci.yml"
-  - "RDS/circle3_central_services/token_service/.gitlab-ci.yml"
-  - "RDS/circle3_central_services/project_manager/.gitlab-ci.yml"
+  - "RDS/circle3_central_services/token_storage/.gitlab-ci.yml"
+  - "RDS/circle3_central_services/research_manager/.gitlab-ci.yml"
 
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:

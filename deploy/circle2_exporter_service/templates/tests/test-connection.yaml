@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "circle2_token_service.fullname" . }}-test-connection"
+  name: "{{ include "circle2_exporter_service.fullname" . }}-test-research"
   labels:
-{{ include "circle2_token_service.labels" . | indent 4 }}
+{{ include "circle2_exporter_service.labels" . | indent 4 }}
   annotations:
     "helm.sh/hook": test-success
 spec:
@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ include "circle2_token_service.fullname" . }}:{{ .Values.service.port }}']
+      args:  ['{{ include "circle2_exporter_service.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never

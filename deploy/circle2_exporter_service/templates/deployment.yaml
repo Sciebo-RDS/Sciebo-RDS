@@ -27,41 +27,11 @@ spec:
           env:
           - name: "FLASK_HOST_ADDRESS"
             value: "{{ .Values.environment.FLASK_HOST_ADDRESS }}"
-          - name: CENTRAL-SERVICE_TOKEN-STORAGE
-            valueFrom:
-              configMapKeyRef:
-                name: mservice
-                key: CENTRAL_SERVICE_TOKEN_STORAGE
-          - name: HTTP_PROXY
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: http
-          - name: HTTPS_PROXY
-            valueFrom:
-            configMapKeyRef:
+          envFrom:
+          - configMapRef:
+              name: mservice
+          - configMapRef:
               name: proxy
-              key: http
-          - name: http_proxy
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: http
-          - name: https_proxy
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: http
-          - name: no_proxy
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: no_http_proxy
-          - name: NO_PROXY
-            valueFrom:
-              configMapKeyRef:
-                name: proxy
-                key: no_http_proxy
           ports:
             - name: http
               containerPort: 8080

@@ -1,0 +1,146 @@
+openapi: 3.0.0
+info:
+  title: Interface for Ports used as file storage
+  version: '1.0'
+  description: This document describes the interface of the port owncloud from the innermost circle of the rds architecture to the second circle.
+  contact:
+    name: Peter Heiss
+    email: peter.heiss@uni-muenster.de
+    url: 'https://www.research-data-services.org'
+servers:
+  - url: 'http://port:3000/storage'
+paths:
+  /file:
+    parameters: []
+    get:
+      summary: Get file
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+      description: Returns the file
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filepath:
+                  type: string
+                userId:
+                  type: string
+                apiKey:
+                  type: string
+                  description: ''
+              required:
+                - filepath
+    post:
+      summary: Create the file in filepath
+      responses:
+        '200':
+          description: OK
+      description: Create the file
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                filepath:
+                  type: string
+                userId:
+                  type: string
+                apiKey:
+                  type: string
+                files:
+                  type: object
+              required:
+                - filepath
+    delete:
+      summary: ''
+      responses:
+        '200':
+          description: OK
+      description: Delete the file
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filepath:
+                  type: string
+                userId:
+                  type: string
+                apiKey:
+                  type: string
+              required:
+                - filepath
+    patch:
+      summary: ''
+      responses:
+        '200':
+          description: OK
+      description: Update the file
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filepath:
+                  type: string
+                userId:
+                  type: string
+                apiKey:
+                  type: string
+              required:
+                - filepath
+  /folder:
+    get:
+      summary: Returns all filenames in filepath
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  files:
+                    type: array
+                    items:
+                      type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filepath:
+                  type: string
+                userId:
+                  type: string
+                apiKey:
+                  type: string
+      description: 'Returns all files within filepath, if it is a folder. Otherwise the array is empty.'
+    parameters: []
+tags:
+  - name: deposit
+    description: All about depositions
+  - name: creator
+    description: All about user and deposition creators
+  - name: misc
+    description: Everything else.

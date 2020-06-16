@@ -6,15 +6,17 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 pactman = "*"
+pytest-cov = "*"
+pydoc-markdown = "*"
 
 [packages]
 requests = "*"
 jaeger-client = "*"
 gevent = "*"
-python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 flask-cors = "*"
+jsonschema = "*"
 
 [requires]
 python_version = "3.6"

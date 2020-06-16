@@ -2,6 +2,7 @@ import requests
 import json
 import os
 import logging
+from flask import abort
 
 
 class Zenodo(object):
@@ -22,6 +23,7 @@ class Zenodo(object):
         self.upload_new_file_to_deposition = self.upload_new_file_to_deposition_internal
         self.change_metadata_in_deposition = self.change_metadata_in_deposition_internal
         self.publish_deposition = self.publish_deposition_internal
+        self.delete_all_files_from_deposition = self.delete_all_files_from_deposition_internal
 
     @classmethod
     def get_deposition(cls, api_key, *args, **kwargs):
@@ -48,6 +50,10 @@ class Zenodo(object):
         return cls(api_key).publish_deposition(*args, **kwargs)
 
     @classmethod
+    def delete_all_files_from_deposition(cls, api_key, *args, **kwargs):
+        return cls(api_key).delete_all_files_from_deposition_internal(*args, **kwargs)
+
+    @classmethod
     def check_token(cls, api_key, *args, **kwargs):
         """Check the API-Token `api_key`.
 
@@ -59,7 +65,7 @@ class Zenodo(object):
 
         return r.status_code == 200
 
-    def get_deposition_internal(self, id=-1, return_response=False):
+    def get_deposition_internal(self, id: int = None, return_response: bool = False, metadataFilter: dict = None):
         """ Require: None
                 Optional return_response: For testing purposes, you can set this to True.
 
@@ -67,9 +73,12 @@ class Zenodo(object):
 
             Description: Get all depositions for the account, which owns the api-key."""
 
-        self.log.debug("get depositions from zenodo")
+        self.log.debug(
+            f"get depositions from zenodo, id? {id}, return response? {return_response}, metadata? {metadataFilter}")
         headers = {"Authorization": f"Bearer {self.api_key}"}
-        if id > -1:
+        self.log.debug("set header, now requests")
+
+        if id is not None:
             r = requests.get(f"{self.zenodo_address}/api/deposit/depositions/{id}",
                              headers=headers)
         else:
@@ -78,10 +87,40 @@ class Zenodo(object):
             self.log.debug(
                 "Get Depositions: Status Code: {}".format(r.status_code))
 
-        return r.json() if not return_response else r
+        if return_response:
+            return r
+
+        if r.status_code >= 300:
+            abort(r.status_code)
+
+        result = r.json()
+
+        if id is not None:
+            result = [result]
+        self.log.debug(f"filter only metadata, {result}")
+
+        result = [res["metadata"] for res in result]
+
+        self.log.debug("apply filter")
+        if metadataFilter is not None:
+            result = {
+                key: res[key]
+                for res in result
+                for key in metadataFilter.keys()
+                if key in res
+            }
+
+        self.log.debug("finished applying filter")
+
+        self.log.debug("return results")
+
+        if id is not None:
+            return result[0]
+
+        return result
 
     def create_new_deposition_internal(self, metadata=None, return_response=False):
-        """ 
+        """
         Require: None
         Returns: Boolean, Alternative: json if return_response=True
         Description: Creates a new deposition. You can get the id with r.json()['id']
@@ -99,12 +138,12 @@ class Zenodo(object):
             "Create new deposition: Status Code: {}".format(r.status_code))
 
         if r.status_code != 201:
-            return False if not return_response else r
+            return {} if not return_response else r
 
         if metadata is not None and isinstance(metadata, dict):
             return self.change_metadata_in_deposition(r.json()["id"], metadata, return_response=return_response)
 
-        return True if not return_response else r
+        return r.json() if not return_response else r
 
     def remove_deposition_internal(self, id, return_response=False):
         r = requests.delete(f'{self.zenodo_address}/api/deposit/depositions/{id}',
@@ -113,7 +152,7 @@ class Zenodo(object):
         return r.status_code == 201 if not return_response else r
 
     def upload_new_file_to_deposition_internal(self, deposition_id, path_to_file, file=None, return_response=False):
-        """ 
+        """
         Require:
             A deposit id (from get_deposition or create_new_deposition; r.json()['id'])
             A path to a file
@@ -123,19 +162,30 @@ class Zenodo(object):
         (More: https://developers.zenodo.org/#deposition-files)
         """
 
-        from io import IOBase
-        try:
-            self.log.debug("Try read the file content.")
-            files = {'file': file.read()}
-        except Exception:
-            self.log.debug("Cannot read the content. So maybe it is in cache?")
-            # for temporary files
-            files = {'file': open(os.path.expanduser(path_to_file), 'rb')}
+        from werkzeug.utils import secure_filename
 
-        filename = os.path.basename(path_to_file)
+        from io import IOBase
+        filename = secure_filename(os.path.basename(path_to_file))
         data = {"name": filename}
 
-        self.log.debug("Submit the following informations to zenodo.\nData: {}, Files: {}".format(data, files))
+        try:
+            if file is None:
+                raise Exception("File is none.")
+
+            from io import BytesIO
+
+            self.log.debug("Try read the file content.")
+            files = {'file': (filename, BytesIO(file.read()))}
+            self.log.debug("size: {}".format(len(file.read())))
+        except Exception as e:
+            self.log.error(e)
+            self.log.debug("Cannot read the content. So maybe it is in cache?")
+            # for temporary files
+            files = {'file': (filename, open(
+                os.path.expanduser(path_to_file), 'rb'))}
+
+        self.log.debug(
+            "Submit the following informations to zenodo.\nData: {}, Files: {}".format(data, files))
 
         r = requests.post(
             f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}/files',
@@ -146,8 +196,16 @@ class Zenodo(object):
 
         return r.status_code == 201 if not return_response else r
 
+    def get_files_from_deposition(self, deposition_id):
+        req = requests.get(f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}/files',
+                           headers={'Authorization': f"Bearer {self.api_key}"})
+
+        result = req.json()
+
+        return result
+
     def change_metadata_in_deposition_internal(self, deposition_id, metadata, return_response=False):
-        """ 
+        """
         Require:
             A deposit id (from get_deposition or create_new_deposition; r.json()['id'])
 
@@ -173,7 +231,7 @@ class Zenodo(object):
         data["metadata"] = metadata
 
         r = requests.put(f'{self.zenodo_address}/api/deposit/depositions/{deposition_id}',
-                         data=json.dumps(data), headers=headers)
+                         json=data, headers=headers)
         return r.status_code == 200 if not return_response else r
 
     def publish_deposition_internal(self, deposition_id, return_response=False):
@@ -181,6 +239,24 @@ class Zenodo(object):
                           headers={'Authorization': f"Bearer {self.api_key}"})
 
         return r.status_code == 202 if not return_response else r
+
+    def delete_all_files_from_deposition_internal(self, deposition_id):
+        for file in self.get_files_from_deposition(deposition_id):
+            self.log.debug("found file: {}".format(file))
+
+            if not self.delete_file_from_deposition_internal(deposition_id, file["id"]):
+                return False
+
+        return True
+
+    def delete_file_from_deposition_internal(self, deposition_id, file_id):
+        r = requests.delete("{}/api/deposit/depositions/{}/files/{}".format(
+            self.zenodo_address, deposition_id, file_id), headers={'Authorization': f"Bearer {self.api_key}"})
+
+        if r.status_code < 300:
+            return True
+
+        return False
 
 
 if __name__ == "__main__":

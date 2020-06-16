@@ -8,13 +8,6 @@
     - .tests
     - .port_owncloud
 
-    only:
-        changes:
-        - RDS/circle1_adapters_and_ports/port_owncloud/*
-        - RDS/circle1_adapters_and_ports/port_owncloud/**/*
-        - RDS/circle2_use_cases/port_owncloud.yml
-        - RDS/circle3_central_services/port_owncloud.yml
-
 test:port_owncloud3.6:
     extends: .tests_port_owncloud
     image: python:3.6
@@ -31,3 +24,10 @@ build:port_owncloud:
     extends: 
     - .builds
     - .port_owncloud
+
+    only:
+        changes:
+        - RDS/circle1_adapters_and_ports/port_owncloud/*
+        - RDS/circle1_adapters_and_ports/port_owncloud/**/*
+        - RDS/circle2_use_cases/interface_port_file_storage.yml
+        - RDS/circle3_central_services/interface_port_token_storage.yml

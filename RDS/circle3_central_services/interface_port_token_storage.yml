@@ -1,0 +1,51 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: Interface for Ports used by token storage
+  description: This describes the needed specification for circle 3.
+  contact:
+    name: Peter Heiss
+    email: peter.heiss@uni-muenster.de
+paths:
+  /application_token:
+    get:
+      summary: Get application token
+      tags:
+        - token
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationToken'
+      description: |-
+        Returns everything needed for oauth 2.0 support.
+        https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/
+components:
+  schemas:
+    ApplicationToken:
+      title: ApplicationToken
+      type: object
+      x-tags:
+        - token
+      description: |-
+        This model describes the object, which represents all needed informations for oauth2.
+        https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/
+      properties:
+        client_id:
+          type: string
+          description: ''
+        access_token_url:
+          type: string
+          description: ' Access token URL (POST)'
+        authorize_url:
+          type: string
+          description: ' Authorize URL (GET)'
+      required:
+        - client_id
+        - access_token_url
+        - authorize_url
+servers:
+  - url: 'http://port:3000/token-storage'
+    description: ''

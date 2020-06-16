@@ -1,0 +1,277 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the ownCloud Core package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ownCloud Core 8.0.0\n"
+"Report-Msgid-Bugs-To: translations@owncloud.org\n"
+"POT-Creation-Date: 2020-05-15 16:38+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: appinfo/app.php:20
+msgid "RDS App"
+msgstr ""
+
+#: js/View.js:57
+msgid "Your entries could not be saved."
+msgstr ""
+
+#: js/View.js:58 js/View.js:227 js/View.js:477 js/View.js:560 js/View.js:582
+#: js/View.js:600 js/main-rds.js:38
+msgid "RDS Update project"
+msgstr ""
+
+#: js/View.js:226
+msgid "Your files will be synchronize within 2 minutes."
+msgstr ""
+
+#: js/View.js:237
+msgid "Choose source and / or target folder"
+msgstr ""
+
+#: js/View.js:559 js/main-rds.js:37
+msgid "Could not create research"
+msgstr ""
+
+#: js/fileActions.js:14
+msgid "Add folder to RDS"
+msgstr ""
+
+#: js/fileActions.js:32
+msgid "Update RDS file"
+msgstr ""
+
+#: js/fileActions.js:52
+msgid "File was successfully uploaded to outgoing services."
+msgstr ""
+
+#: js/fileActions.js:54 js/fileActions.js:60
+msgid "RDS upload directly through Files app"
+msgstr ""
+
+#: js/fileActions.js:59
+msgid "File upload to outgoing services failed."
+msgstr ""
+
+#: js/settings-personal.js:139
+msgid "Are you sure, that you want to delete {servicename}?"
+msgstr ""
+
+#: js/settings-personal.js:142 js/settings-personal.js:159
+msgid "RDS Settings services"
+msgstr ""
+
+#: js/settings-personal.js:156
+msgid "Could not remove the service {servicename}"
+msgstr ""
+
+#: js/settings-personal.js:218
+msgid "Authorize {servicename} now"
+msgstr ""
+
+#: lib/Panels/PersonalSection.php:47
+msgid "Research data services"
+msgstr ""
+
+#: templates/not_authorized.php:12
+msgid ""
+"Welcome. To use this app, you need to authenticate\n"
+"      services to perform actions with RDS on files in the services. Please\n"
+"      follow this steps."
+msgstr ""
+
+#: templates/not_authorized.php:19
+msgid "Step 1: Authorize RDS to authenticate against ownCloud."
+msgstr ""
+
+#: templates/not_authorized.php:23
+msgid "Authorize ownCloud."
+msgstr ""
+
+#: templates/not_authorized.php:28
+msgid "Step 2: Authorize RDS to authenticate against Zenodo."
+msgstr ""
+
+#: templates/not_authorized.php:32
+msgid "Authorize Zenodo."
+msgstr ""
+
+#: templates/not_authorized.php:37
+msgid "Step 3: Create a research in RDS and configure it."
+msgstr ""
+
+#: templates/not_authorized.php:41
+msgid "Create a research in RDS."
+msgstr ""
+
+#: templates/part.research.content.file.php:5
+msgid "Files auto upload"
+msgstr ""
+
+#: templates/part.research.content.file.php:7
+msgid "The system will upload all files in the given folder after some time."
+msgstr ""
+
+#: templates/part.research.content.file.php:13
+msgid "Apply file changes"
+msgstr ""
+
+#: templates/part.research.content.file.php:15
+msgid ""
+"Otherwise deletions or file changes are not synchronized to the given "
+"services."
+msgstr ""
+
+#: templates/part.research.content.file.php:21
+#: templates/part.research.content.metadata.php:14
+#: templates/part.research.content.service.php:123
+msgid "Save"
+msgstr ""
+
+#: templates/part.research.content.file.php:22
+msgid "Synchronize files"
+msgstr ""
+
+#: templates/part.research.content.file.php:23
+msgid "Finish research"
+msgstr ""
+
+#: templates/part.research.content.metadata.php:15
+#: templates/part.research.content.service.php:124
+msgid "Save & continue"
+msgstr ""
+
+#: templates/part.research.content.overview.php:1
+msgid "This is a nice text in overview"
+msgstr ""
+
+#: templates/part.research.content.overview.php:1
+msgid "Welcome info"
+msgstr ""
+
+#: templates/part.research.content.service.php:1
+#: templates/part.research.navigation.php:5
+msgid "Project"
+msgstr ""
+
+#: templates/part.research.content.service.php:3
+msgid ""
+"Here you can enter all informations about your research synchronization."
+msgstr ""
+
+#: templates/part.research.content.service.php:13
+msgid "Please select a folder where you want to take your files from."
+msgstr ""
+
+#: templates/part.research.content.service.php:18
+msgid "Current path:"
+msgstr ""
+
+#: templates/part.research.content.service.php:23
+msgid "No path currently selected."
+msgstr ""
+
+#: templates/part.research.content.service.php:30
+msgid "Please select a project where you want to take your files to."
+msgstr ""
+
+#: templates/part.research.content.service.php:45
+msgid "Project DOI"
+msgstr ""
+
+#: templates/part.research.content.service.php:45
+msgid "No title found."
+msgstr ""
+
+#: templates/part.research.content.service.php:49
+msgid "No projects found."
+msgstr ""
+
+#: templates/part.research.content.service.php:59
+msgid "Create new project."
+msgstr ""
+
+#: templates/part.research.content.service.php:65
+msgid "For which transfer, do you want to use this service?"
+msgstr ""
+
+#: templates/part.research.content.service.php:66
+msgid "Informations about ingoing and outgoing traffic."
+msgstr ""
+
+#: templates/part.research.content.service.php:75
+msgid "Ingoing"
+msgstr ""
+
+#: templates/part.research.content.service.php:85
+msgid "Outgoing"
+msgstr ""
+
+#: templates/part.research.content.service.php:89
+msgid "For which storage, do you want to use this service?"
+msgstr ""
+
+#: templates/part.research.content.service.php:90
+msgid "Informations about storage for metadata and fileStorage."
+msgstr ""
+
+#: templates/part.research.content.service.php:100
+msgid "File Storage"
+msgstr ""
+
+#: templates/part.research.content.service.php:112
+msgid "Metadata Storage"
+msgstr ""
+
+#: templates/part.research.content.service.php:125
+msgid "Sync files"
+msgstr ""
+
+#: templates/part.research.navigation.php:2
+msgid "Add research"
+msgstr ""
+
+#: templates/part.research.settings.php:9
+msgid "Add missing service"
+msgstr ""
+
+#: templates/settings-personal.php:45 templates/settings-personal.php:45
+msgid "Sciebo RDS"
+msgstr ""
+
+#: templates/settings-personal.php:53 templates/settings-personal.php:53
+msgid "Which services do you want to use?"
+msgstr ""
+
+#: templates/settings-personal.php:59 templates/settings-personal.php:59
+msgid "Please select a service."
+msgstr ""
+
+#: templates/settings-personal.php:68 templates/settings-personal.php:68
+msgid "Servicename"
+msgstr ""
+
+#: templates/settings-personal.php:70 templates/settings-personal.php:70
+msgid "Actions"
+msgstr ""
+
+#: templates/settings-personal.php:80 templates/settings-personal.php:80
+msgid "Do you want to revoke the access for Sciebo RDS?"
+msgstr ""
+
+#: templates/settings-personal.php:90 templates/settings-personal.php:90
+msgid "Sciebo RDS is not authorized yet."
+msgstr ""
+
+#: templates/settings-personal.php:92 templates/settings-personal.php:92
+msgid "Authorize Sciebo RDS now."
+msgstr ""

@@ -6,7 +6,7 @@ owncloud_oauth_authorize = os.getenv(
     "OWNCLOUD_OAUTH_AUTHORIZE_URL", "https://sandbox.owncloud.org/oauth/authorize")
 owncloud_oauth_token_url = os.getenv(
     "OWNCLOUD_OAUTH_ACCESS_TOKEN_URL", "https://sandbox.owncloud.org/oauth/token")
-owncloud_oauth_id = os.getenv("OWNCLOUD_OAUTH_CLIEND_ID", "XY")
+owncloud_oauth_id = os.getenv("OWNCLOUD_OAUTH_CLIENT_ID", "XY")
 owncloud_oauth_secret = os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET", "ABC")
 
 

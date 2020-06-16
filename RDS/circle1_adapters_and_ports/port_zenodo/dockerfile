@@ -2,33 +2,23 @@ FROM python:3.7-alpine
 EXPOSE 8080
 
 # set the base installation, requirements are not changed often
-RUN apk update && apk add build-base
+RUN apk update && apk add --no-cache --virtual .build-deps build-base g++ python3-dev libffi-dev openssl-dev
 
 WORKDIR /app
 ADD ./requirements.txt ./
 RUN pip install -r requirements.txt
 
-# download yaml file for better usability and reproducable behaviour
-RUN apk add curl
-
-ENV OPENAPI_FILEPATH_EXTERNAL   "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/port_invenio.yml"
-ENV OPENAPI_FILEPATH            "c2_invenio.yml"
-RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
-
-ENV OPENAPI_FILEPATH_EXTERNAL   "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/port_invenio.yml"
-ENV OPENAPI_FILEPATH            "c3_invenio.yml"
-RUN curl -X GET "$OPENAPI_FILEPATH_EXTERNAL" -o "$OPENAPI_FILEPATH"
-
-# comma separated
-ENV OPENAPI_MULTIPLE_FILES      "c2_invenio.yml;c3_invenio.yml"
-
 # this has to be set separatley and safely
-ENV CENTRAL-SERVICE_TOKEN-STORAGE "http://circle3-token-storage"
+ENV CENTRAL_SERVICE_TOKEN_STORAGE "http://circle3-token-storage"
 ENV ZENODO_OAUTH_AUTHORIZE_URL "https://sandbox.zenodo.org/oauth/authorize"
 ENV ZENODO_OAUTH_ACCESS_TOKEN_URL "https://sandbox.zenodo.org/oauth/token"
-ENV ZENODO_OAUTH_CLIEND_ID "XY"
+ENV ZENODO_OAUTH_CLIENT_ID "XY"
 ENV ZENODO_OAUTH_CLIENT_SECRET "ABC"
 
+ENV OPENAPI_MULTIPLE_FILES      "interface_port_metadata.yml;interface_port_token_storage.yml"
+
+ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_metadata.yml" ./
+ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/interface_port_token_storage.yml" ./
 
 # now add everything else, which changes often
 ADD src ./

@@ -3,6 +3,11 @@
 JSONEncoder.default() automatically checks for a special "to_json()"
 method and uses it to encode the object if found.
 """
+from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
+from jaeger_client import Config as jConfig
+import os
+import logging
+from connexion_plus import App, MultipleResourceResolver, Util
 from json import JSONEncoder, JSONDecoder
 
 
@@ -13,12 +18,6 @@ def to_default(self, obj):
 to_default.default = JSONEncoder.default  # Save unmodified default.
 JSONEncoder.default = to_default  # Replace it.
 
-from connexion_plus import App, MultipleResourceResolver, Util
-
-import logging
-import os
-from jaeger_client import Config as jConfig
-from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 
 log_level = logging.DEBUG
 logger = logging.getLogger('')
@@ -41,8 +40,7 @@ def monkeypatch():
 
 
 def bootstrap(name='MicroService', *args, **kwargs):
-    list_openapi = Util.load_oai(
-        os.getenv("OPENAPI_FILEPATH", "use-case_exporter.yml"))
+    list_openapi = Util.load_oai("use-case_exporter.yml")
 
     app = App(name, *args, **kwargs)
 
