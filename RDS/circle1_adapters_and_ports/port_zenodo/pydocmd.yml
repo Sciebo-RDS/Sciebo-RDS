@@ -6,10 +6,9 @@ site_name: "My Documentation"
 # documented. Higher indentation leads to smaller header size.
 generate:
 - port-zenodo.md:
-  - Zenodo:
-    - lib.Datacite++
-    - lib.upload_zenodo++
-    - lib.Util++
+  - lib.upload_zenodo++
+  - lib.Datacite++
+  - lib.Util++
 
 # MkDocs pages configuration. The `<<` operator is sugar added by pydocmd
 # that allows you to use an external Markdown file (eg. your project's README)

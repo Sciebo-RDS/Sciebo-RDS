@@ -1,6 +1,6 @@
 # updates the pipfiles
 install:
-	@pip install pipenv
+	@pip install pipenv | grep -v 'already satisfied' || true
 	@pipenv shell > /dev/null 2>&1 || true
 	@pip install -r requirements.txt | grep -v 'already satisfied' || true
 

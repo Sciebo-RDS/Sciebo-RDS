@@ -6,7 +6,7 @@ site_name: "My Documentation"
 # documented. Higher indentation leads to smaller header size.
 generate:
 - port-owncloud.md:
-  - Owncloud:
+  - ownCloudUser:
     - lib.ownCloudUser++
 
 # MkDocs pages configuration. The `<<` operator is sugar added by pydocmd
