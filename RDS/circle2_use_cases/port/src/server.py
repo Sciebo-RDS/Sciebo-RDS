@@ -1,4 +1,7 @@
 from __init__ import bootstrap
+import logging
+
+logging.basicConfig(level=os.environ.get("LOGLEVEL", "DEBUG"))
 
 if __name__ == "__main__":
     app = bootstrap("UseCaseTokenStorage", all=True)

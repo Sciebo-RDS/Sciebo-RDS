@@ -1,6 +1,5 @@
 import Util as ServerUtil
 
-
 def monkeypatch():
     """ Module that monkey-patches json module when it's imported so
     JSONEncoder.default() automatically checks for a special "to_json()"
@@ -15,8 +14,7 @@ def monkeypatch():
     JSONEncoder.default = to_default  # Replace it.
 
 
-def bootstrap(name='MicroService', *args, **kwargs):
-    import logging
+def bootstrap(name="MicroService", *args, **kwargs):
     import os
     from connexion_plus import App, MultipleResourceResolver, Util
 
@@ -33,10 +31,11 @@ def bootstrap(name='MicroService', *args, **kwargs):
     app = App(name, *args, **kwargs)
 
     for oai in list_openapi:
-        app.add_api(oai, resolver=MultipleResourceResolver(
-            'api', collection_endpoint_name="index"), validate_responses=True)
+        app.add_api(
+            oai,
+            resolver=MultipleResourceResolver("api", collection_endpoint_name="index"),
+            validate_responses=True,
+        )
 
     monkeypatch()
     return app
-
-
