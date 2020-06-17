@@ -116,7 +116,7 @@ msgstr "Zugriff gewähren"
 
 #: templates/not_authorized.php:37
 msgid "Step 3: Create a research in RDS and configure it."
-msgstr "Erstelle einen RDS Forschungskontex und konfiguriere ihn."
+msgstr "Schritt 3: Erstelle einen RDS Forschungskontex und konfiguriere ihn. "
 
 #: templates/not_authorized.php:41
 msgid "Create a research in RDS."
@@ -148,7 +148,7 @@ msgstr ""
 #: templates/part.research.content.metadata.php:14
 #: templates/part.research.content.service.php:123
 msgid "Save"
-msgstr "Speichern"
+msgstr "Konfiguration speichern"
 
 #: templates/part.research.content.file.php:22
 msgid "Synchronize files"
@@ -182,13 +182,13 @@ msgstr "Projekt"
 #: templates/part.research.content.service.php:3
 msgid ""
 "Here you can enter all informations about your research synchronization."
-msgstr ""
-"Hier kannst Du alle Informationen über dein Forschungsprojekt angeben."
+msgstr "Hier kannst Du dein RDS Forschungsprojekt konfigurieren."
 
 #: templates/part.research.content.service.php:13
 msgid "Please select a folder where you want to take your files from."
 msgstr ""
-"Bitte wähle einen Ordner aus, welcher als Ausgangsort verwendet werden soll."
+"Bitte wähle einen Ordner aus, dessen Inhalte für die Publikation verwendet "
+"werden sollen."
 
 #: templates/part.research.content.service.php:18
 msgid "Current path:"
@@ -201,7 +201,8 @@ msgstr "Derzeit ist kein Pfad ausgewählt."
 #: templates/part.research.content.service.php:30
 msgid "Please select a project where you want to take your files to."
 msgstr ""
-"Bitte wähle ein Projekt aus, wohin deine Dateien geladen werden sollen."
+"Bitte wähle ein Zenodo Projekt aus, in das Deine Dateien geladen werden "
+"sollen."
 
 #: templates/part.research.content.service.php:45
 msgid "Project DOI"
@@ -253,7 +254,7 @@ msgstr "Metadatenspeicher"
 
 #: templates/part.research.content.service.php:125
 msgid "Sync files"
-msgstr "Dateien abgleichen"
+msgstr "Dateien nach Zenodo übertragen"
 
 #: templates/part.research.navigation.php:2
 msgid "Add research"
