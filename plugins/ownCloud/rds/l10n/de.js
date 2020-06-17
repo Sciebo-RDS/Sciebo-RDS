@@ -37,6 +37,7 @@ OC.L10N.register(
     "Project" : "Projekt",
     "Here you can enter all informations about your research synchronization." : "Hier kannst Du dein RDS Forschungsprojekt konfigurieren.",
     "Please select a folder where you want to take your files from." : "Bitte wähle einen Ordner aus, dessen Inhalte für die Publikation verwendet werden sollen.",
+    "Select folder" : "Ordner auswählen",
     "Current path:" : "Aktueller Pfad:",
     "No path currently selected." : "Derzeit ist kein Pfad ausgewählt.",
     "Please select a project where you want to take your files to." : "Bitte wähle ein Zenodo Projekt aus, in das Deine Dateien geladen werden sollen.",

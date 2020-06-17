@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud Core 8.0.0\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2020-05-15 16:38+0200\n"
+"POT-Creation-Date: 2020-06-17 13:30+0200\n"
 "PO-Revision-Date: 2020-06-16 15:05+0000\n"
 "Last-Translator: Peter Heiss <peter.heiss@uni-muenster.de>, 2020\n"
 "Language-Team: German (https://www.transifex.com/university-of-munster/teams/109551/de/)\n"
@@ -189,6 +189,10 @@ msgid "Please select a folder where you want to take your files from."
 msgstr ""
 "Bitte wähle einen Ordner aus, dessen Inhalte für die Publikation verwendet "
 "werden sollen."
+
+#: templates/part.research.content.service.php:16
+msgid "Select folder"
+msgstr "Ordner auswählen"
 
 #: templates/part.research.content.service.php:18
 msgid "Current path:"
