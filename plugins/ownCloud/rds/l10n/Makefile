@@ -2,6 +2,10 @@
 # Translation
 #--------------------------------------
 
+install:
+	sudo apt install gettext liblocale-po-perl python-pip
+	sudo pip install transifex-client
+
 .PHONY: l10n-push
 l10n-push:
 	tx -d push -s --skip --no-interactive
