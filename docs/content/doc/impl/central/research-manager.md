@@ -5,7 +5,7 @@ subtitle: All studies in RDS
 menu:
   doc:
     parent: core
-weight: 1101
+weight: 801
 mermaid: true
 ---
 

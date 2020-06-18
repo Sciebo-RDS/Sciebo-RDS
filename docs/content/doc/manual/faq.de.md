@@ -5,6 +5,6 @@ subtitle: Häufig gestellte Fragen
 menu:
   doc:
     parent: manual
-weight: -1000
+weight: 200
 ---
 Keine Fragen bisher eingetragen.

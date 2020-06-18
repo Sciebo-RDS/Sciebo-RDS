@@ -4,8 +4,8 @@ subtitle:
 
 menu:
   doc:
-    parent: arch
-weight: 205
+    parent: infrastructure
+weight: 501
 mermaid: true
 ---
 

@@ -4,8 +4,8 @@ subtitle: Architecture documentation with Arc42
 
 menu:
   doc:
-    parent: arch
-weight: 201
+    parent: architecture
+weight: 401
 ---
 
 ## Einführung und Ziele

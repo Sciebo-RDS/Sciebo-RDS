@@ -5,7 +5,7 @@ subtitle: Export your package to a Zenodo repository.
 menu:
   doc:
     parent: adapter-port
-weight: 1000
+weight: 601
 ---
 
 # OpenAPI v3

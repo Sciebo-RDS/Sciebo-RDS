@@ -5,6 +5,6 @@ subtitle: Frequently asked questions
 menu:
   doc:
     parent: manual
-weight: -1000
+weight: 200
 ---
 No content

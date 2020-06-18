@@ -5,7 +5,7 @@ subtitle: Helm Chart und Installationsanleitung
 menu:
   doc:
     parent: installation
-weight: 102
+weight: 302
 ---
 
 Lorem Ipsum

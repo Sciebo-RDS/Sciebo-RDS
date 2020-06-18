@@ -5,7 +5,7 @@ subtitle: Work on your files from owncloud within RDS
 menu:
   doc:
     parent: adapter-port
-weight: 1000
+weight: 600
 ---
 
 # OpenAPI v3

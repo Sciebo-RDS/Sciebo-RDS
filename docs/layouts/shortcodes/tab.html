@@ -1,4 +1,3 @@
-<div class="tab-pane" title="{{ .Get 0 }}">
-  {{ .Inner }}
+<div class="tab-pane" title="{{ with .Get 1 }}{{ . }}{{else}}{{.Get 0}}{{end}}">
+  {{- highlight (string .Inner) (.Get 0) "linenos=false" -}}
 </div>
-

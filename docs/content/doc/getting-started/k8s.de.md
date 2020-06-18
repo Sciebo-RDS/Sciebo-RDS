@@ -4,37 +4,37 @@ subtitle: Helm Chart und Installationsanleitung
 
 menu:
   doc:
+
     parent: installation
-weight: 102
+
+weight: 302
 ---
 
 Voraussetzung: [Konfiguration getätigt](/de/doc/getting-started/config/)
 
 Im "deploy"-Ordner ist eine Makefile, welche mit dem Programm *make* benutzt wird.
 
-```bash
+``` bash
 sudo apt install make
 ```
 
 Falls helm oder kubectl noch nicht installiert wurden, können diese bequem installiert werden.
 
-Für Fedora/CentOS:
+{{<tabs>}}
+{{<tab "bash" "Ubuntu/Debian">}}make dependencies_ubuntu
+{{</tab>}}
 
-```bash
-make dependencies_fedora
-```
+{{<tab "bash" "Fedora/CentOS">}}make dependencies_fedora
+{{</tab>}}
+{{</tabs>}}
 
-Für Ubuntu/Debian:
-
-```bash
-make dependencies_ubuntu
-```
+*Hinweis: Seit Helm v3 wird kein Tillerserver mehr auf Seiten des Kubernetes [benötigt](https://helm.sh/blog/helm-3-released/).*
 
 Nun muss Kubectl konfiguriert werden, sodass auf ein Kubernetes-Cluster zugegriffen werden kann. (Für Testzwecke minikube nutzen, andernfalls den Clusteradministrator nachfragen.)
 
 Anschließend kann mit folgendem Befehl das RDS Ökosystem auf den Cluster geladen werden:
 
-```bash
+``` bash
 make install
 ```
 
@@ -42,7 +42,7 @@ Durch den oberen Befehl werden sämtliche zur Verfügung stehende Services insta
 
 Das System installiert automatisch eine Jaeger-Instanz für das Verfolgen von Log-Nachrichten. Darauf kann man mit folgendem Befehl zugreifen und anschließend im Browser die angezeigte IP-Adresse aufrufen:
 
-```bash
+``` bash
 make jaeger
 ```
 

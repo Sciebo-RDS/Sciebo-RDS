@@ -5,7 +5,7 @@ subtitle: Wie konfiguriert man RDS
 menu:
   doc:
     parent: installation
-weight: 100
+weight: 301
 ---
 
 Man benötigt den Ordner "deploy" aus dem Github Repositorium.
@@ -38,3 +38,5 @@ nano values.yaml
 ```
 
 Sobald diese Anpassungen getätigt wurden, kann nun der Cluster installiert werden.
+
+Falls die Kommunikation zwischen Plugins und Cluster durch eine HTTPS Verbindung abgesichert werden soll, was dringend empfohlen wird, so kann mittels des Shellskriptes [create_create.sh](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/create_certs.sh) ein entsprechendes Zertifikat erstellen und als Secret hinterlegt werden. Es muss das Skript angepasst werden für welche Domain das Zertifikat ausgestellt werden soll.

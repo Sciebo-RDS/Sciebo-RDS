@@ -13,6 +13,8 @@ pygmentCodeFences = true
 #disqusShortname = "XXX"
 #googleAnalytics = "XXX"
 
+enableGitInfo = true
+
 [languages]
   [languages.de]
 	languageName = "Deutsch"
@@ -51,7 +53,7 @@ pygmentCodeFences = true
     identifier = "docs home"
     pre = "<i class='fa fa-home'></i>"
     url = "/de/doc/"
-    weight = -999
+    weight = -1050
 
 [[languages.de.menu.doc]]
     name = "Nutzerhandbuch"
@@ -60,7 +62,7 @@ pygmentCodeFences = true
     weight = -1000
 
 [[languages.de.menu.doc]]
-    name = "Wo beginnen"
+    name = "Administrator"
     identifier = "installation"
     pre = "<i class='fa fa-play'></i>"
     weight = -900
@@ -82,7 +84,7 @@ pygmentCodeFences = true
 
 [[languages.de.menu.doc]]
     name = "Architektur"
-    identifier = "arch"
+    identifier = "architecture"
     pre = "<i class='fa fa-university'></i>"
     weight = -300
     post = "border-top: 1px dotted #ccc;"
@@ -95,19 +97,19 @@ pygmentCodeFences = true
     weight = -290
 
 [[languages.de.menu.doc]]
-    name = "Adapters & Ports"
+    name = "Schicht 1"
     identifier = "adapter-port"
     pre = "<i class='fa fa-map-o'></i>"
     weight = -280
 
 [[languages.de.menu.doc]]
-    name = "Nutzfälle"
+    name = "Schicht 2"
     identifier = "use-case"
     pre = "<i class='fa fa-cogs'></i>"
     weight = -270
 
 [[languages.de.menu.doc]]
-    name = "Zentrale Dienste"
+    name = "Schicht 3"
     identifier = "core"
     pre = "<i class='fa fa-archive'></i>"
     weight = -260
@@ -256,7 +258,7 @@ pygmentCodeFences = true
 
 [[menu.doc]]
     name = "Architecture"
-    identifier = "arch"
+    identifier = "architecture"
     pre = "<i class='fa fa-university'></i>"
     weight = -300
     post = "border-top: 1px dotted #ccc;"

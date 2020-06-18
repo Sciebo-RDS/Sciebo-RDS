@@ -4,8 +4,8 @@ subtitle: Architekturdokumentation mit Arc42
 
 menu:
   doc:
-    parent: arch
-weight: 202
+    parent: architecture
+weight: 402
 ---
 
 ## Randbedingungen

@@ -4,8 +4,8 @@ subtitle: Wo befindet sich was
 
 menu:
   doc:
-    parent: arch
-weight: 205
+    parent: infrastructure
+weight: 501
 mermaid: true
 ---
 
@@ -39,7 +39,7 @@ graph TD;
 
         subgraph Central Services
           CSToken[Token Storage]
-          CSProject[Project Manager]
+          CSProject[Research Manager]
         end
       end
     end

@@ -1,6 +1,6 @@
 ---
-title: OwnCloud
-subtitle: How to use RDS with OwnCloud
+title: ownCloud
+subtitle: RDS mittels ownCloud App integrieren und verwenden
 
 menu:
   doc:

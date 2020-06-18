@@ -6,6 +6,7 @@ menu:
   doc:
     parent: infrastructure
 mermaid: true
+weight: 500
 ---
 
 ## Domain

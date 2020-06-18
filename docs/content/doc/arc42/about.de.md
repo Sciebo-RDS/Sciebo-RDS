@@ -4,8 +4,8 @@ subtitle: Architekturdokumentation mit Arc42
 
 menu:
   doc:
-    parent: arch
-weight: 200
+    parent: architecture
+weight: 400
 ---
 
 ## Über arc42

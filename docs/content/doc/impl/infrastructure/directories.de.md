@@ -1,6 +1,6 @@
 ---
 title: Pfaddefinitionen
-subtitle: Wo gibt es welchen Dienst zu finden
+subtitle: Hier erfährst Du, welcher Microservice sich hinter den verschiedenen API-Endpunkten versteckt.
 
 menu:
   doc:
