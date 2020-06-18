@@ -105,6 +105,9 @@ hugo:test:
 pages:
   image: registry.gitlab.com/pages/hugo:0.59.1
   stage: pages
+  before_script:
+  - apk add --update --no-cache git
+
   script:
     - cd docs
     - hugo
