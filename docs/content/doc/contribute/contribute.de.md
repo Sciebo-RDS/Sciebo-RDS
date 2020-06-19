@@ -1,6 +1,6 @@
 ---
 title: Mitwirken
-subtitle: Wie kannst Du bei diesem Projekt beitragen?
+subtitle: Wie Du dieses Projekt unterstützen kannst.
 weight: 10000
 
 menu:
