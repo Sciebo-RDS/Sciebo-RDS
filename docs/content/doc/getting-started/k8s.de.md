@@ -28,7 +28,9 @@ Falls helm oder kubectl noch nicht installiert wurden, können diese bequem inst
 {{</tab>}}
 {{</tabs>}}
 
-*Hinweis: Seit Helm v3 wird kein Tillerserver mehr auf Seiten des Kubernetes [benötigt](https://helm.sh/blog/helm-3-released/).*
+{{<callout "tip">}}
+Hinweis: Seit Helm v3 wird kein Tillerserver mehr auf Seiten des Kubernetes [benötigt](https://helm.sh/blog/helm-3-released/).
+{{</callout>}}
 
 Nun muss Kubectl konfiguriert werden, sodass auf ein Kubernetes-Cluster zugegriffen werden kann. (Für Testzwecke minikube nutzen, andernfalls den Clusteradministrator nachfragen.)
 
