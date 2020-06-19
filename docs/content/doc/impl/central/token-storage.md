@@ -18,8 +18,7 @@ This service provides secure handling and exchange of passwords and other access
 Because of the high security in RDS, the communication between the plugins and the RDS system must be encrypted or at least signed. Since an OAuth2 provider is required for authentication, a client secret is passed from the provider to the RDS system at the very beginning of the configuration. This secret is used as a password to encrypt further communication between the two systems.
 
 If this password is corrupted, an attacker can set up his own system and pretend to be an RDS system and thus carry out a man-in-the-middle attack, whereby all communication between the provider and the RDS system is broken, despite encryption. For this reason the OAuth2-Secret can be used as a key. If we cannot trust this secret, the entire communication is not secure (even without this secret as a key for synchronous encryption).
-
-``mermaid
+```mermaid
 sequenceDiagram
   participant user
   participant RDS
@@ -37,8 +36,7 @@ Because of the secrecy of the Oauth2-secret, all plugin communication must be ro
 ## UML Diagram
 
 Due to the high relevance of a faultless storage of the user tokens, a UML diagram with cardinalities describing the storage structure of the data is presented in the following.
-
-``mermaid
+```mermaid
 classDiagram
 
   class Storage {

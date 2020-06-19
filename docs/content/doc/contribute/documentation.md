@@ -22,6 +22,6 @@ Hugo offers many conveniences for creation and formatting. Further functions are
 
 You can view your changes locally with an installed Hugo application. The following command starts a server at [http://localhost:1313](http://localhost:1313):
 
-``bash
+```bash
 hugo server
 ```

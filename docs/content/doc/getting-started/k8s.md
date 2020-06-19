@@ -13,7 +13,7 @@ Condition: [Configuration made]/doc/getting-started/config/)
 
 In the "deploy" folder is a Makefile, which is used with the program *make*.
 
-`` bash
+```bash
 sudo apt install make
 ```
 
@@ -33,7 +33,7 @@ Now Kubectl must be configured so that a Kubernetes cluster can be accessed. (Us
 
 Afterwards the RDS ecosystem can be loaded onto the cluster with the following command:
 
-`` bash
+```bash
 make install
 ```
 
@@ -41,7 +41,7 @@ The above command installs all available services. Currently, the system does no
 
 The system automatically installs a Jaeger instance for tracking log messages. You can access this instance with the following command and then call up the displayed IP address in the browser:
 
-`` bash
+```bash
 make jaeger
 ```
 

@@ -15,54 +15,54 @@ The following diagram shows the data flow within the RDS ecosystem. Each service
 
 Incoming connections are established by the plugins (currently Owncloud). Further integrations are possible. (Information about this will be added later).
 
-``mermaid
+```mermaid
 graph TD;
   %% define nodes
 
-  WWWI [incoming connections]
+  WWWI[incoming connections]
 
   subgraph RDS
     Ingress
 
     subgraph Adapters & Ports
-      %% SPAEx [SPA Exporter]
-      %% SPATS [SPA Token Storage]
+      %% SPAEx[SPA Exporter]
+      %% SPATS[SPA Token Storage]
 
-      PInvenio [Port Invenio]
-      POwncloud [Port Owncloud]
+      PInvenio[Port Invenio]
+      POwncloud[Port Owncloud]
 
       subgraph Use Cases
-        UCExporter [Exporter Service]
-        UCPort [Port Service]
-        UCMetadata [Metadata Service]
-        %% UCProject [Project Service]
+        UCExporter[Exporter Service]
+        UCPort[Port Service]
+        UCMetadata[Metadata Service]
+        %% UCProject[Project Service]
 
         subgraph Central Services
-          CSToken [Token Storage]
-          CSProject [Research Manager]
+          CSToken[Token Storage]
+          CSProject[Research Manager]
         end
       end
     end
   end
 
-  WWWO [outgoing connections]
+  WWWO[outgoing connections]
 
-  click PInvenio "/en/doc/impl/ports/port-invenio
-  click POwncloud "/en/doc/impl/ports/port-storage
+  click PInvenio "/doc/impl/ports/port-invenio"
+  click POwncloud "/doc/impl/ports/port-storage"
 
-  click UCPort "/en/doc/impl/use-cases/port-service
-  click UCExporter "/en/doc/impl/use-cases/exporter
-  click UCMetadata "/en/doc/impl/use-cases/metadata
+  click UCPort "/doc/impl/use-cases/port-service"
+  click UCExporter "/doc/impl/use-cases/exporter"
+  click UCMetadata "/doc/impl/use-cases/metadata"
 
-  click CSProject "/en/doc/impl/central/research-manager"
-  click CSToken ""/en/doc/impl/central/token-storage""
+  click CSProject "/doc/impl/central/research-manager"
+  click CSToken ""/doc/impl/central/token-storage""
 
   %% define connections
   WWWI --> Ingress
 
   %% Ingress --> SPAEx --> UCExporter
   %% Ingress --> SPATS --> CSToken
-  %% Ingress -->|Only for the registration of new tokens| ARegister
+  %% Ingress -->|Nur für die Registration von neuen Tokens| ARegister
   Ingress --> CSProject & UCExporter & UCMetadata & UCPort
 
   %% UCExporter --> UCProject

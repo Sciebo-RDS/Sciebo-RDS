@@ -11,7 +11,7 @@ weight: 301
 
 The folder again contains "example" files, more precisely "values.yaml.example", which must be renamed as above. In these files you now have to enter the corresponding data for the services.
 
-``bash
+```bash
 cp values.yaml.example values.yaml
 nano values.yaml
 ```

@@ -18,7 +18,7 @@ In the settings, the user has the option of storing OAuth tokens and passwords (
 
 ### Input masks of the settings
 
-``mermaid
+```mermaid
 stateDiagram
   [*] --> Start
   Start --> RDS: no
@@ -71,7 +71,7 @@ The user has an overview page at the beginning, which is empty. He has the possi
 
 At any time the user can leave his current status and return to the overview. His previous information is not deleted, but the status is maintained until he completes or deletes the project.
 
-``mermaid
+```mermaid
 stateDiagram
 
 Service: "Connect services".

@@ -243,19 +243,19 @@ enableGitInfo = true
     weight = -290
 
 [[menu.doc]]
-    name = "Adapters & Ports"
+    name = "Layer 1"
     identifier = "adapter-port"
     pre = "<i class='fa fa-map-o'></i>"
     weight = -280
 
 [[menu.doc]]
-    name = "Use Cases"
+    name = "Layer 2"
     identifier = "use-case"
     pre = "<i class='fa fa-cogs'></i>"
     weight = -270
 
 [[menu.doc]]
-    name = "Central Services"
+    name = "Layer 3"
     identifier = "core"
     pre = "<i class='fa fa-archive'></i>"
     weight = -260

@@ -16,8 +16,7 @@ This service implements the communication between the plug-ins, the token storag
 Due to the high relevance of the central service *Token Storage*, a direct communication between these and the outside world should be prevented. For this purpose the user can use the *Port* service in the second circle, which addresses the functions for the user of the central service in the third circle. For convenience, many concepts are again abstracted away so that the handling remains very convenient and simple. The service also handles the entire server part of the OAuth workflow.
 
 The plug-ins must follow the sequence diagram below so that it can store a user's credentials for a service to be connected in the RDS system
-
-``mermaid
+```mermaid
 sequenceDiagram
 
 participant U as User
