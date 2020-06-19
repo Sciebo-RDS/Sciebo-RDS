@@ -62,7 +62,7 @@ enableGitInfo = true
     weight = -1000
 
 [[languages.de.menu.doc]]
-    name = "Administrator"
+    name = "Administration"
     identifier = "installation"
     pre = "<i class='fa fa-play'></i>"
     weight = -900
@@ -177,34 +177,6 @@ enableGitInfo = true
     url = "page/about/"
     weight = 20
 
-#[[menu.main]]
-#    identifier = "samples"
-#    name = "Samples"
-#    weight = 2
-
-#[[menu.main]]
-#    parent = "samples"
-#    name = "Big Image Sample"
-#    url = "post/2017-03-07-bigimg-sample"
-#    weight = 1
-
-#[[menu.main]]
-#    parent = "samples"
-#    name = "Math Sample"
-#    url = "post/2017-03-05-math-sample"
-#    weight = 2
-
-#[[menu.main]]
-#    parent = "samples"
-#    name = "Code Sample"
-#    url = "post/2016-03-08-code-sample"
-#    weight = 3
-
-#[[menu.main]]
-#    name = "Tags"
-#    url = "tags"
-#    weight = 3
-
 [[menu.main]]
     name = "Contribute"
     url = "/doc/contribute/"
@@ -227,10 +199,10 @@ enableGitInfo = true
     identifier = "docs home"
     pre = "<i class='fa fa-home'></i>"
     url = "/doc/"
-    weight = -999
+    weight = -1050
 
 [[menu.doc]]
-    name = "Getting started"
+    name = "Administration"
     identifier = "installation"
     pre = "<i class='fa fa-play'></i>"
     weight = -900

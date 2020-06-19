@@ -8,12 +8,18 @@ menu:
 weight: 600
 ---
 
-# OpenAPI v3
+# Mission
 
-{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_file_storage.yml"  >}}
+This service handles all communication with the configured Owncloud instance and makes its files available to the RDS system.
 
-# Implementation
+Currently, this service can only be used as a source service for the configuration of research projects, since currently only the download of files is implemented.
 
-The following classes implements a library to work easier with an owncloud installation.
+## OpenAPI v3
+
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_file_storage.yml" >}}
+
+## Implementation
+
+The following class implements a library to use an owncloud installation.
 
 {{% code file="doc/impl/ports/port-owncloud-docstring.md" %}}
