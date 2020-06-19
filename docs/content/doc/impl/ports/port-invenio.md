@@ -8,12 +8,18 @@ menu:
 weight: 601
 ---
 
-# OpenAPI v3
+# Mission
 
-{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_metadata.yml"  >}}
+This service handles all communication with the configured Owncloud instance and makes its files available to the RDS system.
 
-# Implementation
+When creating research projects, this service can be configured as source and target service.
 
-The following classes implements a library to work easier with zenodo in the zenodo service.
+## OpenAPI v3
+
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_metadata.yml" >}}
+
+## Implementation
+
+The following class implements a library to use the Invenio installation "Zenodo".
 
 {{% code file="doc/impl/ports/port-invenio-docstring.md" %}}
