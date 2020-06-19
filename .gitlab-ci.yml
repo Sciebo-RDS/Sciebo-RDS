@@ -82,6 +82,9 @@ hugo:test:
   variables:
     FOLDER: docs/
 
+  before_script:
+  - apk add --update --no-cache git
+
   script:
     - cd $FOLDER
     - hugo
