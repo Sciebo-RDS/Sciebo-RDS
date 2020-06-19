@@ -25,6 +25,7 @@ variables:
 
   except:
     refs:
+      - /^translations_plugins-.*$/i # ignore, if it comes from transifex
       - master
 
   # https://gitlab.com/gitlab-org/gitlab/issues/8177
@@ -83,7 +84,7 @@ hugo:test:
     FOLDER: docs/
 
   before_script:
-  - apk add --update --no-cache git
+    - apk add --update --no-cache git
 
   script:
     - cd $FOLDER
@@ -109,7 +110,7 @@ pages:
   image: registry.gitlab.com/pages/hugo:0.59.1
   stage: pages
   before_script:
-  - apk add --update --no-cache git
+    - apk add --update --no-cache git
 
   script:
     - cd docs
