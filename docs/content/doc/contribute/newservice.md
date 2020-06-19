@@ -36,7 +36,7 @@ Before we start, you should make it clear in which layer your micro service is t
 If your service does not fit into any of the layers, you should consider splitting your service into several microservices so that the functions you implement can be used by as many other services as possible.
 
 As a rule of thumb you should consider the following:
-{{{<callout info>}}
+{{<callout info>}}
 A micro service basically pursues only one goal and its task can be described in one sentence. This guarantees reusability and reduces the complexity of your service. It also reduces the dependency of the whole system to a few services (see [Clean Architecture]/doc/arc42/contextboundary/#section-solid-arch)).
 {{</callout>}}
 

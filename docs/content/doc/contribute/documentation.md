@@ -18,7 +18,7 @@ Github provides the ability to directly edit the files that are in the Git repos
 
 {{<callout "info">}}
 Make sure that you create a new pull request when you save your changes or select the correct branch of your changes so that your changes can be viewed and applied by the developers. As long as there is no pull request, your changes cannot be applied.
-{{{</callout>}}
+{{</callout>}}
 
 ## Offline
 
