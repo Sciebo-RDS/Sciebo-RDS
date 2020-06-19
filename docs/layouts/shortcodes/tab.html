@@ -1,3 +1,7 @@
 <div class="tab-pane" title="{{ with .Get 1 }}{{ . }}{{else}}{{.Get 0}}{{end}}">
+  {{ if (.Get 1) }}
   {{- highlight (string .Inner) (.Get 0) "linenos=false" -}}
+  {{ else }}
+  {{ .Inner | markdownify }}
+  {{ end }}
 </div>

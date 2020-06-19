@@ -1,5 +1,3 @@
-var Handlebars = require('handlebars');
-
 Handlebars.registerHelper('inc', function (number, options) {
     if (typeof (number) === 'undefined' || number === null)
         return null;
