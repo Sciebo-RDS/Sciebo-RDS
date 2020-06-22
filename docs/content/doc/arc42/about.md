@@ -1,5 +1,5 @@
 ---
-title: About Architecture
+title: About Arc42
 subtitle: Architecture documentation with Arc42
 
 menu:
