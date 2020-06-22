@@ -18,8 +18,10 @@ Hereinkommende Verbindungen werden u.a. von den Plugins aufgebaut (aktuell Owncl
 ```mermaid
 graph TD;
   %% define nodes
-
-  WWWI[hereinkommende Verbindungen]
+  
+  subgraph Plugins
+      OP[Owncloud App]
+  end
 
   subgraph RDS
     Ingress
@@ -45,6 +47,7 @@ graph TD;
     end
   end
 
+  WWWI[hereinkommende Verbindungen]
   WWWO[ausgehende Verbindungen]
 
   click PInvenio "/de/doc/impl/ports/port-invenio"
@@ -58,7 +61,8 @@ graph TD;
   click CSToken ""/de/doc/impl/central/token-storage""
 
   %% define connections
-  WWWI --> Ingress
+  WWWI --> OP
+  OP --> Ingress
 
   %% Ingress --> SPAEx --> UCExporter
   %% Ingress --> SPATS --> CSToken

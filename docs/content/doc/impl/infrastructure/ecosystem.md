@@ -19,7 +19,10 @@ Incoming connections are established by the plugins (currently Owncloud). Furthe
 graph TD;
   %% define nodes
 
-  WWWI[incoming connections]
+  subgraph Plugins
+      OP[Owncloud App]
+  end
+
 
   subgraph RDS
     Ingress
@@ -45,6 +48,7 @@ graph TD;
     end
   end
 
+  WWWI[incoming connections]
   WWWO[outgoing connections]
 
   click PInvenio "/doc/impl/ports/port-invenio"
@@ -58,7 +62,8 @@ graph TD;
   click CSToken ""/doc/impl/central/token-storage""
 
   %% define connections
-  WWWI --> Ingress
+  WWWI --> OP
+  OP --> Ingress
 
   %% Ingress --> SPAEx --> UCExporter
   %% Ingress --> SPATS --> CSToken
