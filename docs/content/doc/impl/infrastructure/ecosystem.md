@@ -31,7 +31,7 @@ graph TD;
       %% SPAEx[SPA Exporter]
       %% SPATS[SPA Token Storage]
 
-      PInvenio[Port Invenio]
+      PInvenio[Port Zenodo]
       POwncloud[Port Owncloud]
 
       subgraph Use Cases
@@ -50,6 +50,8 @@ graph TD;
 
   WWWI[incoming connections]
   WWWO[outgoing connections]
+
+  click OP "/doc/impl/plugins/owncloud/"
 
   click PInvenio "/doc/impl/ports/port-invenio"
   click POwncloud "/doc/impl/ports/port-storage"
