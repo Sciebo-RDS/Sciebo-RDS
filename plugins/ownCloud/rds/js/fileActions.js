@@ -17,32 +17,50 @@
       });
       pushFileToResearch.init("all", fileList.fileActions);
 
+      var directories = new OC.rds.ResearchDirectories();
+      var activate = true;
+      directories
+        .load()
+        .fail(function () {
+          console.log(
+            "cannot find directories. Could be possible, that rds is not activated?"
+          );
+          activate = false;
+        })
+        .always(function () {
+          if (activate) {
+          }
+        });
+
       // setup advanced filter
       fileList.fileActions.addAdvancedFilter(function (actions, context) {
-          var fileName = context.$file.data("file");
-          var mimetype = context.$file.data("mime");
-          var dir = context.fileList.getCurrentDirectory();
+        var fileName = context.$file.data("file");
+        var mimetype = context.$file.data("mime");
+        var dir = context.fileList.getCurrentDirectory();
 
-          alert("advanced filter is called")
-          found = false;
-          directories.getFolders().forEach(function (item) {
-            if (item === dir) {
-              found = true;
-            }
-          });
-
-          if (found) {
-            if (mimetype === "httpd/unix-directory") {
-              delete actions.addFolderToResearch;
-            }
-          } else {
-            delete actions.pushFileToResearch;
+        var found = false;
+        directories.getFolders().forEach(function (item) {
+          // check if following is in folders:
+          // - current directory (because then the files can be pushed separately)
+          // - one of the files (can be pushed manually)
+          // - edge case: filenames in root dir
+          if (item === dir + "/" || item === dir + "/" + fileName + "/" || dir === "/" && item == "/" + fileName + "/") {
+            found = true;
           }
+        });
 
-          return actions;
+        if (found) {
+          if (mimetype === "httpd/unix-directory") {
+            delete actions.addFolderToResearch;
+          }
+        } else {
+          delete actions.pushFileToResearch;
+        }
+
+        return actions;
       });
 
-      }
+    }
   };
 
   var addFolderToResearch = {
@@ -74,15 +92,28 @@
         type: OCA.Files.FileActions.TYPE_DROPDOWN,
         iconClass: "icon-rds-research-small",
         actionHandler: function (filename, context) {
+          var fileName = "";
+          var mimetype = context.$file.data("mime");
+          var dir = context.fileList.getCurrentDirectory();
+
+          if (!dir.endsWith("/")) {
+            dir += "/";
+          }
+
+          fileName = dir + filename;
+          if (mimetype === "httpd/unix-directory") {
+            fileName += "/"
+          }
+
           var data = {
-            filename: filename,
+            filename: fileName,
           };
 
           $.ajax({
             type: "POST",
             url: OC.generateUrl("/apps/rds/research/files"),
             data: JSON.stringify(data),
-            dataType: "json",
+            contentType: "application/json",
           })
             .done(function () {
               OC.dialogs.alert(
@@ -146,19 +177,4 @@
   OC.Plugins.register("OCA.Files.NewFileMenu", createRdsResearch);
   OC.Plugins.register('OCA.Files.FileList', OC.rds.FilePlugin);
 
-  // TODO: move this logic into OC.rds.FilePlugin
-  var directories = new OC.rds.ResearchDirectories();
-  var activate = true;
-  directories
-    .load()
-    .fail(function () {
-      console.log(
-        "cannot find directories. Could be possible, that rds is not activated?"
-      );
-      activate = false;
-    })
-    .always(function () {
-      if (activate) {
-      }
-    });
 })(OC, window, jQuery);
