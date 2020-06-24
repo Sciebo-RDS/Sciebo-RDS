@@ -1,4 +1,4 @@
-<h2><?php p($l->t('Project')); ?> {{ inc @research.researchIndex }}</h2>
+<h2><?php p($l->t('Project')); ?> {{ inc research.researchIndex }}</h2>
 
 <p class="section-text"><h1><?php p($l->t('Here you can enter all informations about your research synchronization.')); ?></p>
 
