@@ -216,7 +216,7 @@
     var servicename = btn.data("service");
 
     $("[id=service-configuration]").hide();
-    $("#btn-save-research-and-continue").hide();
+    #$("#btn-save-research-and-continue").hide();
     $("#btn-sync-files-in-research").hide();
 
     $("#btn-sync-files-in-research").click(function () {
