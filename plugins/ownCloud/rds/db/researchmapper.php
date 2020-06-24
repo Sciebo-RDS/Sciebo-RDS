@@ -385,6 +385,7 @@ class ResearchMapper {
     }
 
     public function triggerExport( $userId, $researchIndex, $files = null ) {
+        // TODO: if $files are given, only transmit them, not all
         $curl = curl_init( $this->exporterURL . '/user/' . $userId . '/research/' . $researchIndex );
         $options = [CURLOPT_RETURNTRANSFER => true];
         curl_setopt_array( $curl, $options );
