@@ -4,10 +4,49 @@
 
   OC.rds = OC.rds || {};
 
-  var fileActions = OCA.Files.fileActions;
+  OC.rds.FilePlugin = {
+
+    /**
+     * @param fileList
+     */
+    attach: function (fileList) {
+      // add file actions in here using
+      var mimes = ["httpd/unix-directory"];
+      mimes.forEach((item) => {
+        addFolderToResearch.init(item, fileList.fileActions);
+      });
+      pushFileToResearch.init("all", fileList.fileActions);
+
+      // setup advanced filter
+      fileList.fileActions.addAdvancedFilter(function (actions, context) {
+          var fileName = context.$file.data("file");
+          var mimetype = context.$file.data("mime");
+          var dir = context.fileList.getCurrentDirectory();
+
+          alert("advanced filter is called")
+          found = false;
+          directories.getFolders().forEach(function (item) {
+            if (item === dir) {
+              found = true;
+            }
+          });
+
+          if (found) {
+            if (mimetype === "httpd/unix-directory") {
+              delete actions.addFolderToResearch;
+            }
+          } else {
+            delete actions.pushFileToResearch;
+          }
+
+          return actions;
+      });
+
+      }
+  };
 
   var addFolderToResearch = {
-    init: function (mimetype) {
+    init: function (mimetype, fileActions) {
       var self = this;
       fileActions.registerAction({
         name: "addFolderToResearch",
@@ -25,7 +64,7 @@
   };
 
   var pushFileToResearch = {
-    init: function (mimetype) {
+    init: function (mimetype, fileActions) {
       var self = this;
       fileActions.registerAction({
         name: "pushFileToResearch",
@@ -103,6 +142,11 @@
     },
   };
 
+  // plugins need to be registered right away
+  OC.Plugins.register("OCA.Files.NewFileMenu", createRdsResearch);
+  OC.Plugins.register('OCA.Files.FileList', OC.rds.FilePlugin);
+
+  // TODO: move this logic into OC.rds.FilePlugin
   var directories = new OC.rds.ResearchDirectories();
   var activate = true;
   directories
@@ -115,35 +159,6 @@
     })
     .always(function () {
       if (activate) {
-        OC.Plugins.register("OCA.Files.NewFileMenu", createRdsResearch);
-        fileActions.addAdvancedFilter(function (actions, context) {
-          var fileName = context.$file.data("file");
-          var mimetype = context.$file.data("mime");
-          var dir = context.fileList.getCurrentDirectory();
-
-          found = false;
-          directories.getFolders().forEach(function (item) {
-            if (item === dir) {
-              found = true;
-            }
-          });
-
-          if (found) {
-            if (mimetype === "httpd/unix-directory") {
-              delete actions.addFolderToResearch;
-            }
-          } else {
-            delete actions.pushFileToResearch;
-          }
-
-          return actions;
-        });
-
-        var mimes = ["httpd/unix-directory"];
-        mimes.forEach((item) => {
-          addFolderToResearch.init(item);
-        });
-        pushFileToResearch.init("all");
       }
     });
 })(OC, window, jQuery);
