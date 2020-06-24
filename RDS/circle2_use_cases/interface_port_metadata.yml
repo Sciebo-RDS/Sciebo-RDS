@@ -51,7 +51,9 @@ paths:
                 apiKey:
                   type: string
                 metadata:
-                  type: object
+                  type:
+                    - object
+                    - 'null'
                 userId:
                   type: string
             examples:
