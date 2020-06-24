@@ -54,7 +54,7 @@ def register_service(servicename: str, authorize_url: str, refresh_url: str, cli
     response = requests.post(
         f"{tokenStorage}/service", json=data, headers=headers)
 
-    if response.status_code is not 200:
+    if response.status_code != 200:
         raise Exception(
             "Cannot find and register Token Storage, msg:\n{}".format(response.text))
 
