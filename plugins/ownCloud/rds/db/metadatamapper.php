@@ -19,6 +19,7 @@ class MetadataMapper
         $options = [CURLOPT_RETURNTRANSFER => true];
         curl_setopt_array($curl, $options);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $metadata->jsonSerialize());
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
