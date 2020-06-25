@@ -56,6 +56,118 @@ class MetadataMapper {
     }
 
     public function jsonschema() {
+        return [
+            "kernelversion" =>"custom",
+            "schema" => '{
+            "$schema": "http://json-schema.org/draft-07/schema",
+            "$id": "http://example.com/example.json",
+            "type": "object",
+            "title": "The root schema",
+            "description": "The root schema comprises the entire JSON document.",
+            "default": {},
+            "examples": [
+                {
+                    "upload_type": "poster",
+                    "description": "This is my first upload",
+                    "creators": [
+                        {
+                            "name": "Doe, John",
+                            "affiliation": "Zenodo"
+                        }
+                    ]
+                }
+            ],
+            "required": [
+                "upload_type",
+                "description",
+                "creators"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "upload_type": {
+                    "$id": "#/properties/upload_type",
+                    "type": "string",
+                    "title": "The upload_type schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "poster"
+                    ]
+                },
+                "description": {
+                    "$id": "#/properties/description",
+                    "type": "string",
+                    "title": "The description schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "This is my first upload"
+                    ]
+                },
+                "creators": {
+                    "$id": "#/properties/creators",
+                    "type": "array",
+                    "title": "The creators schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": [],
+                    "examples": [
+                        [
+                            {
+                                "name": "Doe, John",
+                                "affiliation": "Zenodo"
+                            }
+                        ]
+                    ],
+                    "additionalItems": true,
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$id": "#/properties/creators/items/anyOf/0",
+                                "type": "object",
+                                "title": "The first anyOf schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": {},
+                                "examples": [
+                                    {
+                                        "name": "Doe, John",
+                                        "affiliation": "Zenodo"
+                                    }
+                                ],
+                                "required": [
+                                    "name",
+                                    "affiliation"
+                                ],
+                                "additionalProperties": true,
+                                "properties": {
+                                    "name": {
+                                        "$id": "#/properties/creators/items/anyOf/0/properties/name",
+                                        "type": "string",
+                                        "title": "The name schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "Doe, John"
+                                        ]
+                                    },
+                                    "affiliation": {
+                                        "$id": "#/properties/creators/items/anyOf/0/properties/affiliation",
+                                        "type": "string",
+                                        "title": "The affiliation schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "Zenodo"
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        "$id": "#/properties/creators/items"
+                    }
+                }
+            }
+        }'];
+
         $url = $this->rdsURL . '/jsonschema';
 
         $curl = curl_init();
