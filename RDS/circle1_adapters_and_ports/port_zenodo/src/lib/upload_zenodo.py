@@ -265,7 +265,7 @@ class Zenodo(object):
 
         r = requests.put(
             f"{self.zenodo_address}/api/deposit/depositions/{deposition_id}",
-            json=data,
+            data=json.dumps(data),
             headers=headers,
         )
         return r.status_code == 200 if not return_response else r
