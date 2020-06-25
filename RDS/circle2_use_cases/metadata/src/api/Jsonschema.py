@@ -9,6 +9,6 @@ def index():
     # example can be found here: https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/example/datacite-example-HasMetadata-v4.json
     with open("zenodo_schema.json", "r") as file:
         return jsonify({
-            "kernelversion": "zenodo",
+            "kernelversion": "4.3",
             "schema": json.dumps(json.load(file))
         })
