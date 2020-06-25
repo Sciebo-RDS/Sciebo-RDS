@@ -22,6 +22,8 @@ class MetadataMapper
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        // Set the content type to application/json
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
 
         $response = json_decode(curl_exec($curl));
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
