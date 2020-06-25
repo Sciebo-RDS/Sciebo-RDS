@@ -51,7 +51,7 @@ paths:
                 apiKey:
                   type: string
                 metadata:
-                  oneOf:
+                  anyOf:
                     - type: object
                     - type: 'null'
                 userId:
@@ -106,7 +106,7 @@ paths:
                 apiKey:
                   type: string
                 metadata:
-                  oneOf:
+                  anyOf:
                     - type: object
                     - type: 'null'
                 userId:
@@ -114,13 +114,16 @@ paths:
             examples:
               example-1:
                 value:
-                  titles:
-                    - title: long title
-                      lang: en
-                  publisher: research publisher gmbh
-                  type:
-                    resourceType: ''
-                    resourceTypeGeneral: Poster
+                  apiKey: 123
+                  userId: 1
+                  metadata:
+                    titles:
+                      - title: long title
+                        lang: en
+                    publisher: research publisher gmbh
+                    type:
+                      resourceType: ''
+                      resourceTypeGeneral: Poster
         description: The given body has to be valid against the datacite jsonschema (without required fields).
   '/project/{project-id}/files':
     parameters:
