@@ -18,7 +18,7 @@ class MetadataMapper
         $curl = curl_init($this->rdsURL . '/user/' . $metadata->getUserId() . '/research/' . $metadata->getResearchIndex());
         $options = [CURLOPT_RETURNTRANSFER => true];
         curl_setopt_array($curl, $options);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $metadata->getMetadata());
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($metadata->getMetadata()));
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
