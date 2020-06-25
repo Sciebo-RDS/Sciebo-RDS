@@ -106,7 +106,9 @@ paths:
                 apiKey:
                   type: string
                 metadata:
-                  type: object
+                  oneOf:
+                    - type: object
+                    - type: 'null'
                 userId:
                   type: string
             examples:
