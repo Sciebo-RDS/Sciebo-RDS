@@ -258,6 +258,7 @@ class Zenodo(object):
             "Authorization": f"Bearer {self.api_key}",
         }
 
+
         data = {}
         data["metadata"] = metadata
 
