@@ -33,20 +33,7 @@ class MetadataMapper
             return NULL;
         }
 
-        $result = [];
-
-        foreach ($response['list'] as $rdsMetadata) {
-            $newMetadata = new Metadata();
-
-            $newMetadata->setUserId($metadata->getUserId());
-            $newMetadata->setResearchIndex($metadata->getResearchIndex());
-            $newMetadata->setMetadata($rdsMetadata['metadata']);
-            $newMetadata->setPort($rdsMetadata['port']);
-
-            $result[] = $newMetadata;
-        }
-
-        return $result;
+        return true;
     }
 
     public function find($userId, $researchIndex, $port)
