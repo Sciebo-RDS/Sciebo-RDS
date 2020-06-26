@@ -59,8 +59,8 @@
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(md),
-        success: function () {
-          self.load(self._activeResearchId)
+        success: function (metadatas) {
+          self._metadata = metadatas;
         },
       });
     },
