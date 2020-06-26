@@ -539,9 +539,13 @@
 
         return studies;
       }
-      var html = template({ studies: patch(this._studies.getAll()) });
 
-      $("#app-navigation ul").html(html);
+      var rerender = function () {
+        var html = template({ studies: patch(self._studies.getAll()) });
+        $("#app-navigation ul").html(html);
+      }
+      rerender();
+
 
       // create new research
       var self = this;
@@ -610,6 +614,8 @@
         if (self._studies.getActive().status > 1) {
           self._files.load(self._studies.getActive().researchIndex);
         }
+
+        rerender();
 
         self._stateView = 1;
         self.render();
