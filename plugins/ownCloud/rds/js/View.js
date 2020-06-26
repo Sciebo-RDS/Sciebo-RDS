@@ -431,9 +431,7 @@
       return deferred.promise();
     }
 
-    return self._studies._metadata.update(self._bf.getData()).done(function () {
-      self._studies.loadAll();
-    });
+    return self._studies._metadata.update(self._bf.getData());
   };
 
   OC.rds.FileTemplate = function (divName, view, services, studies, files) {
