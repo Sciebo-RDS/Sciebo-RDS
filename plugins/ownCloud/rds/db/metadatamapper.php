@@ -238,31 +238,31 @@ class MetadataMapper
                         "default": "CC-BY-4.0"
                     },
                     "conference_acronym": {
-                        "title": "Acronym",
+                        "title": "Conference Acronym",
                         "type": "string"
                     },
                     "conference_dates": {
-                        "title": "Dates",
+                        "title": "Conference Dates",
                         "type": "string"
                     },
                     "conference_place": {
-                        "title": "Place",
+                        "title": "Conference Place",
                         "type": "string"
                     },
                     "conference_session": {
-                        "title": "Session",
+                        "title": "Conference Session",
                         "type": "string"
                     },
                     "conference_session_part": {
-                        "title": "Part of session",
+                        "title": "Conference Part of session",
                         "type": "string"
                     },
                     "conference_title": {
-                        "title": "Title",
+                        "title": "Conference Title",
                         "type": "string"
                     },
                     "conference_url": {
-                        "title": "URL",
+                        "title": "Conference URL",
                         "type": "string"
                     },
                     "notes": {
@@ -271,11 +271,11 @@ class MetadataMapper
                         "type": "string"
                     },
                     "partof_pages": {
-                        "title": "Pages",
+                        "title": "Book Pages",
                         "type": "string"
                     },
                     "partof_title": {
-                        "title": "Title",
+                        "title": "Book Title",
                         "type": "string"
                     },
                     "publication_date": {
