@@ -5,7 +5,7 @@ subtitle: Exportiere deine Dateien zu einem Zenodo Repositorium.
 menu:
   doc:
     parent: adapter-port
-weight: 1000
+weight: 601
 ---
 
 # Aufgabe

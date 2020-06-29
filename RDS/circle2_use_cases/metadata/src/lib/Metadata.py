@@ -1,12 +1,12 @@
 import requests
-import logging
+import logging, json
 from lib.Research import Research
 from lib.Util import loadAccessToken
 
 logger = logging.getLogger()
 
 
-class Metadata():
+class Metadata:
     def __init__(self, testing: str = None):
         """
         This is the constructor. No needed parameters.
@@ -23,7 +23,9 @@ class Metadata():
         """
         This method returns the corresponding researchId to the given userId and researchIndex.
         """
-        return Research(testing=self.testing, userId=userId, researchIndex=researchIndex).researchId
+        return Research(
+            testing=self.testing, userId=userId, researchIndex=researchIndex
+        ).researchId
 
     def getPortString(self, port: str):
         res = f"circle1-{port}"
@@ -33,7 +35,13 @@ class Metadata():
 
         return res
 
-    def getMetadataForResearch(self, userId: str = None, researchIndex: int = None, researchId: int = None, metadataFields=None):
+    def getMetadataForResearch(
+        self,
+        userId: str = None,
+        researchIndex: int = None,
+        researchId: int = None,
+        metadataFields=None,
+    ):
         """
         This method returns the metadata from all available ports for specified researchId.
         """
@@ -41,8 +49,12 @@ class Metadata():
 
         logger.debug("start get metadata method for research")
 
-        research = Research(testing=self.testing,
-                            userId=userId, researchIndex=researchIndex, researchId=researchId)
+        research = Research(
+            testing=self.testing,
+            userId=userId,
+            researchIndex=researchIndex,
+            researchId=researchId,
+        )
 
         ports = research.getPortsWithProjectId()
 
@@ -55,21 +67,24 @@ class Metadata():
                 continue
 
             apiKey = loadAccessToken(
-                research.userId, port["port"].replace("port-", "").capitalize())
+                research.userId, port["port"].replace("port-", "").capitalize()
+            )
 
             logger.debug(f"work on port {port} with apiKey {apiKey}")
             port = port["port"]
             metadata = self.getMetadataForProjectFromPort(
-                port, projectId, apiKeyMetadata={"apiKey": apiKey, "metadata": metadataFields})
-            d = {
-                "port": port,
-                "metadata": metadata
-            }
+                port,
+                projectId,
+                apiKeyMetadata={"apiKey": apiKey, "metadata": metadataFields},
+            )
+            d = {"port": port, "metadata": metadata}
             allMetadata.append(d)
 
         return allMetadata
 
-    def getMetadataForProjectFromPort(self, port: str, projectId: int, apiKeyMetadata=None):
+    def getMetadataForProjectFromPort(
+        self, port: str, projectId: int, apiKeyMetadata=None
+    ):
         """
         This method returns the metadata from given port for specified projectId.
         Beware that the projectId comes from the service, which is connected throug the port.
@@ -81,11 +96,14 @@ class Metadata():
 
         if apiKeyMetadata is not None:
             req = requests.get(
-                f"http://{self.getPortString(port)}/metadata/project/{projectId}", json=apiKeyMetadata)
+                f"http://{self.getPortString(port)}/metadata/project/{projectId}",
+                json=apiKeyMetadata,
+            )
 
         else:
             req = requests.get(
-                f"http://{self.getPortString(port)}/metadata/project/{projectId}")
+                f"http://{self.getPortString(port)}/metadata/project/{projectId}"
+            )
 
         if req.status_code == 200:
             return req.json()
@@ -103,8 +121,7 @@ class Metadata():
         # get all ports registered to researchId
         logger.debug("start update for research method")
 
-        research = Research(testing=self.testing,
-                            researchId=researchId)
+        research = Research(testing=self.testing, researchId=researchId)
         ports = research.getPortsWithProjectId()
         logger.debug("research ports: {}".format(ports))
 
@@ -114,22 +131,23 @@ class Metadata():
                 continue
 
             apiKey = loadAccessToken(
-                research.userId, port["port"].replace("port-", "").capitalize())
+                research.userId, port["port"].replace("port-", "").capitalize()
+            )
 
             logger.debug("work on port {}".format(port))
             port = port["port"]
 
             metadata = self.updateMetadataForResearchFromPort(
-                port, projectId, {"apiKey": apiKey, "metadata": updateMetadata})
-            d = {
-                "port": port,
-                "metadata": metadata
-            }
+                port, projectId, {"apiKey": apiKey, "metadata": updateMetadata}
+            )
+            d = {"port": port, "metadata": metadata}
             allMetadata.append(d)
 
         return allMetadata
 
-    def updateMetadataForResearchFromPort(self, port: str, projectId: int, updateMetadata: dict):
+    def updateMetadataForResearchFromPort(
+        self, port: str, projectId: int, updateMetadata: dict
+    ):
         """
         This method changes the metadata in given port to the given metadata values in given dict for specified projectId.
         Returns the current metadata data, so you can check, if the update was successful or not.
@@ -153,11 +171,17 @@ class Metadata():
 
         port = str(port).lower()
 
+        headers = {"content-type": "application/json"}
+
         req = requests.patch(
-            f"http://{self.getPortString(port)}/metadata/project/{projectId}", json=updateMetadata)
+            f"http://{self.getPortString(port)}/metadata/project/{projectId}",
+            data=json.dumps(updateMetadata),
+            headers=headers,
+        )
 
         if req.status_code >= 300:
             logger.exception(
-                Exception(f"Update metadata for \"{updateMetadata}\" failed"))
+                Exception(f'Update metadata for "{updateMetadata}" failed')
+            )
 
         return req.json()

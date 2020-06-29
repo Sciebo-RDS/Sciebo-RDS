@@ -188,6 +188,13 @@ msgstr ""
 "Unten links kannst Du neue Dienste hinzufügen, falls Dir noch ein Dienst fehlt."
 
 #: templates/part.research.content.overview.php:1
+msgid "This is a nice text in overview"
+msgstr ""
+"Willkommen in deiner Forschungsübersicht. Links siehst Du alle bereits erstellten Forschungsprojekte. Klicke einen Dienst an, um ihn zu konfigurieren. Die drei Punkte an deiner Auswahl zeigen weitere Möglichkeiten an.\n"
+"\n"
+"Unten links kannst Du neue Dienste hinzufügen, falls Dir noch ein Dienst fehlt."
+
+#: templates/part.research.content.overview.php:1
 msgid "Welcome info"
 msgstr "Willkommensinfo"
 
@@ -200,6 +207,11 @@ msgstr "Forschungskontext"
 msgid ""
 "Here you can enter all informations about your research synchronization."
 msgstr "Hier kannst Du Dein RDS Forschungsprojekt konfigurieren."
+
+#: templates/part.research.content.service.php:3
+msgid ""
+"Here you can enter all informations about your research synchronization."
+msgstr "Hier kannst Du dein RDS Forschungsprojekt konfigurieren."
 
 #: templates/part.research.content.service.php:13
 msgid "Please select a folder where you want to take your files from."

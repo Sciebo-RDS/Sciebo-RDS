@@ -6,9 +6,7 @@ OC.L10N.register(
     "Choose source and / or target folder" : "Wählen Sie den Quell- und / oder Zielordner",
     "Add folder to RDS" : "Ordner zu RDS hinzufügen",
     "Update RDS file" : "RDS-Datei aktualisieren",
-    "Research folders could not be loaded." : "Forschungsordner konnte nicht geladen werden.",
     "Research data services" : "Forschungsdatendienste",
-    "Go to settings now." : "Gehen Sie jetzt zu den Einstellungen.",
     "Files auto upload" : "Dateien werden automatisch hochgeladen",
     "The system will upload all files in the given folder after some time." : "Das System lädt nach einiger Zeit alle Dateien in den angegebenen Ordner hoch.",
     "Apply file changes" : "Übernehmen Sie Dateiänderungen",
@@ -40,7 +38,6 @@ OC.L10N.register(
     "Servicename" : "Dienstname",
     "Actions" : "Aktionen",
     "Do you want to revoke the access for Sciebo RDS?" : "Möchten Sie den Zugriff für Sciebo RDS widerrufen?",
-    "Are you sure you want to delete this item?" : "Möchten Sie diesen Artikel wirklich löschen?",
     "Sciebo RDS is not authorized yet." : "Sciebo RDS ist noch nicht autorisiert.",
     "Authorize Sciebo RDS now." : "Autorisieren Sie Sciebo RDS jetzt."
 },

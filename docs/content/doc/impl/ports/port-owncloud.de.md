@@ -5,7 +5,7 @@ subtitle: Arbeite auf deinen Owncloud Dateien in RDS.
 menu:
   doc:
     parent: adapter-port
-weight: 1000
+weight: 600
 ---
 
 # Aufgabe

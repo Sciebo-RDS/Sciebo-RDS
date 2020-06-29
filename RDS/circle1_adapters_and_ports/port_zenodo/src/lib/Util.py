@@ -37,7 +37,7 @@ def require_api_key(api_method):
         g.zenodo = None
 
         try:
-            req = request.get_json(force=True)
+            req = request.get_json(force=True, cache=True)
         except:
             req = request.form.to_dict()
 

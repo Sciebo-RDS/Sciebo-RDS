@@ -4,22 +4,22 @@ subtitle: Architecture documentation with Arc42
 
 menu:
   doc:
-    parent: arch
-weight: 202
+    parent: architecture
+weight: 402
 ---
 
-## Randbedingungen
+## Boundary conditions
 
-Die meisten der folgenden Randbedingungen sind direkt aus dem Antragsdokument entnommen worden oder sind dort implizit beschrieben.
+Most of the following boundary conditions have been taken directly from the application document or are implicitly described there.
 
-|  ID  |                                                                 Beschreibung                                                                  |
-|------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| RB-1 |                     Die Architektur setzt auf eine modulare Arbeitsweise, welche v.A. durch Microservices getragen wird.                      |
-| RB-2 |                             Dabei steht die Nachnutzbarkeit von bereits bestehenden Entwicklungen im Vordergrund.                             |
-| RB-3 |                       Es kommen aktuelle Techniken des DevOps zum Einsatz (z.B. Gitlab, Docker und Kubernetes; CI/CD).                        |
-| RB-4 |   Das Projekt hat nach 2 Jahren (bis zum 01.04.2021) einen Einsatz außerhalb von NRW nachzuweisen und ist nach max. 3 Jahren abgeschlossen.   |
-| RB-5 | Alle Eigenentwicklungen sind ebenfalls unter einer Open-Source-Lizenz zur Verfügung zu stellen, um die Infrastruktur nachhaltig zu gestalten. |
-| RB-6 |                                           Die Dokumentation der Architektur findet in Arc42 statt.                                            |
-| RB-7 |         Der entwickelte Softwarestack lässt sich ohne größere Anpassungen in vergleichbaren universitären Infrastrukturen betreiben.          |
-| RB-8 |                              Datenschutz nach DSGVO muss berücksichtigt werden. (Ein Hauptargument für Sciebo.)                               |
-| RB-9 |                                          Das Projekt hat nur eine öffentlich zugängliche IP-Adresse.                                          |
+| ID   | Description                                                                                                                              |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| RB-1 | The architecture is based on a modular approach, which is mainly supported by microservices.                                             |
+| RB-2 | The focus is on the reusability of already existing developments.                                                                        |
+| RB-3 | Current DevOps techniques are used (e.g. Gitlab, Docker and Kubernetes; CI/CD).                                                          |
+| RB-4 | The project has to prove after 2 years (until 01.04.2021) that it has been used outside NRW and is completed after a maximum of 3 years. |
+| RB-5 | All proprietary developments are also to be made available under an open source license in order to make the infrastructure sustainable. |
+| RB-6 | The documentation of the architecture takes place in Arc42.                                                                              |
+| RB-7 | The developed software stack can be operated in comparable university infrastructures without major adaptations.                         |
+| RB-8 | Data protection according to DSGVO must be taken into account. (A main argument for Sciebo.)                                             |
+| RB-9 | The project has only one publicly accessible IP address.                                                                                 |

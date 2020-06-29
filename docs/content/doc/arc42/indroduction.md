@@ -4,68 +4,54 @@ subtitle: Architecture documentation with Arc42
 
 menu:
   doc:
-    parent: arch
-weight: 201
+    parent: architecture
+weight: 401
 ---
 
-# Einführung und Ziele
+## Introduction and goals
 
-Die nachfolgende Dokumentation der Architektur zu den *sciebo Research Data Services* wird federführend von Peter Heiss (peter.heiss@uni-muenster.de) erstellt und gepflegt. Zuallererst soll die Kernaufgabe des Systems genannt werden und anschließend eine ausführliche Aufgabenstellung erläutert werden.
+The following documentation of the architecture for the *sciebo Research Data Services* is created and maintained by Peter Heiss (peter.heiss@uni-muenster.de). First of all, the core task of the system should be mentioned and then a detailed task description should be explained.
 
-## Kernaufgabe
+### Core task
 
-Das System bietet Brückenfunktionalitäten zu bereits bestehenden Forschungsdaten-Services und unterstützt den Forschenden bei der Arbeit in Sciebo bei seinem Forschungsdatenmanagement von der Projektentwicklung bis hin zur Publikation und Archivierung. Die wichtigsten Aspekte dabei sind die niederschwelligen Dienste, Wiederverwendung von bestehenden Diensten, die Integration des Systems in Sciebo und die User Experience.
+The system offers bridging functionalities to already existing research data services and supports the researcher working in Sciebo in his research data management from project development to publication and archiving. The most important aspects are the low-threshold services, reuse of existing services, integration of the system in Sciebo and user experience.
 
-## Aufgabenstellung
+### Task definition
 
-Die Antragsdokumente zu diesem Projekt für die DFG beschreiben viele der Aufgabenstellungen sehr ausführlich. Sie sind im **sciebo RDS**-spezifischen Ordner in Sciebo unter `sciebo RDS/Dokumente-DFG/DFG-Antrag_sciebo_RDS_final.pdf` zu finden. Im Folgenden sind diese auf das Wesentliche zusammengefasst.
+The application documents for this project for the DFG describe many of the tasks in great detail. They can be found in the **sciebo RDS**-specific folder in Sciebo under 'sciebo RDS/Documents-DFG/DFG-Antrag_sciebo_RDS_final.pdf'. These are summarized in the following.
 
-| ID  |             Anforderung             |                                                              Erklärung                                                              |
-|-----|-------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| M-1 |        Integration in Sciebo        |                                            Forschende sind bereits mit Sciebo vertraut.                                             |
-| M-2 |      Niederschwellige Dienste       |                                   Eine einfache Handhabung garantiert auch langfristige Nutzung.                                    |
-| M-3 |   bietet Brückenfunktionalitäten    |                             Bereits bestehende Services werden durch Brückenfunktionalitäten verbunden.                             |
-| M-4 |  Integration von externen Services  |    Es wird vermieden neue Entwicklungen anzustoßen, durch die Nachnutzung von bereits bestehenden Services und Infrastrukturen.     |
-| M-5 | adaptiert externe Expertenwerkzeuge |                         Die Tools der Forschenden sollen bei den Brückenfunktionalitäten integriert werden.                         |
-| M-6 |      bietet grundlegendes FDM       |                         Dafür werden Funktionalitäten für die Erschließung von Forschungsdaten entwickelt.                          |
-| M-7 |     durchgehende Arbeitsweisen      | Das FDM wird von der Projektentwicklung über die operative Arbeit bis hin zur Publikation und Archivierung durchgehend unterstützt. |
+| ID  | Request                          | Explanation                                                                                                         |
+| --- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| M-1 | Integration in Sciebo            | Researchers are already familiar with Sciebo.                                                                       |
+| M-2 | Low-threshold services           | Easy handling guarantees long-term use.                                                                             |
+| M-3 | offers bridge functionalities    | Already existing services are connected by bridge functionalities                                                   |
+| M-4 | Integration of external services | It is avoided to initiate new developments by reusing already existing services and infrastructures.                |
+| M-5 | adapts external expert tools     | The researchers' tools are to be integrated into the bridge functionalities.                                        |
+| M-6 | offers basic FDM                 | For this purpose, functionalities for the indexing of research data are developed.                                  |
+| M-7 | continuous working methods       | The FDM receives continuous support from project development through operational work to publication and archiving. |
 
-Legende: M = Muss, O = Optional
+Legend: M = Must, O = Optional
 
-Die folgende Abbildung ist eine symbolische Einordnung der zu erzeugenden Softwarearchitektur in die vorhandenen internen und externen Services.
+The following figure is a symbolic classification of the software architecture to be generated into the existing internal and external services.
 
-![Anforderungscluster](/images/anforderungscluster.svg)
+![requirement cluster](/images/request cluster.svg)
 
-Eine genaue Auflistung sämtlicher anzubindenen Services und Repositorien ist im Antrag auf S. 15 zu finden.
+A detailed list of all services and repositories to be connected can be found in the application on p. 15.
 
-## Qualitätsziele
+### Quality objectives
 
-In der folgenden Tabelle werden Ziele und Anforderungen genannt, welche für Stakeholder bei der Bedienung und der User Experience der Services dienlich sein sollen.
+The following table lists goals and requirements that are intended to help stakeholders in the operation and user experience of the services.
 
-| ID  | Prio | Qualitätsziel |                                                                     Erläuterung                                                                      |
-|-----|:----:|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Q-1 |  2   |  Performance  | Das System verarbeitet die Anfragen der Nutzer möglichst instantan oder asynchron, sodass die Nutzer keine Verzögerung in ihrem Arbeitsablauf haben. |
-| Q-2 |  1   | Flexibilität  |                           Neue Funktionen lassen sich ohne großen Aufwand hinzufügen. Neue Services lassen sich anbinden.                            |
-| Q-3 |  1   |  Sicherheit   |       Die Nutzerdaten werden bei der Verarbeitung nicht verändert, Datenschutz wird berücksichtigt. Nutzerdaten bleiben Eigentum des Nutzers.        |
-| Q-4 |  2   |  Korrektheit  |  Die Nutzerführung und Verständigung der Funktionalitäten ist für nicht technikaffine Fachbereiche nachvollziehbar und entspricht den Erwartungen.   |
-| Q-5 |  3   |  Durchgehend  |               Die Nutzerführung hat einen durchgehend sinnvollen Arbeitsablauf bzw. können die Nutzer einen eigenen Ablauf verwenden.                |
-| Q-6 |  3   |  Transparenz  |                    Die Verarbeitung von Daten ist transparent gestaltet und die Software als Open-Source zur Verfügung gestellt.                     |
-| Q-7 |  1   |  Monitoring   |                                Sämtliche Services und Aufträge sowie deren Status können jederzeit eingesehen werden.                                |
+| ID  | Prio  | Quality Target | Explanation                                                                                                                             |
+| --- | :---: | -------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Q-1 |   2   | Performance    | The system processes user requests as instantaneously or asynchronously as possible, so that the users have no delay in their workflow. |
+| Q-2 |   1   | Flexibility    | New functions can be added without much effort. New services can be integrated.                                                         |
+| Q-3 |   1   | Security       | User data is not changed during processing, data protection is taken into account. User data remain the property of the user.           |
+| Q-4 |   2   | Correctness    | The user guidance and understanding of the functionalities is comprehensible for non-technical departments and meets the expectations.  |
+| Q-5 |   3   | Continuous     | The user guidance has a continuous sensible workflow or the users can use their own workflow.                                           |
+| Q-6 |   3   | Transparency   | The processing of data is designed transparently and the software is provided as open source.                                           |
+| Q-7 |   1   | Monitoring     | All services and orders and their status can be viewed at any time.                                                                     |
 
-Legende: Prioritätenskala 1 (besonders wertvoll) bis 4 (wird angestrebt)
+Legend: Priority scale 1 (particularly valuable) to 4 (to be aimed at)
 
-(TODO) Szenarien hinzufügen (siehe Szenarien.pdf und S. 43 von Eff. Arch. von Starke)
-
-## Stakeholder
-
-Eine komplette Liste aller Beteiligten ist im *sciebo RDS* Ordner zu finden unter `Organisatorisches/`zu finden in den Dateien `ORGA sciebo RDS.docx` und `Projekt scieboRDS Adressliste.docx`. Im Folgenden sollen lediglich Namen oder zur Einfachheit Gruppen genannt werden.
-
-|       Rolle        |            Kontakt            |                                                          Erwartungshaltung                                                           |
-|--------------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-|   Abteilung: F&E   | Jörg Lorenz, Immanuel Normann |     Informationen und Erfahrungen über Entwicklung und Deployment von Microservices werden Abteilungsübergreifend weitergegeben.     |
-|  Antragsstellende  |               -               |                                                                  -                                                                   |
-|    Entwickelnde    |          sciebo RDS           |   Neue Features können ohne große Seiteneffekte integriert werden. Dokumentation soll Architektur und Entscheidungen beschreiben.    |
-|     Forschende     | v.A. Forscher der Universität |                                                   (Aktuell durch UDE betrachtet.)                                                    |
-| Sciebo Betreibende |        Holger Angenent        | Ein Mehrwert für die Nutzenden ist aus der Dokumentation erkennbar. Eine Kooperation zu CERN Mesh ist durch die Architektur möglich. |
-|   Sciebo Nutzer    |       v.A. Studierende        |             Bedienbarkeit von Sciebo nicht beeinflusst. Perspektivenwechsel von Nutzer zu Forschender muss möglich sein.             |
-| ULB Projektleitung |       Holger Przibytzin       |                        Eine Übersicht und Beschreibung der Architektur zur Kommunikation der Projektführung.   
+(TODO) add scenarios (see 

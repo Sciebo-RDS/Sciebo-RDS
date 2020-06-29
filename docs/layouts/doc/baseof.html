@@ -16,6 +16,8 @@
               {{ if isset .Params "subtitle" }}
               <p>{{ .Params.subtitle | markdownify | safeHTML }}</p>
               {{ end }}
+              <small>{{ default (i18n "dateFormat") .Site.Params.dateformat | .Page.Lastmod.Format | i18n "postedOnDate" }}</small>
+              
             </div>
             <div class="article-body">
               <div class="row">

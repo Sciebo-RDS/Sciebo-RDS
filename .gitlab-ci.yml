@@ -25,6 +25,7 @@ variables:
 
   except:
     refs:
+      - /^translations_plugins-.*$/i # ignore, if it comes from transifex
       - master
 
   # https://gitlab.com/gitlab-org/gitlab/issues/8177
@@ -77,10 +78,13 @@ include:
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:
   extends: .tests
-  image: registry.gitlab.com/pages/hugo:0.59.1
+  image: registry.gitlab.com/pages/hugo:0.68.3
 
   variables:
     FOLDER: docs/
+
+  before_script:
+    - apk add --update --no-cache git
 
   script:
     - cd $FOLDER
@@ -103,8 +107,11 @@ hugo:test:
       - docs/
 
 pages:
-  image: registry.gitlab.com/pages/hugo:0.59.1
+  image: registry.gitlab.com/pages/hugo:0.68.3
   stage: pages
+  before_script:
+    - apk add --update --no-cache git
+
   script:
     - cd docs
     - hugo

@@ -5,9 +5,11 @@ subtitle: Für die Verbindung zum zentralen Token Storage Dienst.
 menu:
   doc:
     parent: use-case
-weight: 1000
+weight: 703
 mermaid: True
 ---
+
+Dieser Service implementiert die Kommunikation zwischen den Plugins, dem Token Storage, dem Research Manager und den Ports, u.a. indem es den Oauth2-Code-Exchange-Workflow implementiert und dadurch den Access- und Refresh-Token generiert und im Token Storage hinterlegt und Projekte anlegt und Services denselbigen hinterlegt.
 
 # Kommunikation mit den Plugins
 

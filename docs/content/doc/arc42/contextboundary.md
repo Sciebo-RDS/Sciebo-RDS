@@ -4,113 +4,108 @@ subtitle: Architecture documentation with Arc42
 
 menu:
   doc:
-    parent: arch
-weight: 203
+    parent: architecture
+weight: 403
 ---
 
-## Kontextabgrenzung
 
-### Fachlicher Kontext
+## Context delimitation
 
-Bei der folgenden Abbildung handelt es sich um eine Abgrenzung des zu erstellenden Sciebo RDS Systems zu allen verwendeten Services. Gleichzeitig wird ein erster Hinweis auf die Kommunikationsdaten gegeben. Anschließend folgt eine Tabelle zur besseren Erläuterung von verwendeten Begriffen innerhalb des Bildes. Hierbei handelt es sich explizit nicht um eine Erläuterung des zu erzeugenden Systems, sondern dessen Einbettung in bestehende Services.
+### Domain knowledge
 
-Bei der Darstellung handelt es sich um ein UML-Diagramm. Bei der fachlichen Abgrenzung sollen allerdings Datenströme und -Flüsse dargestellt werden, sodass zur Vereinfachung die Pfeile die "Fließrichtung" der Daten darstellt. Die Deklarierung der Pfeile mit `<<flow>>` wurde für die bessere Lesbarkeit weggelassen.
+The following figure is a delimitation of the Sciebo RDS system to be created for all services used. At the same time a first indication of the communication data is given. This is followed by a table for a better explanation of terms used within the figure. This is explicitly not an explanation of the system to be created, but its embedding in existing services.
 
-![umfangreiche Kontextabgrenzung via UMLet](/images/kontextabgrenzung_umfeld.svg)
+The representation is a UML diagram. However, for the technical delimitation, data streams and flows should be shown so that the arrows represent the "flow direction" of the data for simplification. The declaration of the arrows with `<<flow>>' has been omitted for better readability.
 
-|     Element      |                                                          Bedeutung                                                           |
-|------------------|------------------------------------------------------------------------------------------------------------------------------|
-|       User       |               Fasst sämtliche Arten von Benutzern zusammen, u.a. Studierende, Forschende und Administrierende                |
-|       DMP        |              Kurzform für Datenmanagementpläne, dokumentiert den Umgang mit Forschungsdaten seitens der Nutzer.              |
-| Veröffentlichung |                 Fasst sämtliche Arten von Veröffentlichungen und Archivierung von Forschungsdaten zusammen.                  |
-|  Pfeilrichtung   |                                                 Dokumentiert den Datenfluss                                                  |
-|        ?         |                                                 Noch zu dokumentieren (TODO)                                                 |
-|  Authenticator   |                          Authentifiziert den Nutzer gegenüber einem System, in diesem Fall Sciebo.                           |
-|   uni-internal   |                               Dies sind Webdienste, welche innerhalb der WWU betrieben werden.                               |
-|   uni-external   | Dies sind Webdienste, welche außerhalb der WWU (und damit außerhalb der Zuständigkeit) betrieben werden. *Datenschutzrisiko* |
+| element         | meaning                                                                                                                    |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| User            | Groups together all types of users, including students, researchers and administrators                                     |
+| DMP             | short form for data management plans, documents the handling of research data by users.                                    |
+| Publication     | Groups together all types of publication and archiving of research data.                                                   |
+| Arrow direction | Documents the data flow                                                                                                    |
+| ?               | Still to be documented (TODO)                                                                                              |
+| Authenticator   | Authenticates the user to a system, in this case Sciebo.                                                                   |
+| uni-internal    | These are web services which are operated within the EMU.                                                                  |
+| uni-external    | These are web services which are operated outside the EMU (and therefore outside the jurisdiction). *data protection risk* |
 
-#### Beschreibung der externen Schnittstellen
+![extensive context delimitation via UMLet](/images/context delimitation_environment.svg)
 
-|    Service    |                              Beschreibung                              |
-|---------------|------------------------------------------------------------------------|
-|    CLARIN     | European Research Infrastructure for Language Resources and Technology |
-|     ePIC      |    Consortium for Persistent Identifiers in the context of eScience    |
-|    Zenodo     |           Open Science Repository entwickelt durch das CERN            |
-|    Rosetta    |            Archivierungssoftware und -dienst des Landes NRW            |
-| RD-Repository |                       Forschungsdatenrepository                        |
-|   arXiv.org   |  Ein öffentlicher Dokumentenserver der naturwissenschaftlichen Fächer  |
+#### Description of the external interfaces
 
-### Technischer Kontext
+| Service       | Description                                                            |
+| ------------- | ---------------------------------------------------------------------- |
+| CLARIN        | European Research Infrastructure for Language Resources and Technology |
+| ePIC          | Consortium for Persistent Identifiers in the context of eScience       |
+| Zenodo        | Open Science Repository developed by CERN                              |
+| Rosetta       | Archiving Software and Service of the State of NRW                     |
+| RD Repository | Research Data Repository                                               |
+| arXiv.org     | A public document server of the natural sciences                       |
 
-In folgender Abbildung ist die Kontextabgrenzung dargestellt mit den jeweils verwendeten Protokollen. Auffällig hierbei ist die ausschließlche Nutzung von HTTPS und REST. Dies liegt daran, dass im Auftragsdokument dies bereits so festgelegt wurde.
+### Technical context
 
-![umfangreiche technische Kontextabgrenzung](/images/kontextabgrenzung_umfeld_technisch.svg)
+The following figure shows the context delimitation with the respective protocols used. The exclusive use of HTTPS and REST is striking. This is because this has already been defined in the order document.
+
+[extensive technical context delimitation](/images/kontextabgrenzung_umfeld_technisch.svg)
 
 
-**\<optional: Erläuterung der externen technischen Schnittstellen\>**
+## Solution strategy {#section-solution-strategy}
 
-**\<Mapping fachliche auf technische Schnittstellen\>**
+| ID   | Task                                        | Solution                                                                                                                             |
+| ---- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| L-1  | Sustainable Architecture                    | A microservice approach will combine existing and new services.                                                                      |
+| L-2  | asynchronous communication between services | A messaging system can take over the guarantee of message dispatch for tasks.                                                        |
+| L-3  | little effort for new features              | [Clean Architecture](/de/doc/arc42/contextboundary/#section-solid-arch) is implemented with microservices.                           |
+| L-4  | Data collection by plugins                  | The integration of RDS in different platforms is realized with the existing plugin system.                                           |
+| L-5  | Software flexibility                        | Clean Architecture allows a problem to be solved independently of other stacks using the best technology stack for the task at hand. |
+| L-6  | Maintainability, Scalability                | Deployment relies on Docker and Kubernetes and Gitlab as integration, test and deployment pipeline.                                  |
+| L-7  | Authentication and Authorization            | The architecture uses OAuth2 as the mechanism to perform tasks legitimately to Sciebo or other services.                             |
+| L-8  | encrypted communication                     | External communication (e.g. to REST-API) is always via HTTPS / SSL.                                                                 |
+| L-9  | RB-9                                        | Reverse Proxy and Caching Server as front-end server for delivering HTML, CSS and JavaScript and accepting API requests.             |
+| L-10 | Data storage                                | Basically, microservices are stateless. If necessary, data is stored in cloud storage in layer 3 of the Clean Architecture.          |
 
-## Lösungsstrategie {#section-solution-strategy}
+## Scenarios
 
-|  ID  |                  Aufgabe                   |                                                      Lösungsansatz                                                      |
-|------|--------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
-| L-1  |          Nachhaltige Architektur           |                Ein Microservice-Ansatz wird bereits bestehende und neue Services miteinander verbinden.                 |
-| L-2  | asynchrone Kommunikation zwischen Services |                        Ein Messaging-System übernimmt die Gewährleistung des Nachrichtenversand.                        |
-| L-3  |     geringer Aufwand für neue Features     |  Der Microservice-Ansatz fußt auf Self-Contained Systems, wodurch Frontend, Logik und Backend zusammen erzeugt werden.  |
-| L-4  |          Datenerhebung trotz SCS           | Es wird ein Frontend-Server aufgesetzt, welcher die Frontends der Microservice sammelt, darstellt und Daten weitergibt. |
-| L-5  |         Flexibilität der Software          |                  Durch die SCS kann jedes Problem durch einen eigenen Technologiestack gelöst werden.                   |
-| L-6  |        Wartbarkeit, Skalierbarkeit         |  Es werden beim Deployment Docker und Kubernetes verwendet und Gitlab als Integrations-, Test- und Deploymentpipeline.  |
-| L-7  |    Authentifizierung und Authorisierung    | Die Architektur verwendet OAuth2 als Mechanik, um die Aufgaben legitim gegenüber Sciebo oder anderen IDP durchzuführen. |
-| L-8  |        verschlüsselte Kommunikation        |                  Die externe Kommunikation (z.B. zu REST-API) geschieht vorzugsweise über HTTPS / SSL.                  |
-| L-9  |                    RB-9                    |           Reverse Proxy und Caching-Server als Frontend-Server zur Auslieferung von HTML, CSS und JavaScript.           |
-| L-10 |              Datenspeicherung              |         Sämtliche Nachrichten sind Stateless. Falls dennoch notwendig, werden Daten im Cloudspeicher abgelegt.          |
+| quality feature                          | scenario                    | measures                                                                                                  |
+| ---------------------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------- |
+| L-3                                      | implement new feature.      | Clean Architecture enables linking of services and fast implementation of new features.                   |
+| Integration of RDS into existing systems | Integrate RDS into service. | API endpoints and a security system are offered. Integration with platform-specific features is possible. |
 
-| Q-Merkmal | Szenario | Maßnahmen |
-|-----------|----------|-----------|
-|           |          |           |
+### Clean Architecture {#section-solid-arch}
 
-(TODO)
+The [SOLID principles](https://de.wikipedia.org/wiki/Prinzipien_objektorientierten_Designs#SOLID-Prinzipien) have already been successfully applied in (enterprise) software development and are known in practice for [its high maintainability and agility](https://www.informatik-aktuell.de/entwicklung/methoden/solid-die-5-prinzipien-fuer-objektorientiertes-softwaredesign.html).
 
-### Frontend-Server, Open-Host Service und Messaging-Systeme
+The author [Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) has already thought about an architecture in 2012, but calls it *Clean Architecture* and describes it in detail in his book of the same name. Since the architecture only describes a concept of how a system can be built and the concept of microservices is seen as a deployment concept, these two concepts can be combined. [Martin also wrote about it](https://blog.cleancoder.com/uncle-bob/2014/10/01/CleanMicroserviceArchitecture.html), but in his opinion one should investigate which advantages and disadvantages one gets and the architecture should and must be able to work without microservices.
 
-Aufgrund der hohen Komplexität der Kommunikation zwischen Frontend-Server und Services bei L-4 und dessen zentrale Rolle für die gesamte Architektur, ist ein Grundverständnis für die Funktionsweise der Nachrichtenübermittlung für die weitere Arbeit mit der Architektur notwendig. Deshalb wird im Folgenden der Ansatz des Open-Host Services, des Frontend-Servers und des Messaging-Systems beschrieben. Dafür wird der Bausteinsicht, welche im nächsten Kapitel näher erläutert wird, vorausgegriffen werden mit einer reduzierten Blackboxdarstellung auf der ersten Ebene.
+{{<callout info>}}
+In order not to extend this documentation any further, we explicitly refer to the links in the previous section. Otherwise, it is assumed from here on that the concept of Clean Architecture has been understood by the reader.
+{{</callout>}}
 
-![Ein erster Blick der Kommunikation in der ersten Ebene der Bausteinsicht](/images/blackbox_ebene1.svg) (TODO)
+Above all, the concept of layers and dependencies should be mentioned here.
 
-Der Frontend-Server (hier als RDPM für *Research data project manager* bezeichnet) stellt die Schnittstelle zwischen Nutzer und System dar. Dabei kommt die Kommunikation vor allem durch die Microservices zustande, sodass das Frontend sich vor allem auf die Auslieferung und Verarbeitung von Daten konzentrieren kann. Dafür müssen vom RDPM entsprechende Schnittstellen als Open-Host-System zur Verfügung zu stellen.
 
-Die Kommunikation zwischen den Microservices findet über eine LAN-Verbindung statt. Aufgrund der hohen Komplexität und der hohen Interoperabilität der angestrebten Architektur ist es notwendig, sich um mögliche Garantien wie Nachrichtenerhalt oder Nachrichtenwiederherstellung bei Hardwareausfall Gedanken zu machen. Aus diesem Grund wird ein weiteres System in die Architektur integriert: das *Messaging System* über welches sämtliche Kommunikation verläuft. Dies entspricht dem Lösungsansatz L-2. Das Messaging-System verfolgt ein Push-Pull-Prinzip bzw. ein [Pub-Sub-Messaging](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern).
-Dieser Umstand wird auch im nächsten Bild dargestellt. Dabei wurden die angebundenen Services unter einem einzigen *Service* als Beispiel der Anbindung zusammengefasst. Zur Veranschaulichung für die Integration von generischen Microservices wurden drei verschiedene Microservices eingezeichnet.
+![Clean Architecture](https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)
+Quelle: https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg
 
-![Blackbox Darstellung eines vereinfachten Gesamtsystems](/images/blackbox_ebene1_2.svg)
+The service system in RDS has been built on the basis of these concepts and is shown as a diagram in the [Service Ecosystem](/en/doc/impl/infrastructure/ecosystem/) in this documentation.
 
-Vereinfacht ausgedrückt wird die Kommunikation zwischen Frontend-Server und Microservices lediglich um die Komponente des Messaging Systems erweitert. Die höhere Komplexität der Architektur erhöht die Stabilität und die genannten Garantien brauchen nicht mehr von jedem Microservice selbst implementiert zu werden. Dies reduziert die Fehleranfälligkeit bei der Kommunikation, da sich hier auf bestimmte Regeln wie ein Nachrichtenprotokoll bei der Serviceinitialisierung geeinigt wird.
+Thereby...
+- in the outermost layer the services are counted, which connects external and internal services to RDS. For this reason, the containers in this layer are called *ports*.
+- in the middle layer contains the services that implement features. For this reason, the containers are called *Use Cases* here.
+- the innermost layer contains services that store information or are so essential for the entire system that they cannot be omitted. Here the containers are named *Central*.
 
-Um die Kommunikation zwischen den entwickelnden Teams der jeweiligen Microservices nach L-1 auf ein Mindestmaß zu reduzieren, muss das Frontend-System durch die Microservices gesteuert werden können. Dafür wird eine Schnittstelle vom Frontend angeboten, einem sogenannten [Open-Host Service](http://ddd.fed.wiki.org/view/open-host-service). Diese nimmt Anfragen entgegen, welche das Verhalten des Servers ändern oder den Funktionsumfang entsprechend der gestellten Anfragen und der übermittelten Daten erweitern. Dieser Open-Host Service wird vor allem dann eingesetzt, wenn ein neuer Microservice an das Messaging-System angeschlossen wird.
+This division of microservices can be found in the link overview in this documentation.
 
-Da es sich um ein Frontend-Server handelt, welcher vor allem auf moderne Technologien aufsetzt, werden bei der Initialisierung von einem Microservice vor allem HTML-Code, sowie API-Endpunkte benötigt, welche der Microservice nach außen hin anbieten soll. Die statischen Dateien wie HTML, JavaScript (kurz JS) oder CSS werden durch ein gemeinsames Git-Repo zur Verfügung gestellt, in dem die statischen Dateien der Microservices als Submodule eingebunden sind. Dieser Aufbau wird im kommenden Kapitel der [Bausteinsicht der Ebene 2](#frontendserver) mit technischen Details dargestellt. Die folgenden Annahmen liegen dieser Funktionalität zugrunde: die API-Endpoints sind zur Laufzeit unveränderlich und HTML-Dateien dürfen nur durch einen entsprechenden Git-Befehl wie `git pull` verändert werden.
+### Concept of Integration
 
-Das folgende Schaubild veranschaulicht den Ablauf für einen einzigen Microservice exemplarisch am genannten Beispiel (im Kapitel [Laufzeitsicht](#laufzeitsicht) wird dies noch mit Sequenzdiagrammen ausführlicher beschrieben). Die Pfeile symbolisieren dabei die Flussrichtung der Daten und welchem Zweck diese dienen, wobei die Zahl zu Beginn der Beschreibung die Reihenfolge der Abarbeitung festlegt.
+Basically the integration of the RDS application is done by the platform specific plugin system.
 
-> *#FIXME Hinweis: Der folgende Ablauf ist nicht der aktuelle Zustand des Prototypen. Dieser sendet einfach sämtliche Anfragen an den Message Broker und gibt den HTTP-Code 201 (Created) zurück. Stellt man dieselbe Anfrage nocheinmal, so wird nachgeschaut, ob es bereits eine Antwort durch den Message Broker gab. Falls ja, wird die hinterlegte Antwort mit dem HTTP-Code 200 (OK), andernfalls der Code 202 (Accepted) gesendet. Dadurch können auch langwierige Aufgaben vollzogen und dessen Antwortstatus ermittelt werden. Der Microservice-Entwickler trägt dafür die Verantwortung mit den entsprechenden HTTP-Codes umzugehen und Anfragen gegebenenfalls durch seine JavaScript-Anwendung erneut zu senden. [Weitere Erklärungen zur Funktionsweise](https://farazdagi.com/2014/rest-and-long-running-jobs/)*
+Due to the diverse landscape of the software, RDS has to provide the highest possible integration diversity. For this reason the decision was made to hand over this responsibility to the target platform: There must be a plugin system that allows the integration of third-party applications. For this reason, RDS only implements API endpoints and makes them available for further use. Owncloud was chosen as the first target platform. Further integrations are possible, but must adhere to the Oauth2 concept.
 
-> *Dieses "Fehlverhalten" des Prototyps soll jedoch in Zukunft an den hier beschriebenen Abläufen angeglichen werden. Vor allem weil aktuell sämtliche Anfragen ohne Überprüfung bedient und weitergeleitet werden, sodass der Message Broker auch Anfragen erhält, welche von keinem Microservice bedient werden, sodass diese Anfragen ins Leere laufen und der Webserver stets HTTP-Code 201 senden wird, da er niemals eine Antwort erhalten wird. Dies ist nicht nur unter performance und technischer Sicht bedenklich. Für ein Szenario, indem ein Microservice sämtliche Anfragen erhalten möchte, sehe ich aktuell auch keine Anwendung, trotz dem dieses durch die hier geplanten Abläufe durch entsprechende Anpassungen der Frontend-Anwendung möglich sein wird. Die Vorgehensweise mit den HTTP-Codes wird allerdings übernommen werden und die Dokumentation, vor allem die Sequencediagramme, entsprechend angepasst.*
+RDS uses the first token it receives for a user of an integration platform as the main token, so that all subsequently added tokens assigned to the same user and integration platform are interpreted as connected services and offered to the user for selection. This also results in the use of unique user names or IDs for each integration platform. Although the same user name or ID may occur several times in RDS, it must be possible to assign it uniquely with the integration platform as information. 
 
-![Blackbox Darstellung eines vereinfachten Gesamtsystems bei der Initialisierung eines Microservices](/images/blackbox_initializing2.svg)
+For this reason, it is also easy to implement new integrations by other platforms, as the new service must offer Oauth2 and the user must be able to authorise himself to RDS with this service. All services connected through RDS can then be given to the user to choose from and authorise, so that RDS can authorise itself to them on behalf of the user. For this purpose RDS offers many different API endpoints, so that the integration can only focus on displaying and sending requests and not on implementing complex algorithms.
 
-Das Absenden der Informationen über die Endpoints wird mittels einem wohldefinierten Schema über das Messaging-System versendet, sodass der Frontend-Server genau weiß, wie er damit umzugehen hat und die Nutzerinformationen an das Event-Thema weiterzuleiten hat, sodass jeder interessierte Microservice diese selbstständig herausfiltern kann und sie entsprechend bearbeiten kann. Natürlich hat vor allem der Microservice an diesen Informationen Interesse, welcher den Endpoint erzeugt hat. Durch die eventbasierte Architektur können aber auch alle anderen Services sich an diesen Informationen bedienen, wodurch schnellere Arbeitswege möglich werden.
+### Security concept
 
-Aufgrund des zu erwartenden hohen Durchsatzes von Events, müssen die Nachrichten sehr schnell und ressourceneffizient gefiltert werden können: Dies geschieht wieder mit den genannten Schemata, welche eine schnelle Filterung zulassen. Durch das Messaging-System ist es außerdem gewährleistet, dass gleiche Interessensgruppen keine Nachricht mehrfach erhalten, wodurch ein hoher Durchsatz und die vertikale Skalierbarkeit von Services garantiert werden kann.
+The security concept is currently being revised ([See Issue 12](https://github.com/Sciebo-RDS/Sciebo-RDS/issues/12)). Therefore, this section will be revised again.
 
-Die verwendeten Kommunikationskanäle zwischen Frontend-Server und den Microservices können natürlich auch für die Kommunikation zwischen den Microservices selbst verwendet werden, wodurch ein hoher Datenaustausch auch zwischen diesen möglich ist. Vor allem das Prinzip des Events und des Schemas ermöglicht es auf Aktionen anderer Microservices zu reagieren ohne mit deren Entwicklerteam Rücksprache über ein einheitliches Protokoll halten zu müssen.
-
-Eine weitere Besonderheit der Architektur ist der Abruf von Informationen mittels einer REST-API. Aufgrund der angestrebten hohen Skalierbarkeit kann eine naive Implementierung der API nicht zielführend sein. Aus diesem Grund bedient sich der hier verfolgte Ansatz einer asynchronen Alternative, welche u.a. auf [medium.com](https://medium.com/@grzegorzolechwierowicz/long-computations-over-rest-http-in-python-4569b1187e80) näher beschrieben wird. Das Ziel dabei ist es auf Verzögerungen (z.B. durch Netzwerklatenz oder hohe Nachfrage) skalierbar reagieren zu können. Das folgende Bild veranschaulicht einen möglichen Ablauf einer API-Abfrage.
-
-![Ein GET-Request der API.](/images/api-callbacks.svg)
-
-Die weiteren Request-Typen (POST, PUT, DELETE) unterscheiden sich lediglich in der fehlenden Abfrage im Cache, sodass auf die Antwort des Microservice gewartet wird, welcher die Anfrage bearbeitet. Dies verhindert, dass eine neue GET-Anfrage gestellt wird, bevor Daten im Microservice geändert werden, sodass der Nutzer z.B. nach seiner POST-Anfrage anschließend auch die neuen Informationen mit einer GET-Anfrage abfragen kann. Durch einen Cache-Server können häufig abgefragte Daten beschleunigt werden, da sich die Daten im Microservice außerhalb von Anfragen nicht ändern. Bei einer verändernden Anfrage wird der entsprechende Eintrag im Cache invalidiert und neu geladen.
-
-![Eine verändernde Request (POST, PUT, DELETE, ...) der API.](/images/api-callbacks-changes.svg)
-
-Mehr Informationen zu den Themen Frontend-Server, Open-Host-Service und Messaging-Systeme können im Buch *E. Wolff - Microservices* gefunden werden.

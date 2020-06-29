@@ -5,8 +5,9 @@ import json
 
 def index():
     # taken from https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json
+    # https://sandbox.zenodo.org//schemas/deposits/records/legacyrecord.json
     # example can be found here: https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/example/datacite-example-HasMetadata-v4.json
-    with open("datacite_4.3_schema.json", "r") as file:
+    with open("zenodo_schema.json", "r") as file:
         return jsonify({
             "kernelversion": "4.3",
             "schema": json.dumps(json.load(file))

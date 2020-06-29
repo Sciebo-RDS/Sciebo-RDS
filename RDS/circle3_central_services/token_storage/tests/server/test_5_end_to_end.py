@@ -143,7 +143,7 @@ class test_end_to_end(unittest.TestCase):
         storage.refresh_service(owncloud)
         tokens = storage.getTokens(oauthuser2)
         checkToken = tokens[0]
-        self.assertGreater(checkToken.expiration_date,
+        self.assertGreaterEqual(checkToken.expiration_date,
                            oauthtoken2.expiration_date)
         self.assertEqual(checkToken, oauthtoken2)
 

@@ -5,7 +5,7 @@ subtitle: Speichere deine Geheimnisse hier ab
 menu:
   doc:
     parent: core
-weight: 1100
+weight: 800
 mermaid: true
 ---
 

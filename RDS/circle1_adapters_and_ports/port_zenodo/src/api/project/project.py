@@ -50,7 +50,7 @@ def delete(project_id):
 
 @require_api_key
 def patch(project_id):
-    req = request.json.get("metadata")
+    req = request.get_json(force=True, cache=True).get("metadata")
 
     depoResponse = g.zenodo.change_metadata_in_deposition_internal(
         deposition_id=int(project_id), metadata=req, return_response=True)

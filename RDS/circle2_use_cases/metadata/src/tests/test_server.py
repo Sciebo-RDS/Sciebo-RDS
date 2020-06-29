@@ -576,7 +576,7 @@ class TestMetadata(unittest.TestCase):
     def test_jsonschema(self):
         result = self.client.get("/metadata/jsonschema").json
 
-        with open("datacite_4.3_schema.json", "r") as file:
+        with open("zenodo_schema.json", "r") as file:
             import json
             d = json.load(file)
 

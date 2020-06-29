@@ -1,19 +1,19 @@
 ---
-title: About Architecture
+title: About Arc42
 subtitle: Architecture documentation with Arc42
 
 menu:
   doc:
-    parent: arch
-weight: 200
+    parent: architecture
+weight: 400
 ---
 
-## Über arc42
+## About arc42
 
-arc42, das Template zur Dokumentation von Software- und
-Systemarchitekturen.
+arc42, the template for documentation of software and
+system architectures.
 
-Erstellt von Dr. Gernot Starke, Dr. Peter Hruschka und Mitwirkenden.
+Created by Dr. Gernot Starke, Dr. Peter Hruschka and contributors.
 
 Template Revision: 7.0 DE (asciidoc-based), January 2017
 

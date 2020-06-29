@@ -1,11 +1,14 @@
 ---
-title: Beitragen
-subtitle: Wie kannst Du bei diesem Projekt beitragen?
-weight: 10000
+title: Kriterien
+subtitle: Was dein Microservice bieten muss.
+
+menu:
+  doc:
+    parent: contrib
+
+mermaid: true
+weight: 10007
 ---
-
-Wir nutzen Github als Plattform für sämtliche Quelltextänderungen. Falls Du beitragen möchtest, kannst Du also den Github-Workflow nutzen, um einen Pull Request auf der Plattform abzusetzen. Anschließend werden wir uns deine Änderungen anschauen und akzeptieren, falls es den folgenden Kriterien entspricht.
-
 
 ## Definition of Done
 

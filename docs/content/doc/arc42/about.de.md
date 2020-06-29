@@ -1,11 +1,11 @@
 ---
-title: Über Architektur
+title: Über Arc42
 subtitle: Architekturdokumentation mit Arc42
 
 menu:
   doc:
-    parent: arch
-weight: 200
+    parent: architecture
+weight: 400
 ---
 
 ## Über arc42
@@ -17,6 +17,6 @@ Erstellt von Dr. Gernot Starke, Dr. Peter Hruschka und Mitwirkenden.
 
 Template Revision: 7.0 DE (asciidoc-based), January 2017
 
-© We acknowledge that this document uses material from the arc42
-architecture template, <http://www.arc42.de>. Created by Dr. Peter
+© Wir erkennen an, dass dieses Dokument Material aus dem arc42
+Architekturvorlage, <http://www.arc42.de>. Erstellt von Dr. Peter
 Hruschka & Dr. Gernot Starke.
