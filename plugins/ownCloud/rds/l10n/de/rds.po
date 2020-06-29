@@ -4,8 +4,9 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Danielle Nießner <danielle.nieszner@uni-muenster.de>, 2020
 # Holger Przibytzin <holger.przibytzin@uni-muenster.de>, 2020
+# Danielle Nießner <danielle.nieszner@uni-muenster.de>, 2020
+# Jens Stegmann <jstegman@uni-muenster.de>, 2020
 # Peter Heiss <peter.heiss@uni-muenster.de>, 2020
 # 
 #, fuzzy
@@ -13,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud Core 8.0.0\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2020-06-17 13:30+0200\n"
+"POT-Creation-Date: 2020-06-29 09:28+0200\n"
 "PO-Revision-Date: 2020-06-16 15:05+0000\n"
 "Last-Translator: Peter Heiss <peter.heiss@uni-muenster.de>, 2020\n"
 "Language-Team: German (https://www.transifex.com/university-of-munster/teams/109551/de/)\n"
@@ -31,8 +32,8 @@ msgstr "Forschung"
 msgid "Your entries could not be saved."
 msgstr "Deine Einträge konnten nicht gespeichert werden."
 
-#: js/View.js:58 js/View.js:227 js/View.js:477 js/View.js:560 js/View.js:582
-#: js/View.js:600 js/main-rds.js:38
+#: js/View.js:58 js/View.js:227 js/View.js:478 js/View.js:562 js/View.js:584
+#: js/View.js:602 js/main-rds.js:38
 msgid "RDS Update project"
 msgstr "RDS Projekt aktualisieren"
 
@@ -44,29 +45,29 @@ msgstr "Deine Dateien werden innerhalb von 2 Minuten synchronisiert."
 msgid "Choose source and / or target folder"
 msgstr "Wähle den Quell- und / oder Zielordner"
 
-#: js/View.js:559 js/main-rds.js:37
+#: js/View.js:561 js/main-rds.js:37
 msgid "Could not create research"
-msgstr "Eine neue Forschung konnte nicht erstellt werden."
+msgstr "Neuer Forschungskontext konnte nicht erstellt werden."
 
-#: js/fileActions.js:14
+#: js/fileActions.js:71
 msgid "Add folder to RDS"
 msgstr "Ordner zu RDS hinzufügen"
 
-#: js/fileActions.js:32
+#: js/fileActions.js:89
 msgid "Update RDS file"
 msgstr "RDS-Datei aktualisieren"
 
-#: js/fileActions.js:52
+#: js/fileActions.js:122
 msgid "File was successfully uploaded to outgoing services."
-msgstr "Datei wurde erfolgreich hochgeladen."
+msgstr "Die Datei wurde erfolgreich hochgeladen."
 
-#: js/fileActions.js:54 js/fileActions.js:60
+#: js/fileActions.js:124 js/fileActions.js:130
 msgid "RDS upload directly through Files app"
-msgstr "Datei direkt über Dateien hochladen"
+msgstr "Datei zu Zenodo hochladen"
 
-#: js/fileActions.js:59
+#: js/fileActions.js:129
 msgid "File upload to outgoing services failed."
-msgstr "Datei konte nicht hochgeladen werden"
+msgstr "Die Datei konnte nicht hochgeladen werden"
 
 #: js/settings-personal.js:139
 msgid "Are you sure, that you want to delete {servicename}?"
@@ -74,7 +75,7 @@ msgstr "Bist Du sicher, dass Du {servicename} entfernen möchtest?"
 
 #: js/settings-personal.js:142 js/settings-personal.js:159
 msgid "RDS Settings services"
-msgstr "RDS Diensteinstellungen"
+msgstr "Allgemeine RDS Einstellungen"
 
 #: js/settings-personal.js:156
 msgid "Could not remove the service {servicename}"
@@ -82,7 +83,7 @@ msgstr "Der Dienst {servicename} konnte nicht entfernt werden"
 
 #: js/settings-personal.js:218
 msgid "Authorize {servicename} now"
-msgstr "{servicename} authorisieren"
+msgstr "{servicename} autorisieren"
 
 #: lib/Panels/PersonalSection.php:47
 msgid "Research data services"
@@ -100,7 +101,7 @@ msgstr ""
 
 #: templates/not_authorized.php:19
 msgid "Step 1: Authorize RDS to authenticate against ownCloud."
-msgstr "Schritt 1: Erlaube den RDS den Zugriff auf sciebo.   "
+msgstr "Schritt 1: Erlaube den RDS den Zugriff auf Sciebo.   "
 
 #: templates/not_authorized.php:23
 msgid "Authorize ownCloud."
@@ -116,27 +117,37 @@ msgstr "Zugriff gewähren"
 
 #: templates/not_authorized.php:37
 msgid "Step 3: Create a research in RDS and configure it."
-msgstr "Schritt 3: Erstelle einen RDS Forschungskontex und konfiguriere ihn. "
+msgstr ""
+"Schritt 3: Erstelle einen RDS Forschungskontext und konfiguriere ihn. "
 
 #: templates/not_authorized.php:41
 msgid "Create a research in RDS."
 msgstr "Forschungskontext erstellen"
 
-#: templates/part.research.content.file.php:5
-msgid "Files auto upload"
-msgstr "Dateien werden automatisch hochgeladen"
+#: templates/part.research.content.file.php:2
+msgid ""
+"Here you can finalize your research project or synchronize all files with "
+"your defined services."
+msgstr ""
+"Hier kannst Du Deine Daten mit Zenodo abgleichen oder deinen "
+"Forschungskontext abschließen. Beachte, dass deine Daten nach dem Abschluss "
+"nicht mehr bearbeitet werden können."
 
 #: templates/part.research.content.file.php:7
+msgid "Files auto upload"
+msgstr "Dateien automatisch hochladen"
+
+#: templates/part.research.content.file.php:9
 msgid "The system will upload all files in the given folder after some time."
 msgstr ""
 "Das System lädt nach einiger Zeit alle Dateien in den angegebenen Ordner "
 "hoch."
 
-#: templates/part.research.content.file.php:13
-msgid "Apply file changes"
-msgstr "Alle Dateiänderungen übernehmen."
-
 #: templates/part.research.content.file.php:15
+msgid "Apply file changes"
+msgstr "Alle Dateiänderungen übernehmen"
+
+#: templates/part.research.content.file.php:17
 msgid ""
 "Otherwise deletions or file changes are not synchronized to the given "
 "services."
@@ -144,24 +155,30 @@ msgstr ""
 "Andernfalls werden Löschungen oder Dateiänderungen nicht mit den angegebenen"
 " Diensten synchronisiert."
 
-#: templates/part.research.content.file.php:21
-#: templates/part.research.content.metadata.php:14
+#: templates/part.research.content.file.php:23
+#: templates/part.research.content.metadata.php:16
 #: templates/part.research.content.service.php:123
 msgid "Save"
 msgstr "Konfiguration speichern"
 
-#: templates/part.research.content.file.php:22
+#: templates/part.research.content.file.php:24
 msgid "Synchronize files"
 msgstr "Dateien synchronisieren"
 
-#: templates/part.research.content.file.php:23
+#: templates/part.research.content.file.php:25
 msgid "Finish research"
-msgstr "Forschung beenden"
+msgstr "Arbeitsprozess abschließen und Daten bei Zenodo veröffentlichen"
 
-#: templates/part.research.content.metadata.php:15
+#: templates/part.research.content.metadata.php:9
+msgid "Here you enter your metadata informations about your research."
+msgstr ""
+"Hier kannst Du Metadaten bezüglich der Forschungsobjekte eingeben. Diese "
+"werden mit Zenodo abgeglichen."
+
+#: templates/part.research.content.metadata.php:17
 #: templates/part.research.content.service.php:124
 msgid "Save & continue"
-msgstr "Speichern fortsetzen"
+msgstr "Speichern & fortsetzen"
 
 #: templates/part.research.content.overview.php:1
 msgid "This is a nice text in overview"
@@ -177,12 +194,12 @@ msgstr "Willkommensinfo"
 #: templates/part.research.content.service.php:1
 #: templates/part.research.navigation.php:5
 msgid "Project"
-msgstr "Projekt"
+msgstr "Forschungskontext"
 
 #: templates/part.research.content.service.php:3
 msgid ""
 "Here you can enter all informations about your research synchronization."
-msgstr "Hier kannst Du dein RDS Forschungsprojekt konfigurieren."
+msgstr "Hier kannst Du Dein RDS Forschungsprojekt konfigurieren."
 
 #: templates/part.research.content.service.php:13
 msgid "Please select a folder where you want to take your files from."
@@ -222,15 +239,15 @@ msgstr "Keine Projekte gefunden."
 
 #: templates/part.research.content.service.php:59
 msgid "Create new project."
-msgstr "Erstelle ein neues Projekt."
+msgstr "Neues Projekt erstellen"
 
 #: templates/part.research.content.service.php:65
 msgid "For which transfer, do you want to use this service?"
-msgstr "Für welche Übertragung möchten Sie diesen Service nutzen?"
+msgstr "Für welche Übertragung möchtest Du diesen Dienst nutzen?"
 
 #: templates/part.research.content.service.php:66
 msgid "Informations about ingoing and outgoing traffic."
-msgstr "Informationen zum eingehenden und ausgehenden Verkehr."
+msgstr "Informationen zum eingehenden und ausgehenden Verkehr"
 
 #: templates/part.research.content.service.php:75
 msgid "Ingoing"
@@ -242,11 +259,11 @@ msgstr "Ausgehend"
 
 #: templates/part.research.content.service.php:89
 msgid "For which storage, do you want to use this service?"
-msgstr "Für welchen Speicher möchten Sie diesen Service nutzen?"
+msgstr "Für welchen Speicher möchtest Du diesen Dienst nutzen?"
 
 #: templates/part.research.content.service.php:90
 msgid "Informations about storage for metadata and fileStorage."
-msgstr "Informationen zum Speichern von Metadaten und fileStorage."
+msgstr "Informationen zum Speichern von Metadaten und fileStorage"
 
 #: templates/part.research.content.service.php:100
 msgid "File Storage"
@@ -262,11 +279,11 @@ msgstr "Dateien nach Zenodo übertragen"
 
 #: templates/part.research.navigation.php:2
 msgid "Add research"
-msgstr "Forschung hinzufügen"
+msgstr "Forschungskontext hinzufügen"
 
 #: templates/part.research.settings.php:9
 msgid "Add missing service"
-msgstr "Fehlenden Service hinzufügen"
+msgstr "Fehlenden Dienst hinzufügen"
 
 #: templates/settings-personal.php:45 templates/settings-personal.php:45
 msgid "Sciebo RDS"
@@ -278,7 +295,7 @@ msgstr "Welche Dienste möchtest Du nutzen?"
 
 #: templates/settings-personal.php:59 templates/settings-personal.php:59
 msgid "Please select a service."
-msgstr "Bitte wähle einen Service."
+msgstr "Bitte wähle einen Dienst."
 
 #: templates/settings-personal.php:68 templates/settings-personal.php:68
 msgid "Servicename"
@@ -290,12 +307,12 @@ msgstr "Aktionen"
 
 #: templates/settings-personal.php:80 templates/settings-personal.php:80
 msgid "Do you want to revoke the access for Sciebo RDS?"
-msgstr "Möchtest Du den Zugriff für Sciebo RDS widerrufen?"
+msgstr "Zugang für alle Forschungsdienste widerrufen"
 
 #: templates/settings-personal.php:90 templates/settings-personal.php:90
 msgid "Sciebo RDS is not authorized yet."
-msgstr "Sciebo RDS ist noch nicht autorisiert."
+msgstr "Forschungsdienste sind noch nicht autorisiert."
 
 #: templates/settings-personal.php:92 templates/settings-personal.php:92
 msgid "Authorize Sciebo RDS now."
-msgstr "Jetzt Sciebo RDS autorisieren."
+msgstr "Jetzt autorisieren"
