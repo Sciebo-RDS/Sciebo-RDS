@@ -51,7 +51,7 @@
 
     save: function () {
       return this._saveFn()
-        .done(function () {})
+        .done(function () { })
         .fail(function () {
           OC.dialogs.alert(
             t("rds", "Your entries could not be saved."),
@@ -90,8 +90,8 @@
       services: this._services.getAll(),
     };
   };
-  OC.rds.OverviewTemplate.prototype._beforeTemplateRenders = function () {};
-  OC.rds.OverviewTemplate.prototype._afterTemplateRenders = function () {};
+  OC.rds.OverviewTemplate.prototype._beforeTemplateRenders = function () { };
+  OC.rds.OverviewTemplate.prototype._afterTemplateRenders = function () { };
   OC.rds.OverviewTemplate.prototype._saveFn = function () {
     $.when();
   };
@@ -208,7 +208,7 @@
       services: services,
     };
   };
-  OC.rds.ServiceTemplate.prototype._beforeTemplateRenders = function () {};
+  OC.rds.ServiceTemplate.prototype._beforeTemplateRenders = function () { };
   OC.rds.ServiceTemplate.prototype._afterTemplateRenders = function () {
     var self = this;
 
@@ -381,10 +381,11 @@
     return self._studies.updateActive(portIn, portOut);
   };
 
-  OC.rds.MetadataTemplate = function (divName, view, studies) {
+  OC.rds.MetadataTemplate = function (divName, view, studies, services) {
     OC.rds.AbstractTemplate.call(this, divName, view);
 
     this._studies = studies;
+    this._services = services;
     this._bf = undefined;
   };
 
@@ -394,7 +395,7 @@
       constructor: OC.rds.MetadataTemplate,
     }
   );
-  OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () {};
+  OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () { };
   OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
     var self = this;
 
@@ -422,15 +423,16 @@
       self._view.render();
     });
   };
-  OC.rds.MetadataTemplate.prototype._getParams = function () {};
+  OC.rds.MetadataTemplate.prototype._getParams = function () { };
   OC.rds.MetadataTemplate.prototype._saveFn = function () {
+    var self = this;
     if (this._bf === undefined || !this._bf.validate()) {
       var deferred = $.Deferred();
       deferred.reject();
       return deferred.promise();
     }
 
-    return this._studies._metadata.update(this._bf.getData());
+    return this._studies._metadata.update(this._bf.getData()).done(function () { self._services.loadUser() });
   };
 
   OC.rds.FileTemplate = function (divName, view, services, studies, files) {
@@ -478,7 +480,7 @@
         });
     });
   };
-  OC.rds.FileTemplate.prototype._getParams = function () {};
+  OC.rds.FileTemplate.prototype._getParams = function () { };
   OC.rds.FileTemplate.prototype._saveFn = function () {
     return $.when();
   };
@@ -505,7 +507,8 @@
       new OC.rds.MetadataTemplate(
         "#research-edit-metadata-tpl",
         this,
-        this._studies
+        this._studies,
+        this._services
       ),
       new OC.rds.FileTemplate(
         "#research-edit-file-tpl",
