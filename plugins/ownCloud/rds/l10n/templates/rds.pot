@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud Core 8.0.0\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2020-06-29 09:26+0200\n"
+"POT-Creation-Date: 2020-06-29 09:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -138,7 +138,7 @@ msgid ""
 msgstr ""
 
 #: templates/part.research.content.file.php:23
-#: templates/part.research.content.metadata.php:14
+#: templates/part.research.content.metadata.php:16
 #: templates/part.research.content.service.php:123
 msgid "Save"
 msgstr ""
@@ -151,7 +151,11 @@ msgstr ""
 msgid "Finish research"
 msgstr ""
 
-#: templates/part.research.content.metadata.php:15
+#: templates/part.research.content.metadata.php:9
+msgid "Here you enter your metadata informations about your research."
+msgstr ""
+
+#: templates/part.research.content.metadata.php:17
 #: templates/part.research.content.service.php:124
 msgid "Save & continue"
 msgstr ""

@@ -6,6 +6,8 @@ script( 'rds', array("brutusin-json-forms.min") );
 
 ?>
 
+<?php p($l->t('Here you enter your metadata informations about your research.')); ?>
+
 <!-- Load the metadata editor -->
 <div id="metadata-jsonschema-editor"><div class="icon-loading"></div></div>
 
