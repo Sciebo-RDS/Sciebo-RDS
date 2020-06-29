@@ -78,7 +78,7 @@ include:
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:
   extends: .tests
-  image: registry.gitlab.com/pages/hugo:0.59.1
+  image: registry.gitlab.com/pages/hugo:0.68.3
 
   variables:
     FOLDER: docs/
@@ -107,7 +107,7 @@ hugo:test:
       - docs/
 
 pages:
-  image: registry.gitlab.com/pages/hugo:0.59.1
+  image: registry.gitlab.com/pages/hugo:0.68.3
   stage: pages
   before_script:
     - apk add --update --no-cache git

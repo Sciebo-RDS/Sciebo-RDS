@@ -88,6 +88,36 @@ paths:
                   titles: ''
                   publisher: ''
                   type: ''
+    patch:
+      summary: Modify a research
+      operationId: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: 'This will returns only the updated fields, because this service redirects only the output from ports.'
+                properties:
+                  length:
+                    type: integer
+                  list:
+                    type: array
+                    items:
+                      type: object
+              examples:
+                example-1:
+                  value:
+                    - port: port-zenodo
+                      metadata:
+                        titles:
+                          - title: long title
+                            lang: en
+                        publisher: research publisher gmbh
+                        type:
+                          resourceType: ''
+                          resourceTypeGeneral: Poster
   '/research/{research-id}':
     parameters:
       - schema:

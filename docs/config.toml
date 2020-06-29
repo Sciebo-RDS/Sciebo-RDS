@@ -35,7 +35,7 @@ enableGitInfo = true
 
 [[languages.de.menu.main]]
     name = "Mithelfen"
-    url = "/de/doc/contribute/"
+    url = "/de/doc/contribute/contribute/"
     weight = 25
     
 [[languages.de.menu.main]]
@@ -179,7 +179,7 @@ enableGitInfo = true
 
 [[menu.main]]
     name = "Contribute"
-    url = "/doc/contribute/"
+    url = "/doc/contribute/contribute/"
     weight = 25
     
 [[menu.main]]

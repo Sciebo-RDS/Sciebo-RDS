@@ -19,7 +19,10 @@ Incoming connections are established by the plugins (currently Owncloud). Furthe
 graph TD;
   %% define nodes
 
-  WWWI[incoming connections]
+  subgraph Plugins
+      OP[Owncloud App]
+  end
+
 
   subgraph RDS
     Ingress
@@ -28,7 +31,7 @@ graph TD;
       %% SPAEx[SPA Exporter]
       %% SPATS[SPA Token Storage]
 
-      PInvenio[Port Invenio]
+      PInvenio[Port Zenodo]
       POwncloud[Port Owncloud]
 
       subgraph Use Cases
@@ -45,7 +48,10 @@ graph TD;
     end
   end
 
+  WWWI[incoming connections]
   WWWO[outgoing connections]
+
+  click OP "/doc/impl/plugins/owncloud/"
 
   click PInvenio "/doc/impl/ports/port-invenio"
   click POwncloud "/doc/impl/ports/port-storage"
@@ -58,7 +64,8 @@ graph TD;
   click CSToken ""/doc/impl/central/token-storage""
 
   %% define connections
-  WWWI --> Ingress
+  WWWI --> OP
+  OP --> Ingress
 
   %% Ingress --> SPAEx --> UCExporter
   %% Ingress --> SPATS --> CSToken

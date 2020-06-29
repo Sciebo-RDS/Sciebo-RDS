@@ -18,8 +18,10 @@ Hereinkommende Verbindungen werden u.a. von den Plugins aufgebaut (aktuell Owncl
 ```mermaid
 graph TD;
   %% define nodes
-
-  WWWI[hereinkommende Verbindungen]
+  
+  subgraph Plugins
+      OP[Owncloud App]
+  end
 
   subgraph RDS
     Ingress
@@ -28,7 +30,7 @@ graph TD;
       %% SPAEx[SPA Exporter]
       %% SPATS[SPA Token Storage]
 
-      PInvenio[Port Invenio]
+      PInvenio[Port Zenodo]
       POwncloud[Port Owncloud]
 
       subgraph Use Cases
@@ -45,7 +47,10 @@ graph TD;
     end
   end
 
+  WWWI[hereinkommende Verbindungen]
   WWWO[ausgehende Verbindungen]
+
+  click OP "/de/doc/impl/plugins/owncloud/"
 
   click PInvenio "/de/doc/impl/ports/port-invenio"
   click POwncloud "/de/doc/impl/ports/port-storage"
@@ -58,7 +63,8 @@ graph TD;
   click CSToken ""/de/doc/impl/central/token-storage""
 
   %% define connections
-  WWWI --> Ingress
+  WWWI --> OP
+  OP --> Ingress
 
   %% Ingress --> SPAEx --> UCExporter
   %% Ingress --> SPATS --> CSToken

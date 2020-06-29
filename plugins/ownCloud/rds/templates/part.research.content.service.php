@@ -1,4 +1,4 @@
-<h2><?php p($l->t('Project')); ?> {{research.researchIndex}}</h2>
+<h2><?php p($l->t('Project')); ?> {{ inc research.researchIndex }}</h2>
 
 <p class="section-text"><h1><?php p($l->t('Here you can enter all informations about your research synchronization.')); ?></p>
 
@@ -122,5 +122,4 @@
   <div id="spacer"></div>
   <button id="btn-save-research"><?php p($l->t('Save')); ?></button>
   <button id="btn-save-research-and-continue"><?php p($l->t('Save & continue')); ?></button>
-  <button id="btn-sync-files-in-research"><?php p($l->t('Sync files')); ?></button>
 </div>
