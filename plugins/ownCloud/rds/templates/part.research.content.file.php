@@ -1,4 +1,6 @@
 
+<?php p($l->t('Here you can finalize your research project or synchronize all files with your defined services.')); ?>
+
 <div id="wrapper-auto-upload">
     <label>
         <input type="checkbox" id="checkbox-automatic-upload">

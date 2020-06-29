@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud Core 8.0.0\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2020-06-17 13:30+0200\n"
+"POT-Creation-Date: 2020-06-29 09:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,8 +25,8 @@ msgstr ""
 msgid "Your entries could not be saved."
 msgstr ""
 
-#: js/View.js:58 js/View.js:227 js/View.js:477 js/View.js:560 js/View.js:582
-#: js/View.js:600 js/main-rds.js:38
+#: js/View.js:58 js/View.js:227 js/View.js:478 js/View.js:562 js/View.js:584
+#: js/View.js:602 js/main-rds.js:38
 msgid "RDS Update project"
 msgstr ""
 
@@ -38,27 +38,27 @@ msgstr ""
 msgid "Choose source and / or target folder"
 msgstr ""
 
-#: js/View.js:559 js/main-rds.js:37
+#: js/View.js:561 js/main-rds.js:37
 msgid "Could not create research"
 msgstr ""
 
-#: js/fileActions.js:14
+#: js/fileActions.js:71
 msgid "Add folder to RDS"
 msgstr ""
 
-#: js/fileActions.js:32
+#: js/fileActions.js:89
 msgid "Update RDS file"
 msgstr ""
 
-#: js/fileActions.js:52
+#: js/fileActions.js:122
 msgid "File was successfully uploaded to outgoing services."
 msgstr ""
 
-#: js/fileActions.js:54 js/fileActions.js:60
+#: js/fileActions.js:124 js/fileActions.js:130
 msgid "RDS upload directly through Files app"
 msgstr ""
 
-#: js/fileActions.js:59
+#: js/fileActions.js:129
 msgid "File upload to outgoing services failed."
 msgstr ""
 
@@ -113,35 +113,41 @@ msgstr ""
 msgid "Create a research in RDS."
 msgstr ""
 
-#: templates/part.research.content.file.php:5
-msgid "Files auto upload"
+#: templates/part.research.content.file.php:2
+msgid ""
+"Here you can finalize your research project or synchronize all files with "
+"your defined services."
 msgstr ""
 
 #: templates/part.research.content.file.php:7
+msgid "Files auto upload"
+msgstr ""
+
+#: templates/part.research.content.file.php:9
 msgid "The system will upload all files in the given folder after some time."
 msgstr ""
 
-#: templates/part.research.content.file.php:13
+#: templates/part.research.content.file.php:15
 msgid "Apply file changes"
 msgstr ""
 
-#: templates/part.research.content.file.php:15
+#: templates/part.research.content.file.php:17
 msgid ""
 "Otherwise deletions or file changes are not synchronized to the given "
 "services."
 msgstr ""
 
-#: templates/part.research.content.file.php:21
+#: templates/part.research.content.file.php:23
 #: templates/part.research.content.metadata.php:14
 #: templates/part.research.content.service.php:123
 msgid "Save"
 msgstr ""
 
-#: templates/part.research.content.file.php:22
+#: templates/part.research.content.file.php:24
 msgid "Synchronize files"
 msgstr ""
 
-#: templates/part.research.content.file.php:23
+#: templates/part.research.content.file.php:25
 msgid "Finish research"
 msgstr ""
 
