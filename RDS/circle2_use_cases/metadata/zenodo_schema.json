@@ -3,9 +3,6 @@
     "description": "Describe information needed for deposit module.",
     "id": "http://zenodo.org/schemas/deposits/records/legacyjson.json",
     "properties": {
-      "$schema": {
-          "type": "string"
-      },
       "upload_type": {
           "additionalProperties": false,
           "default": "publication",
