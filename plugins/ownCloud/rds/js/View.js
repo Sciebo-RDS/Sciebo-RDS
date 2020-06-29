@@ -426,13 +426,13 @@
   OC.rds.MetadataTemplate.prototype._getParams = function () { };
   OC.rds.MetadataTemplate.prototype._saveFn = function () {
     var self = this;
-    if (this._bf === undefined || !this._bf.validate()) {
+    if (self._bf === undefined || !self._bf.validate()) {
       var deferred = $.Deferred();
       deferred.reject();
       return deferred.promise();
     }
 
-    return this._studies._metadata.update(this._bf.getData()).done(function () { self._services.loadUser() });
+    return self._studies._metadata.update(self._bf.getData()).done(function () { self._services.loadUser() });
   };
 
   OC.rds.FileTemplate = function (divName, view, services, studies, files) {
