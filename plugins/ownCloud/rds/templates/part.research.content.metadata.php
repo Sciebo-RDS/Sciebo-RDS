@@ -15,5 +15,5 @@ script( 'rds', array("brutusin-json-forms.min") );
   <div id="spacer"></div>
   <button id="btn-save-metadata"><?php p($l->t('Save')); ?></button>
   <button id="btn-save-metadata-and-continue"><?php p($l->t('Save & continue')); ?></button>
-  <button id="btn-skip">Skip</button>
+  <button id="btn-skip"><?php p($l->t('Skip')); ?></button>
 </div>
