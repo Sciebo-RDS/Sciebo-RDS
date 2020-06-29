@@ -179,7 +179,7 @@ class MetadataMapper
                     "description": "Conditions under which access is given if record is restricted.",
                     "title": "Access conditions",
                     "type": "string"
-                  },
+                  }
                 },
                 "required": ["upload_type","publication_date","title","creators","description","access_right"],
                 "title": "Zenodo Legacy Deposit Schema v1.0.0",
