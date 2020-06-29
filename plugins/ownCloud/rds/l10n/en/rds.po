@@ -4,17 +4,18 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Peter Heiss <peter.heiss@uni-muenster.de>, 2020
 # Danielle Nießner <danielle.nieszner@uni-muenster.de>, 2020
+# Jens Stegmann <jstegman@uni-muenster.de>, 2020
+# Peter Heiss <peter.heiss@uni-muenster.de>, 2020
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud Core 8.0.0\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2020-06-17 13:30+0200\n"
+"POT-Creation-Date: 2020-06-29 09:28+0200\n"
 "PO-Revision-Date: 2020-06-16 15:05+0000\n"
-"Last-Translator: Danielle Nießner <danielle.nieszner@uni-muenster.de>, 2020\n"
+"Last-Translator: Peter Heiss <peter.heiss@uni-muenster.de>, 2020\n"
 "Language-Team: English (https://www.transifex.com/university-of-munster/teams/109551/en/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,8 +31,8 @@ msgstr "Research"
 msgid "Your entries could not be saved."
 msgstr "Your entries could not be saved."
 
-#: js/View.js:58 js/View.js:227 js/View.js:477 js/View.js:560 js/View.js:582
-#: js/View.js:600 js/main-rds.js:38
+#: js/View.js:58 js/View.js:227 js/View.js:478 js/View.js:562 js/View.js:584
+#: js/View.js:602 js/main-rds.js:38
 msgid "RDS Update project"
 msgstr "Update RDS project "
 
@@ -43,27 +44,27 @@ msgstr "Your files will synchronize within 2 minutes."
 msgid "Choose source and / or target folder"
 msgstr "Choose source and / or target folder"
 
-#: js/View.js:559 js/main-rds.js:37
+#: js/View.js:561 js/main-rds.js:37
 msgid "Could not create research"
-msgstr "Could not create a research"
+msgstr "A new research context could not be created."
 
-#: js/fileActions.js:14
+#: js/fileActions.js:71
 msgid "Add folder to RDS"
 msgstr "Add folder to RDS"
 
-#: js/fileActions.js:32
+#: js/fileActions.js:89
 msgid "Update RDS file"
 msgstr "Update RDS file"
 
-#: js/fileActions.js:52
+#: js/fileActions.js:122
 msgid "File was successfully uploaded to outgoing services."
 msgstr "The File was uploaded successfully."
 
-#: js/fileActions.js:54 js/fileActions.js:60
+#: js/fileActions.js:124 js/fileActions.js:130
 msgid "RDS upload directly through Files app"
-msgstr "RDS upload directly through Files app"
+msgstr "Upload files to Zenodo"
 
-#: js/fileActions.js:59
+#: js/fileActions.js:129
 msgid "File upload to outgoing services failed."
 msgstr "The file could not be uploaded."
 
@@ -73,7 +74,7 @@ msgstr "Are you sure you want to delete {servicename}?"
 
 #: js/settings-personal.js:142 js/settings-personal.js:159
 msgid "RDS Settings services"
-msgstr "RDS Settings services"
+msgstr "General RDS settings"
 
 #: js/settings-personal.js:156
 msgid "Could not remove the service {servicename}"
@@ -120,19 +121,27 @@ msgstr "Step 3: Create a research context in RDS and configure it. "
 msgid "Create a research in RDS."
 msgstr "Create a research context"
 
-#: templates/part.research.content.file.php:5
+#: templates/part.research.content.file.php:2
+msgid ""
+"Here you can finalize your research project or synchronize all files with "
+"your defined services."
+msgstr ""
+"Please finalize your research project or synchronize all files with your "
+"defined services."
+
+#: templates/part.research.content.file.php:7
 msgid "Files auto upload"
 msgstr "Files auto upload"
 
-#: templates/part.research.content.file.php:7
+#: templates/part.research.content.file.php:9
 msgid "The system will upload all files in the given folder after some time."
 msgstr "The system will upload all files to the given folder after some time."
 
-#: templates/part.research.content.file.php:13
+#: templates/part.research.content.file.php:15
 msgid "Apply file changes"
 msgstr "Apply file changes"
 
-#: templates/part.research.content.file.php:15
+#: templates/part.research.content.file.php:17
 msgid ""
 "Otherwise deletions or file changes are not synchronized to the given "
 "services."
@@ -140,21 +149,26 @@ msgstr ""
 "Otherwise, deletions or file changes will not be synchronized with the "
 "specified services."
 
-#: templates/part.research.content.file.php:21
-#: templates/part.research.content.metadata.php:14
+#: templates/part.research.content.file.php:23
+#: templates/part.research.content.metadata.php:16
 #: templates/part.research.content.service.php:123
 msgid "Save"
 msgstr "Save configurations"
 
-#: templates/part.research.content.file.php:22
+#: templates/part.research.content.file.php:24
 msgid "Synchronize files"
 msgstr "Synchronize files"
 
-#: templates/part.research.content.file.php:23
+#: templates/part.research.content.file.php:25
 msgid "Finish research"
-msgstr "Finish research"
+msgstr "Complete the work process and publish data at Zenodo"
 
-#: templates/part.research.content.metadata.php:15
+#: templates/part.research.content.metadata.php:9
+msgid "Here you enter your metadata informations about your research."
+msgstr ""
+"Please enter metadata describing the research objects to be deposited."
+
+#: templates/part.research.content.metadata.php:17
 #: templates/part.research.content.service.php:124
 msgid "Save & continue"
 msgstr "Save and continue"
@@ -162,11 +176,11 @@ msgstr "Save and continue"
 #: templates/part.research.content.overview.php:1
 msgid "This is a nice text in overview"
 msgstr ""
-"Welcome to your research overview. On the left you can see all the research projects you have already created. \n"
+"Welcome to your research overview. On the left you can see all research contexts that are already created. \n"
 "\n"
-"Click on a service to configure it. The three dots on your selection indicate further possibilities.\n"
+"Click on a context to configure it. The three dots on your selection indicate further possibilities.\n"
 "\n"
-"At the bottom left you can add new services if you are missing one."
+"In the settings on the bottom left you can add and configure new research services."
 
 #: templates/part.research.content.overview.php:1
 msgid "Welcome info"
@@ -175,7 +189,7 @@ msgstr "Welcome info"
 #: templates/part.research.content.service.php:1
 #: templates/part.research.navigation.php:5
 msgid "Project"
-msgstr "Project"
+msgstr "Research context"
 
 #: templates/part.research.content.service.php:3
 msgid ""
@@ -253,11 +267,11 @@ msgstr "Metadata storage"
 
 #: templates/part.research.content.service.php:125
 msgid "Sync files"
-msgstr "Sync files"
+msgstr "Transfer files to Zenodo"
 
 #: templates/part.research.navigation.php:2
 msgid "Add research"
-msgstr "Add research"
+msgstr "Add research context"
 
 #: templates/part.research.settings.php:9
 msgid "Add missing service"
@@ -285,12 +299,12 @@ msgstr "Actions"
 
 #: templates/settings-personal.php:80 templates/settings-personal.php:80
 msgid "Do you want to revoke the access for Sciebo RDS?"
-msgstr "Do you want to revoke the access for Sciebo RDS?"
+msgstr "Revoke access for all research services"
 
 #: templates/settings-personal.php:90 templates/settings-personal.php:90
 msgid "Sciebo RDS is not authorized yet."
-msgstr "Sciebo RDS is not authorized yet."
+msgstr "Research services are not yet authorized."
 
 #: templates/settings-personal.php:92 templates/settings-personal.php:92
 msgid "Authorize Sciebo RDS now."
-msgstr "Authorize Sciebo RDS now."
+msgstr "Authorize now"
