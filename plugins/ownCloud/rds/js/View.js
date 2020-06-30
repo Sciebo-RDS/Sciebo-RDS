@@ -249,7 +249,6 @@
   OC.rds.ServiceTemplate.prototype._saveFn = function () {
     var self = this;
 
-
     var checkIfProjectCreate = function () {
       var btns = $(".radiobutton-new-project");
       var deferreds = [];
@@ -286,10 +285,7 @@
       });
 
       return $.when.apply($, deferreds).always(function () {
-        self._services.loadUser().always(function () {
-          self.save();
-          self._view.render();
-        });
+        self._services.loadUser();
       });
     }
 
