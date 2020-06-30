@@ -470,7 +470,8 @@
       self._studies
         .removeActive()
         .done(function () {
-          self.render();
+          self._view._stateView = 0;
+          self._view.render();
         })
         .fail(function () {
           OC.dialogs.alert(
