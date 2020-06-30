@@ -240,6 +240,9 @@
 
     $("#app-content #btn-save-research").click(function () {
       self.save();
+      self._services.loadUser().done(function () {
+        self._view.render();
+      });
     });
 
     $("#app-content #btn-save-research-and-continue").click(function () {
@@ -284,9 +287,7 @@
         }
       });
 
-      return $.when.apply($, deferreds).always(function () {
-        self._services.loadUser();
-      });
+      return $.when.apply($, deferreds);
     }
 
     var portIn = [];
@@ -453,7 +454,7 @@
     });
 
     $("#btn-sync-files").click(function () {
-      self._files.triggerSync().done(function(){
+      self._files.triggerSync().done(function () {
         console.log("done")
       });
       OC.dialogs.alert(
