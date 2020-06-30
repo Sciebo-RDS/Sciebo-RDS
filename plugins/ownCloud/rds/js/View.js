@@ -237,7 +237,20 @@
       );
     });
 
+
     $("#app-content #btn-save-research").click(function () {
+      self.save();
+    });
+
+    $("#app-content #btn-save-research-and-continue").click(function () {
+      self.save_next();
+    });
+  };
+  OC.rds.ServiceTemplate.prototype._saveFn = function () {
+    var self = this;
+
+
+    var checkIfProjectCreate = function () {
       var btns = $(".radiobutton-new-project");
       var deferreds = [];
       console.log(btns);
@@ -272,20 +285,14 @@
         }
       });
 
-      $.when.apply($, deferreds).always(function () {
+      return $.when.apply($, deferreds).always(function () {
         self._services.loadUser().always(function () {
           self.save();
           self._view.render();
         });
       });
-    });
+    }
 
-    $("#app-content #btn-save-research-and-continue").click(function () {
-      self.save_next();
-    });
-  };
-  OC.rds.ServiceTemplate.prototype._saveFn = function () {
-    var self = this;
     var portIn = [];
     var portOut = [];
 
@@ -365,7 +372,7 @@
       }
     });
 
-    return self._studies.updateActive(portIn, portOut);
+    return checkIfProjectCreate().always(self._studies.updateActive(portIn, portOut));
   };
 
   OC.rds.MetadataTemplate = function (divName, view, studies, services) {
