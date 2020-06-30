@@ -168,6 +168,8 @@ class ResearchService
                         break;
                     }
                 }
+            } else {
+                $found = true;
             }
 
             if (!$found) {
