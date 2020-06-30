@@ -217,20 +217,7 @@
 
     $("[id=service-configuration]").hide();
     //$("#btn-save-research-and-continue").hide();
-    $("#btn-sync-files-in-research").hide();
-
-    $("#btn-sync-files-in-research").click(function () {
-      self._view._files.load(self._studies.getActive().researchIndex);
-      self._view._files.triggerSync();
-      OC.dialogs.alert(
-        t("rds", "Your files will be synchronize within 2 minutes."),
-        t("rds", "RDS Update project")
-      );
-    });
-
-    if (self._studies.getActive().status > 1) {
-      $("#btn-sync-files-in-research").show();
-    }
+    //$("#btn-sync-files-in-research").hide();
 
     btn.click(function () {
       OC.dialogs.filepicker(
@@ -463,7 +450,12 @@
     });
 
     $("#btn-sync-files").click(function () {
-      self._files.triggerSync();
+      self._view._files.load(self._studies.getActive().researchIndex);
+      self._view._files.triggerSync();
+      OC.dialogs.alert(
+        t("rds", "Your files will be synchronize within 2 minutes."),
+        t("rds", "RDS Update project")
+      );
     });
 
     $("#btn-finish-research").click(function () {
