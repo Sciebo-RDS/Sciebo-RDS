@@ -116,7 +116,7 @@ class MetadataMapper
                         "type": "string"
                   },
                   "publication_date": {
-                      "description": "Record publication date (IS8601-formatted). EDTF support to be added for field.",
+                      "description": "Format: YYYY-MM-DD. In case your upload was already published elsewhere, please use the date of first publication.",
                       "type": "string"
                   },
                   "title": {
@@ -171,7 +171,7 @@ class MetadataMapper
                       "default": "CC-BY-4.0"
                   },
                   "embargo_date": {
-                      "description": "Embargo date of record (ISO8601 formatted date).",
+                      "description": "Format: YYYY-MM-DD. The date your upload will be made publicly available in case it is under an embargo period from your publisher.",
                       "title": "Embargo Date",
                       "type": "string"
                   },

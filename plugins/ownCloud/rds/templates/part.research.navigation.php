@@ -2,7 +2,7 @@
     <li id="new-research"><a href="#"><?php p($l->t('Add research')); ?></a></li>
     {{#each studies}}
         <li class="research with-menu {{#if active}}active{{/if}}"  data-id="{{ researchIndex }}">
-            <a href="#"><?php p($l->t('Project')); ?> {{ inc @index }}</a>
+            <a href="#"><?php p($l->t('Project')); ?> {{ inc researchIndex }}</a>
             <div class="app-navigation-entry-utils">
                 <ul>
                     <li class="app-navigation-entry-utils-menu-button svg"><button></button></li>
