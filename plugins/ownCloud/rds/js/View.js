@@ -272,6 +272,7 @@
               btn.prop("checked", true);
               btn.data("value", proj.projectId);
               self.data[servicename] = proj.projectId;
+              console.log("projectId in self.data " + servicename + ": " + self.data[servicename]);
             })
             deferred.resolve(proj.projectId);
           })
@@ -317,6 +318,7 @@
 
       if ((projectId === "on" || projectId === undefined) && element.servicename in self.data) {
         projectId = self.data[element.servicename]
+        console.log("projectId in self.data " + element.servicename + ": " + self.data[servicename]);
       }
 
       if (projectId !== undefined) {
