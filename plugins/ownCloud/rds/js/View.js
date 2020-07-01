@@ -239,10 +239,11 @@
 
 
     $("#app-content #btn-save-research").click(function () {
-      self.save();
-      self._services.loadUser().done(function () {
-        self._view.render();
-      });
+      self.save().done(function(){
+        self._services.loadUser().done(function () {
+          self._view.render();
+        });
+      })
     });
 
     $("#app-content #btn-save-research-and-continue").click(function () {
