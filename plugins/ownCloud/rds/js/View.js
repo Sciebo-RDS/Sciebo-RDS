@@ -241,7 +241,7 @@
     $("#app-content #btn-save-research").click(function () {
       self.save().done(function(){
         self._services.loadUser().done(function () {
-          self._view.render();
+          self.render();
         });
       })
     });
