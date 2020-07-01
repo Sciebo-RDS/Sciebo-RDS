@@ -240,8 +240,8 @@
 
     $("#app-content #btn-save-research").click(function () {
       self.save().done(function () {
-        $.when(self._services.loadUser(), self._studies.loadAll()).done(function () {
-          self.render();
+        $.when(self._view.loadAll()).done(function () {
+          self_view.render();
         });
       })
     });
