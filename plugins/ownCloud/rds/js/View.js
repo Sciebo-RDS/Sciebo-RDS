@@ -295,95 +295,95 @@
       return $.when.apply($, deferreds);
     }
 
-    var portIn = [];
-    var portOut = [];
+    return checkIfProjectCreate().then(function () {
+      var portIn = [];
+      var portOut = [];
 
-    self._services.getAll().forEach(function (element) {
-      var properties = [];
-      var tempPortIn = {};
-      var tempPortOut = {};
+      self._services.getAll().forEach(function (element) {
+        var properties = [];
+        var tempPortIn = {};
+        var tempPortOut = {};
 
-      var portName = element.servicename;
-      if (!portName.startsWith("port-")) {
-        portName = "port-" + portName.toLowerCase();
-      }
+        var portName = element.servicename;
+        if (!portName.startsWith("port-")) {
+          portName = "port-" + portName.toLowerCase();
+        }
 
-      tempPortIn["port"] = portName;
-      tempPortOut["port"] = portName;
+        tempPortIn["port"] = portName;
+        tempPortOut["port"] = portName;
 
-      var valProp = [];
+        var valProp = [];
 
-      var tmpRadio = $("input[name='radiobutton-" + element.servicename + "']:checked");
-      var projectId = tmpRadio.data("value");
-      console.log("projectId " + projectId)
-      console.log(self.data)
+        var tmpRadio = $("input[name='radiobutton-" + element.servicename + "']:checked");
+        var projectId = tmpRadio.data("value");
+        console.log("projectId " + projectId)
+        console.log(self.data)
 
-      if ((projectId === "on" || typeof projectId === "undefined") && element.servicename in self.data) {
-        projectId = self.data[element.servicename]
-        console.log("projectId in self.data " + element.servicename + ": " + self.data[servicename]);
-      }
-      console.log("projectId " + projectId)
+        if ((projectId === "on" || typeof projectId === "undefined") && element.servicename in self.data) {
+          projectId = self.data[element.servicename]
+          console.log("projectId in self.data " + element.servicename + ": " + self.data[servicename]);
+        }
+        console.log("projectId " + projectId)
 
-      if (projectId !== undefined) {
-        valProp.push({
-          key: "projectId",
-          value: projectId.toString(),
-        });
-      }
-
-      console.log(valProp)
-
-      var filePathObj = $("#fileStorage-path-" + element.servicename);
-      if (filePathObj.length) {
-        var filepath = filePathObj.html().trim();
-        if (filepath !== undefined) {
+        if (projectId !== undefined) {
           valProp.push({
-            key: "filepath",
-            value: filepath,
+            key: "projectId",
+            value: projectId.toString(),
           });
         }
-      }
 
-      properties.push({
-        portType: "customProperties",
-        value: valProp,
+        console.log(valProp)
+
+        var filePathObj = $("#fileStorage-path-" + element.servicename);
+        if (filePathObj.length) {
+          var filepath = filePathObj.html().trim();
+          if (filepath !== undefined) {
+            valProp.push({
+              key: "filepath",
+              value: filepath,
+            });
+          }
+        }
+
+        properties.push({
+          portType: "customProperties",
+          value: valProp,
+        });
+
+        $.each(
+          $(
+            "input[name='checkbox-" + element.servicename + "-property']:checked"
+          ),
+          function () {
+            var val = $(this).data("value");
+
+            var property = {};
+            property["portType"] = val;
+            property["value"] = true;
+            properties.push(property);
+          }
+        );
+
+        tempPortIn["properties"] = properties;
+        tempPortOut["properties"] = properties;
+
+        if (
+          $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
+            "checked"
+          ) === true
+        ) {
+          portIn.push(tempPortIn);
+        }
+
+        if (
+          $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
+            "checked"
+          ) === true
+        ) {
+          portOut.push(tempPortOut);
+        }
       });
 
-      $.each(
-        $(
-          "input[name='checkbox-" + element.servicename + "-property']:checked"
-        ),
-        function () {
-          var val = $(this).data("value");
-
-          var property = {};
-          property["portType"] = val;
-          property["value"] = true;
-          properties.push(property);
-        }
-      );
-
-      tempPortIn["properties"] = properties;
-      tempPortOut["properties"] = properties;
-
-      if (
-        $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
-          "checked"
-        ) === true
-      ) {
-        portIn.push(tempPortIn);
-      }
-
-      if (
-        $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
-          "checked"
-        ) === true
-      ) {
-        portOut.push(tempPortOut);
-      }
-    });
-
-    return checkIfProjectCreate().then(function () {
       return self._studies.updateActive(portIn, portOut)
     });
   };
