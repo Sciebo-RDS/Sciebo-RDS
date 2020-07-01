@@ -248,6 +248,7 @@
 
   OC.rds.ServiceTemplate.prototype._saveFn = function () {
     var self = this;
+    self.data = {};
 
     var checkIfProjectCreate = function () {
       var btns = $(".radiobutton-new-project");
@@ -270,7 +271,7 @@
               var btn = $($("input[name='radiobutton-" + servicename + "']")[0])
               btn.prop("checked", true);
               btn.data("projectId", proj.projectId);
-              self.data = { servicename: proj.projectId };
+              self.data[servicename] = proj.projectId;
             })
             deferred.resolve(proj.projectId);
           })
@@ -315,331 +316,331 @@
       var projectId = tmpRadio.data("projectId");
 
       if ((projectId === "on" || projectId === undefined) && element.servicename in self.data) {
-      projectId = self.data[element.servicename]
-    }
+        projectId = self.data[element.servicename]
+      }
 
-    if (projectId !== undefined) {
-      valProp.push({
-        key: "projectId",
-        value: projectId,
-      });
-    }
-
-    console.log(valProp)
-
-    var filePathObj = $("#fileStorage-path-" + element.servicename);
-    if (filePathObj.length) {
-      var filepath = filePathObj.html().trim();
-      if (filepath !== undefined) {
+      if (projectId !== undefined) {
         valProp.push({
-          key: "filepath",
-          value: filepath,
+          key: "projectId",
+          value: projectId,
         });
       }
-    }
 
-    properties.push({
-      portType: "customProperties",
-      value: valProp,
-    });
+      console.log(valProp)
 
-    $.each(
-      $(
-        "input[name='checkbox-" + element.servicename + "-property']:checked"
-      ),
-      function () {
-        var val = $(this).val();
-
-        var property = {};
-        property["portType"] = val;
-        property["value"] = true;
-        properties.push(property);
-      }
-    );
-
-    tempPortIn["properties"] = properties;
-    tempPortOut["properties"] = properties;
-
-    if (
-      $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
-        "checked"
-      ) === true
-    ) {
-      portIn.push(tempPortIn);
-    }
-
-    if (
-      $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
-        "checked"
-      ) === true
-    ) {
-      portOut.push(tempPortOut);
-    }
-  });
-
-  return checkIfProjectCreate().then(function () {
-    return self._studies.updateActive(portIn, portOut)
-  });
-};
-
-OC.rds.MetadataTemplate = function (divName, view, studies, services) {
-  OC.rds.AbstractTemplate.call(this, divName, view);
-
-  this._studies = studies;
-  this._services = services;
-  this._bf = undefined;
-};
-
-OC.rds.MetadataTemplate.prototype = Object.create(
-  OC.rds.AbstractTemplate.prototype,
-  {
-    constructor: OC.rds.MetadataTemplate,
-  }
-);
-OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () { };
-OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
-  var self = this;
-
-  this._studies.loadMetadata().done(function () {
-    var data = self._studies._metadata.getMetadata()[0]["metadata"];
-    console.log(data);
-
-    var BrutusinForms = brutusin["json-forms"];
-    self._bf = BrutusinForms.create(self._studies._metadata.getSchema());
-    var container = document.getElementById("metadata-jsonschema-editor");
-    container.innerHTML = "";
-    self._bf.render(container, data);
-  });
-
-  $("#app-content #btn-save-metadata").click(function () {
-    self.save();
-  });
-
-  $("#app-content #btn-save-metadata-and-continue").click(function () {
-    self.save_next();
-  });
-
-  $("#app-content #btn-skip").click(function () {
-    self._view._stateView += 1;
-    self._view.render();
-  });
-};
-OC.rds.MetadataTemplate.prototype._getParams = function () { };
-OC.rds.MetadataTemplate.prototype._saveFn = function () {
-  var self = this;
-  if (self._bf === undefined || !self._bf.validate()) {
-    var deferred = $.Deferred();
-    deferred.reject();
-    return deferred.promise();
-  }
-
-  return self._studies._metadata.update(self._bf.getData()).done(function () { self._services.loadUser() });
-};
-
-OC.rds.FileTemplate = function (divName, view, services, studies, files) {
-  OC.rds.AbstractTemplate.call(this, divName, view);
-  this._services = services;
-  this._studies = studies;
-  this._files = files;
-};
-OC.rds.FileTemplate.prototype = Object.create(
-  OC.rds.AbstractTemplate.prototype,
-  {
-    constructor: OC.rds.FileTemplate,
-  }
-);
-
-OC.rds.FileTemplate.prototype._beforeTemplateRenders = function () {
-  this._files.load(this._studies.getActive().researchIndex);
-};
-OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {
-  var self = this;
-
-  $("#wrapper-auto-upload").hide();
-  $("#wrapper-apply-changes").hide();
-  $("#btn-save-files").hide();
-
-  $("#btn-save-files").click(function () {
-    self.save();
-  });
-
-  $("#btn-sync-files").click(function () {
-    self._files.triggerSync().done(function () {
-      console.log("done")
-    });
-    OC.dialogs.alert(
-      t("rds", "Your files will be synchronize within 2 minutes."),
-      t("rds", "RDS Update project")
-    );
-  });
-
-  $("#btn-finish-research").click(function () {
-    self._studies
-      .removeActive()
-      .done(function () {
-        self._view._stateView = 0;
-        self._view.render();
-      })
-      .fail(function () {
-        OC.dialogs.alert(
-          t("Could not close this research."),
-          t("rds", "RDS Update project")
-        );
-      });
-  });
-};
-OC.rds.FileTemplate.prototype._getParams = function () { };
-OC.rds.FileTemplate.prototype._saveFn = function () {
-  return $.when();
-};
-
-OC.rds.View = function (studies, services, files) {
-  this._studies = studies;
-  this._services = services;
-  this._files = files;
-  this._stateView = 0;
-
-  this._templates = [
-    new OC.rds.OverviewTemplate(
-      "#research-overview-tpl",
-      this,
-      this._services,
-      this._studies
-    ),
-    new OC.rds.ServiceTemplate(
-      "#research-edit-service-tpl",
-      this,
-      this._services,
-      this._studies
-    ),
-    new OC.rds.MetadataTemplate(
-      "#research-edit-metadata-tpl",
-      this,
-      this._studies,
-      this._services
-    ),
-    new OC.rds.FileTemplate(
-      "#research-edit-file-tpl",
-      this,
-      this._services,
-      this._studies,
-      this._files
-    ),
-  ];
-};
-
-OC.rds.View.prototype = {
-  renderContent: function () {
-    var self = this;
-    if (self._studies.getActive() === undefined) {
-      self._stateView = 0;
-    }
-    this._templates[self._stateView].render();
-  },
-  renderNavigation: function () {
-    var self = this;
-    var source = $("#navigation-tpl").html();
-    var template = Handlebars.compile(source);
-    function patch(studies) {
-      studies.forEach(function (research, index) {
-        if (research.status === 2) {
-          this[index].showSync = true;
+      var filePathObj = $("#fileStorage-path-" + element.servicename);
+      if (filePathObj.length) {
+        var filepath = filePathObj.html().trim();
+        if (filepath !== undefined) {
+          valProp.push({
+            key: "filepath",
+            value: filepath,
+          });
         }
-      }, studies);
-
-      return studies;
-    }
-    var html = template({ studies: patch(this._studies.getAll()) });
-
-    $("#app-navigation ul").html(html);
-
-    // create new research
-    var self = this;
-    $("#new-research").click(function () {
-      var conn = {};
-
-      self._studies
-        .create()
-        .done(function () {
-          self._stateView = 1;
-          self.render();
-        })
-        .fail(function () {
-          OC.dialogs.alert(
-            t("rds", "Could not create research"),
-            t("rds", "RDS Update project")
-          );
-        });
-    });
-
-    // show app menu
-    $("#app-navigation .app-navigation-entry-utils-menu-button").click(
-      function () {
-        var entry = $(this).closest(".research");
-        entry.find(".app-navigation-entry-menu").toggleClass("open");
       }
-    );
 
-    $("#app-navigation .research .upload").click(function () {
-      self._files
-        .triggerSync()
-        .done(function () {
-          self.render();
-        })
-        .fail(function () {
-          OC.dialogs.alert(
-            t("Could not sync research, not found"),
-            t("rds", "RDS Update project")
-          );
-        });
+      properties.push({
+        portType: "customProperties",
+        value: valProp,
+      });
+
+      $.each(
+        $(
+          "input[name='checkbox-" + element.servicename + "-property']:checked"
+        ),
+        function () {
+          var val = $(this).val();
+
+          var property = {};
+          property["portType"] = val;
+          property["value"] = true;
+          properties.push(property);
+        }
+      );
+
+      tempPortIn["properties"] = properties;
+      tempPortOut["properties"] = properties;
+
+      if (
+        $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
+          "checked"
+        ) === true
+      ) {
+        portIn.push(tempPortIn);
+      }
+
+      if (
+        $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
+          "checked"
+        ) === true
+      ) {
+        portOut.push(tempPortOut);
+      }
     });
 
-    // delete a research
-    $("#app-navigation .research .delete").click(function () {
-      var entry = $(this).closest(".research");
-      entry.find(".app-navigation-entry-menu").removeClass("open");
+    return checkIfProjectCreate().then(function () {
+      return self._studies.updateActive(portIn, portOut)
+    });
+  };
 
+  OC.rds.MetadataTemplate = function (divName, view, studies, services) {
+    OC.rds.AbstractTemplate.call(this, divName, view);
+
+    this._studies = studies;
+    this._services = services;
+    this._bf = undefined;
+  };
+
+  OC.rds.MetadataTemplate.prototype = Object.create(
+    OC.rds.AbstractTemplate.prototype,
+    {
+      constructor: OC.rds.MetadataTemplate,
+    }
+  );
+  OC.rds.MetadataTemplate.prototype._beforeTemplateRenders = function () { };
+  OC.rds.MetadataTemplate.prototype._afterTemplateRenders = function () {
+    var self = this;
+
+    this._studies.loadMetadata().done(function () {
+      var data = self._studies._metadata.getMetadata()[0]["metadata"];
+      console.log(data);
+
+      var BrutusinForms = brutusin["json-forms"];
+      self._bf = BrutusinForms.create(self._studies._metadata.getSchema());
+      var container = document.getElementById("metadata-jsonschema-editor");
+      container.innerHTML = "";
+      self._bf.render(container, data);
+    });
+
+    $("#app-content #btn-save-metadata").click(function () {
+      self.save();
+    });
+
+    $("#app-content #btn-save-metadata-and-continue").click(function () {
+      self.save_next();
+    });
+
+    $("#app-content #btn-skip").click(function () {
+      self._view._stateView += 1;
+      self._view.render();
+    });
+  };
+  OC.rds.MetadataTemplate.prototype._getParams = function () { };
+  OC.rds.MetadataTemplate.prototype._saveFn = function () {
+    var self = this;
+    if (self._bf === undefined || !self._bf.validate()) {
+      var deferred = $.Deferred();
+      deferred.reject();
+      return deferred.promise();
+    }
+
+    return self._studies._metadata.update(self._bf.getData()).done(function () { self._services.loadUser() });
+  };
+
+  OC.rds.FileTemplate = function (divName, view, services, studies, files) {
+    OC.rds.AbstractTemplate.call(this, divName, view);
+    this._services = services;
+    this._studies = studies;
+    this._files = files;
+  };
+  OC.rds.FileTemplate.prototype = Object.create(
+    OC.rds.AbstractTemplate.prototype,
+    {
+      constructor: OC.rds.FileTemplate,
+    }
+  );
+
+  OC.rds.FileTemplate.prototype._beforeTemplateRenders = function () {
+    this._files.load(this._studies.getActive().researchIndex);
+  };
+  OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {
+    var self = this;
+
+    $("#wrapper-auto-upload").hide();
+    $("#wrapper-apply-changes").hide();
+    $("#btn-save-files").hide();
+
+    $("#btn-save-files").click(function () {
+      self.save();
+    });
+
+    $("#btn-sync-files").click(function () {
+      self._files.triggerSync().done(function () {
+        console.log("done")
+      });
+      OC.dialogs.alert(
+        t("rds", "Your files will be synchronize within 2 minutes."),
+        t("rds", "RDS Update project")
+      );
+    });
+
+    $("#btn-finish-research").click(function () {
       self._studies
         .removeActive()
         .done(function () {
-          self.render();
+          self._view._stateView = 0;
+          self._view.render();
         })
         .fail(function () {
           OC.dialogs.alert(
-            t("Could not delete research, not found"),
+            t("Could not close this research."),
             t("rds", "RDS Update project")
           );
         });
     });
+  };
+  OC.rds.FileTemplate.prototype._getParams = function () { };
+  OC.rds.FileTemplate.prototype._saveFn = function () {
+    return $.when();
+  };
 
-    // load a research
-    $("#app-navigation .research > a").click(function () {
-      var id = parseInt($(this).parent().data("id"), 10);
-      self._studies.load(id);
+  OC.rds.View = function (studies, services, files) {
+    this._studies = studies;
+    this._services = services;
+    this._files = files;
+    this._stateView = 0;
 
-      if (self._studies.getActive().status > 1) {
-        self._files.load(self._studies.getActive().researchIndex);
+    this._templates = [
+      new OC.rds.OverviewTemplate(
+        "#research-overview-tpl",
+        this,
+        this._services,
+        this._studies
+      ),
+      new OC.rds.ServiceTemplate(
+        "#research-edit-service-tpl",
+        this,
+        this._services,
+        this._studies
+      ),
+      new OC.rds.MetadataTemplate(
+        "#research-edit-metadata-tpl",
+        this,
+        this._studies,
+        this._services
+      ),
+      new OC.rds.FileTemplate(
+        "#research-edit-file-tpl",
+        this,
+        this._services,
+        this._studies,
+        this._files
+      ),
+    ];
+  };
+
+  OC.rds.View.prototype = {
+    renderContent: function () {
+      var self = this;
+      if (self._studies.getActive() === undefined) {
+        self._stateView = 0;
       }
+      this._templates[self._stateView].render();
+    },
+    renderNavigation: function () {
+      var self = this;
+      var source = $("#navigation-tpl").html();
+      var template = Handlebars.compile(source);
+      function patch(studies) {
+        studies.forEach(function (research, index) {
+          if (research.status === 2) {
+            this[index].showSync = true;
+          }
+        }, studies);
 
-      self._stateView = 1;
-      self.render();
-    });
-  },
-  render: function () {
-    this.renderNavigation();
-    this.renderContent();
-    $(".icon-info").tipsy({ gravity: "w" });
-  },
-  loadAll: function () {
-    var self = this;
+        return studies;
+      }
+      var html = template({ studies: patch(this._studies.getAll()) });
 
-    return $.when(
-      self._studies.loadAll(),
-      self._services.loadAll(),
-      self._studies._metadata.loadJsonSchema()
-      // needed later
-      //self._files.loadAll()
-    );
-  },
-};
-}) (OC, window, jQuery);
+      $("#app-navigation ul").html(html);
+
+      // create new research
+      var self = this;
+      $("#new-research").click(function () {
+        var conn = {};
+
+        self._studies
+          .create()
+          .done(function () {
+            self._stateView = 1;
+            self.render();
+          })
+          .fail(function () {
+            OC.dialogs.alert(
+              t("rds", "Could not create research"),
+              t("rds", "RDS Update project")
+            );
+          });
+      });
+
+      // show app menu
+      $("#app-navigation .app-navigation-entry-utils-menu-button").click(
+        function () {
+          var entry = $(this).closest(".research");
+          entry.find(".app-navigation-entry-menu").toggleClass("open");
+        }
+      );
+
+      $("#app-navigation .research .upload").click(function () {
+        self._files
+          .triggerSync()
+          .done(function () {
+            self.render();
+          })
+          .fail(function () {
+            OC.dialogs.alert(
+              t("Could not sync research, not found"),
+              t("rds", "RDS Update project")
+            );
+          });
+      });
+
+      // delete a research
+      $("#app-navigation .research .delete").click(function () {
+        var entry = $(this).closest(".research");
+        entry.find(".app-navigation-entry-menu").removeClass("open");
+
+        self._studies
+          .removeActive()
+          .done(function () {
+            self.render();
+          })
+          .fail(function () {
+            OC.dialogs.alert(
+              t("Could not delete research, not found"),
+              t("rds", "RDS Update project")
+            );
+          });
+      });
+
+      // load a research
+      $("#app-navigation .research > a").click(function () {
+        var id = parseInt($(this).parent().data("id"), 10);
+        self._studies.load(id);
+
+        if (self._studies.getActive().status > 1) {
+          self._files.load(self._studies.getActive().researchIndex);
+        }
+
+        self._stateView = 1;
+        self.render();
+      });
+    },
+    render: function () {
+      this.renderNavigation();
+      this.renderContent();
+      $(".icon-info").tipsy({ gravity: "w" });
+    },
+    loadAll: function () {
+      var self = this;
+
+      return $.when(
+        self._studies.loadAll(),
+        self._services.loadAll(),
+        self._studies._metadata.loadJsonSchema()
+        // needed later
+        //self._files.loadAll()
+      );
+    },
+  };
+})(OC, window, jQuery);
