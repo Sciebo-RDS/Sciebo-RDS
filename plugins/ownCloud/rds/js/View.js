@@ -267,7 +267,10 @@
             radio.val(proj.projectId);
             self._services.loadUser().done(function () {
               self._view.render();
-              $($("input[name='radiobutton-" + servicename + "']")[0]).prop("checked", true);
+              var btn = $($("input[name='radiobutton-" + servicename + "']")[0])
+              btn.prop("checked", true);
+              btn.val(proj.projectId);
+              btn.data("projectId", proj.projectId);
             })
             deferred.resolve(proj.projectId);
           })
@@ -311,7 +314,7 @@
       var tmpRadio = $("input[name='radiobutton-" + element.servicename + "']:checked");
       var projectId = tmpRadio.val();
 
-      if (projectId === "on") {
+      if (projectId === "on" || projectid === undefined) {
         projectId = tmpRadio.data("projectId");
       }
 
