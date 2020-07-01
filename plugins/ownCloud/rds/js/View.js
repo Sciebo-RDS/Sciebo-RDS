@@ -239,8 +239,8 @@
 
 
     $("#app-content #btn-save-research").click(function () {
-      self.save().done(function(){
-        self._services.loadUser().done(function () {
+      self.save().done(function () {
+        $.when(self._services.loadUser(), self._studies.loadAll()).done(function () {
           self.render();
         });
       })
