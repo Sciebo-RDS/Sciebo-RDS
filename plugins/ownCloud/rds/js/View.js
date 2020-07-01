@@ -265,12 +265,12 @@
         })
           .done(function (proj) {
             console.log(proj);
-            radio.data("projectId", proj.projectId);
+            radio.data("value", proj.projectId);
             self._services.loadUser().done(function () {
               self._view.render();
               var btn = $($("input[name='radiobutton-" + servicename + "']")[0])
               btn.prop("checked", true);
-              btn.data("projectId", proj.projectId);
+              btn.data("value", proj.projectId);
               self.data[servicename] = proj.projectId;
             })
             deferred.resolve(proj.projectId);
@@ -313,7 +313,7 @@
       var valProp = [];
 
       var tmpRadio = $("input[name='radiobutton-" + element.servicename + "']:checked");
-      var projectId = tmpRadio.data("projectId");
+      var projectId = tmpRadio.data("value");
 
       if ((projectId === "on" || projectId === undefined) && element.servicename in self.data) {
         projectId = self.data[element.servicename]
@@ -349,7 +349,7 @@
           "input[name='checkbox-" + element.servicename + "-property']:checked"
         ),
         function () {
-          var val = $(this).val();
+          var val = $(this).data("value");
 
           var property = {};
           property["portType"] = val;
