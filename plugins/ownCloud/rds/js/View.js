@@ -245,6 +245,7 @@
       self.save_next();
     });
   };
+  
   OC.rds.ServiceTemplate.prototype._saveFn = function () {
     var self = this;
 
@@ -372,7 +373,7 @@
     });
 
     return checkIfProjectCreate().then(function () {
-      self._studies.updateActive(portIn, portOut)
+      return self._studies.updateActive(portIn, portOut)
     });
   };
 
