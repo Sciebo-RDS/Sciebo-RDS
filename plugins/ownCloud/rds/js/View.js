@@ -267,7 +267,7 @@
             radio.val(proj.projectId);
             self._services.loadUser().done(function () {
               self._view.render();
-              $("input[name='radiobutton-" + element.servicename + "']")[0].prop("checked", true);
+              $("input[name='radiobutton-" + servicename + "']")[0].prop("checked", true);
             })
             deferred.resolve(proj.projectId);
           })
