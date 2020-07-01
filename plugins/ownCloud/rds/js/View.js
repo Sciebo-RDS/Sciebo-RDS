@@ -256,7 +256,6 @@
 
       function createProject(servicename, radio) {
         var deferred = $.Deferred();
-        var self = this;
         $.ajax({
           url: OC.generateUrl(
             "/apps/rds/userservice/" + servicename + "/projects"
