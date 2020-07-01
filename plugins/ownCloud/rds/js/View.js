@@ -265,9 +265,6 @@
           console.log(proj);
           radio.val(proj.projectId);
           radio.data("projectId", proj.projectId);
-          self._services.loadUser().done(function () {
-            self._view.render();
-          })
         })
       }
 
