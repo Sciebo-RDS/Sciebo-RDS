@@ -245,7 +245,7 @@
       self.save_next();
     });
   };
-  
+
   OC.rds.ServiceTemplate.prototype._saveFn = function () {
     var self = this;
 
@@ -321,6 +321,8 @@
           value: projectId,
         });
       }
+
+      console.log(valProp)
 
       var filePathObj = $("#fileStorage-path-" + element.servicename);
       if (filePathObj.length) {
