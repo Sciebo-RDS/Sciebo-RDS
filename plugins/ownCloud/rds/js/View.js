@@ -322,7 +322,7 @@
       if (projectId !== undefined) {
         valProp.push({
           key: "projectId",
-          value: projectId,
+          value: projectId.toString(),
         });
       }
 
