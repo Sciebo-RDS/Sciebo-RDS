@@ -257,23 +257,17 @@
       console.log(btns);
 
       function createProject(servicename, radio) {
-        var deferred = $.Deferred();
         var self = this;
-        $.ajax({
+        return $.ajax({
           url: OC.generateUrl(
             "/apps/rds/userservice/" + servicename + "/projects"
           ),
           method: "POST",
+        }).done(function (proj) {
+          console.log(proj);
+          radio.val(proj.projectId);
+          radio.data("projectId", proj.projectId);
         })
-          .done(function (proj) {
-            console.log(proj);
-            radio.val(proj.projectId);
-            deferred.resolve();
-          })
-          .fail(function () {
-            deferred.reject();
-          });
-        return deferred.promise();
       }
 
       btns.each(function () {
@@ -307,9 +301,12 @@
 
       var valProp = [];
 
-      var projectId = $(
-        "input[name='radiobutton-" + element.servicename + "']:checked"
-      ).val();
+      var tmpRadio = $("input[name='radiobutton-" + element.servicename + "']:checked");
+      var projectId = tmpRadio.val();
+
+      if (projectId === "on") {
+        projectId = tmpRadio.data("projectId");
+      }
 
       if (projectId !== undefined) {
         valProp.push({
