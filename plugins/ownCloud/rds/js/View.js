@@ -318,6 +318,8 @@
         });
       }
 
+      console.log(valProp)
+
       var filePathObj = $("#fileStorage-path-" + element.servicename);
       if (filePathObj.length) {
         var filepath = filePathObj.html().trim();
@@ -368,7 +370,7 @@
       }
     });
 
-    return checkIfProjectCreate().always(self._studies.updateActive(portIn, portOut));
+    return checkIfProjectCreate().then(self._studies.updateActive(portIn, portOut));
   };
 
   OC.rds.MetadataTemplate = function (divName, view, studies, services) {
