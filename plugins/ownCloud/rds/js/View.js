@@ -315,11 +315,14 @@
 
       var tmpRadio = $("input[name='radiobutton-" + element.servicename + "']:checked");
       var projectId = tmpRadio.data("value");
+      console.log("projectId " + projectId)
+      console.log(self.data)
 
-      if ((projectId === "on" || projectId === undefined) && element.servicename in self.data) {
+      if ((projectId === "on" || typeof projectId === "undefined") && element.servicename in self.data) {
         projectId = self.data[element.servicename]
         console.log("projectId in self.data " + element.servicename + ": " + self.data[servicename]);
       }
+      console.log("projectId " + projectId)
 
       if (projectId !== undefined) {
         valProp.push({
