@@ -255,17 +255,23 @@
       console.log(btns);
 
       function createProject(servicename, radio) {
+        var deferred = $.Deferred();
         var self = this;
-        return $.ajax({
+        $.ajax({
           url: OC.generateUrl(
             "/apps/rds/userservice/" + servicename + "/projects"
           ),
           method: "POST",
-        }).done(function (proj) {
-          console.log(proj);
-          radio.val(proj.projectId);
-          radio.data("projectId", proj.projectId);
         })
+          .done(function (proj) {
+            console.log(proj);
+            radio.val(proj.projectId);
+            deferred.resolve(proj.projectId);
+          })
+          .fail(function () {
+            deferred.reject();
+          });
+        return deferred.promise();
       }
 
       btns.each(function () {
