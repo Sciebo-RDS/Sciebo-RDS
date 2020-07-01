@@ -51,7 +51,6 @@
 
     save: function () {
       return this._saveFn()
-        .done(function () { })
         .fail(function () {
           OC.dialogs.alert(
             t("rds", "Your entries could not be saved."),
@@ -322,8 +321,6 @@
         });
       }
 
-      console.log(valProp)
-
       var filePathObj = $("#fileStorage-path-" + element.servicename);
       if (filePathObj.length) {
         var filepath = filePathObj.html().trim();
@@ -374,7 +371,9 @@
       }
     });
 
-    return checkIfProjectCreate().then(self._studies.updateActive(portIn, portOut));
+    return checkIfProjectCreate().then(function () {
+      self._studies.updateActive(portIn, portOut)
+    });
   };
 
   OC.rds.MetadataTemplate = function (divName, view, studies, services) {
