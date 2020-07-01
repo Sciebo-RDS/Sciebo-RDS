@@ -347,7 +347,7 @@
           "input[name='checkbox-" + element.servicename + "-property']:checked"
         ),
         function () {
-          var val = $(this).data("projectId");
+          var val = $(this).val();
 
           var property = {};
           property["portType"] = val;
