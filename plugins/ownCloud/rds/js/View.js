@@ -314,7 +314,7 @@
       var tmpRadio = $("input[name='radiobutton-" + element.servicename + "']:checked");
       var projectId = tmpRadio.val();
 
-      if (projectId === "on" || projectid === undefined) {
+      if (projectId === "on" || projectId === undefined) {
         projectId = tmpRadio.data("projectId");
       }
 
