@@ -240,9 +240,7 @@
 
     $("#app-content #btn-save-research").click(function () {
       self.save().done(function () {
-        $.when(self._view.loadAll()).done(function () {
-          self._view.render();
-        });
+        self._view.render();
       })
     });
 
