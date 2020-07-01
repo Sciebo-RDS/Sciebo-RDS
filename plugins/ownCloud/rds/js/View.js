@@ -239,9 +239,7 @@
 
 
     $("#app-content #btn-save-research").click(function () {
-      self.save().done(function () {
-        self._view.render();
-      })
+      self.save()
     });
 
     $("#app-content #btn-save-research-and-continue").click(function () {
@@ -267,6 +265,9 @@
           console.log(proj);
           radio.val(proj.projectId);
           radio.data("projectId", proj.projectId);
+          self._services.loadUser().done(function () {
+            self._view.render();
+          })
         })
       }
 
