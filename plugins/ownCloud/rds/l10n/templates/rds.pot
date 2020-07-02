@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud Core 8.0.0\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2020-06-29 09:28+0200\n"
+"POT-Creation-Date: 2020-07-02 10:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,24 +21,28 @@ msgstr ""
 msgid "RDS App"
 msgstr ""
 
-#: js/View.js:57
+#: js/View.js:56
 msgid "Your entries could not be saved."
 msgstr ""
 
-#: js/View.js:58 js/View.js:227 js/View.js:478 js/View.js:562 js/View.js:584
-#: js/View.js:602 js/main-rds.js:38
+#: js/View.js:57 js/View.js:478 js/View.js:487 js/View.js:503 js/View.js:590
+#: js/View.js:612 js/View.js:630 js/main-rds.js:38
 msgid "RDS Update project"
 msgstr ""
 
-#: js/View.js:226
-msgid "Your files will be synchronize within 2 minutes."
-msgstr ""
-
-#: js/View.js:237
+#: js/View.js:223
 msgid "Choose source and / or target folder"
 msgstr ""
 
-#: js/View.js:561 js/main-rds.js:37
+#: js/View.js:477
+msgid "Your files will be synchronize within 2 minutes."
+msgstr ""
+
+#: js/View.js:484
+msgid "Are you sure, that you want to close the research {researchIndex}?"
+msgstr ""
+
+#: js/View.js:589 js/main-rds.js:37
 msgid "Could not create research"
 msgstr ""
 
@@ -160,6 +164,10 @@ msgstr ""
 msgid "Save & continue"
 msgstr ""
 
+#: templates/part.research.content.metadata.php:18
+msgid "Skip"
+msgstr ""
+
 #: templates/part.research.content.overview.php:1
 msgid "This is a nice text in overview"
 msgstr ""
@@ -244,10 +252,6 @@ msgstr ""
 
 #: templates/part.research.content.service.php:112
 msgid "Metadata Storage"
-msgstr ""
-
-#: templates/part.research.content.service.php:125
-msgid "Sync files"
 msgstr ""
 
 #: templates/part.research.navigation.php:2
