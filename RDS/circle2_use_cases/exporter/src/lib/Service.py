@@ -30,7 +30,13 @@ class Service():
         self.metadata = metadata
         self.customProperties = customProperties
 
+        self.useZipForFolder = False
+
         self.reload()
+
+    @property
+    def zipForFolder(self):
+        return self.useZipForFolder
 
     def reload(self):
         if self.fileStorage:
@@ -45,7 +51,19 @@ class Service():
 
         if self.metadata:
             # TODO: metadata ports can also response with files
-            pass
+            self.useZipForFolder = self.getZipStatusForFolders()
+
+    def getZipStatusForFolders(self):
+        """Returns True, if you have to send zip files, when there are folder in folders. Otherwise False.
+
+        Returns:
+            bool: True, if you have to send zip for folder in folders.
+        """
+        json = requests.get(
+                f"{self.portaddress}/zip").json()
+
+        status = json.get("needsZip")
+        return bool(status)
 
     def getFilepath(self):
         filepath = self.getProperty("filepath")
