@@ -480,18 +480,34 @@
     });
 
     $("#btn-finish-research").click(function () {
-      self._studies
-        .removeActive()
-        .done(function () {
-          self._view._stateView = 0;
-          self._view.render();
-        })
-        .fail(function () {
-          OC.dialogs.alert(
-            t("Could not close this research."),
-            t("rds", "RDS Update project")
-          );
-        });
+      var self = this;
+
+      OC.dialogs.confirm(
+        t("rds", "Are you sure, that you want to close the research {researchIndex}?", {
+          researchIndex: self._studies.getActive().researchIndex,
+        }),
+        t("rds", "RDS Update project"),
+        function (confirmation) {
+          {
+            if (confirmation == false) {
+              return;
+            }
+
+            self._studies
+              .removeActive()
+              .done(function () {
+                self._view._stateView = 0;
+                self._view.render();
+              })
+              .fail(function () {
+                OC.dialogs.alert(
+                  t("Could not close this research."),
+                  t("rds", "RDS Update project")
+                );
+              });
+          }
+        }
+      );
     });
   };
   OC.rds.FileTemplate.prototype._getParams = function () { };
