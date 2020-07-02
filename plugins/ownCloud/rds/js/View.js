@@ -480,8 +480,6 @@
     });
 
     $("#btn-finish-research").click(function () {
-      var self = this;
-
       OC.dialogs.confirm(
         t("rds", "Are you sure, that you want to close the research {researchIndex}?", {
           researchIndex: self._studies.getActive().researchIndex,
