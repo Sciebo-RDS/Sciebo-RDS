@@ -14,3 +14,11 @@ def delete(user_id, research_id):
 
     raise Exception(f"given project with id {research_id} not removed")
 
+
+def put(user_id, research_id):
+    resp = Singleton.ProjectService.publish(user_id, int(research_id))
+
+    if resp:
+        return None, 204
+
+    return None, 400

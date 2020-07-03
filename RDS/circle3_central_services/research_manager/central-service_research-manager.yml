@@ -66,6 +66,12 @@ paths:
       responses:
         '204':
           description: No Content
+    put:
+      summary: Finish research
+      responses:
+        '200':
+          description: OK
+      description: 'Finish this research, for example publish it in the corresponding metadata service.'
   '/user/{user-id}/research/{research-id}/exports':
     parameters:
       - schema:
