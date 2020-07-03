@@ -214,6 +214,9 @@ class ProjectService:
         self, user: str = None, researchIndex: int = None, researchId: int = None
     ):
         """Publishes research in all configured export services.
+        This function implements the parameters like self.getProjects.
+        If you provide only user, then all researches will be published at once. 
+        Otherwise only the given research with Index or Id.
 
         Args:
             user (str, optional): Defaults to None.
