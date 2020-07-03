@@ -482,7 +482,7 @@
     $("#btn-finish-research").click(function () {
       OC.dialogs.confirm(
         t("rds", "Are you sure, that you want to close the research {researchIndex}?", {
-          researchIndex: self._studies.getActive().researchIndex,
+          researchIndex: self._studies.getActive().researchIndex + 1,
         }),
         t("rds", "RDS Update project"),
         function (confirmation) {
