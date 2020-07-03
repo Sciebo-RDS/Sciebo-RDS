@@ -16,7 +16,7 @@ class ResearchController extends Controller
     private $service;
 
     use Errors;
-    
+
     public function __construct(ILogger $logger, $AppName, IRequest $request, ResearchService $service, $userId)
     {
         parent::__construct($AppName, $request);
@@ -25,8 +25,9 @@ class ResearchController extends Controller
         $this->service = $service;
     }
 
-    public function log( $message, $arr ) {
-        $this->logger->error( $message, array_merge( ['app' => $this->appName], $arr ) );
+    public function log($message, $arr)
+    {
+        $this->logger->error($message, array_merge(['app' => $this->appName], $arr));
     }
 
     /**
@@ -38,7 +39,8 @@ class ResearchController extends Controller
      * @NoCSRFRequired
      * @NoAdminRequired
      */
-    public function index() {
+    public function index()
+    {
         return $this->handleNotFound(function () {
             return $this->service->findAll($this->userId);
         });
@@ -52,7 +54,8 @@ class ResearchController extends Controller
      *
      * @NoAdminRequired
      */
-    public function show($id) {
+    public function show($id)
+    {
         return $this->handleNotFound(function () use ($id) {
             return $this->service->find($id, $this->userId);
         });
@@ -65,7 +68,8 @@ class ResearchController extends Controller
      * 
      * @NoAdminRequired
      */
-    public function create() {
+    public function create()
+    {
         return $this->handleNotFound(function () {
             return $this->service->create($this->userId);
         });
@@ -82,9 +86,10 @@ class ResearchController extends Controller
      * 
      * @NoAdminRequired
      */
-    public function update($id, $status, $portIn, $portOut) {
+    public function update($id, $status, $portIn, $portOut)
+    {
         return $this->handleNotFound(function () use ($id, $status, $portIn, $portOut) {
-            return $this->service->update( $this->userId, $id, $portIn, $portOut, $status);
+            return $this->service->update($this->userId, $id, $portIn, $portOut, $status);
         });
     }
 
@@ -96,18 +101,20 @@ class ResearchController extends Controller
      *
      * @NoAdminRequired
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         return $this->handleNotFound(function () use ($id) {
             return $this->service->delete($id, $this->userId);
         });
     }
 
-     /**
+    /**
      * Returns all folders in all studies.
      * 
      * @NoAdminRequired
      */
-    public function filesIndex() {
+    public function filesIndex()
+    {
         return $this->handleNotFound(function () {
             return $this->service->files($this->userId);
         });
@@ -121,21 +128,23 @@ class ResearchController extends Controller
      * 
      * @NoAdminRequired
      */
-    public function filesGet( $id ) {
-        return $this->handleNotFound(function () use( $id ) {
+    public function filesGet($id)
+    {
+        return $this->handleNotFound(function () use ($id) {
             return $this->service->files($this->userId, $id);
         });
     }
 
 
-     /**
+    /**
      * Trigger an update request for research project to exporter func in RDS
      * 
      * @return boolean True, if Trigger was successful. False otherwise.
      * @NoAdminRequired
      */
-    public function filesTrigger( $id, $filename = null ) {
-        return $this->handleNotFound(function () use( $id, $filename ) {
+    public function filesTrigger($id, $filename = null)
+    {
+        return $this->handleNotFound(function () use ($id, $filename) {
             return $this->service->updateFiles($this->userId, $id, $filename);
         });
     }
@@ -146,11 +155,12 @@ class ResearchController extends Controller
      * @return boolean True, if Trigger was successful. False otherwise.
      * @NoAdminRequired
      */
-    public function filesIndexUpload( $filename ) {
-        return $this->handleNotFound(function () use( $filename ) {
+    public function filesIndexUpload($filename)
+    {
+        return $this->handleNotFound(function () use ($filename) {
             return $this->service->updateFiles($this->userId, null, $filename);
         });
-    }    
+    }
 
     /**
      * Returns all settings for rds exporter.
@@ -160,8 +170,9 @@ class ResearchController extends Controller
      * 
      * @NoAdminRequired
      */
-    public function filesSettingsGet( $id ) {
-        return $this->handleNotFound(function () use( $id ) {
+    public function filesSettingsGet($id)
+    {
+        return $this->handleNotFound(function () use ($id) {
             return $this->service->getSettings($this->userId, $id);
         });
     }
@@ -175,9 +186,17 @@ class ResearchController extends Controller
      * 
      * @NoAdminRequired
      */
-    public function filesSettingsUpdate( $id, $settings ) {
-        return $this->handleNotFound(function () use( $id, $settings ) {
+    public function filesSettingsUpdate($id, $settings)
+    {
+        return $this->handleNotFound(function () use ($id, $settings) {
             return $this->service->updateSettings($this->userId, $id, $settings);
+        });
+    }
+
+    public function publish($id)
+    {
+        return $this->handleNotFound(function () use ($id) {
+            return $this->service->publish($this->userId, $id);
         });
     }
 }

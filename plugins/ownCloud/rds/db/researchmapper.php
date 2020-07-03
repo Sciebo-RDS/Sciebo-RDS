@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\RDS\Db;
 
 use \OCA\RDS\Db\Port;
@@ -6,95 +7,101 @@ use \OCA\RDS\Db\Research;
 use \OCA\RDS\Service\NotFoundException;
 use OCP\ILogger;
 
-class ResearchMapper {
+class ResearchMapper
+{
     private $rdsURL = 'https://sciebords-dev.uni-muenster.de/research';
     private $exporterURL = 'https://sciebords-dev.uni-muenster.de/exporter';
 
-    public function __construct( ILogger $logger, $appName ) {
+    public function __construct(ILogger $logger, $appName)
+    {
         $this->logger = $logger;
         $this->appName = $appName;
     }
 
-    public function log( $message, $arr ) {
-        $this->logger->error( $message, array_merge( ['app' => $this->appName], $arr ) );
+    public function log($message, $arr)
+    {
+        $this->logger->error($message, array_merge(['app' => $this->appName], $arr));
     }
 
-    public function insert( $userId ) {
-        $curl = curl_init( $this->rdsURL . '/user/' . $userId );
+    public function insert($userId)
+    {
+        $curl = curl_init($this->rdsURL . '/user/' . $userId);
         $options = [CURLOPT_RETURNTRANSFER => true];
-        curl_setopt_array( $curl, $options );
-        curl_setopt( $curl, CURLOPT_POST, TRUE );
-        curl_setopt( $curl, CURLOPT_POSTFIELDS, [] );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+        curl_setopt_array($curl, $options);
+        curl_setopt($curl, CURLOPT_POST, TRUE);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, []);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
-        $request = curl_exec( $curl );
-        $response = json_decode( $request, true );
-        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-        $info = curl_getinfo( $curl );
+        $request = curl_exec($curl);
+        $response = json_decode($request, true);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $info = curl_getinfo($curl);
 
-        curl_close( $curl );
+        curl_close($curl);
 
-        if ( $httpcode >= 300 ) {
-            throw new NotFoundException( json_encode( [
-                'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg(),
-                'curl_error_message'=>$info,
-                'response'=>$request
-            ] ) );
+        if ($httpcode >= 300) {
+            throw new NotFoundException(json_encode([
+                'http_code' => $httpcode,
+                'json_error_message' => json_last_error_msg(),
+                'curl_error_message' => $info,
+                'response' => $request
+            ]));
         }
 
         $conn = new Research();
-        $conn->setUserId( $response['userId'] );
-        $conn->setStatus( $response['status'] );
-        $conn->setResearchId( $response['researchId'] );
-        $conn->setResearchIndex( $response['researchIndex'] );
-        $conn->setportIn( $response['portIn'] );
-        $conn->setportOut( $response['portOut'] );
+        $conn->setUserId($response['userId']);
+        $conn->setStatus($response['status']);
+        $conn->setResearchId($response['researchId']);
+        $conn->setResearchIndex($response['researchIndex']);
+        $conn->setportIn($response['portIn']);
+        $conn->setportOut($response['portOut']);
 
         return $conn;
     }
 
-    public function update( $conn ) {
-        $current = $this->find( $conn->getResearchIndex(), $conn->getUserId() );
+    public function update($conn)
+    {
+        $current = $this->find($conn->getResearchIndex(), $conn->getUserId());
 
-        return $this->updateResearch( $current, $conn );
+        return $this->updateResearch($current, $conn);
     }
 
-    private function updateResearch( $currentResearch, $newResearch ) {
-        if ( $currentResearch->getStatus() != $newResearch->getStatus() ) {
-            $newResearch->setStatus( $this->nextStatus( $currentResearch ) );
+    private function updateResearch($currentResearch, $newResearch)
+    {
+        if ($currentResearch->getStatus() != $newResearch->getStatus()) {
+            $newResearch->setStatus($this->nextStatus($currentResearch));
         }
 
-        $this->removeDistinctPorts( $currentResearch, $newResearch );
-        $this->addDistinctPorts( $newResearch, $currentResearch );
+        $this->removeDistinctPorts($currentResearch, $newResearch);
+        $this->addDistinctPorts($newResearch, $currentResearch);
 
         return $newResearch;
     }
 
     /**
-    * Removes all $currentPorts from $conn, which are not in $newPorts
-    * or has different properties as defined in $newPorts.
-    * Returns TRUE, if something was removed, otherwise FALSE.
-    *
-    * @param \OCA\RDS\Db\Research $currentConn
-    * @param \OCA\RDS\Db\Research $newConn
-    * @return boolean
-    */
+     * Removes all $currentPorts from $conn, which are not in $newPorts
+     * or has different properties as defined in $newPorts.
+     * Returns TRUE, if something was removed, otherwise FALSE.
+     *
+     * @param \OCA\RDS\Db\Research $currentConn
+     * @param \OCA\RDS\Db\Research $newConn
+     * @return boolean
+     */
 
-    private function removeDistinctPorts( $currentConn, $newConn ) {
+    private function removeDistinctPorts($currentConn, $newConn)
+    {
         $removeSth = False;
 
-        $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortIn(), $newConn->getPortIn() );
-        foreach ( array_reverse( $removeIndices ) as $index ) {
-            $this->removePortIn( $currentConn, $index );
+        $removeIndices = $this->getNotEqualPortIndices($currentConn->getPortIn(), $newConn->getPortIn());
+        foreach (array_reverse($removeIndices) as $index) {
+            $this->removePortIn($currentConn, $index);
             $removeSth = TRUE;
-
         }
 
-        $removeIndices = $this->getNotEqualPortIndices( $currentConn->getPortOut(), $newConn->getPortOut() );
-        foreach ( array_reverse( $removeIndices ) as $index ) {
-            $this->removePortOut( $currentConn, $index );
+        $removeIndices = $this->getNotEqualPortIndices($currentConn->getPortOut(), $newConn->getPortOut());
+        foreach (array_reverse($removeIndices) as $index) {
+            $this->removePortOut($currentConn, $index);
             $removeSth = TRUE;
         }
 
@@ -102,49 +109,51 @@ class ResearchMapper {
     }
 
     /**
-    * Adds all $currentPorts from $conn, which are not in $newPorts
-    * or has different properties as defined in $newPorts
-    * Returns TRUE, if something was added, otherwise FALSE.
-    *
-    * @param \OCA\RDS\Db\Research $currentConn
-    * @param \OCA\RDS\Db\Research $newConn
-    * @return boolean
-    */
+     * Adds all $currentPorts from $conn, which are not in $newPorts
+     * or has different properties as defined in $newPorts
+     * Returns TRUE, if something was added, otherwise FALSE.
+     *
+     * @param \OCA\RDS\Db\Research $currentConn
+     * @param \OCA\RDS\Db\Research $newConn
+     * @return boolean
+     */
 
-    private function addDistinctPorts( $currentConn, $newConn ) {
+    private function addDistinctPorts($currentConn, $newConn)
+    {
         $addSth = False;
 
-        $addIndices = $this->getNotEqualPortIndices( $currentConn->getPortIn(), $newConn->getPortIn() );
-        foreach ( $addIndices as $index ) {
-            $this->addPortIn( $currentConn, $currentConn->getPortIn()[$index] );
+        $addIndices = $this->getNotEqualPortIndices($currentConn->getPortIn(), $newConn->getPortIn());
+        foreach ($addIndices as $index) {
+            $this->addPortIn($currentConn, $currentConn->getPortIn()[$index]);
             $addSth = TRUE;
         }
 
-        $addIndices = $this->getNotEqualPortIndices( $currentConn->getPortOut(), $newConn->getPortOut() );
-        foreach ( $addIndices as $index ) {
-            $this->addPortOut( $currentConn, $currentConn->getPortOut()[$index] );
+        $addIndices = $this->getNotEqualPortIndices($currentConn->getPortOut(), $newConn->getPortOut());
+        foreach ($addIndices as $index) {
+            $this->addPortOut($currentConn, $currentConn->getPortOut()[$index]);
             $addSth = TRUE;
         }
 
         return $addSth;
     }
 
-    private function getNotEqualPortIndices( $currentPorts, $newPorts ) {
+    private function getNotEqualPortIndices($currentPorts, $newPorts)
+    {
         $returnList = [];
         $index = 0;
 
-        foreach ( $currentPorts as $i ) {
+        foreach ($currentPorts as $i) {
             $found = FALSE;
-            foreach ( $newPorts as $j ) {
-                if ( $i->getPort() == $j->getPort() ) {
-                    if ( ! $i->equal( $j ) ) {
+            foreach ($newPorts as $j) {
+                if ($i->getPort() == $j->getPort()) {
+                    if (!$i->equal($j)) {
                         $returnList[] = $index;
                     }
                     $found = TRUE;
                 }
             }
 
-            if ( !$found ) {
+            if (!$found) {
                 $returnList[] = $index;
             }
         }
@@ -152,221 +161,232 @@ class ResearchMapper {
         return $returnList;
     }
 
-    private function removePortIn( $conn, $index ) {
-        return $this->removePort( $conn->getResearchIndex(), $conn->getUserId(), $index, 'imports' );
+    private function removePortIn($conn, $index)
+    {
+        return $this->removePort($conn->getResearchIndex(), $conn->getUserId(), $index, 'imports');
     }
 
-    private function removePortOut( $conn, $index ) {
-        return $this->removePort( $conn->getResearchIndex(), $conn->getUserId(), $index, 'exports' );
+    private function removePortOut($conn, $index)
+    {
+        return $this->removePort($conn->getResearchIndex(), $conn->getUserId(), $index, 'exports');
     }
 
-    private function addPortIn( $conn, $port ) {
-        return $this->addPort( $conn->getResearchIndex(), $conn->getUserId(), $port, 'imports' );
+    private function addPortIn($conn, $port)
+    {
+        return $this->addPort($conn->getResearchIndex(), $conn->getUserId(), $port, 'imports');
     }
 
-    private function addPortOut( $conn, $port ) {
-        return $this->addPort( $conn->getResearchIndex(), $conn->getUserId(), $port, 'exports' );
+    private function addPortOut($conn, $port)
+    {
+        return $this->addPort($conn->getResearchIndex(), $conn->getUserId(), $port, 'exports');
     }
 
-    private function removePort( $researchIndex, $userId, $portIndex, $where ) {
-        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where.'/'.$portIndex;
+    private function removePort($researchIndex, $userId, $portIndex, $where)
+    {
+        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where . '/' . $portIndex;
 
-        $curl = curl_init( $url );
+        $curl = curl_init($url);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
-        curl_setopt_array( $curl, $options );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+        curl_setopt_array($curl, $options);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
-        $response = json_decode( curl_exec( $curl ) );
-        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-        $info = curl_getinfo( $curl );
+        $response = json_decode(curl_exec($curl));
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $info = curl_getinfo($curl);
 
-        curl_close( $curl );
+        curl_close($curl);
 
-        if ( $httpcode >= 300 ) {
-            throw new NotFoundException( json_encode( [
-                'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg(),
-                'curl_error_message'=>$info
-            ] ) );
+        if ($httpcode >= 300) {
+            throw new NotFoundException(json_encode([
+                'http_code' => $httpcode,
+                'json_error_message' => json_last_error_msg(),
+                'curl_error_message' => $info
+            ]));
         }
 
         return TRUE;
     }
 
-    private function addPort( $researchIndex, $userId, $port, $where ) {
+    private function addPort($researchIndex, $userId, $port, $where)
+    {
         $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where;
-        $data_string = json_encode( $port->jsonSerialize() );
+        $data_string = json_encode($port->jsonSerialize());
 
-        $curl = curl_init( $url );
+        $curl = curl_init($url);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'POST'];
-        curl_setopt( $curl, CURLOPT_HTTPHEADER, array(
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
-            'Content-Length: ' . strlen( $data_string ) )
-        );
+            'Content-Length: ' . strlen($data_string)
+        ));
 
-        curl_setopt_array( $curl, $options );
-        curl_setopt( $curl, CURLOPT_POSTFIELDS, $data_string );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+        curl_setopt_array($curl, $options);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
-        $request = curl_exec( $curl );
-        $response = json_decode( $request );
-        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-        $info = curl_getinfo( $curl );
+        $request = curl_exec($curl);
+        $response = json_decode($request);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $info = curl_getinfo($curl);
 
-        curl_close( $curl );
+        curl_close($curl);
 
-        if ( $httpcode >= 300 ) {
-            throw new NotFoundException( json_encode( [
-                'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg(),
-                'curl_error_message'=>$info,
-                'content'=>$request
-            ] ) );
+        if ($httpcode >= 300) {
+            throw new NotFoundException(json_encode([
+                'http_code' => $httpcode,
+                'json_error_message' => json_last_error_msg(),
+                'curl_error_message' => $info,
+                'content' => $request
+            ]));
         }
 
         return TRUE;
     }
 
-    private function nextStatus( $conn ) {
+    private function nextStatus($conn)
+    {
         $url = $this->rdsURL . '/user/' . $conn->getUserId() . '/research/' . $conn->getResearchIndex() . '/status';
 
-        $curl = curl_init( $url );
+        $curl = curl_init($url);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PATCH'];
-        curl_setopt_array( $curl, $options );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+        curl_setopt_array($curl, $options);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
-        $response = json_decode( curl_exec( $curl ), true );
-        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-        $info = curl_getinfo( $curl );
+        $response = json_decode(curl_exec($curl), true);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $info = curl_getinfo($curl);
 
-        curl_close( $curl );
+        curl_close($curl);
 
-        if ( $httpcode >= 300 ) {
-            throw new NotFoundException( json_encode( [
-                'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg(),
-                'curl_error_message'=>$info
-            ] ) );
+        if ($httpcode >= 300) {
+            throw new NotFoundException(json_encode([
+                'http_code' => $httpcode,
+                'json_error_message' => json_last_error_msg(),
+                'curl_error_message' => $info
+            ]));
         }
 
         return $response['status'];
     }
 
-    public function delete( $researchIndex, $userId ) {
-        $conn = $this->find( $researchIndex, $userId );
+    public function delete($researchIndex, $userId)
+    {
+        $conn = $this->find($researchIndex, $userId);
 
-        $curl = curl_init( $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex );
+        $curl = curl_init($this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
-        curl_setopt_array( $curl, $options );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+        curl_setopt_array($curl, $options);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
-        $request = curl_exec( $curl );
-        $response = json_decode( $request );
-        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-        $info = curl_getinfo( $curl );
+        $request = curl_exec($curl);
+        $response = json_decode($request);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $info = curl_getinfo($curl);
 
-        curl_close( $curl );
+        curl_close($curl);
 
-        if ( $httpcode >= 300 ) {
-            throw new NotFoundException( json_encode( [
-                'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg(),
-                'curl_error_message'=>$info,
-                'content'=>$request
-            ] ) );
+        if ($httpcode >= 300) {
+            throw new NotFoundException(json_encode([
+                'http_code' => $httpcode,
+                'json_error_message' => json_last_error_msg(),
+                'curl_error_message' => $info,
+                'content' => $request
+            ]));
         }
 
         return $conn;
     }
 
-    public function createPort( $port ) {
+    public function createPort($port)
+    {
         $pport = new Port();
-        $pport->setPort( ucfirst( ( str_replace( 'port-', '', $port['port'] ) ) ) );
+        $pport->setPort(ucfirst((str_replace('port-', '', $port['port']))));
 
-        foreach ( $port['properties'] as $prop ) {
+        foreach ($port['properties'] as $prop) {
             $portType = $prop['portType'];
             $value = $prop['value'];
-            $pport->addProperty( $portType, $value );
+            $pport->addProperty($portType, $value);
         }
 
         return $pport;
     }
 
-    public function find( $researchIndex, $userId ) {
-        $curl = curl_init( $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex );
-        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
-        $result = curl_exec( $curl );
-        $response = json_decode( $result, true );
-        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-        $info = curl_getinfo( $curl );
+    public function find($researchIndex, $userId)
+    {
+        $curl = curl_init($this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        $result = curl_exec($curl);
+        $response = json_decode($result, true);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $info = curl_getinfo($curl);
 
-        curl_close( $curl );
+        curl_close($curl);
 
-        if ( $httpcode >= 300 ) {
-            throw new NotFoundException( json_encode( [
-                'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg(),
-                'curl_error_message'=>$info
-            ] ) );
+        if ($httpcode >= 300) {
+            throw new NotFoundException(json_encode([
+                'http_code' => $httpcode,
+                'json_error_message' => json_last_error_msg(),
+                'curl_error_message' => $info
+            ]));
         }
 
         $portIn = [];
-        foreach ( $response['portIn'] as $port ) {
-            $portIn[] = $this->createPort( $port );
+        foreach ($response['portIn'] as $port) {
+            $portIn[] = $this->createPort($port);
         }
 
         $portOut = [];
-        foreach ( $response['portOut'] as $port ) {
-            $portOut[] = $this->createPort( ( $port ) );
+        foreach ($response['portOut'] as $port) {
+            $portOut[] = $this->createPort(($port));
         }
 
         $conn = new Research();
-        $conn->setUserId( $response['userId'] );
-        $conn->setStatus( $response['status'] );
-        $conn->setResearchId( $response['researchId'] );
-        $conn->setResearchIndex( $response['researchIndex'] );
-        $conn->setportIn( $portIn );
-        $conn->setportOut( $portOut );
+        $conn->setUserId($response['userId']);
+        $conn->setStatus($response['status']);
+        $conn->setResearchId($response['researchId']);
+        $conn->setResearchIndex($response['researchIndex']);
+        $conn->setportIn($portIn);
+        $conn->setportOut($portOut);
 
         return $conn;
     }
 
-    public function findAll( $userId ) {
-        $curl = curl_init( $this->rdsURL . '/user/' . $userId );
-        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
-        $result = curl_exec( $curl );
-        $response = json_decode( $result, true );
-        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-        $info = curl_getinfo( $curl );
+    public function findAll($userId)
+    {
+        $curl = curl_init($this->rdsURL . '/user/' . $userId);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        $result = curl_exec($curl);
+        $response = json_decode($result, true);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $info = curl_getinfo($curl);
 
-        curl_close( $curl );
+        curl_close($curl);
 
-        if ( $httpcode >= 300 ) {
-            throw new NotFoundException( json_encode( [
-                'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg(),
-                'curl_error_message'=>$info
-            ] ) );
+        if ($httpcode >= 300) {
+            throw new NotFoundException(json_encode([
+                'http_code' => $httpcode,
+                'json_error_message' => json_last_error_msg(),
+                'curl_error_message' => $info
+            ]));
         }
 
         $result = [];
 
-        foreach ( $response as $rdsConn ) {
+        foreach ($response as $rdsConn) {
             $conn = new Research();
-            $conn->setUserId( $rdsConn['userId'] );
-            $conn->setStatus( $rdsConn['status'] );
-            $conn->setResearchId( $rdsConn['researchId'] );
-            $conn->setResearchIndex( $rdsConn['researchIndex'] );
-            $conn->setportIn( $rdsConn['portIn'] );
-            $conn->setportOut( $rdsConn['portOut'] );
+            $conn->setUserId($rdsConn['userId']);
+            $conn->setStatus($rdsConn['status']);
+            $conn->setResearchId($rdsConn['researchId']);
+            $conn->setResearchIndex($rdsConn['researchIndex']);
+            $conn->setportIn($rdsConn['portIn']);
+            $conn->setportOut($rdsConn['portOut']);
 
             $result[] = $conn;
         }
@@ -374,44 +394,72 @@ class ResearchMapper {
         return $result;
     }
 
-    public function getSettings( $userId, $researchIndex ) {
+    public function getSettings($userId, $researchIndex)
+    {
         $result = [];
         return $result;
     }
 
-    public function updateSettings( $userId, $researchIndex, $settings ) {
+    public function updateSettings($userId, $researchIndex, $settings)
+    {
         $result = [];
         return $result;
     }
 
-    public function triggerExport( $userId, $researchIndex, $files = null ) {
+    public function triggerExport($userId, $researchIndex, $files = null)
+    {
         // TODO: if $files are given, only transmit them, not all
-        $curl = curl_init( $this->exporterURL . '/user/' . $userId . '/research/' . $researchIndex );
+        $curl = curl_init($this->exporterURL . '/user/' . $userId . '/research/' . $researchIndex);
         $options = [CURLOPT_RETURNTRANSFER => true];
-        curl_setopt_array( $curl, $options );
-        curl_setopt( $curl, CURLOPT_POST, TRUE );
-        curl_setopt( $curl, CURLOPT_POSTFIELDS, [] );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+        curl_setopt_array($curl, $options);
+        curl_setopt($curl, CURLOPT_POST, TRUE);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, []);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
-        $request = curl_exec( $curl );
-        $response = json_decode( $request, true );
-        $httpcode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-        $info = curl_getinfo( $curl );
+        $request = curl_exec($curl);
+        $response = json_decode($request, true);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $info = curl_getinfo($curl);
 
-        curl_close( $curl );
+        curl_close($curl);
 
-        if ( $httpcode >= 300 ) {
-            throw new NotFoundException( json_encode( [
-                'http_code'=>$httpcode,
-                'json_error_message'=>json_last_error_msg(),
-                'curl_error_message'=>$info,
-                'response'=>$request
-            ] ) );
+        if ($httpcode >= 300) {
+            throw new NotFoundException(json_encode([
+                'http_code' => $httpcode,
+                'json_error_message' => json_last_error_msg(),
+                'curl_error_message' => $info,
+                'response' => $request
+            ]));
         }
 
         return true;
-
     }
 
+    public function publish($userId, $researchIndex)
+    {
+        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex;
+
+        $curl = curl_init($url);
+        $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PUT'];
+        curl_setopt_array($curl, $options);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        $response = json_decode(curl_exec($curl));
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $info = curl_getinfo($curl);
+
+        curl_close($curl);
+
+        if ($httpcode >= 300) {
+            throw new NotFoundException(json_encode([
+                'http_code' => $httpcode,
+                'json_error_message' => json_last_error_msg(),
+                'curl_error_message' => $info
+            ]));
+        }
+
+        return TRUE;
+    }
 }

@@ -198,4 +198,9 @@ class ResearchService
         // TODO: set settings from owncloud or rds
         return [];
     }
+
+    public function publish($userId, $researchIndex)
+    {
+        return $this->mapper->publish($userId, $researchIndex);
+    }
 }

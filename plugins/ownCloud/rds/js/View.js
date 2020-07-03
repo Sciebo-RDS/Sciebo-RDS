@@ -492,7 +492,7 @@
             }
 
             self._studies
-              .removeActive()
+              .publishActive()
               .done(function () {
                 self._view._stateView = 0;
                 self._view.render();
