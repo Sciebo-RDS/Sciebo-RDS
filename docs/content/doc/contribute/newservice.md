@@ -49,7 +49,7 @@ The following describes the general procedure as well as the implementation and 
 
 Since your microservice integrates a service into the RDS system, it must register in the Token Storage so that it can offer your microservice in the plugins in the registration process. The Token Storage requires all Oauth2 workflow information (Client ID, Client Secret, authorize url, etc.). For this you use the */service* endpoint of the [Token Storage](/doc/impl/central/token-storage).
 
-`` mermaid
+``` mermaid
 sequenceDiagram
   participant PS as Port Service
   participant TS as Token Storage
@@ -63,7 +63,7 @@ Since your service is in layer 1, it can be used by other microservices than [fi
 
 With the following Python function you can register your service with *Token Storage*.
 
-`` python
+``` python
 def register_service(service name: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
     tokenStorage = os.getenv("CENTRAL_SERVICE_TOKEN_STORAGE")
     if tokenStorage is None:
