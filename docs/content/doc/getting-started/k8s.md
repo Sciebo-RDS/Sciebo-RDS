@@ -9,7 +9,7 @@ weight: 302
 ---
 
 
-Condition: [Configuration made]/doc/getting-started/config/)
+Condition: [Configuration made](/doc/getting-started/config/)
 
 In the "deploy" folder is a Makefile, which is used with the program *make*.
 

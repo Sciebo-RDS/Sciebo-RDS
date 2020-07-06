@@ -15,9 +15,9 @@ The following describes how the microservices work together and how a new one is
 
 The advantage of the microservice architecture is that each service can be written in a different language to best solve the problem that needs to be solved. Currently, most microservices are written in Python3, so all available libraries and facilities are written in this language.
 
-If you have not yet internalized the [architecture and its concepts]/doc/arc42/indroduction/), you should pause here and read the [related documentation]/doc/arc42/ecosystem/) before continuing.
+If you have not yet internalized the [architecture and its concepts](/doc/arc42/indroduction/), you should pause here and read the [related documentation](/doc/arc42/ecosystem/) before continuing.
 
-Remember that the third and deepest layer is where the most important components of the system run. This includes the [Token Storage]/doc/impl/central/token-storage/) and the [Research Manager]/doc/impl/central/research-manager/). These are particularly important for the further process, as they define which services the user can access.
+Remember that the third and deepest layer is where the most important components of the system run. This includes the [Token Storage](/doc/impl/central/token-storage/) and the [Research Manager](/doc/impl/central/research-manager/). These are particularly important for the further process, as they define which services the user can access.
 
 ## Project term in RDS context
 
@@ -37,7 +37,7 @@ If your service does not fit into any of the layers, you should consider splitti
 
 As a rule of thumb you should consider the following:
 {{<callout info>}}
-A micro service basically pursues only one goal and its task can be described in one sentence. This guarantees reusability and reduces the complexity of your service. It also reduces the dependency of the whole system to a few services (see [Clean Architecture]/doc/arc42/contextboundary/#section-solid-arch)).
+A micro service basically pursues only one goal and its task can be described in one sentence. This guarantees reusability and reduces the complexity of your service. It also reduces the dependency of the whole system to a few services (see [Clean Architecture](/doc/arc42/contextboundary/#section-solid-arch)).
 {{</callout>}}
 
 
@@ -47,7 +47,7 @@ The following describes the general procedure as well as the implementation and 
 
 ## Layer 1
 
-Since your microservice integrates a service into the RDS system, it must register in the Token Storage so that it can offer your microservice in the plugins in the registration process. The Token Storage requires all Oauth2 workflow information (Client ID, Client Secret, authorize url, etc.). For this you use the */service* endpoint of the [Token Storage]/doc/impl/central/token-storage).
+Since your microservice integrates a service into the RDS system, it must register in the Token Storage so that it can offer your microservice in the plugins in the registration process. The Token Storage requires all Oauth2 workflow information (Client ID, Client Secret, authorize url, etc.). For this you use the */service* endpoint of the [Token Storage](/doc/impl/central/token-storage).
 
 `` mermaid
 sequenceDiagram
@@ -112,7 +112,7 @@ Your service does not require registration, because it is called directly via GU
 
 ## Connexion-Plus
 
-In order to make working with Python in conjunction with Flask much easier, we started with Connexion, as it directly builds an API server from an OpenAPIv3 specification using Flask. By adding functionality and extending some more libraries [Connexion-Plus](https://pypi.org/project/connexion-plus/) was created. It is strongly recommended to use this library, because many functions like opentracing and Prometheus metrics are added automatically, which are needed for a successful integration (see [Contribute]/doc/contribute/)).
+In order to make working with Python in conjunction with Flask much easier, we started with Connexion, as it directly builds an API server from an OpenAPIv3 specification using Flask. By adding functionality and extending some more libraries [Connexion-Plus](https://pypi.org/project/connexion-plus/) was created. It is strongly recommended to use this library, because many functions like opentracing and Prometheus metrics are added automatically, which are needed for a successful integration (see [Contribute](/doc/contribute/)).
 
 ## Gitlab CI
 

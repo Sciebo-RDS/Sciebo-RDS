@@ -11,7 +11,7 @@ weight: 500
 
 ## Domain
 
-The domain is defined in the central configuration file, [as described here]/doc/getting-started/config/). The following definitions are specified as folders under this domain. If your domain is `example.com', then an example service `folder' can be found as follows: `example.com/folder' .
+The domain is defined in the central configuration file, [as described here](/doc/getting-started/config/). The following definitions are specified as folders under this domain. If your domain is `example.com', then an example service `folder' can be found as follows: `example.com/folder' .
 
 ## Path definitions
 
