@@ -29,7 +29,7 @@ For this reason, we have decided to use the term *research context*, which shoul
 
 Before we start, you should make it clear in which layer your micro service is to be classified.
 
-**Layer 1**: your microservice integrates a service into the RDS ecosystem. Your service is called *port service*.
+* **Layer 1**: your microservice integrates a service into the RDS ecosystem. Your service is called *port service*.
 * **Layer 2**: your microservice uses a microservice from layer 1 and/or layer 3 and processes information, but does not store any information, so it is stateless. Your service is called *UseCase Service*.
 * **Layer 3**: your microservice is essential for the entire ecosystem and / or stores information. Your service is called *Central Service*.
 
