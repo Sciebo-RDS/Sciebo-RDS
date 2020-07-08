@@ -40,7 +40,6 @@ $application->registerRoutes( $this, [
         ['name' => 'projects#create',           'url' => '/userservice/{servicename}/projects',             'verb' => 'POST'],
         ['name' => 'projects#destroy',          'url' => '/userservice/{servicename}/projects/{id}',        'verb' => 'DELETE'],
 
-        # TODO: needs to be implemented, and use c2-port-service/exchange endpoint to trigger oauth2-workflow
         ['name' => 'Userservice#register',            'url'=> '/oauth',                                           'verb'=>'GET']
 
     ]
