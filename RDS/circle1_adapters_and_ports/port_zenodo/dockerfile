@@ -8,16 +8,10 @@ WORKDIR /app
 ADD ./requirements.txt ./
 RUN pip install -r requirements.txt
 
-# this has to be set separatley and safely
-ENV CENTRAL_SERVICE_TOKEN_STORAGE "http://circle3-token-storage"
-ENV ZENODO_OAUTH_AUTHORIZE_URL "https://sandbox.zenodo.org/oauth/authorize"
-ENV ZENODO_OAUTH_CLIENT_ID "XY"
-ENV ZENODO_OAUTH_CLIENT_SECRET "ABC"
-
 ENV OPENAPI_MULTIPLE_FILES      "interface_port_metadata.yml;interface_port_token_storage.yml"
 
 ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/metadata-transform/RDS/circle2_use_cases/interface_port_metadata.yml" ./
-ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/interface_port_token_storage.yml" ./
+ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/metadata-transform/RDS/circle3_central_services/interface_port_token_storage.yml" ./
 
 # now add everything else, which changes often
 ADD src ./
