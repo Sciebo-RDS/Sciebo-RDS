@@ -3,7 +3,7 @@
 namespace OCA\RDS\AppInfo;
 
 $application = new Application();
-$application->registerRoutes( $this, [
+$application->registerRoutes($this, [
     'resources' => [
         # Research resource API Endpoints, full CRUD
         'research' => ['url' => '/research'],
@@ -32,7 +32,7 @@ $application->registerRoutes( $this, [
         ['name' => 'research#filesTrigger',                   'url' => '/research/{id}/files',             'verb' => 'POST'],
         ['name' => 'research#filesSettingsGet',               'url' => '/research/{id}/settings',          'verb' => 'GET'],
         ['name' => 'research#filesSettingsUpdate',            'url' => '/research/{id}/settings',          'verb' => 'PUT'],
-        ['name' => 'research#publish',                        'url' => '/research/{id}/publish',          'verb' => 'PUT'],
+        ['name' => 'research#publish',                        'url' => '/research/{id}/publish',           'verb' => 'PUT'],
 
         # User Service resource API Endpoints, only index/show/delete
         ['name' => 'projects#index',            'url' => '/userservice/{servicename}/projects',             'verb' => 'GET'],
@@ -40,7 +40,7 @@ $application->registerRoutes( $this, [
         ['name' => 'projects#create',           'url' => '/userservice/{servicename}/projects',             'verb' => 'POST'],
         ['name' => 'projects#destroy',          'url' => '/userservice/{servicename}/projects/{id}',        'verb' => 'DELETE'],
 
-        ['name' => 'Userservice#register',            'url'=> '/oauth',                                           'verb'=>'GET']
+        ['name' => 'Userservice#register',      'url' => '/oauth',                                          'verb' => 'GET']
 
     ]
-] );
+]);
