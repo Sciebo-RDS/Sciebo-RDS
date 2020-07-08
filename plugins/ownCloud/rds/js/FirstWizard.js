@@ -70,17 +70,19 @@
       }
     });
 
-    $("#activateOwncloud").click(openPopup(owncloud));
-    $("#activateZenodo").click(openPopup(zenodo));
-    $("#activateResearch").click(function () {
-      window.location.replace(OC.generateUrl("/apps/rds?createResearch"));
-    });
+    if ((owncloud !== undefined) || (zenodo !== undefined)) {
+      $("#activateOwncloud").click(openPopup(owncloud));
+      $("#activateZenodo").click(openPopup(zenodo));
+      $("#activateResearch").click(function () {
+        window.location.replace(OC.generateUrl("/apps/rds?createResearch"));
+      });
+    }
   }
 
   $(document).ready(function () {
     services = new OC.rds.Services();
 
-    $.when(services.loadService(), services.loadUser()).then(function () {
+    $.when(services.loadService(), services.loadUser()).always(function () {
       render();
       reload();
     });
