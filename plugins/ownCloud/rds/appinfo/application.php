@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\RDS\AppInfo;
 
 use \OCP\AppFramework\App;
@@ -26,60 +27,64 @@ use \OCA\RDS\Service\ProjectsService;
 use \OCA\RDS\Controller\ProjectsController;
 
 
-class Application extends App {
-    public function __construct(array $urlParams=array()){
+class Application extends App
+{
+    public function __construct(array $urlParams = array())
+    {
         parent::__construct('rds', $urlParams);
 
         $container = $this->getContainer();
 
-        $container->registerService('Logger', function($c) {
+        $container->registerService('Logger', function ($c) {
             return $c->query('ServerContainer')->getLogger();
         });
-        
-        $container->registerService("ServiceMapper", function($c) {
+
+        $container->registerService("ServiceMapper", function ($c) {
             return new ServiceMapper($c->query('UserId'));
         });
-        $container->registerService("ServiceportService", function($c) {
+        $container->registerService("ServiceportService", function ($c) {
             return new ServiceportService($c->query("ServiceMapper"));
         });
-        $container->registerService('ServiceController', function($c) {
+        $container->registerService('ServiceController', function ($c) {
             return new ServiceController(
                 $c->query('AppName'),
                 $c->query('Request'),
                 $c->query("ServiceportService")
             );
         });
-        
-        $container->registerService("UserserviceMapper", function($c) {
+
+        $container->registerService("UserserviceMapper", function ($c) {
             return new UserserviceMapper();
         });
-        $container->registerService("UserserviceportService", function($c) {
+        $container->registerService("UserserviceportService", function ($c) {
             return new UserserviceportService($c->query("UserserviceMapper"));
         });
-        $container->registerService('UserserviceController', function($c) {
+        $container->registerService('UserserviceController', function ($c) {
             return new UserserviceController(
                 $c->query('AppName'),
                 $c->query('Request'),
                 $c->query("UserserviceportService"),
+                $c->query('\OCA\OAuth2\Db\ClientMapper'),
                 $c->query('UserId')
             );
         });
-        
-        $container->registerService("ResearchMapper", function($c) {
+
+        $container->registerService("ResearchMapper", function ($c) {
             return new ResearchMapper(
-                $c->query('Logger'), 
+                $c->query('Logger'),
                 $c->query('AppName')
             );
         });
-        $container->registerService("ResearchService", function($c) {
+        $container->registerService("ResearchService", function ($c) {
             return new ResearchService(
-                $c->query('Logger'), 
+                $c->query('Logger'),
                 $c->query('AppName'),
-                $c->query("ResearchMapper"));
+                $c->query("ResearchMapper")
+            );
         });
-        $container->registerService('ResearchController', function($c) {
+        $container->registerService('ResearchController', function ($c) {
             return new ResearchController(
-                $c->query('Logger'), 
+                $c->query('Logger'),
                 $c->query('AppName'),
                 $c->query('Request'),
                 $c->query("ResearchService"),
@@ -87,13 +92,13 @@ class Application extends App {
             );
         });
 
-        $container->registerService("ProjectsMapper", function($c) {
+        $container->registerService("ProjectsMapper", function ($c) {
             return new ProjectsMapper();
         });
-        $container->registerService("ProjectsService", function($c) {
+        $container->registerService("ProjectsService", function ($c) {
             return new ProjectsService($c->query("ProjectsMapper"));
         });
-        $container->registerService('ProjectsController', function($c) {
+        $container->registerService('ProjectsController', function ($c) {
             return new ProjectsController(
                 $c->query('AppName'),
                 $c->query('Request'),
@@ -101,14 +106,14 @@ class Application extends App {
                 $c->query('UserId')
             );
         });
-        
-        $container->registerService("MetadataMapper", function($c) {
+
+        $container->registerService("MetadataMapper", function ($c) {
             return new MetadataMapper();
         });
-        $container->registerService("MetadataService", function($c) {
+        $container->registerService("MetadataService", function ($c) {
             return new MetadataService($c->query("MetadataMapper"));
         });
-        $container->registerService('MetadataController', function($c) {
+        $container->registerService('MetadataController', function ($c) {
             return new MetadataController(
                 $c->query('AppName'),
                 $c->query('Request'),
@@ -118,15 +123,13 @@ class Application extends App {
             );
         });
 
-        $container->registerService('PageController', function($c) {
+        $container->registerService('PageController', function ($c) {
             return new PageController(
                 $c->query('AppName'),
                 $c->query('Request'),
-                $c->query('\OCA\OAuth2\Db\ClientMapper'),
                 $c->query("UserserviceportService"),
                 $c->query('UserId')
             );
         });
-        
     }
 }
