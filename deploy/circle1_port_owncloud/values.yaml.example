@@ -54,6 +54,6 @@ tolerations: []
 affinity: {}
 
 environment:
-  OWNCLOUD_INSTALLATION_URL: http://10.14.28.90/owncloud
+  OWNCLOUD_INSTALLATION_URL: https://10.14.28.90/owncloud
   OWNCLOUD_OAUTH_CLIENT_ID: ABC
   OWNCLOUD_OAUTH_CLIENT_SECRET: XYZ
