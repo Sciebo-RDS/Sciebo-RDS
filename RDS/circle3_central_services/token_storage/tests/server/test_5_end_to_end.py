@@ -34,7 +34,7 @@ class test_end_to_end(unittest.TestCase):
         # prepare service
         storage = Storage()
 
-        redirect = "http://10.14.28.90/owncloud/index.php/apps/rds/oauth"
+        redirect = "https://10.14.28.90/owncloud/index.php/apps/rds/oauth"
         owncloud = OAuth2Service(
             "owncloud-local",
             "http://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
