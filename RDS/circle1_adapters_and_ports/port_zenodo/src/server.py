@@ -10,7 +10,7 @@ zenodo_oauth_token_url = "{}/oauth/token".format(zenodo_address)
 zenodo_oauth_id = os.getenv("ZENODO_OAUTH_CLIENT_ID", "XY")
 zenodo_oauth_secret = os.getenv("ZENODO_OAUTH_CLIENT_SECRET", "ABC")
 
-zenodo_oauth_authorize = "{}/oauth/authorize%3Fredirect_uri={}&response_type=code&scope=deposit%3Awrite+deposit%3Aactions&client_id={}".format(
+zenodo_oauth_authorize = "{}/oauth/authorize%3Fredirect_uri={}&response_type=code&scope%3Ddeposit%3Awrite%20deposit%3Aactions&client_id={}".format(
     zenodo_address, redirect_uri, zenodo_oauth_id
 )
 
