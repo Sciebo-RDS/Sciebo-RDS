@@ -131,6 +131,7 @@ class UserserviceMapper
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         $result = curl_exec($curl);
         $response = json_decode($result, true);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
