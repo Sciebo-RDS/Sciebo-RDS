@@ -1,6 +1,6 @@
 from flask import jsonify
 
 
-def get():
+def index():
     data = {"needsZip": True}
     return jsonify(data)
