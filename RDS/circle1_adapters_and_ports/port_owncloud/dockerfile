@@ -11,8 +11,6 @@ RUN pip install -r requirements.txt
 # this has to be set separatley and safely
 ENV CENTRAL_SERVICE_TOKEN_STORAGE "http://circle3-token-storage"
 ENV OWNCLOUD_INSTALLATION_URL "http://owncloud"
-ENV OWNCLOUD_OAUTH_AUTHORIZE_URL "https://owncloud/index.php/apps/oauth2/authorize"
-ENV OWNCLOUD_OAUTH_ACCESS_TOKEN_URL "https://owncloud/index.php/apps/oauth2/api/v1/token"
 ENV OWNCLOUD_OAUTH_CLIENT_ID "XY"
 ENV OWNCLOUD_OAUTH_CLIENT_SECRET "ABC"
 
