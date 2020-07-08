@@ -70,21 +70,25 @@
       }
     });
 
-    if ((owncloud !== undefined) || (zenodo !== undefined)) {
+    if ((owncloud !== undefined) && (zenodo !== undefined)) {
       $("#activateOwncloud").click(openPopup(owncloud));
       $("#activateZenodo").click(openPopup(zenodo));
       $("#activateResearch").click(function () {
         window.location.replace(OC.generateUrl("/apps/rds?createResearch"));
       });
+
+      return true
     }
+    return false
   }
 
   $(document).ready(function () {
     services = new OC.rds.Services();
 
     $.when(services.loadService(), services.loadUser()).always(function () {
-      render();
-      reload();
+      if(render()) {
+        reload();
+      }
     });
   });
 })(OC, window, jQuery);
