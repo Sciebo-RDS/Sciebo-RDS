@@ -307,6 +307,21 @@ paths:
                   type: string
                 userId:
                   type: string
+  /zip:
+    get:
+      summary: Is zip needed for folder in folder?
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  needsZip:
+                    type: boolean
+      description: 'Returns, if it is needed to use zip files for folder in folder data upload.'
 components:
   schemas:
     File:
