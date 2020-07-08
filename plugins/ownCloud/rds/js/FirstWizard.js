@@ -80,7 +80,7 @@
   $(document).ready(function () {
     services = new OC.rds.Services();
 
-    $.when(services.loadService(), services.loadUser()).always(function () {
+    $.when(services.loadService(), services.loadUser()).then(function () {
       render();
       reload();
     });
