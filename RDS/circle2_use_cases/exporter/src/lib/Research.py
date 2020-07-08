@@ -105,7 +105,7 @@ class Research:
             saveContent = False
 
             if isFolderInFiles(svc.getFiles()):
-                logger.debug("use zipfile, because it is needed for ")
+                logger.debug("use zipfile, because the folder holds folders again")
                 saveContent = True
 
             if saveContent:
@@ -122,7 +122,7 @@ class Research:
                     zip.writestr(*fileTuple)
 
                 # saveContent skips services, which needs zip, if folder in folder found.
-                self.addFile(saveContent=saveContent, *fileTuple)
+                self.addFile(folderInFolder=saveContent, *fileTuple)
 
             if saveContent:
                 results = [

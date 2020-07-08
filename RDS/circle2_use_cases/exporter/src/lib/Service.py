@@ -22,9 +22,6 @@ class Service():
         self.userId = userId
         self.researchIndex = researchIndex
 
-        self.fileStorage = False
-        self.metadata = False
-
         self.port = servicename
         self.fileStorage = fileStorage
         self.metadata = metadata
