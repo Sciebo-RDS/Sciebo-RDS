@@ -126,7 +126,7 @@ class UserserviceMapper
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'POST'];
-        curl_setopt($curl, CURLOPT_POSTFIELDS, ['jwt' => $jwt]);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(['jwt' => $jwt]));
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
