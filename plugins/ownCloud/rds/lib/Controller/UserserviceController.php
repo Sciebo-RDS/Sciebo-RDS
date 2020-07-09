@@ -99,13 +99,11 @@ class UserserviceController extends Controller
             return new TemplateResponse('rds', "code.failure", []);
         }
 
-        return $this->handleNotFound(function () use ($code, $state, $secret) {
-            $result = $this->service->register("Owncloud", $code, $state, $this->userId, $secret);
-            $params = [];
-            if ($result) {
-                return new TemplateResponse('rds', "code.done", $params);
-            }
-            return new TemplateResponse('rds', "code.failure", $params);
-        });
+        $result = $this->service->register("Owncloud", $code, $state, $this->userId, $secret);
+        $params = [];
+        if ($result) {
+            return new TemplateResponse('rds', "code.done", $params);
+        }
+        return new TemplateResponse('rds', "code.failure", $params);
     }
 }
