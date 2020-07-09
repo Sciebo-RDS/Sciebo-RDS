@@ -66,7 +66,7 @@ class Service:
             bool: True, if you have to send zip for folder in folders.
         """
         json = requests.get(
-            f"{self.portaddress}/zip",
+            f"{self.portaddress}/metadata/zip",
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         ).json()
 
