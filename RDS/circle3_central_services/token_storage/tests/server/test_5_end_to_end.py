@@ -22,8 +22,11 @@ class test_end_to_end(unittest.TestCase):
 
     def setUp(self):
         server = "http://selenium:4444/wd/hub"
+        desired_capabilities = DesiredCapabilities.FIREFOX.copy()
+        desired_capabilities['acceptInsecureCerts'] = True
+
         self.driver = webdriver.Remote(command_executor=server,
-                                       desired_capabilities=DesiredCapabilities.FIREFOX)
+                                       desired_capabilities=desired_capabilities)
         self.driver.implicitly_wait(5)
 
     def tearDown(self):
