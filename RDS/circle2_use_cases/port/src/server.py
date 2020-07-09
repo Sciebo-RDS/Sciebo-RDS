@@ -1,5 +1,6 @@
 from __init__ import bootstrap
-import logging, os
+import os
+import logging
 
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 

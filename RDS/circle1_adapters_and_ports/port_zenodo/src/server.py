@@ -2,6 +2,9 @@
 
 from __init__ import app, register_service
 import os
+import logging
+
+logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 
 
 redirect_uri = os.getenv("RDS_OAUTH_REDIRECT_URI", "")

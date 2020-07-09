@@ -17,3 +17,4 @@ configMapGenerator:
   - name: globalenvvar
     literals:
       - RDS_OAUTH_REDIRECT_URI=https://10.14.28.90/owncloud/index.php/apps/rds/oauth
+      - LOGLEVEL=DEBUG
