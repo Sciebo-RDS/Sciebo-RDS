@@ -23,22 +23,21 @@ def post():
         servicename = unverified.get("servicename")
         service = Util.tokenService.getService(servicename, clean=True)
 
-        master_data = jwt.decode(master_jwt, service.client_secret)
+        master_data = jwt.decode(master_jwt, service.client_secret, algorithms="HS256")
         logger.debug("verified: {}".format(master_data))
 
         userId = master_data.get("userId")
         code = master_data.get("code")
         logger.debug("code: {}, userId: {}".format(code, userId))
 
-        stateB64Encode = master_data.get("state")
-        state = base64.b64decode(stateB64Encode)
-        state_data = jwt.decode(state.get("jwt"), Util.tokenService.secret)
+        stateJWT = master_data.get("state")
+        state = jwt.decode(stateJWT, Util.tokenService.secret, algorithms="HS256")
 
-        logger.debug("state: {}, decoded state: {}".format(state, state_data))
+        logger.debug("state: {}, decoded state: {}".format(stateJWT, state))
 
         Util.tokenService.exchangeAuthCodeToAccessToken(
             code,
-            Util.tokenService.getService(state_data["servicename"], clean=True),
+            Util.tokenService.getService(state["servicename"], clean=True),
             user=userId,
         )
 
