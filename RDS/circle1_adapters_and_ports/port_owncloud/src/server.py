@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
 from __init__ import app, register_service
-import os, logging
-
-logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
+import os
 
 owncloud_installation_url = os.getenv("OWNCLOUD_INSTALLATION_URL", "")
 owncloud_redirect_uri = os.getenv("RDS_OAUTH_REDIRECT_URI", "")

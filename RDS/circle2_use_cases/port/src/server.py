@@ -1,11 +1,9 @@
+#!/usr/bin/env python
+
 from __init__ import bootstrap
-import os, logging
 
-logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
+app = bootstrap("UseCaseTokenStorage", all=True)
 
-if __name__ == "__main__":
-    app = bootstrap("UseCaseTokenStorage", all=True)
-
-    # set the WSGI application callable to allow using uWSGI:
-    # uwsgi --http :8080 -w app
-    app.run(port=8080, server="gevent")
+# set the WSGI application callable to allow using uWSGI:
+# uwsgi --http :8080 -w app
+app.run(port=8080, server="gevent")
