@@ -65,6 +65,7 @@ class Application extends App
                 $c->query('Request'),
                 $c->query("UserserviceportService"),
                 $c->query('\OCA\OAuth2\Db\ClientMapper'),
+                $c->query('URLGenerator'),
                 $c->query('UserId')
             );
         });

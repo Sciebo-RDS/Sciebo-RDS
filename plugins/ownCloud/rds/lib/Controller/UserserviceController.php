@@ -5,6 +5,7 @@ namespace OCA\RDS\Controller;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
+use OCP\IurlGenerator;
 use \OCA\RDS\Service\UserserviceportService;
 use OCP\AppFramework\Http\RedirectResponse;
 use \OCA\OAuth2\Db\Client;
@@ -18,15 +19,17 @@ class UserserviceController extends Controller
     private $service;
     /** @var ClientMapper */
     private $clientMapper;
+    private $urlGenerator;
 
     use Errors;
 
-    public function __construct($AppName, IRequest $request, UserserviceportService $service, ClientMapper $clientMapper, $userId)
+    public function __construct($AppName, IRequest $request, UserserviceportService $service, ClientMapper $clientMapper, IurlGenerator $urlGenerator, $userId)
     {
         parent::__construct($AppName, $request);
         $this->clientMapper = $clientMapper;
         $this->userId = $userId;
         $this->service = $service;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -108,7 +111,7 @@ class UserserviceController extends Controller
         }
 
         if ($settings > 0) {
-            return new RedirectResponse("/settings/personal?sectionid=rds");
+            return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ["sectionid" => "rds"]));
         }
         return new TemplateResponse('rds', "not_authorized", $params);
     }
