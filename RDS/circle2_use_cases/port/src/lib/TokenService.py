@@ -89,6 +89,8 @@ class TokenService:
     def getService(self, servicename: str, clean=False) -> Service:
         """
         Returns a dict like self.getAllServices, but for only a single servicename (str).
+
+        If clean is True, it returns the service object, otherwise it returns the a state object for registration process.
         """
 
         svc = None
