@@ -3,6 +3,7 @@ import Util
 import json
 import jwt
 import logging
+import base64
 
 logger = logging.getLogger()
 
@@ -29,10 +30,11 @@ def post():
         code = master_data.get("code")
         logger.debug("code: {}, userId: {}".format(code, userId))
 
-        state_jwt = master_data.get("state")
-        state_data = jwt.decode(state_jwt, Util.tokenService.secret)
+        stateB64Encode = master_data.get("state")
+        state = base64.b64decode(stateB64Encode)
+        state_data = jwt.decode(state.get("jwt"), Util.tokenService.secret)
 
-        logger.debug("state: {}, decoded state: {}".format(state_jwt, state_data))
+        logger.debug("state: {}, decoded state: {}".format(state, state_data))
 
         Util.tokenService.exchangeAuthCodeToAccessToken(
             code,
