@@ -224,7 +224,7 @@
 
         notUsedServices.forEach(function (item, index) {
           self._authorizeUrl[item.servicename] =
-            item.authorizeUrl + "&state=" + item.state;
+            item.authorizeUrl + "&state=" + item.state + "FROMSETTINGS";
           var option = document.createElement("option");
           option.text = option.value = item.servicename;
           self._select.add(option, 0);

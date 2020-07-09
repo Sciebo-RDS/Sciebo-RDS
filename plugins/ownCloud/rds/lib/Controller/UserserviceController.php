@@ -92,10 +92,12 @@ class UserserviceController extends Controller
     public function register($code, $state)
     {
         $params = [];
+        $settings = 0;
         try {
             # TODO make this adjustable for admins
             $client = $this->clientMapper->findByName("Sciebo RDS");
             $secret = $client->getSecret();
+            $state = str_replace("FROMSETTINGS", "", $state, $settings);
 
             $result = $this->service->register("Owncloud", $code, $state, $this->userId, $secret);
             if (!$result) {
@@ -105,6 +107,9 @@ class UserserviceController extends Controller
             $params["error"] = $e;
         }
 
+        if ($settings > 0) {
+            return new RedirectResponse("/settings/personal?sectionid=rds");
+        }
         return new TemplateResponse('rds', "not_authorized", $params);
     }
 }
