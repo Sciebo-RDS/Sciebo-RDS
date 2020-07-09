@@ -114,21 +114,22 @@ class UserserviceMapper
     {
         function base64url_encode($plainText)
         {
-            $base64 = base64_encode($plainText);
-            $base64url =  str_replace(['+', '/', '='], ['-', '_', ''], $base64);
-            return ($base64url);
         }
 
         function jwt_encode($arr)
         {
+            # inspired by https://rbrt.wllr.info/2018/01/29/how-create-json-web-token-php.html
             if (is_array(($arr))) {
                 $val = json_encode($arr);
             } else {
                 $val = $arr;
             }
-            $jwtPart = base64url_encode($val);
-            return $jwtPart;
+            
+            $base64 = base64_encode($val);
+            $base64url =  str_replace(['+', '/', '='], ['-', '_', ''], $base64);
+            return ($base64url);
         }
+
         $head = ['alg' => 'HS256', 'typ' => 'JWT'];
         $body = ['servicename' => $servicename, 'code' => $code, 'state' => $state, 'userId' => $userId];
 
