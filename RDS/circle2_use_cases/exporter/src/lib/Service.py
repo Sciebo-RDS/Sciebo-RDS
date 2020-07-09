@@ -5,8 +5,17 @@ import logging
 logger = logging.getLogger()
 
 
-class Service():
-    def __init__(self, servicename, userId, researchIndex, fileStorage=False, metadata=False, customProperties: list = None, testing=False):
+class Service:
+    def __init__(
+        self,
+        servicename,
+        userId,
+        researchIndex,
+        fileStorage=False,
+        metadata=False,
+        customProperties: list = None,
+        testing=False,
+    ):
         self.files = []
 
         self.servicename = servicename
@@ -37,12 +46,12 @@ class Service():
 
     def reload(self):
         if self.fileStorage:
-            data = {
-                "filepath": self.getFilepath(),
-                "userId": self.userId
-            }
+            data = {"filepath": self.getFilepath(), "userId": self.userId}
             json = requests.get(
-                f"{self.portaddress}/storage/folder", json=data).json()
+                f"{self.portaddress}/storage/folder",
+                json=data,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            ).json()
 
             self.files = json.get("files")
 
@@ -57,7 +66,9 @@ class Service():
             bool: True, if you have to send zip for folder in folders.
         """
         json = requests.get(
-                f"{self.portaddress}/zip").json()
+            f"{self.portaddress}/zip",
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        ).json()
 
         status = json.get("needsZip")
         return bool(status)
@@ -82,11 +93,11 @@ class Service():
         for index, file in enumerate(self.files):
             if getContent:
                 logger.debug(
-                    "get file {} from service {}".format(file, self.servicename))
+                    "get file {} from service {}".format(file, self.servicename)
+                )
                 content = self.getFile(index)
 
-                logger.debug("got content size: {}".format(
-                    len(content.getvalue())))
+                logger.debug("got content size: {}".format(len(content.getvalue())))
 
                 yield file, content
             else:
@@ -107,13 +118,16 @@ class Service():
         if self.fileStorage:
             data = {
                 "userId": self.userId,
-                "filepath": "{}/{}".format(self.getFilepath(), file)
+                "filepath": "{}/{}".format(self.getFilepath(), file),
             }
 
             logger.debug("request data {}".format(data))
 
             response_to = requests.get(
-                f"{self.portaddress}/storage/file", json=data)
+                f"{self.portaddress}/storage/file",
+                json=data,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
 
             cnt = response_to.content
             logger.debug("got bytes {}".format(cnt))
@@ -124,23 +138,23 @@ class Service():
             # TODO: metadata can respond with files too.
             pass
 
-        return BytesIO(b'')
+        return BytesIO(b"")
 
     def addFile(self, filename, fileContent):
-        files = {
-            "file": (filename, fileContent.getvalue())
-        }
-        data = {
-            "userId": self.userId,
-            "filename": filename
-        }
+        files = {"file": (filename, fileContent.getvalue())}
+        data = {"userId": self.userId, "filename": filename}
 
-        logger.debug("add file {} with data {} in service {}".format(
-            files, data, self.getJSON()))
+        logger.debug(
+            "add file {} with data {} in service {}".format(files, data, self.getJSON())
+        )
 
         if self.metadata:
             response_to = requests.post(
-                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files", files=files, data=data)
+                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files",
+                files=files,
+                data=data,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
 
             if response_to.status_code >= 300:
                 logger.error(response_to.json())
@@ -157,20 +171,24 @@ class Service():
 
         file = self.files[file_id]
 
-        data = {
-            "userId": self.userId
-        }
+        data = {"userId": self.userId}
         if self.fileStorage:
             data["filepath"] = "{}/{}".format(self.getFilepath(), file)
             req = requests.delete(
-                f"{self.portaddress}/storage/file", json=data)
+                f"{self.portaddress}/storage/file",
+                json=data,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
 
             if req.status_code < 300:
                 found = True
 
         if self.metadata:
             req = requests.delete(
-                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files/{file_id}", json=data)
+                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files/{file_id}",
+                json=data,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
 
             if req.status_code < 300:
                 found = True
@@ -183,9 +201,7 @@ class Service():
 
     def removeAllFiles(self):
         logger.debug("remove files in service {}".format(self.servicename))
-        data = {
-            "userId": self.userId
-        }
+        data = {"userId": self.userId}
 
         found = False
 
@@ -195,7 +211,10 @@ class Service():
 
         if self.metadata:
             req = requests.delete(
-                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files", json=data)
+                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files",
+                json=data,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
 
             if req.status_code < 300:
                 found = True
@@ -207,14 +226,12 @@ class Service():
 
     def getJSON(self):
         import json
+
         return json.dumps(self.getDict())
 
     def getDict(self):
 
-        obj = {
-            "servicename": self.servicename,
-            "files": [x for x in self.getFiles()]
-        }
+        obj = {"servicename": self.servicename, "files": [x for x in self.getFiles()]}
 
         return obj
 
@@ -233,10 +250,19 @@ class Service():
             elif prop["portType"] == "customProperties":
                 customProperties = prop["value"]
 
-        return cls(portName, userId=userId, researchIndex=researchIndex, fileStorage=fileStorage, metadata=metadata, customProperties=customProperties, testing=testing)
+        return cls(
+            portName,
+            userId=userId,
+            researchIndex=researchIndex,
+            fileStorage=fileStorage,
+            metadata=metadata,
+            customProperties=customProperties,
+            testing=testing,
+        )
 
     def __eq__(self, obj):
         if not isinstance(obj, Service):
             return False
 
-        return (self.getDict() == obj.getDict())
+        return self.getDict() == obj.getDict()
+

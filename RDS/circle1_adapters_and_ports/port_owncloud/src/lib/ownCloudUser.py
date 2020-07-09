@@ -11,7 +11,10 @@ def loadAccessToken(userId: str, service: str):
         "USE_CASE_SERVICE_PORT_SERVICE", "http://localhost:3000"
     )
     # load access token from token-storage
-    result = requests.get(f"{tokenStorageURL}/user/{userId}/service/{service}")
+    result = requests.get(
+        f"{tokenStorageURL}/user/{userId}/service/{service}",
+        verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+    )
 
     if result.status_code > 200:
         return None
@@ -74,7 +77,7 @@ class OwncloudUser:
         del files[0]
 
         indexList = []
-        #TODO: needs tests.
+        # TODO: needs tests.
         for index, file in enumerate(files):
             if file.endsWith("/"):
                 # save index for later removal, because we do not want the folderpaths

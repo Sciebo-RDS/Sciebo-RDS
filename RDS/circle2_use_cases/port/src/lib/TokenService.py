@@ -52,7 +52,10 @@ class TokenService:
         return service.authorize_url
 
     def refreshServices(self) -> bool:
-        response = requests.get(f"{self.address}/service")
+        response = requests.get(
+            f"{self.address}/service",
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        )
         data = response.json()
         services = [Service.init(svc) for svc in data["list"]]
 
@@ -65,7 +68,10 @@ class TokenService:
         if isinstance(service, Service):
             service = service.servicename
 
-        response = requests.get(f"{self.address}/service/{service}")
+        response = requests.get(
+            f"{self.address}/service/{service}",
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        )
 
         if response.status_code is not 200:
             raise ServiceNotFoundError(Service(service))
@@ -169,7 +175,10 @@ class TokenService:
         """
         Returns a `list` for all services which the user has registered a token for.
         """
-        response = requests.get(f"{self.address}/user/{user.username}/token")
+        response = requests.get(
+            f"{self.address}/user/{user.username}/token",
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        )
         data = response.json()
 
         # TODO: adjust to oai spec
@@ -202,7 +211,9 @@ class TokenService:
             port = self.address
 
         req = requests.get(
-            f"{port}/metadata/project", json={"apiKey": token.access_token}
+            f"{port}/metadata/project",
+            json={"apiKey": token.access_token},
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         if req.status_code >= 300:
@@ -223,7 +234,11 @@ class TokenService:
         if self.address.startswith("http://localhost"):
             port = self.address
 
-        req = requests.post("{}/metadata/project".format(port), json=data)
+        req = requests.post(
+            "{}/metadata/project".format(port),
+            json=data,
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        )
 
         if req.status_code < 300:
             project = req.json()
@@ -246,7 +261,9 @@ class TokenService:
             port = self.address
 
         req = requests.delete(
-            "{}/metadata/project/{}".format(port, project_id), json=data
+            "{}/metadata/project/{}".format(port, project_id),
+            json=data,
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         return req.status_code == 204
@@ -271,7 +288,11 @@ class TokenService:
 
         Raise an `UserAlreadyRegisteredError`, if user already registered.
         """
-        response = requests.post(f"{self.address}/user", data=json.dumps(user))
+        response = requests.post(
+            f"{self.address}/user",
+            data=json.dumps(user),
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        )
         if response.status_code is not 200:
             raise UserAlreadyRegisteredError(user)
 
@@ -287,7 +308,10 @@ class TokenService:
         Raise an `UserNotfoundError`, if user was not found.
         """
 
-        response = requests.delete(f"{self.address}/user/{user.username}")
+        response = requests.delete(
+            f"{self.address}/user/{user.username}",
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        )
         if response.status_code is not 200:
             raise UserNotFoundError(user)
 
@@ -305,7 +329,9 @@ class TokenService:
         """
 
         response = requests.post(
-            f"{self.address}/user/{user.username}/token", data=json.dumps(token)
+            f"{self.address}/user/{user.username}/token",
+            data=json.dumps(token),
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
         data = response.json()
 
@@ -340,7 +366,8 @@ class TokenService:
         self, service: Service, user: User
     ) -> bool:
         response = requests.delete(
-            f"{self.address}/user/{user.username}/token/{service.servicename}"
+            f"{self.address}/user/{user.username}/token/{service.servicename}",
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
         data = response.json()
         if response.status_code is not 200:
@@ -363,7 +390,8 @@ class TokenService:
         Raise ServiceNotExistsError, if no token for service was found.
         """
         response = requests.get(
-            f"{self.address}/user/{user.username}/token/{service.servicename}"
+            f"{self.address}/user/{user.username}/token/{service.servicename}",
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         data = response.json()
@@ -436,6 +464,7 @@ class TokenService:
             f"{service.refresh_url}",
             data=body,
             auth=(service.client_id, service.client_secret),
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         logger.info(f"response body: {response.text}")
@@ -477,6 +506,7 @@ class TokenService:
             f"{self.address}/user/{user}/token",
             data=json.dumps(oauthtoken),
             headers=headers,
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
         logger.info(f"response oauthtoken body: {response.text}")
 

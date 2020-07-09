@@ -1,6 +1,6 @@
 from lib.Project import Project
 import logging
-import requests
+import requests, os
 from lib.EnumStatus import Status
 
 logger = logging.getLogger()
@@ -227,7 +227,10 @@ class ProjectService:
 
         def publishInPort(port, projectId):
             url = "http://circle1-port-{}".format(str(port.portname).lower())
-            req = requests.put("{}/project/{}".format(url, projectId))
+            req = requests.put(
+                "{}/project/{}".format(url, projectId),
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
             return req.status_code == 200
 
         projects = self.getProject(

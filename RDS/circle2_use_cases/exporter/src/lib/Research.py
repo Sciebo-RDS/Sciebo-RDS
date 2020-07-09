@@ -4,6 +4,7 @@ import requests
 import logging
 import zipfile
 from io import BytesIO
+import os
 
 logger = logging.getLogger()
 
@@ -34,7 +35,8 @@ class Research:
 
     def reload(self):
         req = requests.get(
-            f"{self.address}/research/user/{self.userId}/research/{self.researchIndex}"
+            f"{self.address}/research/user/{self.userId}/research/{self.researchIndex}",
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         json = req.json()
@@ -115,7 +117,9 @@ class Research:
                 )
 
             for fileTuple in svc.getFiles(getContent=True):
-                logger.debug("file: {}, content: {}".format(fileTuple[0], len(fileTuple[1])))
+                logger.debug(
+                    "file: {}, content: {}".format(fileTuple[0], len(fileTuple[1]))
+                )
 
                 # TODO: needs tests
                 if saveContent:

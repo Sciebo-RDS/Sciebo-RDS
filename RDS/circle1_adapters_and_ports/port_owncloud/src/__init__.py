@@ -56,7 +56,12 @@ def register_service(
     }
     headers = {"Content-Type": "application/json"}
 
-    response = requests.post(f"{tokenStorage}/service", json=data, headers=headers)
+    response = requests.post(
+        f"{tokenStorage}/service",
+        json=data,
+        headers=headers,
+        verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+    )
 
     if response.status_code is not 200:
         raise Exception(
