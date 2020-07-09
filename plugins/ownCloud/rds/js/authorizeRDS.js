@@ -17,7 +17,7 @@
             function () {
               var select = self._select;
               var win = window.open(
-                authorize_url,
+                OC.generateUrl("apps/rds"),
                 "oauth2-service-for-rds",
                 "width=800,height=600,scrollbars=yes"
               );
