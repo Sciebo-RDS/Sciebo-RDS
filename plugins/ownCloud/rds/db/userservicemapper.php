@@ -112,14 +112,27 @@ class UserserviceMapper
 
     public function register($servicename, $code, $state, $userId, $secret)
     {
+        function base64url_encode($plainText)
+        {
+            $base64 = base64_encode($plainText);
+            $base64url = strtr($base64, '+/', '-_');
+            return ($base64url);
+        }
+
+        function jwt_encode($arr)
+        {
+            $jwtPart = base64url_encode(json_encode($arr));
+            return $jwtPart;
+        }
         $head = ['alg' => 'HS256', 'typ' => 'JWT'];
         $body = ['servicename' => $servicename, 'code' => $code, 'state' => $state, 'userId' => $userId];
 
-        $jwtHead = base64_encode(json_encode($head));
-        $jwtBody = base64_encode(json_encode($body));
-        $sign = hash_hmac('sha256', $jwtBody, $secret);
+        $jwtHead = jwt_encode($head);
+        $jwtBody = jwt_encode($body);
+        $sign = hash_hmac('sha256', $jwtHead . "." . $jwtBody, $secret, true);
+        $jwtSign = jwt_encode($sign);
 
-        $jwt =  $jwtHead . '.' . $jwtBody . '.' . $sign;
+        $jwt =  $jwtHead . '.' . $jwtBody . '.' . $jwtSign;
 
         $url = $this->rdsURL . '/exchange';
 
