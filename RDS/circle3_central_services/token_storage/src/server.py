@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from __init__ import bootstrap, ServerUtil
-import logging
+import logging, os
 
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 

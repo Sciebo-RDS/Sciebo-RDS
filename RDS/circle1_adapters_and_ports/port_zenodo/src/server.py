@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 from __init__ import app, register_service
-import os
-import logging
+import os, logging
 
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 
