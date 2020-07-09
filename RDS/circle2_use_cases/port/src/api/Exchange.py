@@ -23,7 +23,6 @@ def post():
         service = Util.tokenService.getService(servicename, clean=True)
 
         master_data = jwt.decode(master_jwt, service.client_secret)
-
         logger.debug("verified: {}".format(master_data))
 
         userId = master_data.get("userId")
