@@ -115,13 +115,18 @@ class UserserviceMapper
         function base64url_encode($plainText)
         {
             $base64 = base64_encode($plainText);
-            $base64url = strtr($base64, '+/', '-_');
+            $base64url =  str_replace(['+', '/', '='], ['-', '_', ''], $base64);
             return ($base64url);
         }
 
         function jwt_encode($arr)
         {
-            $jwtPart = base64url_encode(json_encode($arr));
+            if (is_array(($arr))) {
+                $val = json_encode($arr);
+            } else {
+                $val = $arr;
+            }
+            $jwtPart = base64url_encode($val);
             return $jwtPart;
         }
         $head = ['alg' => 'HS256', 'typ' => 'JWT'];
