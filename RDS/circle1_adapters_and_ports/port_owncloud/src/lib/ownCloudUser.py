@@ -53,6 +53,7 @@ class OwncloudUser:
             "webdav_token": self._access_token,
         }
         self.client = Client(options)
+        self.client.verify = os.environ.get("VERIFY_SSL", "True") == "True"
 
     def getFolder(self, foldername):
         """Returns the files within the foldername. If a folder is in there, it returns all files within recursive.
