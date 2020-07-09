@@ -7,7 +7,7 @@ import os
 import json
 from lib.TokenService import TokenService
 from pactman import Consumer, Provider
-from server import bootstrap
+from src import bootstrap
 from lib.Exceptions.ServiceException import *
 from lib.Token import Token, OAuth2Token
 from lib.Service import Service, OAuth2Service

@@ -5,7 +5,7 @@ import os
 import json
 import logging
 from pactman import Consumer, Provider
-from server import bootstrap
+from src import bootstrap
 
 from lib.TokenService import TokenService
 
