@@ -1,5 +1,13 @@
 import Util as ServerUtil
 
+import logging, os
+
+log_level = os.environ.get("LOGLEVEL", "DEBUG")
+logger = logging.getLogger("")
+logging.getLogger("").handlers = []
+logging.basicConfig(format="%(asctime)s %(message)s", level=log_level)
+
+
 def monkeypatch():
     """ Module that monkey-patches json module when it's imported so
     JSONEncoder.default() automatically checks for a special "to_json()"
