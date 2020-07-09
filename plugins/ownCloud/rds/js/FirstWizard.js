@@ -39,7 +39,7 @@
     return function () {
       var win = window.open(
         service.authorizeUrl + "&state=" + service.state,
-        "oauth2-service-for-rds",
+        "_self",
         "innerWidth=1024,innerHeight=768"
       );
 
@@ -86,7 +86,7 @@
     services = new OC.rds.Services();
 
     $.when(services.loadService(), services.loadUser()).always(function () {
-      if(render()) {
+      if (render()) {
         reload();
       }
     });

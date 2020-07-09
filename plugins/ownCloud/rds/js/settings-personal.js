@@ -177,12 +177,12 @@
           if (item["servicename"] !== "Owncloud") {
             source.append(
               "<tr><td>" +
-                item["servicename"] +
-                "</td><td>" +
-                '<button data-servicename="' +
-                item["servicename"] +
-                '" class="button icon-delete"></button>' +
-                "</td></tr>"
+              item["servicename"] +
+              "</td><td>" +
+              '<button data-servicename="' +
+              item["servicename"] +
+              '" class="button icon-delete"></button>' +
+              "</td></tr>"
             );
           }
         }, this);
@@ -239,8 +239,8 @@
         self._btn.onclick = function () {
           var select = self._select;
           var win = window.open(
-            self._authorizeUrl[select.options[select.selectedIndex].text],
-            "oauth2-service-for-rds",
+            OC.generateUrl("apps/rds"),
+            "_self",
             "width=100%,height=100%,scrollbars=yes"
           );
 
