@@ -105,7 +105,7 @@ class Test_Service(unittest.TestCase):
         pact.given(
             f"set zipStatus for service {service}, if it needs zip for folder in folder"
         ).upon_receiving("service responds with zipStatus").with_request(
-            "GET", f"/zip"
+            "GET", f"/metadata/zip"
         ).will_respond_with(
             200, body={"needsZip": status}
         )
