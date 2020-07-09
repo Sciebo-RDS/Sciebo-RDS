@@ -91,19 +91,20 @@ class UserserviceController extends Controller
 
     public function register($code, $state)
     {
+        $params = [];
         try {
             # TODO make this adjustable for admins
             $client = $this->clientMapper->findByName("Sciebo RDS");
             $secret = $client->getSecret();
+
+            $result = $this->service->register("Owncloud", $code, $state, $this->userId, $secret);
+            if (!$result) {
+                $params["error"] = "register was not successful";
+            }
         } catch (Exception $e) {
-            return new TemplateResponse('rds', "code.failure", []);
+            $params["error"] = $e;
         }
 
-        $result = $this->service->register("Owncloud", $code, $state, $this->userId, $secret);
-        $params = [];
-        if ($result) {
-            return new TemplateResponse('rds', "code.done", $params);
-        }
-        return new TemplateResponse('rds', "code.failure", $params);
+        return new TemplateResponse('rds', "not_authorized", $params);
     }
 }
