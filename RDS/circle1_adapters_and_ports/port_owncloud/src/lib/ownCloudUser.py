@@ -85,7 +85,7 @@ class OwncloudUser:
                 indexList.append(index)
                 fullname = file
                 logger.debug(f"recursive getFolder for inner folders: {fullname}")
-                tmpFiles = self.getFolder(fullname)
+                tmpFiles = self.getFolder(foldername + "/" + fullname)
 
                 for appendFile in tmpFiles:
                     # add full filepath in context of folder
