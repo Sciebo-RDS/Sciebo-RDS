@@ -129,9 +129,21 @@ class Research:
                 self.addFile(folderInFolder=useZipForContent, *fileTuple)
 
             if useZipForContent:
+                import re
+
+                def urlify(s):
+
+                    # Remove all non-word characters (everything except numbers and letters)
+                    s = re.sub(r"[^\w\s]", "", s)
+
+                    # Replace all runs of whitespace with a single dash
+                    s = re.sub(r"\s+", "-", s)
+
+                    return s
+
                 results = [
                     exportSvc.addFile(
-                        "{}_{}.zip".format(svc.servicename, svc.getFilepath()),
+                        "{}_{}.zip".format(svc.servicename, urlify(svc.getFilepath())),
                         mem_zip.getvalue(),
                     )
                     for exportSvc in self.exportServices
