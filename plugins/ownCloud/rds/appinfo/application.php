@@ -26,6 +26,8 @@ use \OCA\RDS\Db\ProjectsMapper;
 use \OCA\RDS\Service\ProjectsService;
 use \OCA\RDS\Controller\ProjectsController;
 
+use \OCA\RDS\Service\UrlService;
+
 
 class Application extends App
 {
@@ -39,8 +41,18 @@ class Application extends App
             return $c->query('ServerContainer')->getLogger();
         });
 
+        $container->registerService("UrlService", function ($c) {
+            return new UrlService(
+                $c->query('Config'),
+                $c->query('AppName')
+            );
+        });
+
         $container->registerService("ServiceMapper", function ($c) {
-            return new ServiceMapper($c->query('UserId'));
+            return new ServiceMapper(
+                $c->query('UrlService'),
+                $c->query('UserId')
+            );
         });
         $container->registerService("ServiceportService", function ($c) {
             return new ServiceportService($c->query("ServiceMapper"));
@@ -54,7 +66,7 @@ class Application extends App
         });
 
         $container->registerService("UserserviceMapper", function ($c) {
-            return new UserserviceMapper();
+            return new UserserviceMapper($c->query('UrlService'));
         });
         $container->registerService("UserserviceportService", function ($c) {
             return new UserserviceportService($c->query("UserserviceMapper"));
@@ -72,6 +84,7 @@ class Application extends App
 
         $container->registerService("ResearchMapper", function ($c) {
             return new ResearchMapper(
+                $c->query('UrlService'),
                 $c->query('Logger'),
                 $c->query('AppName')
             );
@@ -94,7 +107,7 @@ class Application extends App
         });
 
         $container->registerService("ProjectsMapper", function ($c) {
-            return new ProjectsMapper();
+            return new ProjectsMapper($c->query('UrlService'));
         });
         $container->registerService("ProjectsService", function ($c) {
             return new ProjectsService($c->query("ProjectsMapper"));
@@ -109,7 +122,7 @@ class Application extends App
         });
 
         $container->registerService("MetadataMapper", function ($c) {
-            return new MetadataMapper();
+            return new MetadataMapper($c->query('UrlService'));
         });
         $container->registerService("MetadataService", function ($c) {
             return new MetadataService($c->query("MetadataMapper"));

@@ -6,14 +6,15 @@ use \OCA\RDS\Db\Port;
 use \OCA\RDS\Db\Research;
 use \OCA\RDS\Service\NotFoundException;
 use OCP\ILogger;
+use \OCA\RDS\Service\UrlService;
 
 class ResearchMapper
 {
-    private $rdsURL = 'https://sciebords-dev.uni-muenster.de/research';
-    private $exporterURL = 'https://sciebords-dev.uni-muenster.de/exporter';
+    private $urlService;
 
-    public function __construct(ILogger $logger, $appName)
+    public function __construct($urlService, ILogger $logger, $appName)
     {
+        $this->urlService = $urlService;
         $this->logger = $logger;
         $this->appName = $appName;
     }
@@ -25,7 +26,7 @@ class ResearchMapper
 
     public function insert($userId)
     {
-        $curl = curl_init($this->rdsURL . '/user/' . $userId);
+        $curl = curl_init($this->urlService->getResearchURL() . '/user/' . $userId);
         $options = [CURLOPT_RETURNTRANSFER => true];
         curl_setopt_array($curl, $options);
         curl_setopt($curl, CURLOPT_POST, TRUE);
@@ -183,7 +184,7 @@ class ResearchMapper
 
     private function removePort($researchIndex, $userId, $portIndex, $where)
     {
-        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where . '/' . $portIndex;
+        $url = $this->urlService->getResearchURL() . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where . '/' . $portIndex;
 
         $curl = curl_init($url);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
@@ -210,7 +211,7 @@ class ResearchMapper
 
     private function addPort($researchIndex, $userId, $port, $where)
     {
-        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where;
+        $url = $this->urlService->getResearchURL() . '/user/' . $userId . '/research/' . $researchIndex . '/' . $where;
         $data_string = json_encode($port->jsonSerialize());
 
         $curl = curl_init($url);
@@ -246,7 +247,7 @@ class ResearchMapper
 
     private function nextStatus($conn)
     {
-        $url = $this->rdsURL . '/user/' . $conn->getUserId() . '/research/' . $conn->getResearchIndex() . '/status';
+        $url = $this->urlService->getResearchURL() . '/user/' . $conn->getUserId() . '/research/' . $conn->getResearchIndex() . '/status';
 
         $curl = curl_init($url);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PATCH'];
@@ -275,7 +276,7 @@ class ResearchMapper
     {
         $conn = $this->find($researchIndex, $userId);
 
-        $curl = curl_init($this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex);
+        $curl = curl_init($this->urlService->getResearchURL() . '/user/' . $userId . '/research/' . $researchIndex);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
         curl_setopt_array($curl, $options);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -305,7 +306,7 @@ class ResearchMapper
      */
     public function deleteUser($userId)
     {
-        $curl = curl_init($this->rdsURL . '/user/' . $userId);
+        $curl = curl_init($this->urlService->getResearchURL() . '/user/' . $userId);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
         curl_setopt_array($curl, $options);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -346,7 +347,7 @@ class ResearchMapper
 
     public function find($researchIndex, $userId)
     {
-        $curl = curl_init($this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex);
+        $curl = curl_init($this->urlService->getResearchURL() . '/user/' . $userId . '/research/' . $researchIndex);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
@@ -388,7 +389,7 @@ class ResearchMapper
 
     public function findAll($userId)
     {
-        $curl = curl_init($this->rdsURL . '/user/' . $userId);
+        $curl = curl_init($this->urlService->getResearchURL() . '/user/' . $userId);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
@@ -439,7 +440,7 @@ class ResearchMapper
     public function triggerExport($userId, $researchIndex, $files = null)
     {
         // TODO: if $files are given, only transmit them, not all
-        $curl = curl_init($this->exporterURL . '/user/' . $userId . '/research/' . $researchIndex);
+        $curl = curl_init($this->urlService->getExporterURL() . '/user/' . $userId . '/research/' . $researchIndex);
         $options = [CURLOPT_RETURNTRANSFER => true];
         curl_setopt_array($curl, $options);
         curl_setopt($curl, CURLOPT_POST, TRUE);
@@ -468,7 +469,7 @@ class ResearchMapper
 
     public function publish($userId, $researchIndex)
     {
-        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex;
+        $url = $this->urlService->getResearchURL() . '/user/' . $userId . '/research/' . $researchIndex;
 
         $curl = curl_init($url);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PUT'];

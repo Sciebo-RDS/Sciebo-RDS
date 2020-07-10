@@ -5,20 +5,22 @@ namespace OCA\RDS\Db;
 use \OCA\RDS\Db\Service;
 use \OCA\RDS\Db\RegisteredService;
 use \OCA\RDS\Service\NotFoundException;
+use \OCA\RDS\Service\UrlService;
 
 class ServiceMapper
 {
-    private $rdsURL = 'https://sciebords-dev.uni-muenster.de/port-service';
+    private $urlService;
     private $userId;
 
-    public function __construct($userId)
+    public function __construct($urlService, $userId)
     {
+        $this->urlService = $urlService;
         $this->userId = $userId;
     }
 
     public function findAll()
     {
-        $url = $this->rdsURL . '/service';
+        $url = $this->urlService->getPortURL() . '/service';
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -62,7 +64,7 @@ class ServiceMapper
 
     public function find($servicename)
     {
-        $url = $this->rdsURL . '/service/' . $servicename;
+        $url = $this->urlService->getPortURL() . '/service/' . $servicename;
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

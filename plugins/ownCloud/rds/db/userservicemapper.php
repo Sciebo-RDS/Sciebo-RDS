@@ -5,13 +5,16 @@ namespace OCA\RDS\Db;
 use \OCA\RDS\Db\RegisteredService;
 use \OCA\RDS\Db\Project;
 use \OCA\RDS\Service\NotFoundException;
+use \OCA\RDS\Service\UrlService;
+
 
 class UserserviceMapper
 {
-    private $rdsURL = 'https://sciebords-dev.uni-muenster.de/port-service';
+    private $urlService;
 
-    public function __construct()
+    public function __construct($urlService)
     {
+        $this->urlService = $urlService;
     }
 
     # this should be the way to add a service to rds
@@ -33,7 +36,7 @@ class UserserviceMapper
     {
         $svc = $this->find($servicename, $userId);
 
-        $curl = curl_init($this->rdsURL . '/user/' . $userId . '/service/' . $servicename);
+        $curl = curl_init($this->urlService->getPortURL() . '/user/' . $userId . '/service/' . $servicename);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
         curl_setopt_array($curl, $options);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -48,7 +51,7 @@ class UserserviceMapper
 
     public function findAll($userId)
     {
-        $curl = curl_init($this->rdsURL . '/user/' . $userId . '/service');
+        $curl = curl_init($this->urlService->getPortURL() . '/user/' . $userId . '/service');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
@@ -124,7 +127,7 @@ class UserserviceMapper
             } else {
                 $val = $arr;
             }
-            
+
             $base64 = base64_encode($val);
             $base64url =  str_replace(['+', '/', '='], ['-', '_', ''], $base64);
             return ($base64url);
@@ -140,7 +143,7 @@ class UserserviceMapper
 
         $jwt =  $jwtHead . '.' . $jwtBody . '.' . $jwtSign;
 
-        $url = $this->rdsURL . '/exchange';
+        $url = $this->urlService->getPortURL() . '/exchange';
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
