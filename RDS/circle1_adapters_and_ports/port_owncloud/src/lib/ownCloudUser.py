@@ -80,7 +80,7 @@ class OwncloudUser:
         indexList = []
         # TODO: needs tests.
         for index, file in enumerate(files):
-            if file.endsWith("/"):
+            if file.endswith("/"):
                 # save index for later removal, because we do not want the folderpaths
                 indexList.append(index)
                 fullname = file
