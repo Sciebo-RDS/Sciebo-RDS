@@ -104,13 +104,13 @@ class Research:
         for svc in self.importServices:
             logger.debug("import service: {}".format(svc.getJSON()))
 
-            saveContent = False
+            useZipForContent = False
 
             if isFolderInFiles(svc.getFiles()):
                 logger.debug("use zipfile, because the folder holds folders again")
-                saveContent = True
+                useZipForContent = True
 
-            if saveContent:
+            if useZipForContent:
                 mem_zip = BytesIO()
                 zip = zipfile.ZipFile(
                     mem_zip, mode="w", compression=zipfile.ZIP_DEFLATED
@@ -122,13 +122,13 @@ class Research:
                 )
 
                 # TODO: needs tests
-                if saveContent:
+                if useZipForContent:
                     zip.writestr(*fileTuple)
 
-                # saveContent skips services, which needs zip, if folder in folder found.
-                self.addFile(folderInFolder=saveContent, *fileTuple)
+                # useZipForContent skips services, which needs zip, if folder in folder found.
+                self.addFile(folderInFolder=useZipForContent, *fileTuple)
 
-            if saveContent:
+            if useZipForContent:
                 results = [
                     exportSvc.addFile(
                         "{}_{}.zip".format(svc.servicename, svc.getFilepath()),
