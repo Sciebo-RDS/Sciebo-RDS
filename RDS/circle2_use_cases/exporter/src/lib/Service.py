@@ -128,7 +128,7 @@ class Service:
             )
 
             cnt = response_to.content
-            logger.debug("got content size: {}".format(cnt.getbuffer().nbytes))
+            logger.debug("got content size: {}".format(len(cnt)))
 
             return BytesIO(cnt)
 
