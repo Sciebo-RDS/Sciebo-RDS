@@ -82,6 +82,10 @@ class Application extends App
             );
         });
 
+        $container->registerService('URLGenerator', static function ($c) {
+            return $c->query('ServerContainer')->getURLGenerator();
+        });
+
         $container->registerService("ResearchMapper", function ($c) {
             return new ResearchMapper(
                 $c->query('UrlService'),
