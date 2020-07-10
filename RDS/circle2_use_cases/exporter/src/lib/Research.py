@@ -113,7 +113,7 @@ class Research:
             if useZipForContent:
                 mem_zip = BytesIO()
                 zip = zipfile.ZipFile(
-                    mem_zip, mode="w", compression=zipfile.ZIP_DEFLATED
+                    mem_zip, mode="w", compression=zipfile.ZIP_STORED
                 )
 
             for fileTuple in svc.getFiles(getContent=True):
