@@ -97,7 +97,7 @@ class Service:
                 )
                 content = self.getFile(index)
 
-                logger.debug("got content size: {}".format(len(content.getvalue())))
+                logger.debug("got content size: {}".format(content.getbuffer().nbytes))
 
                 yield file, content
             else:

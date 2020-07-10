@@ -118,7 +118,7 @@ class Research:
 
             for fileTuple in svc.getFiles(getContent=True):
                 logger.debug(
-                    "file: {}, content: {}".format(fileTuple[0], len(fileTuple[1]))
+                    "file: {}, contentlength: {}".format(fileTuple[0], fileTuple[1].getbuffer().nbytes)
                 )
 
                 # TODO: needs tests
