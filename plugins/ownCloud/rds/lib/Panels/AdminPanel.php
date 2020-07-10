@@ -1,23 +1,5 @@
 <?php
 
-/**
- * @author Project Seminar "sciebo@Learnweb" of the University of Muenster
- * @copyright Copyright (c) 2017, University of Muenster
- * @license AGPL-3.0
- *
- * This code is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License, version 3,
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License, version 3,
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
-
 namespace OCA\RDS\Panels;
 
 use \OCA\OAuth2\Db\ClientMapper;
@@ -25,6 +7,7 @@ use OCP\IURLGenerator;
 use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
+use \OCA\RDS\Service\UrlService;
 
 class AdminPanel implements ISettings
 {
@@ -43,14 +26,21 @@ class AdminPanel implements ISettings
      */
     protected $urlGenerator;
 
+    /**
+     * @var UrlService
+     */
+    protected $urlService;
+
     public function __construct(
         ClientMapper $clientMapper,
         IUserSession $userSession,
-        IURLGenerator $urlGenerator
+        IURLGenerator $urlGenerator,
+        UrlService $urlService
     ) {
         $this->clientMapper = $clientMapper;
         $this->userSession = $userSession;
         $this->urlGenerator = $urlGenerator;
+        $this->urlService = $urlService;
     }
 
     public function getSectionID()
@@ -68,6 +58,7 @@ class AdminPanel implements ISettings
         $t->assign('clients', $this->clientMapper->findByUser($userId));
         $t->assign('user_id', $userId);
         $t->assign('urlGenerator', $this->urlGenerator);
+        $t->assign("cloudURL", $this->urlService->getURL());
         return $t;
     }
 
@@ -75,5 +66,4 @@ class AdminPanel implements ISettings
     {
         return 20;
     }
-
 }
