@@ -131,7 +131,8 @@ class Research:
             if saveContent:
                 results = [
                     exportSvc.addFile(
-                        "Files_from_{}.zip".format(svc.servicename), mem_zip.getvalue(),
+                        "{}_{}.zip".format(svc.servicename, svc.getFilepath()),
+                        mem_zip.getvalue(),
                     )
                     for exportSvc in self.exportServices
                     if exportSvc.zipForFolder
