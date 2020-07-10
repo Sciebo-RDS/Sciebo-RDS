@@ -128,7 +128,7 @@ class Research:
                     zip.writestr(fileTuple[0], fileTuple[1].read())
 
                 # useZipForContent skips services, which needs zip, if folder in folder found.
-                self.addFile(folderInFolder=useZipForContent, *fileTuple)
+                self.addFile(useZipForContent, *fileTuple)
 
             if useZipForContent:
                 import re
