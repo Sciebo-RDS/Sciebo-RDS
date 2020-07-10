@@ -128,7 +128,7 @@ class Research:
                     zip.writestr(fileTuple[0], fileTuple[1].read())
 
                 # useZipForContent skips services, which needs zip, if folder in folder found.
-                self.addFile(useZipForContent, *fileTuple)
+                self.addFile(folderInFolder=useZipForContent, *fileTuple)
 
             if useZipForContent:
                 import re
@@ -154,7 +154,7 @@ class Research:
 
                 zip.close()
 
-    def addFile(self, folderInFolder=False, *args, **kwargs):
+    def addFile(self, *args, folderInFolder=False, **kwargs):
         """
         Wrapper function to call addFile in all export services objects with parameters.
 
