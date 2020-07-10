@@ -83,7 +83,7 @@ class OwncloudUser:
             if file.endswith("/"):
                 # save index for later removal, because we do not want the folderpaths
                 indexList.append(index)
-                fullname = foldername + "/" + file
+                fullname = file
                 logger.debug(f"recursive getFolder for inner folders: {fullname}")
                 tmpFiles = self.getFolder(fullname)
 
