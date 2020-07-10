@@ -252,7 +252,7 @@ class ProjectService:
 
         return True
     
-    def removeUser(user: str):
+    def removeUser(self, user: str):
         """Removes user and all projects.
 
         Args:
