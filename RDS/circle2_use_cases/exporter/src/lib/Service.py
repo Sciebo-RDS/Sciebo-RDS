@@ -97,8 +97,6 @@ class Service:
                 )
                 content = self.getFile(index)
 
-                logger.debug("got content size: {}".format(content.getbuffer().nbytes))
-
                 yield file, content
             else:
                 yield file
@@ -130,7 +128,7 @@ class Service:
             )
 
             cnt = response_to.content
-            logger.debug("got bytes {}".format(cnt))
+            logger.debug("got content size: {}".format(cnt.getbuffer().nbytes))
 
             return BytesIO(cnt)
 
