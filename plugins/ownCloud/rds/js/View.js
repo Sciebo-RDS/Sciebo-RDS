@@ -470,9 +470,12 @@
     });
 
     $("#btn-sync-files").click(function () {
-      self._files.triggerSync().done(function () {
+
+      self._view._files.load(self._studies.getActive().researchIndex);
+      self._view._files.triggerSync().done(function () {
         console.log("done")
       });
+
       OC.dialogs.alert(
         t("rds", "Your files will be synchronize within 2 minutes."),
         t("rds", "RDS Update project")

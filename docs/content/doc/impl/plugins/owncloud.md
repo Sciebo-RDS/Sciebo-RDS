@@ -55,7 +55,7 @@ stateDiagram
 
 ### Reference to Token Service on level 2
 
-The background flow of the input masks is strongly influenced by the corresponding use case service. Therefore you have to look at the [Token Services]/doc/impl/use-cases/port-service/#communication-with-the-plugins) page.
+The background flow of the input masks is strongly influenced by the corresponding use case service. Therefore you have to look at the [Token Services](/doc/impl/use-cases/port-service/#communication-with-the-plugins) page.
 
 Note: This reference will disappear in the future, as the Token Service will be removed and the task will be taken over by the Token Storage on level 3 to define clearer tasks.
 

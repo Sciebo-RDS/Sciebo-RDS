@@ -26,7 +26,6 @@ variables:
   except:
     refs:
       - /^translations_plugins-.*$/i # ignore, if it comes from transifex
-      - master
 
   # https://gitlab.com/gitlab-org/gitlab/issues/8177
   # not supported currently
