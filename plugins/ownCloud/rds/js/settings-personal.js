@@ -163,7 +163,7 @@
                   if (servicename === "Owncloud") {
                     $.ajax({
                       type: "DELETE",
-                      url: this._baseUrl + "/research",
+                      url: self._baseUrl + "/research",
                     }).always(function (result) {
                       location.reload();
                     });
