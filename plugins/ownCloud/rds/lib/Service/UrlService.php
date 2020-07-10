@@ -25,7 +25,15 @@ class UrlService
 
     public function setURL($value)
     {
-        return $this->config->setAppValue($this->appName, $this->cloudUrlKey, $value);
+        $this->config->setAppValue($this->appName, $this->cloudUrlKey, $value);
+        return $this->getURL();
+    }
+
+    public function getOverview()
+    {
+        return [
+            $this->cloudUrlKey => $this->getURL()
+        ];
     }
 
     public function getCloudUrlKey()

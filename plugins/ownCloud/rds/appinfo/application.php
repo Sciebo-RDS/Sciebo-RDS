@@ -145,5 +145,9 @@ class Application extends App
                 $c->query('UserId')
             );
         });
+
+        $container->registerService('Config', function ($c) {
+            return $c->query('ServerContainer')->getConfig();
+        });
     }
 }

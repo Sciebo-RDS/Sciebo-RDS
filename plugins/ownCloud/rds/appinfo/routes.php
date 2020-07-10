@@ -41,7 +41,11 @@ $application->registerRoutes($this, [
         ['name' => 'projects#create',           'url' => '/userservice/{servicename}/projects',             'verb' => 'POST'],
         ['name' => 'projects#destroy',          'url' => '/userservice/{servicename}/projects/{id}',        'verb' => 'DELETE'],
 
-        ['name' => 'Userservice#register',      'url' => '/oauth',                                          'verb' => 'GET']
+        ['name' => 'Userservice#register',      'url' => '/oauth',                                          'verb' => 'GET'],
+
+        # Admin Settings API Endpoints to configure RDS connection.
+        ['name' => 'Settings#index',            'url' => '/settings',                                          'verb' => 'GET'],
+        ['name' => 'Settings#update',           'url' => '/settings',                                          'verb' => 'PUT']
 
     ]
 ]);
