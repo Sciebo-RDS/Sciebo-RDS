@@ -37,6 +37,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Research'
+    delete:
+      summary: Remove user
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      description: 'This removes all research projects for the specified user, which means that this service delete everything about the user.'
+      operationId: ''
   '/user/{user-id}/research/{research-id}':
     parameters:
       - schema:

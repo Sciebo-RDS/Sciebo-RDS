@@ -251,3 +251,15 @@ class ProjectService:
                 )
 
         return True
+    
+    def removeUser(user: str):
+        """Removes user and all projects.
+
+        Args:
+            user (str): The username, which should be removed.
+        """
+        if  self.projects.get(user) is not None:
+            del self.projects[user]
+            return True
+        
+        return False
