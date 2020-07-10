@@ -139,6 +139,15 @@ class Service:
         return BytesIO(b"")
 
     def addFile(self, filename, fileContent):
+        """Adds given file with filename to this service.
+
+        Args:
+            filename (str): Set the filename of this file.
+            fileContent (io.BytesIO): Set the content of this file.
+
+        Returns:
+            bool: Return True, if the file was uploaded successfully, otherwise False.
+        """
         files = {"file": (filename, fileContent.getvalue())}
         data = {"userId": self.userId, "filename": filename}
 
