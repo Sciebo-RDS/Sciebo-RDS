@@ -161,7 +161,12 @@
                 })
                 .always(function () {
                   if (servicename === "Owncloud") {
-                    location.reload();
+                    $.ajax({
+                      type: "DELETE",
+                      url: this._baseUrl + "/research",
+                    }).always(function (result) {
+                      location.reload();
+                    });
                   }
                 });
             }
@@ -177,12 +182,12 @@
           if (item["servicename"] !== "Owncloud") {
             source.append(
               "<tr><td>" +
-                item["servicename"] +
-                "</td><td>" +
-                '<button data-servicename="' +
-                item["servicename"] +
-                '" class="button icon-delete"></button>' +
-                "</td></tr>"
+              item["servicename"] +
+              "</td><td>" +
+              '<button data-servicename="' +
+              item["servicename"] +
+              '" class="button icon-delete"></button>' +
+              "</td></tr>"
             );
           }
         }, this);

@@ -199,4 +199,11 @@ class ResearchController extends Controller
             return $this->service->publish($this->userId, $id);
         });
     }
+
+    public function deleteUser()
+    {
+        return $this->handleNotFound(function () {
+            return $this->service->deleteUser($this->userId);
+        });
+    }
 }

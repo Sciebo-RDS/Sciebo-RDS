@@ -300,6 +300,36 @@ class ResearchMapper
         return $conn;
     }
 
+    /**
+     * Deletes the research in RDS for given user.
+     */
+    public function deleteUser($userId)
+    {
+        $curl = curl_init($this->rdsURL . '/user/' . $userId);
+        $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'DELETE'];
+        curl_setopt_array($curl, $options);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        $request = curl_exec($curl);
+        $response = json_decode($request);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $info = curl_getinfo($curl);
+
+        curl_close($curl);
+
+        if ($httpcode >= 300) {
+            throw new NotFoundException(json_encode([
+                'http_code' => $httpcode,
+                'json_error_message' => json_last_error_msg(),
+                'curl_error_message' => $info,
+                'content' => $request
+            ]));
+        }
+
+        return true;
+    }
+
     public function createPort($port)
     {
         $pport = new Port();

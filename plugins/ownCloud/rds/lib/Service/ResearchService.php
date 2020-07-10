@@ -203,4 +203,9 @@ class ResearchService
     {
         return $this->mapper->publish($userId, $researchIndex);
     }
+
+    public function deleteUser($userId)
+    {
+        return $this->mapper->deleteUser($userId);
+    }
 }
