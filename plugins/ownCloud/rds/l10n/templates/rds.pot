@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud Core 8.0.0\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2020-07-02 10:28+0200\n"
+"POT-Creation-Date: 2020-07-10 15:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,8 +25,8 @@ msgstr ""
 msgid "Your entries could not be saved."
 msgstr ""
 
-#: js/View.js:57 js/View.js:478 js/View.js:487 js/View.js:503 js/View.js:590
-#: js/View.js:612 js/View.js:630 js/main-rds.js:38
+#: js/View.js:57 js/View.js:481 js/View.js:490 js/View.js:506 js/View.js:593
+#: js/View.js:615 js/View.js:633 js/main-rds.js:38
 msgid "RDS Update project"
 msgstr ""
 
@@ -34,15 +34,15 @@ msgstr ""
 msgid "Choose source and / or target folder"
 msgstr ""
 
-#: js/View.js:477
+#: js/View.js:480
 msgid "Your files will be synchronize within 2 minutes."
 msgstr ""
 
-#: js/View.js:484
+#: js/View.js:487
 msgid "Are you sure, that you want to close the research {researchIndex}?"
 msgstr ""
 
-#: js/View.js:589 js/main-rds.js:37
+#: js/View.js:592 js/main-rds.js:37
 msgid "Could not create research"
 msgstr ""
 
@@ -78,42 +78,46 @@ msgstr ""
 msgid "Could not remove the service {servicename}"
 msgstr ""
 
-#: js/settings-personal.js:218
+#: js/settings-personal.js:223
 msgid "Authorize {servicename} now"
 msgstr ""
 
-#: lib/Panels/PersonalSection.php:47
+#: lib/Panels/AdminSection.php:29 lib/Panels/PersonalSection.php:29
 msgid "Research data services"
 msgstr ""
 
-#: templates/not_authorized.php:12
+#: templates/not_authorized.php:14
+msgid "oauth workflow was not successful finished."
+msgstr ""
+
+#: templates/not_authorized.php:20
 msgid ""
 "Welcome. To use this app, you need to authenticate\n"
 "      services to perform actions with RDS on files in the services. Please\n"
 "      follow this steps."
 msgstr ""
 
-#: templates/not_authorized.php:19
+#: templates/not_authorized.php:27
 msgid "Step 1: Authorize RDS to authenticate against ownCloud."
 msgstr ""
 
-#: templates/not_authorized.php:23
+#: templates/not_authorized.php:30
 msgid "Authorize ownCloud."
 msgstr ""
 
-#: templates/not_authorized.php:28
+#: templates/not_authorized.php:35
 msgid "Step 2: Authorize RDS to authenticate against Zenodo."
 msgstr ""
 
-#: templates/not_authorized.php:32
+#: templates/not_authorized.php:38
 msgid "Authorize Zenodo."
 msgstr ""
 
-#: templates/not_authorized.php:37
+#: templates/not_authorized.php:43
 msgid "Step 3: Create a research in RDS and configure it."
 msgstr ""
 
-#: templates/not_authorized.php:41
+#: templates/not_authorized.php:47
 msgid "Create a research in RDS."
 msgstr ""
 
@@ -144,6 +148,7 @@ msgstr ""
 #: templates/part.research.content.file.php:23
 #: templates/part.research.content.metadata.php:16
 #: templates/part.research.content.service.php:123
+#: templates/settings-admin.php:20
 msgid "Save"
 msgstr ""
 
@@ -260,6 +265,24 @@ msgstr ""
 
 #: templates/part.research.settings.php:9
 msgid "Add missing service"
+msgstr ""
+
+#: templates/settings-admin.php:9
+msgid "Research Data Services"
+msgstr ""
+
+#: templates/settings-admin.php:11
+msgid "Open documentation"
+msgstr ""
+
+#: templates/settings-admin.php:15
+msgid "url to rds instance"
+msgstr ""
+
+#: templates/settings-admin.php:17
+msgid ""
+"Specify here the URL, where the ownCloud instance can find your RDS instance "
+"e.g. https://url-to-rds-in-k8s. Please leave out the trailing slash."
 msgstr ""
 
 #: templates/settings-personal.php:45 templates/settings-personal.php:45
