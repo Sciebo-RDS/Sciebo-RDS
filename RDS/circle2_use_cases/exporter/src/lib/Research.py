@@ -143,6 +143,8 @@ class Research:
 
                     return s
 
+                zip.close()
+                
                 results = [
                     exportSvc.addFile(
                         "{}_{}.zip".format(svc.servicename, urlify(svc.getFilepath())),
@@ -152,7 +154,6 @@ class Research:
                     if exportSvc.zipForFolder
                 ]
 
-                zip.close()
 
     def addFile(self, *args, folderInFolder=False, **kwargs):
         """
