@@ -118,12 +118,14 @@ class Research:
 
             for fileTuple in svc.getFiles(getContent=True):
                 logger.debug(
-                    "file: {}, contentlength: {}".format(fileTuple[0], fileTuple[1].getbuffer().nbytes)
+                    "file: {}, contentlength: {}".format(
+                        fileTuple[0], fileTuple[1].getbuffer().nbytes
+                    )
                 )
 
                 # TODO: needs tests
                 if useZipForContent:
-                    zip.writestr(*fileTuple)
+                    zip.writestr(fileTuple[0], fileTuple[1].read())
 
                 # useZipForContent skips services, which needs zip, if folder in folder found.
                 self.addFile(folderInFolder=useZipForContent, *fileTuple)
