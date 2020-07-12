@@ -73,6 +73,17 @@ include:
   - "RDS/circle2_use_cases/metadata/.gitlab-ci.yml"
   - "RDS/circle3_central_services/token_storage/.gitlab-ci.yml"
   - "RDS/circle3_central_services/research_manager/.gitlab-ci.yml"
+  - template: Code-Quality.gitlab-ci.yml
+  
+code_quality:
+  stage: test
+  artifacts:
+    expose_as: 'Code Quality Report'
+    paths: [gl-code-quality-report.json]
+  after_script:
+    - curl -L "https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64" >> ./cc-test-reporter
+    - chmod +x ./cc-test-reporter
+    - ./cc-test-reporter upload-coverage -i gl-code-quality-report.json
 
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:
