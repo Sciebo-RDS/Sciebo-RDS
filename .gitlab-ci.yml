@@ -78,6 +78,8 @@ include:
 code_quality:
   services:
     - docker:dind
+  tags:
+    - docker-in-docker
   variables:
     DOCKER_HOST: tcp://docker:2375
   stage: test
