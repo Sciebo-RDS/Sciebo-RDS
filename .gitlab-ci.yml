@@ -60,10 +60,10 @@ variables:
     - export CI_IMAGE_SHA=$CI_PROJECT_PATH:$CI_COMMIT_BRANCH
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker pull $CI_IMAGE_SHA || true
+    - docker pull --quiet $CI_IMAGE_SHA || true
     - docker build --cache-from $CI_IMAGE_SHA --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_SHA --file="dockerfile" .
-    - docker push $CI_IMAGE_SHA
-    - docker push $CI_IMAGE_LATEST
+    - docker push --quiet $CI_IMAGE_SHA
+    - docker push --quiet $CI_IMAGE_LATEST
 
 include:
   - "RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
@@ -76,16 +76,17 @@ include:
   - template: Code-Quality.gitlab-ci.yml
   
 code_quality:
+  services:
+    - docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375
-    DOCKER_DRIVER: overlay2
   stage: test
   artifacts:
     expose_as: 'Code Quality Report'
     paths: [gl-code-quality-report.json]
   after_script:
     - apk add --no-cache curl
-    - curl -L "https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64" >> ./cc-test-reporter
+    - curl -L "https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64" > ./cc-test-reporter
     - chmod +x ./cc-test-reporter
     - ./cc-test-reporter upload-coverage -i gl-code-quality-report.json
 
