@@ -10,7 +10,7 @@ class MetadataMapper
 {
   private $urlService;
 
-  public function __construct($urlService)
+  public function __construct(UrlService $urlService)
   {
     $this->urlService = $urlService;
   }

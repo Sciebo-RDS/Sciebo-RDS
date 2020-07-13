@@ -5,12 +5,13 @@ namespace OCA\RDS\Db;
 use \OCA\RDS\Db\Project;
 use \OCA\RDS\Service\UrlService;
 use \OCA\RDS\Service\NotFoundException;
+use \OCA\RDS\Service\UrlService;
 
 class ProjectsMapper
 {
     private $urlService;
 
-    public function __construct($urlService)
+    public function __construct(UrlService $urlService)
     {
         $this->urlService = $urlService;
     }

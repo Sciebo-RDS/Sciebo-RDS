@@ -12,7 +12,7 @@ class ResearchMapper
 {
     private $urlService;
 
-    public function __construct($urlService, ILogger $logger, $appName)
+    public function __construct(UrlService $urlService, ILogger $logger, $appName)
     {
         $this->urlService = $urlService;
         $this->logger = $logger;
