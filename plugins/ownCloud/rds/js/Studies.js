@@ -51,7 +51,7 @@
         this._studies.splice(index, 1);
 
         $.ajax({
-          url: this._baseUrl + "/" + researchIndex,
+          url: this._baseUrl + "/" + researchIndex + "/publish",
           method: "PUT",
         })
           .done(function () {

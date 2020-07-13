@@ -502,7 +502,7 @@
               })
               .fail(function () {
                 OC.dialogs.alert(
-                  t("Could not close this research."),
+                  t("rds", "Could not close this research."),
                   t("rds", "RDS Update project")
                 );
               });
