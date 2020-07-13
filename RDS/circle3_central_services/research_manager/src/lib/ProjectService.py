@@ -226,7 +226,7 @@ class ProjectService:
         # TODO: needs tests
 
         def publishInPort(port, projectId):
-            url = "http://circle1-port-{}".format(str(port.portname).lower())
+            url = "http://circle1-{}".format(str(port.portname).lower())
             req = requests.put(
                 "{}/project/{}".format(url, projectId),
                 verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
