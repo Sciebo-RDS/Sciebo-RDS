@@ -52,7 +52,7 @@
 
         $.ajax({
           url: this._baseUrl + "/" + researchIndex + "/publish",
-          method: "PUT",
+          method: "POST",
         })
           .done(function () {
             deferred.resolve();
