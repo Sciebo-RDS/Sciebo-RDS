@@ -106,7 +106,8 @@ upload_test_coverage:
     - *install_cc_tester
 
   script:
-    - mkdir coverage
+    - mkdir -p coverage
+    - ls -la coverage
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://Testresults coverage --recursive
     - ./cc-test-reporter sum-coverage --output - coverage/*.json | ./cc-test-reporter upload-coverage --input -
 
