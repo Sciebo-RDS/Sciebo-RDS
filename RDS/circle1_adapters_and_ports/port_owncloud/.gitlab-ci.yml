@@ -8,14 +8,6 @@
     - .tests
     - .port_owncloud
 
-test:port_owncloud3.6:
-    extends: .tests_port_owncloud
-    image: python:3.6
-
-test:port_owncloud3.7:
-    extends: .tests_port_owncloud
-    image: python:3.7
-
 test:port_owncloud3.8:
     extends: .tests_port_owncloud
     image: python:3.8

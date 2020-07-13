@@ -17,14 +17,6 @@
     - name: selenium/standalone-firefox
       alias: selenium
 
-test:central_service_token_storage3.6:
-  image: python:3.6
-  extends: .tests_central_service_token_storage
-
-test:central_service_token_storage3.7:
-  image: python:3.7
-  extends: .tests_central_service_token_storage
-
 test:central_service_token_storage3.8:
   image: python:3.8
   extends: .tests_central_service_token_storage

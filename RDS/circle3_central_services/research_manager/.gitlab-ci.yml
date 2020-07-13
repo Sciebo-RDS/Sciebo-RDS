@@ -7,14 +7,6 @@
   - .tests
   - .central_service_research_manager
 
-test:central_service_research_manager3.6:
-  image: python:3.6
-  extends: .tests_central_service_research_manager
-
-test:central_service_research_manager3.7:
-  image: python:3.7
-  extends: .tests_central_service_research_manager
-
 test:central_service_research_manager3.8:
   image: python:3.8
   extends: .tests_central_service_research_manager
