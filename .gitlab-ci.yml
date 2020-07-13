@@ -26,7 +26,7 @@ variables:
 
   after_script:
     - cd $FOLDER
-    - ./cc-test-reporter format-coverage -o coverage/codeclimate.$CI_JOB_NAME.json
+    - ./cc-test-reporter format-coverage -o coverage/codeclimate.$CI_JOB_NAME.json -t coverage.py .coverage
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp coverage s3://Testresults --recursive
 
   tags:
