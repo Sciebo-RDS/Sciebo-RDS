@@ -7,14 +7,6 @@
     - .tests
     - .use_case_exporter
 
-test:use_case_exporter3.6:
-  image: python:3.6
-  extends: .tests_use_case_exporter
-
-test:use_case_exporter3.7:
-  image: python:3.7
-  extends: .tests_use_case_exporter
-
 test:use_case_exporter3.8:
   image: python:3.8
   extends: .tests_use_case_exporter
@@ -29,13 +21,8 @@ build:use_case_exporter:
       - RDS/circle2_use_cases/exporter/*
       - RDS/circle2_use_cases/exporter/**/*
 
-
 doc:use_case_exporter:
   image: python:3.8
   extends:
-  - .documentation
-  - .use_case_exporter
-
-  script:
-  - cd $FOLDER
-  - make doc
+    - .documentation
+    - .use_case_exporter
