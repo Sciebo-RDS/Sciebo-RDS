@@ -240,26 +240,27 @@ class ProjectService:
             projects = [projects]
 
         for proj in projects:
-            port = proj.getPortOut()
+            ports = proj.getPortOut()
             researchId = proj.researchId
 
-            if not publishInPort(port, researchId):
-                return Exception(
-                    "ResearchId {} in Port {} cannot be published.".format(
-                        researchId, port
+            for port in ports:
+                if not publishInPort(port, researchId):
+                    return Exception(
+                        "ResearchId {} in Port {} cannot be published.".format(
+                            researchId, port
+                        )
                     )
-                )
 
         return True
-    
+
     def removeUser(self, user: str):
         """Removes user and all projects.
 
         Args:
             user (str): The username, which should be removed.
         """
-        if  self.projects.get(user) is not None:
+        if self.projects.get(user) is not None:
             del self.projects[user]
             return True
-        
+
         return False
