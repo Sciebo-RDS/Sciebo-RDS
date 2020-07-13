@@ -97,11 +97,10 @@ code_quality:
     expose_as: "Code Quality Report"
     paths: [gl-code-quality-report.json]
 
-test_coverage:
-  stage: deploy
+upload_test_coverage:
+  stage: documentation
 
   before_script:
-    - apk add --no-cache curl
     - curl -L "https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64" > ./cc-test-reporter
     - chmod +x ./cc-test-reporter
 
