@@ -107,6 +107,7 @@ test_coverage:
 
   script:
     - mkdir coverage
+    - python -m pip install awscli
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://Testresults coverage --recursive
     - ./cc-test-reporter sum-coverage --output - coverage/*.json | ./cc-test-reporter upload-coverage --input -
 
