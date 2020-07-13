@@ -14,11 +14,20 @@ variables:
 .tests:
   stage: test
 
-  script:
+  before_script:
     - cd $FOLDER
+    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    - chmod +x ./cc-test-reporter
+
+  script:
     - test -f requirements.txt && pip install -r requirements.txt
     - test -f requirements-dev.txt && pip install -r requirements-dev.txt
     - make test
+
+  after_script:
+    - cd $FOLDER
+    - ./cc-test-reporter format-coverage -t CoveragePy -o coverage/codeclimate.$CI_JOB_NAME.json .coverage
+    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp coverage s3://Testresults --recursive
 
   tags:
     - autoscaling
@@ -66,15 +75,15 @@ variables:
     - docker push --quiet $CI_IMAGE_LATEST
 
 include:
-  - "RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
-  - "RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml"
-  - "RDS/circle2_use_cases/exporter/.gitlab-ci.yml"
-  - "RDS/circle2_use_cases/port/.gitlab-ci.yml"
-  - "RDS/circle2_use_cases/metadata/.gitlab-ci.yml"
-  - "RDS/circle3_central_services/token_storage/.gitlab-ci.yml"
-  - "RDS/circle3_central_services/research_manager/.gitlab-ci.yml"
+  - "/RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
+  - "/RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml"
+  - "/RDS/circle2_use_cases/exporter/.gitlab-ci.yml"
+  - "/RDS/circle2_use_cases/port/.gitlab-ci.yml"
+  - "/RDS/circle2_use_cases/metadata/.gitlab-ci.yml"
+  - "/RDS/circle3_central_services/token_storage/.gitlab-ci.yml"
+  - "/RDS/circle3_central_services/research_manager/.gitlab-ci.yml"
   - template: Code-Quality.gitlab-ci.yml
-  
+
 code_quality:
   services:
     - docker:dind
@@ -84,13 +93,21 @@ code_quality:
     DOCKER_HOST: tcp://docker:2375
   stage: test
   artifacts:
-    expose_as: 'Code Quality Report'
+    expose_as: "Code Quality Report"
     paths: [gl-code-quality-report.json]
-  after_script:
+
+test_coverage:
+  stage: deploy
+
+  before_script:
     - apk add --no-cache curl
     - curl -L "https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64" > ./cc-test-reporter
     - chmod +x ./cc-test-reporter
-    - ./cc-test-reporter upload-coverage -i gl-code-quality-report.json
+
+  script:
+    - mkdir coverage
+    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://Testresults coverage --recursive
+    - ./cc-test-reporter sum-coverage --output - coverage/*.json | ./cc-test-reporter upload-coverage --input -
 
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:
