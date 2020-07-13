@@ -30,8 +30,9 @@ variables:
 
   after_script:
     - cd $FOLDER
-    - ./cc-test-reporter format-coverage -o coverage/codeclimate.$CI_JOB_NAME.json -t coverage.py coverage.xml
+    - ./cc-test-reporter format-coverage -o coverage/codeclimate.$CI_JOB_NAME.json -t coverage.py coverage.xml --prefix /
     - sed "s?src/?$PWD/src/?g" coverage/codeclimate.$CI_JOB_NAME.json -i
+    - sed "s?/builds/?builds/?g" coverage/codeclimate.$CI_JOB_NAME.json -i
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp coverage s3://Testresults --recursive
 
   tags:
