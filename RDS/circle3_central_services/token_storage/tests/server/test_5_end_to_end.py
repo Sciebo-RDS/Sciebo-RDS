@@ -34,14 +34,14 @@ class test_end_to_end(unittest.TestCase):
         # prepare service
         storage = Storage()
 
-        redirect = "http://sciebords-dev.uni-muenster.de/oauth2/redirect"
+        redirect = "https://sciebords-dev.uni-muenster.de/oauth2/redirect"
         owncloud = OAuth2Service(
             "owncloud-local",
-            "http://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
+            "https://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
                 os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"),
                 redirect
             ),
-            "http://10.14.28.90/owncloud/index.php/apps/oauth2/api/v1/token",
+            "https://10.14.28.90/owncloud/index.php/apps/oauth2/api/v1/token",
             os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"),
             os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET")
         )
@@ -60,7 +60,7 @@ class test_end_to_end(unittest.TestCase):
 
             self.driver.get(owncloud.authorize_url)
 
-            if self.driver.current_url.startswith("http://10.14.28.90/owncloud/index.php/login"):
+            if self.driver.current_url.startswith("https://10.14.28.90/owncloud/index.php/login"):
                 # it redirects to login form
                 field_username = self.driver.find_element_by_xpath(
                     "//*[@id=\"user\"]")
