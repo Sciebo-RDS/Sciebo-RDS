@@ -11,13 +11,17 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   FOLDER: ./
 
+.install_cc_tester: &install_cc_tester
+  - curl -L "https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64" > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - python -m pip install awscli
+
 .tests:
   stage: test
 
   before_script:
     - cd $FOLDER
-    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-    - chmod +x ./cc-test-reporter
+    - *install_cc_tester
 
   script:
     - test -f requirements.txt && pip install -r requirements.txt
@@ -27,7 +31,6 @@ variables:
   after_script:
     - cd $FOLDER
     - ./cc-test-reporter format-coverage -o coverage/codeclimate.$CI_JOB_NAME.json -t coverage.py coverage.xml
-    - python -m pip install awscli
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp coverage s3://Testresults --recursive
 
   tags:
@@ -101,12 +104,10 @@ upload_test_coverage:
   stage: documentation
 
   before_script:
-    - curl -L "https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64" > ./cc-test-reporter
-    - chmod +x ./cc-test-reporter
+    - *install_cc_tester
 
   script:
     - mkdir coverage
-    - python -m pip install awscli
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://Testresults coverage --recursive
     - ./cc-test-reporter sum-coverage --output - coverage/*.json | ./cc-test-reporter upload-coverage --input -
 
