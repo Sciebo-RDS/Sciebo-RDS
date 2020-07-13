@@ -3,6 +3,7 @@ import Util
 import json
 import jwt
 import logging
+import base64
 
 logger = logging.getLogger()
 
@@ -14,27 +15,29 @@ def post():
     """
     try:
         master_jwt = request.json.get("jwt")
+        logger.debug("jwt: {}".format(master_jwt))
+
         unverified = jwt.decode(master_jwt, verify=False)
+        logger.debug("unverified: {}".format(unverified))
 
         servicename = unverified.get("servicename")
         service = Util.tokenService.getService(servicename, clean=True)
 
         master_data = jwt.decode(master_jwt, service.client_secret, algorithms="HS256")
-
-        logger.debug("jwt: {}, decoded: {}".format(master_jwt, master_data))
+        logger.debug("verified: {}".format(master_data))
 
         userId = master_data.get("userId")
         code = master_data.get("code")
         logger.debug("code: {}, userId: {}".format(code, userId))
 
-        state_jwt = master_data.get("state")
-        state_data = jwt.decode(state_jwt, Util.tokenService.secret, algorithms="HS256")
+        stateJWT = master_data.get("state")
+        state = jwt.decode(stateJWT, Util.tokenService.secret, algorithms="HS256")
 
-        logger.debug("state: {}, decoded state: {}".format(state_jwt, state_data))
+        logger.debug("state: {}, decoded state: {}".format(stateJWT, state))
 
         Util.tokenService.exchangeAuthCodeToAccessToken(
             code,
-            Util.tokenService.getService(state_data["servicename"], clean=True),
+            Util.tokenService.getService(state["servicename"], clean=True),
             user=userId,
         )
 

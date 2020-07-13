@@ -19,6 +19,10 @@ class Port():
         self.metadata = metadata
         self.customProperties = customProperties
 
+    @property
+    def portname(self):
+        return self.port
+
     def setProperty(self, portType, value):
         """
         Returns True, if portType was found and set to value. Otherwise false.

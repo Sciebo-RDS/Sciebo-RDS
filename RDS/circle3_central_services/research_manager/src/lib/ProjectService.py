@@ -1,11 +1,12 @@
 from lib.Project import Project
 import logging
+import requests, os
 from lib.EnumStatus import Status
 
 logger = logging.getLogger()
 
 
-class ProjectService():
+class ProjectService:
     def __init__(self):
         # format: {user: [<type project>]}
         self.projects = {}
@@ -26,11 +27,11 @@ class ProjectService():
 
         if not isinstance(userOrProject, (Project, str)):
             raise ValueError(
-                "The parameter `userOrProject` is not of type `str` or `Project`.")
+                "The parameter `userOrProject` is not of type `str` or `Project`."
+            )
 
         if isinstance(userOrProject, str):
-            userOrProject = Project(
-                userOrProject, portIn=portIn, portOut=portOut)
+            userOrProject = Project(userOrProject, portIn=portIn, portOut=portOut)
 
         researchId = self.highest_index
         self.highest_index += 1
@@ -85,6 +86,7 @@ class ProjectService():
             listOfProjects = self.projects.get(user, None)
             if listOfProjects is None:
                 from lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
+
                 raise NotFoundUserError(user, researchIndex)
 
             if researchIndex is None:
@@ -99,9 +101,12 @@ class ProjectService():
                 return listOfProjects[researchIndex]
 
         from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
+
         raise NotFoundIDError(user, researchIndex)
 
-    def removeProject(self, user: str = None, researchIndex: int = None, researchId: int = None):
+    def removeProject(
+        self, user: str = None, researchIndex: int = None, researchId: int = None
+    ):
         """
         This method removes the projects for given user. 
 
@@ -118,17 +123,23 @@ class ProjectService():
 
                 try:
                     self.projects[user][rmv_id].status = Status.DELETED
-                    #del self.projects[user][rmv_id]
+                    # del self.projects[user][rmv_id]
                 except:
-                    logger.debug("id {} not found for user {}, try to find researchIndex as index".format(
-                        researchIndex, user))
+                    logger.debug(
+                        "id {} not found for user {}, try to find researchIndex as index".format(
+                            researchIndex, user
+                        )
+                    )
 
                     try:
                         self.projects[user][researchIndex].status = Status.DELETED
-                        #del self.projects[user][researchIndex]
+                        # del self.projects[user][researchIndex]
                         return True
                     except:
-                        from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
+                        from lib.Exceptions.ProjectServiceExceptions import (
+                            NotFoundIDError,
+                        )
+
                         raise NotFoundIDError(user, researchIndex)
 
             else:
@@ -141,10 +152,13 @@ class ProjectService():
 
                     if not found:
                         raise Exception
-                    #del self.projects[user]
-                    
+                    # del self.projects[user]
+
                 except:
-                    from lib.Exceptions.ProjectServiceExceptions import NotFoundUserError
+                    from lib.Exceptions.ProjectServiceExceptions import (
+                        NotFoundUserError,
+                    )
+
                     raise NotFoundUserError(user, researchIndex)
             return True
 
@@ -157,9 +171,10 @@ class ProjectService():
 
                 try:
                     self.projects[user][rmv_id].status = Status.DELETED
-                    #del self.projects[user][rmv_id]
+                    # del self.projects[user][rmv_id]
                 except:
                     from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
+
                     raise NotFoundIDError(user, researchId)
                 return True
 
@@ -167,6 +182,7 @@ class ProjectService():
 
     def getJSON(self):
         import json
+
         return json.dumps(self.getDict())
 
     def getAllProjects(self):
@@ -192,4 +208,58 @@ class ProjectService():
         if not isinstance(obj, Project):
             return False
 
-        return (self.getDict() == obj.getDict())
+        return self.getDict() == obj.getDict()
+
+    def publish(
+        self, user: str = None, researchIndex: int = None, researchId: int = None
+    ):
+        """Publishes research in all configured export services.
+        This function implements the parameters like self.getProjects.
+        If you provide only user, then all researches will be published at once. 
+        Otherwise only the given research with Index or Id.
+
+        Args:
+            user (str, optional): Defaults to None.
+            researchIndex (int, optional): Defaults to None.
+            researchId (int, optional): Defaults to None.
+        """
+        # TODO: needs tests
+
+        def publishInPort(port, projectId):
+            url = "http://circle1-port-{}".format(str(port.portname).lower())
+            req = requests.put(
+                "{}/project/{}".format(url, projectId),
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
+            return req.status_code == 200
+
+        projects = self.getProject(
+            user=user, researchIndex=researchIndex, researchId=researchId
+        )
+        if not isinstance(projects, list):
+            projects = [projects]
+
+        for proj in projects:
+            port = proj.getPortOut()
+            researchId = proj.researchId
+
+            if not publishInPort(port, researchId):
+                return Exception(
+                    "ResearchId {} in Port {} cannot be published.".format(
+                        researchId, port
+                    )
+                )
+
+        return True
+    
+    def removeUser(self, user: str):
+        """Removes user and all projects.
+
+        Args:
+            user (str): The username, which should be removed.
+        """
+        if  self.projects.get(user) is not None:
+            del self.projects[user]
+            return True
+        
+        return False

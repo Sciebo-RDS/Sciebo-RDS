@@ -7,8 +7,9 @@ use OCP\IURLGenerator;
 use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
+use \OCA\RDS\Service\UrlService;
 
-class PersonalPanel implements ISettings
+class AdminPanel implements ISettings
 {
 
     /**
@@ -25,14 +26,21 @@ class PersonalPanel implements ISettings
      */
     protected $urlGenerator;
 
+    /**
+     * @var UrlService
+     */
+    protected $urlService;
+
     public function __construct(
         ClientMapper $clientMapper,
         IUserSession $userSession,
-        IURLGenerator $urlGenerator
+        IURLGenerator $urlGenerator,
+        UrlService $urlService
     ) {
         $this->clientMapper = $clientMapper;
         $this->userSession = $userSession;
         $this->urlGenerator = $urlGenerator;
+        $this->urlService = $urlService;
     }
 
     public function getSectionID()
@@ -46,10 +54,11 @@ class PersonalPanel implements ISettings
     public function getPanel()
     {
         $userId = $this->userSession->getUser()->getUID();
-        $t = new Template('rds', 'settings-personal');
+        $t = new Template('rds', 'settings-admin');
         $t->assign('clients', $this->clientMapper->findByUser($userId));
         $t->assign('user_id', $userId);
         $t->assign('urlGenerator', $this->urlGenerator);
+        $t->assign("cloudURL", $this->urlService->getURL());
         return $t;
     }
 
@@ -57,5 +66,4 @@ class PersonalPanel implements ISettings
     {
         return 20;
     }
-
 }

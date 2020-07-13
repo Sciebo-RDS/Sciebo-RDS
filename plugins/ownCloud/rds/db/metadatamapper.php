@@ -4,56 +4,58 @@ namespace OCA\RDS\Db;
 
 use \OCA\RDS\Db\Metadata;
 use \OCA\RDS\Service\NotFoundException;
+use \OCA\RDS\Service\UrlService;
 
 class MetadataMapper
 {
-    private $rdsURL = 'https://sciebords-dev.uni-muenster.de/metadata';
+  private $urlService;
 
-    public function __construct()
-    {
+  public function __construct($urlService)
+  {
+    $this->urlService = $urlService;
+  }
+
+  public function update($metadata)
+  {
+    $curl = curl_init($this->urlService->getMetadataURL() . '/user/' . $metadata->getUserId() . '/research/' . $metadata->getResearchIndex());
+    $options = [CURLOPT_RETURNTRANSFER => true];
+    curl_setopt_array($curl, $options);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($metadata->getMetadata()));
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    // Set the content type to application/json
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+
+    $response = json_decode(curl_exec($curl));
+    $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+
+    if ($httpcode >= 300) {
+      return NULL;
     }
 
-    public function update($metadata)
-    {
-        $curl = curl_init($this->rdsURL . '/user/' . $metadata->getUserId() . '/research/' . $metadata->getResearchIndex());
-        $options = [CURLOPT_RETURNTRANSFER => true];
-        curl_setopt_array($curl, $options);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($metadata->getMetadata()));
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        // Set the content type to application/json
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+    return true;
+  }
 
-        $response = json_decode(curl_exec($curl));
-        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
+  public function find($userId, $researchIndex, $port)
+  {
+    $metadatas = $this->findAll($userId, $researchIndex);
 
-        if ($httpcode >= 300) {
-            return NULL;
-        }
-
-        return true;
+    foreach ($metadatas as $md) {
+      if ($md->port == $port) {
+        return $md;
+      }
     }
 
-    public function find($userId, $researchIndex, $port)
-    {
-        $metadatas = $this->findAll($userId, $researchIndex);
+    throw new NotFoundException('No metadata for ' . $port . ' found.');
+  }
 
-        foreach ($metadatas as $md) {
-            if ($md->port == $port) {
-                return $md;
-            }
-        }
-
-        throw new NotFoundException('No metadata for ' . $port . ' found.');
-    }
-
-    public function jsonschema()
-    {
-        return json_encode([
-            "kernelversion" => "custom",
-            "schema" => '{
+  public function jsonschema()
+  {
+    return json_encode([
+      "kernelversion" => "custom",
+      "schema" => '{
                 "additionalProperties": false,
                 "description": "Describe information needed for deposit module.",
                 "id": "http://zenodo.org/schemas/deposits/records/legacyjson.json",
@@ -185,58 +187,58 @@ class MetadataMapper
                 "title": "Zenodo Legacy Deposit Schema v1.0.0",
                 "type": "object"
               }'
-        ]);
+    ]);
 
-        $url = $this->rdsURL . '/jsonschema';
+    $url = $this->urlService->getMetadataURL() . '/jsonschema';
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        $result = curl_exec($curl);
-        $response = json_decode($result, true);
-        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    $result = curl_exec($curl);
+    $response = json_decode($result, true);
+    $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
 
-        if ($httpcode >= 300) {
-            return NULL;
-        }
-
-        return $result;
+    if ($httpcode >= 300) {
+      return NULL;
     }
 
-    public function findAll($userId, $researchIndex)
-    {
-        $url = $this->rdsURL . '/user/' . $userId . '/research/' . $researchIndex;
+    return $result;
+  }
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        $result = curl_exec($curl);
-        $response = json_decode($result, true);
-        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
+  public function findAll($userId, $researchIndex)
+  {
+    $url = $this->urlService->getMetadataURL() . '/user/' . $userId . '/research/' . $researchIndex;
 
-        if ($httpcode >= 300) {
-            return NULL;
-        }
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    $result = curl_exec($curl);
+    $response = json_decode($result, true);
+    $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
 
-        $result = [];
-
-        foreach ($response['list'] as $rdsMetadata) {
-            $metadata = new Metadata();
-
-            $metadata->setUserId($userId);
-            $metadata->setResearchIndex($researchIndex);
-            $metadata->setPort($rdsMetadata['port']);
-            $metadata->setMetadata($rdsMetadata['metadata']);
-
-            $result[] = $metadata;
-        }
-
-        return $result;
+    if ($httpcode >= 300) {
+      return NULL;
     }
+
+    $result = [];
+
+    foreach ($response['list'] as $rdsMetadata) {
+      $metadata = new Metadata();
+
+      $metadata->setUserId($userId);
+      $metadata->setResearchIndex($researchIndex);
+      $metadata->setPort($rdsMetadata['port']);
+      $metadata->setMetadata($rdsMetadata['metadata']);
+
+      $result[] = $metadata;
+    }
+
+    return $result;
+  }
 }

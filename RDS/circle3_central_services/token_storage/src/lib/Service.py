@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger()
 
 
-class Service():
+class Service:
     """
     Represents a service, which can be used in RDS.
     This service only allows username:password authentication.
@@ -44,10 +44,7 @@ class Service():
         pass
 
     def __eq__(self, obj):
-        return (
-            isinstance(obj, (Service)) and
-            self.servicename == obj.servicename
-        )
+        return isinstance(obj, (Service)) and self.servicename == obj.servicename
 
     def __str__(self):
         return json.dumps(self)
@@ -57,10 +54,7 @@ class Service():
         Returns this object as a json string.
         """
 
-        data = {
-            "type": self.__class__.__name__,
-            "data": self.to_dict()
-        }
+        data = {"type": self.__class__.__name__, "data": self.to_dict()}
         return data
 
     def to_dict(self):
@@ -68,10 +62,7 @@ class Service():
         Returns this object as a dict.
         """
 
-        data = {
-            "servicename": self._servicename,
-            "implements": self._implements
-        }
+        data = {"servicename": self._servicename, "implements": self._implements}
 
         return data
 
@@ -82,7 +73,9 @@ class Service():
         """
 
         data = serviceStr
-        while type(data) is not dict:  # FIX for bug: JSON.loads sometimes returns a string
+        while (
+            type(data) is not dict
+        ):  # FIX for bug: JSON.loads sometimes returns a string
             data = json.loads(data)
 
         if "type" in data and str(data["type"]).endswith("Service") and "data" in data:
@@ -117,7 +110,13 @@ class Service():
         from Util import try_function_on_dict
 
         load = try_function_on_dict(
-            [OAuth2Service.from_json, Service.from_json, OAuth2Service.from_dict, Service.from_dict])
+            [
+                OAuth2Service.from_json,
+                Service.from_json,
+                OAuth2Service.from_dict,
+                Service.from_dict,
+            ]
+        )
         return load(obj)
 
 
@@ -132,7 +131,15 @@ class OAuth2Service(Service):
     _client_id = None
     _client_secret = None
 
-    def __init__(self, servicename: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str, implements: list = None):
+    def __init__(
+        self,
+        servicename: str,
+        authorize_url: str,
+        refresh_url: str,
+        client_id: str,
+        client_secret: str,
+        implements: list = None,
+    ):
         super(OAuth2Service, self).__init__(servicename, implements)
 
         self.check_string(authorize_url, "authorize_url")
@@ -171,15 +178,21 @@ class OAuth2Service(Service):
         data = {
             "grant_type": "refresh_token",
             "refresh_token": token.refresh_token,
-            "redirect_uri": "{}/redirect".format(os.getenv("FLASK_HOST_ADDRESS", "http://localhost:3000")),
+            "redirect_uri": "{}/redirect".format(
+                os.getenv("FLASK_HOST_ADDRESS", "http://localhost:3000")
+            ),
             "client_id": self.client_id,
             "client_secret": self.client_secret,
         }
 
         logger.debug(f"send data {data}")
 
-        req = requests.post(self.refresh_url, data=data,
-                            auth=(self.client_id, self.client_secret))
+        req = requests.post(
+            self.refresh_url,
+            data=data,
+            auth=(self.client_id, self.client_secret),
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        )
 
         logger.debug(f"status code: {req.status_code}")
 
@@ -191,21 +204,27 @@ class OAuth2Service(Service):
 
                 if error_type == "invalid_request":
                     from .Exceptions.ServiceException import OAuth2InvalidRequestError
+
                     raise OAuth2InvalidRequestError()
                 elif error_type == "invalid_client":
                     from .Exceptions.ServiceException import OAuth2InvalidClientError
+
                     raise OAuth2InvalidClientError()
                 elif error_type == "invalid_grant":
                     from .Exceptions.ServiceException import OAuth2InvalidGrantError
+
                     raise OAuth2InvalidGrantError()
                 elif error_type == "unauthorized_client":
                     from .Exceptions.ServiceException import OAuth2UnauthorizedClient
+
                     raise OAuth2UnauthorizedClient()
                 elif error_type == "unsupported_grant_type":
                     from .Exceptions.ServiceException import OAuth2UnsupportedGrantType
+
                     raise OAuth2UnsupportedGrantType()
 
             from .Exceptions.ServiceException import OAuth2UnsuccessfulResponseError
+
             raise OAuth2UnsuccessfulResponseError()
 
         data = json.loads(req.text)
@@ -220,8 +239,9 @@ class OAuth2Service(Service):
         """
 
         date = datetime.now() + timedelta(seconds=data["expires_in"])
-        new_token = OAuth2Token(token.user, token.service,
-                                data["access_token"], data["refresh_token"], date)
+        new_token = OAuth2Token(
+            token.user, token.service, data["access_token"], data["refresh_token"], date
+        )
         logger.debug(f"new token {new_token}")
         return new_token
 
@@ -242,22 +262,33 @@ class OAuth2Service(Service):
         return self._client_secret
 
     @classmethod
-    def from_service(cls, service: Service, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
+    def from_service(
+        cls,
+        service: Service,
+        authorize_url: str,
+        refresh_url: str,
+        client_id: str,
+        client_secret: str,
+    ):
         """
         Converts the given Service to an oauth2service.
         """
-        return cls(service.servicename, authorize_url, refresh_url, client_id, client_secret, service.implements)
+        return cls(
+            service.servicename,
+            authorize_url,
+            refresh_url,
+            client_id,
+            client_secret,
+            service.implements,
+        )
 
     def __eq__(self, obj):
-        return (
-            super(OAuth2Service, self).__eq__(obj) or
-            (
-                isinstance(obj, (OAuth2Service)) and
-                self.refresh_url == obj.refresh_url and
-                self.authorize_url == obj.authorize_url and
-                self.client_id == obj.client_id and
-                self.client_secret == obj.client_secret
-            )
+        return super(OAuth2Service, self).__eq__(obj) or (
+            isinstance(obj, (OAuth2Service))
+            and self.refresh_url == obj.refresh_url
+            and self.authorize_url == obj.authorize_url
+            and self.client_id == obj.client_id
+            and self.client_secret == obj.client_secret
         )
 
     def __repr__(self):
@@ -294,14 +325,22 @@ class OAuth2Service(Service):
         """
 
         data = serviceStr
-        while type(data) is not dict:  # FIX for bug: JSON.loads sometimes returns a string
+        while (
+            type(data) is not dict
+        ):  # FIX for bug: JSON.loads sometimes returns a string
             data = json.loads(data)
 
         service = super(OAuth2Service, cls).from_json(serviceStr)
 
         try:
             data = data["data"]
-            return cls.from_service(service, data["authorize_url"], data["refresh_url"], data["client_id"], data["client_secret"])
+            return cls.from_service(
+                service,
+                data["authorize_url"],
+                data["refresh_url"],
+                data["client_id"],
+                data["client_secret"],
+            )
         except:
             raise ValueError("not a valid oauthservice json string.")
 
@@ -314,6 +353,12 @@ class OAuth2Service(Service):
         service = super(OAuth2Service, cls).from_dict(serviceDict)
 
         try:
-            return OAuth2Service.from_service(service, serviceDict["authorize_url"], serviceDict["refresh_url"], serviceDict["client_id"], serviceDict["client_secret"])
+            return OAuth2Service.from_service(
+                service,
+                serviceDict["authorize_url"],
+                serviceDict["refresh_url"],
+                serviceDict["client_id"],
+                serviceDict["client_secret"],
+            )
         except:
             raise ValueError("not a valid oauthservice dict.")

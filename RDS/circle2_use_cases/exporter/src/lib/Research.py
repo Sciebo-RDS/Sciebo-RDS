@@ -2,15 +2,17 @@ from lib.Service import Service
 from pathos.multiprocessing import ProcessingPool as Pool
 import requests
 import logging
+import zipfile
+from io import BytesIO
+import os
 
 logger = logging.getLogger()
 
 
-class Research():
+class Research:
     def __init__(self, userId=None, researchIndex=None, researchId=None, testing=False):
         if (userId is None or researchIndex is None) and researchId is None:
-            raise ValueError(
-                "(userId or researchIndex) and researchId are None.")
+            raise ValueError("(userId or researchIndex) and researchId are None.")
 
         self.importServices = []
         self.exportServices = []
@@ -25,32 +27,48 @@ class Research():
         self.applyChanges = True
 
         self.testing = testing
-        self.address = "http://circle3-research-manager" if testing is False else testing
+        self.address = (
+            "http://circle3-research-manager" if testing is False else testing
+        )
 
         self.reload()
 
     def reload(self):
         req = requests.get(
-            f"{self.address}/research/user/{self.userId}/research/{self.researchIndex}")
+            f"{self.address}/research/user/{self.userId}/research/{self.researchIndex}",
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        )
 
         json = req.json()
 
         self.importServices = []
         for port in json.get("portIn"):
-            svc = Service.fromDict(port, userId=self.userId,
-                                   researchIndex=self.researchIndex, testing=self.testing)
+            svc = Service.fromDict(
+                port,
+                userId=self.userId,
+                researchIndex=self.researchIndex,
+                testing=self.testing,
+            )
             self.importServices.append(svc)
 
         self.exportServices = []
         for port in json.get("portOut"):
-            svc = Service.fromDict(port, userId=self.userId,
-                                   researchIndex=self.researchIndex, testing=self.testing)
+            svc = Service.fromDict(
+                port,
+                userId=self.userId,
+                researchIndex=self.researchIndex,
+                testing=self.testing,
+            )
             self.exportServices.append(svc)
 
         self.status = json.get("status")
 
-        logger.debug("import: {},\nexport: {}".format([x.getJSON(
-        ) for x in self.importServices], [x.getJSON() for x in self.exportServices]))
+        logger.debug(
+            "import: {},\nexport: {}".format(
+                [x.getJSON() for x in self.importServices],
+                [x.getJSON() for x in self.exportServices],
+            )
+        )
 
         return True
 
@@ -86,14 +104,65 @@ class Research():
         for svc in self.importServices:
             logger.debug("import service: {}".format(svc.getJSON()))
 
-            for fileTuple in svc.getFiles(getContent=True):
-                logger.debug("file: {}, content: {}".format(
-                    fileTuple[0], fileTuple[1]))
-                self.addFile(*fileTuple)
+            useZipForContent = False
 
-    def addFile(self, *args, **kwargs):
+            if isFolderInFiles(svc.getFiles()):
+                logger.debug("use zipfile, because the folder holds folders again")
+                useZipForContent = True
+
+            if useZipForContent:
+                mem_zip = BytesIO()
+                zip = zipfile.ZipFile(
+                    mem_zip, mode="w", compression=zipfile.ZIP_STORED
+                )
+
+            for fileTuple in svc.getFiles(getContent=True):
+                logger.debug(
+                    "file: {}, contentlength: {}".format(
+                        fileTuple[0], fileTuple[1].getbuffer().nbytes
+                    )
+                )
+
+                # TODO: needs tests
+                if useZipForContent:
+                    zip.writestr(fileTuple[0], fileTuple[1].read())
+
+                # useZipForContent skips services, which needs zip, if folder in folder found.
+                self.addFile(folderInFolder=useZipForContent, *fileTuple)
+
+            if useZipForContent:
+                import re
+
+                def urlify(s):
+
+                    # Remove all non-word characters (everything except numbers and letters)
+                    s = re.sub(r"[^\w\s]", "", s)
+
+                    # Replace all runs of whitespace with a single dash
+                    s = re.sub(r"\s+", "-", s)
+
+                    return s
+
+                zip.close()
+                
+                results = [
+                    exportSvc.addFile(
+                        "{}_{}.zip".format(svc.servicename, urlify(svc.getFilepath())),
+                        mem_zip,
+                    )
+                    for exportSvc in self.exportServices
+                    if exportSvc.zipForFolder
+                ]
+
+
+    def addFile(self, *args, folderInFolder=False, **kwargs):
         """
         Wrapper function to call addFile in all export services objects with parameters.
+
+        folderInFolder (bool): Only if folderInFolder is True, then it will be checked, if service needs a zip for folders in folder upload.
+
+        Returns:
+            list: Returns list of booleans, if it succeeds or not. The order follows the self.exportServices order.
         """
         logger.debug("args: {}, kwargs: {}".format(args, kwargs))
 
@@ -106,7 +175,11 @@ class Research():
                      len(self.exportServices), argRight*len(self.exportServices))
         """
 
-        return [svc.addFile(*args, **kwargs) for svc in self.exportServices]
+        return [
+            svc.addFile(*args, **kwargs)
+            for svc in self.exportServices
+            if not (folderInFolder and svc.zipForFolder)
+        ]
 
     def removeAllFiles(self):
         """
@@ -147,4 +220,18 @@ class Research():
     def getFiles(self):
         from functools import reduce
 
-        return list(set(reduce(lambda x, y: x + y, [svc.getFiles() for svc in self.importServices])))
+        return list(
+            set(
+                reduce(
+                    lambda x, y: x + y, [svc.getFiles() for svc in self.importServices]
+                )
+            )
+        )
+
+
+def isFolderInFiles(files):
+    for file in files:
+        if "/" in file or "\\" in file:
+            return True
+
+    return False

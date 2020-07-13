@@ -22,8 +22,11 @@ class test_end_to_end(unittest.TestCase):
 
     def setUp(self):
         server = "http://selenium:4444/wd/hub"
+        desired_capabilities = DesiredCapabilities.FIREFOX.copy()
+        desired_capabilities['acceptInsecureCerts'] = True
+
         self.driver = webdriver.Remote(command_executor=server,
-                                       desired_capabilities=DesiredCapabilities.FIREFOX)
+                                       desired_capabilities=desired_capabilities)
         self.driver.implicitly_wait(5)
 
     def tearDown(self):
@@ -34,7 +37,7 @@ class test_end_to_end(unittest.TestCase):
         # prepare service
         storage = Storage()
 
-        redirect = "https://sciebords-dev.uni-muenster.de/oauth2/redirect"
+        redirect = "https://10.14.28.90/owncloud/index.php/apps/rds/oauth"
         owncloud = OAuth2Service(
             "owncloud-local",
             "https://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
@@ -92,7 +95,7 @@ class test_end_to_end(unittest.TestCase):
             }
 
             req = requests.post(owncloud.refresh_url, data=data, auth=(
-                owncloud.client_id, owncloud.client_secret)).json()
+                owncloud.client_id, owncloud.client_secret), verify=False).json()
             oauthtoken = OAuth2Token(
                 user, token.service, req["access_token"], req["refresh_token"], datetime.now() + timedelta(seconds=req["expires_in"]))
             return oauthtoken

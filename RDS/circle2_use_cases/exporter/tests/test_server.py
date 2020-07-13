@@ -48,6 +48,7 @@ class TestServiceExporter(unittest.TestCase):
 
         Test_Research.requestResearchGET(pact, userId, researchIndex, research)
         Test_Service.requestStorageFolderGET(pact, "/", userId, expected_files)
+        Test_Service.zipStatusGET(pact, "port-zenodo", True)
 
         with pact:
             resp = self.client.get(

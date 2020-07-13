@@ -1,9 +1,11 @@
 from jsonschema import validate
 import requests
-import json
+import json, os
 
 schema = requests.get(
-    "https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.2/datacite_4.2_schema.json").json()
+    "https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.2/datacite_4.2_schema.json",
+    verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+).json()
 
 """
 This class represents a valid datacite metadata collection.
@@ -21,6 +23,8 @@ Access Creators Attribute:
 Get ZenodoApi Metadata schema:
     `dc.toZenodoApi()`
 """
+
+
 class Datacite:
     def __init__(self, dataciteMetadata):
         validate(instance=dataciteMetadata, schema=schema)

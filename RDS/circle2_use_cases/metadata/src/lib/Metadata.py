@@ -1,5 +1,5 @@
 import requests
-import logging, json
+import logging, json, os
 from lib.Research import Research
 from lib.Util import loadAccessToken
 
@@ -98,11 +98,13 @@ class Metadata:
             req = requests.get(
                 f"http://{self.getPortString(port)}/metadata/project/{projectId}",
                 json=apiKeyMetadata,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
             )
 
         else:
             req = requests.get(
-                f"http://{self.getPortString(port)}/metadata/project/{projectId}"
+                f"http://{self.getPortString(port)}/metadata/project/{projectId}",
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
             )
 
         if req.status_code == 200:
@@ -177,6 +179,7 @@ class Metadata:
             f"http://{self.getPortString(port)}/metadata/project/{projectId}",
             data=json.dumps(updateMetadata),
             headers=headers,
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         if req.status_code >= 300:
