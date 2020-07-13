@@ -3,7 +3,7 @@
 namespace OCA\RDS\AppInfo;
 
 $application = new Application();
-$application->registerRoutes( $this, [
+$application->registerRoutes($this, [
     'resources' => [
         # Research resource API Endpoints, full CRUD
         'research' => ['url' => '/research'],
@@ -28,10 +28,12 @@ $application->registerRoutes( $this, [
         # Research additional API endpoint
         ['name' => 'research#filesIndex',                     'url' => '/research/files',                  'verb' => 'GET'],
         ['name' => 'research#filesIndexUpload',               'url' => '/research/files',                  'verb' => 'POST'],
+        ['name' => 'research#deleteUser',                     'url' => '/research',                        'verb' => 'DELETE'],
         ['name' => 'research#filesGet',                       'url' => '/research/{id}/files',             'verb' => 'GET'],
         ['name' => 'research#filesTrigger',                   'url' => '/research/{id}/files',             'verb' => 'POST'],
         ['name' => 'research#filesSettingsGet',               'url' => '/research/{id}/settings',          'verb' => 'GET'],
         ['name' => 'research#filesSettingsUpdate',            'url' => '/research/{id}/settings',          'verb' => 'PUT'],
+        ['name' => 'research#publish',                        'url' => '/research/{id}/publish',           'verb' => 'PUT'],
 
         # User Service resource API Endpoints, only index/show/delete
         ['name' => 'projects#index',            'url' => '/userservice/{servicename}/projects',             'verb' => 'GET'],
@@ -39,8 +41,7 @@ $application->registerRoutes( $this, [
         ['name' => 'projects#create',           'url' => '/userservice/{servicename}/projects',             'verb' => 'POST'],
         ['name' => 'projects#destroy',          'url' => '/userservice/{servicename}/projects/{id}',        'verb' => 'DELETE'],
 
-        # TODO: needs to be implemented, and use c2-port-service/exchange endpoint to trigger oauth2-workflow
-        ['name' => 'oauth#register',            'url'=> '/oauth',                                           'verb'=>'GET']
+        ['name' => 'Userservice#register',      'url' => '/oauth',                                          'verb' => 'GET']
 
     ]
-] );
+]);

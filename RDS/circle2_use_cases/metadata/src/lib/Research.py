@@ -1,16 +1,22 @@
 import requests
-import logging
+import logging, os
 
 logger = logging.getLogger()
 
 
-class Research():
+class Research:
     """
     This class enables metadataservice to reuse requests and let it easier to use.
     *Currently* only for get requests.
     """
 
-    def __init__(self, userId: str = None, researchIndex: int = None, researchId: int = None, testing: str = None):
+    def __init__(
+        self,
+        userId: str = None,
+        researchIndex: int = None,
+        researchId: int = None,
+        testing: str = None,
+    ):
         """
         This constructor loads all research relevant informations.
 
@@ -23,7 +29,8 @@ class Research():
             self.researchManager = testing
 
         self.researchObj = self.reload(
-            userId=userId, researchIndex=researchIndex, researchId=researchId)
+            userId=userId, researchIndex=researchIndex, researchId=researchId
+        )
 
     @property
     def researchId(self):
@@ -100,7 +107,9 @@ class Research():
         """
         return self.getPorts()
 
-    def reload(self, userId: str = None, researchIndex: int = None, researchId: int = None):
+    def reload(
+        self, userId: str = None, researchIndex: int = None, researchId: int = None
+    ):
         """
         This method catches the research information from the central service research manager.
         userId and researchIndex are only used together. You can provide researchId,
@@ -109,14 +118,18 @@ class Research():
 
         if researchId is not None:
             req = requests.get(
-                f"http://{self.researchManager}/research/id/{researchId}")
+                f"http://{self.researchManager}/research/id/{researchId}",
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
 
             if req.status_code == 200:
                 return req.json()
 
         if userId is not None and researchIndex is not None:
             req = requests.get(
-                f"http://{self.researchManager}/research/user/{userId}/research/{researchIndex}")
+                f"http://{self.researchManager}/research/user/{userId}/research/{researchIndex}",
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
 
             if req.status_code < 300:
                 return req.json()
@@ -125,4 +138,5 @@ class Research():
             return {}
 
         raise ValueError(
-            "userId and researchIndex or researchId are needed parameters.")
+            "userId and researchIndex or researchId are needed parameters."
+        )

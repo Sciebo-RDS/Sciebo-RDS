@@ -125,6 +125,16 @@ paths:
                       resourceType: ''
                       resourceTypeGeneral: Poster
         description: The given body has to be valid against the datacite jsonschema (without required fields).
+    put:
+      summary: ''
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Continue
+      description: |-
+        Publishes the project, if possible.
+        This will disable any future changes to the given projectId.
   '/project/{project-id}/files':
     parameters:
       - schema:
@@ -297,6 +307,21 @@ paths:
                   type: string
                 userId:
                   type: string
+  /zip:
+    get:
+      summary: Is zip needed for folder in folder?
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  needsZip:
+                    type: boolean
+      description: 'Returns, if it is needed to use zip files for folder in folder data upload.'
 components:
   schemas:
     File:

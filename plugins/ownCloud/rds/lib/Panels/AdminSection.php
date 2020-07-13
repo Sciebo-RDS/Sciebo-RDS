@@ -5,7 +5,7 @@ namespace OCA\RDS\Panels;
 use OCP\IL10N;
 use OCP\Settings\ISection;
 
-class PersonalSection implements ISection {
+class AdminSection implements ISection {
 	/** @var IL10N  $l*/
 	protected $l;
 

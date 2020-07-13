@@ -51,7 +51,6 @@
 
     save: function () {
       return this._saveFn()
-        .done(function () { })
         .fail(function () {
           OC.dialogs.alert(
             t("rds", "Your entries could not be saved."),
@@ -237,14 +236,27 @@
       );
     });
 
+
     $("#app-content #btn-save-research").click(function () {
+      self.save()
+    });
+
+    $("#app-content #btn-save-research-and-continue").click(function () {
+      self.save_next();
+    });
+  };
+
+  OC.rds.ServiceTemplate.prototype._saveFn = function () {
+    var self = this;
+    self.data = {};
+
+    var checkIfProjectCreate = function () {
       var btns = $(".radiobutton-new-project");
       var deferreds = [];
       console.log(btns);
 
       function createProject(servicename, radio) {
         var deferred = $.Deferred();
-        var self = this;
         $.ajax({
           url: OC.generateUrl(
             "/apps/rds/userservice/" + servicename + "/projects"
@@ -253,8 +265,16 @@
         })
           .done(function (proj) {
             console.log(proj);
-            radio.val(proj.projectId);
-            deferred.resolve();
+            radio.data("value", proj.projectId);
+            self._services.loadUser().done(function () {
+              self._view.render();
+              var btn = $($("input[name='radiobutton-" + servicename + "']")[0])
+              btn.prop("checked", true);
+              btn.data("value", proj.projectId);
+              self.data[servicename] = proj.projectId;
+              console.log("projectId in self.data " + servicename + ": " + self.data[servicename]);
+            })
+            deferred.resolve(proj.projectId);
           })
           .fail(function () {
             deferred.reject();
@@ -272,100 +292,100 @@
         }
       });
 
-      $.when.apply($, deferreds).always(function () {
-        self._services.loadUser().always(function () {
-          self.save();
-          self._view.render();
-        });
-      });
-    });
+      return $.when.apply($, deferreds);
+    }
 
-    $("#app-content #btn-save-research-and-continue").click(function () {
-      self.save_next();
-    });
-  };
-  OC.rds.ServiceTemplate.prototype._saveFn = function () {
-    var self = this;
-    var portIn = [];
-    var portOut = [];
+    return checkIfProjectCreate().then(function () {
+      var portIn = [];
+      var portOut = [];
 
-    self._services.getAll().forEach(function (element) {
-      var properties = [];
-      var tempPortIn = {};
-      var tempPortOut = {};
+      self._services.getAll().forEach(function (element) {
+        var properties = [];
+        var tempPortIn = {};
+        var tempPortOut = {};
 
-      var portName = element.servicename;
-      if (!portName.startsWith("port-")) {
-        portName = "port-" + portName.toLowerCase();
-      }
+        var portName = element.servicename;
+        if (!portName.startsWith("port-")) {
+          portName = "port-" + portName.toLowerCase();
+        }
 
-      tempPortIn["port"] = portName;
-      tempPortOut["port"] = portName;
+        tempPortIn["port"] = portName;
+        tempPortOut["port"] = portName;
 
-      var valProp = [];
+        var valProp = [];
 
-      var projectId = $(
-        "input[name='radiobutton-" + element.servicename + "']:checked"
-      ).val();
+        var tmpRadio = $("input[name='radiobutton-" + element.servicename + "']:checked");
+        var projectId = tmpRadio.data("value");
+        console.log("projectId " + projectId)
+        console.log(self.data)
 
-      if (projectId !== undefined) {
-        valProp.push({
-          key: "projectId",
-          value: projectId,
-        });
-      }
+        if ((projectId === "on" || typeof projectId === "undefined") && element.servicename in self.data) {
+          projectId = self.data[element.servicename]
+          console.log("projectId in self.data " + element.servicename + ": " + self.data[servicename]);
+        }
+        console.log("projectId " + projectId)
 
-      var filePathObj = $("#fileStorage-path-" + element.servicename);
-      if (filePathObj.length) {
-        var filepath = filePathObj.html().trim();
-        if (filepath !== undefined) {
+        if (projectId !== undefined) {
           valProp.push({
-            key: "filepath",
-            value: filepath,
+            key: "projectId",
+            value: projectId.toString(),
           });
         }
-      }
 
-      properties.push({
-        portType: "customProperties",
-        value: valProp,
+        console.log(valProp)
+
+        var filePathObj = $("#fileStorage-path-" + element.servicename);
+        if (filePathObj.length) {
+          var filepath = filePathObj.html().trim();
+          if (filepath !== undefined) {
+            valProp.push({
+              key: "filepath",
+              value: filepath,
+            });
+          }
+        }
+
+        properties.push({
+          portType: "customProperties",
+          value: valProp,
+        });
+
+        $.each(
+          $(
+            "input[name='checkbox-" + element.servicename + "-property']:checked"
+          ),
+          function () {
+            var val = $(this).data("value");
+
+            var property = {};
+            property["portType"] = val;
+            property["value"] = true;
+            properties.push(property);
+          }
+        );
+
+        tempPortIn["properties"] = properties;
+        tempPortOut["properties"] = properties;
+
+        if (
+          $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
+            "checked"
+          ) === true
+        ) {
+          portIn.push(tempPortIn);
+        }
+
+        if (
+          $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
+            "checked"
+          ) === true
+        ) {
+          portOut.push(tempPortOut);
+        }
       });
 
-      $.each(
-        $(
-          "input[name='checkbox-" + element.servicename + "-property']:checked"
-        ),
-        function () {
-          var val = $(this).val();
-
-          var property = {};
-          property["portType"] = val;
-          property["value"] = true;
-          properties.push(property);
-        }
-      );
-
-      tempPortIn["properties"] = properties;
-      tempPortOut["properties"] = properties;
-
-      if (
-        $('input[id="checkbox-' + element.servicename + '-ingoing"]').prop(
-          "checked"
-        ) === true
-      ) {
-        portIn.push(tempPortIn);
-      }
-
-      if (
-        $('input[id="checkbox-' + element.servicename + '-outgoing"]').prop(
-          "checked"
-        ) === true
-      ) {
-        portOut.push(tempPortOut);
-      }
+      return self._studies.updateActive(portIn, portOut)
     });
-
-    return self._studies.updateActive(portIn, portOut);
   };
 
   OC.rds.MetadataTemplate = function (divName, view, studies, services) {
@@ -450,8 +470,12 @@
     });
 
     $("#btn-sync-files").click(function () {
+
       self._view._files.load(self._studies.getActive().researchIndex);
-      self._view._files.triggerSync();
+      self._view._files.triggerSync().done(function () {
+        console.log("done")
+      });
+
       OC.dialogs.alert(
         t("rds", "Your files will be synchronize within 2 minutes."),
         t("rds", "RDS Update project")
@@ -459,18 +483,32 @@
     });
 
     $("#btn-finish-research").click(function () {
-      self._studies
-        .removeActive()
-        .done(function () {
-          self._view._stateView = 0;
-          self._view.render();
-        })
-        .fail(function () {
-          OC.dialogs.alert(
-            t("Could not close this research."),
-            t("rds", "RDS Update project")
-          );
-        });
+      OC.dialogs.confirm(
+        t("rds", "Are you sure, that you want to close the research {researchIndex}?", {
+          researchIndex: self._studies.getActive().researchIndex + 1,
+        }),
+        t("rds", "RDS Update project"),
+        function (confirmation) {
+          {
+            if (confirmation == false) {
+              return;
+            }
+
+            self._studies
+              .publishActive()
+              .done(function () {
+                self._view._stateView = 0;
+                self._view.render();
+              })
+              .fail(function () {
+                OC.dialogs.alert(
+                  t("Could not close this research."),
+                  t("rds", "RDS Update project")
+                );
+              });
+          }
+        }
+      );
     });
   };
   OC.rds.FileTemplate.prototype._getParams = function () { };

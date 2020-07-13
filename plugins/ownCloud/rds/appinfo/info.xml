@@ -16,9 +16,11 @@
     <bugs>https://github.com/Sciebo-RDS/Sciebo-RDS/issues</bugs>
     <settings>
         <personal>OCA\RDS\Panels\PersonalPanel</personal>
+        <admin>OCA\RDS\Panels\AdminPanel</admin>
     </settings>
      <settings-sections>
         <personal>OCA\RDS\Panels\PersonalSection</personal>
+        <admin>OCA\RDS\Panels\AdminSection</admin>
     </settings-sections>
 </info>
 

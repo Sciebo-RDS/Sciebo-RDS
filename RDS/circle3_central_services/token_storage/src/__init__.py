@@ -1,4 +1,3 @@
-
 """ Module that monkey-patches json module when it's imported so
 JSONEncoder.default() automatically checks for a special "to_json()"
 method and uses it to encode the object if found.
@@ -9,12 +8,12 @@ from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 from jaeger_client import Config as jConfig
 from connexion_plus import App, MultipleResourceResolver, Util
 
-import logging
+import logging, os
 
-log_level = logging.DEBUG
-logger = logging.getLogger('')
-logging.getLogger('').handlers = []
-logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
+log_level = os.environ.get("LOGLEVEL", "DEBUG")
+logger = logging.getLogger("")
+logging.getLogger("").handlers = []
+logging.basicConfig(format="%(asctime)s %(message)s", level=log_level)
 
 
 def monkeypatch():
@@ -32,15 +31,20 @@ def monkeypatch():
 
 
 monkeypatch()
-def bootstrap(name='MicroService', *args, **kwargs):
+
+
+def bootstrap(name="MicroService", *args, **kwargs):
     monkeypatch()
     list_openapi = Util.load_oai("central-service_token-storage.yml")
 
     app = App(name, *args, **kwargs)
 
     for oai in list_openapi:
-        app.add_api(oai, resolver=MultipleResourceResolver(
-            'api', collection_endpoint_name="index"), validate_responses=True)
+        app.add_api(
+            oai,
+            resolver=MultipleResourceResolver("api", collection_endpoint_name="index"),
+            validate_responses=True,
+        )
 
     # init token storage
     ServerUtil.storage = Storage()

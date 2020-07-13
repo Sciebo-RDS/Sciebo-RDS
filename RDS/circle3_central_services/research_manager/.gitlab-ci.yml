@@ -1,19 +1,11 @@
 .central_service_research_manager:
   variables:
-      FOLDER: RDS/circle3_central_services/research_manager
+    FOLDER: RDS/circle3_central_services/research_manager
 
 .tests_central_service_research_manager:
-  extends: 
-  - .tests
-  - .central_service_research_manager
-
-test:central_service_research_manager3.6:
-  image: python:3.6
-  extends: .tests_central_service_research_manager
-
-test:central_service_research_manager3.7:
-  image: python:3.7
-  extends: .tests_central_service_research_manager
+  extends:
+    - .tests
+    - .central_service_research_manager
 
 test:central_service_research_manager3.8:
   image: python:3.8
@@ -21,20 +13,16 @@ test:central_service_research_manager3.8:
 
 build:central_service_research_manager:
   extends:
-  - .builds
-  - .central_service_research_manager
+    - .builds
+    - .central_service_research_manager
 
   only:
     changes:
-    - RDS/circle3_central_services/research_manager/*
-    - RDS/circle3_central_services/research_manager/**/*
+      - RDS/circle3_central_services/research_manager/*
+      - RDS/circle3_central_services/research_manager/**/*
 
 doc:central_service_research_manager:
   image: python:3.8
   extends:
-  - .documentation
-  - .central_service_research_manager
-
-  script:
-  - cd $FOLDER
-  - make doc
+    - .documentation
+    - .central_service_research_manager

@@ -7,7 +7,11 @@ from __init__ import bootstrap, ServerUtil
 app = bootstrap("CentralServiceTokenStorage", all=True)
 
 # add refresh func for refresh_tokens to scheduler and starts (https://stackoverflow.com/a/52068807)
-app.scheduler.add_job("refresh_service",
-                      ServerUtil.storage.refresh_services, trigger='interval', minutes=20)
+app.scheduler.add_job(
+    "refresh_service",
+    ServerUtil.storage.refresh_services,
+    trigger="interval",
+    minutes=20,
+)
 
-app.run(port=8080, server='gevent')
+app.run(port=8080, server="gevent")

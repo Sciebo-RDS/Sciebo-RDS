@@ -91,11 +91,15 @@ class Zenodo(object):
 
         if id is not None:
             r = requests.get(
-                f"{self.zenodo_address}/api/deposit/depositions/{id}", headers=headers
+                f"{self.zenodo_address}/api/deposit/depositions/{id}",
+                headers=headers,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
             )
         else:
             r = requests.get(
-                f"{self.zenodo_address}/api/deposit/depositions", headers=headers
+                f"{self.zenodo_address}/api/deposit/depositions",
+                headers=headers,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
             )
             self.log.debug("Get Depositions: Status Code: {}".format(r.status_code))
 
@@ -146,7 +150,10 @@ class Zenodo(object):
         }
 
         r = requests.post(
-            f"{self.zenodo_address}/api/deposit/depositions", json={}, headers=headers
+            f"{self.zenodo_address}/api/deposit/depositions",
+            json={},
+            headers=headers,
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         self.log.debug("Create new deposition: Status Code: {}".format(r.status_code))
@@ -165,6 +172,7 @@ class Zenodo(object):
         r = requests.delete(
             f"{self.zenodo_address}/api/deposit/depositions/{id}",
             headers={"Authorization": f"Bearer {self.api_key}"},
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         return r.status_code == 201 if not return_response else r
@@ -215,6 +223,7 @@ class Zenodo(object):
             headers={"Authorization": f"Bearer {self.api_key}"},
             data=data,
             files=files,
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         self.log.debug("Content: {}".format(r.content))
@@ -225,6 +234,7 @@ class Zenodo(object):
         req = requests.get(
             f"{self.zenodo_address}/api/deposit/depositions/{deposition_id}/files",
             headers={"Authorization": f"Bearer {self.api_key}"},
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         result = req.json()
@@ -258,7 +268,6 @@ class Zenodo(object):
             "Authorization": f"Bearer {self.api_key}",
         }
 
-
         data = {}
         data["metadata"] = metadata
 
@@ -268,6 +277,7 @@ class Zenodo(object):
             f"{self.zenodo_address}/api/deposit/depositions/{deposition_id}",
             data=json.dumps(data),
             headers=headers,
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
         return r.status_code == 200 if not return_response else r
 
@@ -275,6 +285,7 @@ class Zenodo(object):
         r = requests.post(
             f"{self.zenodo_address}/api/deposit/depositions/{deposition_id}/actions/publish",
             headers={"Authorization": f"Bearer {self.api_key}"},
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         return r.status_code == 202 if not return_response else r
@@ -294,6 +305,7 @@ class Zenodo(object):
                 self.zenodo_address, deposition_id, file_id
             ),
             headers={"Authorization": f"Bearer {self.api_key}"},
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         if r.status_code < 300:

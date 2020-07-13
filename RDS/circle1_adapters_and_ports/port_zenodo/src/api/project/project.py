@@ -13,15 +13,19 @@ def index():
     req = request.json.get("metadata")
 
     depoResponse = g.zenodo.get_deposition(metadataFilter=req)
-    return jsonify([{"projectId": str(depo["prereserve_doi"]["recid"]), "metadata": depo} for depo in depoResponse])
+    return jsonify(
+        [
+            {"projectId": str(depo["prereserve_doi"]["recid"]), "metadata": depo}
+            for depo in depoResponse
+        ]
+    )
 
 
 @require_api_key
 def get(project_id):
     req = request.json.get("metadata")
 
-    depoResponse = g.zenodo.get_deposition(
-        id=int(project_id), metadataFilter=req)
+    depoResponse = g.zenodo.get_deposition(id=int(project_id), metadataFilter=req)
 
     return jsonify(depoResponse)
 
@@ -31,11 +35,17 @@ def post():
     req = request.json.get("metadata")
 
     depoResponse = g.zenodo.create_new_deposition_internal(
-        metadata=req, return_response=True)
+        metadata=req, return_response=True
+    )
 
     if depoResponse.status_code < 300:
         depoResponse = depoResponse.json()
-        return jsonify({"projectId": str(depoResponse.get("id")), "metadata": depoResponse.get("metadata")})
+        return jsonify(
+            {
+                "projectId": str(depoResponse.get("id")),
+                "metadata": depoResponse.get("metadata"),
+            }
+        )
 
     abort(depoResponse.status_code)
 
@@ -53,9 +63,18 @@ def patch(project_id):
     req = request.get_json(force=True, cache=True).get("metadata")
 
     depoResponse = g.zenodo.change_metadata_in_deposition_internal(
-        deposition_id=int(project_id), metadata=req, return_response=True)
+        deposition_id=int(project_id), metadata=req, return_response=True
+    )
 
     if depoResponse.status_code == 200:
         return jsonify(depoResponse.json().get("metadata"))
 
     abort(depoResponse.status_code)
+
+
+@require_api_key
+def put(project_id):
+    if g.zenodo.publish_deposition_internal(deposition_id=int(project_id)):
+        return True, 200
+
+    abort(400)

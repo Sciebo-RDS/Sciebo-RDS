@@ -7,7 +7,7 @@ import os
 import json
 from lib.TokenService import TokenService
 from pactman import Consumer, Provider
-from server import bootstrap
+from src import bootstrap
 from lib.Exceptions.ServiceException import *
 from lib.Token import Token, OAuth2Token
 from lib.Service import Service, OAuth2Service
@@ -40,7 +40,7 @@ class Test_TokenService(unittest.TestCase):
     def setUp(self):
         self.tokenService = TokenService(testing="http://localhost:3000")
 
-        self.url1 = "http://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
+        self.url1 = "https://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
             1, "http://localhost:8080")
         self.url2 = "http://zenodo.org/oauth/authorize?response_type=code&client_id={}&redirect_uri={}".format(
             2, "http://localhost:8080")
@@ -52,7 +52,7 @@ class Test_TokenService(unittest.TestCase):
         self.user2 = User("user_refresh")
 
         self.service1 = OAuth2Service(self.servicename1, self.url1,
-                                      "http://10.14.28.90/owncloud/index.php/apps/oauth2/api/v1/token", "ABC", "XYZ")
+                                      "https://10.14.28.90/owncloud/index.php/apps/oauth2/api/v1/token", "ABC", "XYZ")
 
         self.service2 = OAuth2Service(self.servicename2, self.url2,
                                       "https://sandbox.zenodo.org/oauth/token", "DEF", "UVW")

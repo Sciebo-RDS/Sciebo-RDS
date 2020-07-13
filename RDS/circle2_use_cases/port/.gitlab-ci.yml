@@ -7,14 +7,6 @@
     - .tests
     - .use_case_port_service
 
-test:use_case_port_service3.6:
-  image: python:3.6
-  extends: .tests_use_case_port_service
-
-test:use_case_port_service3.7:
-  image: python:3.7
-  extends: .tests_use_case_port_service
-
 test:use_case_port_service3.8:
   image: python:3.8
   extends: .tests_use_case_port_service
@@ -32,9 +24,5 @@ build:use_case_port_service:
 doc:use_case_port_service:
   image: python:3.8
   extends:
-  - .documentation
-  - .use_case_port_service
-
-  script:
-  - cd $FOLDER
-  - make doc
+    - .documentation
+    - .use_case_port_service

@@ -31,6 +31,40 @@
     loadMetadata: function () {
       return this._metadata.load(this._activeResearch.researchIndex);
     },
+
+    publishActive: function(){
+      var index = undefined;
+      var deferred = $.Deferred();
+      var researchIndex = this._activeResearch.researchIndex;
+
+      this._studies.forEach(function (conn, counter) {
+        if (conn.researchIndex === researchIndex) {
+          index = counter;
+        }
+      });
+
+      if (index !== undefined) {
+        if (this._activeResearch === this._studies[index]) {
+          delete this._activeResearch;
+        }
+
+        this._studies.splice(index, 1);
+
+        $.ajax({
+          url: this._baseUrl + "/" + researchIndex,
+          method: "PUT",
+        })
+          .done(function () {
+            deferred.resolve();
+          })
+          .fail(function () {
+            deferred.reject();
+          });
+      } else {
+        deferred.reject();
+      }
+      return deferred.promise();
+    },
     removeActive: function () {
       var index = undefined;
       var deferred = $.Deferred();

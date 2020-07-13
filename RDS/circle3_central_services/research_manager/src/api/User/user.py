@@ -1,5 +1,5 @@
 import Singleton
-from flask import jsonify, request
+from flask import jsonify, request, abort
 import logging
 
 logger = logging.getLogger()
@@ -31,5 +31,13 @@ def post(user_id):
         portOut = []
 
     result = Singleton.ProjectService.addProject(
-        user_id, portIn=portIn, portOut=portOut)
+        user_id, portIn=portIn, portOut=portOut
+    )
     return jsonify(result)
+
+
+def delete(user_id):
+    if Singleton.ProjectService.removeUser(user_id):
+        return "", 204
+
+    abort(404)

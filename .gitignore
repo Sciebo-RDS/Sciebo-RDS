@@ -6,7 +6,9 @@ openapi.yaml
 *-pact.json
 _build
 .vscode
-.coverage
 deploy/secrets.yaml
 values.yaml
 kustomization.yaml
+.coverage
+coverage.xml
+coverage

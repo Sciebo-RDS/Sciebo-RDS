@@ -11,14 +11,26 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   FOLDER: ./
 
+.install_cc_tester: &install_cc_tester
+  - curl -L "https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64" > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - python -m pip install awscli
+
 .tests:
   stage: test
 
-  script:
+  before_script:
     - cd $FOLDER
+
+  script:
     - test -f requirements.txt && pip install -r requirements.txt
     - test -f requirements-dev.txt && pip install -r requirements-dev.txt
     - make test
+
+  after_script:
+    - *install_cc_tester
+    - ./cc-test-reporter format-coverage -o coverage/codeclimate.$CI_JOB_NAME.json -t coverage.py $FOLDER/coverage.xml
+    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp coverage s3://Testresults --recursive
 
   tags:
     - autoscaling
@@ -60,19 +72,44 @@ variables:
     - export CI_IMAGE_SHA=$CI_PROJECT_PATH:$CI_COMMIT_BRANCH
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker pull $CI_IMAGE_SHA || true
+    - docker pull --quiet $CI_IMAGE_SHA || true
     - docker build --cache-from $CI_IMAGE_SHA --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_SHA --file="dockerfile" .
     - docker push $CI_IMAGE_SHA
     - docker push $CI_IMAGE_LATEST
 
 include:
-  - "RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
-  - "RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml"
-  - "RDS/circle2_use_cases/exporter/.gitlab-ci.yml"
-  - "RDS/circle2_use_cases/port/.gitlab-ci.yml"
-  - "RDS/circle2_use_cases/metadata/.gitlab-ci.yml"
-  - "RDS/circle3_central_services/token_storage/.gitlab-ci.yml"
-  - "RDS/circle3_central_services/research_manager/.gitlab-ci.yml"
+  - "/RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
+  - "/RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml"
+  - "/RDS/circle2_use_cases/exporter/.gitlab-ci.yml"
+  - "/RDS/circle2_use_cases/port/.gitlab-ci.yml"
+  - "/RDS/circle2_use_cases/metadata/.gitlab-ci.yml"
+  - "/RDS/circle3_central_services/token_storage/.gitlab-ci.yml"
+  - "/RDS/circle3_central_services/research_manager/.gitlab-ci.yml"
+  - template: Code-Quality.gitlab-ci.yml
+
+code_quality:
+  services:
+    - docker:dind
+  tags:
+    - docker-in-docker
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+  stage: test
+  artifacts:
+    expose_as: "Code Quality Report"
+    paths: [gl-code-quality-report.json]
+
+upload_test_coverage:
+  stage: documentation
+
+  before_script:
+    - *install_cc_tester
+
+  script:
+    - mkdir -p coverage
+    - ls -la coverage
+    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://Testresults coverage --recursive
+    - ./cc-test-reporter sum-coverage --output - coverage/*.json | ./cc-test-reporter upload-coverage --input -
 
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:
@@ -104,6 +141,9 @@ hugo:test:
     expire_in: 1 days
     paths:
       - docs/
+  script:
+    - cd $FOLDER
+    - make doc
 
 pages:
   image: registry.gitlab.com/pages/hugo:0.68.3

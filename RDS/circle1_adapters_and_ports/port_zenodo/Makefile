@@ -14,7 +14,7 @@ update:
 
 test: dev
 	@#docker run -d --network host --privileged --name server docker.io/selenium/standalone-firefox || true
-	python -m pytest --cov=src
+	python -m pytest --cov=src --cov-report xml
 	@#docker stop server || true
 
 run: install

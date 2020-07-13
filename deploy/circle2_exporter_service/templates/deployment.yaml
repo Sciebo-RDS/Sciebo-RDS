@@ -32,6 +32,8 @@ spec:
               name: mservice
           - configMapRef:
               name: proxy
+          - configMapRef:
+              name: globalenvvar
           ports:
             - name: http
               containerPort: 8080

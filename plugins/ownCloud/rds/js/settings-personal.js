@@ -161,7 +161,12 @@
                 })
                 .always(function () {
                   if (servicename === "Owncloud") {
-                    location.reload();
+                    $.ajax({
+                      type: "DELETE",
+                      url: self._services._baseUrl + "/research",
+                    }).always(function (result) {
+                      location.reload();
+                    });
                   }
                 });
             }
@@ -177,12 +182,12 @@
           if (item["servicename"] !== "Owncloud") {
             source.append(
               "<tr><td>" +
-                item["servicename"] +
-                "</td><td>" +
-                '<button data-servicename="' +
-                item["servicename"] +
-                '" class="button icon-delete"></button>' +
-                "</td></tr>"
+              item["servicename"] +
+              "</td><td>" +
+              '<button data-servicename="' +
+              item["servicename"] +
+              '" class="button icon-delete"></button>' +
+              "</td></tr>"
             );
           }
         }, this);
@@ -224,7 +229,7 @@
 
         notUsedServices.forEach(function (item, index) {
           self._authorizeUrl[item.servicename] =
-            item.authorizeUrl + "&state=" + item.state;
+            item.authorizeUrl + "&state=" + item.state + "FROMSETTINGS";
           var option = document.createElement("option");
           option.text = option.value = item.servicename;
           self._select.add(option, 0);
@@ -240,7 +245,7 @@
           var select = self._select;
           var win = window.open(
             self._authorizeUrl[select.options[select.selectedIndex].text],
-            "oauth2-service-for-rds",
+            "_self",
             "width=100%,height=100%,scrollbars=yes"
           );
 

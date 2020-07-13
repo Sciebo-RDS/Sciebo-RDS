@@ -39,7 +39,7 @@
     return function () {
       var win = window.open(
         service.authorizeUrl + "&state=" + service.state,
-        "oauth2-service-for-rds",
+        "_self",
         "innerWidth=1024,innerHeight=768"
       );
 
@@ -70,19 +70,25 @@
       }
     });
 
-    $("#activateOwncloud").click(openPopup(owncloud));
-    $("#activateZenodo").click(openPopup(zenodo));
-    $("#activateResearch").click(function () {
-      window.location.replace(OC.generateUrl("/apps/rds?createResearch"));
-    });
+    if ((owncloud !== undefined) && (zenodo !== undefined)) {
+      $("#activateOwncloud").click(openPopup(owncloud));
+      $("#activateZenodo").click(openPopup(zenodo));
+      $("#activateResearch").click(function () {
+        window.location.replace(OC.generateUrl("/apps/rds?createResearch"));
+      });
+
+      return true
+    }
+    return false
   }
 
   $(document).ready(function () {
     services = new OC.rds.Services();
 
     $.when(services.loadService(), services.loadUser()).always(function () {
-      render();
-      reload();
+      if (render()) {
+        reload();
+      }
     });
   });
 })(OC, window, jQuery);
