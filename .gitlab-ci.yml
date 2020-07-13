@@ -72,8 +72,8 @@ variables:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull --quiet $CI_IMAGE_SHA || true
     - docker build --cache-from $CI_IMAGE_SHA --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_SHA --file="dockerfile" .
-    - docker push --quiet $CI_IMAGE_SHA
-    - docker push --quiet $CI_IMAGE_LATEST
+    - docker push $CI_IMAGE_SHA
+    - docker push $CI_IMAGE_LATEST
 
 include:
   - "/RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
