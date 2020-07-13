@@ -87,18 +87,6 @@ include:
   - "/RDS/circle3_central_services/research_manager/.gitlab-ci.yml"
   - template: Code-Quality.gitlab-ci.yml
 
-code_quality:
-  services:
-    - docker:dind
-  tags:
-    - docker-in-docker
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-  stage: test
-  artifacts:
-    expose_as: "Code Quality Report"
-    paths: [gl-code-quality-report.json]
-
 upload_test_coverage:
   stage: documentation
 
