@@ -141,6 +141,9 @@ hugo:test:
     expire_in: 1 days
     paths:
       - docs/
+  script:
+    - cd $FOLDER
+    - make doc
 
 pages:
   image: registry.gitlab.com/pages/hugo:0.68.3

@@ -27,9 +27,5 @@ build:port_zenodo:
 doc:port_zenodo:
   image: python:3.8
   extends:
-  - .documentation
-  - .port_zenodo
-
-  script:
-  - cd $FOLDER
-  - make doc
+    - .documentation
+    - .port_zenodo

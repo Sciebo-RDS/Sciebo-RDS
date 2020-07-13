@@ -36,7 +36,3 @@ doc:central_service_token_storage:
   extends:
     - .documentation
     - .central_service_token_storage
-
-  script:
-    - cd $FOLDER
-    - make doc

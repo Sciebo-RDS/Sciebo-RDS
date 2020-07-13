@@ -4,32 +4,28 @@
         FOLDER: RDS/circle1_adapters_and_ports/port_owncloud
 
 .tests_port_owncloud:
-    extends: 
-    - .tests
-    - .port_owncloud
+    extends:
+        - .tests
+        - .port_owncloud
 
 test:port_owncloud3.8:
     extends: .tests_port_owncloud
     image: python:3.8
 
 build:port_owncloud:
-    extends: 
-    - .builds
-    - .port_owncloud
+    extends:
+        - .builds
+        - .port_owncloud
 
     only:
         changes:
-        - RDS/circle1_adapters_and_ports/port_owncloud/*
-        - RDS/circle1_adapters_and_ports/port_owncloud/**/*
-        - RDS/circle2_use_cases/interface_port_file_storage.yml
-        - RDS/circle3_central_services/interface_port_token_storage.yml
+            - RDS/circle1_adapters_and_ports/port_owncloud/*
+            - RDS/circle1_adapters_and_ports/port_owncloud/**/*
+            - RDS/circle2_use_cases/interface_port_file_storage.yml
+            - RDS/circle3_central_services/interface_port_token_storage.yml
 
 doc:port_owncloud:
-  image: python:3.8
-  extends:
-  - .documentation
-  - .port_owncloud
-
-  script:
-  - cd $FOLDER
-  - make doc
+    image: python:3.8
+    extends:
+        - .documentation
+        - .port_owncloud
