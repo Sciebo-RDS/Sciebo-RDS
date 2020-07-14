@@ -74,7 +74,7 @@ variables:
     - export CI_IMAGE_JOBID=$CI_PROJECT_PATH:$CI_JOB_ID
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker pull --quiet $CI_IMAGE_SHA || true
+    - docker pull --quiet $CI_IMAGE_BRANCH || true
     - docker build --cache-from $CI_IMAGE_BRANCH --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_BRANCH  --tag $CI_JOB_ID --file="dockerfile" .
     - docker push $CI_IMAGE_BRANCH
     - docker push $CI_IMAGE_LATEST
