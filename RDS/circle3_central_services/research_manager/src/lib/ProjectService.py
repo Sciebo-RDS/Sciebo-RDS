@@ -251,6 +251,8 @@ class ProjectService:
                         )
                     )
 
+            proj.setDone()
+
         return True
 
     def removeUser(self, user: str):
