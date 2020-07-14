@@ -115,7 +115,14 @@ class Zenodo(object):
             result = [result]
         self.log.debug(f"filter only metadata, {result}")
 
-        result = [res["metadata"] for res in result if not res.get("submitted", False)]
+        result = [
+            res["metadata"]
+            for res in result
+            if "submitted" in res
+            and not res["submitted"]
+            or "submitted" in res["metadata"]
+            and not res["metadata"]["submitted"]
+        ]
 
         self.log.debug("apply filter")
         if metadataFilter is not None:
