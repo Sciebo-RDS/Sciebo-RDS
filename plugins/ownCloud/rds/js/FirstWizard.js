@@ -30,6 +30,8 @@
         state += 1;
       }
     });
+    // TODO: if state 0 (no buttons enabled), then show an error message: RDS currently not available
+    // retest every 2 seconds, if there is RDS enabled and rerender form.
   }
 
   function openPopup(service) {
