@@ -283,7 +283,3 @@ class Test_projectserviceService(unittest.TestCase):
 
         # we remove the first one, so there are only 2 projects left
         self.assertEqual([portOwncloud], md.getProject(researchId=id1).getPortIn())
-
-    def test_projectservice_publish(self):
-        # TODO: implement me
-        pass

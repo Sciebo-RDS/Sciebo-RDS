@@ -127,7 +127,7 @@
           self._activeResearch = undefined;
           self._studies = [];
           conns.forEach(function (conn, counter) {
-            if (conn.status !== 4) {
+            if (conn.status < 3) {
               self._studies.push(conn);
             }
           });

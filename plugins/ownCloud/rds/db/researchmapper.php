@@ -469,7 +469,7 @@ class ResearchMapper
 
     public function publish($userId, $researchIndex)
     {
-        $url = $this->urlService->getResearchURL() . '/user/' . $userId . '/research/' . $researchIndex;
+        $url = $this->urlService->getMetadataURL() . '/user/' . $userId . '/research/' . $researchIndex;
 
         $curl = curl_init($url);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PUT'];

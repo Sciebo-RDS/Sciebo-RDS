@@ -210,51 +210,6 @@ class ProjectService:
 
         return self.getDict() == obj.getDict()
 
-    def publish(
-        self, user: str = None, researchIndex: int = None, researchId: int = None
-    ):
-        """Publishes research in all configured export services.
-        This function implements the parameters like self.getProjects.
-        If you provide only user, then all researches will be published at once. 
-        Otherwise only the given research with Index or Id.
-
-        Args:
-            user (str, optional): Defaults to None.
-            researchIndex (int, optional): Defaults to None.
-            researchId (int, optional): Defaults to None.
-        """
-        # TODO: needs tests
-
-        def publishInPort(port, projectId):
-            url = "http://circle1-{}".format(str(port.portname).lower())
-            req = requests.put(
-                "{}/project/{}".format(url, projectId),
-                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
-            )
-            return req.status_code == 200
-
-        projects = self.getProject(
-            user=user, researchIndex=researchIndex, researchId=researchId
-        )
-        if not isinstance(projects, list):
-            projects = [projects]
-
-        for proj in projects:
-            ports = proj.getPortOut()
-            researchId = proj.researchId
-
-            for port in ports:
-                if not publishInPort(port, researchId):
-                    return Exception(
-                        "ResearchId {} in Port {} cannot be published.".format(
-                            researchId, port
-                        )
-                    )
-
-            proj.setDone()
-
-        return True
-
     def removeUser(self, user: str):
         """Removes user and all projects.
 

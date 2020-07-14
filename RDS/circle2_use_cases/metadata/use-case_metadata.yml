@@ -118,6 +118,13 @@ paths:
                         type:
                           resourceType: ''
                           resourceTypeGeneral: Poster
+    put:
+      summary: Finish research
+      responses:
+        '200':
+          description: OK
+      description: 'Finish this research, for example publish it in the corresponding metadata service.'
+      operationId: ''
   '/research/{research-id}':
     parameters:
       - schema:
