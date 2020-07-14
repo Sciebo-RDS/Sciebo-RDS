@@ -3,3 +3,4 @@ sign:
 	--privateKey=${HOME}/.ssl/rdsOwncloud/rds.key \
 	--certificate=${HOME}/.ssl/rdsOwncloud/rds.crt \
 	--path="${PWD}/apps/rds"
+	./occ integrity:check-app rds

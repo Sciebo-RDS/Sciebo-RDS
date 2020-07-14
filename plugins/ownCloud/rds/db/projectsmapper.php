@@ -86,7 +86,16 @@ class ProjectsMapper
 
         $response = json_decode(curl_exec($curl));
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $info = curl_getinfo($curl);
         curl_close($curl);
+
+        if ($httpcode >= 300) {
+            throw new NotFoundException(json_encode([
+                'http_code' => $httpcode,
+                'json_error_message' => json_last_error_msg(),
+                'curl_error_message' => $info
+            ]));
+        }
 
         $projs = $this->findAll($userId, $servicename);
         #        $proj = end( ( array_values( $projs ) ) );
