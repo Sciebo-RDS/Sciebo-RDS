@@ -33,7 +33,7 @@ def put(user_id, research_index):
     url = "{}".format(
         os.getenv("CENTRAL_SERVICE_RESEARCH_MANAGER", current_app.config.get("TESTING"))
     )
-    requests.put(
+    requests.patch(
         "{}/research/user/{}/research/{}/status".format(url, user_id, research_index),
         verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
     )
