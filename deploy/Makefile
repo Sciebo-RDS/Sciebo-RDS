@@ -67,13 +67,24 @@ circle1: port_zenodo port_owncloud
 circle2: service_token service_exporter service_metadata
 circle3: storage_token storage_research
 
-features:
+
+jaeger:
 	helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
 	helm repo update
 	helm upgrade jaeger jaegertracing/jaeger --install --values jaeger.yaml
 
-remove_features:
+remove_jaeger:
 	helm uninstall jaeger || true
+
+redis:
+	helm install redis bitnami/redis-cluster --values redis.yaml
+
+remove_redis:
+	helm uninstall redis || true
+
+features: jaeger redis
+
+remove_features: remove_jaeger remove_redis
 
 remove_port_zenodo:
 	helm uninstall circle1-port-zenodo || true
