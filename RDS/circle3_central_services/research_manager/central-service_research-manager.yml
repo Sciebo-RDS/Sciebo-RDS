@@ -75,7 +75,6 @@ paths:
       responses:
         '204':
           description: No Content
-    
   '/user/{user-id}/research/{research-id}/exports':
     parameters:
       - schema:
