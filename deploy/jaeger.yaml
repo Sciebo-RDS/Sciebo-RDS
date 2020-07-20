@@ -1,3 +1,5 @@
+# Options: https://github.com/jaegertracing/helm-charts
+
 ingress:
   enabled: true
   annotations:

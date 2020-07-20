@@ -77,7 +77,8 @@ remove_jaeger:
 	helm uninstall jaeger || true
 
 redis:
-	helm install redis bitnami/redis-cluster --values redis.yaml
+	helm repo add dandydev https://dandydeveloper.github.io/charts --values redis.yaml
+	helm install dandydev/redis-ha
 
 remove_redis:
 	helm uninstall redis || true
