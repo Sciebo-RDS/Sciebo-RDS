@@ -543,3 +543,8 @@ class Test_Metadata(unittest.TestCase):
             result = md.getMetadataForResearch(
                 researchId=researchId, metadataFields=wanted_metadata)
         self.assertEqual(result, expected_metadata)
+
+    
+    def test_metadata_publish(self):
+        # TODO: implement me
+        pass

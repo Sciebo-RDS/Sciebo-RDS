@@ -1,10 +1,11 @@
+from gevent import monkey
+
+monkey.patch_all()
+
 from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 from jaeger_client import Config as jConfig
 from connexion_plus import App, MultipleResourceResolver, Util
 from json import JSONEncoder, JSONDecoder
-from gevent import monkey
-
-monkey.patch_all()
 
 import logging, os
 

@@ -188,3 +188,53 @@ class Metadata:
             )
 
         return req.json()
+
+    def publish(self, researchId: int = None):
+        """Publishes research in all configured export services.
+        This function implements the parameters like self.getProjects.
+        If you provide only user, then all researches will be published at once. 
+        Otherwise only the given research with Index or Id.
+
+        Args:
+            researchId (int, optional): Defaults to None.
+        """
+        # TODO: needs tests
+
+        def publishInPort(port, projectId, apiKey):
+            headers = {"content-type": "application/json"}
+
+            req = requests.put(
+                "http://{}/metadata/project/{}".format(
+                    self.getPortString(port), projectId
+                ),
+                data=json.dumps({"apiKey": apiKey}),
+                headers=headers,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
+
+            if req.status_code >= 300:
+                logger.exception(
+                    Exception(f'Publishing fails')
+                )
+
+            return req.status_code == 200
+
+        research = Research(testing=self.testing, researchId=researchId)
+        ports = research.getPortsWithProjectId()
+        logger.debug("research ports: {}".format(ports))
+
+        # FIXME: parallize me
+        for (port, projectId) in ports:
+            if projectId is None:
+                continue
+
+            apiKey = loadAccessToken(
+                research.userId, port["port"].replace("port-", "").capitalize()
+            )
+
+            logger.debug("work on port {}".format(port))
+            port = port["port"]
+
+            publishInPort(port, projectId, apiKey)
+
+        return True

@@ -1,7 +1,7 @@
 
 <?php p($l->t('Here you can finalize your research project or synchronize all files with your defined services.')); ?>
 
-<div id="wrapper-auto-upload">
+<div class="wrapper-auto-upload">
     <label>
         <input type="checkbox" id="checkbox-automatic-upload">
         <?php p($l->t('Files auto upload')); ?>
@@ -9,7 +9,7 @@
 	   title="<?php p($l->t('The system will upload all files in the given folder after some time.')); ?>"></a>
     </label>
 </div>
-<div id="wrapper-apply-changes">
+<div class="wrapper-apply-changes">
     <label>
         <input type="checkbox" id="checkbox-apply-changes">
         <?php p($l->t('Apply file changes')); ?>
@@ -18,8 +18,8 @@
     </label>
 </div>
 
-<div id="wrapper-custom-buttons">
-  <div id="spacer"></div>
+<div class="wrapper-custom-buttons">
+  <div class="spacer"></div>
   <button id="btn-save-files"><?php p($l->t('Save')); ?></button>
   <button id="btn-sync-files"><?php p($l->t('Synchronize files')); ?></button>
   <button id="btn-finish-research"><?php p($l->t('Finish research')); ?></button>

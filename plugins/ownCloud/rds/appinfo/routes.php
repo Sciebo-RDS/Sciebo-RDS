@@ -33,9 +33,9 @@ $application->registerRoutes($this, [
         ['name' => 'research#filesTrigger',                   'url' => '/research/{id}/files',             'verb' => 'POST'],
         ['name' => 'research#filesSettingsGet',               'url' => '/research/{id}/settings',          'verb' => 'GET'],
         ['name' => 'research#filesSettingsUpdate',            'url' => '/research/{id}/settings',          'verb' => 'PUT'],
-        ['name' => 'research#publish',                        'url' => '/research/{id}/publish',           'verb' => 'PUT'],
+        ['name' => 'research#publish',                        'url' => '/research/{id}/publish',           'verb' => 'POST'],
 
-        # User Service resource API Endpoints, only index/show/delete
+        # User Service resource API Endpoints, index/show/create/delete
         ['name' => 'projects#index',            'url' => '/userservice/{servicename}/projects',             'verb' => 'GET'],
         ['name' => 'projects#show',             'url' => '/userservice/{servicename}/projects/{id}',        'verb' => 'GET'],
         ['name' => 'projects#create',           'url' => '/userservice/{servicename}/projects',             'verb' => 'POST'],

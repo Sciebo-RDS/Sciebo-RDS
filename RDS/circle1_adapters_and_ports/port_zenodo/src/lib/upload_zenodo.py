@@ -115,7 +115,19 @@ class Zenodo(object):
             result = [result]
         self.log.debug(f"filter only metadata, {result}")
 
-        result = [res["metadata"] for res in result]
+        metadataList = []
+        for res in result:
+            if (
+                "submitted" in res
+                and res["submitted"]
+                or "submitted" in res["metadata"]
+                and res["metadata"]["submitted"]
+            ):
+                continue
+
+            metadataList.append(res["metadata"])
+
+        result = metadataList
 
         self.log.debug("apply filter")
         if metadataFilter is not None:
@@ -279,6 +291,7 @@ class Zenodo(object):
             headers=headers,
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
+
         return r.status_code == 200 if not return_response else r
 
     def publish_deposition_internal(self, deposition_id, return_response=False):

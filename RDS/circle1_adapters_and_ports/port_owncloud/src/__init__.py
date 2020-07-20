@@ -63,7 +63,7 @@ def register_service(
         verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
     )
 
-    if response.status_code is not 200:
+    if response.status_code != 200:
         raise Exception(
             "Cannot find and register Token Storage, msg:\n{}".format(response.text)
         )

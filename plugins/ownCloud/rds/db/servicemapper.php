@@ -12,7 +12,7 @@ class ServiceMapper
     private $urlService;
     private $userId;
 
-    public function __construct($urlService, $userId)
+    public function __construct(UrlService $urlService, $userId)
     {
         $this->urlService = $urlService;
         $this->userId = $userId;

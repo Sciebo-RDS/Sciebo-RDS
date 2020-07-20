@@ -51,8 +51,8 @@
         this._studies.splice(index, 1);
 
         $.ajax({
-          url: this._baseUrl + "/" + researchIndex,
-          method: "PUT",
+          url: this._baseUrl + "/" + researchIndex + "/publish",
+          method: "POST",
         })
           .done(function () {
             deferred.resolve();
@@ -127,7 +127,7 @@
           self._activeResearch = undefined;
           self._studies = [];
           conns.forEach(function (conn, counter) {
-            if (conn.status !== 4) {
+            if (conn.status < 3) {
               self._studies.push(conn);
             }
           });
