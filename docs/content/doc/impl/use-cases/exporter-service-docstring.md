@@ -54,6 +54,11 @@ Research.addFile(*args, **kwargs)
 
 Wrapper function to call addFile in all export services objects with parameters.
 
+folderInFolder (bool): Only if folderInFolder is True, then it will be checked, if service needs a zip for folders in folder upload.
+
+Returns:
+    list: Returns list of booleans, if it succeeds or not. The order follows the self.exportServices order.
+
 
 ### removeAllFiles
 ```python
@@ -97,6 +102,16 @@ Service(self,
 ```
 
 
+### getZipStatusForFolders
+```python
+Service.getZipStatusForFolders()
+```
+Returns True, if you have to send zip files, when there are folder in folders. Otherwise False.
+
+Returns:
+    bool: True, if you have to send zip for folder in folders.
+
+
 ### getFiles
 ```python
 Service.getFiles(getContent=False)
@@ -105,4 +120,18 @@ Service.getFiles(getContent=False)
 Returns a generator to iterate over.
 
 Returns the filepath string and the content of the file in the current used service.
+
+
+### addFile
+```python
+Service.addFile(filename, fileContent)
+```
+Adds given file with filename to this service.
+
+Args:
+    filename (str): Set the filename of this file.
+    fileContent (io.BytesIO): Set the content of this file.
+
+Returns:
+    bool: Return True, if the file was uploaded successfully, otherwise False.
 

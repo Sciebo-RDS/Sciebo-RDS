@@ -112,9 +112,7 @@ class Research:
 
             if useZipForContent:
                 mem_zip = BytesIO()
-                zip = zipfile.ZipFile(
-                    mem_zip, mode="w", compression=zipfile.ZIP_STORED
-                )
+                zip = zipfile.ZipFile(mem_zip, mode="w", compression=zipfile.ZIP_STORED)
 
             for fileTuple in svc.getFiles(getContent=True):
                 logger.debug(
@@ -144,7 +142,7 @@ class Research:
                     return s
 
                 zip.close()
-                
+
                 results = [
                     exportSvc.addFile(
                         "{}_{}.zip".format(svc.servicename, urlify(svc.getFilepath())),
@@ -154,8 +152,7 @@ class Research:
                     if exportSvc.zipForFolder
                 ]
 
-
-    def addFile(self, *args, folderInFolder=False, **kwargs):
+    def addFile(self, *args, **kwargs):
         """
         Wrapper function to call addFile in all export services objects with parameters.
 
@@ -174,6 +171,8 @@ class Research:
             pool.map(Service.addFile, self.exportServices, argLeft *
                      len(self.exportServices), argRight*len(self.exportServices))
         """
+
+        folderInFolder = kwargs.get("folderInFolder", False)
 
         return [
             svc.addFile(*args, **kwargs)
