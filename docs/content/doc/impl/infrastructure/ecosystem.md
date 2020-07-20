@@ -74,12 +74,9 @@ graph TD;
 
   %% UCExporter --> UCProject
   %% UCProject --> CSProject
-  UCPort --> CSToken
 
   CSToken --- PInvenio & POwncloud
-  UCExporter & UCMetadata --> PInvenio & POwncloud & CSProject
-
-  %% PInvenio --> POwncloud
+  UCExporter & UCMetadata & UCPort --> PInvenio & POwncloud & CSProject & CSToken
 
   PInvenio --> WWWO
   POwncloud --> WWWO

@@ -193,6 +193,13 @@ class ResearchController extends Controller
         });
     }
 
+    /**
+     * Publish / Closes the given id in rds.
+     * 
+     * @param integer $id have to be a researchIndex
+     * 
+     * @NoAdminRequired
+     */
     public function publish($id)
     {
         return $this->handleNotFound(function () use ($id) {
@@ -200,6 +207,11 @@ class ResearchController extends Controller
         });
     }
 
+    /**
+     * Remove the current user in rds.
+     * 
+     * @NoAdminRequired
+     */
     public function deleteUser()
     {
         return $this->handleNotFound(function () {

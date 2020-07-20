@@ -5,7 +5,7 @@ class Port():
 
         fileStorage and metadata are booleans to enable this port as fileStorage or as metadata storage.
 
-        With customProperties, you can save other informations about 
+        With customProperties, you can save other informations about connections.
         """
         if not isinstance(portName, str):
             raise ValueError("Portname has to be string.")

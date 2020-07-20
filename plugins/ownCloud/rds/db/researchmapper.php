@@ -12,7 +12,7 @@ class ResearchMapper
 {
     private $urlService;
 
-    public function __construct($urlService, ILogger $logger, $appName)
+    public function __construct(UrlService $urlService, ILogger $logger, $appName)
     {
         $this->urlService = $urlService;
         $this->logger = $logger;
@@ -469,7 +469,7 @@ class ResearchMapper
 
     public function publish($userId, $researchIndex)
     {
-        $url = $this->urlService->getResearchURL() . '/user/' . $userId . '/research/' . $researchIndex;
+        $url = $this->urlService->getMetadataURL() . '/user/' . $userId . '/research/' . $researchIndex;
 
         $curl = curl_init($url);
         $options = [CURLOPT_RETURNTRANSFER => true, CURLOPT_CUSTOMREQUEST => 'PUT'];

@@ -273,8 +273,9 @@
               btn.data("value", proj.projectId);
               self.data[servicename] = proj.projectId;
               console.log("projectId in self.data " + servicename + ": " + self.data[servicename]);
+            }).always(function () {
+              deferred.resolve(proj.projectId);
             })
-            deferred.resolve(proj.projectId);
           })
           .fail(function () {
             deferred.reject();
@@ -502,7 +503,7 @@
               })
               .fail(function () {
                 OC.dialogs.alert(
-                  t("Could not close this research."),
+                  t("rds", "Could not close this research."),
                   t("rds", "RDS Update project")
                 );
               });

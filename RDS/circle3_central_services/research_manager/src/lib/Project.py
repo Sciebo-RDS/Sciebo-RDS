@@ -84,6 +84,19 @@ class Project():
             self.status = self.status.succ()
         return self.status
 
+    def setDone(self):
+        """
+        Set the status of this project to done.
+        If already done or deleted, then return False. Otherwise True.
+        """
+
+        if self.status == Status.DONE or self.status == Status.DELETED:
+            return False
+
+        self.status = Status.DONE
+        return True
+
+
     def getJSON(self):
         import json
         return json.dumps(self.getDict())

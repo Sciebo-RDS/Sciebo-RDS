@@ -69,13 +69,16 @@ variables:
     - export DOCKERTAGNAME=$(echo "$CI_JOB_NAME" | cut -d":" -f2)
     - export CI_PROJECT_PATH=$CI_PROJECT_PATH/$DOCKERTAGNAME
     - export CI_IMAGE_LATEST=$CI_PROJECT_PATH:latest
-    - export CI_IMAGE_SHA=$CI_PROJECT_PATH:$CI_COMMIT_BRANCH
+    - export CI_IMAGE_SHA=$CI_PROJECT_PATH:$CI_COMMIT_SHORT_SHA
+    - export CI_IMAGE_BRANCH=$CI_PROJECT_PATH:$CI_COMMIT_BRANCH
+    - export CI_IMAGE_JOBID=$CI_PROJECT_PATH:$CI_PIPELINE_ID
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker pull --quiet $CI_IMAGE_SHA || true
-    - docker build --cache-from $CI_IMAGE_SHA --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_SHA --file="dockerfile" .
-    - docker push $CI_IMAGE_SHA
+    - docker pull --quiet $CI_IMAGE_BRANCH || true
+    - docker build --cache-from $CI_IMAGE_BRANCH --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_BRANCH  --tag $CI_IMAGE_JOBID --file="dockerfile" .
+    - docker push $CI_IMAGE_BRANCH
     - docker push $CI_IMAGE_LATEST
+    - docker push $CI_IMAGE_JOBID
 
 include:
   - "/RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
@@ -85,19 +88,6 @@ include:
   - "/RDS/circle2_use_cases/metadata/.gitlab-ci.yml"
   - "/RDS/circle3_central_services/token_storage/.gitlab-ci.yml"
   - "/RDS/circle3_central_services/research_manager/.gitlab-ci.yml"
-  - template: Code-Quality.gitlab-ci.yml
-
-code_quality:
-  services:
-    - docker:dind
-  tags:
-    - docker-in-docker
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-  stage: test
-  artifacts:
-    expose_as: "Code Quality Report"
-    paths: [gl-code-quality-report.json]
 
 upload_test_coverage:
   stage: documentation

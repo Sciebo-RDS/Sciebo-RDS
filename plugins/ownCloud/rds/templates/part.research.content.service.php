@@ -2,17 +2,17 @@
 
 <p class="section-text"><h1><?php p($l->t('Here you can enter all informations about your research synchronization.')); ?></p>
 
-<div id="wrapper-services">
+<div class="wrapper-services">
   {{#each services}}
   <hr />
-  <div id="selector-available-services">
+  <div class="selector-available-services">
     <h3>{{ servicename }}:</h3>
     {{#unless type.metadata}}
       {{#if type.fileStorage}}
       <p class="section-service">
       <?php p($l->t('Please select a folder where you want to take your files from.')); ?>
       </p>
-      <div id="fileStorage-wrapper">
+      <div class="fileStorage-wrapper">
         <label><button id="btn-open-folderpicker" data-service="{{servicename}}"><?php p($l->t('Select folder')); ?></button>
           {{#if filepath }}
             <?php p($l->t('Current path:')); ?>
@@ -29,7 +29,7 @@
     <p class="section-service">
       <?php p($l->t('Please select a project where you want to take your files to.')); ?>
     </p>
-    <div id="radiobuttons-list">
+    <div class="radiobuttons-list">
       {{#each serviceProjects}}
       <label>
           <input
@@ -60,8 +60,8 @@
       </label>
     </div>
     {{/unless}}
-    <div id="service-configuration">
-      <div id="service-configuration-transfergoing">
+    <div class="service-configuration">
+      <div class="service-configuration-transfergoing">
         <?php p($l->t('For which transfer, do you want to use this service?')); ?> 
         <a target="_blank" rel="noreferrer" class="icon-info"  href="#" title="<?php p($l->t('Informations about ingoing and outgoing traffic.')); ?>"></a>
         <label>
@@ -85,7 +85,7 @@
           <?php p($l->t('Outgoing')); ?>
         </label>
       </div>
-      <div id="service-configuration-status">
+      <div class="service-configuration-status">
       <?php p($l->t('For which storage, do you want to use this service?')); ?>
       <a target="_blank" rel="noreferrer" class="icon-info"  href="#" title="<?php p($l->t('Informations about storage for metadata and fileStorage.')); ?>"></a>
       {{#if type.fileStorage}}
@@ -118,8 +118,8 @@
   {{/each}}
 </div>
 
-<div id="wrapper-custom-buttons">
-  <div id="spacer"></div>
+<div class="wrapper-custom-buttons">
+  <div class="spacer"></div>
   <button id="btn-save-research"><?php p($l->t('Save')); ?></button>
   <button id="btn-save-research-and-continue"><?php p($l->t('Save & continue')); ?></button>
 </div>
