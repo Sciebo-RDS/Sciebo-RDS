@@ -6,6 +6,8 @@ from lib.Exceptions.ServiceException import ServiceExistsAlreadyError, ServiceNo
 
 import logging
 import requests
+import os
+from hot_redis import List, Dict
 
 logger = logging.getLogger()
 
@@ -19,8 +21,13 @@ class Storage():
     _services = None
 
     def __init__(self):
-        self._storage = {}
-        self._services = []
+        if os.getenv("RDS_OAUTH_REDIRECT_URI") is not None:
+            # runs in RDS ecosystem
+            self._storage = Dict(key="storage")
+            self._services = List(key="services")
+        else:
+            self._storage = {}
+            self._services = []
 
     @property
     def users(self):
@@ -29,6 +36,10 @@ class Storage():
     @property
     def storage(self):
         return self._storage
+    
+    @property
+    def services(self):
+        return self._services[:]
 
     @property
     def tokens(self):
@@ -130,7 +141,7 @@ class Storage():
         """
         Returns a list of all registered services.
         """
-        return self._services
+        return self.services
 
     def getService(self, service: Union[str, Service], index: bool = False):
         """
@@ -148,7 +159,7 @@ class Storage():
             service = Service(service)
 
         try:
-            k = self.internal_find_service(service.servicename, self._services)
+            k = self.internal_find_service(service.servicename, self.services)
             svc = self._services[k]
             return (svc, k) if index is True else svc
         except:
@@ -194,7 +205,7 @@ class Storage():
             service = service.servicename
 
         index = None
-        for i, val in enumerate(self._services):
+        for i, val in enumerate(self.services):
             if val.servicename == service:
                 index = i
                 break
@@ -317,7 +328,7 @@ class Storage():
 
         logger.info(f"Try to find service {token.servicename}")
         try:
-            self.internal_find_service(token.servicename, self._services)
+            self.internal_find_service(token.servicename, self.services)
         except ValueError:
             raise ServiceNotExistsError(Service(token.servicename))
         logger.debug("service found")
@@ -379,7 +390,7 @@ class Storage():
         """
 
         if services is None:
-            return self.internal_refresh_services(self._services)
+            return self.internal_refresh_services(self.services)
 
         return self.internal_refresh_services(services)
 
