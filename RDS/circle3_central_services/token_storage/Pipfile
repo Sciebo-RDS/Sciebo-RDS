@@ -18,6 +18,7 @@ python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 apscheduler = "*"
+hot-redis = "*"
 
 [requires]
 python_version = "3.8"
