@@ -4,12 +4,20 @@ import requests, os
 from lib.EnumStatus import Status
 
 logger = logging.getLogger()
+from redis_pubsub_dict import RedisDict
+from rediscluster import StrictRedisCluster
 
 
 class ProjectService:
     def __init__(self):
         # format: {user: [<type project>]}
-        self.projects = {}
+        if os.getenv("RDS_OAUTH_REDIRECT_URI") is not None:
+            # runs in RDS ecosystem
+            rc = StrictRedisCluster(startup_nodes=[{"host": "redis", "port": "6379"}])
+            self.projects = RedisDict(rc, 'researchmanager_projects')
+        else:
+            self.projects = {}
+            
         self.highest_index = 0
 
     def addProject(self, userOrProject, portIn=None, portOut=None):

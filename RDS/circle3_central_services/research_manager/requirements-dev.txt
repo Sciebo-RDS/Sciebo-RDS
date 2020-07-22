@@ -1,43 +1,88 @@
 -i https://pypi.org/simple
-attrs==19.3.0
-certifi==2020.4.5.1
+apscheduler==3.6.3
+attrs==19.3.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+certifi==2020.6.20
 chardet==3.0.4
-click==7.1.1
-colorama==0.4.3
-coverage==5.1
-future==0.18.2
-idna==2.9
-importlib-metadata==1.6.0 ; python_version < '3.8'
-jinja2==2.11.2
-joblib==0.14.1
-livereload==2.6.1
-lunr[languages]==0.5.6
-markdown==3.2.1
-markupsafe==1.1.1
-mkdocs==1.1
-more-itertools==8.2.0
-nltk==3.5
-packaging==20.3
-pactman==2.25.0
-pluggy==0.13.1
-py==1.8.1
-pydoc-markdown==2.1.3
-pygments==2.6.1
-pygount==1.2.1
-pyparsing==2.4.7
-pytest-cov==2.8.1
-pytest==5.4.1
+click==7.1.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+clickclick==1.2.2
+colorama==0.4.3; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+connexion-plus==0.38
+connexion[swagger-ui]==2.7.0
+contextlib2==0.6.0.post1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+coverage==5.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
+docspec-python==0.0.7
+docspec==0.2.0
+flask-apscheduler==1.11.0
+flask-cors==3.0.8
+flask-opentracing==1.1.0
+flask==1.1.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+future==0.18.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
+gevent==20.6.2
+greenlet==0.4.16; platform_python_implementation == 'CPython'
+htmlmin==0.1.12
+idna==2.10; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+inflection==0.5.0; python_version >= '3.5'
+itsdangerous==1.1.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+jaeger-client==4.3.0
+jinja2==2.11.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+jsonschema==3.2.0
+markdown==3.2.2; python_version >= '3.5'
+markupsafe==1.1.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+more-itertools==8.4.0; python_version >= '3.5'
+msgpack==1.0.0
+nr.collections==0.0.1
+nr.databind.core==0.0.21
+nr.databind.json==0.0.13
+nr.fs==1.6.2
+nr.interface==0.0.3
+nr.metaclass==0.0.5
+nr.parsing.date==0.2.0
+nr.pylang.utils==0.0.3
+nr.stream==0.0.4
+nr.sumtype==0.0.3
+nr.utils.re==0.1.0
+openapi-spec-validator==0.2.8
+opentracing-instrumentation==3.3.1
+opentracing==2.3.0
+packaging==20.4; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+pactman==2.28.0
+pathtools==0.1.2
+pluggy==0.13.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+prometheus-client==0.8.0
+prometheus-flask-exporter==0.15.0
+py==1.9.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+pydoc-markdown==3.3.0
+pygments==2.6.1; python_version >= '3.5'
+pygount==1.2.3
+pyjwt==1.7.1
+pylru==1.2.0
+pyparsing==2.4.7; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
+pyrsistent==0.16.0
+pytest-cov==2.10.0
+pytest==5.4.3
+python-dateutil==2.8.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+python-jsonschema-objects==0.3.12
+pytz==2020.1
 pyyaml==5.3.1
-regex==2020.4.4
-requests==2.23.0
+redis-pubsub-dict==0.0.2
+redis-py-cluster==2.0.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+redis==3.0.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+requests==2.24.0
 restnavigator==1.0.1
-semver==2.9.1
-six==1.14.0
-tornado==5.1.1
-tqdm==4.45.0
+semver==2.10.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+six==1.15.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+swagger-ui-bundle==0.0.8
+threadloop==1.0.2
+thrift==0.13.0
+toml==0.10.1
+tornado==5.1.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+tzlocal==2.1
 unidecode==1.1.1
-uritemplate==3.0.1
-urllib3==1.25.8
-wcwidth==0.1.9
-yapf==0.29.0
-zipp==3.1.0
+uritemplate==3.0.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+urllib3==1.25.9; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
+watchdog==0.10.3
+wcwidth==0.2.5
+werkzeug==1.0.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+wrapt==1.12.1
+zope.event==4.4
+zope.interface==5.1.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'

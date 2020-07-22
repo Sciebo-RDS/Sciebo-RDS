@@ -17,6 +17,7 @@ python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 pyjwt = "*"
+redis-pubsub-dict = "*"
 
 [requires]
 python_version = "3.8"
