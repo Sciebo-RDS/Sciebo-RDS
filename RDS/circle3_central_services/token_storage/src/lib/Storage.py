@@ -7,8 +7,6 @@ from lib.Exceptions.ServiceException import ServiceExistsAlreadyError, ServiceNo
 import logging
 import requests
 import os
-from redis_pubsub_dict import RedisDict
-from rediscluster import StrictRedisCluster
 
 logger = logging.getLogger()
 
@@ -23,6 +21,8 @@ class Storage():
 
     def __init__(self):
         if os.getenv("RDS_OAUTH_REDIRECT_URI") is not None:
+            from redis_pubsub_dict import RedisDict
+            from rediscluster import StrictRedisCluster
             # runs in RDS ecosystem, use redis as backend
             rc = StrictRedisCluster(startup_nodes=[{"host": "redis", "port": "6379"}])
             self._storage = RedisDict(rc, 'tokenstorage_storage')
@@ -46,7 +46,10 @@ class Storage():
     
     @property
     def services(self):
-        return self._services.values()
+        try:
+            return self._services.values()
+        except:
+            return self._services
 
     @property
     def tokens(self):
@@ -148,7 +151,7 @@ class Storage():
         """
         Returns a list of all registered services.
         """
-        return self.services()
+        return self.services
 
     def getService(self, service: Union[str, Service], index: bool = False):
         """
