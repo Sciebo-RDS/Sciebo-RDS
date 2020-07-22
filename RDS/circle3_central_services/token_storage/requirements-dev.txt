@@ -19,7 +19,6 @@ flask==1.1.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 
 future==0.18.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
 gevent==20.6.2
 greenlet==0.4.16; platform_python_implementation == 'CPython'
-hot-redis==0.3
 htmlmin==0.1.12
 idna==2.10; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 inflection==0.5.0; python_version >= '3.5'
@@ -30,8 +29,9 @@ jsonschema==3.2.0
 markdown==3.2.2; python_version >= '3.5'
 markupsafe==1.1.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 more-itertools==8.4.0; python_version >= '3.5'
+msgpack==1.0.0
 nr.collections==0.0.1
-nr.databind.core==0.0.20.post1
+nr.databind.core==0.0.21
 nr.databind.json==0.0.13
 nr.fs==1.6.2
 nr.interface==0.0.3
@@ -54,6 +54,7 @@ py==1.9.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3
 pydoc-markdown==3.3.0
 pygments==2.6.1; python_version >= '3.5'
 pygount==1.2.3
+pylru==1.2.0
 pyparsing==2.4.7; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
 pyrsistent==0.16.0
 pytest-cov==2.10.0
@@ -62,13 +63,14 @@ python-dateutil==2.8.1; python_version >= '2.7' and python_version not in '3.0, 
 python-jsonschema-objects==0.3.12
 pytz==2020.1
 pyyaml==5.3.1
-redis==3.5.3; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+redis-pubsub-dict==0.0.2
+redis-py-cluster==2.0.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+redis==3.0.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 requests==2.24.0
 restnavigator==1.0.1
 selenium==3.141.0
 semver==2.10.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 six==1.15.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
-sphinx-me==0.3
 swagger-ui-bundle==0.0.8
 threadloop==1.0.2
 thrift==0.13.0
