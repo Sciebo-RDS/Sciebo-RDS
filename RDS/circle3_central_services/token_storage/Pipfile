@@ -19,6 +19,9 @@ connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 apscheduler = "*"
 redis-pubsub-dict = "*"
+research-data-services-common = {extras = ["flask"], version = "*"}
+redis = "*"
+redis-py-cluster = "*"
 
 [requires]
 python_version = "3.8"

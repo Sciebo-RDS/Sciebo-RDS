@@ -7,13 +7,8 @@ site_name: "My Documentation"
 generate:
 - token-storage.md:
   - Storage:
-    - lib.User++
-    - lib.Token++
-    - lib.Service++
     - lib.Storage++     # (+ to include members)
-    - lib.Exceptions.ServiceException++
     - lib.Exceptions.StorageException++
-    - Util+
 
 # MkDocs pages configuration. The `<<` operator is sugar added by pydocmd
 # that allows you to use an external Markdown file (eg. your project's README)

@@ -9,7 +9,7 @@ colorama==0.4.3; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.
 connexion-plus==0.38
 connexion[swagger-ui]==2.7.0
 contextlib2==0.6.0.post1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
-coverage==5.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
+coverage==5.2.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
 docspec-python==0.0.7
 docspec==0.2.0
 flask-apscheduler==1.11.0
@@ -22,6 +22,7 @@ greenlet==0.4.16; platform_python_implementation == 'CPython'
 htmlmin==0.1.12
 idna==2.10; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 inflection==0.5.0; python_version >= '3.5'
+iniconfig==1.0.1
 itsdangerous==1.1.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 jaeger-client==4.3.0
 jinja2==2.11.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
@@ -41,7 +42,7 @@ nr.pylang.utils==0.0.3
 nr.stream==0.0.4
 nr.sumtype==0.0.3
 nr.utils.re==0.1.0
-openapi-spec-validator==0.2.8
+openapi-spec-validator==0.2.9
 opentracing-instrumentation==3.3.1
 opentracing==2.3.0
 packaging==20.4; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
@@ -49,7 +50,7 @@ pactman==2.28.0
 pathtools==0.1.2
 pluggy==0.13.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 prometheus-client==0.8.0
-prometheus-flask-exporter==0.15.0
+prometheus-flask-exporter==0.15.4
 py==1.9.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 pydoc-markdown==3.3.0
 pygments==2.6.1; python_version >= '3.5'
@@ -58,15 +59,16 @@ pylru==1.2.0
 pyparsing==2.4.7; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
 pyrsistent==0.16.0
 pytest-cov==2.10.0
-pytest==5.4.3
+pytest==6.0.1
 python-dateutil==2.8.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 python-jsonschema-objects==0.3.12
 pytz==2020.1
 pyyaml==5.3.1
 redis-pubsub-dict==0.0.2
-redis-py-cluster==2.0.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
-redis==3.0.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+redis-py-cluster==2.0.0
+redis==3.0.1
 requests==2.24.0
+research-data-services-common==0.6
 restnavigator==1.0.1
 selenium==3.141.0
 semver==2.10.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
@@ -79,9 +81,8 @@ tornado==5.1.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2
 tzlocal==2.1
 unidecode==1.1.1
 uritemplate==3.0.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
-urllib3==1.25.9; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
+urllib3==1.25.10; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
 watchdog==0.10.3
-wcwidth==0.2.5
 werkzeug==1.0.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 wrapt==1.12.1
 zope.event==4.4
