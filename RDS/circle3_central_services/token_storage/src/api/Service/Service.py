@@ -1,13 +1,14 @@
 from flask import jsonify, request, Response
-import Util, json
+import json
 
-from lib.Service import Service, OAuth2Service
-from lib.Exceptions.ServiceException import (
+from RDS import Service, OAuth2Service, Util
+from RDS.ServiceException import (
     ServiceExistsAlreadyError,
     ServiceNotExistsError,
 )
 from werkzeug.exceptions import abort
 import logging
+import utility
 
 logger = logging.getLogger(__name__)
 
@@ -17,13 +18,13 @@ init_object = Util.try_function_on_dict(
 
 
 def index():
-    services = Util.storage.getServices()
+    services = utility.storage.getServices()
     data = {"length": len(services), "list": services}
     return jsonify(data)
 
 
 def get(servicename: str):
-    svc = Util.storage.getService(servicename)
+    svc = utility.storage.getService(servicename)
     if svc is not None:
         return jsonify(svc)
 
@@ -36,10 +37,10 @@ def post():
     svc = Service.init(data)
 
     try:
-        Util.storage.addService(svc)
+        utility.storage.addService(svc)
 
     except ServiceExistsAlreadyError:
-        Util.storage.addService(svc, Force=True)
+        utility.storage.addService(svc, Force=True)
     except:
         raise
 

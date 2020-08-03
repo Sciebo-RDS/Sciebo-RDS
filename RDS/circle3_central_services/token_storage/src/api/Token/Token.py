@@ -1,15 +1,13 @@
 from flask import jsonify
-from lib.Token import Token, OAuth2Token
-import Util
+from RDS import Token, OAuth2Token
+import utility
 
 
 def index():
-    tokens = Util.storage.getTokens()
-    data = {
-        "length": len(tokens),
-        "list": tokens
-    }
+    tokens = utility.storage.getTokens()
+    data = {"length": len(tokens), "list": tokens}
     return jsonify(data)
+
 
 # TODO Implements me
 

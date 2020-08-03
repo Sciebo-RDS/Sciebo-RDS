@@ -1,8 +1,9 @@
-from lib.User import User
-from lib.Token import Token, OAuth2Token
-from lib.Service import Service, OAuth2Service
+from RDS import User, Token, OAuth2Token, Service, OAuth2Service
 from typing import Union
-from lib.Exceptions.ServiceException import ServiceExistsAlreadyError, ServiceNotExistsError
+from RDS.ServiceException import (
+    ServiceExistsAlreadyError,
+    ServiceNotExistsError,
+)
 
 import logging
 import requests
@@ -11,7 +12,7 @@ import os
 logger = logging.getLogger()
 
 
-class Storage():
+class Storage:
     """
     Represents a Safe for Tokens.
     """
@@ -22,11 +23,12 @@ class Storage():
     def __init__(self):
         if os.getenv("RDS_OAUTH_REDIRECT_URI") is not None:
             from redis_pubsub_dict import RedisDict
-            from rediscluster import StrictRedisCluster
+            from rediscluster import RedisCluster
+
             # runs in RDS ecosystem, use redis as backend
-            rc = StrictRedisCluster(startup_nodes=[{"host": "redis", "port": "6379"}])
-            self._storage = RedisDict(rc, 'tokenstorage_storage')
-            self._services = RedisDict(rc, 'tokenstorage_services')
+            rc = RedisCluster(startup_nodes=[{"host": "redis", "port": "6379"}])
+            self._storage = RedisDict(rc, "tokenstorage_storage")
+            self._services = RedisDict(rc, "tokenstorage_services")
 
             def append(self, value):
                 self[self.size] = value
@@ -43,7 +45,7 @@ class Storage():
     @property
     def storage(self):
         return self._storage
-    
+
     @property
     def services(self):
         try:
@@ -72,6 +74,7 @@ class Storage():
             return self._storage[user_id]["data"]
 
         from .Exceptions.StorageException import UserNotExistsError
+
         raise UserNotExistsError(self, User(user_id))
 
     def getTokens(self, user: Union[str, User] = None):
@@ -100,6 +103,7 @@ class Storage():
             return tokens
 
         from .Exceptions.StorageException import UserNotExistsError
+
         raise UserNotExistsError(self, user)
 
     def getToken(self, user_id: Union[str, User], token_id: Union[str, int]):
@@ -145,6 +149,7 @@ class Storage():
                         return token
 
         from .Exceptions.StorageException import UserNotExistsError
+
         raise UserNotExistsError(self, user)
 
     def getServices(self):
@@ -195,7 +200,8 @@ class Storage():
                 self._services[index] = service
                 return True
 
-            from lib.Exceptions.ServiceException import ServiceExistsAlreadyError
+            from RDS.ServiceException import ServiceExistsAlreadyError
+
             raise ServiceExistsAlreadyError(service)
 
         self._services.append(service)
@@ -244,6 +250,7 @@ class Storage():
 
         else:
             from .Exceptions.StorageException import UserExistsAlreadyError
+
             raise UserExistsAlreadyError(self, user)
 
     def removeUser(self, user: User):
@@ -264,6 +271,7 @@ class Storage():
 
         if not user.username in self._storage:
             from .Exceptions.StorageException import UserNotExistsError
+
             raise UserNotExistsError(self, user)
 
         del self._storage[user.username]
@@ -291,6 +299,7 @@ class Storage():
 
         if not user.username in self._storage:
             from .Exceptions.StorageException import UserNotExistsError
+
             raise UserNotExistsError(self, user)
 
         try:
@@ -304,6 +313,7 @@ class Storage():
                     break
         except ValueError:
             from .Exceptions.StorageException import TokenNotExistsError
+
             raise TokenNotExistsError(self, user, token)
 
     def internal_addUser(self, user: User):
@@ -315,13 +325,11 @@ class Storage():
 
         # check if this id is a superuser
         if not user.username in self._storage:
-            self._storage[user.username] = {
-                "data": user,
-                "tokens": []
-            }
+            self._storage[user.username] = {"data": user, "tokens": []}
 
         else:
             from lib.Exceptions.StorageException import UserExistsAlreadyError
+
             raise UserExistsAlreadyError(self, user)
 
     def addTokenToUser(self, token: Token, user: User = None, Force: bool = False):
@@ -352,9 +360,11 @@ class Storage():
             if Force:
                 self.internal_addUser(user)
                 logger.debug(
-                    f"add user {user} with force, because it does not exist in storage already.")
+                    f"add user {user} with force, because it does not exist in storage already."
+                )
             else:
                 from lib.Exceptions.StorageException import UserNotExistsError
+
                 raise UserNotExistsError(self, user)
 
         try:
@@ -373,6 +383,7 @@ class Storage():
 
             else:
                 from .Exceptions.StorageException import UserHasTokenAlreadyError
+
                 raise UserHasTokenAlreadyError(self, user, token)
 
         except ValueError:
@@ -417,17 +428,23 @@ class Storage():
 
         # iterate over tokens
         tokens = [
-            (userdata["data"],  token)
+            (userdata["data"], token)
             for userdata in self._storage.values()
             for token in userdata["tokens"]
         ]
 
         for user, token in tokens:
-            if not isinstance(token, OAuth2Token) or not isinstance(token.service, OAuth2Service):
+            if not isinstance(token, OAuth2Token) or not isinstance(
+                token.service, OAuth2Service
+            ):
                 continue
 
             # refresh token
-            from .Exceptions.ServiceException import OAuth2UnsuccessfulResponseError, TokenNotValidError
+            from RDS.ServiceException import (
+                OAuth2UnsuccessfulResponseError,
+                TokenNotValidError,
+            )
+
             try:
                 new_token = token.refresh()
                 self.addTokenToUser(new_token, user, Force=True)
@@ -459,11 +476,15 @@ class Storage():
             if service.servicename == servicename:
                 return index
 
-        raise ValueError("Service {} not found in services {}.".format(
-            servicename, ";".join(map(str, services))))
+        raise ValueError(
+            "Service {} not found in services {}.".format(
+                servicename, ";".join(map(str, services))
+            )
+        )
 
     def __str__(self):
         import json
+
         return json.dumps(self.storage)
 
         """

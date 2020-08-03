@@ -1,7 +1,5 @@
-from ..User import User
+from RDS import User, Token, OAuth2Token, Service
 from ..Storage import Storage
-from ..Token import Token, OAuth2Token
-from ..Service import Service
 
 
 class UserExistsAlreadyError(Exception):
@@ -28,6 +26,7 @@ class UserHasTokenAlreadyError(UserExistsAlreadyError):
             msg = f"{user} has already {token.service} in Storage"
 
         super(UserHasTokenAlreadyError, self).__init__(storage, user, msg)
+
 
 class TokenNotForUser(Exception):
     def __init__(self, storage: Storage, user: User, token: Token, msg=None):
