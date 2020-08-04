@@ -18,6 +18,8 @@ connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 pyjwt = "*"
 redis-pubsub-dict = "*"
+redis = "*"
+redis-py-cluster = "*"
 
 [requires]
 python_version = "3.8"

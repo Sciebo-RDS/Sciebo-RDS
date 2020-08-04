@@ -13,7 +13,14 @@ class ProjectService:
             from redis_pubsub_dict import RedisDict
             from rediscluster import StrictRedisCluster
             # runs in RDS ecosystem
-            rc = StrictRedisCluster(startup_nodes=[{"host": "redis", "port": "6379"}])
+            rc = RedisCluster(
+                startup_nodes=[
+                    {
+                        "host": os.getenv("REDIS_HOST", "localhost"),
+                        "port": os.getenv("REDIS_PORT", "6379"),
+                    }
+                ]
+            )
             self.projects = RedisDict(rc, 'researchmanager_projects')
         else:
             self.projects = {}

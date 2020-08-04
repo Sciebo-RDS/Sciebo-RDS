@@ -18,8 +18,8 @@ python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 apscheduler = "*"
-redis-pubsub-dict = "*"
 research-data-services-common = {extras = ["flask"], version = "*"}
+redis-pubsub-dict = "*"
 redis = "*"
 redis-py-cluster = "*"
 
