@@ -12,7 +12,13 @@ mermaid: true
 
 This plugin represents the first integration of RDS into another ecosystem. In order to ensure usability and to keep the threshold as low as possible, care is taken to use as many functionalities of the platform as possible and to extend them by RDS.
 
-## Settings
+## Settings administrator view
+
+Once the plugin has been installed and activated in Owncloud from the Apps Market (see [here how](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), the RDS system must be configured in the settings.
+
+![Administrator view](/images/oc-plugin-view-admin.png)
+
+## Settings user view
 
 In the settings, the user has the option of storing OAuth tokens and passwords (which are also referred to as tokens in the following) in the system, with which the system can log on to various services on behalf of the user. The following status diagram illustrates the process.
 
