@@ -29,7 +29,7 @@ class Storage:
             rc = RedisCluster(
                 startup_nodes=[
                     {
-                        "host": os.getenv("REDIS_HOST", "redis"),
+                        "host": os.getenv("REDIS_HOST", "localhost"),
                         "port": os.getenv("REDIS_PORT", "6379"),
                     }
                 ]
