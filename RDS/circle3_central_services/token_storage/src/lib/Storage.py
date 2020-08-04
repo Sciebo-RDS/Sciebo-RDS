@@ -21,7 +21,7 @@ class Storage:
     _services = None
 
     def __init__(self):
-        if os.getenv("RDS_OAUTH_REDIRECT_URI") is not None:
+        try:
             from redis_pubsub_dict import RedisDict
             from rediscluster import RedisCluster
 
@@ -41,7 +41,7 @@ class Storage:
                 self[self.size] = value
 
             self._services.append = append
-        else:
+        except Exception:
             self._storage = {}
             self._services = []
 

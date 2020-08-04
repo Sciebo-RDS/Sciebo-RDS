@@ -9,7 +9,7 @@ logger = logging.getLogger()
 class ProjectService:
     def __init__(self):
         # format: {user: [<type project>]}
-        if os.getenv("RDS_OAUTH_REDIRECT_URI") is not None:
+        try:
             from redis_pubsub_dict import RedisDict
             from rediscluster import StrictRedisCluster
             # runs in RDS ecosystem
@@ -22,7 +22,7 @@ class ProjectService:
                 ]
             )
             self.projects = RedisDict(rc, 'researchmanager_projects')
-        else:
+        except Exception:
             self.projects = {}
             
         self.highest_index = 0
