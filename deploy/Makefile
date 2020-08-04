@@ -68,7 +68,7 @@ circle2: service_token service_exporter service_metadata
 circle3: storage_token storage_research
 
 
-jaeger:
+install_jaeger:
 	helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
 	helm repo update
 	helm upgrade jaeger jaegertracing/jaeger --install --values jaeger.yaml
@@ -76,14 +76,14 @@ jaeger:
 remove_jaeger:
 	helm uninstall jaeger || true
 
-redis:
-	helm repo add dandydev https://dandydeveloper.github.io/charts --values redis.yaml
-	helm install dandydev/redis-ha
+install_redis:
+	helm repo add dandydev https://dandydeveloper.github.io/charts
+	helm upgrade redis-ha dandydev/redis-ha --install --values redis.yaml
 
 remove_redis:
-	helm uninstall redis || true
+	helm uninstall redis-ha || true
 
-features: jaeger redis
+features: install_jaeger install_redis
 
 remove_features: remove_jaeger remove_redis
 

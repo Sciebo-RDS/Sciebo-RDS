@@ -26,7 +26,14 @@ class Storage:
             from rediscluster import RedisCluster
 
             # runs in RDS ecosystem, use redis as backend
-            rc = RedisCluster(startup_nodes=[{"host": "redis", "port": "6379"}])
+            rc = RedisCluster(
+                startup_nodes=[
+                    {
+                        "host": os.getenv("REDIS_HOST", "redis"),
+                        "port": os.getenv("REDIS_PORT", "6379"),
+                    }
+                ]
+            )
             self._storage = RedisDict(rc, "tokenstorage_storage")
             self._services = RedisDict(rc, "tokenstorage_services")
 

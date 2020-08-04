@@ -54,3 +54,5 @@ affinity: {}
 
 environment:
   FLASK_HOST_ADDRESS: https://sciebords-dev.uni-muenster.de/port-service
+  REDIS_HOST: redis-ha.sciebo-rds.svc.cluster.local
+  REDIS_PORT: 6379
