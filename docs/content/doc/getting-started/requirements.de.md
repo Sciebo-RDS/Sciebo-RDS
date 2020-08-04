@@ -22,9 +22,23 @@ Folgende Rechte muss der [Nutzeraccount](https://kubernetes.io/docs/reference/ac
 Diese Rechte sind ziemlich fundamental für die Arbeit mit Kubernetes und sollten für jedes Nutzerkonto verfügbar sein. Es kann in einigen Umgebungen aber nötig sein, den Clusteradministrator auf diese Rechte anzusprechen und entsprechende Berechtigungen zu erhalten.
 
 Es wird empfohlen einen eigenen [Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) für RDS im Kubernetes zu erzeugen (z.B. *research-data-services*).
-Sobald Kubectl installiert ist ([siehe Kubernetes](/de/doc/getting-started/k8s/)) kann mittels folgendem Bashbefehl dieser Namespace Standard konfiguriert werden.
+
+Sobald Kubectl installiert ist ([siehe Kubernetes](/de/doc/getting-started/k8s/)) kann mittels folgenden Bashbefehlen eine Datei mit dem Namen *namespace-rds.json* erstellt, der Namespace *research-data-services* im Kubernetes erstellt und dieser als Standard im aktuellen Kontext konfiguriert werden.
 
 ```bash
+cat > namespace-rds.json << EOL
+{
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": {
+        "name": "research-data-services",
+        "labels": {
+            "name": "research-data-services"
+        }
+    }
+}
+EOL
+kubectl apply -f namespace-rds.json
 kubectl config set-context --current --namespace=research-data-services
 ```
 
