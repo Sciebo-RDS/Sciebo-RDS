@@ -41,6 +41,10 @@ make install
 
 The above command installs all available services. Currently, the system does not yet check which services have been configured so that only these are set up. This currently means that unconfigured services will not work, but will be set up.
 
+{{<callout "warning">}}
+If the error message *Error: template: circle2-port-service/templates/tests/test-connection.yaml:14:73: executing "circle2-port-service/templates/tests/test-connection.yaml" at <.Values.service.port>: nil pointer evaluating interface {}.port* appears in a modification, there is no values.yaml file available for the mentioned service. Look again in the [Configuration](/doc/getting-started/config/).
+{{</callout>}}
+
 The system automatically installs a Jaeger instance for tracking log messages. You can access this instance with the following command and then call up the displayed IP address in the browser:
 
 ```bash
