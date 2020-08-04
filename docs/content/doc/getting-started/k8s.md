@@ -54,3 +54,8 @@ make jaeger
 Jaeger is particularly well suited for identifying errors or problems within the ecosystem.
 
 If a Prometheus system is used, all metrics are automatically tapped and offered in the respective system. A standardised view will be offered in the future (see [Issue 39](https://github.com/Sciebo-RDS/Sciebo-RDS/issues/39)).
+
+
+Now that the installation of the RDS instance is complete, a client software is now required. Currently the following plugins are available:
+
+- [ownCloud Plugin](/doc/impl/plugins/owncloud/)
