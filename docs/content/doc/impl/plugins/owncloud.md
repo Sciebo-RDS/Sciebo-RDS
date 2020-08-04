@@ -12,15 +12,36 @@ mermaid: true
 
 This plugin represents the first integration of RDS into another ecosystem. In order to ensure usability and to keep the threshold as low as possible, care is taken to use as many functionalities of the platform as possible and to extend them by RDS.
 
-## Settings administrator view
+## Installation
+
+
+The plugin is located in the [Git-Repo in the plugins folder](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud). The repository must be copied and then the *rds* folder must be moved to the *Apps* folder of the owncloud instance.
+
+{{<callout "info">}}
+Currently the RDS plugin is not available in the official Owncloud Marketplace for Apps. This is currently in preparation. Therefore the manual steps are necessary.
+{{{</callout>}}
+
+The following commands copy the git repo to the current folder and copy the necessary files. Assume that the owncloud instance is located at */var/www/html/owncloud*. This can be adjusted in the first line.
+
+```bash
+export OWNCLOUD_INSTALLATION=/var/www/html/owncloud
+git clone https://github.com/Sciebo-RDS/Sciebo-RDS.git
+cp -r Sciebo-RDS/plugins/ownCloud/rds $OWNCLOUD_INSTALLATION/apps/
+```
+
+Now the *RDS* app can be found and activated in the Market app in the administrator account. Then the administrator has to configure the RDS app in the administrator settings, as described below.
+
+### Settings administrator view
 
 Once the plugin has been installed and activated in Owncloud from the Apps Market (see [here how](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), the RDS system must be configured in the settings.
 
 ![Administrator view](/images/oc-plugin-view-admin.png)
 
-## Settings user view
+### Settings user view
 
 In the settings, the user has the option of storing OAuth tokens and passwords (which are also referred to as tokens in the following) in the system, with which the system can log on to various services on behalf of the user. The following status diagram illustrates the process.
+
+## Developing
 
 ### Input masks of the settings
 
