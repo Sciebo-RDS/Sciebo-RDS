@@ -17,19 +17,23 @@ logging.getLogger("").handlers = []
 logging.basicConfig(format="%(asctime)s %(message)s", level=log_level)
 
 
-def monkeypatch():
-    """ 
-    Module that monkey-patches json module when it's imported so
-    JSONEncoder.default() automatically checks for a special "getJSON"
+def get_encoder(func_name: str = "to_json"):
+    """ Module that monkey-patches json module when it's imported so
+    JSONEncoder.default() automatically checks for a special "to_json()"
     method and uses it to encode the object if found.
     """
-    from json import JSONEncoder, JSONDecoder
 
-    def to_default(self, obj):
-        return getattr(obj, "getDict", to_default.default)()
+    from flask.json import JSONEncoder
 
-    to_default.default = JSONEncoder.default  # Save unmodified default.
-    JSONEncoder.default = to_default  # Replace it.
+    class RDSEncoder(JSONEncoder):
+        def default(self, o):
+            method = getattr(o, func_name, JSONEncoder.default)
+            try:
+                return method()
+            except:
+                return method(self, o)
+
+    return RDSEncoder
 
 
 def bootstrap(name="MicroService", *args, **kwargs):
@@ -46,5 +50,5 @@ def bootstrap(name="MicroService", *args, **kwargs):
             validate_responses=True,
         )
 
-    monkeypatch()
+    app.app.json_encoder = get_encoder("getDict")
     return app
