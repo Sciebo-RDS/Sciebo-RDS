@@ -26,11 +26,9 @@ nano kustomization.yaml
 
 In der kustomization.yaml werden die Proxies definiert, welche möglicherweise in der Umgebung notwendig sind. Dadurch können die Microservices auch außerhalb des Clusters verfügbare Services erreichen, falls der Cluster keine eigene weltweite IP besitzt.
 
-Die folgenden Services benötigen ebenfalls Anpassungen, wenn sie eingesetzt werden sollen:
-- Owncloud (circle1_port_owncloud)  
-- Zenodo (circle1_port_zenodo)
+Jeder Service, welcher eingesetzt werden soll, benötigt die nachfolgende Anpassung. Somit wird sichergestellt, dass das System auch wirklich die Services aufsetzt, welche der Nutzer einsetzen möchte.
 
-In den Ordner sind wieder "example"-Dateien enthalten, genauer "values.yaml.example", welche wie oben umbenannt werden müssen. Darin müssen nun die entsprechenden Daten für die Services eingegeben werden.
+In den Ordner der verschiedenen Services sind wieder "example"-Dateien enthalten, genauer "values.yaml.example", welche wie oben umbenannt werden müssen. Darin müssen nun die entsprechenden Daten für die Services eingegeben werden.
 
 ```bash
 cp values.yaml.example values.yaml
