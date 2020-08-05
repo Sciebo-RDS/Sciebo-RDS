@@ -18,4 +18,4 @@ nano values.yaml
 
 Once these adjustments have been made, the cluster can now be installed.
 
-If the communication between plugins and cluster should be secured by a HTTPS connection, which is strongly recommended, you can create a certificate with the shell script [create_create.sh](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/create_certs.sh) and store it as a secret. The script has to be adapted for which domain the certificate should be issued.
+If the communication between plugins and cluster should be secured by a HTTPS connection, which is strongly recommended, you can create a certificate with the shell script [create_certs.sh](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/create_certs.sh) and store it as a secret. The script has to be adapted for which domain the certificate should be issued.
