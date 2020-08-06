@@ -25,6 +25,7 @@ def bootstrap(name="MicroService", *args, **kwargs):
         ServerUtil.tokenService = TokenService()
 
     app = App(name, *args, **kwargs)
+    CommonUtil.monkeypatch(app=app.app)
 
     for oai in list_openapi:
         app.add_api(
@@ -32,7 +33,5 @@ def bootstrap(name="MicroService", *args, **kwargs):
             resolver=MultipleResourceResolver("api", collection_endpoint_name="index"),
             validate_responses=True,
         )
-
-    CommonUtil.monkeypatch()
 
     return app

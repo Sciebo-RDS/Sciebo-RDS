@@ -20,7 +20,7 @@ def bootstrap(name="MicroService", *args, **kwargs):
     list_openapi = Util.load_oai("central-service_token-storage.yml")
 
     app = App(name, *args, **kwargs)
-    app.app.json_encoder = CommonUtil.get_encoder()
+    CommonUtil.monkeypatch(app=app.app)
 
     for oai in list_openapi:
         app.add_api(

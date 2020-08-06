@@ -8,6 +8,7 @@ from jaeger_client import Config as jConfig
 from connexion_plus import App, MultipleResourceResolver, Util
 import Singleton
 from lib.ProjectService import ProjectService
+from RDS import Util as RDSUtil
 
 import logging, os
 
@@ -17,29 +18,11 @@ logging.getLogger("").handlers = []
 logging.basicConfig(format="%(asctime)s %(message)s", level=log_level)
 
 
-def get_encoder(func_name: str = "to_json"):
-    """ Module that monkey-patches json module when it's imported so
-    JSONEncoder.default() automatically checks for a special "to_json()"
-    method and uses it to encode the object if found.
-    """
-
-    from flask.json import JSONEncoder
-
-    class RDSEncoder(JSONEncoder):
-        def default(self, o):
-            method = getattr(o, func_name, JSONEncoder.default)
-            try:
-                return method()
-            except:
-                return method(self, o)
-
-    return RDSEncoder
-
-
 def bootstrap(name="MicroService", *args, **kwargs):
     list_openapi = Util.load_oai("central-service_research-manager.yml")
 
     app = App(name, *args, **kwargs)
+    RDSUtil.monkeypatch("getDict", app=app.app)
 
     Singleton.ProjectService = ProjectService()
 
@@ -50,5 +33,4 @@ def bootstrap(name="MicroService", *args, **kwargs):
             validate_responses=True,
         )
 
-    app.app.json_encoder = get_encoder("getDict")
     return app
