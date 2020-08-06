@@ -2,10 +2,7 @@ import requests
 import os
 import json
 from flask import jsonify
-from lib.Service import Service, OAuth2Service
-from lib.User import User
-from lib.Token import Token, OAuth2Token
-import Util
+from RDS import Service, OAuth2Service, User, Token, OAuth2Token
 from lib.Exceptions.ServiceException import *
 import jwt
 import datetime
@@ -73,7 +70,7 @@ class TokenService:
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
-        if response.status_code is not 200:
+        if response.status_code != 200:
             raise ServiceNotFoundError(Service(service))
 
         svc = Service.init(response.json())
@@ -131,7 +128,7 @@ class TokenService:
         }
         """
 
-        if len(self._services) is 0:
+        if len(self._services) == 0:
             self.refreshServices()
         services = self._services
 
@@ -293,7 +290,7 @@ class TokenService:
             data=json.dumps(user),
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
-        if response.status_code is not 200:
+        if response.status_code != 200:
             raise UserAlreadyRegisteredError(user)
 
         data = response.json()
@@ -312,7 +309,7 @@ class TokenService:
             f"{self.address}/user/{user.username}",
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
-        if response.status_code is not 200:
+        if response.status_code != 200:
             raise UserNotFoundError(user)
 
         data = response.json()
@@ -335,7 +332,7 @@ class TokenService:
         )
         data = response.json()
 
-        if response.status_code is not 200:
+        if response.status_code != 200:
             if "error" in data:
                 if data["error"] == "UserHasTokenAlreadyError":
                     raise UserHasTokenAlreadyError(user, token)
@@ -370,7 +367,7 @@ class TokenService:
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
         data = response.json()
-        if response.status_code is not 200:
+        if response.status_code != 200:
             if "error" in data:
                 if data["error"] == "TokenNotExistsError":
                     raise TokenNotFoundError(Token(user, service, "NOT_USED"))
@@ -398,7 +395,7 @@ class TokenService:
         while type(data) is not dict:
             data = json.loads(data)
 
-        if response.status_code is not 200:
+        if response.status_code != 200:
             if "error" in data:
                 if data["error"] == "TokenNotExistsError":
                     raise TokenNotFoundError(Token(user, service, "NOT_USED"))
@@ -469,7 +466,7 @@ class TokenService:
 
         logger.info(f"response body: {response.text}")
 
-        if response.status_code is not 200:
+        if response.status_code != 200:
             raise CodeNotExchangeable(code, service, msg=response.text)
 
         response_with_access_token = response.json()

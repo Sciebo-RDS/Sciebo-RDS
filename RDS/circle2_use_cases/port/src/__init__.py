@@ -2,10 +2,7 @@ import Util as ServerUtil
 
 import logging, os
 
-log_level = os.environ.get("LOGLEVEL", "DEBUG")
-logger = logging.getLogger("")
-logging.getLogger("").handlers = []
-logging.basicConfig(format="%(asctime)s %(message)s", level=log_level)
+from RDS import Util as CommonUtil
 
 
 def monkeypatch():
@@ -20,6 +17,12 @@ def monkeypatch():
 
     to_default.default = JSONEncoder.default  # Save unmodified default.
     JSONEncoder.default = to_default  # Replace it.
+
+
+log_level = os.environ.get("LOGLEVEL", "DEBUG")
+logger = logging.getLogger("")
+logging.getLogger("").handlers = []
+logging.basicConfig(format="%(asctime)s %(message)s", level=log_level)
 
 
 def bootstrap(name="MicroService", *args, **kwargs):
@@ -45,5 +48,7 @@ def bootstrap(name="MicroService", *args, **kwargs):
             validate_responses=True,
         )
 
+    app.app.json_encoder = CommonUtil.get_encoder()
     monkeypatch()
+    
     return app

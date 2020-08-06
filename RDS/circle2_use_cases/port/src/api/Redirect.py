@@ -7,7 +7,7 @@ from jwt.exceptions import InvalidSignatureError
 
 import logging
 from lib.Exceptions.ServiceException import CodeNotExchangeable
-from lib.Service import OAuth2Service
+from RDS import OAuth2Service
 from connexion_plus import FlaskOptimize
 
 func = [Util.initialize_object_from_json, Util.initialize_object_from_dict]
