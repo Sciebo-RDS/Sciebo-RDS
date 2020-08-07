@@ -21,6 +21,8 @@ Folgende Rechte muss der [Nutzeraccount](https://kubernetes.io/docs/reference/ac
 
 Diese Rechte sind ziemlich fundamental für die Arbeit mit Kubernetes und sollten für jedes Nutzerkonto verfügbar sein. Es kann in einigen Umgebungen aber nötig sein, den Clusteradministrator auf diese Rechte anzusprechen und entsprechende Berechtigungen zu erhalten.
 
+### Namespace
+
 Es wird empfohlen einen eigenen [Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) für RDS im Kubernetes zu erzeugen (z.B. *research-data-services*).
 
 Sobald Kubectl installiert ist ([siehe Kubernetes](/de/doc/getting-started/k8s/)) kann mittels folgenden Bashbefehlen eine Datei mit dem Namen *namespace-rds.json* erstellt, der Namespace *research-data-services* im Kubernetes erstellt und dieser als Standard im aktuellen Kontext konfiguriert werden.
@@ -43,3 +45,11 @@ kubectl config set-context --current --namespace=research-data-services
 ```
 
 Anschließend wird das Angeben eines Kontexts für jeden Kubectl Befehl (und Helm) obsolet, da der angegebene Namespace als Default verwendet wird. Ist dies nicht gewünscht, müssen sämtliche Befehle entsprechend ergänzt werden und die im Folgenden zur Verfügung gestellten Hilfsmittel können größtenteils nicht verwendet werden.
+
+### Ingress
+
+Das System benötigt einen Ingress Server. Sollte Minikube zum Einsatz kommen, lässt sich dies mit folgendem Befehl nachrüsten. Andernfalls bitte bei einem Administrator nachfragen.
+
+```bash
+minikube addons enable ingress
+```
