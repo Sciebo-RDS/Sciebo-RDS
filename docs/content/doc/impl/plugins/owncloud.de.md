@@ -11,7 +11,31 @@ mermaid: true
 
 Dieser Plugin stellt die erste Integration von RDS in ein anderes Ökosystem dar. Um die Bedienbarkeit zu gewährleisten und möglichst niedrigschwellig zu gestalten, wird darauf geachtet, möglichst sämtliche Funktionsmöglichkeiten der Plattform zu verwenden und durch RDS zu erweitern.
 
-## Einstellungen
+# Installation
+
+Das Plugin liegt im [Git-Repo im Ordner plugins](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud). Das Repositorium muss kopiert und anschließend der *rds*-Ordner in den *Apps*-Ordner der Owncloud-Instanz verschoben werden.
+
+{{<callout "info">}}
+Aktuell ist das RDS Plugin nicht im offiziellen Owncloud Marketplace für Apps verfügbar. Dies ist aktuell in Vorbereitung. Daher sind die manuellen Schritte notwendig.
+{{</callout>}}
+
+Die folgenden Befehle kopieren das Git-Repo in den aktuellen Ordner und kopieren die notwendigen Dateien. Angenommen wird, dass die Owncloud-Instanz sich unter */var/www/html/owncloud* befindet. Dies kann in der ersten Zeile angepasst werden.
+
+```bash
+export OWNCLOUD_INSTALLATION=/var/www/html/owncloud
+git clone https://github.com/Sciebo-RDS/Sciebo-RDS.git
+cp -r Sciebo-RDS/plugins/ownCloud/rds $OWNCLOUD_INSTALLATION/apps/
+```
+
+Nun kann die *RDS*-App in den Einstellungen aktiviert (https://localhost/owncloud/index.php/settings/admin?sectionid=apps&category=disabled) werden. Anschließend muss der Administrator in den Administratoreneinstellungen die RDS App konfigurieren, wie im folgenden beschrieben.
+
+### Einstellungen Administratorensicht
+
+Sobald das Plugin in Owncloud aus dem Apps Market installiert und aktiviert wurde (siehe [hier wie](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), muss das RDS System in den Einstellungen konfiguriert werden.
+
+![Administratorensicht](/images/oc-plugin-view-admin.png)
+
+### Einstellungen Nutzersicht
 
 In den Einstellungen hat der Nutzer die Möglichkeit, OAuth Tokens und Passwörter (welche ebenfalls als Tokens bezeichnet werden im Folgenden) im System zu hinterlegen, womit sich das System im Namen des Nutzers bei verschiedenen Diensten anmelden kann. Das folgende Zustandsdiagramm stellt den Ablauf dar.
 
