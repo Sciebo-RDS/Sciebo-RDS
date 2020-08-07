@@ -22,9 +22,23 @@ The [user account](https://kubernetes.io/docs/reference/access-authn-authz/rbac/
 These rights are quite fundamental for working with Kubernetes and should be available for every user account. However, in some environments, it may be necessary to contact the cluster administrator about these rights and obtain appropriate permissions.
 
 It is recommended to create a separate [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) for RDS in Kubernetes (e.g. *research-data-services*).
-As soon as Kubectl is installed ([see Kubernetes](/doc/getting-started/k8s/)), this namespace default can be configured with the following bash command
+
+Once Kubectl is installed ([see Kubernetes](/doc/getting-started/k8s/)) you can use the following bash commands to create a file named *namespace-rds.json*, create the namespace *research-data-services* in Kubernetes and configure it as the default in the current context
 
 ```bash
+cat > namespace-rds.json << EOL
+{
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": {
+        "name": "research-data-services",
+        "labels": {
+            "name": "research-data-services"
+        }
+    }
+}
+EOL
+kubectl apply -f namespace-rds.json
 kubectl config set-context --current --namespace=research-data-services
 ```
 
