@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # edit this
-HOST=sciebords-dev.uni-muenster.de
+HOST=sciebords-dev.org
 
 # let this
 KEY_FILE=tls.key

@@ -22,18 +22,16 @@ service:
 
 ingress:
   enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx-internal
-    # kubernetes.io/tls-acme: "true"
+  
   hosts:
-    - host: sciebords-dev.uni-muenster.de
+    - host: sciebords-dev.org
       paths:
       - /port-service
 
   tls:
     - secretName: sciebords-tls-public
       hosts:
-        - sciebords-dev.uni-muenster.de
+        - sciebords-dev.org
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -54,4 +52,4 @@ tolerations: []
 affinity: {}
 
 environment:
-  FLASK_HOST_ADDRESS: https://sciebords-dev.uni-muenster.de/port-service
+  FLASK_HOST_ADDRESS: https://sciebords-dev.org/port-service

@@ -1,7 +1,7 @@
 <?php
 
 function getRegisteredServicesForUser( $userId ) {
-    $rdsURL = 'https://sciebords-dev.uni-muenster.de/port-service';
+    $rdsURL = 'https://sciebords-dev.org/port-service';
     $curl = curl_init( $rdsURL . '/user/' . $userId . '/service' );
     curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
     curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );

@@ -2,11 +2,9 @@
 
 ingress:
   enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx-internal
-    # kubernetes.io/tls-acme: "true"
+  
   hosts:
-    - host: sciebords-dev.uni-muenster.de
+    - host: sciebords-dev.org
       paths:
       - /tracing
 
