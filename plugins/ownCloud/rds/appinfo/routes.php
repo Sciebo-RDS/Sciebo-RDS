@@ -1,9 +1,5 @@
 <?php
-
-namespace OCA\RDS\AppInfo;
-
-$application = new Application();
-$application->registerRoutes($this, [
+return [
     'resources' => [
         # Research resource API Endpoints, full CRUD
         'research' => ['url' => '/research'],
@@ -44,4 +40,4 @@ $application->registerRoutes($this, [
         ['name' => 'Userservice#register',      'url' => '/oauth',                                          'verb' => 'GET']
 
     ]
-]);
+];
