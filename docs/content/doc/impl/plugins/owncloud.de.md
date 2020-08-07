@@ -39,6 +39,8 @@ Sobald das Plugin in Owncloud aus dem Apps Market installiert und aktiviert wurd
 
 In den Einstellungen hat der Nutzer die Möglichkeit, OAuth Tokens und Passwörter (welche ebenfalls als Tokens bezeichnet werden im Folgenden) im System zu hinterlegen, womit sich das System im Namen des Nutzers bei verschiedenen Diensten anmelden kann. Das folgende Zustandsdiagramm stellt den Ablauf dar.
 
+## Entwicklung
+
 ### Eingabemasken der Einstellungen
 
 ```mermaid

@@ -40,6 +40,8 @@ Once the plugin has been installed and activated in Owncloud from the Apps Marke
 
 In the settings, the user has the option of storing OAuth tokens and passwords (which are also referred to as tokens in the following) in the system, with which the system can log on to various services on behalf of the user. The following status diagram illustrates the process.
 
+## Developing
+
 ### Input masks of the settings
 
 ```mermaid
