@@ -338,3 +338,5 @@ class Test_TokenStorage(unittest.TestCase):
 
         self.empty_storage.removeToken(self.user1, self.oauthtoken3)
         self.assertEqual(self.empty_storage.storage, expected)
+
+    

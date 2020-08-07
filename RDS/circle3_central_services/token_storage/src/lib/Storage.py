@@ -20,20 +20,21 @@ class Storage:
     _storage = None
     _services = None
 
-    def __init__(self):
+    def __init__(self, rc = None):
         try:
             from redis_pubsub_dict import RedisDict
             from rediscluster import RedisCluster
 
             # runs in RDS ecosystem, use redis as backend
-            rc = RedisCluster(
-                startup_nodes=[
-                    {
-                        "host": os.getenv("REDIS_HOST", "localhost"),
-                        "port": os.getenv("REDIS_PORT", "6379"),
-                    }
-                ]
-            )
+            if rc is None:
+                rc = RedisCluster(
+                    startup_nodes=[
+                        {
+                            "host": os.getenv("REDIS_HOST", "localhost"),
+                            "port": os.getenv("REDIS_PORT", "6379"),
+                        }
+                    ]
+                )
             self._storage = RedisDict(rc, "tokenstorage_storage")
             self._services = RedisDict(rc, "tokenstorage_services")
 

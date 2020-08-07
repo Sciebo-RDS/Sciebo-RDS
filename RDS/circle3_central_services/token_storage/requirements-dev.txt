@@ -12,6 +12,7 @@ contextlib2==0.6.0.post1; python_version >= '2.7' and python_version not in '3.0
 coverage==5.2.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
 docspec-python==0.0.7
 docspec==0.2.0
+fakeredis==1.4.2
 flask-apscheduler==1.11.0
 flask-cors==3.0.8
 flask-opentracing==1.1.0
@@ -73,6 +74,7 @@ restnavigator==1.0.1
 selenium==3.141.0
 semver==2.10.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 six==1.15.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+sortedcontainers==2.2.2
 swagger-ui-bundle==0.0.8
 threadloop==1.0.2
 thrift==0.13.0

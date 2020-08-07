@@ -10,6 +10,7 @@ pygount = "*"
 pydoc-markdown = "*"
 pytest-cov = "*"
 selenium = "*"
+fakeredis = "*"
 
 [packages]
 requests = "*"
