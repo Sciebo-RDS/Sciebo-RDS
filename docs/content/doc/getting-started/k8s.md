@@ -27,7 +27,9 @@ If helmet or kubectl have not yet been installed, you can easily install them.
 {{</tab>}}
 {{</tabs>}}
 
-*Note: Since Helm v3 no more Tillerserver is [required] on the sides of the Kubernet [https://helm.sh/blog/helm-3-released/).*
+{{<callout "tip">}}
+Note: Since Helm v3 no Tillerserver is [required](https://helm.sh/blog/helm-3-released/) on the kubernetes side.
+{{</callout>}}
 
 Now Kubectl must be configured so that a Kubernetes cluster can be accessed. (Use minikube for test purposes, otherwise ask the cluster administrator).
 
