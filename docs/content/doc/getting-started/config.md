@@ -37,7 +37,10 @@ In kustomization.yaml the proxies that may be necessary in the environment are t
 
 Furthermore, each service that will be used by the RDS system may be adjusted with respect to local needs, thereby ensuring that the system actually sets up exactly the services that are needed as appropriate.
 
-There are again "example" files to be found in the folders of all the different services, which are called "values.yaml.example". They have to be renamed following the pattern laid out above, i.e. pruning the respective example suffixes. You may also change the corresponding data for the services if necessary.
+If you are fine with the standard values, you do not need any changes for your services except connector-services. But if you want to change any value, you need a value.yaml for the corresponding microservice. If you want to see any available parameter, please take a look at the [chart repo](https://github.com/Sciebo-RDS/charts/tree/master/charts).
+
+For the connector-services, you need to specify the OAuth-ID and -secret to identify with.
+There are again "example" files to be found in the folders of all the connector services in layer 1 in the deploy folder, which are called "values.yaml.example". They have to be renamed following the pattern laid out above, i.e. pruning the respective example suffixes. You may also change the corresponding data for the services if necessary.
 
 ```bash
 cp values.yaml.example values.yaml

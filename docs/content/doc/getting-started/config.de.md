@@ -36,7 +36,10 @@ In der kustomization.yaml werden u.a. die Proxies definiert, welche möglicherwe
 
 Für alle Microservices, die eingesetzt werden sollen, gilt, dass potentiell weitere Anpassungen vorgenommen werden können. Somit wird sichergestellt, dass das System auch wirklich die Services aufsetzt, welche der Nutzer einsetzen möchte.
 
-In den Ordnern der verschiedenen Services sind hierfür wieder "example"-Dateien enthalten, genauer "values.yaml.example", welche wie oben beschrieben umbenannt werden müssen. Innerhalb der Dateien können nun die entsprechenden Daten für die Services lokal angepasst werden, falls das nötig ist. 
+Falls die Standardwerte für den Einsatz ausreichen, so sind keine Änderungen notwendig, außer in den Konnektorendiensten. Um Werte dennoch abzuändern, ist eine value.yaml Datei notwendig für jeden einzelnen Microservice. Um alle verfügbaren Parameter einzusehen, ist ein Blick in das [Helm Chart Repo](https://github.com/Sciebo-RDS/charts/tree/master/charts) empfohlen.
+
+Da die Konnektorendienste zusätzliche Informationen zur OAuth-Authentifizierung benötigt wie die ID und das Secret, benötigen diese eine value.yaml Datei. 
+In den Ordnern der verschiedenen Konnektorendienste in Schicht 1 sind hierfür wieder "example"-Dateien enthalten, genauer "values.yaml.example", welche wie oben beschrieben umbenannt werden müssen. Innerhalb der Dateien können nun die entsprechenden Daten für die Services lokal angepasst werden, falls das nötig ist. 
 
 ```bash
 cp values.yaml.example values.yaml
