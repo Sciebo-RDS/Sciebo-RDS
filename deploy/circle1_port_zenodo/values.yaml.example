@@ -1,4 +1,0 @@
-environment: 
-  ZENODO_OAUTH_CLIENT_ID: ABC
-  ZENODO_OAUTH_CLIENT_SECRET: XYZ
-  ZENODO_ADDRESS: https://sandbox.zenodo.org
