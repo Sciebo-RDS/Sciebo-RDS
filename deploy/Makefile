@@ -1,4 +1,5 @@
-all: install
+start: install
+clean: uninstall
 
 dependencies_ubuntu: dependencies_kubectl_ubuntu dependencies_helm
 dependencies_fedora: dependencies_kubectl_fedora dependencies_helm
@@ -41,93 +42,21 @@ uninstall_kustomization:
 install_configmaps: install_kustomization install_configmap_mserviceurl
 uninstall_configmaps: uninstall_kustomization remove_configmap_mserviceurl
 
-port_zenodo:
-	helm upgrade circle1-port-zenodo sciebo-rds/circle1-port-zenodo --install --values circle1_port_zenodo/values.yaml
-
-port_owncloud:
-	helm upgrade circle1-port-owncloud sciebo-rds/circle1-port-owncloud --install --values circle1_port_owncloud/values.yaml
-
-service_exporter:
-	helm upgrade circle2-exporter-service sciebo-rds/circle2-exporter-service --install --values circle2_exporter_service/values.yaml
-
-service_token:
-	helm upgrade circle2-port-service sciebo-rds/circle2-port-service --install --values circle2_port_service/values.yaml
-
-service_metadata:
-	helm upgrade circle2-metadata-service sciebo-rds/circle2-metadata-service --install --values circle2_metadata_service/values.yaml
-
-storage_token:
-	helm upgrade circle3-token-storage sciebo-rds/circle3-token-storage --install --values circle3_token_storage/values.yaml
-
-storage_research:
-	helm upgrade circle3-research-manager sciebo-rds/circle3-research-manager --install --values circle3_research_manager/values.yaml
-
-circle1: port_zenodo port_owncloud
-circle2: service_token service_exporter service_metadata
-circle3: storage_token storage_research
-
-install_sciebo_rds:
-	helm repo add sciebo-rds https://sciebo-rds.github.io/charts/
-
-remove_sciebo_rds:
-	helm repo remove sciebo-rds
-
-install_jaeger:
-	helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
-	helm upgrade jaeger jaegertracing/jaeger --install --values jaeger.yaml
-
-remove_jaeger:
-	helm uninstall jaeger || true
-	helm repo remove jaegertracing
-
-install_redis:
-	helm repo add dandydev https://dandydeveloper.github.io/charts
-	helm upgrade redis-ha dandydev/redis-ha --install --values redis.yaml
-
-remove_redis:
-	helm uninstall redis-ha || true
-	helm repo remove dandydev
-
-features: install_jaeger install_redis install_sciebo_rds
-
-remove_features: remove_sciebo_rds remove_jaeger remove_redis
-
-remove_port_zenodo:
-	helm uninstall circle1-port-zenodo || true
-
-remove_port_owncloud:
-	helm uninstall circle1-port-owncloud || true
-
-remove_service_exporter:
-	helm uninstall circle2-exporter-service || true
-
-remove_service_token:
-	helm uninstall circle2-port-service || true
-
-remove_service_metadata:
-	helm uninstall circle2-metadata-service || true
-
-remove_storage_token:
-	helm uninstall circle3-token-storage || true
-
-remove_storage_research:
-	helm uninstall circle3-research-manager || true
-
-uninstall_circle1: remove_port_zenodo remove_port_owncloud
-uninstall_circle2: remove_service_token remove_service_exporter remove_service_metadata
-uninstall_circle3: remove_storage_token remove_storage_research
-
 install_tls:
 	chmod +x create_certs.sh && ./create_certs.sh
 
 uninstall_tls:
 	kubectl delete secret sciebords-tls-public
 
-install: install_configmaps features circle3 circle2 circle1
-uninstall: uninstall_circle1 uninstall_circle2 uninstall_circle3 remove_features uninstall_configmaps
-clean: uninstall
+install_all:
+	helm upgrade sciebo-rds sciebo-rds/all -i  --values values.yaml
+	
+uninstall_all:
+	helm uninstall sciebo-rds
+
+install: install_configmaps install_all
+uninstall: uninstall_all uninstall_configmaps
 reinstall: uninstall install
-reinstall_fast: uninstall_circle1 uninstall_circle2 uninstall_circle3 install_configmaps circle3 circle2 circle1
 
 jaeger:
 	$(eval POD_JAEGER=$(shell kubectl get pods --namespace sciebo-rds -l "app.kubernetes.io/instance=jaeger,app.kubernetes.io/component=query" -o jsonpath="{.items[0].metadata.name}"))
