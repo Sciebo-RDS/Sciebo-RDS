@@ -11,7 +11,7 @@ weight: 302
 
 Condition: [Configuration made](/doc/getting-started/config/)
 
-In the "deploy" folder is a Makefile, which is used with the program *make*.
+There is a Makefile in the "deploy" folder, which is used via the program *make*.
 
 ```bash
 sudo apt install make
@@ -28,10 +28,10 @@ If helmet or kubectl have not yet been installed, you can easily install them.
 {{</tabs>}}
 
 {{<callout "tip">}}
-Note: Since Helm v3 no Tillerserver is [required](https://helm.sh/blog/helm-3-released/) on the kubernetes side.
+Note: Since Helm v3 no Tillerserver is [required](https://helm.sh/blog/helm-3-released/) on the Kubernetes side.
 {{</callout>}}
 
-Now Kubectl must be configured so that a Kubernetes cluster can be accessed. (Use minikube for test purposes, otherwise ask the cluster administrator).
+Now kubectl must be configured so that a Kubernetes cluster can be accessed. (Use minikube for test purposes, otherwise ask the cluster administrator).
 
 Afterwards the RDS ecosystem can be loaded onto the cluster with the following command:
 
@@ -39,7 +39,11 @@ Afterwards the RDS ecosystem can be loaded onto the cluster with the following c
 make install
 ```
 
-The above command installs all available services. Currently, the system does not yet check which services have been configured so that only these are set up. This currently means that unconfigured services will not work, but will be set up.
+Note that the above command installs all the available services. This implies that for each service a copied or (if necessary) adapted values.yaml should actually be available. Currently, the system does not yet check which services have been configured so that only these are set up. <!-- This currently means that unconfigured services will not work, but will be set up. -->
+
+{{<callout "warning">}}
+If the error message *Error: template: circle2-port-service/templates/tests/test-connection.yaml:14:73: executing "circle2-port-service/templates/tests/test-connection.yaml" at <.Values.service.port>: nil pointer evaluating interface {}.port* appears in a modification, there is no values.yaml file available for the mentioned service. Look again in the [Configuration](/doc/getting-started/config/).
+{{</callout>}}
 
 {{<callout "warning">}}
 If the error message *Error: template: circle2-port-service/templates/tests/test-connection.yaml:14:73: executing "circle2-port-service/templates/tests/test-connection.yaml" at <.Values.service.port>: nil pointer evaluating interface {}.port* appears in a modification, there is no values.yaml file available for the mentioned service. Look again in the [Configuration](/doc/getting-started/config/).

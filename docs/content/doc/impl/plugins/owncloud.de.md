@@ -31,7 +31,7 @@ Nun kann die *RDS*-App in den Einstellungen aktiviert (https://localhost/ownclou
 
 ### Einstellungen Administratorensicht
 
-Sobald das Plugin in Owncloud aus dem Apps Market installiert und aktiviert wurde (siehe [hier wie](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), muss das RDS System in den Einstellungen konfiguriert werden.
+Sobald das Plugin in Owncloud, zum Beispiel aus dem Apps Market, installiert und aktiviert wurde (siehe [hier wie](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), muss das RDS System in den Einstellungen konfiguriert werden.
 
 ![Administratorensicht](/images/oc-plugin-view-admin.png)
 

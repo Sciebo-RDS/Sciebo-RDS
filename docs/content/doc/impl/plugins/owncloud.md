@@ -14,7 +14,6 @@ This plugin represents the first integration of RDS into another ecosystem. In o
 
 ## Installation
 
-
 The plugin is located in the [Git-Repo in the plugins folder](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud). The repository must be copied and then the *rds* folder must be moved to the *Apps* folder of the owncloud instance.
 
 {{<callout "info">}}
@@ -33,7 +32,7 @@ Now the *RDS* app can be activated in the administrator account (https://localho
 
 ### Settings administrator view
 
-Once the plugin has been installed and activated in Owncloud from the Apps Market (see [here how](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), the RDS system must be configured in the settings.
+Once the plugin has been installed and activated in Owncloud, for example through the Apps Market (see [here how](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), the RDS system must be configured in the settings.
 
 ![Administrator view](/images/oc-plugin-view-admin.png)
 

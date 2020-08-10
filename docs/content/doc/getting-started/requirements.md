@@ -19,11 +19,13 @@ The [user account](https://kubernetes.io/docs/reference/access-authn-authz/rbac/
 - Creation of own DaemonSets
 - Generation of own services
 
-These rights are quite fundamental for working with Kubernetes and should be available for every user account. However, in some environments, it may be necessary to contact the cluster administrator about these rights and obtain appropriate permissions.
+These rights are rather fundamental for working with Kubernetes and should be available for every user account. However, in some environments, it may be necessary to contact the cluster administrator about these rights and obtain appropriate permissions.
+
+### Namespace
 
 It is recommended to create a separate [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) for RDS in Kubernetes (e.g. *research-data-services*).
 
-Once Kubectl is installed ([see Kubernetes](/doc/getting-started/k8s/)) you can use the following bash commands to create a file named *namespace-rds.json*, create the namespace *research-data-services* in Kubernetes and configure it as the default in the current context
+Once Kubectl is installed ([see Kubernetes](/doc/getting-started/k8s/)) you can use the following bash commands to create a file named *namespace-rds.json*, create the namespace *research-data-services* in Kubernetes and configure it as the default in the current context.
 
 ```bash
 cat > namespace-rds.json << EOL
@@ -42,4 +44,12 @@ kubectl apply -f namespace-rds.json
 kubectl config set-context --current --namespace=research-data-services
 ```
 
-After that, specifying a context for each Kubectl command (and helmet) becomes obsolete because the specified namespace is used as default. If this is not desired, all commands must be completed accordingly and the tools provided below cannot be used for the most part.
+After that, specifying a context for each Kubectl command (the same with helmet) becomes obsolete because the specified namespace is used as a default. Otherwise, all commands must be completed respectively and the tools provided in what follows cannot be used straightforwardly.
+
+### Ingress
+
+The system needs an ingress server. If you want to use minikube, you can add it with the following command. Otherwise, please ask your Kubernetes cluster administrator.
+
+```bash
+minikube addons enable ingress
+```
