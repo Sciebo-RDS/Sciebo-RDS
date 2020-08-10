@@ -17,7 +17,7 @@ There is a Makefile in the "deploy" folder, which is used via the program *make*
 sudo apt install make
 ```
 
-If helmet or kubectl have not yet been installed, you can easily install them.
+If helm or kubectl have not yet been installed, you can easily install them.
 
 {{<tabs>}}
 {{<tab "bash" "Ubuntu/Debian">}}make dependencies_ubuntu
