@@ -485,6 +485,3 @@ class TestStorageService(unittest.TestCase):
         # should be empty now
         self.assertEqual(self.empty_storage.getServices(), [])
 
-
-if __name__ == "__main__":
-    unittest.main()

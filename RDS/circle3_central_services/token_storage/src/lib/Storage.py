@@ -1,4 +1,4 @@
-from RDS import User, Token, OAuth2Token, Service, OAuth2Service
+from RDS import User, Token, OAuth2Token, Service, OAuth2Service, Util
 from typing import Union
 from RDS.ServiceException import (
     ServiceExistsAlreadyError,
@@ -8,8 +8,13 @@ from RDS.ServiceException import (
 import logging
 import requests
 import os
+import json
 
 logger = logging.getLogger()
+
+
+def append(self, value):
+    self[str(self.size())] = value
 
 
 class Storage:
@@ -20,9 +25,27 @@ class Storage:
     _storage = None
     _services = None
 
-    def __init__(self, rc = None):
+    def __init__(self, rc=None):
         try:
-            from redis_pubsub_dict import RedisDict
+            import redis_pubsub_dict, functools
+
+            def wraps(fn, methodname, *methodargs, **methodkwargs):
+                @functools.wraps(fn)
+                def wrapper(*args, **kwargs):
+                    obj = fn(*args, **kwargs)
+                    try:
+                        return getattr(obj, methodname)(
+                            *methodargs, **methodkwargs
+                        )
+                    except AttributeError:
+                        return obj
+
+
+                return wrapper
+
+            redis_pubsub_dict.dumps = wraps(json.dumps, "encode")
+            redis_pubsub_dict.loads = Util.initialize_object_from_dict(wraps(json.loads, "decode", "utf-8"))
+
             from rediscluster import RedisCluster
 
             # runs in RDS ecosystem, use redis as backend
@@ -35,13 +58,10 @@ class Storage:
                         }
                     ]
                 )
-            self._storage = RedisDict(rc, "tokenstorage_storage")
-            self._services = RedisDict(rc, "tokenstorage_services")
+            self._storage = redis_pubsub_dict.RedisDict(rc, "tokenstorage_storage")
+            self._services = redis_pubsub_dict.RedisDict(rc, "tokenstorage_services")
 
-            def append(self, value):
-                self[self.size] = value
-
-            self._services.append = append
+            self._services.append = append.__get__(self._services, type(self._services))
         except Exception:
             self._storage = {}
             self._services = []
@@ -477,7 +497,10 @@ class Storage:
 
         Otherwise raise an ValueError.
         """
-        if not isinstance(services, list):
+
+        import inspect
+
+        if not isinstance(services, (list)) and not inspect.isgenerator(services):
             raise ValueError("Services is not of type list.")
 
         for index, service in enumerate(services):
