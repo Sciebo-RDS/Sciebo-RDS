@@ -15,6 +15,14 @@ git clone https://github.com/Sciebo-RDS/Sciebo-RDS.git
 cd ScieboRDS/deploy
 ```
 
+{{<callout info>}}
+Falls nur die Helm Charts benötigt werden, kann mit folgendem Befehl das Helm Chart Repositorium hinzugefügt werden.
+
+```bash
+helm repo add sciebo-rds https://sciebo-rds.github.io/charts/
+```
+{{</callout>}}
+
 Darin sind sämtliche Dateien enthalten, welche zur Konfiguration und Installation benötigt werden.
 
 Um die Installation anzupassen, sind mehrere Dateien anzupassen. Dafür liegen im deploy- und in den jeweiligen Microservice-Ordnern ".example"-Dateien, welche kopiert und umbenannt werden sollen und anschließend angepasst werden müssen.

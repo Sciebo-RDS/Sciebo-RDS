@@ -18,11 +18,19 @@ cd ScieboRDS/deploy
 
 It contains all files which are required for configuration and installation.
 
+{{<callout info>}}
+If you only want to install via helm charts, you can use the following command to add our helm chart repository:
+
+```bash
+helm repo add sciebo-rds https://sciebo-rds.github.io/charts/
+```
+{{</callout>}}
+
 To customize the installation, several files have to be adjusted. For this purpose, there are ".example" files in the deployment and in the respective microservice folders, which are to be copied and renamed and then adapted.
 
 ```bash
-cp customization.yaml.example customization.yaml
-nano customization.yaml
+cp kustomization.yaml.example kustomization.yaml
+nano kustomization.yaml
 ```
 
 In kustomization.yaml the proxies that may be necessary in the environment are defined. This allows the microservices to reach services available outside the cluster if the cluster does not have its own global IP.
