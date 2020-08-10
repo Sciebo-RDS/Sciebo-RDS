@@ -12,3 +12,4 @@ kustomization.yaml
 .coverage
 coverage.xml
 coverage
+create_certs.sh
