@@ -40,7 +40,7 @@ uninstall_kustomization:
 	kubectl delete -k .
 
 install_configmaps: install_kustomization install_configmap_mserviceurl
-uninstall_configmaps: uninstall_kustomization remove_configmap_mserviceurl
+uninstall_configmaps: remove_configmap_mserviceurl uninstall_kustomization
 
 install_tls:
 	chmod +x create_certs.sh && ./create_certs.sh
