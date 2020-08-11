@@ -26,6 +26,7 @@ class Storage:
     _services = None
 
     def __init__(self, rc=None):
+        logger.info("use redis.")
         try:
             import redis_pubsub_dict, functools
 
@@ -63,6 +64,7 @@ class Storage:
 
             self._services.append = append.__get__(self._services, type(self._services))
         except Exception:
+            logger.info("no redis found. use memory")
             self._storage = {}
             self._services = []
 
