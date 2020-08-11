@@ -49,10 +49,12 @@ uninstall_tls:
 	kubectl delete secret sciebords-tls-public
 
 install_all:
+	helm repo add sciebo-rds https://sciebo-rds.github.io/charts/
 	helm upgrade sciebo-rds sciebo-rds/all -i  --values values.yaml
 	
 uninstall_all:
 	helm uninstall sciebo-rds
+	helm repo remove sciebo-rds
 
 install: install_configmaps install_all
 uninstall: uninstall_all uninstall_configmaps
