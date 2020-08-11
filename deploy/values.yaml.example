@@ -1,3 +1,8 @@
+global:
+  domain: localhost # will be used for ingress hosts, too
+  ingress:
+    tls:
+      secretName: sciebords-tls-public # secretName where tls cert stored (see create-certs.sh)
 circle1-port-owncloud:
   environment:
     OWNCLOUD_INSTALLATION_URL: https://localhost/owncloud
@@ -8,18 +13,10 @@ circle1-port-zenodo:
     ZENODO_ADDRESS: https://sandbox.zenodo.org
     ZENODO_OAUTH_CLIENT_ID: ABC
     ZENODO_OAUTH_CLIENT_SECRET: XYZ
-circle2-exporter-service:
-  environment:
-    FLASK_HOST_ADDRESS: https://sciebords-dev.org/exporter
-circle2-port-service:
-  environment:
-    FLASK_HOST_ADDRESS: https://sciebords-dev.org/port-service
-circle2-metadata-service:
-  environment:
-    FLASK_HOST_ADDRESS: https://sciebords-dev.org/metadata
+circle2-exporter-service: {}
+circle2-port-service: {}
+circle2-metadata-service: {}
 circle3-research-manager: {}
-circle3-token-storage:
-  environment:
-    FLASK_HOST_ADDRESS: https://sciebords-dev.org/port-service
+circle3-token-storage: {}
 redis: {}
 jaeger: {}
