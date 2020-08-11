@@ -9,6 +9,7 @@ configMapGenerator:
       - NO_PROXY=""
   - name: globalenvvar
     literals:
+      # the URL, which you enter in your oauth providers to redirect to.
       - RDS_OAUTH_REDIRECT_URI=https://localhost/owncloud/index.php/apps/rds/oauth
       - LOGLEVEL=INFO
       - VERIFY_SSL=True
