@@ -1,8 +1,5 @@
 global:
   domain: localhost # will be used for ingress hosts, too
-  ingress:
-    tls:
-      secretName: sciebords-tls-public # secretName where tls cert stored (see create-certs.sh)
 circle1-port-owncloud:
   environment:
     OWNCLOUD_INSTALLATION_URL: https://localhost/owncloud
