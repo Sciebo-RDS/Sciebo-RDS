@@ -24,6 +24,12 @@ dependencies_kubectl_fedora:
 	EOF
 	yum install -y kubectl
 
+dependencies_windows:
+	Set-ExecutionPolicy AllSigned
+	Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+	choco install -y kubernetes-cli kubernetes-helm minikube
+	minikube start
+
 dependencies_helm:
 	curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
@@ -77,6 +83,9 @@ uninstall_namespace:
 install: install_tls install_configmaps install_all
 uninstall: uninstall_all uninstall_configmaps uninstall_tls
 reinstall: uninstall install
+
+install_win: install_configmaps install_all
+uninstall_win: uninstall_all uninstall_configmaps
 
 jaeger:
 	$(eval POD_JAEGER=$(shell kubectl get pods -l "app.kubernetes.io/instance=jaeger,app.kubernetes.io/component=query" -o jsonpath="{.items[0].metadata.name}"))
