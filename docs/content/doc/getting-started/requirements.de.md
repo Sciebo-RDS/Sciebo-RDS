@@ -21,30 +21,13 @@ Folgende Rechte muss der [Nutzeraccount](https://kubernetes.io/docs/reference/ac
 
 Diese Rechte sind vergleichsweise fundamental für die Arbeit mit Kubernetes und sollten für jedes Nutzerkonto verfügbar sein. Es kann dennoch in einigen Umgebungen nötig sein, den Clusteradministrator bezüglich der Vergabe dieser Rechte anzusprechen.
 
-### Namespace
+Die folgenden Rechte sind optional, aber sehr empfohlen:
+- Erstellung von Namespaces
 
-Es wird empfohlen einen eigenen [Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) für RDS im Kubernetes-Cluster zu erzeugen (z.B. *research-data-services*).
-
-Sobald Kubectl installiert ist ([siehe Kubernetes](/de/doc/getting-started/k8s/)) kann mittels der folgenden Bashbefehle eine Datei mit dem Namen *namespace-rds.json* sowie der Namespace *research-data-services* erstellt werden und dieser als Default im aktuellen Kontext konfiguriert werden.
-
-```bash
-cat > namespace-rds.json << EOL
-{
-    "apiVersion": "v1",
-    "kind": "Namespace",
-    "metadata": {
-        "name": "research-data-services",
-        "labels": {
-            "name": "research-data-services"
-        }
-    }
-}
-EOL
-kubectl apply -f namespace-rds.json
-kubectl config set-context --current --namespace=research-data-services
-```
-
-Anschließend wird das Angeben eines Kontexts für jeden Aufruf des Kubectl-Befehls (auch: Helm) obsolet, da der angegebene Namespace als Default verwendet wird. Ist dies nicht gewünscht, müssen sämtliche Befehle entsprechend ergänzt werden und die im Folgenden zur Verfügung gestellten Hilfsmittel können nicht ohne Weiteres verwendet werden.
+{{<callout "info">}}
+Use minikube for test purposes, otherwise ask the cluster administrator for access informations.
+Für Testzwecke wird `minikube` empfohlen. Ansonsten muss ein Cluster Administrator für Zugangsdaten kontaktiert werden.
+{{</callout>}}
 
 ### Ingress
 
@@ -53,3 +36,27 @@ Das System benötigt einen Ingress Server. Sollte Minikube zum Einsatz kommen, l
 ```bash
 minikube addons enable ingress
 ```
+
+### Erforderliche Programme
+
+Es wird das Programm `make` für die Konfiguration und Installation der Software verwendet. Die benötigte `Makefile` ist im `deploy` Ordner zu finden. Falls `helm` oder `kubectl` noch nicht installiert wurden, kann dies mit den folgenden Befehlen erledigt werden.
+
+{{<tabs>}}
+{{<tab "bash" "Ubuntu/Debian">}}sudo apt install make -y
+make dependencies_ubuntu
+{{</tab>}}
+
+{{<tab "bash" "Fedora/CentOS">}}sudo dnf install make -y
+make dependencies_fedora
+{{</tab>}}
+
+{{<tab "bash" "Windows 10 Powershell">}}Set-ExecutionPolicy AllSigned
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+choco install -y make
+make dependencies_windows
+{{</tab>}}
+{{</tabs>}}
+
+{{<callout "tip">}}
+Hinweis: Seit Helm v3 wird kein Tillerserver mehr auf Seiten des Kubernetes [benötigt](https://helm.sh/blog/helm-3-released/).
+{{</callout>}}

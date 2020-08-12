@@ -1,16 +1,23 @@
-from lib.User import User
-from lib.Token import Token, OAuth2Token
-from lib.Service import Service, OAuth2Service
+from RDS import User, Token, OAuth2Token, Service, OAuth2Service, Util
 from typing import Union
-from lib.Exceptions.ServiceException import ServiceExistsAlreadyError, ServiceNotExistsError
+from RDS.ServiceException import (
+    ServiceExistsAlreadyError,
+    ServiceNotExistsError,
+)
 
 import logging
 import requests
+import os
+import json
 
 logger = logging.getLogger()
 
 
-class Storage():
+def append(self, value):
+    self[str(self.size())] = value
+
+
+class Storage:
     """
     Represents a Safe for Tokens.
     """
@@ -18,9 +25,48 @@ class Storage():
     _storage = None
     _services = None
 
-    def __init__(self):
-        self._storage = {}
-        self._services = []
+    def __init__(self, rc=None):
+        logger.info("use redis.")
+        try:
+            import redis_pubsub_dict, functools
+
+            def wraps(fn, methodname, *methodargs, **methodkwargs):
+                @functools.wraps(fn)
+                def wrapper(*args, **kwargs):
+                    obj = fn(*args, **kwargs)
+                    try:
+                        return getattr(obj, methodname)(
+                            *methodargs, **methodkwargs
+                        )
+                    except AttributeError:
+                        return obj
+
+
+                return wrapper
+
+            redis_pubsub_dict.dumps = wraps(json.dumps, "encode")
+            redis_pubsub_dict.loads = Util.initialize_object_from_dict(wraps(json.loads, "decode", "utf-8"))
+
+            from rediscluster import RedisCluster
+
+            # runs in RDS ecosystem, use redis as backend
+            if rc is None:
+                rc = RedisCluster(
+                    startup_nodes=[
+                        {
+                            "host": os.getenv("REDIS_HOST", "localhost"),
+                            "port": os.getenv("REDIS_PORT", "6379"),
+                        }
+                    ]
+                )
+            self._storage = redis_pubsub_dict.RedisDict(rc, "tokenstorage_storage")
+            self._services = redis_pubsub_dict.RedisDict(rc, "tokenstorage_services")
+
+            self._services.append = append.__get__(self._services, type(self._services))
+        except Exception:
+            logger.info("no redis found. use memory")
+            self._storage = {}
+            self._services = []
 
     @property
     def users(self):
@@ -29,6 +75,13 @@ class Storage():
     @property
     def storage(self):
         return self._storage
+
+    @property
+    def services(self):
+        try:
+            return self._services.values()
+        except:
+            return self._services
 
     @property
     def tokens(self):
@@ -51,6 +104,7 @@ class Storage():
             return self._storage[user_id]["data"]
 
         from .Exceptions.StorageException import UserNotExistsError
+
         raise UserNotExistsError(self, User(user_id))
 
     def getTokens(self, user: Union[str, User] = None):
@@ -79,6 +133,7 @@ class Storage():
             return tokens
 
         from .Exceptions.StorageException import UserNotExistsError
+
         raise UserNotExistsError(self, user)
 
     def getToken(self, user_id: Union[str, User], token_id: Union[str, int]):
@@ -124,13 +179,14 @@ class Storage():
                         return token
 
         from .Exceptions.StorageException import UserNotExistsError
+
         raise UserNotExistsError(self, user)
 
     def getServices(self):
         """
         Returns a list of all registered services.
         """
-        return self._services
+        return self.services
 
     def getService(self, service: Union[str, Service], index: bool = False):
         """
@@ -148,7 +204,7 @@ class Storage():
             service = Service(service)
 
         try:
-            k = self.internal_find_service(service.servicename, self._services)
+            k = self.internal_find_service(service.servicename, self.services)
             svc = self._services[k]
             return (svc, k) if index is True else svc
         except:
@@ -174,7 +230,8 @@ class Storage():
                 self._services[index] = service
                 return True
 
-            from lib.Exceptions.ServiceException import ServiceExistsAlreadyError
+            from RDS.ServiceException import ServiceExistsAlreadyError
+
             raise ServiceExistsAlreadyError(service)
 
         self._services.append(service)
@@ -194,7 +251,7 @@ class Storage():
             service = service.servicename
 
         index = None
-        for i, val in enumerate(self._services):
+        for i, val in enumerate(self.services):
             if val.servicename == service:
                 index = i
                 break
@@ -202,7 +259,7 @@ class Storage():
         if index is None:
             return False
 
-        self._services.pop(index)
+        del self._services[index]
 
         for val in self._storage.values():
             for token in reversed(val.get("tokens")):
@@ -223,6 +280,7 @@ class Storage():
 
         else:
             from .Exceptions.StorageException import UserExistsAlreadyError
+
             raise UserExistsAlreadyError(self, user)
 
     def removeUser(self, user: User):
@@ -243,6 +301,7 @@ class Storage():
 
         if not user.username in self._storage:
             from .Exceptions.StorageException import UserNotExistsError
+
             raise UserNotExistsError(self, user)
 
         del self._storage[user.username]
@@ -270,6 +329,7 @@ class Storage():
 
         if not user.username in self._storage:
             from .Exceptions.StorageException import UserNotExistsError
+
             raise UserNotExistsError(self, user)
 
         try:
@@ -283,6 +343,7 @@ class Storage():
                     break
         except ValueError:
             from .Exceptions.StorageException import TokenNotExistsError
+
             raise TokenNotExistsError(self, user, token)
 
     def internal_addUser(self, user: User):
@@ -294,13 +355,11 @@ class Storage():
 
         # check if this id is a superuser
         if not user.username in self._storage:
-            self._storage[user.username] = {
-                "data": user,
-                "tokens": []
-            }
+            self._storage[user.username] = {"data": user, "tokens": []}
 
         else:
             from lib.Exceptions.StorageException import UserExistsAlreadyError
+
             raise UserExistsAlreadyError(self, user)
 
     def addTokenToUser(self, token: Token, user: User = None, Force: bool = False):
@@ -317,7 +376,7 @@ class Storage():
 
         logger.info(f"Try to find service {token.servicename}")
         try:
-            self.internal_find_service(token.servicename, self._services)
+            self.internal_find_service(token.servicename, self.services)
         except ValueError:
             raise ServiceNotExistsError(Service(token.servicename))
         logger.debug("service found")
@@ -331,9 +390,11 @@ class Storage():
             if Force:
                 self.internal_addUser(user)
                 logger.debug(
-                    f"add user {user} with force, because it does not exist in storage already.")
+                    f"add user {user} with force, because it does not exist in storage already."
+                )
             else:
                 from lib.Exceptions.StorageException import UserNotExistsError
+
                 raise UserNotExistsError(self, user)
 
         try:
@@ -352,6 +413,7 @@ class Storage():
 
             else:
                 from .Exceptions.StorageException import UserHasTokenAlreadyError
+
                 raise UserHasTokenAlreadyError(self, user, token)
 
         except ValueError:
@@ -379,7 +441,7 @@ class Storage():
         """
 
         if services is None:
-            return self.internal_refresh_services(self._services)
+            return self.internal_refresh_services(self.services)
 
         return self.internal_refresh_services(services)
 
@@ -396,17 +458,23 @@ class Storage():
 
         # iterate over tokens
         tokens = [
-            (userdata["data"],  token)
+            (userdata["data"], token)
             for userdata in self._storage.values()
             for token in userdata["tokens"]
         ]
 
         for user, token in tokens:
-            if not isinstance(token, OAuth2Token) or not isinstance(token.service, OAuth2Service):
+            if not isinstance(token, OAuth2Token) or not isinstance(
+                token.service, OAuth2Service
+            ):
                 continue
 
             # refresh token
-            from .Exceptions.ServiceException import OAuth2UnsuccessfulResponseError, TokenNotValidError
+            from RDS.ServiceException import (
+                OAuth2UnsuccessfulResponseError,
+                TokenNotValidError,
+            )
+
             try:
                 new_token = token.refresh()
                 self.addTokenToUser(new_token, user, Force=True)
@@ -431,18 +499,25 @@ class Storage():
 
         Otherwise raise an ValueError.
         """
-        if not isinstance(services, list):
+
+        import inspect
+
+        if not isinstance(services, (list)) and not inspect.isgenerator(services):
             raise ValueError("Services is not of type list.")
 
         for index, service in enumerate(services):
             if service.servicename == servicename:
                 return index
 
-        raise ValueError("Service {} not found in services {}.".format(
-            servicename, ";".join(map(str, services))))
+        raise ValueError(
+            "Service {} not found in services {}.".format(
+                servicename, ";".join(map(str, services))
+            )
+        )
 
     def __str__(self):
         import json
+
         return json.dumps(self.storage)
 
         """

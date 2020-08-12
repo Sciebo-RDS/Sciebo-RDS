@@ -1,0 +1,25 @@
+# Global app settings
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: globalenvvar
+data:
+  # Set this to DEBUG and restart your applications to get more informations in logs. Default: INFO
+  LOGLEVEL: INFO
+  # If you set this to "False", SSL will not be verified in all https requests. Default: "True"
+  VERIFY_SSL: "True"
+  # The URL, which you configured in your oauth providers
+  RDS_OAUTH_REDIRECT_URI: https://localhost/owncloud/index.php/apps/rds/oauth
+---
+# Proxy Settings
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: proxy
+data:
+  HTTP_PROXY: ""
+  HTTPS_PROXY: ""
+  NO_PROXY: ""
+  http_proxy: ""
+  https_proxy: ""
+  no_proxy: ""

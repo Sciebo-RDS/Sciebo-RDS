@@ -9,7 +9,22 @@ logger = logging.getLogger()
 class ProjectService:
     def __init__(self):
         # format: {user: [<type project>]}
-        self.projects = {}
+        try:
+            from redis_pubsub_dict import RedisDict
+            from rediscluster import StrictRedisCluster
+            # runs in RDS ecosystem
+            rc = RedisCluster(
+                startup_nodes=[
+                    {
+                        "host": os.getenv("REDIS_HOST", "localhost"),
+                        "port": os.getenv("REDIS_PORT", "6379"),
+                    }
+                ]
+            )
+            self.projects = RedisDict(rc, 'researchmanager_projects')
+        except Exception:
+            self.projects = {}
+            
         self.highest_index = 0
 
     def addProject(self, userOrProject, portIn=None, portOut=None):

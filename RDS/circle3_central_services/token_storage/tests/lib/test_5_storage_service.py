@@ -1,9 +1,7 @@
 import unittest
-from lib.Service import Service, OAuth2Service
+from RDS import Service, OAuth2Service, Token, OAuth2Token, User
+from RDS.ServiceException import *
 from lib.Storage import Storage
-from lib.Token import Token, OAuth2Token
-from lib.User import User
-from lib.Exceptions.ServiceException import *
 from pactman import Consumer, Provider
 
 from datetime import datetime
@@ -11,14 +9,16 @@ from time import time
 
 import logging
 import sys
+
 logger = logging.getLogger()
 logger.level = logging.DEBUG
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
 pact_host_port = 3000
 pact_host_fqdn = f"http://localhost:{pact_host_port}"
-pact = Consumer('CentralServiceTokenStorage').has_pact_with(
-    Provider('OAuth-Provider'), port=pact_host_port)
+pact = Consumer("CentralServiceTokenStorage").has_pact_with(
+    Provider("OAuth-Provider"), port=pact_host_port
+)
 
 
 class TestStorageService(unittest.TestCase):
@@ -35,15 +35,29 @@ class TestStorageService(unittest.TestCase):
 
         # owncloud
         self.oauthservice1 = OAuth2Service.from_service(
-            self.service1, f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorize",
-            f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/api/v1/token", "ABC", "XYZ")
+            self.service1,
+            f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorize",
+            f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/api/v1/token",
+            "ABC",
+            "XYZ",
+        )
 
         # zenodo
         self.oauthservice2 = OAuth2Service.from_service(
-            self.service2, f"{pact_host_fqdn}/oauth/authorize", f"{pact_host_fqdn}/oauth/token", "DEF", "UVW")
+            self.service2,
+            f"{pact_host_fqdn}/oauth/authorize",
+            f"{pact_host_fqdn}/oauth/token",
+            "DEF",
+            "UVW",
+        )
 
         self.oauthservice3 = OAuth2Service.from_service(
-            self.service3, f"{pact_host_fqdn}/api/authorize", f"{pact_host_fqdn}/api/token", "GHI", "MNO")
+            self.service3,
+            f"{pact_host_fqdn}/api/authorize",
+            f"{pact_host_fqdn}/api/token",
+            "GHI",
+            "MNO",
+        )
 
         self.token1 = Token(self.user1, self.service1, "ABC")
         self.token_like_token1 = Token(self.user1, self.service1, "DEF")
@@ -51,14 +65,20 @@ class TestStorageService(unittest.TestCase):
         self.token3 = Token(self.user1, self.service3, "GHI")
 
         self.oauthtoken1 = OAuth2Token(self.user3, self.oauthservice1, "ABC", "X_ABC")
-        self.oauthtoken_like_token1 = OAuth2Token(self.user3, self.oauthservice1, "ABC", "X_DEF")
+        self.oauthtoken_like_token1 = OAuth2Token(
+            self.user3, self.oauthservice1, "ABC", "X_DEF"
+        )
         self.oauthtoken2 = OAuth2Token(self.user1, self.oauthservice2, "XYZ", "X_XYZ")
         self.oauthtoken3 = OAuth2Token(self.user3, self.oauthservice3, "GHI", "X_GHI")
         self.oauthtoken4 = OAuth2Token(self.user1, self.oauthservice1, "AMZ", "X_AMZ")
 
         self.services = [
-            self.service1, self.service2, self.service3,
-            self.oauthservice1, self.oauthservice2, self.oauthservice3
+            self.service1,
+            self.service2,
+            self.service3,
+            self.oauthservice1,
+            self.oauthservice2,
+            self.oauthservice3,
         ]
 
         self.filled_storage_without_tokens = Storage()
@@ -86,55 +106,99 @@ class TestStorageService(unittest.TestCase):
         self.filled_storage.addTokenToUser(self.oauthtoken3, self.user3)
 
     def test_internal_find_services(self):
-        self.assertEqual(self.empty_storage.internal_find_service(
-            self.service1.servicename, [self.service1]), 0)
-        self.assertEqual(self.empty_storage.internal_find_service(
-            self.service1.servicename, [self.service1, self.service2]), 0)
-        self.assertEqual(self.empty_storage.internal_find_service(
-            self.service1.servicename, [self.service2, self.service1]), 1)
-        self.assertEqual(self.empty_storage.internal_find_service(
-            self.service2.servicename, [self.service1, self.service2]), 1)
+        self.assertEqual(
+            self.empty_storage.internal_find_service(
+                self.service1.servicename, [self.service1]
+            ),
+            0,
+        )
+        self.assertEqual(
+            self.empty_storage.internal_find_service(
+                self.service1.servicename, [self.service1, self.service2]
+            ),
+            0,
+        )
+        self.assertEqual(
+            self.empty_storage.internal_find_service(
+                self.service1.servicename, [self.service2, self.service1]
+            ),
+            1,
+        )
+        self.assertEqual(
+            self.empty_storage.internal_find_service(
+                self.service2.servicename, [self.service1, self.service2]
+            ),
+            1,
+        )
 
-        self.assertEqual(self.empty_storage.internal_find_service(
-            self.oauthservice1.servicename, [self.oauthservice1]), 0)
-        self.assertEqual(self.empty_storage.internal_find_service(
-            self.oauthservice1.servicename, [self.oauthservice1, self.oauthservice2]), 0)
-        self.assertEqual(self.empty_storage.internal_find_service(
-            self.oauthservice1.servicename, [self.oauthservice2, self.oauthservice1]), 1)
-        self.assertEqual(self.empty_storage.internal_find_service(
-            self.oauthservice2.servicename, [self.oauthservice1, self.oauthservice2]), 1)
+        self.assertEqual(
+            self.empty_storage.internal_find_service(
+                self.oauthservice1.servicename, [self.oauthservice1]
+            ),
+            0,
+        )
+        self.assertEqual(
+            self.empty_storage.internal_find_service(
+                self.oauthservice1.servicename, [self.oauthservice1, self.oauthservice2]
+            ),
+            0,
+        )
+        self.assertEqual(
+            self.empty_storage.internal_find_service(
+                self.oauthservice1.servicename, [self.oauthservice2, self.oauthservice1]
+            ),
+            1,
+        )
+        self.assertEqual(
+            self.empty_storage.internal_find_service(
+                self.oauthservice2.servicename, [self.oauthservice1, self.oauthservice2]
+            ),
+            1,
+        )
 
-        self.assertEqual(self.empty_storage.internal_find_service(
-            self.oauthservice2.servicename, [self.service1, self.oauthservice2]), 1)
+        self.assertEqual(
+            self.empty_storage.internal_find_service(
+                self.oauthservice2.servicename, [self.service1, self.oauthservice2]
+            ),
+            1,
+        )
 
         with self.assertRaises(ValueError):
             self.empty_storage.internal_find_service(
-                self.service1.servicename, [self.service2])
+                self.service1.servicename, [self.service2]
+            )
 
         with self.assertRaises(ValueError):
             self.empty_storage.internal_find_service(
-                self.service1.servicename, [self.service2, self.service3])
+                self.service1.servicename, [self.service2, self.service3]
+            )
 
         with self.assertRaises(ValueError):
             self.empty_storage.internal_find_service(
-                self.service1.servicename, [self.oauthservice2, self.oauthservice3])
+                self.service1.servicename, [self.oauthservice2, self.oauthservice3]
+            )
 
         with self.assertRaises(ValueError):
-            self.empty_storage.internal_find_service(self.oauthservice1.servicename, [
-                                                     self.service2, self.service3])
+            self.empty_storage.internal_find_service(
+                self.oauthservice1.servicename, [self.service2, self.service3]
+            )
 
     def test_refresh_all_tokens(self):
         # works without any tokens
         self.assertFalse(
-            self.filled_storage_without_tokens.refresh_service(self.service1))
+            self.filled_storage_without_tokens.refresh_service(self.service1)
+        )
         self.assertFalse(
-            self.filled_storage_without_tokens.refresh_services(self.oauthservice1))
+            self.filled_storage_without_tokens.refresh_services(self.oauthservice1)
+        )
         self.assertFalse(
-            self.filled_storage_without_tokens.refresh_services(self.services))
+            self.filled_storage_without_tokens.refresh_services(self.services)
+        )
 
         # false because only a simple service
-        self.assertFalse(self.filled_storage.refresh_service(
-            self.service1), msg=self.filled_storage)
+        self.assertFalse(
+            self.filled_storage.refresh_service(self.service1), msg=self.filled_storage
+        )
 
         # works with a request to a provider
         expected_user = self.user3
@@ -148,37 +212,39 @@ class TestStorageService(unittest.TestCase):
             "expires_in": expires_in,
             "refresh_token": "7y0wJuvKmj5E1vjVnhlPBEhha59JyaAiFIVQDvcBY2ss0pauzdQtnuo1NkIsbndA",
             "user_id": expected_user.username,
-            "message_url": f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorization-successful"
+            "message_url": f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorization-successful",
         }
 
         from base64 import b64encode
+
         auth = f"{expected_service.client_id}:{expected_service.client_secret}"
         b64 = b64encode(auth.encode("utf-8")).decode("utf-8")
 
         pact.given(
-            "Username can refresh given oauth2token to service", username=expected_service.client_id, service=expected_service
-        ).upon_receiving(
-            "An invalid response."
-        ).with_request(
+            "Username can refresh given oauth2token to service",
+            username=expected_service.client_id,
+            service=expected_service,
+        ).upon_receiving("An invalid response.").with_request(
             "POST", "/oauth/token"
-        ).will_respond_with(404, body={})
+        ).will_respond_with(
+            404, body={}
+        )
 
         pact.given(
-            "Username can refresh given oauth2token to service", username=expected_service.client_id, service=expected_service
-        ).upon_receiving(
-            "A valid refresh token response."
-        ).with_request(
-            "POST", "/owncloud/index.php/apps/oauth2/api/v1/token", headers={"Authorization": f"Basic {b64}"}
-        ).will_respond_with(200, body=json_expected)
+            "Username can refresh given oauth2token to service",
+            username=expected_service.client_id,
+            service=expected_service,
+        ).upon_receiving("A valid refresh token response.").with_request(
+            "POST",
+            "/owncloud/index.php/apps/oauth2/api/v1/token",
+            headers={"Authorization": f"Basic {b64}"},
+        ).will_respond_with(
+            200, body=json_expected
+        )
 
-        pact.given(
-            "Username can refresh given oauth2token to service"
-        ).upon_receiving(
+        pact.given("Username can refresh given oauth2token to service").upon_receiving(
             "An invalid response for another service."
-        ).with_request(
-            "POST", "/api/token"
-        ).will_respond_with(404, body={})
-
+        ).with_request("POST", "/api/token").will_respond_with(404, body={})
 
         result = None
         with pact:
@@ -187,8 +253,9 @@ class TestStorageService(unittest.TestCase):
         self.assertTrue(result)
 
         # test for missing service
-        self.assertFalse(self.filled_storage.refresh_services(
-            [Service("NotFoundService")]))
+        self.assertFalse(
+            self.filled_storage.refresh_services([Service("NotFoundService")])
+        )
 
     """ Currently not implemented and no idea how to solve.
     def test_valid_token(self):
@@ -217,7 +284,7 @@ class TestStorageService(unittest.TestCase):
             "expires_in": expires_in,
             "refresh_token": expected.refresh_token,
             "user_id": self.user1.username,
-            "message_url": f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorization-successful"
+            "message_url": f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorization-successful",
         }
 
         pact.given(
@@ -226,7 +293,9 @@ class TestStorageService(unittest.TestCase):
             "A valid refresh token response with a higher expiration date."
         ).with_request(
             "POST", "/owncloud/index.php/apps/oauth2/api/v1/token"
-        ).will_respond_with(200, body=json_expected)
+        ).will_respond_with(
+            200, body=json_expected
+        )
 
         result = None
         with pact:
@@ -238,10 +307,10 @@ class TestStorageService(unittest.TestCase):
 
             # there should only be one element in list, so it is ours
             self.assertEqual(len(result), 1)
-            self.assertEqual(result[0], expected,
-                             msg=f"\nresult: {result[0]}\nexpected: {expected}")
-            self.assertGreaterEqual(
-                result[0].expiration_date, expected.expiration_date)
+            self.assertEqual(
+                result[0], expected, msg=f"\nresult: {result[0]}\nexpected: {expected}"
+            )
+            self.assertGreaterEqual(result[0].expiration_date, expected.expiration_date)
 
     def test_refresh_oauth2token(self):
         expires_in = 3600
@@ -257,22 +326,23 @@ class TestStorageService(unittest.TestCase):
             "expires_in": expires_in,
             "refresh_token": expected.refresh_token,
             "user_id": expected.user.username,
-            "message_url": f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorization-successful"
+            "message_url": f"{pact_host_fqdn}/owncloud/index.php/apps/oauth2/authorization-successful",
         }
 
         pact.given(
             "Username can refresh given oauth2token", username=self.user1.username
-        ).upon_receiving(
-            "A valid refresh token response."
-        ).with_request(
+        ).upon_receiving("A valid refresh token response.").with_request(
             "POST", "/owncloud/index.php/apps/oauth2/api/v1/token"
-        ).will_respond_with(200, body=json_expected)
+        ).will_respond_with(
+            200, body=json_expected
+        )
 
         result = None
         with pact:
             result = self.oauthtoken1.refresh()
-            self.assertEqual(result, expected,
-                             msg=f"\nresult: {result}\nexpected: {expected}")
+            self.assertEqual(
+                result, expected, msg=f"\nresult: {result}\nexpected: {expected}"
+            )
 
         """ obsolete
         # this needs to be here, because it counts the given interactions,
@@ -292,34 +362,37 @@ class TestStorageService(unittest.TestCase):
 
         pact.given(
             "Username can't refresh given oauth2token", username=self.user1.username
-        ).upon_receiving(
-            "A bad request was made."
-        ).with_request(
+        ).upon_receiving("A bad request was made.").with_request(
             "POST", "/owncloud/index.php/apps/oauth2/api/v1/token"
-        ).will_respond_with(400, body=json_expected)
+        ).will_respond_with(
+            400, body=json_expected
+        )
 
         with self.assertRaises(OAuth2UnsuccessfulResponseError):
             with pact:
                 self.oauthservice1.refresh(self.oauthtoken1)
 
         self.make_bad_request_for_oauth_provider(
-            "invalid_request", OAuth2InvalidRequestError)
+            "invalid_request", OAuth2InvalidRequestError
+        )
         self.make_bad_request_for_oauth_provider(
-            "invalid_client", OAuth2InvalidClientError)
+            "invalid_client", OAuth2InvalidClientError
+        )
         self.make_bad_request_for_oauth_provider(
-            "invalid_grant", OAuth2InvalidGrantError)
+            "invalid_grant", OAuth2InvalidGrantError
+        )
         self.make_bad_request_for_oauth_provider(
-            "unauthorized_client", OAuth2UnauthorizedClient)
+            "unauthorized_client", OAuth2UnauthorizedClient
+        )
         self.make_bad_request_for_oauth_provider(
-            "unsupported_grant_type", OAuth2UnsupportedGrantType)
+            "unsupported_grant_type", OAuth2UnsupportedGrantType
+        )
 
     def make_bad_request_for_oauth_provider(self, error_code, error):
         """
         For convenience.
         """
-        json_expected = {
-            "error": error_code
-        }
+        json_expected = {"error": error_code}
 
         pact.given(
             "Username made a bad request", username=self.user1.username
@@ -327,7 +400,9 @@ class TestStorageService(unittest.TestCase):
             f"A bad request with error {error_code} was made."
         ).with_request(
             "POST", "/owncloud/index.php/apps/oauth2/api/v1/token"
-        ).will_respond_with(400, body=json_expected)
+        ).will_respond_with(
+            400, body=json_expected
+        )
 
         with self.assertRaises(error):
             with pact:
@@ -362,12 +437,15 @@ class TestStorageService(unittest.TestCase):
         self.empty_storage.addService(self.service1)
         self.assertEqual(self.empty_storage.getServices(), expected)
 
-        self.assertIsInstance(self.empty_storage.getService(
-            self.service1.servicename), Service)
-        self.assertEqual(self.empty_storage.getService(
-            self.service1.servicename), self.service1, msg=self.empty_storage.getServices())
-        self.assertEqual(self.empty_storage.getService(
-            self.service1), self.service1)
+        self.assertIsInstance(
+            self.empty_storage.getService(self.service1.servicename), Service
+        )
+        self.assertEqual(
+            self.empty_storage.getService(self.service1.servicename),
+            self.service1,
+            msg=self.empty_storage.getServices(),
+        )
+        self.assertEqual(self.empty_storage.getService(self.service1), self.service1)
 
         _, index = self.empty_storage.getService(self.service1, index=True)
         self.assertEqual(index, 0)
@@ -375,7 +453,8 @@ class TestStorageService(unittest.TestCase):
         _, index = self.empty_storage.getService(self.service2, index=True)
         self.assertIsNone(index)
 
-        from lib.Exceptions.ServiceException import ServiceExistsAlreadyError
+        from RDS.ServiceException import ServiceExistsAlreadyError
+
         with self.assertRaises(ServiceExistsAlreadyError):
             self.empty_storage.addService(self.service1)
 
@@ -398,11 +477,11 @@ class TestStorageService(unittest.TestCase):
         # remove a not existing service
         self.assertFalse(self.empty_storage.removeService(self.service3))
         self.assertTrue(self.empty_storage.removeService(self.service2))
-        self.assertTrue(self.empty_storage.removeService(self.service1), msg="{}".format(",".join(map(str, self.empty_storage._services))))
+        self.assertTrue(
+            self.empty_storage.removeService(self.service1),
+            msg="{}".format(",".join(map(str, self.empty_storage._services))),
+        )
 
         # should be empty now
         self.assertEqual(self.empty_storage.getServices(), [])
 
-
-if __name__ == "__main__":
-    unittest.main()

@@ -1,0 +1,5 @@
+# Create Namespace with the following name
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: research-data-services

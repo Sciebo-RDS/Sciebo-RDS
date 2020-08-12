@@ -1,6 +1,4 @@
-from lib.Service import Service
-from lib.User import User
-from lib.Token import Token
+from RDS import Service, User, Token
 
 
 class ServiceNotFoundError(Exception):
@@ -14,6 +12,7 @@ class ServiceNotFoundError(Exception):
 
         super(ServiceNotFoundError, self).__init__(msg)
         self.service = service
+
 
 class ProjectNotCreatedError(Exception):
     """

@@ -1,0 +1,21 @@
+global:
+  domain: localhost # will be used for ingress host, adjust here too if you changed it in create_certs.sh
+circle1-port-owncloud:
+  environment:
+    # needs to be adjusted to correct values
+    OWNCLOUD_INSTALLATION_URL: https://localhost/owncloud
+    OWNCLOUD_OAUTH_CLIENT_ID: ABC
+    OWNCLOUD_OAUTH_CLIENT_SECRET: XYZ
+circle1-port-zenodo:
+  environment:
+    # needs to be adjusted to correct values
+    ZENODO_ADDRESS: https://sandbox.zenodo.org
+    ZENODO_OAUTH_CLIENT_ID: ABC
+    ZENODO_OAUTH_CLIENT_SECRET: XYZ
+circle2-exporter-service: {}
+circle2-port-service: {}
+circle2-metadata-service: {}
+circle3-research-manager: {}
+circle3-token-storage: {}
+redis: {}
+jaeger: {}

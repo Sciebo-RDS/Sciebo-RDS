@@ -17,6 +17,10 @@ python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 pyjwt = "*"
+redis-pubsub-dict = "*"
+redis = "*"
+redis-py-cluster = "*"
+research-data-services-common = {extras = ["flask"], version = "*"}
 
 [requires]
 python_version = "3.8"

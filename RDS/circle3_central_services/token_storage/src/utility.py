@@ -1,0 +1,2 @@
+# singleton storage
+storage = None

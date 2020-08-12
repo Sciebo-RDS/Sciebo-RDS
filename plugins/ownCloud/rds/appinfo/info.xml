@@ -7,7 +7,7 @@
     <author>Peter Heiss</author>
     <version>0.0.1</version>
     <namespace>RDS</namespace>
-    <category>tool</category>
+    <category>integration</category>
     <dependencies>
         <owncloud min-version="10" max-version="10" />
     </dependencies>

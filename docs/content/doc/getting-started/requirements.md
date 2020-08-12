@@ -21,35 +21,44 @@ The [user account](https://kubernetes.io/docs/reference/access-authn-authz/rbac/
 
 These rights are rather fundamental for working with Kubernetes and should be available for every user account. However, in some environments, it may be necessary to contact the cluster administrator about these rights and obtain appropriate permissions.
 
-### Namespace
+The following rights are optional, but highly recommended:
+- creation of Namespaces
 
-It is recommended to create a separate [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) for RDS in Kubernetes (e.g. *research-data-services*).
+{{<callout "info">}}
+Use `minikube` for test purposes, otherwise ask the cluster administrator for access informations.
+{{</callout>}}
 
-Once Kubectl is installed ([see Kubernetes](/doc/getting-started/k8s/)) you can use the following bash commands to create a file named *namespace-rds.json*, create the namespace *research-data-services* in Kubernetes and configure it as the default in the current context.
-
-```bash
-cat > namespace-rds.json << EOL
-{
-    "apiVersion": "v1",
-    "kind": "Namespace",
-    "metadata": {
-        "name": "research-data-services",
-        "labels": {
-            "name": "research-data-services"
-        }
-    }
-}
-EOL
-kubectl apply -f namespace-rds.json
-kubectl config set-context --current --namespace=research-data-services
-```
-
-After that, specifying a context for each Kubectl command (the same with helm) becomes obsolete because the specified namespace is used as a default. Otherwise, all commands must be completed respectively and the tools provided in what follows cannot be used straightforwardly.
+The provided scripts uses *nano* to open files. Please be sure to installed it.
 
 ### Ingress
 
-The system needs an ingress server. If you want to use minikube, you can add it with the following command. Otherwise, please ask your Kubernetes cluster administrator.
+The system needs an ingress server. If you want to use `minikube`, you can add it with the following command. Otherwise, please ask your Kubernetes cluster administrator.
 
 ```bash
 minikube addons enable ingress
 ```
+
+### Required programs
+
+We use the program `make` to configure and deploy our software with a Makefile, which can be found in the `deploy` folder. If `helm` or `kubectl` have not yet been installed, you can easily install them with the following commands, too.
+
+{{<tabs>}}
+{{<tab "bash" "Ubuntu/Debian">}}sudo apt install make -y
+make dependencies_ubuntu
+{{</tab>}}
+
+{{<tab "bash" "Fedora/CentOS">}}sudo dnf install make -y
+make dependencies_fedora
+{{</tab>}}
+
+{{<tab "bash" "Windows 10 Powershell">}}Set-ExecutionPolicy AllSigned
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+choco install -y make
+make dependencies_windows
+# You cannot use all commands in the following, please translate from linux to windows commands by yourself.
+{{</tab>}}
+{{</tabs>}}
+
+{{<callout "tip">}}
+Note: Since Helm v3 no Tillerserver is [required](https://helm.sh/blog/helm-3-released/) on the Kubernetes side.
+{{</callout>}}

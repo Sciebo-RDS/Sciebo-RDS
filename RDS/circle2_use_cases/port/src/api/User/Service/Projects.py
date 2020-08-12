@@ -1,6 +1,5 @@
 import Util
-from lib.Service import Service
-from lib.User import User
+from RDS import Service, User
 
 from flask import jsonify, abort
 
@@ -26,12 +25,13 @@ def get(user_id, servicename, projects_id):
 
 
 def post(user_id, servicename):
-    Util.tokenService.createProjectForUserInService(
-        User(user_id), Service(servicename))
+    Util.tokenService.createProjectForUserInService(User(user_id), Service(servicename))
     return None, 204
 
 
 def delete(user_id, servicename, projects_id):
-    if Util.tokenService.removeProjectForUserInService(User(user_id), Service(servicename), projects_id):
+    if Util.tokenService.removeProjectForUserInService(
+        User(user_id), Service(servicename), projects_id
+    ):
         return None, 204
     abort(404)
