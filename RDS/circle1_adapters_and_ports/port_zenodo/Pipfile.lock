@@ -77,7 +77,7 @@
                 "sha256:da9dac6ecb96665cbf21365d1b811e6acbe390c160b3029d040a035fd406f8d5"
             ],
             "index": "pypi",
-            "version": "==0.38"
+            "version": "==0.37"
         },
         "contextlib2": {
             "hashes": [
