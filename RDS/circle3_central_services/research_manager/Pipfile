@@ -7,7 +7,7 @@ verify_ssl = true
 pytest = "*"
 pactman = "*"
 pygount = "*"
-pydoc-markdown = "*"
+pydoc-markdown = "==2.1.3"
 pytest-cov = "*"
 
 [packages]
@@ -21,6 +21,7 @@ redis-pubsub-dict = "*"
 redis = "*"
 redis-py-cluster = "*"
 research-data-services-common = {extras = ["flask"], version = "*"}
+pydoc-markdown = "==2.1.3"
 
 [requires]
 python_version = "3.8"

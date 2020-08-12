@@ -40,7 +40,7 @@ redis-pubsub-dict==0.0.2
 redis-py-cluster==2.0.0
 redis==3.0.1
 requests==2.24.0
-research-data-services-common[flask]==0.14
+research-data-services-common[flask]==0.15
 six==1.15.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 swagger-ui-bundle==0.0.8
 threadloop==1.0.2

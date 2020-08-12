@@ -1,6 +1,0 @@
-Help on function get_json_encoder in module RDS.Util:
-
-ggeett__jjssoonn__eennccooddeerr(func_name: str = 'to_json')
-    Module that monkey-patches json module when it's imported so
-    JSONEncoder.default() automatically checks for a special "to_json()"
-    method and uses it to encode the object if found.
