@@ -12,7 +12,7 @@ weight: 302
 The commands in this chapter needs some configuration, which you made in the previous chapter. If you did not create the needed files, you will get a lot of error messages now. So please be sure to follow the steps from the [configuration tutorial](/doc/getting-started/config/).
 {{</callout>}}
 
-Afterwards the RDS ecosystem can be loaded onto the cluster with the following command:
+Now the RDS ecosystem can be loaded onto the cluster with the following command:
 
 {{<tabs>}}
 {{<tab "bash" "Install RDS">}}make install

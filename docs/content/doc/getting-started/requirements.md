@@ -25,14 +25,14 @@ The following rights are optional, but highly recommended:
 - creation of Namespaces
 
 {{<callout "info">}}
-Use minikube for test purposes, otherwise ask the cluster administrator for access informations.
+Use `minikube` for test purposes, otherwise ask the cluster administrator for access informations.
 {{</callout>}}
 
 The provided scripts uses *nano* to open files. Please be sure to installed it.
 
 ### Ingress
 
-The system needs an ingress server. If you want to use minikube, you can add it with the following command. Otherwise, please ask your Kubernetes cluster administrator.
+The system needs an ingress server. If you want to use `minikube`, you can add it with the following command. Otherwise, please ask your Kubernetes cluster administrator.
 
 ```bash
 minikube addons enable ingress
@@ -40,7 +40,7 @@ minikube addons enable ingress
 
 ### Required programs
 
-We use the program `make` to configure and deploy our software with a Makefile, which can be found in the `deploy` folder. If helm or kubectl have not yet been installed, you can easily install them with the following commands, too.
+We use the program `make` to configure and deploy our software with a Makefile, which can be found in the `deploy` folder. If `helm` or `kubectl` have not yet been installed, you can easily install them with the following commands, too.
 
 {{<tabs>}}
 {{<tab "bash" "Ubuntu/Debian">}}sudo apt install make -y

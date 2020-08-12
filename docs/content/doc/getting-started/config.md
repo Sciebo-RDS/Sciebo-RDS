@@ -24,26 +24,26 @@ If you want to see the helm charts, take a look at your [charts repo](https://gi
 
 ## Configuration
 
-To customize the installation, several files have to be adjusted. For this purpose, there are ".example" files in the `deploy` folder which needs to be copied, renamed and adapted as necessary.
+To customize the installation, several files have to be adjusted. For this purpose, there are `.example` files in the `deploy` folder which needs to be copied, renamed and adapted as necessary.
 
 ```bash
 cp configuration.yaml.example configuration.yaml
 nano configuration.yaml
 ```
 
-In configuration.yaml the proxies that may be necessary in the environment are to be defined. This allows the microservices to reach services available outside of the cluster, if the cluster does not have its own global IP. You might want to ask your local network administrator concerning the correct proxy configuration for your environment.
+In `configuration.yaml` the proxies that may be necessary in the environment are to be defined. This allows the microservices to reach services available outside of the cluster, if the cluster does not have its own global IP. You might want to ask your local network administrator concerning the correct proxy configuration for your environment.
 
-Furthermore, each service that will be used by the RDS system may be adjusted with respect to local needs. If you are fine with the standard values, you do not need any changes for your services except connector-services. But if you want to change any value, you need to specify it in the values.yaml for the corresponding microservice. If you want to see every available parameter, please take a look at the [chart repo](https://github.com/Sciebo-RDS/charts/tree/master/charts).
+Furthermore, each service that will be used by the RDS system may be adjusted with respect to local needs. If you are fine with the standard values, you do not need any changes for your services except connector-services. But if you want to change any value, you need to specify it in the `values.yaml` for the corresponding microservice. If you want to see every available parameter, please take a look at the [chart repo](https://github.com/Sciebo-RDS/charts/tree/master/charts).
 
 For the connector-services, you need to specify the OAuth-ID and -secret to identify with.
-There are again an "example" file to be found in the `deploy` folder, which is called "values.yaml.example". This file have to be renamed following the pattern laid out above, i.e. pruning the respective example suffix. You may also change the corresponding data for the services if necessary.
+There are again an `example` file to be found in the `deploy` folder, which is called `values.yaml.example`. This file have to be renamed following the pattern laid out above, i.e. pruning the respective example suffix. You may also change the corresponding data for the services if necessary.
 
 ```bash
 cp values.yaml.example values.yaml
 nano values.yaml
 ```
 
-Once these adjustments have been made, the cluster can be installed.
+Once these adjustments have been made, the system can be installed.
 
 ### Namespace
 
@@ -86,8 +86,8 @@ make install_tls
 {{</tabs>}}
 
 {{<callout info>}}
-If you want to use an already existing certificate, please store it as secret in the RDS namespace with the name "sciebords-tls-public". See the shell script "create_cert.sh" for an example.
-If you want to change the secret name, you need to set the name in your `values.yaml` under `global.ingress.tls.secretName`.
+If you want to use an already existing certificate, please store it as secret in the RDS namespace with the name `sciebords-tls-public`. See the shell script `create_cert.sh` for an example.
+If you want to change the secret name, you need to set the name in your `values.yaml` under `global.ingress.tls.secretName` and restart the system.
 {{</callout>}}
 
 ## Apply the configuration
