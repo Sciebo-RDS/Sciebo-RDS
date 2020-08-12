@@ -33,13 +33,19 @@ dependencies_windows:
 dependencies_helm:
 	curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
-install_configs:
+install_configuration:
 	kubectl apply -f configmaps/mserviceurl.yaml
 	kubectl apply -f configuration.yaml
 
-uninstall_configs:
+uninstall_configuration:
 	kubectl delete -f configuration.yaml
 	kubectl delete -f configmaps/mserviceurl.yaml
+
+install_namespace:
+	kubectl apply -f namespace.yaml
+
+uninstall_namespace:
+	kubectl delete -f namespace.yaml
 
 install_tls:
 	chmod +x create_certs.sh && ./create_certs.sh
@@ -55,12 +61,9 @@ uninstall_all:
 	helm uninstall sciebo-rds
 	helm repo remove sciebo-rds
 
-install: install_tls install_configs install_all
-uninstall: uninstall_all uninstall_configs uninstall_tls
+install: install_all
+uninstall: uninstall_all
 reinstall: uninstall install
-
-install_win: install_configs install_all
-uninstall_win: uninstall_all uninstall_configs
 
 jaeger:
 	$(eval POD_JAEGER=$(shell kubectl get pods -l "app.kubernetes.io/instance=jaeger,app.kubernetes.io/component=query" -o jsonpath="{.items[0].metadata.name}"))
