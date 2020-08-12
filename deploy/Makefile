@@ -56,8 +56,8 @@ uninstall_all:
 	helm uninstall sciebo-rds
 	helm repo remove sciebo-rds
 
-install: install_configmaps install_all
-uninstall: uninstall_all uninstall_configmaps
+install: install_tls install_configmaps install_all
+uninstall: uninstall_all uninstall_configmaps uninstall_tls
 reinstall: uninstall install
 
 jaeger:
