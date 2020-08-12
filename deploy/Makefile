@@ -56,6 +56,24 @@ uninstall_all:
 	helm uninstall sciebo-rds
 	helm repo remove sciebo-rds
 
+install_namespace:
+	cat > namespace-rds.json << EOL
+	{
+		"apiVersion": "v1",
+		"kind": "Namespace",
+		"metadata": {
+			"name": "research-data-services",
+			"labels": {
+				"name": "research-data-services"
+			}
+		}
+	}
+	EOL
+	vi namespace-rds.json && kubectl apply -f namespace-rds.json && kubectl config set-context --current --namespace=$(sed -n 's/"name": "\(.*\)",/\1/p' < namespace-rds.json)
+
+uninstall_namespace:
+	kubectl delete namespace $(sed -n 's/"name": "\(.*\)",/\1/p' < namespace-rds.json)
+
 install: install_tls install_configmaps install_all
 uninstall: uninstall_all uninstall_configmaps uninstall_tls
 reinstall: uninstall install
