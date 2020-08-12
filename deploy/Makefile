@@ -33,20 +33,13 @@ dependencies_windows:
 dependencies_helm:
 	curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
-install_configmap_mserviceurl:
+install_configs:
 	kubectl apply -f configmaps/mserviceurl.yaml
+	kubectl apply -f configuration.yaml
 
-remove_configmap_mserviceurl:
+uninstall_configs:
+	kubectl delete -f configuration.yaml
 	kubectl delete -f configmaps/mserviceurl.yaml
-
-install_kustomization: 
-	kubectl apply -k .
-
-uninstall_kustomization:
-	kubectl delete -k .
-
-install_configmaps: install_kustomization install_configmap_mserviceurl
-uninstall_configmaps: remove_configmap_mserviceurl uninstall_kustomization
 
 install_tls:
 	chmod +x create_certs.sh && ./create_certs.sh
@@ -62,30 +55,12 @@ uninstall_all:
 	helm uninstall sciebo-rds
 	helm repo remove sciebo-rds
 
-install_namespace:
-	cat > namespace-rds.json << EOL
-	{
-		"apiVersion": "v1",
-		"kind": "Namespace",
-		"metadata": {
-			"name": "research-data-services",
-			"labels": {
-				"name": "research-data-services"
-			}
-		}
-	}
-	EOL
-	vi namespace-rds.json && kubectl apply -f namespace-rds.json && kubectl config set-context --current --namespace=$(sed -n 's/"name": "\(.*\)",/\1/p' < namespace-rds.json)
-
-uninstall_namespace:
-	kubectl delete namespace $(sed -n 's/"name": "\(.*\)",/\1/p' < namespace-rds.json)
-
-install: install_tls install_configmaps install_all
-uninstall: uninstall_all uninstall_configmaps uninstall_tls
+install: install_tls install_configs install_all
+uninstall: uninstall_all uninstall_configs uninstall_tls
 reinstall: uninstall install
 
-install_win: install_configmaps install_all
-uninstall_win: uninstall_all uninstall_configmaps
+install_win: install_configs install_all
+uninstall_win: uninstall_all uninstall_configs
 
 jaeger:
 	$(eval POD_JAEGER=$(shell kubectl get pods -l "app.kubernetes.io/instance=jaeger,app.kubernetes.io/component=query" -o jsonpath="{.items[0].metadata.name}"))

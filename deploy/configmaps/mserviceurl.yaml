@@ -1,3 +1,4 @@
+# Do not edit anything here, except you know what you are doing.
 apiVersion: v1
 kind: ConfigMap
 metadata:
