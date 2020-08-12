@@ -11,7 +11,7 @@ owncloud_oauth_token_url = "{}/index.php/apps/oauth2/api/v1/token".format(
 owncloud_oauth_id = os.getenv("OWNCLOUD_OAUTH_CLIENT_ID", "XY")
 owncloud_oauth_secret = os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET", "ABC")
 
-owncloud_oauth_authorize = "{}/index.php/apps/oauth2/authorize?redirect_uri={}&response_type=code&client_id={}".format(
+owncloud_oauth_authorize = "{}/index.php/apps/oauth2/authorize%3Fredirect_uri={}&response_type=code&client_id={}".format(
     owncloud_installation_url, owncloud_redirect_uri, owncloud_oauth_id
 )
 

@@ -115,10 +115,6 @@ class UserserviceMapper
 
     public function register($servicename, $code, $state, $userId, $secret)
     {
-        function base64url_encode($plainText)
-        {
-        }
-
         function jwt_encode($arr)
         {
             # inspired by https://rbrt.wllr.info/2018/01/29/how-create-json-web-token-php.html
