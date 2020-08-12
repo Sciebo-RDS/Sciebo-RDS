@@ -26,21 +26,21 @@ helm repo add sciebo-rds https://sciebo-rds.github.io/charts/
 ```
 {{</callout>}}
 
-To customize the installation, several files have to be adjusted. For this purpose, there are ".example" files in the deployment and in all the respective microservice folders, which are to be copied, renamed and adapted as necessary.
+## Configuration
+
+To customize the installation, several files have to be adjusted. For this purpose, there are ".example" files in the *deploy* which needs to be copied, renamed and adapted as necessary.
 
 ```bash
-cp kustomization.yaml.example kustomization.yaml
-nano kustomization.yaml
+cp configuration.yaml.example configuration.yaml
+nano configuration.yaml
 ```
 
-In kustomization.yaml the proxies that may be necessary in the environment are to be defined. This allows the microservices to reach services available outside of the cluster, if the cluster does not have its own global IP. You might want to ask your local network administrator concerning the correct proxy configuration for your environment. 
+In configuration.yaml the proxies that may be necessary in the environment are to be defined. This allows the microservices to reach services available outside of the cluster, if the cluster does not have its own global IP. You might want to ask your local network administrator concerning the correct proxy configuration for your environment.
 
-Furthermore, each service that will be used by the RDS system may be adjusted with respect to local needs, thereby ensuring that the system actually sets up exactly the services that are needed as appropriate.
-
-If you are fine with the standard values, you do not need any changes for your services except connector-services. But if you want to change any value, you need a value.yaml for the corresponding microservice. If you want to see any available parameter, please take a look at the [chart repo](https://github.com/Sciebo-RDS/charts/tree/master/charts).
+Furthermore, each service that will be used by the RDS system may be adjusted with respect to local needs. If you are fine with the standard values, you do not need any changes for your services except connector-services. But if you want to change any value, you need to specifiy it in the values.yaml for the corresponding microservice. If you want to see any available parameter, please take a look at the [chart repo](https://github.com/Sciebo-RDS/charts/tree/master/charts).
 
 For the connector-services, you need to specify the OAuth-ID and -secret to identify with.
-There are again "example" files to be found in the folders of all the connector services in layer 1 in the deploy folder, which are called "values.yaml.example". They have to be renamed following the pattern laid out above, i.e. pruning the respective example suffixes. You may also change the corresponding data for the services if necessary.
+There are again an "example" file to be found in the deploy folder, which is called "values.yaml.example". This file have to be renamed following the pattern laid out above, i.e. pruning the respective example suffix. You may also change the corresponding data for the services if necessary.
 
 ```bash
 cp values.yaml.example values.yaml
@@ -50,3 +50,45 @@ nano values.yaml
 Once these adjustments have been made, the cluster can be installed.
 
 If the communication between plugins and cluster shall be secured by a HTTPS connection, which is strongly recommended, you can create a certificate using the shell script [create_certs.sh](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/create_certs.sh) and store it as a secret. The script has to be adapted regarding the domain, for which the certificate shall be issued.
+
+With the following command, you can create the needed ssl cert.
+
+{{<tabs>}}
+{{<tab "bash" "Create and apply ssl cert">}}cp create_cert.sh.example create_cert.sh
+nano create_cert.sh
+make install_tls
+{{</tab>}}
+
+{{<tab "bash" "Delete ssl cert">}}make uninstall_tls
+{{</tab>}}
+{{</tabs>}}
+
+### Namespace
+
+It is recommended to create a separate [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) for RDS in Kubernetes (e.g. named *research-data-services*). If you want to create a namespace, rename the file "namespace.yaml.example" to "namespace.yaml" and apply it. You can use the following commands to do this.
+
+{{<tabs>}}
+{{<tab "bash" "Apply namespace">}}cp namespace.yaml.example namespace.yaml
+nano namespace.yaml
+make install_namespace
+kubectl config set-context --current --namespace=$(sed -n 's/name: \(.*\)/\1/p' < namespace.yaml | head -n 1)
+{{</tab>}}
+
+{{<tab "bash" "Undoing namespace">}}kubectl config set-context --current --namespace=default
+make uninstall_namespace
+{{</tab>}}
+{{</tabs>}}
+
+After the last command, specifying a context for each Kubectl command (the same with helm) becomes obsolete because the specified namespace is used as a default. Otherwise, all commands must be completed respectively and the tools provided in what follows cannot be used straightforwardly.
+
+## Apply the configuration
+
+If you follow the previous steps, you can now apply the configuration to your kubernetes cluster.
+
+{{<tabs>}}
+{{<tab "bash" "Apply configuration">}}make install_configuration
+{{</tab>}}
+
+{{<tab "bash" "Undoing configuration">}}make uninstall_configuration
+{{</tab>}}
+{{</tabs>}}
