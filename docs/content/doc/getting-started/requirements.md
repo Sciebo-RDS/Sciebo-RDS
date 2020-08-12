@@ -37,3 +37,27 @@ The system needs an ingress server. If you want to use minikube, you can add it 
 ```bash
 minikube addons enable ingress
 ```
+
+### Required programs
+
+We use the program `make` to configure and deploy our software with a Makefile, which can be found in the `deploy` folder. If helm or kubectl have not yet been installed, you can easily install them with the following commands, too.
+
+{{<tabs>}}
+{{<tab "bash" "Ubuntu/Debian">}}sudo apt install make -y
+make dependencies_ubuntu
+{{</tab>}}
+
+{{<tab "bash" "Fedora/CentOS">}}sudo dnf install make -y
+make dependencies_fedora
+{{</tab>}}
+
+{{<tab "bash" "Windows 10 Powershell">}}Set-ExecutionPolicy AllSigned
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+choco install -y make
+make dependencies_windows
+{{</tab>}}
+{{</tabs>}}
+
+{{<callout "tip">}}
+Note: Since Helm v3 no Tillerserver is [required](https://helm.sh/blog/helm-3-released/) on the Kubernetes side.
+{{</callout>}}
