@@ -14,3 +14,4 @@ coverage.xml
 coverage
 create_certs.sh
 namespace.yaml
+configuration.yaml

@@ -1,9 +1,3 @@
-# Create Namespace. remove this, if you do not want to create a new namespace
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: research-data-services
----
 # Global app settings
 apiVersion: v1
 kind: ConfigMap
