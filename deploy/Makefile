@@ -46,7 +46,7 @@ install_tls:
 	chmod +x create_certs.sh && ./create_certs.sh
 
 uninstall_tls:
-	kubectl delete secret sciebords-tls-public
+	kubectl delete secret $(sed -n 's/CERT_NAME=\(.*\)/\1/p' < create_certs.sh)
 
 install_all:
 	helm repo add sciebo-rds https://sciebo-rds.github.io/charts/
