@@ -50,11 +50,8 @@ Sobald die Anpassungen getätigt wurden, kann das System installiert werden.
 Es wird empfohlen einen eigenen [Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) für RDS im Kubernetes-Cluster zu erzeugen (z.B. *research-data-services*).
 
 {{<callout warning>}}
-If you do not follow the commands in this section, all commands must be completed respectively and the tools provided in what follows cannot be used straightforwardly. So you need to adjust all commands in the makefile to your needs or execute them manually and at your chosen namespace per hand.
-Falls die folgenden Anweisungen nicht ausgeführt werden, 
+Falls die folgenden Anweisungen nicht ausgeführt werden, müssen sämtliche Befehle entsprechend ergänzt werden und die im Folgenden zur Verfügung gestellten Hilfsmittel können nicht ohne Weiteres verwendet werden. Somit müssen sämtliche Befehle in der Datei `Makefile` angepasst oder manuell ausgeführt werden.
 {{</callout>}}
-
-If you want to create a namespace, rename the file `namespace.yaml.example` to `namespace.yaml` and apply it. You can use the following commands to do this.
 
 Um einen Namespace zu erstellen, sollte die Datei `namespace.yaml.example` in `namespace.yaml` umbenannt werden. Die darin enthaltenen Informationen können mit dem folgenden Befehlen angewendet werden.
 
@@ -70,7 +67,7 @@ make uninstall_namespace
 {{</tab>}}
 {{</tabs>}}
 
-Anschließend wird das Angeben eines Kontexts für jeden Aufruf des Kubectl-Befehls (auch: Helm) obsolet, da der angegebene Namespace als Default verwendet wird. Ist dies nicht gewünscht, müssen sämtliche Befehle entsprechend ergänzt werden und die im Folgenden zur Verfügung gestellten Hilfsmittel können nicht ohne Weiteres verwendet werden.
+Anschließend wird das Angeben eines Kontexts für jeden Aufruf des Kubectl-Befehls (auch: Helm) obsolet, da der angegebene Namespace als Default verwendet wird.
 
 ### Verschlüsselung
 
