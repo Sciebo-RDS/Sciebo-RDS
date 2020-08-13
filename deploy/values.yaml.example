@@ -19,5 +19,6 @@ circle2-port-service: {}
 circle2-metadata-service: {}
 circle3-research-manager: {}
 circle3-token-storage: {}
-redis: {}
+redis:
+  replicas: 1
 jaeger: {}
