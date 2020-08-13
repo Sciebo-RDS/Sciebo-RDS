@@ -214,7 +214,7 @@
     var btn = $("#btn-open-folderpicker");
     var servicename = btn.data("service");
 
-    $("[id=service-configuration]").hide();
+    $("[class=service-configuration]").hide();
     //$("#btn-save-research-and-continue").hide();
     //$("#btn-sync-files-in-research").hide();
 
@@ -462,8 +462,8 @@
   OC.rds.FileTemplate.prototype._afterTemplateRenders = function () {
     var self = this;
 
-    $("#wrapper-auto-upload").hide();
-    $("#wrapper-apply-changes").hide();
+    $(".wrapper-auto-upload").hide();
+    $(".wrapper-apply-changes").hide();
     $("#btn-save-files").hide();
 
     $("#btn-save-files").click(function () {
