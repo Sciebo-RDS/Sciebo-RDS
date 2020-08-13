@@ -19,7 +19,7 @@ cd ScieboRDS/deploy
 It contains all the files which are required for configuration and installation.
 
 {{<callout info>}}
-If you want to see the helm charts, take a look at your [charts repo](https://github.com/Sciebo-RDS/charts).
+If you want to see the helm charts, take a look at the [charts repo](https://github.com/Sciebo-RDS/charts).
 {{</callout>}}
 
 ## Configuration
