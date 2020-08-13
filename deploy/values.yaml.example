@@ -1,5 +1,7 @@
 global:
-  domain: localhost # will be used for ingress host, adjust here too if you changed it in create_certs.sh
+  # will be used for ingress host
+  # edit here if you changed it in create_certs.sh and wants to use another domain
+  domain: localhost 
 circle1-port-owncloud:
   environment:
     # needs to be adjusted to correct values
