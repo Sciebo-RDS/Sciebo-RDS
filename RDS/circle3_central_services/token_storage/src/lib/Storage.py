@@ -17,6 +17,16 @@ def append(self, value):
     self[str(self.size())] = value
 
 
+def load_service_with_tokens(jsonStr):
+    d = json.loads(jsonStr)
+    user = User.from_json(json.dumps(d["data"]))
+    tokens = []
+    for t in d["tokens"]:
+        tokens.append(Util.try_function_on_dict([OAuth2Token.from_json, Token.from_json])(json.dumps(t)))
+
+    return {"data": user, "tokens": tokens}
+
+
 class Storage:
     """
     Represents a Safe for Tokens.
@@ -26,44 +36,40 @@ class Storage:
     _services = None
 
     def __init__(self, rc=None):
-        logger.info("use redis.")
+        logger.info("try to use redis as backend.")
         try:
             import redis_pubsub_dict, functools
 
-            def wraps(fn, methodname, *methodargs, **methodkwargs):
-                @functools.wraps(fn)
-                def wrapper(*args, **kwargs):
-                    obj = fn(*args, **kwargs)
-                    try:
-                        return getattr(obj, methodname)(
-                            *methodargs, **methodkwargs
-                        )
-                    except AttributeError:
-                        return obj
-
-
-                return wrapper
-
-            redis_pubsub_dict.dumps = wraps(json.dumps, "encode")
-            redis_pubsub_dict.loads = Util.initialize_object_from_dict(wraps(json.loads, "decode", "utf-8"))
+            redis_pubsub_dict.dumps = lambda x: json.dumps(x)
+            redis_pubsub_dict.loads = lambda x: Util.try_function_on_dict(
+                [User.from_json, Service.from_json, Token.from_json, load_service_with_tokens]
+            )(x)
+            redis_pubsub_dict.RedisDict.to_json = lambda x: dict(x.items())
+            redis_pubsub_dict.RedisDict.__eq__ = lambda x, other: dict(x.items()) == other
 
             from rediscluster import RedisCluster
 
             # runs in RDS ecosystem, use redis as backend
             if rc is None:
+                logger.debug("No redis client was given. Create one.")
                 rc = RedisCluster(
                     startup_nodes=[
                         {
                             "host": os.getenv("REDIS_HOST", "localhost"),
                             "port": os.getenv("REDIS_PORT", "6379"),
                         }
-                    ]
+                    ],
+                    decode_responses=True,
                 )
+
+            logger.debug("set redis backed dict")
             self._storage = redis_pubsub_dict.RedisDict(rc, "tokenstorage_storage")
             self._services = redis_pubsub_dict.RedisDict(rc, "tokenstorage_services")
 
+            logger.debug("set methods to redis backed dict to use it as list")
             self._services.append = append.__get__(self._services, type(self._services))
-        except Exception:
+        except Exception as e:
+            logger.error(e)
             logger.info("no redis found. use memory")
             self._storage = {}
             self._services = []
@@ -339,7 +345,9 @@ class Storage:
                     if index == 0:
                         del self._storage[user.username]
                     else:
-                        del self._storage[user.username]["tokens"][index]
+                        data = self._storage[user.username]
+                        del data["tokens"][index]
+                        self._storage[user.username] = data
                     break
         except ValueError:
             from .Exceptions.StorageException import TokenNotExistsError
@@ -398,7 +406,9 @@ class Storage:
                 raise UserNotExistsError(self, user)
 
         try:
+            logger.debug("Try to find index")
             index = self._storage[user.username]["tokens"].index(token)
+            logger.debug(f"found index {index}")
 
             """
             obsolete since model update
@@ -408,7 +418,9 @@ class Storage:
             """
 
             if Force:
-                self._storage[user.username]["tokens"][index] = token
+                data = self._storage[user.username]
+                data["tokens"][index] = token
+                self._storage[user.username] = data
                 logger.debug(f"overwrite token for user {user}")
 
             else:
@@ -418,7 +430,10 @@ class Storage:
 
         except ValueError:
             # token not found in storage, so we can add it here.
-            self._storage[user.username]["tokens"].append(token)
+            data = self._storage[user.username]
+            data["tokens"].append(token)
+            self._storage[user.username] = data
+            logger.debug("token {} not found for user {}. Append it to tokens.".format(token.servicename, user.username))
 
         return True
 

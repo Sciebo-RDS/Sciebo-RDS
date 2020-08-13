@@ -15,9 +15,13 @@ from RDS.ServiceException import (
 from fakeredis import FakeStrictRedis
 
 
-def make_test_case(rc=None):
+def make_test_case(useRedis=False):
     class Test_TokenStorage(unittest.TestCase):
         def setUp(self):
+            rc = None
+            if useRedis:
+                rc = FakeStrictRedis(decode_responses=True)
+
             Util.monkeypatch()
             self.empty_storage = Storage(rc=rc)
 
@@ -385,12 +389,9 @@ def make_test_case(rc=None):
     return Test_TokenStorage
 
 
-rc = FakeStrictRedis()
-
-
 class StorageTestCase(make_test_case()):
     pass
 
 
-class StorageRedisBackedTestCase(make_test_case(rc)):
+class StorageRedisBackedTestCase(make_test_case(useRedis=True)):
     pass
