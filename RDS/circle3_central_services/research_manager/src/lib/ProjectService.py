@@ -12,6 +12,7 @@ class ProjectService:
         try:
             from redis_pubsub_dict import RedisDict
             from rediscluster import StrictRedisCluster
+
             # runs in RDS ecosystem
             rc = RedisCluster(
                 startup_nodes=[
@@ -19,12 +20,13 @@ class ProjectService:
                         "host": os.getenv("REDIS_HOST", "localhost"),
                         "port": os.getenv("REDIS_PORT", "6379"),
                     }
-                ]
+                ],
+                decode_responses=True,
             )
-            self.projects = RedisDict(rc, 'researchmanager_projects')
+            self.projects = RedisDict(rc, "researchmanager_projects")
         except Exception:
             self.projects = {}
-            
+
         self.highest_index = 0
 
     def addProject(self, userOrProject, portIn=None, portOut=None):
