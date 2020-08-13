@@ -16,6 +16,12 @@ logger = logging.getLogger()
 def append(self, value):
     self[str(self.size())] = value
 
+def keys(self):
+    prefix = self.prefixer("")
+    for k in self._keys():
+        val = k.replace(prefix, "", 1)
+        yield val
+
 
 def load_service_with_tokens(jsonStr):
     d = json.loads(jsonStr)
@@ -46,6 +52,7 @@ class Storage:
             )(x)
             redis_pubsub_dict.RedisDict.to_json = lambda x: dict(x.items())
             redis_pubsub_dict.RedisDict.__eq__ = lambda x, other: dict(x.items()) == other
+            redis_pubsub_dict.RedisDict.keys = keys
 
             from rediscluster import RedisCluster
 
