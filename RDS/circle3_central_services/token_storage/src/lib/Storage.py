@@ -92,7 +92,7 @@ class Storage:
                     logger.debug("Cluster has an error, try standardalone redis")
                     from redis import Redis
 
-                    rc = Redis(**startup_nodes[0], db=0, decode_responses=True,)
+                    rc = Redis(**(startup_nodes[0]), db=0, decode_responses=True,)
 
             logger.debug("set redis backed dict")
             self._storage = redis_pubsub_dict.RedisDict(rc, "tokenstorage_storage")
