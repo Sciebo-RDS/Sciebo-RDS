@@ -79,7 +79,7 @@ class Storage:
 
                 try:
                     logger.debug("first try cluster")
-                    from rediscluster import StrictRedisCluster as RedisCluster
+                    from rediscluster import RedisCluster
 
                     rc = RedisCluster(
                         startup_nodes=startup_nodes,
@@ -89,7 +89,7 @@ class Storage:
                 except Exception as e:
                     logger.error(e)
                     logger.debug("Cluster has an error, try standardalone redis")
-                    from redis import StrictRedis as Redis
+                    from redis import Redis
 
                     rc = Redis(**(startup_nodes[0]), db=0, decode_responses=True,)
                     rc.info() # provoke an error message
