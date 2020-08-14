@@ -40,7 +40,7 @@
       var template = Handlebars.compile(source);
       var html = template(this._getParams());
 
-      $("#app-content").html(html);
+      $("#app-content-wrapper").html(html);
     },
 
     render: function () {
@@ -237,11 +237,11 @@
     });
 
 
-    $("#app-content #btn-save-research").click(function () {
+    $("#app-content-wrapper #btn-save-research").click(function () {
       self.save()
     });
 
-    $("#app-content #btn-save-research-and-continue").click(function () {
+    $("#app-content-wrapper #btn-save-research-and-continue").click(function () {
       self.save_next();
     });
   };
@@ -418,15 +418,15 @@
       self._bf.render(container, data);
     });
 
-    $("#app-content #btn-save-metadata").click(function () {
+    $("#app-content-wrapper #btn-save-metadata").click(function () {
       self.save();
     });
 
-    $("#app-content #btn-save-metadata-and-continue").click(function () {
+    $("#app-content-wrapper #btn-save-metadata-and-continue").click(function () {
       self.save_next();
     });
 
-    $("#app-content #btn-skip").click(function () {
+    $("#app-content-wrapper #btn-skip").click(function () {
       self._view._stateView += 1;
       self._view.render();
     });
