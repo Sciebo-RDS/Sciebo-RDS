@@ -16,6 +16,7 @@ logger = logging.getLogger()
 def append(self, value):
     self[str(self.size())] = value
 
+
 def keys(self):
     prefix = self.prefixer("")
     for k in self._keys():
@@ -28,7 +29,11 @@ def load_service_with_tokens(jsonStr):
     user = User.from_json(json.dumps(d["data"]))
     tokens = []
     for t in d["tokens"]:
-        tokens.append(Util.try_function_on_dict([OAuth2Token.from_json, Token.from_json])(json.dumps(t)))
+        tokens.append(
+            Util.try_function_on_dict([OAuth2Token.from_json, Token.from_json])(
+                json.dumps(t)
+            )
+        )
 
     return {"data": user, "tokens": tokens}
 
@@ -48,26 +53,44 @@ class Storage:
 
             redis_pubsub_dict.dumps = lambda x: json.dumps(x)
             redis_pubsub_dict.loads = lambda x: Util.try_function_on_dict(
-                [User.from_json, Service.from_json, Token.from_json, load_service_with_tokens]
+                [
+                    User.from_json,
+                    Service.from_json,
+                    Token.from_json,
+                    load_service_with_tokens,
+                ]
             )(x)
             redis_pubsub_dict.RedisDict.to_json = lambda x: dict(x.items())
-            redis_pubsub_dict.RedisDict.__eq__ = lambda x, other: dict(x.items()) == other
+            redis_pubsub_dict.RedisDict.__eq__ = (
+                lambda x, other: dict(x.items()) == other
+            )
             redis_pubsub_dict.RedisDict.keys = keys
-
-            from rediscluster import RedisCluster
 
             # runs in RDS ecosystem, use redis as backend
             if rc is None:
                 logger.debug("No redis client was given. Create one.")
-                rc = RedisCluster(
-                    startup_nodes=[
+
+                startup_nodes = (
+                    [
                         {
                             "host": os.getenv("REDIS_HOST", "localhost"),
                             "port": os.getenv("REDIS_PORT", "6379"),
                         }
                     ],
-                    decode_responses=True,
                 )
+                try:
+                    logger.debug("first try cluster")
+                    from rediscluster import RedisCluster
+
+                    rc = RedisCluster(
+                        startup_nodes=startup_nodes, decode_responses=True,
+                    )
+                except Exception as e:
+                    logger.error(e)
+                    logger.debug("Cluster has an error, try standardalone redis")
+                    from redis import Redis
+
+                    rc = Redis(**startup_nodes[0], db=0, decode_responses=True)
 
             logger.debug("set redis backed dict")
             self._storage = redis_pubsub_dict.RedisDict(rc, "tokenstorage_storage")
@@ -440,7 +463,11 @@ class Storage:
             data = self._storage[user.username]
             data["tokens"].append(token)
             self._storage[user.username] = data
-            logger.debug("token {} not found for user {}. Append it to tokens.".format(token.servicename, user.username))
+            logger.debug(
+                "token {} not found for user {}. Append it to tokens.".format(
+                    token.servicename, user.username
+                )
+            )
 
         return True
 
