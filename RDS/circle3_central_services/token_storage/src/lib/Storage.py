@@ -70,14 +70,13 @@ class Storage:
             if rc is None:
                 logger.debug("No redis client was given. Create one.")
 
-                startup_nodes = (
-                    [
-                        {
-                            "host": os.getenv("REDIS_HOST", "localhost"),
-                            "port": os.getenv("REDIS_PORT", "6379"),
-                        }
-                    ],
-                )
+                startup_nodes = [
+                    {
+                        "host": os.getenv("REDIS_HOST", "localhost"),
+                        "port": os.getenv("REDIS_PORT", "6379"),
+                    }
+                ]
+
                 try:
                     logger.debug("first try cluster")
                     from rediscluster import RedisCluster
