@@ -15,15 +15,22 @@ from RDS.ServiceException import (
 from fakeredis import FakeStrictRedis
 
 
-def make_test_case(useRedis=False):
+def make_test_case(use_redis=False):
+    rc = None
+
+    def get_opts():
+        if use_redis:
+            return {
+                "rc": FakeStrictRedis(decode_responses=True),
+                "use_in_memory_on_failure": False,
+            }
+        return {"use_in_memory_on_failure": True}
+
     class Test_TokenStorage(unittest.TestCase):
         def setUp(self):
-            rc = None
-            if useRedis:
-                rc = FakeStrictRedis(decode_responses=True)
 
             Util.monkeypatch()
-            self.empty_storage = Storage(rc=rc)
+            self.empty_storage = Storage(**get_opts())
 
             self.user1 = User("Max Mustermann")
             self.user2 = User("Mimi Mimikri")
@@ -70,7 +77,7 @@ def make_test_case(useRedis=False):
             )
 
         def test_storage_listUser(self):
-            empty_storage = Storage()
+            empty_storage = Storage(**get_opts())
             self.assertEqual(empty_storage.getUsers(), [])
             empty_storage.addUser(self.user1)
             self.assertEqual(empty_storage.getUsers(), [self.user1])
@@ -84,7 +91,7 @@ def make_test_case(useRedis=False):
                 empty_storage.addUser(self.user1)
 
         def test_tokenstorage_add_service(self):
-            empty_storage = Storage()
+            empty_storage = Storage(**get_opts())
 
             empty_storage.addUser(self.user1)
             #  test the exception raise
@@ -100,7 +107,7 @@ def make_test_case(useRedis=False):
                 self.empty_storage.addService(self.service1)
 
         def test_storage_getUser_getToken(self):
-            empty_storage = Storage()
+            empty_storage = Storage(**get_opts())
             with self.assertRaises(UserNotExistsError):
                 empty_storage.getUser(self.user1.username)
 
@@ -318,7 +325,7 @@ def make_test_case(useRedis=False):
             self.empty_storage.addTokenToUser(self.token1, self.user1, Force=True)
 
         def test_tokenstorage_service_implementstype(self):
-            empty_storage = Storage()
+            empty_storage = Storage(**get_opts())
             service = Service("longname", ["fileStorage", "metadata"])
 
             empty_storage.addUser(self.user1)
@@ -393,5 +400,5 @@ class StorageTestCase(make_test_case()):
     pass
 
 
-class StorageRedisBackedTestCase(make_test_case(useRedis=True)):
+class StorageRedisBackedTestCase(make_test_case(use_redis=True)):
     pass

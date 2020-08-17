@@ -46,7 +46,7 @@ class Storage:
     _storage = None
     _services = None
 
-    def __init__(self, rc=None):
+    def __init__(self, rc=None, use_in_memory_on_failure=True):
         logger.info("try to use redis as backend.")
         try:
             import redis_pubsub_dict, functools
@@ -104,7 +104,14 @@ class Storage:
             self._services.append = append.__get__(self._services, type(self._services))
         except Exception as e:
             logger.error(e)
-            logger.info("no redis found. use memory")
+            logger.info("no redis found.")
+
+            if not use_in_memory_on_failure:
+                logger.info("exit...")
+                import sys
+                sys.exit()
+
+            logger.info("use in-memory")
             self._storage = {}
             self._services = []
 
