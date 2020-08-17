@@ -55,7 +55,9 @@ class Storage:
             redis_pubsub_dict.loads = lambda x: Util.try_function_on_dict(
                 [
                     User.from_json,
+                    OAuth2Service.from_json,
                     Service.from_json,
+                    OAuth2Token.from_json,
                     Token.from_json,
                     load_service_with_tokens,
                 ]
