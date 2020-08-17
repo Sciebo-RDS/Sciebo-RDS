@@ -69,7 +69,7 @@ jaeger:
 	kubectl port-forward $(POD_JAEGER) 8080:16686
 
 redis:
-	$(eval POD_REDIS=$(shell kubectl get pods -l "app.kubernetes.io/name=redis-cluster" -o jsonpath="{.items[0].metadata.name}"))
+	$(eval POD_REDIS=$(shell kubectl get pods -l "app.kubernetes.io/name=redis" -o jsonpath="{.items[0].metadata.name}"))
 	echo "redis-cli"
 	kubectl port-forward $(POD_REDIS) 6379:6379
 
