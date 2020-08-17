@@ -59,7 +59,7 @@ If you want to create a namespace, rename the file "namespace.yaml.example" to "
 {{<tab "bash" "Apply namespace">}}cp namespace.yaml.example namespace.yaml
 nano namespace.yaml
 make install_namespace
-kubectl config set-context --current --namespace=$(sed -n 's/name: \(.*\)/\1/p' < namespace.yaml | head -n 1)
+kubectl config set-context --current --namespace=$(grep 'name:' namespace.yaml.example | tail -n1 | awk '{ print $2}')
 {{</tab>}}
 
 {{<tab "bash" "Remove namespace">}}kubectl config set-context --current --namespace=default
