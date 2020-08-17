@@ -1,7 +1,7 @@
 global:
   # will be used for ingress host
   # edit here if you changed it in create_certs.sh and wants to use another domain
-  domain: localhost 
+  domain: rds.local 
 circle1-port-owncloud:
   environment:
     # needs to be adjusted to correct values
