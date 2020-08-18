@@ -1,8 +1,13 @@
 from lib.EnumStatus import Status
 from lib.Port import Port
+import json
+import logging
 
-class Project():
-    def __init__(self, user, portIn=None, portOut=None):
+logger = logging.getLogger()
+
+
+class Project:
+    def __init__(self, user, status=Status.CREATED, portIn=None, portOut=None):
         if portIn is None:
             portIn = []
 
@@ -10,7 +15,7 @@ class Project():
             portOut = []
 
         self.user = user
-        self.status = Status.CREATED
+        self.status = status
 
         self.portIn = []
         self.portOut = []
@@ -96,10 +101,42 @@ class Project():
         self.status = Status.DONE
         return True
 
-
     def getJSON(self):
-        import json
         return json.dumps(self.getDict())
+
+    @classmethod
+    def fromJSON(cls, dataJson: str):
+        dataList = json.loads(dataJson)
+
+        l = []
+        for data in dataList:
+            fixedData = json.loads(data)
+            fixedData["user"] = fixedData["userId"]
+            del fixedData["userId"]
+
+            fixedData["status"] = Status(fixedData["status"])
+
+            try:
+                researchId = fixedData["researchId"]
+                researchIndex = fixedData["researchIndex"]
+
+                del fixedData["researchId"]
+                del fixedData["researchIndex"]
+            except Exception as e:
+                logger.error("{}, data: {}".format(e, fixedData))
+                logger.debug("no researchIndex or Id found")
+
+            project = cls(**fixedData)
+
+            try:
+                project.researchId = researchId
+                project.researchIndex = researchIndex
+            except Exception as e:
+                logger.error("{}, data: {}".format(e, project.dict))
+
+            l.append(project)
+
+        return l
 
     def getDict(self):
         return self.dict
@@ -110,8 +147,14 @@ class Project():
             "userId": self.user,
             "status": self.status.value,
             "portIn": [port.getDict() for port in self.portIn],
-            "portOut": [port.getDict() for port in self.portOut]
+            "portOut": [port.getDict() for port in self.portOut],
         }
+
+        try:
+            obj["researchId"] = self.researchId
+            obj["researchIndex"] = self.researchIndex
+        except:
+            pass
 
         return obj
 
