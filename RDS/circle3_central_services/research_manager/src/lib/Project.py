@@ -106,7 +106,10 @@ class Project:
 
     @classmethod
     def fromJSON(cls, dataJson: str):
-        dataList = json.loads(dataJson)
+        try:
+            dataList = json.loads(dataJson)
+        except:
+            dataList = dataJson
 
         l = []
         for data in dataList:
