@@ -8,15 +8,16 @@ from RDS import Util
 from fakeredis import FakeStrictRedis
 
 
-def make_test_case(use_redis=False):
-    def get_opts():
-        if use_redis:
-            return {
-                "rc": FakeStrictRedis(decode_responses=True),
-                "use_in_memory_on_failure": False,
-            }
-        return {"use_in_memory_on_failure": True}
+def get_opts(use_redis=False):
+    if use_redis:
+        return {
+            "rc": FakeStrictRedis(decode_responses=True),
+            "use_in_memory_on_failure": False,
+        }
+    return {"use_in_memory_on_failure": True}
 
+
+def make_test_case(use_redis=False):
     class Test_projectserviceService(unittest.TestCase):
         def setUp(self):
             Util.monkeypatch(func_name="getJSON")
@@ -104,6 +105,22 @@ def make_test_case(use_redis=False):
             self.assertEqual(
                 md.getProject(user="user", researchIndex=0).getDict(), expected[0]
             )
+
+        def test_highest_index(self):
+            md = ProjectService(**get_opts())
+
+            self.assertEqual(md.highest_index, 0)
+
+            portOwncloud = Port("port-owncloud", fileStorage=True)
+            portInvenio = Port("port-invenio", fileStorage=True, metadata=True)
+
+            md.addProject("admin", portIn=[])
+            self.assertEqual(md.highest_index, 1)
+
+            md.addProject("admin", portIn=[portOwncloud])
+            md.addProject("user", portIn=[portOwncloud], portOut=[portInvenio])
+
+            self.assertEqual(md.highest_index, 3)
 
         def test_service_ports(self):
             """
@@ -319,4 +336,22 @@ class ProjectServiceTestCase(make_test_case()):
 
 
 class ProjectServiceRedisBackedTestCase(make_test_case(use_redis=True)):
-    pass
+    def test_highest_index_redis(self):
+        opts = get_opts(True)
+        md = ProjectService(**opts)
+
+        portOwncloud = Port("port-owncloud", fileStorage=True)
+        portInvenio = Port("port-invenio", fileStorage=True, metadata=True)
+
+        id1 = md.addProject("admin", portIn=[]).researchId
+        id2 = md.addProject("admin", portIn=[portOwncloud]).researchId
+
+        md2 = ProjectService(**opts)
+        self.assertEqual(md.highest_index, 2)
+        self.assertEqual(md2.highest_index, 2)
+
+        id3 = md.addProject(
+            "user", portIn=[portOwncloud], portOut=[portInvenio]
+        ).researchId
+
+        self.assertEqual(md.highest_index, md2.highest_index)

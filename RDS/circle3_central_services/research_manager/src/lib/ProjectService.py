@@ -72,7 +72,13 @@ class ProjectService:
             logger.info("use in-memory")
             self.projects = {}
 
-        self.highest_index = 0
+    @property
+    def highest_index(self):
+        index = 0
+        for user in self.projects.values():
+            index += len(user)
+
+        return index
 
     def addProject(self, userOrProject, portIn=None, portOut=None):
         """
@@ -96,7 +102,6 @@ class ProjectService:
             userOrProject = Project(userOrProject, portIn=portIn, portOut=portOut)
 
         researchId = self.highest_index
-        self.highest_index += 1
 
         if userOrProject.user not in self.projects:
             self.projects[userOrProject.user] = []
