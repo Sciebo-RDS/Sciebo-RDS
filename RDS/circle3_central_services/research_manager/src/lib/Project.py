@@ -113,7 +113,11 @@ class Project:
 
         l = []
         for data in dataList:
-            fixedData = json.loads(data)
+            try:
+                fixedData = json.loads(data)
+            except:
+                fixedData = data
+                
             fixedData["user"] = fixedData["userId"]
             del fixedData["userId"]
 
