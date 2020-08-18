@@ -16,8 +16,6 @@ from fakeredis import FakeStrictRedis
 
 
 def make_test_case(use_redis=False):
-    rc = None
-
     def get_opts():
         if use_redis:
             return {

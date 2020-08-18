@@ -33,6 +33,8 @@ def bootstrap(name="MicroService", testing=False, *args, **kwargs):
 
     CommonUtil.monkeypatch(app=app.app)
 
+    ServerUtil.storage = Storage(**opts)
+
     for oai in list_openapi:
         app.add_api(
             oai,
@@ -40,7 +42,5 @@ def bootstrap(name="MicroService", testing=False, *args, **kwargs):
             validate_responses=True,
         )
 
-    # init token storage
-    ServerUtil.storage = Storage(**opts)
 
     return app
