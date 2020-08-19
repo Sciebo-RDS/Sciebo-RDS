@@ -24,5 +24,6 @@ Die folgenden Pfaddefinierungen werden von den jeweiligen Diensten ausdefiniert 
 | Port Service     | /port-service |
 | Exporter Service | /exporter     |
 | Metadata Service | /metadata     |
+| Research Manager | /research     |
 
 Die dienstspezifischen Unterordner und Endpunkte werden in den jeweiligen OpenAPI-Datei definiert und können in dieser Dokumenation eingesehen werden.

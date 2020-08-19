@@ -22,5 +22,6 @@ The following path definitions are defined by the respective services and can th
 | Port Service     | /port-service   |
 | Exporter Service | /exporter       |
 | Metadata Service | /metadata       |
+| Research Manager | /research       |
 
 The service-specific subfolders and endpoints are defined in the respective OpenAPI file and can be viewed in this documentation.

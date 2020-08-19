@@ -27,7 +27,7 @@ git clone https://github.com/Sciebo-RDS/Sciebo-RDS.git
 cp -r Sciebo-RDS/plugins/ownCloud/rds $OWNCLOUD_INSTALLATION/apps/
 ```
 
-Nun kann die *RDS*-App in den Einstellungen aktiviert (https://localhost/owncloud/index.php/settings/admin?sectionid=apps&category=disabled) werden. Anschließend muss der Administrator in den Administratoreneinstellungen die RDS App konfigurieren, wie im folgenden beschrieben.
+Nun kann die *RDS*-App in den Einstellungen aktiviert (`https://localhost/owncloud/index.php/settings/admin?sectionid=apps&category=disabled`) werden. Anschließend muss der Administrator in den Administratoreneinstellungen die RDS App konfigurieren, wie im folgenden beschrieben.
 
 ### Einstellungen Administratorensicht
 

@@ -53,7 +53,7 @@ uninstall_tls:
 
 install_all:
 	helm repo add sciebo-rds https://sciebo-rds.github.io/charts/
-	helm upgrade sciebo-rds sciebo-rds/all -i  --values values.yaml
+	helm upgrade sciebo-rds sciebo-rds/all -i --values values.yaml
 	
 uninstall_all:
 	helm uninstall sciebo-rds
