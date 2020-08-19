@@ -11,7 +11,7 @@ weight: 300
 In the following, we will show you how to install the RDS system in your Kubernetes Cluster.
 
 {{<callout "info">}}
-If you not already know, what RDS is and how does it work, you should take a look into this [article](/page/about/).
+If you not already know, what RDS is and how does it work, you should take a look into this [article](/doc/).
 {{</callout>}}
 
 At the beginning of this guide, you will need to fulfill the requirements. After that, you will need to configure the RDS system to your needs. Last but not least, you will install the RDS system on your configured kubernetes cluster.

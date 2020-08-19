@@ -12,7 +12,7 @@ weight: 300
 Nachfolgend wird gezeigt, wie das RDS System in einem Kubernetes Cluster installiert werden kann.
 
 {{<callout "info">}}
-Für einen Überblick über das RDS System und dessen Funktionsweise, sei auf diesen [Artikel](/de/page/about/) verwiesen.
+Für einen Überblick über das RDS System und dessen Funktionsweise, sei auf diesen [Artikel](/de/doc/) verwiesen.
 {{</callout>}}
 
 Zu Beginn dieser Anleitung werden die Voraussetzung an den Cluster und andere Software genannt, welche zuerst erfüllt sein müssen. Anschließend wird das RDS System konfiguriert, sodass es danach auf dem Kubernetes Cluster installiert werden kann.
