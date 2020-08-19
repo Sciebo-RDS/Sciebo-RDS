@@ -17,6 +17,8 @@ RDS was designed as a middleware, which make it easy to interact with different 
 
 ![RDS Core as middleware](/images/rds-overview-middleware.png)
 
+Currently, there are only interfaces for owncloud and zenodo. More are coming soon.
+
 ### Getting started
 
 If you are a user, you can look up [here](/doc/manual/faq/) for FAQ and tutorials.

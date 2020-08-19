@@ -13,9 +13,11 @@ In der hier vorliegenden Dokumentation wird die Funktionsweise und Konzepte mitt
 
 ### Konzeptionierung
 
-Das RDS System wurde als Middleware entwicklet, welche es einfach macht mit internen und externen Diensten zu kommunizieren innerhalb einer bereits existierenden Nutzerumgebung.
+Das RDS System wurde als Middleware entwickelt, welche es einfach macht mit internen und externen Diensten zu kommunizieren innerhalb einer bereits existierenden Nutzerumgebung.
 
 ![RDS Core as middleware](/images/rds-overview-middleware.png)
+
+Aktuell gibt es eine Schnittstelle zwischen Owncloud und Zenodo. Weitere Konnektoren sind in Vorbereitung.
 
 ### Erste Schritte
 
