@@ -20,15 +20,15 @@ Because of the high security in RDS, the communication between the plugins and t
 If this password is corrupted, an attacker can set up his own system and pretend to be an RDS system and thus carry out a man-in-the-middle attack, whereby all communication between the provider and the RDS system is broken, despite encryption. For this reason the OAuth2-Secret can be used as a key. If we cannot trust this secret, the entire communication is not secure (even without this secret as a key for synchronous encryption).
 ```mermaid
 sequenceDiagram
-  participant user
+  participant User
   participant RDS
-  participant provider
+  participant Provider
 
-  User ->> RDS: 1st login by provider
-  RDS -->> User: 2nd Redirect Provider Login
-  User ->> Provider: 3rd login successful
+  User ->> RDS: 1. login by provider
+  RDS -->> User: 2. Redirect Provider Login
+  User ->> Provider: 3. login successful
   Provider -->> RDS: 4. user data forwarding
-  Provider -->> User: 5th Redirect RDS Logged-In
+  Provider -->> User: 5. Redirect RDS Logged-In
 ```
 
 Because of the secrecy of the Oauth2-secret, all plugin communication must be routed through a server structure that has access to this secret. This must then be behind a login page, so that the user must be authenticated. So RDS can be sure that the request is authorized by the user, because we trust the plugin system. If we can't do this, the OAuth2 provider is not trustworthy either, because an attacker can impersonate another person, and OAuth2 would lose its trust.
