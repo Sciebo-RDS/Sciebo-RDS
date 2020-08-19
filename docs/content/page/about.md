@@ -12,8 +12,6 @@ The project sciebo RDS (Research Data Services) has set itself the goal of bring
 
 The work packages for the implementation of these strategies include the development of a suitable software architecture to match the infrastructural environment of the university cloud sciebo. This is to be conducted at the University of Münster. Another important aspect concerns issues in usability and the scientific evaluation of the user perspective. This is where the project partners at the University of Duisburg-Essen contribute their expertise.
 
-![RDS Core as middleware](/images/rds-overview-middleware.png)
-
 The project is designed with sustainability in mind. This will be achieved by making all results of the project, i.e. software components, documentation and scientific publications, accessible to the general public using open licences. In addition, the implementations shall be easily reusable at other locations.
 
 
