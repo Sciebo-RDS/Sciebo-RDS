@@ -125,6 +125,18 @@ class ProjectService:
 
         return userOrProject
 
+    def setProject(self, user, project):
+        try:
+            projects = self.projects[user.username]
+        except:
+            projects = self.projects.get(user)
+
+        if projects is None:
+            self.projects[user] = [project]
+        else:
+            projects[project.researchIndex] = project
+            self.projects[user] = projects
+
     def getProject(self, user="", researchIndex: int = None, researchId: int = None):
         """
         This method returns all projects, if no parameters were set.

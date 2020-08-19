@@ -328,6 +328,29 @@ def make_test_case(use_redis=False):
             # we remove the first one, so there are only 2 projects left
             self.assertEqual([portOwncloud], md.getProject(researchId=id1).getPortIn())
 
+        def test_projectservice_setProject(self):
+            """
+            This unit tests the setProject method
+            """
+            md = ProjectService(**get_opts())
+
+            custom = {"key": "serviceProjectId", "value": "12345"}
+            portOwncloud = Port(
+                "port-owncloud", fileStorage=True, customProperties=custom
+            )
+
+            expected_proj1 = Project("admin")
+
+            proj1 = md.addProject("admin", portIn=[])
+            self.assertEqual(expected_proj1, md.getProject(researchId=proj1.researchId))
+
+            expected_proj1.addPortIn(portOwncloud)
+
+            proj1.addPortIn(portOwncloud)
+            md.setProject(proj1.user, proj1)
+
+            self.assertEqual(expected_proj1, md.getProject(researchId=proj1.researchId))
+
     return Test_projectserviceService
 
 

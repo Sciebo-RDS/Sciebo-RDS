@@ -3,7 +3,9 @@ from flask import jsonify, request
 
 
 def index(user_id, research_id):
-    return jsonify(Singleton.ProjectService.getProject(user_id, int(research_id)).getPortOut())
+    return jsonify(
+        Singleton.ProjectService.getProject(user_id, int(research_id)).getPortOut()
+    )
 
 
 def post(user_id, research_id):
@@ -24,15 +26,26 @@ def post(user_id, research_id):
 
     p = Port(json["port"], fileStorage=fs, metadata=md, customProperties=cp)
 
-    Singleton.ProjectService.getProject(user_id, int(research_id)).addPortOut(p)
-    return jsonify(Singleton.ProjectService.getProject(user_id, int(research_id)).getPortOut())
+    project = Singleton.ProjectService.getProject(user_id, int(research_id))
+    project.addPortOut(p)
+    Singleton.ProjectService.setProject(user_id, project)
+    return jsonify(
+        Singleton.ProjectService.getProject(user_id, int(research_id)).getPortOut()
+    )
 
 
 def get(user_id, research_id, port_id):
-    return jsonify(Singleton.ProjectService.getProject(user_id, int(research_id)).getPortOut().get(int(port_id)))
+    return jsonify(
+        Singleton.ProjectService.getProject(user_id, int(research_id))
+        .getPortOut()
+        .get(int(port_id))
+    )
 
 
 def delete(user_id, research_id, port_id):
-    Singleton.ProjectService.getProject(
-        user_id, int(research_id)).removePortOut(int(port_id))
-    return jsonify(Singleton.ProjectService.getProject(user_id, int(research_id)).getPortOut())
+    project = Singleton.ProjectService.getProject(user_id, int(research_id))
+    project.removePortOut(int(port_id))
+    Singleton.ProjectService.setProject(user_id, project)
+    return jsonify(
+        Singleton.ProjectService.getProject(user_id, int(research_id)).getPortOut()
+    )
