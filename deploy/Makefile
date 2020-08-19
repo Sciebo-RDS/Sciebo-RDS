@@ -68,5 +68,10 @@ jaeger:
 	echo http://127.0.0.1:8080/
 	kubectl port-forward $(POD_JAEGER) 8080:16686
 
+redis:
+	$(eval POD_REDIS=$(shell kubectl get pods -l "app.kubernetes.io/name=redis" -o jsonpath="{.items[0].metadata.name}"))
+	echo "redis-cli"
+	kubectl port-forward $(POD_REDIS) 6379:6379
+
 watch:
 	watch -n 1 kubectl get pods -o wide

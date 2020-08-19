@@ -21,9 +21,6 @@ circle3-research-manager: {}
 circle3-token-storage: {}
 # see: https://github.com/bitnami/charts/tree/master/bitnami/redis-cluster
 redis:
-  cluster:
-    nodes: 2
-    replicas: 1
   redis:
     config: {}
 # see: https://github.com/jaegertracing/helm-charts

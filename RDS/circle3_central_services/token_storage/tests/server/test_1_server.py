@@ -11,9 +11,7 @@ def create_app():
     from src import bootstrap
 
     # creates a test client
-    app = bootstrap(use_default_error=True).app
-    # propagate the exceptions to the test client
-    app.config.update({"TESTING": True})
+    app = bootstrap(use_default_error=True, testing=True).app
 
     return app
 

@@ -2,30 +2,83 @@ from lib.Project import Project
 import logging
 import requests, os
 from lib.EnumStatus import Status
+from RDS import Util
 
 logger = logging.getLogger()
 
 
+def keys(self):
+    prefix = self.prefixer("")
+    for k in self._keys():
+        val = k.replace(prefix, "", 1)
+        yield val
+
+
 class ProjectService:
-    def __init__(self):
+    def __init__(self, rc=None, use_in_memory_on_failure=True):
         # format: {user: [<type project>]}
         try:
             from redis_pubsub_dict import RedisDict
-            from rediscluster import StrictRedisCluster
+            import redis_pubsub_dict, functools, json
+
+            redis_pubsub_dict.dumps = lambda x: json.dumps(x)
+            redis_pubsub_dict.loads = lambda x: Util.try_function_on_dict(
+                [Project.fromJSON]
+            )(x)
+            redis_pubsub_dict.RedisDict.to_json = lambda x: dict(x.items())
+            redis_pubsub_dict.RedisDict.__eq__ = (
+                lambda x, other: dict(x.items()) == other
+            )
+            redis_pubsub_dict.RedisDict.keys = keys
+
             # runs in RDS ecosystem
-            rc = RedisCluster(
-                startup_nodes=[
+
+            if rc is None:
+                logger.debug("No redis client was given. Create one.")
+                startup_nodes = [
                     {
                         "host": os.getenv("REDIS_HOST", "localhost"),
                         "port": os.getenv("REDIS_PORT", "6379"),
                     }
                 ]
-            )
-            self.projects = RedisDict(rc, 'researchmanager_projects')
-        except Exception:
+
+                try:
+                    logger.debug("first try cluster")
+                    from rediscluster import RedisCluster
+
+                    rc = RedisCluster(
+                        startup_nodes=startup_nodes, decode_responses=True,
+                    )
+                except Exception as e:
+                    logger.error(e)
+                    logger.debug("Cluster has an error, try standardalone redis")
+                    from redis import Redis
+
+                    rc = Redis(**(startup_nodes[0]), db=0, decode_responses=True,)
+                    rc.info()  # provoke an error message
+
+            logger.debug("set redis backed dict")
+            self.projects = RedisDict(rc, "researchmanager_projects")
+        except Exception as e:
+            logger.error(e)
+            logger.info("no redis found.")
+
+            if not use_in_memory_on_failure:
+                logger.info("exit...")
+                import sys
+
+                sys.exit()
+
+            logger.info("use in-memory")
             self.projects = {}
-            
-        self.highest_index = 0
+
+    @property
+    def highest_index(self):
+        index = 0
+        for user in self.projects.values():
+            index += len(user)
+
+        return index
 
     def addProject(self, userOrProject, portIn=None, portOut=None):
         """
@@ -49,7 +102,6 @@ class ProjectService:
             userOrProject = Project(userOrProject, portIn=portIn, portOut=portOut)
 
         researchId = self.highest_index
-        self.highest_index += 1
 
         if userOrProject.user not in self.projects:
             self.projects[userOrProject.user] = []
@@ -69,7 +121,21 @@ class ProjectService:
         userOrProject.getDict = getDict
         listProject.append(userOrProject)
 
+        self.projects[userOrProject.user] = listProject
+
         return userOrProject
+
+    def setProject(self, user, project):
+        try:
+            projects = self.projects[user.username]
+        except:
+            projects = self.projects.get(user)
+
+        if projects is None:
+            self.projects[user] = [project]
+        else:
+            projects[project.researchIndex] = project
+            self.projects[user] = projects
 
     def getProject(self, user="", researchIndex: int = None, researchId: int = None):
         """
@@ -137,7 +203,9 @@ class ProjectService:
                         rmv_id = index
 
                 try:
-                    self.projects[user][rmv_id].status = Status.DELETED
+                    projects = self.projects[user]
+                    projects[rmv_id].status = Status.DELETED
+                    self.projects[user] = projects
                     # del self.projects[user][rmv_id]
                 except:
                     logger.debug(
@@ -147,7 +215,9 @@ class ProjectService:
                     )
 
                     try:
-                        self.projects[user][researchIndex].status = Status.DELETED
+                        projects = self.projects[user]
+                        projects[researchIndex].status = Status.DELETED
+                        self.projects[user] = projects
                         # del self.projects[user][researchIndex]
                         return True
                     except:
@@ -160,10 +230,13 @@ class ProjectService:
             else:
                 try:
                     found = False
-                    for proj in self.projects[user]:
+                    projects = self.projects[user]
+                    for proj in projects:
                         if proj.status != Status.DELETED:
                             proj.status = Status.DELETED
                             found = True
+
+                    self.projects[user] = projects
 
                     if not found:
                         raise Exception
@@ -185,7 +258,9 @@ class ProjectService:
                         rmv_id = index
 
                 try:
-                    self.projects[user][rmv_id].status = Status.DELETED
+                    projects = self.projects[user]
+                    projects[rmv_id].status = Status.DELETED
+                    self.projects[user] = projects
                     # del self.projects[user][rmv_id]
                 except:
                     from lib.Exceptions.ProjectServiceExceptions import NotFoundIDError
