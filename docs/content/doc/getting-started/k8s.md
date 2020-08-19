@@ -1,6 +1,6 @@
 ---
 title: Kubernetes
-subtitle: Helm Chart und Installationsanleitung
+subtitle: Requirements, Configuration and Helm Charts
 
 menu:
   doc:
