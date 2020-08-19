@@ -59,7 +59,7 @@ If you want to create a namespace, rename the file "namespace.yaml.example" to "
 {{<tab "bash" "Apply namespace">}}cp namespace.yaml.example namespace.yaml
 nano namespace.yaml
 make install_namespace
-kubectl config set-context --current --namespace=$(sed -n 's/name: \(.*\)/\1/p' < namespace.yaml | head -n 1)
+kubectl config set-context --current --namespace=$(grep 'name:' namespace.yaml | tail -n1 | awk '{ print $2}')
 {{</tab>}}
 
 {{<tab "bash" "Remove namespace">}}kubectl config set-context --current --namespace=default
@@ -76,8 +76,8 @@ If the communication between plugins and cluster shall be secured by a HTTPS con
 With the following command, you can create the needed ssl cert.
 
 {{<tabs>}}
-{{<tab "bash" "Create and apply ssl cert">}}cp create_cert.sh.example create_cert.sh
-nano create_cert.sh
+{{<tab "bash" "Create and apply ssl cert">}}cp create_certs.sh.example create_certs.sh
+nano create_certs.sh
 make install_tls
 {{</tab>}}
 
@@ -86,7 +86,7 @@ make install_tls
 {{</tabs>}}
 
 {{<callout info>}}
-If you want to use an already existing certificate, please store it as secret in the RDS namespace with the name `sciebords-tls-public`. See the shell script `create_cert.sh` for an example.
+If you want to use an already existing certificate, please store it as secret in the RDS namespace with the name `sciebords-tls-public`. See the shell script `create_certs.sh` for an example.
 If you want to change the secret name, you need to set the name in your `values.yaml` under `global.ingress.tls.secretName` and restart the system.
 {{</callout>}}
 

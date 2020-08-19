@@ -59,7 +59,7 @@ Um einen Namespace zu erstellen, sollte die Datei `namespace.yaml.example` in `n
 {{<tab "bash" "Apply namespace">}}cp namespace.yaml.example namespace.yaml
 nano namespace.yaml
 make install_namespace
-kubectl config set-context --current --namespace=$(sed -n 's/name: \(.*\)/\1/p' < namespace.yaml | head -n 1)
+kubectl config set-context --current --namespace=$(grep 'name:' namespace.yaml | tail -n1 | awk '{ print $2}')
 {{</tab>}}
 
 {{<tab "bash" "Remove namespace">}}kubectl config set-context --current --namespace=default
@@ -76,8 +76,8 @@ Falls die Kommunikation zwischen Plugins und Cluster durch eine HTTPS-Verbindung
 Mit dem folgenden Befehlen können die benötigten Zertifikate erstellt und verwendet weden.
 
 {{<tabs>}}
-{{<tab "bash" "Create and apply ssl cert">}}cp create_cert.sh.example create_cert.sh
-nano create_cert.sh
+{{<tab "bash" "Create and apply ssl cert">}}cp create_certs.sh.example create_certs.sh
+nano create_certs.sh
 make install_tls
 {{</tab>}}
 
@@ -86,7 +86,7 @@ make install_tls
 {{</tabs>}}
 
 {{<callout info>}}
-Ein bereits existierende Zertifikat sollte als `Secret` unter dem Namen `sciebords-tls-public` gespeichert werden. Das Skript `create_cert.sh` bietet hier ein Beispiel.
+Ein bereits existierende Zertifikat sollte als `Secret` unter dem Namen `sciebords-tls-public` gespeichert werden. Das Skript `create_certs.sh` bietet hier ein Beispiel.
 Falls ein anderer Name verwendet werden soll, kann der Name in der Datei `values.yaml` unter `global.ingress.tls.secretName` angegeben werden, sodass RDS dieses `Secret` nach einem Neustart verwendet.
 {{</callout>}}
 
