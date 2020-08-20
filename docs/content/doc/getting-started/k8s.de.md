@@ -215,6 +215,6 @@ Nun kann der Browser geöffnet und die folgende URL eingetragen werden: `https:/
 
 ## Nächste Schritte
 
-Da nun die Installation der RDS-Instanz abgeschlossen ist, wird nun eine Clientsoftware benötigt. Aktuell werden folgende Plugins angeboten:
+Da nun die serverseitige Installation der RDS Instanz abgeschlossen wurde, wird nun eine Clientsoftware benötigt. Aktuell werden folgende Plugins angeboten:
 
 - [ownCloud Plugin](/de/doc/impl/plugins/owncloud/)

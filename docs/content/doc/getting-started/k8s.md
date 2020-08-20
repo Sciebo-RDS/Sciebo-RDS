@@ -215,6 +215,6 @@ Now you can open your browser and enter `https://rds.local/port-service/service`
 
 ## Finish the installation
 
-Now that the installation of the RDS instance is complete, a client software is now required. Currently the following plugins are available:
+Since the server-side installation of the RDS instace has now been completed, a client plugin is required. Currently the following plugins are available:
 
 - [ownCloud Plugin](/doc/impl/plugins/owncloud/)
