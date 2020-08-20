@@ -102,11 +102,11 @@ stateDiagram
 
 Service: "Connect services".
 Metadata: "Select / enter metadata
-Files: "Synchronize files".
+Files: "Synchronize files"
 
 [*] --> Service: Create project
 Service --> Metadata: Saving Services
-Metadata --> files: Saving Metadata
+Metadata --> Files: Saving Metadata
 Files --> [*]: Complete / publish project
 
 Metadata --> Service: Revise services
