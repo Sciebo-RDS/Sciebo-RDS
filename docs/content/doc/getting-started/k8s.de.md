@@ -180,10 +180,6 @@ Nun kann mit folgendem Befehl das RDS-Ökosystem auf den Cluster geladen werden:
 make install
 ```
 
-Da nun die Installation der RDS-Instanz abgeschlossen ist, wird nun eine Clientsoftware benötigt. Aktuell werden folgende Plugins angeboten:
-
-- [ownCloud Plugin](/de/doc/impl/plugins/owncloud/)
-
 ### Überwachung
 
 Das System installiert automatisch eine Jaeger-Instanz für das Verfolgen von Log-Nachrichten. Darauf kann man mit folgendem Befehl zugreifen und anschließend im Browser die angezeigte IP-Adresse aufrufen:
@@ -195,3 +191,30 @@ make jaeger
 Jaeger eignet sich besonders gut für die Identifizierung von Fehlern oder Problemen innerhalb des Ökosystems.
 
 Wird ein Prometheus-System verwendet, so werden automatisch sämtliche Metriken abgegriffen und im jeweiligen System angeboten. Eine standardisierte Sicht wird in Zukunft angeboten (siehe [Issue 39](https://github.com/Sciebo-RDS/Sciebo-RDS/issues/39)).
+
+
+### Access to your RDS installation
+
+If you do not have a NIC-System to manage a domain and use minikube as your cluster installation, you should configure your local hosts-file to redirect a domainlookup-request to your `localhost`. With the following command, you can configure this. It assumed, that the local domain, which was configured previously, was `rds.local`. If you changed it in the configuration process, you have to change it here approparly.
+
+Falls kein NIC-System vorhanden sein sollte, welches die Domainauflösung zu der Cluster Installation übernimmt und Minikube eingesetzt wurde, sollte die lokale Hosts-Datei so bearbeitet werden, dass die Auflösung der Domain `rds.local` von `localhost` übernommen werden kann. Mit dem folgenden Befehl kann dies vorgenommen werden. Es wird dabei angenommen, dass bei der Installation des RDS-Systems die Standarddomain `rds.local` verwendet wurde. Falls diese verändert wurde, muss natürlich auch hier diese verändert werden.
+
+{{<tabs>}}
+{{<tab "bash" "Linux">}}export RDS_DOMAIN=rds.local
+echo "$(minikube ip) $RDS_DOMAIN" | sudo tee -a /etc/hosts
+{{</tab>}}
+
+{{<tab "bash" "Windows">}}minikube.exe ip # remember that
+# we open Notepad for you with admin priviliges and you have to append the following to the file
+# <minikube-ip> rds.local
+start -verb runas notepad.exe C:\Windows\system32\drivers\etc\hosts
+{{</tab>}}
+{{</tabs>}}
+
+Nun kann der Browser geöffnet und die folgende URL eingetragen werden: `https://rds.local/port-service/service`. Es sollte eine Liste mit mehreren JWT-enkodierten Einträgen erscheinen. Diese beinhalten die Informationen über alle konfigurierten Konnektoren bereit, welche für den OAuth2-Arbeitsablauf benötigt werden.
+
+## Nächste Schritte
+
+Da nun die Installation der RDS-Instanz abgeschlossen ist, wird nun eine Clientsoftware benötigt. Aktuell werden folgende Plugins angeboten:
+
+- [ownCloud Plugin](/de/doc/impl/plugins/owncloud/)

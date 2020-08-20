@@ -183,10 +183,6 @@ Now the RDS ecosystem can be loaded onto the cluster with the following command:
 {{</tab>}}
 {{</tabs>}}
 
-Now that the installation of the RDS instance is complete, a client software is now required. Currently the following plugins are available:
-
-- [ownCloud Plugin](/doc/impl/plugins/owncloud/)
-
 ### Monitoring
 
 The system automatically installs a Jaeger instance for tracking log messages. You can access this instance with the following command and then call up the displayed IP address in the browser:
@@ -198,3 +194,27 @@ make jaeger
 Jaeger is particularly well suited for identifying errors or problems within the ecosystem.
 
 If a Prometheus system is used, all metrics are automatically tapped and offered in the respective system. A standardised view will be offered in the future (see [Issue 39](https://github.com/Sciebo-RDS/Sciebo-RDS/issues/39)).
+
+### Access to your RDS installation
+
+If you do not have a NIC-System to manage a domain and use minikube as your cluster installation, you should configure your local hosts-file to redirect a domainlookup-request to your `localhost`. With the following command, you can configure this. It assumed, that the local domain, which was configured previously, was `rds.local`. If you changed it in the configuration process, you have to change it here approparly.
+
+{{<tabs>}}
+{{<tab "bash" "Linux">}}export RDS_DOMAIN=rds.local
+echo "$(minikube ip) $RDS_DOMAIN" | sudo tee -a /etc/hosts
+{{</tab>}}
+
+{{<tab "bash" "Windows">}}minikube.exe ip # remember that
+# we open Notepad for you with admin priviliges and you have to append the following to the file
+# <minikube-ip> rds.local
+start -verb runas notepad.exe C:\Windows\system32\drivers\etc\hosts
+{{</tab>}}
+{{</tabs>}}
+
+Now you can open your browser and enter `https://rds.local/port-service/service`. Now you should see a list with some JWT-encoded entries. If you decode them, you will find out, that this holds your configuration about your oauth2-services within RDS.
+
+## Finish the installation
+
+Now that the installation of the RDS instance is complete, a client software is now required. Currently the following plugins are available:
+
+- [ownCloud Plugin](/doc/impl/plugins/owncloud/)
