@@ -18,7 +18,7 @@ The plugin is located in the [Git-Repo in the plugins folder](https://github.com
 
 {{<callout "info">}}
 Currently the RDS plugin is not available in the official Owncloud Marketplace for Apps. This is currently in preparation. Therefore the manual steps are necessary.
-{{{</callout>}}
+{{</callout>}}
 
 The following commands copy the git repo to the current folder and copy the necessary files. Assume that the owncloud instance is located at */var/www/html/owncloud*. This can be adjusted in the first line.
 
