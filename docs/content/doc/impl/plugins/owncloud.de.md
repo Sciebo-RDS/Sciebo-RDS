@@ -11,7 +11,13 @@ mermaid: true
 
 Dieser Plugin stellt die erste Integration von RDS in ein anderes Ökosystem dar. Um die Bedienbarkeit zu gewährleisten und möglichst niedrigschwellig zu gestalten, wird darauf geachtet, möglichst sämtliche Funktionsmöglichkeiten der Plattform zu verwenden und durch RDS zu erweitern.
 
-# Installation
+## Abhängigkeiten
+
+Es wird die [OAuth2-App](https://marketplace.owncloud.com/apps/oauth2) von ownCloud benötigt.
+
+Achtung: Die OAuth2-App benötigt das PHP-Modul `php-gmp`.
+
+## Installation
 
 Das Plugin liegt im [Git-Repo im Ordner plugins](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud). Das Repositorium muss kopiert und anschließend der *rds*-Ordner in den *Apps*-Ordner der Owncloud-Instanz verschoben werden.
 
