@@ -107,8 +107,38 @@ cp values.yaml.example values.yaml
 nano values.yaml
 ```
 
+{{<callout info>}}
+Wenn Sie einen Blick in Ihre Datei `values.yaml` werfen, werden Sie mehrere oauth id und geheime Umgebungsvariablen finden. Diese müssen so eingerichtet werden, dass sie mit den entsprechenden Diensten, die miteinander verbunden werden sollen, korrekt funktionieren. Im folgenden Abschnitt [OAuth2-Identifier und Secret erzeugen](#oauth2-identifier-und-secret-erzeugen) erfahren Sie, wie das geht.
+{{</callout>}}
+
 Sobald die Anpassungen getätigt wurden, kann das System installiert werden.
 
+### OAuth2-Identifier und Secret erzeugen
+
+Sie müssen die Zugangsdaten für Ihren verwendeten oauth2-Dienstanbieter generieren. Diese Credentials werden generiert, wenn Sie eine oauth-Anwendung anlegen. Die folgende Tabelle leitet Sie zu den entsprechenden Websites weiter.
+
+{{<callout info>}}
+Im Folgenden wird davon ausgegangen, dass Ihre eigene Cloud-Installation unter `owncloud.local` verfügbar ist. Passen Sie diese an Ihre Bedürfnisse an.
+{{</callout>}}
+
+| Dienst   | oauth application creation url                                                |
+| -------- | ----------------------------------------------------------------------------- |
+| Zenodo   | https://(sandbox.)zenodo.org/Konto/Einstellungen/Anwendungen/                 |
+| ownCloud | https://`owncloud.local`/index.php/settings/admin?sectionid=Authentifizierung |
+
+Die Erstellung der Anwendung erfordert eine `Redirect url`. Diese muss an das von Ihnen verwendete Plugin angepasst werden, das Ihre RDS-Instanz in Client-Benutzeroberflächen integriert. Der folgende Endpunkt muss für Ihre Installation verwendet werden, wenn Sie das angegebene Plugin verwenden.
+
+| Plugin   | oauth Endpunkt           | Beispiel-Endpunkt                                 |
+| -------- | ------------------------ | ------------------------------------------------- |
+| ownCloud | index.php/apps/rds/oauth | https://`owncloud.local`/index.php/apps/rds/oauth |
+
+Diese Url muss ebenfalls in Ihrer `configuration.yaml` unter der Umgebungsvariablen `RDS_OAUTH_REDIRECT_URI` konfiguriert werden, da diese Information bei jeder Anfrage an Ihre oauth2-Dienstanbieter gesetzt werden muss.
+
+{{<callout info>}}
+Mehrere oauth2-Dienstanbieter benötigen eine `https`-Verbindung.
+{{</callout>}}
+
+Danach haben Sie die Informationen, um die Datei `values.yaml` auszufüllen.
 
 ### Namespace
 

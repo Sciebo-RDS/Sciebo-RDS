@@ -5,7 +5,7 @@ global:
 circle1-port-owncloud:
   environment:
     # needs to be adjusted to correct values
-    OWNCLOUD_INSTALLATION_URL: https://localhost/owncloud
+    OWNCLOUD_INSTALLATION_URL: https://owncloud.local/owncloud
     OWNCLOUD_OAUTH_CLIENT_ID: ABC
     OWNCLOUD_OAUTH_CLIENT_SECRET: XYZ
 circle1-port-zenodo:

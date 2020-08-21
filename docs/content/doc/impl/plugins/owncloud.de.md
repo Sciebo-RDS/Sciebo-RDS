@@ -27,13 +27,7 @@ Das Plugin kann auf dem offiziellen [Marktplatz von ownCloud](https://marketplac
 
 ### Manuell
 
-Das Plugin liegt im [Git-Repo im Ordner plugins](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud). Das Repositorium muss kopiert und anschließend der *rds*-Ordner in den *Apps*-Ordner der Owncloud-Instanz verschoben werden.
-
-{{<callout "info">}}
-Aktuell ist das RDS Plugin nicht im offiziellen Owncloud Marketplace für Apps verfügbar. Dies ist aktuell in Vorbereitung. Daher sind die manuellen Schritte notwendig.
-{{</callout>}}
-
-Die folgenden Befehle kopieren das Git-Repo in den aktuellen Ordner und kopieren die notwendigen Dateien. Angenommen wird, dass die Owncloud-Instanz sich unter */var/www/html/owncloud* befindet. Dies kann in der ersten Zeile angepasst werden.
+Das Plugin liegt im [Git-Repo im Ordner plugins](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud). Das Repositorium muss kopiert und anschließend der *rds*-Ordner in den *Apps*-Ordner der Owncloud-Instanz verschoben werden. Die folgenden Befehle kopieren das Git-Repo in den aktuellen Ordner und kopieren die notwendigen Dateien. Angenommen wird, dass die Owncloud-Instanz sich unter */var/www/html/owncloud* befindet. Dies kann in der ersten Zeile angepasst werden.
 
 ```bash
 export OWNCLOUD_INSTALLATION=/var/www/html/owncloud

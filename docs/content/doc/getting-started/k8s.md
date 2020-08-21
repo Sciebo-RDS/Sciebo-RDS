@@ -107,7 +107,38 @@ cp values.yaml.example values.yaml
 nano values.yaml
 ```
 
+{{<callout info>}}
+If you take a look into your `values.yaml` file, you will find multiple oauth id and secret environment variables. This needs to be set up to work correctly with the corresponding services, which will be connected. In the following section [Generate OAuth2 Identifier and Secrets](#generate-oauth2-identifier-and-secrets) you will find out how.
+{{</callout>}}
+
 Once these adjustments have been made, the system can be installed.
+
+### Generate OAuth2 identifier and secrets
+
+You have to generate the oauth credentials for your used oauth2 service provider. This credentials are generated, when you create an oauth application. The following table redirects you to the corresponding websites.
+
+{{<callout info>}}
+The following assumes that your owncloud installation is available under `owncloud.local`. Adjust this to your needs.
+{{</callout>}}
+
+| Service  | oauth application creation url                                           |
+| -------- | ------------------------------------------------------------------------ |
+| Zenodo   | https://(sandbox.)zenodo.org/account/settings/applications/              |
+| ownCloud | https://`owncloud.local`/index.php/settings/admin?sectionid=authentication |
+
+The application creation requires an `redirect url`. This needs to be adjusted to your used plugin, which integrates your RDS instance into client user interfaces. The following endpoint needs to be used for your installation, when you use the given plugin.
+
+| plugin   | oauth endpoint           | example endpoint                                  |
+| -------- | ------------------------ | ------------------------------------------------- |
+| ownCloud | index.php/apps/rds/oauth | https://`owncloud.local`/index.php/apps/rds/oauth |
+
+This url must also be configured in your `configuration.yaml` under the environment variable `RDS_OAUTH_REDIRECT_URI`, since this information must be set for each request to your oauth2 service providers.
+
+{{<callout info>}}
+Multiple oauth2 service providers requires a `https` connection.
+{{</callout>}}
+
+After this, you have the informations to fill out the `values.yaml` file.
 
 ### Namespace
 
