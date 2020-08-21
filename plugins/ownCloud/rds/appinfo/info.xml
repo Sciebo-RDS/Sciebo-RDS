@@ -2,10 +2,11 @@
 <info>
     <id>rds</id>
     <name>Research Data Services</name>
-    <description>Research Data Services App</description>
-    <licence>AGPL</licence>
+    <description>The Research Data Services App built an infrastructure to connect multiple, very different services to communicate with each other.</description>
+    <summary>Integrates the RDS infrastructure into the ownCloud.</summary>
+    <licence>MIT</licence>
     <author>Peter Heiss</author>
-    <version>0.0.1</version>
+    <version>0.1</version>
     <namespace>RDS</namespace>
     <category>integration</category>
     <dependencies>
@@ -22,6 +23,8 @@
         <personal>OCA\RDS\Panels\PersonalSection</personal>
         <admin>OCA\RDS\Panels\AdminSection</admin>
     </settings-sections>
+    <screenshot>https://www.research-data-services.org/images/oc-plugin-view-admin.png</screenshot>
+    <screenshot>https://www.research-data-services.org/images/oc-plugin-view-user-research-context.png</screenshot>
 </info>
 
 
