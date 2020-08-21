@@ -19,6 +19,14 @@ Achtung: Die OAuth2-App benötigt das PHP-Modul `php-gmp`.
 
 ## Installation
 
+Es gibt zwei Wege, das Plugin auf einer ownCloud Instanz zu aktivieren.
+
+### offizieller Marktplatz
+
+Das Plugin kann auf dem offiziellen [Marktplatz von ownCloud](https://marketplace.owncloud.com/apps/rds) gefunden und von daaus installiert werden.
+
+### Manuell
+
 Das Plugin liegt im [Git-Repo im Ordner plugins](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud). Das Repositorium muss kopiert und anschließend der *rds*-Ordner in den *Apps*-Ordner der Owncloud-Instanz verschoben werden.
 
 {{<callout "info">}}

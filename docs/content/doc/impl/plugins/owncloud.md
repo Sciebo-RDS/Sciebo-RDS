@@ -20,6 +20,14 @@ Beware: The OAuth2-App needs the php-modul `php-gmp` now.
 
 ## Installation
 
+There are two ways to install the plugin on an existing ownCloud instance.
+
+### official Marketplace
+
+The plugin can be found in the official [marketplace of ownCloud](https://marketplace.owncloud.com/apps/rds).
+
+### Manually
+
 The plugin is located in the [Git-Repo in the plugins folder](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud). The repository must be copied and then the *rds* folder must be moved to the *Apps* folder of the owncloud instance.
 
 {{<callout "info">}}
