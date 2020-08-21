@@ -16,9 +16,7 @@ Den schnellsten Beitrag kannst Du bei der Übersetzung leisten. Sollte Dir ein F
 
 Im der folgenden Grafik kannst Du sehen, welche Sprachen noch deine Unterstützung benötigen. Ist eine Sprache nicht dabei, welche Du beherrschst, dann melde Dich gerne bei uns auf Github / E-Mail / Transifex.
 {{<rawhtml>}}
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript" src="https://www.transifex.com/_/charts/js/university-of-munster/sciebo-rds/inc_js/plugins-owncloud-rds-l10n-templates-rds-pot--master/"></script>
-<div id="txchart-sciebo-rds-plugins-owncloud-rds-l10n-templates-rds-pot--master">Loading chart...</div>
+<a href="https://www.transifex.com/university-of-munster/sciebo-rds/translate/" target="_bank"><img border="0" src="https://www.transifex.com/projects/p/sciebo-rds/resource/plugins-owncloud-rds-l10n-templates-rds-pot--master/chart/image_png"/></a>
 {{</rawhtml>}}
 
 ## Entwicklungen

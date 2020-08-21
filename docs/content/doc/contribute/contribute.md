@@ -16,9 +16,7 @@ You can make the fastest contribution with the translation. If you find an error
 
 In the following graphic you can see which languages still need your support. If you can't find a language you know, please contact us at Github / E-Mail / Transifex.
 {{<rawhtml>}}
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript" src="https://www.transifex.com/_/charts/js/university-of-munster/sciebo-rds/inc_js/plugins-owncloud-rds-l10n-templates-rds-pot--master/"></script>
-<div id="txchart-sciebo-rds-plugins-owncloud-rds-l10n-templates-rds-pot--master">Loading chart...</div>
+<a href="https://www.transifex.com/university-of-munster/sciebo-rds/translate/" target="_bank"><img border="0" src="https://www.transifex.com/projects/p/sciebo-rds/resource/plugins-owncloud-rds-l10n-templates-rds-pot--master/chart/image_png"/></a>
 {{</rawhtml>}}
 
 ## Developments
