@@ -121,14 +121,14 @@ Sie müssen die Zugangsdaten für Ihren verwendeten oauth2-Dienstanbieter generi
 Im Folgenden wird davon ausgegangen, dass Ihre eigene Cloud-Installation unter `owncloud.local` verfügbar ist. Passen Sie diese an Ihre Bedürfnisse an.
 {{</callout>}}
 
-| Dienst   | oauth application creation url                                                |
-| -------- | ----------------------------------------------------------------------------- |
-| Zenodo   | https://(sandbox.)zenodo.org/Konto/Einstellungen/Anwendungen/                 |
-| ownCloud | https://`owncloud.local`/index.php/settings/admin?sectionid=Authentifizierung |
+| Service  | oauth application creation url                                             |
+| -------- | -------------------------------------------------------------------------- |
+| Zenodo   | https://(sandbox.)zenodo.org/account/settings/applications/                |
+| ownCloud | https://`owncloud.local`/index.php/settings/admin?sectionid=authentication |
 
 Die Erstellung der Anwendung erfordert eine `Redirect url`. Diese muss an das von Ihnen verwendete Plugin angepasst werden, das Ihre RDS-Instanz in Client-Benutzeroberflächen integriert. Der folgende Endpunkt muss für Ihre Installation verwendet werden, wenn Sie das angegebene Plugin verwenden.
 
-| Plugin   | oauth Endpunkt           | Beispiel-Endpunkt                                 |
+| Plugin   | OAuth Endpunkt           | Beispiel-Endpunkt                                 |
 | -------- | ------------------------ | ------------------------------------------------- |
 | ownCloud | index.php/apps/rds/oauth | https://`owncloud.local`/index.php/apps/rds/oauth |
 
