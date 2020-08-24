@@ -19,7 +19,11 @@ init_object = Util.try_function_on_dict(
 
 def index():
     services = utility.storage.getServices()
-    data = {"length": len(services), "list": services}
+    try:
+        data = {"length": len(services), "list": services}
+    except:
+        data = {"length": services.size(), "list": services}
+        
     return jsonify(data)
 
 
