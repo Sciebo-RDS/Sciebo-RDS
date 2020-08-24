@@ -37,7 +37,17 @@ cp -r Sciebo-RDS/plugins/ownCloud/rds $OWNCLOUD_INSTALLATION/apps/
 
 Nun kann die *RDS*-App in den Einstellungen aktiviert (`https://localhost/owncloud/index.php/settings/admin?sectionid=apps&category=disabled`) werden. Anschließend muss der Administrator in den Administratoreneinstellungen die RDS App konfigurieren, wie im folgenden beschrieben.
 
-### Einstellungen Administratorensicht
+## Einstellungen
+
+### SELinux
+
+Falls SELinux zum Einsatz kommt, so muss dem `httpd`-Server die Erlaubnis gegeben werden, Netzwerkanfragen machen zu dürfen. Dies kann mit dem folgenden Befehl durchgeführt werden. Es wird kein Neustart benötigt.
+
+```bash
+sudo setsebool -P httpd_can_network_connect on
+```
+
+### Administratorensicht
 
 Sobald das Plugin in Owncloud, zum Beispiel aus dem Apps Market, installiert und aktiviert wurde (siehe [hier wie](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), muss das RDS System in den Einstellungen konfiguriert werden.
 

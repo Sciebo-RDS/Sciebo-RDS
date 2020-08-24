@@ -42,13 +42,21 @@ Now the *RDS* app can be activated in the administrator account (`https://localh
 
 Now you need to configure the plugin.
 
-### Settings administrator view
+### SELinux
+
+If SELinux is used, the `httpd' server must be given permission to make network queries. This can be done with the following command. No restart is required.
+
+```bash
+sudo setsebool -P httpd_can_network_connect on
+```
+
+### administrator view
 
 Once the plugin has been installed and activated in Owncloud, for example through the Apps Market (see [here how](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), the RDS system must be configured in the settings.
 
 ![Administrator view](/images/oc-plugin-view-admin.png)
 
-### Settings user view
+### user view
 
 In the settings, the user has the option of storing OAuth tokens and passwords (which are also referred to as tokens in the following) in the system, with which the system can log on to various services on behalf of the user. The following status diagram illustrates the process.
 
