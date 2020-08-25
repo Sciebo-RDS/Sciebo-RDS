@@ -16,21 +16,23 @@ class RDSService
     public function __construct(UrlService $urlService, IConfig $config, $appName)
     {
         $this->urlService = $urlService;
-        $this->oauthname="oauthname";
+        $this->oauthname = "oauthname";
         $this->appName = $appName;
-        $this->config = $config
+        $this->config = $config;
     }
 
-    public function getUrlService(){
+    public function getUrlService()
+    {
         return $this->urlService;
     }
 
-    public function getOauthAppField() {
+    public function getOauthAppField()
+    {
         return $this->oauthname;
     }
 
-    public function getOauthValue() {
-        return $this->config->getAppValue($this->appName, $this->oauthname)
+    public function getOauthValue()
+    {
+        return $this->config->getAppValue($this->appName, $this->oauthname);
     }
-
 }
