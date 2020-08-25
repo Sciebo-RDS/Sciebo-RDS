@@ -19,8 +19,6 @@ init_object = Util.try_function_on_dict(
 
 def index():
     services = utility.storage.getServices()
-    
-    services = list(services.values())
     data = {"length": len(services), "list": services}
         
     return jsonify(data)
