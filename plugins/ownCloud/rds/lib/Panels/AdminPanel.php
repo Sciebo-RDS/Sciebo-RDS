@@ -8,7 +8,7 @@ use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
 use \OCA\RDS\Service\UrlService;
-use OCA\RDS\Service\RDSService;
+use \OCA\RDS\Service\RDSService;
 
 class AdminPanel implements ISettings
 {
