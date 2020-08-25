@@ -5,7 +5,7 @@ namespace OCA\RDS\Controller;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
-use OCP\IurlGenerator;
+use OCP\IURLGenerator;
 use \OCA\RDS\Service\UserserviceportService;
 use \OCA\RDS\Service\RDSService;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -31,7 +31,7 @@ class UserserviceController extends Controller
         IRequest $request,
         UserserviceportService $service,
         ClientMapper $clientMapper,
-        IurlGenerator $urlGenerator,
+        IURLGenerator $urlGenerator,
         $userId,
         $appName,
         RDSService $rdsService
