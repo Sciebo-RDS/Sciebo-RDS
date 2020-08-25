@@ -8,6 +8,7 @@ use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
 use \OCA\RDS\Service\UrlService;
+use OCA\RDS\Service\RDSService;
 
 class AdminPanel implements ISettings
 {
@@ -31,7 +32,7 @@ class AdminPanel implements ISettings
      */
     protected $urlService;
 
-    protected $config;
+    protected $rdsService;
 
     public function __construct(
         ClientMapper $clientMapper,
