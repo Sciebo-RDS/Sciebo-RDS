@@ -10,6 +10,9 @@ $(document).ready(function () {
 			url.val(urlValue);
 		}
 		OC.AppConfig.setValue(app, url.attr('name'), url.val());
+
+		var oauthname = $("#oauth_name");
+		OC.AppConfig.setValue(app, oauthname.attr('name'), oauthname.val());
 	});
 
 	$('.section .icon-info').tipsy({ gravity: 'w' });

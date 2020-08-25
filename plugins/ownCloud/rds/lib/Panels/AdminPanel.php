@@ -31,16 +31,25 @@ class AdminPanel implements ISettings
      */
     protected $urlService;
 
+    protected $config;
+    private $oauthname;
+    private $appName;
+
     public function __construct(
         ClientMapper $clientMapper,
         IUserSession $userSession,
         IURLGenerator $urlGenerator,
-        UrlService $urlService
+        UrlService $urlService,
+        IConfig $config,
+        $appName
     ) {
         $this->clientMapper = $clientMapper;
         $this->userSession = $userSession;
         $this->urlGenerator = $urlGenerator;
         $this->urlService = $urlService;
+        $this->config = $config;
+        $this->oauthname="oauthname";
+        $this->appName = $appName;
     }
 
     public function getSectionID()
@@ -59,6 +68,7 @@ class AdminPanel implements ISettings
         $t->assign('user_id', $userId);
         $t->assign('urlGenerator', $this->urlGenerator);
         $t->assign("cloudURL", $this->urlService->getURL());
+        $t->assign("oauthname", $this->config->getAppValue($this->appName, $this->oauthname));
         return $t;
     }
 
