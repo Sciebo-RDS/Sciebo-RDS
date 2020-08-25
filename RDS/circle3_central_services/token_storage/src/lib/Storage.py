@@ -233,10 +233,7 @@ class Storage:
         """
         Returns a list of all registered services.
         """
-        try:
-            return self.services.values()
-        except:
-            return self.services
+        return self.services
 
     def getService(self, service: Union[str, Service], index: bool = False):
         """
