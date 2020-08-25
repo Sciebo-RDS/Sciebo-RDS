@@ -126,7 +126,7 @@ class Storage:
     @property
     def services(self):
         try:
-            return self._services.values()
+            return list(self._services.values())
         except:
             return self._services
 
