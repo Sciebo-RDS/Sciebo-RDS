@@ -4,7 +4,6 @@ namespace OCA\RDS\Service;
 
 use \OCP\IConfig;
 
-
 class UrlService
 {
     private $appName;

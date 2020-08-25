@@ -7,6 +7,7 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\IurlGenerator;
 use \OCA\RDS\Service\UserserviceportService;
+use \OCA\RDS\Service\RDSService;
 use OCP\AppFramework\Http\RedirectResponse;
 use \OCA\OAuth2\Db\Client;
 use \OCA\OAuth2\Db\ClientMapper;
@@ -20,16 +21,27 @@ class UserserviceController extends Controller
     /** @var ClientMapper */
     private $clientMapper;
     private $urlGenerator;
+    private $rdsService;
 
     use Errors;
 
-    public function __construct($AppName, IRequest $request, UserserviceportService $service, ClientMapper $clientMapper, IurlGenerator $urlGenerator, $userId)
-    {
+    public function __construct(
+        $AppName,
+        IConfig $config,
+        IRequest $request,
+        UserserviceportService $service,
+        ClientMapper $clientMapper,
+        IurlGenerator $urlGenerator,
+        $userId,
+        $appName,
+        RDSService $rdsService
+    ) {
         parent::__construct($AppName, $request);
         $this->clientMapper = $clientMapper;
         $this->userId = $userId;
         $this->service = $service;
         $this->urlGenerator = $urlGenerator;
+        $this->rdsService = $rdsService;
     }
 
     /**
@@ -97,8 +109,7 @@ class UserserviceController extends Controller
         $params = [];
         $settings = 0;
         try {
-            # TODO make this adjustable for admins
-            $client = $this->clientMapper->findByName("Sciebo RDS");
+            $client = $this->clientMapper->findByName($this->rdsService->getOauthValue());
             $secret = $client->getSecret();
             $state = str_replace("FROMSETTINGS", "", $state, $settings);
 
