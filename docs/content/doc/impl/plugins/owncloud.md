@@ -54,7 +54,10 @@ sudo setsebool -P httpd_can_network_connect on
 
 Once the plugin has been installed and activated in Owncloud, for example through the Apps Market (see [here how](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), the RDS system must be configured in the settings.
 
+Here you need to enter the name of the oauth application, which you set for the rds system during the kubernetes installation process. In the following example image, it was named `sciebords`. The oauth configuration, which were used in this example, can be seen in the second image.
+
 ![Administrator view](/images/oc-plugin-view-admin.png)
+![Administrator Oauth view](/images/oc-plugin-view-admin-oauth.png)
 
 ### user view
 

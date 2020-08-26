@@ -128,6 +128,10 @@ Im Folgenden wird davon ausgegangen, dass Ihre eigene Cloud-Installation unter `
 
 Die Erstellung der Anwendung erfordert eine `Redirect url`. Diese muss an das von Ihnen verwendete Plugin angepasst werden, das Ihre RDS-Instanz in Client-Benutzeroberflächen integriert. Der folgende Endpunkt muss für Ihre Installation verwendet werden, wenn Sie das angegebene Plugin verwenden.
 
+{{<callout info>}}
+Bitte merken Sie sich den Namen, den Sie Ihrer Anwendung in Ihrer Owncloud-Installation geben, da Sie diesen Namen in der Konfiguration des Owncloud-Plugins benötigen.
+{{</callout>}}
+
 | Plugin   | OAuth Endpunkt           | Beispiel-Endpunkt                                 |
 | -------- | ------------------------ | ------------------------------------------------- |
 | ownCloud | index.php/apps/rds/oauth | https://`owncloud.local`/index.php/apps/rds/oauth |

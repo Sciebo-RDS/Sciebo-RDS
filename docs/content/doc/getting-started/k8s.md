@@ -128,6 +128,10 @@ The following assumes that your owncloud installation is available under `ownclo
 
 The application creation requires an `redirect url`. This needs to be adjusted to your used plugin, which integrates your RDS instance into client user interfaces. The following endpoint needs to be used for your installation, when you use the given plugin.
 
+{{<callout info>}}
+Please remember the name, which you give your application in your owncloud installation, because you need this name in the configuration of the owncloud plugin.
+{{</callout>}}
+
 | plugin   | oauth endpoint           | example endpoint                                  |
 | -------- | ------------------------ | ------------------------------------------------- |
 | ownCloud | index.php/apps/rds/oauth | https://`owncloud.local`/index.php/apps/rds/oauth |
