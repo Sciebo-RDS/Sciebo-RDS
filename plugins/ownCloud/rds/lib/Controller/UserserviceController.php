@@ -112,7 +112,6 @@ class UserserviceController extends Controller
         try {
             $this->log("used oauthname: " . $this->rdsService->getOauthValue());
             $client = $this->clientMapper->findByName($this->rdsService->getOauthValue());
-            $this->log("client: " . $client);
             $secret = $client->getSecret();
             $this->log("secret: " . $secret);
             $state = str_replace("FROMSETTINGS", "", $state, $settings);
