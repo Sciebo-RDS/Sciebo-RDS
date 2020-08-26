@@ -6,7 +6,7 @@ use \OCA\OAuth2\Db\ClientMapper;
 use OCP\IURLGenerator;
 use OCP\Settings\ISettings;
 use OCP\Template;
-use OCA\RDS\Service\RDSService;
+use \OCA\RDS\Service\RDSService;
 
 class PersonalPanel implements ISettings
 {
