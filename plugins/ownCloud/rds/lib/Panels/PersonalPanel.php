@@ -7,7 +7,7 @@ use OCP\IURLGenerator;
 use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
-use OCA\RDS\Service\UrlService;
+use OCA\RDS\Service\RDSService;
 
 class PersonalPanel implements ISettings
 {
@@ -31,12 +31,13 @@ class PersonalPanel implements ISettings
         ClientMapper $clientMapper,
         IUserSession $userSession,
         IURLGenerator $urlGenerator,
-        UrlService $urlService
+        RDSService $rdsService
     ) {
         $this->clientMapper = $clientMapper;
         $this->userSession = $userSession;
         $this->urlGenerator = $urlGenerator;
-        $this->urlService = $urlService;
+        $this->rdsService = $rdsService;
+        $this->urlService = $rdsService->getUrlService();
     }
 
     public function getSectionID()
@@ -55,6 +56,7 @@ class PersonalPanel implements ISettings
         $t->assign('user_id', $userId);
         $t->assign('urlGenerator', $this->urlGenerator);
         $t->assign('rdsURL', $this->urlService->getPortURL());
+        $t->assign("oauthname", $this->rdsService->getOauthValue());
         return $t;
     }
 
