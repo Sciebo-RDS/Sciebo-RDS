@@ -31,7 +31,7 @@ foreach ($services as $service) {
 $logged_in = false;
 if (!empty($_['clients'])) {
     foreach ($_['clients'] as $client) {
-        if (($client->getName() == 'Sciebo RDS') and $found) {
+        if (($client->getName() == $_["oauthname"]) and $found) {
             $logged_in = true;
             break;
         }
