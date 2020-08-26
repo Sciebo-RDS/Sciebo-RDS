@@ -4,7 +4,6 @@ namespace OCA\RDS\Panels;
 
 use \OCA\OAuth2\Db\ClientMapper;
 use OCP\IURLGenerator;
-use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
 use OCA\RDS\Service\RDSService;
@@ -16,25 +15,20 @@ class PersonalPanel implements ISettings
      * @var \OCA\OAuth2\Db\ClientMapper
      */
     protected $clientMapper;
-    /**
-     * @var IUserSession
-     */
-    protected $userSession;
 
     /**
      * @var IURLGenerator
      */
     protected $urlGenerator;
     protected $urlService;
+    protected $rdsService;
 
     public function __construct(
         ClientMapper $clientMapper,
-        IUserSession $userSession,
         IURLGenerator $urlGenerator,
         RDSService $rdsService
     ) {
         $this->clientMapper = $clientMapper;
-        $this->userSession = $userSession;
         $this->urlGenerator = $urlGenerator;
         $this->rdsService = $rdsService;
         $this->urlService = $rdsService->getUrlService();
