@@ -172,7 +172,11 @@ class Research:
                      len(self.exportServices), argRight*len(self.exportServices))
         """
 
-        folderInFolder = kwargs.get("folderInFolder", False)
+        try:
+            folderInFolder = kwargs["folderInFolder"]
+            del kwargs["folderInFolder"]
+        except:
+            folderInFolder = False
 
         return [
             svc.addFile(*args, **kwargs)
