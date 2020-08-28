@@ -219,12 +219,19 @@ class test_end_to_end(unittest.TestCase):
             btn.click()
 
             url = self.driver.current_url
+            logger.info(url)
 
             self.driver.delete_all_cookies()  # remove all cookies
 
             from urllib.parse import urlparse, parse_qs
 
-            code = parse_qs(urlparse(url).query)["code"]
+            query = urlparse(url).query
+            logger.info(query)
+
+            parse = parse_qs(query)
+            logger.info(parse)
+
+            code = parse["code"]
 
             data = {
                 "grant_type": "authorization_code",
