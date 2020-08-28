@@ -23,7 +23,7 @@ Es gibt zwei Wege, das Plugin auf einer ownCloud Instanz zu aktivieren.
 
 ### offizieller Marktplatz
 
-Das Plugin kann auf dem offiziellen [Marktplatz von ownCloud](https://marketplace.owncloud.com/apps/rds) gefunden und von daaus installiert werden.
+Das Plugin kann auf dem offiziellen [Marktplatz von ownCloud](https://marketplace.owncloud.com/apps/rds) gefunden und von daaus installiert werden. [In der offiziellen Dokumentation](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html) wird beschrieben, wie ein Plugin installiert wird.
 
 ### Manuell
 
@@ -49,7 +49,7 @@ sudo setsebool -P httpd_can_network_connect on
 
 ### Administratorensicht
 
-Sobald das Plugin in Owncloud, zum Beispiel aus dem Apps Market, installiert und aktiviert wurde (siehe [hier wie](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), muss das RDS System in den Einstellungen konfiguriert werden.
+Sobald das Plugin in Owncloud, zum Beispiel aus dem Apps Market, muss das RDS System in den Einstellungen konfiguriert werden.
 
 Hier müssen Sie den Namen der anderen Anwendung eingeben, den Sie bei der Installation von kubernetes für das rds-System festgelegt haben. Im folgenden Beispielbild wurde sie `sciebords` genannt. Die in diesem Beispiel verwendete Konfiguration ist auf dem zweiten Bild zu sehen.
 

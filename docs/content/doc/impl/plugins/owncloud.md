@@ -24,7 +24,7 @@ There are two ways to install the plugin on an existing ownCloud instance.
 
 ### official Marketplace
 
-The plugin can be found in the official [marketplace of ownCloud](https://marketplace.owncloud.com/apps/rds).
+The plugin can be found in the official [marketplace of ownCloud](https://marketplace.owncloud.com/apps/rds). [Read the official doc](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html), where you can find how to install a plugin.
 
 ### Manually
 
@@ -44,22 +44,22 @@ Now you need to configure the plugin.
 
 ### SELinux
 
-If SELinux is used, the `httpd' server must be given permission to make network queries. This can be done with the following command. No restart is required.
+If SELinux is used, the `httpd` server must be given permission to make network queries. This can be done with the following command. No restart is required.
 
 ```bash
 sudo setsebool -P httpd_can_network_connect on
 ```
 
-### administrator view
+### View as administrator
 
-Once the plugin has been installed and activated in Owncloud, for example through the Apps Market (see [here how](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), the RDS system must be configured in the settings.
+Once the plugin has been installed and activated in Owncloud, the RDS system must be configured in the settings.
 
 Here you need to enter the name of the oauth application, which you set for the rds system during the kubernetes installation process. In the following example image, it was named `sciebords`. The oauth configuration, which were used in this example, can be seen in the second image.
 
 ![Administrator view](/images/oc-plugin-view-admin.png)
 ![Administrator Oauth view](/images/oc-plugin-view-admin-oauth.png)
 
-### user view
+### View as user
 
 In the settings, the user has the option of storing OAuth tokens and passwords (which are also referred to as tokens in the following) in the system, with which the system can log on to various services on behalf of the user. The following status diagram illustrates the process.
 
