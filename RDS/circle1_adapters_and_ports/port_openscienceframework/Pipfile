@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+pactman = "*"
+pytest-cov = "*"
+pydoc-markdown = "==2.1.3"
+
+[packages]
+requests = "*"
+jaeger-client = "*"
+gevent = "*"
+connexion = {extras = ["swagger-ui"],version = "*"}
+connexion-plus = "*"
+flask-cors = "*"
+jsonschema = "*"
+
+[requires]
+python_version = "3.8"
