@@ -38,7 +38,7 @@ class Test_TokenService(unittest.TestCase):
     def setUp(self):
         self.tokenService = TokenService(testing="http://localhost:3000")
 
-        self.url1 = "https://10.14.28.250/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
+        self.url1 = "https://10.14.29.60/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
             1, "http://localhost:8080"
         )
         self.url2 = "http://zenodo.org/oauth/authorize?response_type=code&client_id={}&redirect_uri={}".format(
@@ -54,7 +54,7 @@ class Test_TokenService(unittest.TestCase):
         self.service1 = OAuth2Service(
             self.servicename1,
             self.url1,
-            "https://10.14.28.250/owncloud/index.php/apps/oauth2/api/v1/token",
+            "https://10.14.29.60/owncloud/index.php/apps/oauth2/api/v1/token",
             "ABC",
             "XYZ",
         )
