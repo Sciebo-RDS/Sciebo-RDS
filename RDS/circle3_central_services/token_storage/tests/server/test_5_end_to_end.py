@@ -79,10 +79,14 @@ class test_end_to_end(unittest.TestCase):
                 field_password.send_keys(token.access_token)
                 field_password.send_keys(Keys.RETURN)
 
-            btn = self.driver.find_element_by_xpath(
-                "/html/body/div[1]/div/span/form/button"
-            )
-            btn.click()
+            try:
+                btn = self.driver.find_element_by_xpath(
+                    "/html/body/div[1]/div/span/form/button"
+                )
+                btn.click()
+            except Exception as e:
+                logging.error("url: {}".format(self.driver.current_url))
+                raise e
 
             url = self.driver.current_url
 
