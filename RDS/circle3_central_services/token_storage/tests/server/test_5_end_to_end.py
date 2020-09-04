@@ -29,7 +29,7 @@ class test_end_to_end(unittest.TestCase):
         self.driver = webdriver.Remote(
             command_executor=server, desired_capabilities=desired_capabilities
         )
-        self.driver.implicitly_wait(5)
+        self.driver.implicitly_wait(10)
 
     def tearDown(self):
         self.driver.quit()
@@ -94,11 +94,24 @@ class test_end_to_end(unittest.TestCase):
 
             from urllib.parse import urlparse, parse_qs
 
-            try:
-                code = parse_qs(urlparse(url).query)["code"]
-            except Exception as e:
-                logger.error("got url: {}".format(url))
-                raise e
+            retry = True
+
+            import time
+
+            current_time = time.time()
+            while retry:
+                try:
+                    retry = False
+                    code = parse_qs(urlparse(url).query)["code"]
+                except Exception as e:
+                    logger.error("got url: {}".format(url))
+
+                    if time.time() < current_time + 10:
+                        logger.error(e)
+                        retry = True
+                        logger.info("retry")
+                    else:
+                        raise e
 
             data = {
                 "grant_type": "authorization_code",
