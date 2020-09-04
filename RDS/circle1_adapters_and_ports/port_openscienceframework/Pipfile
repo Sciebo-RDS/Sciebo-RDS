@@ -15,8 +15,7 @@ jaeger-client = "*"
 gevent = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
-flask-cors = "*"
-jsonschema = "*"
+osfclient = {editable = true, git = "https://github.com/osfclient/osfclient.git"}
 
 [requires]
 python_version = "3.8"
