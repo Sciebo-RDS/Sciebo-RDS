@@ -94,7 +94,11 @@ class test_end_to_end(unittest.TestCase):
 
             from urllib.parse import urlparse, parse_qs
 
-            code = parse_qs(urlparse(url).query)["code"]
+            try:
+                code = parse_qs(urlparse(url).query)["code"]
+            except Exception as e:
+                logger.error("got url: {}".format(url))
+                raise e
 
             data = {
                 "grant_type": "authorization_code",
