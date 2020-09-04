@@ -110,6 +110,7 @@ class test_end_to_end(unittest.TestCase):
                         logger.error(e)
                         retry = True
                         logger.info("retry")
+                        time.sleep(1)
                     else:
                         raise e
 
