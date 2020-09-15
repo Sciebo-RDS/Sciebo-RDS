@@ -82,15 +82,34 @@ class test_end_to_end(unittest.TestCase):
             btn = self.driver.find_element_by_xpath(
                 "/html/body/div[1]/div/span/form/button"
             )
+            old_url = self.driver.current_url
+            url = self.driver.current_url
+
             btn.click()
 
-            url = self.driver.current_url
+            from time import sleep
+
+            retry = 0
+            while old_url == url and retry < 5:
+                sleep(1)
+                retry += 1
+                url = self.driver.current_url
+                logger.info("url: {}".format(url))
+
+            if retry >= 5:
+                raise Exception("url not redirect!")
 
             self.driver.delete_all_cookies()  # remove all cookies
 
             from urllib.parse import urlparse, parse_qs
 
-            code = parse_qs(urlparse(url).query)["code"]
+            query = urlparse(url).query
+            logger.info("query: {}".format(query))
+
+            parse = parse_qs(query)
+            logger.info("parse: {}".format(parse))
+
+            code = parse["code"]
 
             data = {
                 "grant_type": "authorization_code",
@@ -216,10 +235,22 @@ class test_end_to_end(unittest.TestCase):
             btn = self.driver.find_element_by_xpath(
                 "/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[2]/form/button[1]"
             )
+            old_url = self.driver.current_url
+            url = self.driver.current_url
+
             btn.click()
 
-            url = self.driver.current_url
-            logger.info("url: {}".format(url))
+            from time import sleep
+
+            retry = 0
+            while old_url == url and retry < 5:
+                sleep(1)
+                retry += 1
+                url = self.driver.current_url
+                logger.info("url: {}".format(url))
+
+            if retry >= 5:
+                raise Exception("url not redirect!")
 
             self.driver.delete_all_cookies()  # remove all cookies
 
