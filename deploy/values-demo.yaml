@@ -1,0 +1,56 @@
+global:
+  domain: sciebords-dev.uni-muenster.de
+circle1-port-owncloud:
+  image:
+    tag: master
+  environment:
+    OWNCLOUD_INSTALLATION_URL: https://sciebords.uni-muenster.de
+    OWNCLOUD_OAUTH_CLIENT_ID: OqADCLvuyvW3E2dienRF0UpTV0G8bws47KQdfbdIrkXCisHN6LaUKDJ5R5sE9RNz
+    OWNCLOUD_OAUTH_CLIENT_SECRET: SPJ1PM9u7rI6Msok5uXBzr8FUq2Vu4COyEHAMcapbjyuqO2kWqIuOnEyS1BOY2EV
+circle1-port-zenodo:
+  image:
+    tag: master
+  environment:
+    ZENODO_OAUTH_CLIENT_ID: feYfqBVCfNDJTQyQRXWiJ8eoga99GxKzXYAZXvbm
+    ZENODO_OAUTH_CLIENT_SECRET: ktsrnc67vDCQ6KD8PnlKkXBfxapSstiSMbcyXwFcDKlJQV40YpshrvCu1sPo
+    ZENODO_ADDRESS: https://sandbox.zenodo.org
+circle2-exporter-service:
+  image:
+    tag: master
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx-internal
+circle2-port-service:
+  image:
+    tag: master
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx-internal
+circle2-metadata-service:
+  image:
+    tag: master
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx-internal
+circle3-research-manager:
+  image:
+    tag: master
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx-internal
+  environment:
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+circle3-token-storage:
+  image:
+    tag: master
+  environment:
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+redis:
+  cluster: {}
+  redis:
+    config: {}
+  persistance:
+    storageClassName: cindergold-delete
+jaeger: {}
