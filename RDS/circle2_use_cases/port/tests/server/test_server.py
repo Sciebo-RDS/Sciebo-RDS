@@ -126,18 +126,6 @@ class Test_TokenServiceServer(unittest.TestCase):
         }
         jwtEncode = jwt.encode(pluginDict, service.client_secret, algorithm="HS256")
 
-        # need pact for service from Token Storage
-        pact.given("An oauthservice was registered again.").upon_receiving(
-            "A request to get this oauthservice."
-        ).with_request("GET", f"/service/{service.servicename}").will_respond_with(
-            200, body=service.to_json()
-        )
-
-        pact.given("An oauthservice was registered again 2.").upon_receiving(
-            "A request to get this oauthservice."
-        ).with_request("GET", f"/service/{service.servicename}").will_respond_with(
-            200, body=service.to_json()
-        )
 
         # need pact for exchange for code
         pact.given("Client ID and secret was registered.").upon_receiving(
