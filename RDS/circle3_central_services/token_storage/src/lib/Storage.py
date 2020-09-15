@@ -568,6 +568,11 @@ class Storage:
             raise ValueError("Services is not of type list.")
 
         for index, service in enumerate(services):
+            logger.debug(
+                "test {} against {}, result: {}".format(
+                    service.servicename, servicename, service.servicename == servicename
+                )
+            )
             if service.servicename == servicename:
                 return index
 
