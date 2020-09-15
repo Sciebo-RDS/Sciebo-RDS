@@ -94,7 +94,7 @@ class Storage:
                     from redis import Redis
 
                     rc = Redis(**(startup_nodes[0]), db=0, decode_responses=True,)
-                    rc.info() # provoke an error message
+                    rc.info()  # provoke an error message
 
             logger.debug("set redis backed dict")
             self._storage = redis_pubsub_dict.RedisDict(rc, "tokenstorage_storage")
@@ -109,6 +109,7 @@ class Storage:
             if not use_in_memory_on_failure:
                 logger.info("exit...")
                 import sys
+
                 sys.exit()
 
             logger.info("use in-memory")
@@ -251,8 +252,9 @@ class Storage:
             service = Service(service)
 
         try:
-            k = self.internal_find_service(service.servicename, self.services)
-            svc = self._services[k]
+            services = self.services
+            k = self.internal_find_service(service.servicename, services)
+            svc = services[k]
             return (svc, k) if index is True else svc
         except:
             return (None, None) if index is True else None
