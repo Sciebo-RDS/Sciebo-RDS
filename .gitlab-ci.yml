@@ -29,7 +29,7 @@ variables:
 
   after_script:
     - *install_cc_tester
-    - ./cc-test-reporter format-coverage -o coverage/codeclimate.$CI_JOB_NAME.json -t coverage.py $FOLDER/coverage.xml
+    - ./cc-test-reporter format-coverage -o coverage/$CI_COMMIT_SHORT_SHA/codeclimate.$CI_JOB_NAME.json -t coverage.py $FOLDER/coverage.xml
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp coverage s3://Testresults --recursive
 
   tags:
@@ -99,7 +99,7 @@ upload_test_coverage:
     - mkdir -p coverage
     - ls -la coverage
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://Testresults coverage --recursive
-    - ./cc-test-reporter sum-coverage --output - coverage/*.json | ./cc-test-reporter upload-coverage --input -
+    - ./cc-test-reporter sum-coverage --output - coverage/$CI_COMMIT_SHORT_SHA/*.json | ./cc-test-reporter upload-coverage --input -
 
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:
