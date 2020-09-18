@@ -99,7 +99,6 @@ class Test_TokenServiceServer(unittest.TestCase):
 
         self.assertEqual(resp_state["servicename"], service.servicename)
         self.assertEqual(resp_state["authorize_url"], service.authorize_url)
-        self.assertEqual(resp_state["date"], date)
 
         key = Util.tokenService.secret
 
@@ -125,7 +124,6 @@ class Test_TokenServiceServer(unittest.TestCase):
             "code": code,
         }
         jwtEncode = jwt.encode(pluginDict, service.client_secret, algorithm="HS256")
-
 
         # need pact for exchange for code
         pact.given("Client ID and secret was registered.").upon_receiving(

@@ -1,3 +1,4 @@
+from time import sleep
 import unittest
 import os
 import json
@@ -77,7 +78,21 @@ class test_end_to_end(unittest.TestCase):
 
                 field_password.clear()
                 field_password.send_keys(token.access_token)
+
+                old_url = self.driver.current_url
+                url = self.driver.current_url
+
                 field_password.send_keys(Keys.RETURN)
+
+                retry = 0
+                while old_url == url and retry < 5:
+                    sleep(1)
+                    retry += 1
+                    url = self.driver.current_url
+                    logger.info("url: {}".format(url))
+
+                if retry >= 5:
+                    raise Exception("url not redirect!")
 
             btn = self.driver.find_element_by_xpath(
                 "/html/body/div[1]/div/span/form/button"
@@ -86,8 +101,6 @@ class test_end_to_end(unittest.TestCase):
             url = self.driver.current_url
 
             btn.click()
-
-            from time import sleep
 
             retry = 0
             while old_url == url and retry < 5:
@@ -239,8 +252,6 @@ class test_end_to_end(unittest.TestCase):
             url = self.driver.current_url
 
             btn.click()
-
-            from time import sleep
 
             retry = 0
             while old_url == url and retry < 5:
