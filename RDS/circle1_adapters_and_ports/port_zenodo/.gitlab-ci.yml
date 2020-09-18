@@ -13,6 +13,8 @@ test:port_zenodo3.8:
   image: python:3.8
 
 build:port_zenodo:
+  needs:
+    - test:port_zenodo3.8
   extends:
     - .builds
     - .port_zenodo
@@ -25,6 +27,8 @@ build:port_zenodo:
       - RDS/circle3_central_services/interface_port_token_storage.yml
 
 doc:port_zenodo:
+  needs:
+    - build:port_zenodo
   image: python:3.8
   extends:
     - .documentation
