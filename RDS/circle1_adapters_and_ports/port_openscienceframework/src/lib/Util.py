@@ -1,6 +1,6 @@
 from functools import wraps
-from lib.upload_zenodo import Zenodo
 from flask import request, g, current_app, abort
+from osfclient.api import OSF
 import os
 import requests
 import logging
@@ -51,14 +51,14 @@ def require_api_key(api_method):
         logger.debug("req data: {}".format(req))
 
         if apiKey is None and userId is not None:
-            apiKey = loadAccessToken(userId, "Zenodo")
+            apiKey = loadAccessToken(userId, "OpenScienceFramework")
 
         if apiKey is None:
             logger.error("apiKey or userId not found.")
             abort(401)
 
         logger.debug("found apiKey")
-        g.zenodo = Zenodo(apiKey, address=current_app.zenodo_address)
+        g.osf = OSF(apiKey, address=current_app.zenodo_address)
 
         return api_method(*args, **kwargs)
 
