@@ -1,0 +1,260 @@
+{
+    "@context": {
+        "schema": "https://schema.org/",
+        "Person": "schema:Person",
+        "person_data_contact": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#preservation_repository_information",
+            "@type": "schema:Boolean"
+        },
+        "preservation_repository_information": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#preservation_repository_information",
+            "@type": "schema:Text"
+        },
+        "preservation_longterm_value": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#preservation_longterm_value",
+            "@type": "schema:Text"
+        },
+        "fairprinciples_findable ": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#fairprinciples_findable",
+            "@type": "schema:Text"
+        },
+        "data_costs": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#data_costs",
+            "@type": "schema:Text"
+        },
+        "personal_costs": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#personal_costs",
+            "@type": "schema:Text"
+        },
+        "other_costs": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#other_costs",
+            "@type": "schema:Text"
+        },
+        "cover_costs": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#view_costs",
+            "@type": "schema:Text"
+        },
+        "longtermcost_personal": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#longtermcost_personal",
+            "@type": "schema:Text"
+        },
+        "longtermcost_other": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#longtermcost_other",
+            "@type": "schema:Text"
+        },
+        "grant_number": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#grant_number",
+            "@type": "schema:Text"
+        },
+        "description": {
+            "@id": "schema:description",
+            "@type": "schema:description"
+        },
+        "data_type": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#data_type",
+            "@type": "schema:Text"
+        },
+        "re_use": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#re_use",
+            "@type": "schema:Text"
+        },
+        "origin": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#origin",
+            "@type": "schema:Text"
+        },
+        "size": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#size",
+            "@type": "schema:Text"
+        },
+        "use": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#use",
+            "@type": "schema:Text"
+        },
+        "discoverability": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#discoverability",
+            "@type": "schema:Text"
+        },
+        "naming": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#naming",
+            "@type": "schema:Text"
+        },
+        "versioning": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#versioning",
+            "@type": "schema:Text"
+        },
+        "accessibility": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#accessibility",
+            "@type": "schema:Text"
+        },
+        "documentation": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#documentation",
+            "@type": "schema:Text"
+        },
+        "deposit": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#deposit",
+            "@type": "schema:Text"
+        },
+        "arrangements": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#arrangements",
+            "@type": "schema:Text"
+        },
+        "restrictions": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#restrictions",
+            "@type": "schema:Text"
+        },
+        "authorize": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#authorize",
+            "@type": "schema:Text"
+        },
+        "general": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#general",
+            "@type": "schema:Text"
+        },
+        "metadata_standard": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#metadata_standard",
+            "@type": "schema:Text"
+        },
+        "mappings": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#mappings",
+            "@type": "schema:Text"
+        },
+        "licence": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#licence",
+            "@type": "schema:Text"
+        },
+        "publ_date": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#publ_date",
+            "@type": "schema:Text"
+        },
+        "embargo": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#embargo",
+            "@type": "schema:Text"
+        },
+        "re_usethrid_party": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#re_usethrid_party",
+            "@type": "schema:Text"
+        },
+        "reuse_duration": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#reuse_duration",
+            "@type": "schema:Text"
+        },
+        "qa": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#qa",
+            "@type": "schema:Text"
+        },
+        "responsible": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#responsible",
+            "@type": "schema:Text"
+        },
+        "security": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#security",
+            "@type": "schema:Text"
+        },
+        "repos": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#repos",
+            "@type": "schema:Text"
+        },
+        "sensitive_data": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#sensitive_data",
+            "@type": "schema:Text"
+        },
+        "general_informed_consent": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#general_informed_consent",
+            "@type": "schema:Text"
+        },
+        "funder_data_policy": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#funder_data_policy",
+            "@type": "schema:funder"
+        },
+        "interopability": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#interoperability",
+            "@context": {
+                "general": {
+                    "@type": "general"
+                },
+                "metadata_standard": {
+                    "@type": "metadata_standard"
+                },
+                "mappings": {
+                    "@type": "mappings"
+                }
+            }
+        },
+        "reusability": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#reusability",
+            "@context": {
+                "licence": "licence",
+                "publ_date": "publ_date",
+                "embargo": "embargo",
+                "re_usethrid_party": "re_usethrid_party",
+                "reuse_duration": "reuse_duration",
+                "qa": "qa"
+            }
+        },
+        "datasecurity": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#datasecurity",
+            "@context": {
+                "security": "security",
+                "repos": "repos"
+            }
+        },
+        "costs": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#costs",
+            "@context": {
+                "other": "other_costs",
+                "personal": "personal_costs",
+                "cover": "cover_costs"
+            }
+        },
+        "longterm_costs": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#longterm_costs",
+            "@context": {
+                "other": "longtermcost_other",
+                "person": "longtermcost_person"
+            }
+        },
+        "accessability": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#accessability",
+            "@context": {
+                "discoverability": "discoverability"
+            }
+        },
+        "findable_detail": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#findable_detail",
+            "@context": {
+                "persistant_identifier": "schema:identifier",
+                "naming": "naming",
+                "keywords": "schema:keywords"
+            }
+        },
+        "access_data": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#access_data",
+            "@context": {
+                "documentation": "documentation",
+                "deposit": "deposit",
+                "arrangements": "arrangements",
+                "restrictions": "restrictions",
+                "authorize": "authorize"
+            }
+        },
+        "dataset": {
+            "@id": "https://www.research-data-services.org/doc/datamanagementplan/#dataset",
+            "@context": {
+                "type": "data_type",
+                "reuse": "re_use",
+                "use": "use",
+                "origin": "origin",
+                "size": "size"
+            }
+        }
+    },
+    "costs": {
+        "other": "Ganz viel text",
+        "personal": "Noch mehr",
+        "name": "heyho"
+    },
+    "longterm_costs": {
+        "other": "Ganz viel text",
+        "person": "Noch mehr"
+    }
+}

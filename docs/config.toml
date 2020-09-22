@@ -83,6 +83,14 @@ enableGitInfo = true
     post = "border-top: 1px dotted #ccc;"
 
 [[languages.de.menu.doc]]
+    name = "Linked Data"
+    identifier = "linkeddata"
+    pre = "<i class='fa fa-link'></i>"
+    url = "/de/doc/datamanagementplan/"
+    weight = -300
+    post = "border-top: 1px dotted #ccc;"
+
+[[languages.de.menu.doc]]
     name = "Architektur"
     identifier = "architecture"
     pre = "<i class='fa fa-university'></i>"
@@ -226,6 +234,14 @@ enableGitInfo = true
     pre = "<i class='fa fa-code-fork'></i>"
     url = "/doc/contribute/"
     weight = -5
+    post = "border-top: 1px dotted #ccc;"
+
+[[menu.doc]]
+    name = "Linked Data"
+    identifier = "linkeddata"
+    pre = "<i class='fa fa-link'></i>"
+    url = "/doc/datamanagementplan/"
+    weight = -300
     post = "border-top: 1px dotted #ccc;"
 
 [[menu.doc]]
