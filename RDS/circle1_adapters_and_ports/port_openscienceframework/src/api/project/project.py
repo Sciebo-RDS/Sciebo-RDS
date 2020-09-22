@@ -24,7 +24,7 @@ def index():
 def get(project_id):
     req = request.json.get("metadata")
 
-    depoResponse = g.osf.get_deposition(id=int(project_id), metadataFilter=req)
+    depoResponse = g.osf.project(project_id)
 
     return jsonify(depoResponse)
 
@@ -33,25 +33,22 @@ def get(project_id):
 def post():
     req = request.json.get("metadata")
 
-    depoResponse = g.osf.create_new_deposition_internal(
-        metadata=req, return_response=True
-    )
-
-    if depoResponse.status_code < 300:
-        depoResponse = depoResponse.json()
-        return jsonify(
-            {
-                "projectId": str(depoResponse.get("id")),
-                "metadata": depoResponse.get("metadata"),
-            }
+    try:
+        project = g.osf.create_project(
+            title=req["metadata"],
+            category=req["osf_category"],
+            description=req["description"],
+            tags="",
         )
 
-    abort(depoResponse.status_code)
+        return jsonify({"projectId": project.id, "metadata": project.__dict__,})
+    except:
+        abort(500)
 
 
 @require_api_key
 def delete(project_id):
-    if g.osf.remove_deposition_internal(int(project_id)):
+    if g.osf.project(project_id).delete():
         return "", 204
 
     abort(404)
@@ -61,19 +58,23 @@ def delete(project_id):
 def patch(project_id):
     req = request.get_json(force=True, cache=True).get("metadata")
 
-    depoResponse = g.osf.change_metadata_in_deposition_internal(
-        deposition_id=int(project_id), metadata=req, return_response=True
-    )
+    project = g.osf.project(project_id)
 
-    if depoResponse.status_code == 200:
-        return jsonify(depoResponse.json().get("metadata"))
+    for key, value in req.items():
+        setattr(project, key, value)
 
-    abort(depoResponse.status_code)
+    if project.update():
+        return jsonify(project.__dict__)
+
+    abort(500)
 
 
 @require_api_key
 def put(project_id):
-    if g.osf.publish_deposition_internal(deposition_id=int(project_id)):
+    project = g.osf.project(project_id)
+    project.public = True
+
+    if project.update():
         return True, 200
 
     abort(400)
