@@ -79,7 +79,7 @@ class MetadataMapper
                   },
                   "publication_type": {
                       "additionalProperties": false,
-                      "description": "Publication type.",
+                      "description": "Publication type for zenodo only.",
                       "default": "other",
                       "enum": [
                           "book",
@@ -165,6 +165,23 @@ class MetadataMapper
                         "closed"
                       ],
                       "type": "string"
+                  },
+                  "osf_category": {
+                    "enum": [
+                      "analysis",
+                      "communication",
+                      "data",
+                      "hypothesis",
+                      "instrumentation",
+                      "methods and measures",
+                      "procedure",
+                      "project",
+                      "software",
+                      "other"
+                    ],
+                    "default": "other",
+                    "description": "Category only for OSF",
+                    "type": "string"
                   },
                   "license": {
                       "description": "License for embargoed/open access content.",
