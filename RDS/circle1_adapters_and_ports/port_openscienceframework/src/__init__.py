@@ -23,14 +23,14 @@ def bootstrap(name="MicroService", *args, **kwargs):
         )
     )
 
-    zenodo_address = None
+    osf_address = None
     if "address" in kwargs:
-        zenodo_address = kwargs["address"]
+        osf_address = kwargs["address"]
         del kwargs["address"]
 
     app = App(name, *args, **kwargs)
 
-    app.app.zenodo_address = zenodo_address
+    app.app.osf_address = osf_address
 
     for oai in list_openapi:
         app.add_api(

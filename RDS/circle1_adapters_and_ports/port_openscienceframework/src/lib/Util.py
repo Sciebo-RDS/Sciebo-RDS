@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import request, g, current_app, abort
-from osfclient.api import OSF
+from osfclient import OSF
 import os
 import requests
 import logging
@@ -58,7 +58,7 @@ def require_api_key(api_method):
             abort(401)
 
         logger.debug("found apiKey")
-        g.osf = OSF(apiKey, address=current_app.zenodo_address)
+        g.osf = OSF(token=apiKey, address=current_app.osf_address)
 
         return api_method(*args, **kwargs)
 

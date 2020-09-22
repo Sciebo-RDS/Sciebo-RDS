@@ -15,7 +15,7 @@ jaeger-client = "*"
 gevent = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
-osfclient = {editable = true, git = "https://github.com/osfclient/osfclient.git"}
+osfclient = {editable = true, git = "https://github.com/Sciebo-RDS/osfclient.git"}
 
 [requires]
 python_version = "3.8"
