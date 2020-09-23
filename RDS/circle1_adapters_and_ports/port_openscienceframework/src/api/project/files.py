@@ -34,6 +34,7 @@ def post(project_id):
         .storage()
         .create_file(filename, BytesIO(file.read()), force=True)
     )
+
     logger.debug("Finished file upload")
 
     if resp:
