@@ -11,10 +11,10 @@ logger = logging.getLogger()
 def index():
     req = request.json.get("metadata")
 
-    depoResponse = g.osf.get_deposition(metadataFilter=req)
+    depoResponse = g.osf.projects()
     return jsonify(
         [
-            {"projectId": str(depo["prereserve_doi"]["recid"]), "metadata": depo}
+            {"projectId": str(depo.id), "metadata": depo.__dict__}
             for depo in depoResponse
         ]
     )
@@ -35,7 +35,7 @@ def post():
 
     try:
         project = g.osf.create_project(
-            title=req["metadata"],
+            title=req["title"],
             category=req["osf_category"],
             description=req["description"],
             tags="",
