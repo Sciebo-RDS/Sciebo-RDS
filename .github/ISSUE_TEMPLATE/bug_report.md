@@ -43,6 +43,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Logging:**
 An export to json of the corresponding trace with the errornous behaviour in your jaeger installation. [Here you can find out more about monitoring.](https://www.research-data-services.org/doc/getting-started/k8s/#installation) With this json file, we can lookup for bugs and see the trace through your RDS system.
+Please only provide a [pastebin link](https://pastebin.com/) with the jaeger json or log output for a better overview of this issue.
 
 <!-- In general -->
 **Additional context**
