@@ -14,8 +14,8 @@ requests = "*"
 jaeger-client = "*"
 gevent = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
-connexion-plus = "*"
-osfclient = {editable = true, git = "https://github.com/Sciebo-RDS/osfclient.git"}
+connexion-plus = "==0.37"
+osfclient = {editable = false, git = "https://github.com/Sciebo-RDS/osfclient.git"}
 
 [requires]
 python_version = "3.8"

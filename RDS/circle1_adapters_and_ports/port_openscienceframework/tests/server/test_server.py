@@ -3,7 +3,7 @@ import unittest
 import sys
 import os
 from pactman import Consumer, Provider
-from .example import node_json, _build_node
+#from .example import node_json, _build_node
 
 api_key = os.getenv("OPENSCIENCEFRAMEWORK_API_KEY", default=None)
 
@@ -29,34 +29,47 @@ class TestPortOSF(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client()
 
-    def Test_project_index(self):
+    def test_metric(self):
+        self.assertTrue(True)
+
+    @unittest.skip("not implemented")
+    def test_project_index(self):
         pass
 
-    def Test_project_get(self):
+    @unittest.skip("not implemented")
+    def test_project_get(self):
         pass
 
-    def Test_project_post(self):
+    @unittest.skip("not implemented")
+    def test_project_post(self):
         pass
 
-    def Test_project_put(self):
+    @unittest.skip("not implemented")
+    def test_project_put(self):
         pass
 
-    def Test_project_patch(self):
+    @unittest.skip("not implemented")
+    def test_project_patch(self):
         pass
 
-    def Test_project_delete(self):
+    @unittest.skip("not implemented")
+    def test_project_delete(self):
         pass
 
-    def Test_files_index(self):
+    @unittest.skip("not implemented")
+    def test_files_index(self):
         pass
 
-    def Test_files_get(self):
+    @unittest.skip("not implemented")
+    def test_files_get(self):
         pass
 
-    def Test_files_post(self):
+    @unittest.skip("not implemented")
+    def test_files_post(self):
         pass
 
-    def Test_files_delete(self):
+    @unittest.skip("not implemented")
+    def test_files_delete(self):
         pass
 
 

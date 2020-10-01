@@ -3,7 +3,6 @@ import os
 from flask import jsonify, request, g, current_app
 from werkzeug.exceptions import abort
 from lib.Util import require_api_key
-from OSF import Project
 
 logger = logging.getLogger()
 
