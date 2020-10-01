@@ -3,6 +3,7 @@ import os
 from flask import jsonify, request, g, current_app
 from werkzeug.exceptions import abort
 from lib.Util import require_api_key
+from OSF import Project
 
 logger = logging.getLogger()
 
@@ -14,7 +15,7 @@ def index():
     depoResponse = g.osf.projects()
     return jsonify(
         [
-            {"projectId": str(depo.id), "metadata": depo.metadata()}
+            {"projectId": str(depo.id), "metadata": depo.metadata(jsonld=True)}
             for depo in depoResponse
         ]
     )
@@ -34,14 +35,20 @@ def post():
     req = request.json.get("metadata")
 
     try:
-        project = g.osf.create_project(
-            title=req["title"],
-            category=req["osf_category"],
-            description=req["description"],
-            tags="",
-        )
+        try:
+            project = g.osf.create_project_jsonld(req)
 
-        return jsonify({"projectId": project.id, "metadata": project.metadata(),})
+        except:
+            project = g.osf.create_project(
+                title=req["title"],
+                category=req["osf_category"],
+                description=req["description"],
+                tags=req["description"] if "description" in req else "",
+            )
+
+        return jsonify(
+            {"projectId": project.id, "metadata": project.metadata(jsonld=True)}
+        )
     except:
         abort(500)
 
@@ -60,11 +67,8 @@ def patch(project_id):
 
     project = g.osf.project(project_id)
 
-    for key, value in req.items():
-        setattr(project, key, value)
-
-    if project.update():
-        return jsonify(project.metadata())
+    if project.update(req):
+        return jsonify(project.metadata(jsonld=True))
 
     abort(500)
 
