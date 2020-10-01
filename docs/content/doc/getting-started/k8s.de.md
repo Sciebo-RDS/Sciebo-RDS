@@ -22,7 +22,7 @@ Zu Beginn dieser Anleitung werden die Voraussetzung an den Cluster und andere So
 Jedes RDS System ist:
 
 - nicht öffentlich im Internet verfügbar, sondern lediglich über einen der in dieser Dokumentation beschriebenen Plugins.
-- nur durch ein Plugin verwendet und nicht durch den Nutzer direkt.
+- nur durch einem einzigen Plugin öffentlich zugänglich gemacht.
 - nicht auf Durchsatz getrimmt.
 
 ## Voraussetzungen
