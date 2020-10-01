@@ -17,6 +17,14 @@ Für einen Überblick über das RDS System und dessen Funktionsweise, sei auf di
 
 Zu Beginn dieser Anleitung werden die Voraussetzung an den Cluster und andere Software genannt, welche zuerst erfüllt sein müssen. Anschließend wird das RDS System konfiguriert, sodass es danach auf dem Kubernetes Cluster installiert werden kann.
 
+## Annahmen
+
+Jedes RDS System ist:
+
+- nicht öffentlich im Internet verfügbar, sondern lediglich über einen der in dieser Dokumentation beschriebenen Plugins.
+- nur durch ein Plugin verwendet und nicht durch den Nutzer direkt.
+- nicht auf Durchsatz getrimmt.
+
 ## Voraussetzungen
 
 Als Versionskontrollprogramm wird [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) verwendet.
