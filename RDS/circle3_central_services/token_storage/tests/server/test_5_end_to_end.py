@@ -1,3 +1,4 @@
+from time import sleep
 import unittest
 import os
 import json
@@ -77,42 +78,51 @@ class test_end_to_end(unittest.TestCase):
 
                 field_password.clear()
                 field_password.send_keys(token.access_token)
+
+                old_url = self.driver.current_url
+                url = self.driver.current_url
+
                 field_password.send_keys(Keys.RETURN)
 
-            try:
-                btn = self.driver.find_element_by_xpath(
-                    "/html/body/div[1]/div/span/form/button"
-                )
-                btn.click()
-            except Exception as e:
-                logging.error("url: {}".format(self.driver.current_url))
-                raise e
+                retry = 0
+                while old_url == url and retry < 5:
+                    sleep(1)
+                    retry += 1
+                    url = self.driver.current_url
+                    logger.info("url: {}".format(url))
 
+                if retry >= 5:
+                    raise Exception("url not redirect!")
+
+            btn = self.driver.find_element_by_xpath(
+                "/html/body/div[1]/div/span/form/button"
+            )
+            old_url = self.driver.current_url
             url = self.driver.current_url
+
+            btn.click()
+
+            retry = 0
+            while old_url == url and retry < 5:
+                sleep(1)
+                retry += 1
+                url = self.driver.current_url
+                logger.info("url: {}".format(url))
+
+            if retry >= 5:
+                raise Exception("url not redirect!")
 
             self.driver.delete_all_cookies()  # remove all cookies
 
             from urllib.parse import urlparse, parse_qs
 
-            retry = True
+            query = urlparse(url).query
+            logger.info("query: {}".format(query))
 
-            import time
+            parse = parse_qs(query)
+            logger.info("parse: {}".format(parse))
 
-            current_time = time.time()
-            while retry:
-                try:
-                    retry = False
-                    code = parse_qs(urlparse(url).query)["code"]
-                except Exception as e:
-                    logger.error("got url: {}".format(url))
-
-                    if time.time() < current_time + 10:
-                        logger.error(e)
-                        retry = True
-                        logger.info("retry")
-                        time.sleep(1)
-                    else:
-                        raise e
+            code = parse["code"]
 
             data = {
                 "grant_type": "authorization_code",
@@ -237,10 +247,20 @@ class test_end_to_end(unittest.TestCase):
             btn = self.driver.find_element_by_xpath(
                 "/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[2]/form/button[1]"
             )
+            old_url = self.driver.current_url
+            url = self.driver.current_url
+
             btn.click()
 
-            url = self.driver.current_url
-            logger.info("url: {}".format(url))
+            retry = 0
+            while old_url == url and retry < 5:
+                sleep(1)
+                retry += 1
+                url = self.driver.current_url
+                logger.info("url: {}".format(url))
+
+            if retry >= 5:
+                raise Exception("url not redirect!")
 
             self.driver.delete_all_cookies()  # remove all cookies
 

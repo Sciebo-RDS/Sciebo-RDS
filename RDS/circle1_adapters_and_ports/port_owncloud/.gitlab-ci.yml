@@ -13,6 +13,8 @@ test:port_owncloud3.8:
     image: python:3.8
 
 build:port_owncloud:
+    needs:
+        - test:port_owncloud3.8
     extends:
         - .builds
         - .port_owncloud
@@ -25,6 +27,8 @@ build:port_owncloud:
             - RDS/circle3_central_services/interface_port_token_storage.yml
 
 doc:port_owncloud:
+    needs:
+        - build:port_owncloud
     image: python:3.8
     extends:
         - .documentation

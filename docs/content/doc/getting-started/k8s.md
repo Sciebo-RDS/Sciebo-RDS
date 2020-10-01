@@ -16,6 +16,14 @@ If you not already know, what RDS is and how does it work, you should take a loo
 
 At the beginning of this guide, you will need to fulfill the requirements. After that, you will need to configure the RDS system to your needs. Last but not least, you will install the RDS system on your configured kubernetes cluster.
 
+## Assumptions
+
+Every RDS system is:
+
+- not publicly available on the Internet, but only through one of the plugins described in this documentation.
+- only used by a plugin and not by the user directly.
+- not trimmed for throughput.
+
 ## Requirements
 
 The version control program used is [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).

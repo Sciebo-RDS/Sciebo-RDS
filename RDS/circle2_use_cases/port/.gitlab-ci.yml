@@ -12,6 +12,9 @@ test:use_case_port_service3.8:
   extends: .tests_use_case_port_service
 
 build:use_case_port_service:
+  needs:
+    - test:use_case_port_service3.8
+
   extends:
     - .builds
     - .use_case_port_service
@@ -23,6 +26,8 @@ build:use_case_port_service:
 
 doc:use_case_port_service:
   image: python:3.8
+  needs:
+    - build:use_case_port_service
   extends:
     - .documentation
     - .use_case_port_service

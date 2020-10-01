@@ -12,6 +12,8 @@ test:use_case_metadata3.8:
   extends: .tests_use_case_metadata
 
 build:use_case_metadata:
+  needs:
+    - test:use_case_metadata3.8
   extends:
     - .builds
     - .use_case_metadata
@@ -22,6 +24,8 @@ build:use_case_metadata:
       - RDS/circle2_use_cases/metadata/**/*
 
 doc:use_case_metadata:
+  needs:
+    - build:use_case_metadata
   image: python:3.8
   extends:
     - .documentation
