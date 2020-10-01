@@ -14,7 +14,7 @@ def index():
     depoResponse = g.osf.projects()
     return jsonify(
         [
-            {"projectId": str(depo.id), "metadata": depo.__dict__}
+            {"projectId": str(depo.id), "metadata": depo.metadata()}
             for depo in depoResponse
         ]
     )
@@ -41,7 +41,7 @@ def post():
             tags="",
         )
 
-        return jsonify({"projectId": project.id, "metadata": project.__dict__,})
+        return jsonify({"projectId": project.id, "metadata": project.metadata(),})
     except:
         abort(500)
 
@@ -64,7 +64,7 @@ def patch(project_id):
         setattr(project, key, value)
 
     if project.update():
-        return jsonify(project.__dict__)
+        return jsonify(project.metadata())
 
     abort(500)
 

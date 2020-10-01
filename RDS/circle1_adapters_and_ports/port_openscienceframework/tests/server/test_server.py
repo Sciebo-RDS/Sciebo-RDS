@@ -3,6 +3,7 @@ import unittest
 import sys
 import os
 from pactman import Consumer, Provider
+from .example import node_json, _build_node
 
 api_key = os.getenv("OPENSCIENCEFRAMEWORK_API_KEY", default=None)
 
