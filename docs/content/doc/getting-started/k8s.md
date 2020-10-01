@@ -21,7 +21,7 @@ At the beginning of this guide, you will need to fulfill the requirements. After
 Every RDS system is:
 
 - not publicly available on the Internet, but only through one of the plugins described in this documentation.
-- only used by a plugin and not by the user directly.
+- only made publicly available by a single plugin.
 - not trimmed for throughput.
 
 ## Requirements
