@@ -424,7 +424,7 @@ class TokenService:
             raise ServiceNotFoundError(service)
 
     def exchangeAuthCodeToAccessToken(
-        self, code: str, service: Union[str, OAuth2Service], user=None
+        self, code: str, service: Union[str, OAuth2Service], user: str=None
     ) -> OAuth2Token:
         """
         Exchanges the given `code` by the given `service`
@@ -472,6 +472,7 @@ class TokenService:
         response_with_access_token = response.json()
 
         # FIXME: need here some solution, where the response will be evaluated by the corresponding port
+        """ Do not need the userid for oauth, because token is the only information for login
         try:
             # owncloud / oauth2 spec
             user_id = response_with_access_token["user_id"]
@@ -482,6 +483,7 @@ class TokenService:
         # if no user was set, then this token will be used for superuser
         if user is None:
             user = user_id
+        """
 
         access_token = response_with_access_token["access_token"]
         refresh_token = response_with_access_token["refresh_token"]
@@ -490,7 +492,7 @@ class TokenService:
         )
 
         oauthtoken = OAuth2Token(
-            User(user_id), service, access_token, refresh_token, exp_date
+            User(user), service, access_token, refresh_token, exp_date
         )
 
         # save the access_token in tokenStorage
