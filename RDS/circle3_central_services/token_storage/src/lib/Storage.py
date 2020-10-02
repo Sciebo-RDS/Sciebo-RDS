@@ -253,8 +253,9 @@ class Storage:
 
         try:
             services = self.services
-            k = self.internal_find_service(service.servicename, services)
-            svc = services[k]
+            k, svc = self.internal_find_service(
+                service.servicename, services, return_object=True
+            )
             return (svc, k) if index is True else svc
         except:
             return (None, None) if index is True else None
@@ -553,7 +554,9 @@ class Storage:
 
         return found
 
-    def internal_find_service(self, servicename: str, services: list):
+    def internal_find_service(
+        self, servicename: str, services: list, return_object: bool = False
+    ):
         """
         Tries to find the given servicename in the list of services.
 
@@ -574,6 +577,8 @@ class Storage:
                 )
             )
             if service.servicename == servicename:
+                if return_object:
+                    return index, service
                 return index
 
         raise ValueError(

@@ -18,3 +18,4 @@ namespace.yaml
 configuration.yaml
 configuration-dev.yaml
 *-demo.yaml
+values-osf.yaml
