@@ -39,10 +39,10 @@ def post():
 
         except:
             project = g.osf.create_project(
-                title=req["title"],
-                category=req["osf_category"],
-                description=req["description"],
-                tags=req["description"] if "description" in req else "",
+                req["title"],
+                req.get("osf_category", "project"),
+                description=req.get("description", ""),
+                tags=req.get("tags", ""),
             )
 
         return jsonify(
