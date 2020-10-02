@@ -141,7 +141,7 @@ This is where you can define the build process, which packages and programs will
 
 ### Cubernetes and Helm Chart
 
-In RDS we use Helm Charts to generate the configuration files for Kubernetes. Therefore your service needs a corresponding [Helm Chart](https://helm.sh/). In the [deploy](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/deploy) folder of the Git repository you will find all available charts and a [Makefile](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/Makefile) which allows you to apply the available charts to an existing Kubernetes cluster.
+In RDS we use Helm Charts to generate the configuration files for Kubernetes. Therefore your service needs a corresponding [Helm Chart](https://helm.sh/). In the [deploy](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy) folder of the Git repository you will find all available charts and a [Makefile](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile) which allows you to apply the available charts to an existing Kubernetes cluster.
 
 First, create a folder with a conventionally named folder: *circle[1,2,3]_servicename*. Then follow the [Helm Developers Guide](https://helm.sh/docs/chart_template_guide/) to create and configure your own chart in the new folder.
 
@@ -149,7 +149,7 @@ Then add the Makefile in the *deploy* folder to set up your service in Kubernete
 - the first one installs or renews your service and
 - the second one uninstalls your service
 
-It is best if your second procedure has the same name as the first, but with the addition *remove\_* in front of it (example: [port_owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/Makefile#L44) and [remove_port_owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/Makefile#L77)) Then you add your first procedure to the corresponding procedure *circle1*, *circle2* or *circle3* ([see Makefile](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/Makefile#L62)). The same applies to your *remove\_* procedure, which will be added to one of the following procedures: *uninstall_circle1*, *uninstall_circle2* or *uninstall_circle3* ([see Makefile](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/Makefile#L95))
+It is best if your second procedure has the same name as the first, but with the addition *remove\_* in front of it (example: [port_owncloud](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L44) and [remove_port_owncloud](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L77)) Then you add your first procedure to the corresponding procedure *circle1*, *circle2* or *circle3* ([see Makefile](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L62)). The same applies to your *remove\_* procedure, which will be added to one of the following procedures: *uninstall_circle1*, *uninstall_circle2* or *uninstall_circle3* ([see Makefile](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L95))
 
 # Integration with GUI plugins
 
