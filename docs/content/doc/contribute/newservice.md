@@ -155,7 +155,7 @@ It is best if your second procedure has the same name as the first, but with the
 
 Currently, if you are implementing a new service in layer 2 or 3, it is necessary to create your own plugins, as they currently have no automation to integrate the new endpoints. All available plugins can be found in the root folder of the Git repository. The services in layer 1, called the Port Service, are automatically provided by the Token Storage, connected to the Research Manager, and used by the Metadata and Exporter Service.
 
-Select a plugin ([Example: Owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud)) and see the integration. (Owncloud itself offers a [Developer Manual](https://doc.owncloud.com/server/developer_manual/).)
+Select a plugin ([Example: Owncloud](https://github.com/Sciebo-RDS/plugin-ownCloud)) and see the integration. (Owncloud itself offers a [Developer Manual](https://doc.owncloud.com/server/developer_manual/).)
 
 # Example service
 

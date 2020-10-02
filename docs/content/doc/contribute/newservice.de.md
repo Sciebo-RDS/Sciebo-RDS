@@ -153,7 +153,7 @@ Am besten hat deine zweite Prozedur denselben Namen wie die erste, nur mit dem Z
 
 Aktuell ist es notwendig, solltest Du einen neuen Dienst in Schicht 2 oder 3 implementieren, selbst Hand anzulegen in den Plugins, da diese zum aktuellen Zeitpunkt keinerlei Automatismus besitzen, um die neuen Endpunkte zu integrieren. Alle verfügbaren Plugins findest Du im gleichnamigen Ordner im root-Verzeichnis des Git Repositoriums. Die Dienste in Schicht 1, welche als Port Service bezeichnet werden, werden automatisch durch den Token Storage angeboten, dem Research Manager verbunden und durch den Metadata- und Exporter-Service verwendet.
 
-Wähle ein Plugin aus ([Beispiel: Owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud)) und siehe Dir die Integration an. (Owncloud bietet selbst einen [Developer Handbuch](https://doc.owncloud.com/server/developer_manual/) an.)
+Wähle ein Plugin aus ([Beispiel: Owncloud](https://github.com/Sciebo-RDS/plugin-ownCloud)) und siehe Dir die Integration an. (Owncloud bietet selbst ein [Developer Handbuch](https://doc.owncloud.com/server/developer_manual/) an.)
 
 # Beispielservice
 
