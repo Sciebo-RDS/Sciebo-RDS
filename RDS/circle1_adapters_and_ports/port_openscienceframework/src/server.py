@@ -10,8 +10,8 @@ osf_oauth_token_url = "{}/oauth2/token".format(osf_address)
 osf_oauth_id = os.getenv("OPENSCIENCEFRAMEWORK_OAUTH_CLIENT_ID", "XY")
 osf_oauth_secret = os.getenv("OPENSCIENCEFRAMEWORK_OAUTH_CLIENT_SECRET", "ABC")
 
-osf_oauth_authorize = "{}/oauth2/authorize?response_type=code&redirect_uri={}&client_id={}&scope=osf.full_write".format(
-    osf_address, redirect_uri, osf_oauth_id
+osf_oauth_authorize = "{}/oauth2/authorize?response_type=code&redirect_uri={}&client_id={}&scope=osf.full_write&access_type={}".format(
+    osf_address, redirect_uri, osf_oauth_id, "offline"
 )
 
 register_service(

@@ -465,7 +465,6 @@ class TokenService:
             "redirect_uri": os.getenv(
                 "RDS_OAUTH_REDIRECT_URI", "http://localhost:3000/redirect"
             ),
-            "access_type": "offline",  # OSF specific
         }
 
         logger.info(f"request body: {body}")
