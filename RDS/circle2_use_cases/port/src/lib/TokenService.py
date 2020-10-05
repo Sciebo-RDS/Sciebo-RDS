@@ -424,11 +424,23 @@ class TokenService:
             raise ServiceNotFoundError(service)
 
     def exchangeAuthCodeToAccessToken(
-        self, code: str, service: Union[str, OAuth2Service], user: str=None
+        self, code: str, service: Union[str, OAuth2Service], user: str
     ) -> OAuth2Token:
-        """
-        Exchanges the given `code` by the given `service`
-        """
+        """Exchanges the given `code` by the given `service`
+
+        Args:
+            code (str): The oauth2 exchange code.
+            service (Union[str, OAuth2Service]): The servicename, which the code is for.
+            user (str): The username, which wants to exchange the code.
+
+        Raises:
+            ValueError: The servicename was not valid.
+            ServiceNotFoundError: The servicename was not found.
+            CodeNotExchangeable: Code was not exchangeable.
+
+        Returns:
+            OAuth2Token: The oauth2 token with access- and refresh-tokens.
+        """        
 
         if not isinstance(service, (str, OAuth2Service)):
             raise ValueError(

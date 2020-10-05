@@ -10,7 +10,7 @@ logger = logging.getLogger()
 
 def post():
     """
-    This endpoint implements the same like redirect, but it returns 204 for succes and 400 if something goes wrong.
+    This endpoint implements the same like redirect, but it returns 204 for success and 400 if something goes wrong.
     This enables, that integrations can trigger the serverpart of oauth workflow in rds by themselves.
     """
     try:
