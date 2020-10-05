@@ -440,7 +440,7 @@ class TokenService:
 
         Returns:
             OAuth2Token: The oauth2 token with access- and refresh-tokens.
-        """        
+        """
 
         if not isinstance(service, (str, OAuth2Service)):
             raise ValueError(
@@ -465,6 +465,7 @@ class TokenService:
             "redirect_uri": os.getenv(
                 "RDS_OAUTH_REDIRECT_URI", "http://localhost:3000/redirect"
             ),
+            "access_type": "offline",  # OSF specific
         }
 
         logger.info(f"request body: {body}")
