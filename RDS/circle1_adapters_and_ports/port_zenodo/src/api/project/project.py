@@ -7,15 +7,60 @@ from lib.Util import require_api_key
 
 logger = logging.getLogger()
 
+zenodo_to_jsonld = {
+    "title": "https://schema.org/title",
+    "description": "https://schema.org/description",
+    "tags": "https://schema.org/keywords",
+    "access_right": "https://schema.org/publicAccess",
+    "publication_date": "https://schema.org/datePublished",
+    "id": "https://schema.org/identifier",
+    "zenodocategory": "https://research-data-services.org/jsonld/zenodocategory",
+    "license": "https://schema.org/license",
+    "doi": "https://research-data-services.org/jsonld/doi",
+    "creators": "https://schema.org/creator",
+}
+
+
+def to_jsonld(metadata):
+    try:
+        zenodocategory = "{}/{}".format(
+            metadata["upload_type"], "{}_type".format(metadata["upload_type"])
+        )
+    except:
+        zenodocategory = metadata["upload_type"]
+
+    creators = []
+
+    for creator in metadata["creators"]:
+        creators.append(creator)
+
+    jsonld = {
+        zenodo_to_jsonld["title"]: metadata["title"],
+        zenodo_to_jsonld["description"]: metadata["description"],
+        zenodo_to_jsonld["doi"]: metadata["prereserve_doi"]["doi"],
+        zenodo_to_jsonld["license"]: metadata["license"],
+        zenodo_to_jsonld["publication_date"]: metadata["publication_date"],
+        zenodo_to_jsonld["zenodocategory"]: zenodocategory,
+        zenodo_to_jsonld["creators"]: creators,
+        zenodo_to_jsonld["id"]: metadata["prereserve_doi"]["recid"],
+        zenodo_to_jsonld["access_right"]: metadata["access_right"] == "open",
+    }
+
+    return jsonld
+
 
 @require_api_key
 def index():
     req = request.json.get("metadata")
 
     depoResponse = g.zenodo.get_deposition(metadataFilter=req)
+
     return jsonify(
         [
-            {"projectId": str(depo["prereserve_doi"]["recid"]), "metadata": depo}
+            {
+                "projectId": str(depo["prereserve_doi"]["recid"]),
+                "metadata": to_jsonld(depo),
+            }
             for depo in depoResponse
         ]
     )
