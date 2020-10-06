@@ -128,8 +128,8 @@ class TokenService:
         }
         """
 
-        if len(self._services) == 0:
-            self.refreshServices()
+        self.refreshServices()
+        
         services = self._services
 
         if clean:
