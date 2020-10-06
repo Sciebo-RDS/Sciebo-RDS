@@ -55,15 +55,24 @@ def index():
 
     depoResponse = g.zenodo.get_deposition(metadataFilter=req)
 
-    return jsonify(
-        [
-            {
-                "projectId": str(depo["prereserve_doi"]["recid"]),
-                "metadata": to_jsonld(depo),
-            }
-            for depo in depoResponse
-        ]
-    )
+    try:
+        output = []
+        for depo in depoResponse:
+            output.append(
+                {
+                    "projectId": str(depo["prereserve_doi"]["recid"]),
+                    "metadata": to_jsonld(depo),
+                }
+            )
+
+    except:
+        output = []
+        for depo in depoResponse:
+            output.append(
+                {"projectId": str(depo["prereserve_doi"]["recid"]), "metadata": depo}
+            )
+
+    return jsonify(output)
 
 
 @require_api_key
