@@ -540,7 +540,12 @@ class Storage:
 
             try:
                 new_token = token.refresh()
-                self.addTokenToUser(new_token, new_token.user, Force=True)
+                logger.debug(
+                    "add new token {} to user {}".format(
+                        new_token, user or new_token.user
+                    )
+                )
+                self.addTokenToUser(new_token, user or new_token.user, Force=True)
                 found = True
 
             except TokenNotValidError as e:
