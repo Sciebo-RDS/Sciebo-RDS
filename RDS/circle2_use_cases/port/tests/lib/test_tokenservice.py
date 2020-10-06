@@ -471,14 +471,14 @@ class Test_TokenService(unittest.TestCase):
         with self.assertRaises(InvalidSignatureError):
             req = jwt.decode(req_list[0]["jwt"], key, algorithms="HS256")
 
-        """
+        
         pact.given(
             'one service was registered.'
         ).upon_receiving(
             'a request to get all services and secret is okay.'
         ).with_request(
             'GET', "/service"
-        ) .will_respond_with(200, body={"length": 1, "list": [json.dumps(self.service1)]})"""
+        ) .will_respond_with(200, body={"length": 1, "list": [json.dumps(self.service1)]})
 
         self.tokenService.secret = key
         req_list = self.tokenService.getAllServices()
