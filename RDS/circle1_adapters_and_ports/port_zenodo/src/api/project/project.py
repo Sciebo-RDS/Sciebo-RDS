@@ -54,6 +54,7 @@ def index():
     req = request.json.get("metadata")
 
     depoResponse = g.zenodo.get_deposition(metadataFilter=req)
+    logger.debug("depo response: {}".format(depoResponse))
 
     try:
         output = []
@@ -67,7 +68,7 @@ def index():
 
     except Exception as e:
         logger.error(e)
-        
+
         output = []
         for depo in depoResponse:
             output.append(
