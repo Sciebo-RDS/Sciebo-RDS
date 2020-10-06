@@ -30,9 +30,7 @@ def bootstrap(name="MicroService", *args, **kwargs):
 
     app = App(name, *args, **kwargs)
 
-    app.app.osf_address = osf_address or os.getenv(
-        "OPENSCIENCEFRAMEWORK_ADDRESS", "https://accounts.test.osf.io"
-    )
+    app.app.osf_address = osf_address
 
     for oai in list_openapi:
         app.add_api(

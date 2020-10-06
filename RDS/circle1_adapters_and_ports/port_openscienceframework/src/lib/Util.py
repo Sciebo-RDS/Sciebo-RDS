@@ -58,7 +58,12 @@ def require_api_key(api_method):
             abort(401)
 
         logger.debug("found apiKey")
-        g.osf = OSF(token=apiKey, address=current_app.osf_address)
+        g.osf = OSF(
+            token=apiKey,
+            address=os.getenv(
+                "OPENSCIENCEFRAMEWORK_API_ADDRESS", "https://api.test.osf.io/v2"
+            ),
+        )
 
         return api_method(*args, **kwargs)
 
