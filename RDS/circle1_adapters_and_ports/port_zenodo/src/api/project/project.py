@@ -65,7 +65,9 @@ def index():
                 }
             )
 
-    except:
+    except Exception as e:
+        logger.error(e)
+        
         output = []
         for depo in depoResponse:
             output.append(
