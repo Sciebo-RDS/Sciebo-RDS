@@ -18,6 +18,8 @@ zenodo_to_jsonld = {
     "license": "https://schema.org/license",
     "doi": "https://research-data-services.org/jsonld/doi",
     "creators": "https://schema.org/creator",
+    "affiliation":"https://schema.org/affiliation",
+    "name":"https://schema.org/name",
 }
 
 
@@ -32,7 +34,10 @@ def to_jsonld(metadata):
     creators = []
 
     for creator in metadata["creators"]:
-        creators.append(creator)
+        creators.append({
+            zenodo_to_jsonld["name"]: creator["name"],
+            zenodo_to_jsonld["affiliation"]: creator["affiliation"],
+        })
 
     jsonld = {
         zenodo_to_jsonld["title"]: metadata["title"],
