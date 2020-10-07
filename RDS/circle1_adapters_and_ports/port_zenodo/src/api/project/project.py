@@ -63,6 +63,7 @@ def to_jsonld(metadata):
         ("access_right"),
         ("publication_date"),
         ("zenodocategory"),
+        ("license")
     ]
 
     for parameter in parameterlist:
