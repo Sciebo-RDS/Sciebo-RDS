@@ -87,13 +87,20 @@ class Storage:
                         startup_nodes=startup_nodes,
                         decode_responses=True,
                         skip_full_coverage_check=True,
+                        cluster_down_retry_attempts=1,
                     )
+                    rc.cluster_info()  # provoke an error message
                 except Exception as e:
                     logger.error(e)
                     logger.debug("Cluster has an error, try standalone redis")
                     from redis import Redis
 
-                    rc = Redis(**(startup_nodes[0]), db=0, decode_responses=True,)
+                    rc = Redis(
+                        **(startup_nodes[0]),
+                        db=0,
+                        decode_responses=True,
+                        cluster_down_retry_attempts=1,
+                    )
                     rc.info()  # provoke an error message
 
             logger.debug("set redis backed dict")
@@ -128,7 +135,11 @@ class Storage:
     def services(self):
         try:
             servicelist = list(self._services.values())
-            logger.debug("get services: {}".format([service.to_json() for service in servicelist]))
+            logger.debug(
+                "get services: {}".format(
+                    [service.to_json() for service in servicelist]
+                )
+            )
             return servicelist
         except:
             return self._services
@@ -238,7 +249,7 @@ class Storage:
         """
         return self.services
 
-    def getService(self, service: Union[str, Service], index: bool = False):
+    def getService(self, service: Union[str, Service]):
         """
         Returns the service object with the given servicename. If not found, returns None
 
@@ -255,12 +266,12 @@ class Storage:
 
         try:
             services = self.services
-            k, svc = self.internal_find_service(
+            _, svc = self.internal_find_service(
                 service.servicename, services, return_object=True
             )
-            return (svc, k) if index is True else svc
+            return svc
         except:
-            return (None, None) if index is True else None
+            return None
 
     def addService(self, service: Service, Force=False):
         """
@@ -276,7 +287,14 @@ class Storage:
         if not isinstance(service, (Service, OAuth2Service)):
             raise ValueError("parameter not a service object.")
 
-        svc, index = self.getService(service, index=True)
+        try:
+            index, svc = self.internal_find_service(
+                service.servicename, self.services, return_object=True
+            )
+        except:
+            index = 0
+            svc = None
+
         if svc is not None:
             if Force is True:
                 self._services[index] = service
