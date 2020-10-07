@@ -18,12 +18,27 @@ zenodo_to_jsonld = {
     "license": "https://schema.org/license",
     "doi": "https://research-data-services.org/jsonld/doi",
     "creators": "https://schema.org/creator",
-    "affiliation":"https://schema.org/affiliation",
-    "name":"https://schema.org/name",
+    "affiliation": "https://schema.org/affiliation",
+    "name": "https://schema.org/name",
 }
 
 
 def to_jsonld(metadata):
+    def parse_creator(user):
+        output = {}
+
+        parameterlist = [
+            ("affiliation"),
+            ("name"),
+        ]
+        for parameter in parameterlist:
+            try:
+                output[zenodo_to_jsonld[parameter]] = creator[parameter]
+            except KeyError as e:
+                logger.error(e)
+
+        return output
+
     try:
         zenodocategory = "{}/{}".format(
             metadata["upload_type"], "{}_type".format(metadata["upload_type"])
@@ -34,10 +49,7 @@ def to_jsonld(metadata):
     creators = []
 
     for creator in metadata["creators"]:
-        creators.append({
-            zenodo_to_jsonld["name"]: creator["name"],
-            zenodo_to_jsonld["affiliation"]: creator["affiliation"],
-        })
+        creators.append(parse_creator(creator))
 
     jsonld = {
         zenodo_to_jsonld["title"]: metadata["title"],
