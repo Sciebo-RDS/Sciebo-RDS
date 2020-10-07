@@ -1,4 +1,3 @@
-
 import unittest
 import sys
 import os
@@ -9,16 +8,16 @@ api_key = os.getenv("ZENODO_API_KEY", default=None)
 
 def create_app():
     from src import bootstrap
+
     # creates a test client
-    app = bootstrap(use_default_error=True,
-                    address="http://localhost:3000").app
+    app = bootstrap(use_default_error=True, address="http://localhost:3000").app
     # propagate the exceptions to the test client
     app.config.update({"TESTING": True})
 
     return app
 
 
-pact = Consumer('PortZenodo').has_pact_with(Provider('Zenodo'), port=3000)
+pact = Consumer("PortZenodo").has_pact_with(Provider("Zenodo"), port=3000)
 
 unittest.TestCase.maxDiff = None
 
@@ -45,63 +44,49 @@ class TestPortZenodo(unittest.TestCase):
             "data": {
                 "access_token": "ASD123GANZSICHA",
                 "user": user,
-                "service": {
-                    "data": {
-                        "servicename": "Zenodo"
-                    }
-                }
-            }
+                "service": {"data": {"servicename": "Zenodo"}},
+            },
         }
 
         projectId = 5
 
-        pact.given(
-            'user admin has a token in rds'
-        ).upon_receiving(
-            'the currently available token'
-        ).with_request(
-            'GET', '/user/admin/service/Zenodo'
-        ) .will_respond_with(200, body=admintoken)
+        pact.given("user admin has a token in rds").upon_receiving(
+            "the currently available token"
+        ).with_request("GET", "/user/admin/service/Zenodo").will_respond_with(
+            200, body=admintoken
+        )
 
-        pact.given(
-            'user admin exists in zenodo'
-        ).upon_receiving(
-            'user has no deposit'
-        ).with_request(
-            'GET', '/api/deposit/depositions'
-        ) .will_respond_with(200, body=expected)
+        pact.given("user admin exists in zenodo").upon_receiving(
+            "user has no deposit"
+        ).with_request("GET", "/api/deposit/depositions").will_respond_with(
+            200, body=expected
+        )
 
         result = None
         with pact:
             data = {"apiKey": "ASD123GANZSICHA"}
-            result = self.client.get(
-                "/metadata/project", json=data)
+            result = self.client.get("/metadata/project", json=data)
 
         self.assertEqual(result.json, expected)
 
         expected = []
 
-        pact.given(
-            'user admin has a token in rds'
-        ).upon_receiving(
-            'the currently available token'
-        ).with_request(
-            'GET', '/user/admin/service/Zenodo'
-        ) .will_respond_with(200, body=admintoken)
+        pact.given("user admin has a token in rds").upon_receiving(
+            "the currently available token"
+        ).with_request("GET", "/user/admin/service/Zenodo").will_respond_with(
+            200, body=admintoken
+        )
 
-        pact.given(
-            'user admin exists in zenodo'
-        ).upon_receiving(
-            'user has no deposit'
-        ).with_request(
-            'GET', '/api/deposit/depositions'
-        ) .will_respond_with(200, body=expected)
+        pact.given("user admin exists in zenodo").upon_receiving(
+            "user has no deposit"
+        ).with_request("GET", "/api/deposit/depositions").will_respond_with(
+            200, body=expected
+        )
 
         result = None
         with pact:
             data = {"apiKey": "ASD123GANZSICHA"}
-            result = self.client.get(
-                f"/metadata/project/{projectId}", json=data)
+            result = self.client.get(f"/metadata/project/{projectId}", json=data)
 
         self.assertEqual(result.json, expected)
 
@@ -110,40 +95,40 @@ class TestPortZenodo(unittest.TestCase):
         This test try to get something without apiKey, but this should be a Bad request.
         """
 
-        expected = {'message': 'The server could not verify that you are authorized to '
-                    'access the URL requested.  You either supplied the wrong '
-                    'credentials (e.g. a bad password), or your browser '
-                    "doesn't understand how to supply the credentials "
-                    'required.',
-                    'status': 401}
+        expected = {
+            "message": "The server could not verify that you are authorized to "
+            "access the URL requested.  You either supplied the wrong "
+            "credentials (e.g. a bad password), or your browser "
+            "doesn't understand how to supply the credentials "
+            "required.",
+            "status": 401,
+        }
 
-        pact.given(
-            'user admin not exists in zenodo'
-        ).upon_receiving(
-            'user has no deposit'
-        ).with_request(
-            'GET', '/api/deposit/depositions'
-        ) .will_respond_with(401, body=expected)
+        pact.given("user admin not exists in zenodo").upon_receiving(
+            "user has no deposit"
+        ).with_request("GET", "/api/deposit/depositions").will_respond_with(
+            401, body=expected
+        )
 
         with pact:
             result = self.client.get("/metadata/project")
             self.assertEqual(result.status_code, 400, msg=result.json)
 
     def test_with_invalid_apikey(self):
-        expected = {'message': 'The server could not verify that you are authorized to '
-                    'access the URL requested.  You either supplied the wrong '
-                    'credentials (e.g. a bad password), or your browser '
-                    "doesn't understand how to supply the credentials "
-                    'required.',
-                    'status': 401}
+        expected = {
+            "message": "The server could not verify that you are authorized to "
+            "access the URL requested.  You either supplied the wrong "
+            "credentials (e.g. a bad password), or your browser "
+            "doesn't understand how to supply the credentials "
+            "required.",
+            "status": 401,
+        }
 
-        pact.given(
-            'user admin not exists in zenodo'
-        ).upon_receiving(
-            'user has no deposit'
-        ).with_request(
-            'GET', '/api/deposit/depositions'
-        ) .will_respond_with(401, body=expected)
+        pact.given("user admin not exists in zenodo").upon_receiving(
+            "user has no deposit"
+        ).with_request("GET", "/api/deposit/depositions").will_respond_with(
+            401, body=expected
+        )
 
         with pact:
             data = {"apiKey": "ASD123GANZSICHA"}
@@ -151,25 +136,21 @@ class TestPortZenodo(unittest.TestCase):
             self.assertEqual(result.status_code, 401, msg=result.json)
 
     def test_projectId_not_found(self):
-        expected = {
-            "message": "Deposition not found",
-            "status": 404
-        }
+        expected = {"message": "Deposition not found", "status": 404}
 
         projectId = 5
 
-        pact.given(
-            'projectId not exists in zenodo'
-        ).upon_receiving(
-            'user has no deposit'
+        pact.given("projectId not exists in zenodo").upon_receiving(
+            "user has no deposit"
         ).with_request(
-            'GET', f'/api/deposit/depositions/{projectId}'
-        ) .will_respond_with(404, body=expected)
+            "GET", f"/api/deposit/depositions/{projectId}"
+        ).will_respond_with(
+            404, body=expected
+        )
 
         with pact:
             data = {"apiKey": "ASD123GANZSICHA"}
-            result = self.client.get(
-                f"/metadata/project/{projectId}", json=data)
+            result = self.client.get(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 404, msg=result.json)
 
     def test_index_metadata(self):
@@ -184,37 +165,83 @@ class TestPortZenodo(unittest.TestCase):
                 "files": "https://zenodo.org/api/deposit/depositions/1234/files",
                 "publish": "https://zenodo.org/api/deposit/depositions/1234/actions/publish",
                 "newversion": "https://zenodo.org/api/deposit/depositions/1234/actions/newversion",
-                "self": "https://zenodo.org/api/deposit/depositions/1234"
+                "self": "https://zenodo.org/api/deposit/depositions/1234",
             },
             "metadata": {
-                "prereserve_doi": {
-                    "doi": "10.5072/zenodo.1234",
-                    "recid": projectId
-                }
+                "prereserve_doi": {"doi": "10.5072/zenodo.1234", "recid": projectId}
             },
             "modified": "2016-06-15T16:10:03.319371+00:00",
             "owner": 1,
             "record_id": projectId,
             "state": "unsubmitted",
             "submitted": False,
-            "title": ""
+            "title": "",
         }
 
-        pact.given(
-            'access token is valid'
-        ).upon_receiving(
-            'the corresponding user has one deposit as list'
-        ).with_request(
-            'GET', '/api/deposit/depositions'
-        ).will_respond_with(200, body=[expected_body])
+        pact.given("access token is valid").upon_receiving(
+            "the corresponding user has one deposit as list"
+        ).with_request("GET", "/api/deposit/depositions").will_respond_with(
+            200, body=[expected_body]
+        )
 
         with pact:
             data = {"apiKey": "ASD123GANZSICHA"}
-            result = self.client.get(
-                "/metadata/project", json=data)
+            result = self.client.get("/metadata/project", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(
-                result.json, [{"projectId": str(projectId), "metadata": expected_body["metadata"]}])
+                result.json,
+                [{"projectId": str(projectId), "metadata": expected_body["metadata"]}],
+            )
+
+        expected_body = {
+            "created": "2016-06-15T16:10:03.319363+00:00",
+            "files": [],
+            "id": projectId,
+            "links": {
+                "discard": "https://zenodo.org/api/deposit/depositions/1234/actions/discard",
+                "edit": "https://zenodo.org/api/deposit/depositions/1234/actions/edit",
+                "files": "https://zenodo.org/api/deposit/depositions/1234/files",
+                "publish": "https://zenodo.org/api/deposit/depositions/1234/actions/publish",
+                "newversion": "https://zenodo.org/api/deposit/depositions/1234/actions/newversion",
+                "self": "https://zenodo.org/api/deposit/depositions/1234",
+            },
+            "metadata": {
+                "access_right": "open",
+                "creators": [
+                    {"affiliation": "WWU", "name": "Peter Heiss"},
+                    {"name": "Jens Stegmann"},
+                ],
+                "description": "Beispieltest. Ganz viel<br><br>asd mit umbruch",
+                "doi": "",
+                "image_type": "drawing",
+                "license": "CC-BY-4.0",
+                "prereserve_doi": {"doi": "10.5072\/zenodo.662835", "recid": 662835},
+                "publication_date": "2020-09-29",
+                "title": "testtitle123",
+                "upload_type": "image",
+            },
+            "modified": "2016-06-15T16:10:03.319371+00:00",
+            "owner": 1,
+            "record_id": projectId,
+            "state": "unsubmitted",
+            "submitted": False,
+            "title": "",
+        }
+
+        pact.given("access token is valid 2").upon_receiving(
+            "the corresponding user has one deposit as list 2"
+        ).with_request("GET", "/api/deposit/depositions").will_respond_with(
+            200, body=[expected_body]
+        )
+
+        with pact:
+            data = {"apiKey": "ASD123GANZSICHA"}
+            result = self.client.get("/metadata/project", json=data)
+            self.assertEqual(result.status_code, 200)
+            self.assertNotEqual(
+                result.json,
+                [{"projectId": str(projectId), "metadata": expected_body["metadata"]}],
+            )
 
     def test_get_metadata(self):
         projectId = 5
@@ -231,38 +258,88 @@ class TestPortZenodo(unittest.TestCase):
                     "files": "https://zenodo.org/api/deposit/depositions/1234/files",
                     "publish": "https://zenodo.org/api/deposit/depositions/1234/actions/publish",
                     "newversion": "https://zenodo.org/api/deposit/depositions/1234/actions/newversion",
-                    "self": "https://zenodo.org/api/deposit/depositions/1234"
+                    "self": "https://zenodo.org/api/deposit/depositions/1234",
                 },
                 "metadata": {
-                    "prereserve_doi": {
-                        "doi": "10.5072/zenodo.1234",
-                        "recid": 1234
-                    }
+                    "prereserve_doi": {"doi": "10.5072/zenodo.1234", "recid": 1234}
                 },
                 "modified": "2016-06-15T16:10:03.319371+00:00",
                 "owner": 1,
                 "record_id": 1234,
                 "state": "unsubmitted",
                 "submitted": False,
-                "title": ""
-            }
+                "title": "",
+            },
         }
 
-        pact.given(
-            'access token is valid'
-        ).upon_receiving(
-            'the corresponding user has a deposit'
+        pact.given("access token is valid").upon_receiving(
+            "the corresponding user has a deposit"
         ).with_request(
-            'GET', f'/api/deposit/depositions/{projectId}'
-        ).will_respond_with(200, body=expected_body)
+            "GET", f"/api/deposit/depositions/{projectId}"
+        ).will_respond_with(
+            200, body=expected_body
+        )
 
         with pact:
             data = {"apiKey": "ASD123GANZSICHA"}
-            result = self.client.get(
-                f"/metadata/project/{projectId}", json=data)
+            result = self.client.get(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
-            self.assertEqual(
-                result.json, expected_body["metadata"])
+            self.assertEqual(result.json, expected_body["metadata"])
+
+        expected_body = {
+            "projectId": projectId,
+            "metadata": {
+                "created": "2016-06-15T16:10:03.319363+00:00",
+                "files": [],
+                "id": 1234,
+                "links": {
+                    "discard": "https://zenodo.org/api/deposit/depositions/1234/actions/discard",
+                    "edit": "https://zenodo.org/api/deposit/depositions/1234/actions/edit",
+                    "files": "https://zenodo.org/api/deposit/depositions/1234/files",
+                    "publish": "https://zenodo.org/api/deposit/depositions/1234/actions/publish",
+                    "newversion": "https://zenodo.org/api/deposit/depositions/1234/actions/newversion",
+                    "self": "https://zenodo.org/api/deposit/depositions/1234",
+                },
+                "metadata": {
+                    "access_right": "open",
+                    "creators": [
+                        {"affiliation": "WWU", "name": "Peter Heiss"},
+                        {"name": "Jens Stegmann"},
+                    ],
+                    "description": "Beispieltest. Ganz viel<br><br>asd mit umbruch",
+                    "doi": "",
+                    "image_type": "drawing",
+                    "license": "CC-BY-4.0",
+                    "prereserve_doi": {
+                        "doi": "10.5072\/zenodo.662835",
+                        "recid": 662835,
+                    },
+                    "publication_date": "2020-09-29",
+                    "title": "testtitle123",
+                    "upload_type": "image",
+                },
+                "modified": "2016-06-15T16:10:03.319371+00:00",
+                "owner": 1,
+                "record_id": 1234,
+                "state": "unsubmitted",
+                "submitted": False,
+                "title": "",
+            },
+        }
+
+        pact.given("access token is valid 2").upon_receiving(
+            "the corresponding user has a deposit 2"
+        ).with_request(
+            "GET", f"/api/deposit/depositions/{projectId}"
+        ).will_respond_with(
+            200, body=expected_body
+        )
+
+        with pact:
+            data = {"apiKey": "ASD123GANZSICHA"}
+            result = self.client.get(f"/metadata/project/{projectId}", json=data)
+            self.assertEqual(result.status_code, 200)
+            self.assertNotEqual(result.json, expected_body["metadata"])
 
     def test_patch_metadata(self):
         projectId = 5
@@ -277,77 +354,70 @@ class TestPortZenodo(unittest.TestCase):
                 "files": "https://zenodo.org/api/deposit/depositions/1234/files",
                 "publish": "https://zenodo.org/api/deposit/depositions/1234/actions/publish",
                 "newversion": "https://zenodo.org/api/deposit/depositions/1234/actions/newversion",
-                "self": "https://zenodo.org/api/deposit/depositions/1234"
+                "self": "https://zenodo.org/api/deposit/depositions/1234",
             },
             "metadata": {
-                "prereserve_doi": {
-                    "doi": "10.5072/zenodo.1234",
-                    "recid": 1234
-                }
+                "prereserve_doi": {"doi": "10.5072/zenodo.1234", "recid": 1234}
             },
             "modified": "2016-06-15T16:10:03.319371+00:00",
             "owner": 1,
             "record_id": 1234,
             "state": "unsubmitted",
             "submitted": False,
-            "title": ""
+            "title": "",
         }
 
         updated_metadata = {
-            'title': 'My first upload',
-            'upload_type': 'poster',
-            'description': 'This is my first upload',
-            'creators': [{'name': 'Doe, John',
-                          'affiliation': 'Zenodo'}]
+            "title": "My first upload",
+            "upload_type": "poster",
+            "description": "This is my first upload",
+            "creators": [{"name": "Doe, John", "affiliation": "Zenodo"}],
         }
 
         expected_body["metadata"] = updated_metadata
 
-        pact.given(
-            'access token is valid'
-        ).upon_receiving(
-            'the corresponding user has an updated deposit'
+        pact.given("access token is valid").upon_receiving(
+            "the corresponding user has an updated deposit"
         ).with_request(
-            'PUT', f'/api/deposit/depositions/{projectId}'
-        ).will_respond_with(200, body=expected_body)
+            "PUT", f"/api/deposit/depositions/{projectId}"
+        ).will_respond_with(
+            200, body=expected_body
+        )
 
         with pact:
             data = {"apiKey": "ASD123GANZSICHA"}
-            result = self.client.patch(
-                f"/metadata/project/{projectId}", json=data)
+            result = self.client.patch(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(result.json, updated_metadata)
 
-        pact.given(
-            'access token is valid'
-        ).upon_receiving(
-            'the corresponding user has an updated deposit and has a title metadata'
+        pact.given("access token is valid").upon_receiving(
+            "the corresponding user has an updated deposit and has a title metadata"
         ).with_request(
-            'PUT', f'/api/deposit/depositions/{projectId}'
-        ).will_respond_with(200, body=expected_body)
+            "PUT", f"/api/deposit/depositions/{projectId}"
+        ).will_respond_with(
+            200, body=expected_body
+        )
 
         with pact:
             data = {"apiKey": "ASD123GANZSICHA", "metadata": {"title": ""}}
-            result = self.client.patch(
-                f"/metadata/project/{projectId}", json=data)
+            result = self.client.patch(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(result.json, updated_metadata)
 
     def test_delete_metadata(self):
         projectId = 5
 
-        pact.given(
-            'access token is valid'
-        ).upon_receiving(
-            'the corresponding user has a deposit which can be deleted'
+        pact.given("access token is valid").upon_receiving(
+            "the corresponding user has a deposit which can be deleted"
         ).with_request(
-            'DELETE', f'/api/deposit/depositions/{projectId}'
-        ).will_respond_with(201, body="")
+            "DELETE", f"/api/deposit/depositions/{projectId}"
+        ).will_respond_with(
+            201, body=""
+        )
 
         with pact:
             data = {"apiKey": "ASD123GANZSICHA"}
-            result = self.client.delete(
-                f"/metadata/project/{projectId}", json=data)
+            result = self.client.delete(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 204)
 
     def test_create_metadata(self):
@@ -361,60 +431,52 @@ class TestPortZenodo(unittest.TestCase):
                 "files": "https://zenodo.org/api/deposit/depositions/1234/files",
                 "publish": "https://zenodo.org/api/deposit/depositions/1234/actions/publish",
                 "newversion": "https://zenodo.org/api/deposit/depositions/1234/actions/newversion",
-                "self": "https://zenodo.org/api/deposit/depositions/1234"
+                "self": "https://zenodo.org/api/deposit/depositions/1234",
             },
             "metadata": {
-                "prereserve_doi": {
-                    "doi": "10.5072/zenodo.1234",
-                    "recid": 1234
-                }
+                "prereserve_doi": {"doi": "10.5072/zenodo.1234", "recid": 1234}
             },
             "modified": "2016-06-15T16:10:03.319371+00:00",
             "owner": 1,
             "record_id": 1234,
             "state": "unsubmitted",
             "submitted": False,
-            "title": ""
+            "title": "",
         }
 
-        pact.given(
-            'access token is valid'
-        ).upon_receiving(
-            'the corresponding user can create a deposit.'
-        ).with_request(
-            'POST', '/api/deposit/depositions'
-        ).will_respond_with(201, body=expected_body)
+        pact.given("access token is valid").upon_receiving(
+            "the corresponding user can create a deposit."
+        ).with_request("POST", "/api/deposit/depositions").will_respond_with(
+            201, body=expected_body
+        )
 
         with pact:
             data = {"apiKey": "ASD123GANZSICHA"}
             result = self.client.post("/metadata/project", json=data)
             self.assertEqual(result.status_code, 200)
 
-        pact.given(
-            'access token is valid'
-        ).upon_receiving(
-            'the corresponding user can create a next deposit'
-        ).with_request(
-            'POST', '/api/deposit/depositions'
-        ).will_respond_with(201, body=expected_body)
+        pact.given("access token is valid").upon_receiving(
+            "the corresponding user can create a next deposit"
+        ).with_request("POST", "/api/deposit/depositions").will_respond_with(
+            201, body=expected_body
+        )
 
         updated_metadata = {
-            'title': 'My first upload',
-            'upload_type': 'poster',
-            'description': 'This is my first upload',
-            'creators': [{'name': 'Doe, John',
-                          'affiliation': 'Zenodo'}]
+            "title": "My first upload",
+            "upload_type": "poster",
+            "description": "This is my first upload",
+            "creators": [{"name": "Doe, John", "affiliation": "Zenodo"}],
         }
 
         expected_body["metadata"] = updated_metadata
 
-        pact.given(
-            'access token is valid'
-        ).upon_receiving(
-            'the corresponding user can update the newly created deposit'
+        pact.given("access token is valid").upon_receiving(
+            "the corresponding user can update the newly created deposit"
         ).with_request(
-            'PUT', f'/api/deposit/depositions/{expected_body["id"]}'
-        ).will_respond_with(200, body=expected_body)
+            "PUT", f'/api/deposit/depositions/{expected_body["id"]}'
+        ).will_respond_with(
+            200, body=expected_body
+        )
 
         with pact:
             data = {"apiKey": "ASD123GANZSICHA", "metadata": updated_metadata}
@@ -425,13 +487,17 @@ class TestPortZenodo(unittest.TestCase):
     @unittest.skip
     def test_create_deposition_and_upload_file(self):
 
-        pact.given(
-            'user admin has a token in rds'
-        ).upon_receiving(
-            'the currently available token'
-        ).with_request(
-            'GET', '/user/admin/service/Zenodo'
-        ) .will_respond_with(200, body={"data": {"access_token": api_key, "service": {"data": {"servicename": "Zenodo"}}}})
+        pact.given("user admin has a token in rds").upon_receiving(
+            "the currently available token"
+        ).with_request("GET", "/user/admin/service/Zenodo").will_respond_with(
+            200,
+            body={
+                "data": {
+                    "access_token": api_key,
+                    "service": {"data": {"servicename": "Zenodo"}},
+                }
+            },
+        )
 
         result = None
         with pact:
@@ -441,5 +507,5 @@ class TestPortZenodo(unittest.TestCase):
         self.assertEqual(result.json, {"success": True})
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

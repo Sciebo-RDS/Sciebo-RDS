@@ -84,7 +84,18 @@ def get(project_id):
 
     depoResponse = g.zenodo.get_deposition(id=int(project_id), metadataFilter=req)
 
-    return jsonify(depoResponse)
+    logger.debug("depo reponse: {}".format(depoResponse))
+
+    output = depoResponse
+    try:
+        output["metadata"] = to_jsonld(depoResponse["metadata"])
+
+    except Exception as e:
+        logger.error(e)
+
+    logger.debug("output: {}".format(output))
+
+    return jsonify(output)
 
 
 @require_api_key
