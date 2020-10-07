@@ -46,22 +46,40 @@ def to_jsonld(metadata):
     except:
         zenodocategory = metadata["upload_type"]
 
+    metadata["zenodocategory"] = zenodocategory
+
     creators = []
 
     for creator in metadata["creators"]:
         creators.append(parse_creator(creator))
 
-    jsonld = {
-        zenodo_to_jsonld["title"]: metadata["title"],
-        zenodo_to_jsonld["description"]: metadata["description"],
-        zenodo_to_jsonld["doi"]: metadata["prereserve_doi"]["doi"],
-        zenodo_to_jsonld["license"]: metadata["license"],
-        zenodo_to_jsonld["publication_date"]: metadata["publication_date"],
-        zenodo_to_jsonld["zenodocategory"]: zenodocategory,
-        zenodo_to_jsonld["creators"]: creators,
-        zenodo_to_jsonld["id"]: metadata["prereserve_doi"]["recid"],
-        zenodo_to_jsonld["access_right"]: metadata["access_right"] == "open",
-    }
+    jsonld = {zenodo_to_jsonld["creators"]: creators}
+
+    parameterlist = [
+        ("title"),
+        ("description"),
+        ("doi", ["prereserve_doi", "doi"]),
+        ("id", ["prereserve_doi", "recid"]),
+        ("access_right"),
+        ("publication_date"),
+        ("zenodocategory"),
+    ]
+
+    for parameter in parameterlist:
+        try:
+            left, right = parameter
+            data = metadata
+
+            for attr in right:
+                data = data[attr]
+
+            jsonld[zenodo_to_jsonld[left]] = data
+        except:
+            jsonld[zenodo_to_jsonld[parameter]] = metadata[parameter]
+
+    jsonld[zenodo_to_jsonld["access_right"]] = (
+        jsonld[zenodo_to_jsonld["access_right"]] == "open",
+    )
 
     return jsonld
 
@@ -84,7 +102,7 @@ def index():
             )
 
     except Exception as e:
-        logger.error(e)
+        logger.error(e, exc_info=True)
 
         output = []
         for depo in depoResponse:
@@ -108,7 +126,7 @@ def get(project_id):
         output["metadata"] = to_jsonld(depoResponse["metadata"])
 
     except Exception as e:
-        logger.error(e)
+        logger.error(e, exc_info=True)
 
     logger.debug("output: {}".format(output))
 
