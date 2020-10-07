@@ -90,7 +90,7 @@ class Storage:
                     )
                 except Exception as e:
                     logger.error(e)
-                    logger.debug("Cluster has an error, try standardalone redis")
+                    logger.debug("Cluster has an error, try standalone redis")
                     from redis import Redis
 
                     rc = Redis(**(startup_nodes[0]), db=0, decode_responses=True,)
@@ -128,7 +128,7 @@ class Storage:
     def services(self):
         try:
             servicelist = list(self._services.values())
-            logger.debug("get services: {}".format(servicelist))
+            logger.debug("get services: {}".format([service.to_json() for service in servicelist]))
             return servicelist
         except:
             return self._services
