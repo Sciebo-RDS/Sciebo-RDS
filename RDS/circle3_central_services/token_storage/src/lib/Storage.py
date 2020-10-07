@@ -101,7 +101,7 @@ class Storage:
             self._services = redis_pubsub_dict.RedisDict(rc, "tokenstorage_services")
 
             logger.debug("set methods to redis backed dict to use it as list")
-            self._services.append = append.__get__(self._services, type(self._services))
+            self._services.append = append.__get__(self._services)
         except Exception as e:
             logger.error(e)
             logger.info("no redis found.")
@@ -127,7 +127,9 @@ class Storage:
     @property
     def services(self):
         try:
-            return list(self._services.values())
+            servicelist = list(self._services.values())
+            logger.debug("get services: {}".format(servicelist))
+            return servicelist
         except:
             return self._services
 
@@ -472,7 +474,9 @@ class Storage:
 
                 raise UserHasTokenAlreadyError(self, user, token)
 
-        except ValueError:
+        except ValueError as e:
+            logger.error(e, exc_info=True)
+
             # token not found in storage, so we can add it here.
             data = self._storage[user.username]
             data["tokens"].append(token)
