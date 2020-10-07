@@ -41,7 +41,7 @@ def to_jsonld(metadata):
 
     try:
         zenodocategory = "{}/{}".format(
-            metadata["upload_type"], "{}_type".format(metadata["upload_type"])
+            metadata["upload_type"], metadata["{}_type".format(metadata["upload_type"])]
         )
     except:
         zenodocategory = metadata["upload_type"]
@@ -63,7 +63,7 @@ def to_jsonld(metadata):
         ("access_right"),
         ("publication_date"),
         ("zenodocategory"),
-        ("license")
+        ("license"),
     ]
 
     for parameter in parameterlist:
