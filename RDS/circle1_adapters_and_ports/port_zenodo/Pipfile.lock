@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c5ddab7a71993d67d0d28b571a741d9643cb8aaf7be01c45b93220f14c86cd84"
+            "sha256": "debcf556bd065a1f5f636f97215943d3669d0c86aed51155cdfbbac77c7eec4c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -81,11 +81,11 @@
         },
         "connexion-plus": {
             "hashes": [
-                "sha256:2559c5c0fe9171d03c4cd489e28efdfb49648489c062a50f3ebccfac3e83edf8",
-                "sha256:da9dac6ecb96665cbf21365d1b811e6acbe390c160b3029d040a035fd406f8d5"
+                "sha256:925c1cf142cfc2f9eb52cd7305e45b885c479df8d41db49fdc1931cefc6fb7d2",
+                "sha256:989fc1c783e7e23dfc3dff7d57cad6441c19873475d7fc95e8e8633f30b08e5e"
             ],
             "index": "pypi",
-            "version": "==0.38"
+            "version": "==0.37"
         },
         "contextlib2": {
             "hashes": [

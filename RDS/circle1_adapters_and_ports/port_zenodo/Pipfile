@@ -14,7 +14,7 @@ requests = "*"
 jaeger-client = "*"
 gevent = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
-connexion-plus = "*"
+connexion-plus = "==0.37"
 flask-cors = "*"
 jsonschema = "*"
 PyLD = "*"
