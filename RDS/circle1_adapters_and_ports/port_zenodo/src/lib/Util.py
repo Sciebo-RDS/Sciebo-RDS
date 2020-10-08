@@ -98,13 +98,18 @@ def to_jsonld(metadata):
 
         return output
 
+    zenodocategory = None
     try:
+        zenodocategory = metadata["upload_type"]
         zenodocategory = "{}/{}".format(
             metadata["upload_type"], metadata["{}_type".format(metadata["upload_type"])]
         )
     except:
-        zenodocategory = metadata["upload_type"]
-    
+        pass
+
+    if zenodocategory is not None:
+        jsonld[zenodo_to_jsonld["zenodocategory"]] = zenodocategory
+
     
     creators = []
 
@@ -112,7 +117,6 @@ def to_jsonld(metadata):
         creators.append(parse_creator(creator))
 
     jsonld = {zenodo_to_jsonld["creators"]: creators}
-    jsonld[zenodo_to_jsonld["zenodocategory"]] = zenodocategory
 
     parameterlist = [
         ("title"),
