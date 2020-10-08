@@ -215,7 +215,7 @@ class TestPortZenodo(unittest.TestCase):
                 "doi": "",
                 "image_type": "drawing",
                 "license": "CC-BY-4.0",
-                "prereserve_doi": {"doi": "10.5072\/zenodo.662835", "recid": 662835},
+                "prereserve_doi": {"doi": "10.5072/zenodo.662835", "recid": 662835},
                 "publication_date": "2020-09-29",
                 "title": "testtitle123",
                 "upload_type": "image",
@@ -311,7 +311,7 @@ class TestPortZenodo(unittest.TestCase):
                     "image_type": "drawing",
                     "license": "CC-BY-4.0",
                     "prereserve_doi": {
-                        "doi": "10.5072\/zenodo.662835",
+                        "doi": "10.5072/zenodo.662835",
                         "recid": 662835,
                     },
                     "publication_date": "2020-09-29",
@@ -505,6 +505,67 @@ class TestPortZenodo(unittest.TestCase):
             result = self.client.get("/metadata/project", data=data)
 
         self.assertEqual(result.json, {"success": True})
+
+    def test_metadata_update_jsonld(self):
+        import json
+
+        metadata = {
+            "https://schema.org/creator": [
+                {
+                    "https://schema.org/affiliation": "Zenodo",
+                    "https://schema.org/name": "Doe, John",
+                }
+            ],
+            "https://schema.org/description": "This is my first upload",
+            "https://schema.org/identifier": 1234,
+            "https://schema.org/publicAccess": True,
+            "https://schema.org/title": "My first upload",
+            "https://www.research-data-services.org/jsonld/zenodocategory": "poster",
+            "https://www.research-data-services.org/jsonld/doi": "10.5072/zenodo.1234",
+        }
+
+        projectId = 5
+
+        expected_body = {
+            "created": "2016-06-15T16:10:03.319363+00:00",
+            "files": [],
+            "id": 1234,
+            "links": {
+                "discard": "https://zenodo.org/api/deposit/depositions/1234/actions/discard",
+                "edit": "https://zenodo.org/api/deposit/depositions/1234/actions/edit",
+                "files": "https://zenodo.org/api/deposit/depositions/1234/files",
+                "publish": "https://zenodo.org/api/deposit/depositions/1234/actions/publish",
+                "newversion": "https://zenodo.org/api/deposit/depositions/1234/actions/newversion",
+                "self": "https://zenodo.org/api/deposit/depositions/1234",
+            },
+            "metadata": {
+                "title": "My first upload",
+                "upload_type": "poster",
+                "description": "This is my first upload",
+                "creators": [{"name": "Doe, John", "affiliation": "Zenodo"}],
+                "prereserve_doi": {"doi": "10.5072/zenodo.1234", "recid": 1234},
+            },
+            "modified": "2016-06-15T16:10:03.319371+00:00",
+            "owner": 1,
+            "record_id": 1234,
+            "state": "unsubmitted",
+            "submitted": False,
+            "title": "",
+        }
+
+        pact.given("access token is valid").upon_receiving(
+            "the corresponding user has an updated deposit with"
+        ).with_request(
+            "PUT", f"/api/deposit/depositions/{projectId}"
+        ).will_respond_with(
+            200, body=expected_body
+        )
+
+        with pact:
+            data = {"apiKey": "ASD123GANZSICHA", "metadata": metadata}
+            result = self.client.patch(f"/metadata/project/{projectId}", json=data)
+            self.assertEqual(result.status_code, 200)
+            self.assertEqual(result.json, metadata)
 
 
 if __name__ == "__main__":

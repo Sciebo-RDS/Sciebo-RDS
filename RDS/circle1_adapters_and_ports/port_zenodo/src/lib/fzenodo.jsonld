@@ -1,0 +1,22 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.0/context",
+        {
+            "@vocab": "https://schema.org/",
+            "upload_type": {
+                "@id": "https://www.research-data-services.org/jsonld/zenodocategory/"
+            }
+        }
+    ],
+    "@explicit": "true",
+    "@type": "Dataset",
+    "title": {},
+    "upload_type": {},
+    "description": {},
+    "creator": {
+        "@explicit": "true",
+        "name": {},
+        "affiliation": {}
+    },
+    "datePublished": {}
+}
