@@ -108,11 +108,12 @@ def to_jsonld(metadata):
         pass
 
 
-    
     creators = []
-
-    for creator in metadata["creators"]:
-        creators.append(parse_creator(creator))
+    try:
+        for creator in metadata["creators"]:
+            creators.append(parse_creator(creator))
+    except:
+        pass
 
     jsonld = {zenodo_to_jsonld["creators"]: creators}
     if zenodocategory is not None:
