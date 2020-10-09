@@ -560,7 +560,7 @@ class TestPortZenodo(unittest.TestCase):
         }
 
         pact.given("access token is valid").upon_receiving(
-            "the corresponding user has an updated deposit with 1234"
+            "the corresponding user has an deposit no metadata"
         ).with_request(
             "GET", f"/api/deposit/depositions/{projectId}"
         ).will_respond_with(
@@ -577,7 +577,7 @@ class TestPortZenodo(unittest.TestCase):
         expected_body["metadata"] = incomplete
 
         pact.given("access token is valid").upon_receiving(
-            "the corresponding user has an updated deposit with 123"
+            "the corresponding user has a deposit with full metadata"
         ).with_request(
             "GET", f"/api/deposit/depositions/{projectId}"
         ).will_respond_with(
