@@ -295,13 +295,18 @@ class Storage:
             index = 0
             svc = None
 
+        logger.debug("use index: {}, svc: {}".format(index, svc))
+
         if svc is not None:
+            logger.debug("service found")
             if Force is True:
+                logger.debug("found Force, update service")
                 self._services[index] = service
                 return True
 
             from RDS.ServiceException import ServiceExistsAlreadyError
 
+            logger.debug("raise ServiceExistsAlreadyError")
             raise ServiceExistsAlreadyError(service)
 
         self._services.append(service)
@@ -599,8 +604,8 @@ class Storage:
 
         for index, service in enumerate(services):
             logger.debug(
-                "test {} against {}, result: {}".format(
-                    service.servicename, servicename, service.servicename == servicename
+                "Is {} equal to {}?, result: {}".format(
+                    servicename, service.servicename, service.servicename == servicename
                 )
             )
             if service.servicename == servicename:
