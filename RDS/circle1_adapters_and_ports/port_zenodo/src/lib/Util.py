@@ -85,6 +85,7 @@ zenodo_to_jsonld = {
 def to_jsonld(metadata):
     def parse_creator(user):
         output = {}
+        errors = False
 
         parameterlist = [
             ("affiliation"),
@@ -95,24 +96,24 @@ def to_jsonld(metadata):
                 output[zenodo_to_jsonld[parameter]] = creator[parameter]
             except KeyError as e:
                 logger.error(e)
+                errors = True
 
         return output
 
-    zenodocategory = None
     try:
-        zenodocategory = metadata["upload_type"]
         zenodocategory = "{}/{}".format(
             metadata["upload_type"], metadata["{}_type".format(metadata["upload_type"])]
         )
     except:
-        pass
-
+        zenodocategory = metadata["upload_type"]
 
     creators = []
+
     for creator in metadata["creators"]:
         creators.append(parse_creator(creator))
 
     jsonld = {zenodo_to_jsonld["creators"]: creators}
+
     if zenodocategory is not None:
         jsonld[zenodo_to_jsonld["zenodocategory"]] = zenodocategory
 
@@ -139,7 +140,7 @@ def to_jsonld(metadata):
                 jsonld[zenodo_to_jsonld[parameter]] = metadata[parameter]
             except KeyError as e:
                 logger.debug("key {} not found.".format(e))
-    
+
     try:
         publicAccess = metadata["access_right"] == "open"
         jsonld[zenodo_to_jsonld["access_right"]] = publicAccess
@@ -164,8 +165,8 @@ def from_jsonld(jsonld_data):
 
     data["creators"] = []
 
-    data["publication_date"] = data["datePublished"]
-    del data["datePublished"]
+    data["publication_date"] = data[zenodo_to_jsonld["publication_date"]]
+    del data[zenodo_to_jsonld["publication_date"]]
 
     for creator in data["creator"]:
         try:

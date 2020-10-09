@@ -506,7 +506,92 @@ class TestPortZenodo(unittest.TestCase):
 
         self.assertEqual(result.json, {"success": True})
 
-    def test_metadata_update_jsonld(self):
+    def test_metadata_get_jsonld_missing(self):
+        import json
+
+        projectId = 5
+
+        incomplete = {
+            "prereserve_doi": {"doi": "10.5072/zenodo.1234", "recid": 1234},
+        }
+
+        complete = {
+            "title": "My first upload",
+            "upload_type": "poster",
+            "description": "This is my first upload",
+            "creators": [{"name": "Doe, John", "affiliation": "Zenodo"}],
+            "prereserve_doi": {"doi": "10.5072/zenodo.1234", "recid": 1234},
+        }
+
+        expected_body = {
+            "created": "2016-06-15T16:10:03.319363+00:00",
+            "files": [],
+            "id": 1234,
+            "links": {
+                "discard": "https://zenodo.org/api/deposit/depositions/1234/actions/discard",
+                "edit": "https://zenodo.org/api/deposit/depositions/1234/actions/edit",
+                "files": "https://zenodo.org/api/deposit/depositions/1234/files",
+                "publish": "https://zenodo.org/api/deposit/depositions/1234/actions/publish",
+                "newversion": "https://zenodo.org/api/deposit/depositions/1234/actions/newversion",
+                "self": "https://zenodo.org/api/deposit/depositions/1234",
+            },
+            "metadata": complete,
+            "modified": "2016-06-15T16:10:03.319371+00:00",
+            "owner": 1,
+            "record_id": 1234,
+            "state": "unsubmitted",
+            "submitted": False,
+            "title": "",
+        }
+
+        metadata = {
+            "https://schema.org/creator": [
+                {
+                    "https://schema.org/affiliation": "Zenodo",
+                    "https://schema.org/name": "Doe, John",
+                }
+            ],
+            "https://schema.org/description": "This is my first upload",
+            "https://schema.org/identifier": 1234,
+            "https://schema.org/publicAccess": True,
+            "https://schema.org/title": "My first upload",
+            "https://www.research-data-services.org/jsonld/zenodocategory": "poster",
+            "https://www.research-data-services.org/jsonld/doi": "10.5072/zenodo.1234",
+        }
+
+        pact.given("access token is valid").upon_receiving(
+            "the corresponding user has an updated deposit with 1234"
+        ).with_request(
+            "GET", f"/api/deposit/depositions/{projectId}"
+        ).will_respond_with(
+            200, body=expected_body
+        )
+
+        # should return jsonld
+        with pact:
+            data = {"apiKey": "ASD123GANZSICHA"}
+            result = self.client.get(f"/metadata/project/{projectId}", json=data)
+            self.assertEqual(result.status_code, 200)
+            self.assertEqual(result.json, metadata)
+
+        expected_body["metadata"] = incomplete
+
+        pact.given("access token is valid").upon_receiving(
+            "the corresponding user has an updated deposit with 123"
+        ).with_request(
+            "GET", f"/api/deposit/depositions/{projectId}"
+        ).will_respond_with(
+            200, body=expected_body
+        )
+
+        # should return zenodo specific api dataset, because there was an error in transfomration
+        with pact:
+            data = {"apiKey": "ASD123GANZSICHA"}
+            result = self.client.get(f"/metadata/project/{projectId}", json=data)
+            self.assertEqual(result.status_code, 200)
+            self.assertEqual(result.json, expected_body["metadata"])
+
+    def test_metadata_update_jsonld_complete(self):
         import json
 
         metadata = {

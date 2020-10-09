@@ -15,24 +15,18 @@ def index():
     depoResponse = g.zenodo.get_deposition(metadataFilter=req)
     logger.debug("depo response: {}".format(depoResponse))
 
-    try:
-        output = []
-        for depo in depoResponse:
-            output.append(
-                {
-                    "projectId": str(depo["prereserve_doi"]["recid"]),
-                    "metadata": to_jsonld(depo),
-                }
-            )
+    output = []
+    for depo in depoResponse:
+        try:
+            metadata = to_jsonld(depo)
 
-    except Exception as e:
-        logger.error(e, exc_info=True)
+        except Exception as e:
+            logger.error(e, exc_info=True)
+            metadata = depo
 
-        output = []
-        for depo in depoResponse:
-            output.append(
-                {"projectId": str(depo["prereserve_doi"]["recid"]), "metadata": depo}
-            )
+        output.append(
+            {"projectId": str(depo["prereserve_doi"]["recid"]), "metadata": metadata,}
+        )
 
     return jsonify(output)
 
@@ -47,10 +41,11 @@ def get(project_id):
 
     output = depoResponse
     try:
-        output["metadata"] = to_jsonld(depoResponse["metadata"])
+        output = to_jsonld(depoResponse.get("metadata") or depoResponse)
 
     except Exception as e:
         logger.error(e, exc_info=True)
+        output = depoResponse
 
     logger.debug("output: {}".format(output))
 

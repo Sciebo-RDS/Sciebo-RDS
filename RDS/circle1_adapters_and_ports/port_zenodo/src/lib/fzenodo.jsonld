@@ -4,7 +4,7 @@
         {
             "@vocab": "https://schema.org/",
             "upload_type": {
-                "@id": "https://www.research-data-services.org/jsonld/zenodocategory/"
+                "@id": "https://www.research-data-services.org/jsonld/zenodocategory"
             }
         }
     ],
