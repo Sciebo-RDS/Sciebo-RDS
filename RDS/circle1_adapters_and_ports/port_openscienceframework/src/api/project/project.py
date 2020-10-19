@@ -31,9 +31,7 @@ def get(project_id):
 
 @require_api_key
 def post():
-    default_data = {"title": "Created by Sciebo RDS", "osf_category": "project"}
-
-    req = request.json.get("metadata", default_data)
+    req = request.json.get("metadata")
 
     try:
         try:
@@ -41,7 +39,7 @@ def post():
 
         except:
             project = g.osf.create_project(
-                req["title"],
+                req.get("title", "Created by Sciebo RDS"),
                 req.get("osf_category", "project"),
                 description=req.get("description", ""),
                 tags=req.get("tags", ""),
