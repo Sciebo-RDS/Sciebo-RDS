@@ -31,7 +31,9 @@ def get(project_id):
 
 @require_api_key
 def post():
-    req = request.json.get("metadata")
+    default_data = {"title": "Created by Sciebo RDS", "osf_category": "project"}
+
+    req = request.json.get("metadata", default_data)
 
     try:
         try:
@@ -45,11 +47,10 @@ def post():
                 tags=req.get("tags", ""),
             )
 
-        return jsonify(
-            {"projectId": project.id, "metadata": project.metadata(jsonld=True)}
-        )
     except:
         abort(500)
+
+    return jsonify({"projectId": project.id, "metadata": project.metadata(jsonld=True)})
 
 
 @require_api_key
