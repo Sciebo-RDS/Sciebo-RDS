@@ -31,7 +31,7 @@ def get(project_id):
 
 @require_api_key
 def post():
-    req = request.json.get("metadata")
+    req = request.json.get("metadata", {})
 
     try:
         try:
