@@ -38,12 +38,17 @@ def post():
             project = g.osf.create_project_jsonld(req)
 
         except:
-            project = g.osf.create_project(
+            args = (
                 req.get("title", "Created by Sciebo RDS"),
                 req.get("osf_category", "project"),
-                description=req.get("description", ""),
-                tags=req.get("tags", ""),
             )
+            kwargs = {
+                "description": req.get("description", ""),
+                "tags": req.get("tags", ""),
+            }
+
+            logger.debug("send args: {}, kwargs: {}".format(args, kwargs))
+            project = g.osf.create_project(*args, **kwargs)
 
     except:
         abort(500)
