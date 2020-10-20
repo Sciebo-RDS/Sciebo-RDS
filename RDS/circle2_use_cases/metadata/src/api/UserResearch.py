@@ -1,6 +1,8 @@
 from lib.Metadata import Metadata
+from lib.Research import Research
 from flask import jsonify, current_app, request
 import requests, os
+from io import BytesIO
 
 
 def get(user_id, research_index):
@@ -17,6 +19,61 @@ def get(user_id, research_index):
 
 def patch(user_id, research_index):
     req = request.json
+
+    if req is None or not req:
+        # TODO: build in here the ro-crate upload to c1 services
+        # get ro crate file from portIn
+        crates = []
+
+        researchObj = Research(user_id=user_id, research_index=research_index)
+        for port in researchObj.portIn():
+            filepath = ""
+
+            for prop in port["properties"]:
+                if prop["portType"] == "customProperties":
+                    for cProp in prop["value"]:
+                        if cProp["key"] == "filepath":
+                            if str(cProp["value"]).endswith("/"):
+                                filepath = "{}{}".format(
+                                    cProp["value"], "ro-crate-metadata.json"
+                                )
+                            else:
+                                filepath = "{}{}".format(
+                                    cProp["value"], "/ro-crate-metadata.json"
+                                )
+
+            data = {"filepath": filepath, "userId": user_id}
+
+            crates.append(
+                BytesIO(
+                    requests.get(
+                        "http://circle1-{}/storage/file".format(port.port), json=data
+                    ).content
+                )
+                .read()
+                .decode("UTF-8")
+            )
+
+        # push ro crate file to all portOut
+        for crate in crates:
+            for port in researchObj.portOut():
+                projectId = ""
+
+                for prop in port["properties"]:
+                    if prop["portType"] == "customProperties":
+                        for cProp in prop["value"]:
+                            if cProp["key"] == "projectId":
+                                projectId = cProp["value"]
+
+                data = {"userId": user_id, "metadata": crate}
+                requests.patch(
+                    "http://circle1-{}/metadata/project/{}".format(
+                        port["port"], projectId
+                    ),
+                    json=data,
+                )
+
+        return "", 202
 
     mdService = Metadata(testing=current_app.config.get("TESTING"))
     research_id = mdService.getResearchId(user_id, research_index)
