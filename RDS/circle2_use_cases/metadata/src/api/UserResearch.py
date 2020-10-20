@@ -1,7 +1,7 @@
 from lib.Metadata import Metadata
 from lib.Research import Research
 from flask import jsonify, current_app, request
-import requests, os
+import requests, os, json
 from io import BytesIO
 
 
@@ -45,13 +45,16 @@ def patch(user_id, research_index):
             data = {"filepath": filepath, "userId": user_id}
 
             crates.append(
-                BytesIO(
-                    requests.get(
-                        "http://circle1-{}/storage/file".format(port.port), json=data
-                    ).content
+                json.loads(
+                    BytesIO(
+                        requests.get(
+                            "http://circle1-{}/storage/file".format(port.port),
+                            json=data,
+                        ).content
+                    )
+                    .read()
+                    .decode("UTF-8")
                 )
-                .read()
-                .decode("UTF-8")
             )
 
         # push ro crate file to all portOut
