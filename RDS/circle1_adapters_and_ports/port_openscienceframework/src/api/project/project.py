@@ -40,11 +40,11 @@ def post():
         except:
             args = (
                 req.get("title", "Created by Sciebo RDS"),
-                req.get("osf_category", "project"),
+                req.get("osf_category", None),
             )
             kwargs = {
-                "description": req.get("description", ""),
-                "tags": req.get("tags", ""),
+                "description": req.get("description", None),
+                "tags": req.get("tags", None),
             }
 
             logger.debug("send args: {}, kwargs: {}".format(args, kwargs))
