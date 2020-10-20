@@ -39,7 +39,7 @@ def post():
 
         except:
             args = (
-                req.get("title", "Created by Sciebo RDS"),
+                req.get("title", "No title given, Created by Sciebo RDS"),
                 req.get("osf_category", None),
             )
             kwargs = {
