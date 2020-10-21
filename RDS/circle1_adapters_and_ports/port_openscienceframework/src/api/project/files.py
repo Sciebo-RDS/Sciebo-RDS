@@ -2,7 +2,7 @@ import logging
 import os
 from lib.Util import require_api_key
 from flask import jsonify, request, g, abort
-from io import BytesIO
+from io import BytesIO, BufferedReader
 
 logger = logging.getLogger()
 
@@ -29,7 +29,11 @@ def post(project_id):
     logger.debug("file: {}, filename: {}".format(file, filename))
 
     logger.debug("Start file upload")
-    resp = g.osf.project(project_id).storage().create_file(filename, file, force=True)
+    resp = (
+        g.osf.project(project_id)
+        .storage()
+        .create_file(filename, BufferedReader(file), force=True)
+    )
 
     logger.debug("Finished file upload")
 
