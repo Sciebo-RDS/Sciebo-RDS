@@ -50,7 +50,7 @@ def patch(user_id, research_index):
                 json.loads(
                     BytesIO(
                         requests.get(
-                            "http://circle1-{}/storage/file".format(port.port),
+                            "http://circle1-{}/storage/file".format(port["port"]),
                             json=data,
                             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
                         ).content
