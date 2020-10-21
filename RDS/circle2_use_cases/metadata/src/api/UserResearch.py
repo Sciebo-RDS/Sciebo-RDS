@@ -27,7 +27,7 @@ def patch(user_id, research_index):
         # get ro crate file from portIn
         crates = []
 
-        researchObj = Research(user_id=user_id, research_index=research_index)
+        researchObj = Research(userId=user_id, researchIndex=research_index)
         for port in researchObj.portIn():
             filepath = ""
 
