@@ -16,6 +16,7 @@ gevent = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 osfclient = {editable = false, git = "https://github.com/Sciebo-RDS/osfclient.git"}
+pyld = "*"
 
 [requires]
 python_version = "3.8"
