@@ -29,11 +29,7 @@ def post(project_id):
     logger.debug("file: {}, filename: {}".format(file, filename))
 
     logger.debug("Start file upload")
-    resp = (
-        g.osf.project(project_id)
-        .storage()
-        .create_file(filename, BytesIO(file.read()), force=True)
-    )
+    resp = g.osf.project(project_id).storage().create_file(filename, file, force=True)
 
     logger.debug("Finished file upload")
 
