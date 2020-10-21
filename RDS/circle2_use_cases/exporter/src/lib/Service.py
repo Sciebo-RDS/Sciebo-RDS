@@ -150,7 +150,6 @@ class Service:
         """
         files = {"file": (filename, fileContent.getvalue())}
         data = {"userId": self.userId, "filename": filename}
-        headers = {"content-type": "application/json"}
 
         logger.debug(
             "add file {} with data {} in service {}".format(files, data, self.getJSON())
@@ -161,7 +160,6 @@ class Service:
                 f"{self.portaddress}/metadata/project/{self.getProjectId()}/files",
                 files=files,
                 data=data,
-                headers=headers,
                 verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
             )
 
