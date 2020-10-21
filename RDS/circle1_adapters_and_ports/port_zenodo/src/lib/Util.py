@@ -41,7 +41,7 @@ def require_api_key(api_method):
         g.zenodo = None
 
         try:
-            req = request.get_json()
+            req = request.get_json(force=True)
         except Exception as e:
             logger.error(e, exc_info=True)
             req = request.form.to_dict()

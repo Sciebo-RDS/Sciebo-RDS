@@ -87,7 +87,7 @@ def delete(project_id):
 
 @require_api_key
 def patch(project_id):
-    req = request.get_json()
+    req = request.get_json(force=True)
 
     logger.debug("request data: {}".format(req))
 
