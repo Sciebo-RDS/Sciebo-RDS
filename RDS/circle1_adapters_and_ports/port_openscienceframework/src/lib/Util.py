@@ -4,6 +4,8 @@ from osfclient import OSF
 import os
 import requests
 import logging
+from pyld import jsonld
+import json
 
 logger = logging.getLogger()
 
@@ -68,3 +70,25 @@ def require_api_key(api_method):
         return api_method(*args, **kwargs)
 
     return check_api_key
+
+
+def from_jsonld(req):
+    try:
+        frame = json.load(open("src/lib/fosf.jsonld"))
+    except:
+        frame = json.load(open("lib/fosf.jsonld"))
+
+    done = jsonld.frame(req, json.load(open("frame_osf.json")))
+    done["title"] = done["name"]
+    del done["name"]
+
+    done["description"] = done["description"].replace("\n", " ")
+
+    try:
+        del done["@context"]
+        del done["@id"]
+        del done["@type"]
+    except:
+        pass
+
+    req = {"data": {"type": "nodes", "attributes": done}}

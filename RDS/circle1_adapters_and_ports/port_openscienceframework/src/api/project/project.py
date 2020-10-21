@@ -2,7 +2,8 @@ import logging
 import os
 from flask import jsonify, request, g, current_app
 from werkzeug.exceptions import abort
-from lib.Util import require_api_key
+from lib.Util import require_api_key, from_jsonld
+
 
 logger = logging.getLogger()
 
@@ -31,7 +32,11 @@ def get(project_id):
 
 @require_api_key
 def post():
-    req = request.json.get("metadata", {})
+    req = request.get_json(force=True)
+    try:
+        req = from_jsonld(req)
+    except:
+        req = req.get("metadata")
 
     try:
         try:
