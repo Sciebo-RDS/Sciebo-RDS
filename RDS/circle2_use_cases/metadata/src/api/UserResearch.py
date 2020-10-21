@@ -21,7 +21,6 @@ def patch(user_id, research_index):
     req = request.json
 
     if req is None or not req:
-        # TODO: build in here the ro-crate upload to c1 services
         # get ro crate file from portIn
         crates = []
 
@@ -57,7 +56,7 @@ def patch(user_id, research_index):
                 )
             )
 
-        # push ro crate file to all portOut
+        # push ro crate content to all portOut metadata
         for crate in crates:
             for port in researchObj.portOut():
                 projectId = ""
