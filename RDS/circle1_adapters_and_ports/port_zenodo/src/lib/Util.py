@@ -164,6 +164,9 @@ def from_jsonld(jsonld_data):
     data = jsonld.frame(jsonld_data, frame)
     logger.debug("after framing: {}".format(data))
 
+    data["title"] = data["name"]
+    del data["name"]
+
     data["creators"] = []
 
     data["publication_date"] = data[zenodo_to_jsonld["publication_date"]]
