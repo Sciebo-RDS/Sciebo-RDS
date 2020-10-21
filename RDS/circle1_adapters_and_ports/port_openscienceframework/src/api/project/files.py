@@ -29,20 +29,14 @@ def post(project_id):
     logger.debug("file: {}, filename: {}".format(file, filename))
 
     logger.debug("Start file upload")
-    resp = (
-        g.osf.project(project_id)
-        .storage()
-        .create_file(filename, BufferedReader(file), force=True)
+
+    g.osf.project(project_id).storage().create_file(
+        filename, BufferedReader(file), force=True
     )
 
     logger.debug("Finished file upload")
 
-    if resp:
-        return jsonify({"success": True}), 200
-
-    else:
-        raise ValueError("Upload failed.")
-
+    return jsonify({"success": True}), 200
 
 @require_api_key
 def patch(project_id, file_id):
