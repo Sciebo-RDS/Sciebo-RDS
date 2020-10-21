@@ -28,7 +28,7 @@ def patch(user_id, research_index):
         crates = []
 
         researchObj = Research(userId=user_id, researchIndex=research_index)
-        for port in researchObj.portIn():
+        for port in researchObj.portIn:
             filepath = ""
 
             for prop in port["properties"]:
@@ -62,7 +62,7 @@ def patch(user_id, research_index):
 
         # push ro crate content to all portOut metadata
         for crate in crates:
-            for port in researchObj.portOut():
+            for port in researchObj.portOut:
                 projectId = ""
 
                 for prop in port["properties"]:
