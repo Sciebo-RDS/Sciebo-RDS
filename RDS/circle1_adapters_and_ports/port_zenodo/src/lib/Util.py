@@ -160,8 +160,9 @@ def from_jsonld(jsonld_data):
     except:
         frame = json.load(open("lib/fzenodo.jsonld"))
 
+    logger.debug("before transformation data: {}".format(jsonld_data))
     data = jsonld.frame(jsonld_data, frame)
-    logger.debug("before transformation data: {}".format(data))
+    logger.debug("after framing: {}".format(data))
 
     data["creators"] = []
 

@@ -2,9 +2,14 @@
     "@context": [
         "https://w3id.org/ro/crate/1.0/context",
         {
-            "@vocab": "https://schema.org/",
+            "@vocab": "https://research.org/",
+            "osfcategory": "https://www.research-data-services.org/jsonld/osfcategory",
+            "zenodocategory": "https://www.research-data-services.org/jsonld/zenodocategory",
             "upload_type": {
-                "@id": "https://www.research-data-services.org/jsonld/zenodocategory"
+                "@id": "zenodocategory"
+            },
+            "title": {
+                "@id": "name"
             }
         }
     ],
