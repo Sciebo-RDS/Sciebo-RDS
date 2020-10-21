@@ -18,7 +18,10 @@ def get(user_id, research_index):
 
 
 def patch(user_id, research_index):
-    req = request.json
+    try:
+        req = request.json
+    except:
+        req = None
 
     if req is None or not req:
         # get ro crate file from portIn
@@ -49,6 +52,7 @@ def patch(user_id, research_index):
                         requests.get(
                             "http://circle1-{}/storage/file".format(port.port),
                             json=data,
+                            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
                         ).content
                     )
                     .read()
@@ -73,6 +77,7 @@ def patch(user_id, research_index):
                         port["port"], projectId
                     ),
                     json=data,
+                    verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
                 )
 
         return "", 202
