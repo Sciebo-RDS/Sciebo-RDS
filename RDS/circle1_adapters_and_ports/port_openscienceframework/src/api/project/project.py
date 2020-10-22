@@ -33,14 +33,17 @@ def get(project_id):
 @require_api_key
 def post():
     req = request.get_json(force=True)
+    userId = req.get("userId")
+    metadata = req.get("metadata")
+
     try:
-        req = from_jsonld(req)
-    except:
-        req = req.get("metadata")
+        metadata = from_jsonld(metadata)
+    except Exception as e:
+        logger.error(e, exc_info=True)
 
     try:
         try:
-            project = g.osf.create_project_jsonld(req)
+            project = g.osf.create_project_jsonld(metadata)
 
         except:
             args = (

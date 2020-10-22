@@ -90,17 +90,18 @@ def patch(project_id):
     req = request.get_json(force=True)
 
     logger.debug("request data: {}".format(req))
+    userId = req.get("userId")
+    metadata = req.get("metadata")
 
     try:
-        req = from_jsonld(req)
+        metadata = from_jsonld(metadata)
     except Exception as e:
         logger.error(e, exc_info=True)
-        req = req.get("metadata")
 
-    logger.debug("transformed data: {}".format(req))
+    logger.debug("transformed data: {}".format(metadata))
 
     depoResponse = g.zenodo.change_metadata_in_deposition_internal(
-        deposition_id=int(project_id), metadata=req, return_response=True
+        deposition_id=int(project_id), metadata=metadata, return_response=True
     )
 
     if depoResponse.status_code == 200:
