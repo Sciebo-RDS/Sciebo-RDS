@@ -14,8 +14,11 @@
     "description": {},
     "creator": {
         "@explicit": "true",
+        "@type": "Person",
         "name": {},
-        "affiliation": {}
+        "affiliation": {
+            "@type": "Organization"
+        }
     },
     "datePublished": {}
 }

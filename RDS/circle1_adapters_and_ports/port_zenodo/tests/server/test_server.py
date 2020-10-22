@@ -2,6 +2,7 @@ import unittest
 import sys
 import os
 from pactman import Consumer, Provider
+from constant import req, result as reqResult
 
 api_key = os.getenv("ZENODO_API_KEY", default=None)
 
@@ -368,10 +369,26 @@ class TestPortZenodo(unittest.TestCase):
         }
 
         updated_metadata = {
+            "prereserve_doi": {"doi": "10.5072/zenodo.1234", "recid": 1234},
             "title": "My first upload",
             "upload_type": "poster",
             "description": "This is my first upload",
             "creators": [{"name": "Doe, John", "affiliation": "Zenodo"}],
+        }
+
+        result_metadata = {
+            "https://schema.org/creator": [
+                {
+                    "https://schema.org/affiliation": "Zenodo",
+                    "https://schema.org/name": "Doe, John",
+                }
+            ],
+            "https://schema.org/description": "This is my first upload",
+            "https://schema.org/identifier": 1234,
+            "https://schema.org/publicAccess": True,
+            "https://schema.org/name": "My first upload",
+            "https://www.research-data-services.org/jsonld/zenodocategory": "poster",
+            "https://www.research-data-services.org/jsonld/doi": "10.5072/zenodo.1234",
         }
 
         expected_body["metadata"] = updated_metadata
@@ -388,7 +405,7 @@ class TestPortZenodo(unittest.TestCase):
             data = {"apiKey": "ASD123GANZSICHA"}
             result = self.client.patch(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
-            self.assertEqual(result.json, updated_metadata)
+            self.assertEqual(result.json, result_metadata)
 
         pact.given("access token is valid").upon_receiving(
             "the corresponding user has an updated deposit and has a title metadata"
@@ -402,7 +419,7 @@ class TestPortZenodo(unittest.TestCase):
             data = {"apiKey": "ASD123GANZSICHA", "metadata": {"title": ""}}
             result = self.client.patch(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
-            self.assertEqual(result.json, updated_metadata)
+            self.assertEqual(result.json, result_metadata)
 
     def test_delete_metadata(self):
         projectId = 5
@@ -551,12 +568,12 @@ class TestPortZenodo(unittest.TestCase):
                     "https://schema.org/name": "Doe, John",
                 }
             ],
+            "https://www.research-data-services.org/jsonld/zenodocategory": "poster",
+            "https://schema.org/name": "My first upload",
             "https://schema.org/description": "This is my first upload",
+            "https://www.research-data-services.org/jsonld/doi": "10.5072/zenodo.1234",
             "https://schema.org/identifier": 1234,
             "https://schema.org/publicAccess": True,
-            "https://schema.org/title": "My first upload",
-            "https://www.research-data-services.org/jsonld/zenodocategory": "poster",
-            "https://www.research-data-services.org/jsonld/doi": "10.5072/zenodo.1234",
         }
 
         pact.given("access token is valid").upon_receiving(
@@ -604,7 +621,7 @@ class TestPortZenodo(unittest.TestCase):
             "https://schema.org/description": "This is my first upload",
             "https://schema.org/identifier": 1234,
             "https://schema.org/publicAccess": True,
-            "https://schema.org/title": "My first upload",
+            "https://schema.org/name": "My first upload",
             "https://www.research-data-services.org/jsonld/zenodocategory": "poster",
             "https://www.research-data-services.org/jsonld/doi": "10.5072/zenodo.1234",
         }
@@ -646,11 +663,13 @@ class TestPortZenodo(unittest.TestCase):
             200, body=expected_body
         )
 
+        expected_body["metadata"] = metadata
+
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA", "metadata": metadata}
+            data = {"metadata": metadata, "apiKey": "ASD123GANZSICHA"}
             result = self.client.patch(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
-            self.assertEqual(result.json, metadata)
+            self.assertEqual(result.json, expected_body["metadata"])
 
 
 if __name__ == "__main__":

@@ -67,7 +67,6 @@ def require_api_key(api_method):
 
 
 zenodo_to_jsonld = {
-    "title": "https://schema.org/title",
     "description": "https://schema.org/description",
     "tags": "https://schema.org/keywords",
     "access_right": "https://schema.org/publicAccess",
@@ -79,6 +78,7 @@ zenodo_to_jsonld = {
     "creators": "https://schema.org/creator",
     "affiliation": "https://schema.org/affiliation",
     "name": "https://schema.org/name",
+    "title": "https://schema.org/name",
 }
 
 
@@ -99,6 +99,8 @@ def to_jsonld(metadata):
                 errors = True
 
         return output
+
+    logger.debug("got metadata {}".format(metadata))
 
     try:
         zenodocategory = "{}/{}".format(
@@ -138,7 +140,7 @@ def to_jsonld(metadata):
         except:
             try:
                 jsonld[zenodo_to_jsonld[parameter]] = metadata[parameter]
-            except KeyError as e:
+            except Exception as e:
                 logger.debug("key {} not found.".format(e))
 
     try:
@@ -155,6 +157,9 @@ import json
 
 
 def from_jsonld(jsonld_data):
+    if jsonld_data is None:
+        return
+
     try:
         frame = json.load(open("src/lib/fzenodo.jsonld"))
     except:
@@ -164,13 +169,13 @@ def from_jsonld(jsonld_data):
     data = jsonld.frame(jsonld_data, frame)
     logger.debug("after framing: {}".format(data))
 
-    data["title"] = data["name"]
-    del data["name"]
+    data["title"] = data[zenodo_to_jsonld["title"].replace("https://schema.org/", "")]
+    del data[zenodo_to_jsonld["title"].replace("https://schema.org/", "")]
 
     data["creators"] = []
 
-    data["publication_date"] = data[zenodo_to_jsonld["publication_date"]]
-    del data[zenodo_to_jsonld["publication_date"]]
+    data["publication_date"] = data[zenodo_to_jsonld["publication_date"].replace("https://schema.org/", "")]
+    del data[zenodo_to_jsonld["publication_date"].replace("https://schema.org/", "")]
 
     for creator in data["creator"]:
         try:
@@ -189,11 +194,10 @@ def from_jsonld(jsonld_data):
 
     del data["creator"]
 
-    if data["zenodocategory"].find("/") > 0:
-        typ, subtyp = tuple(data["zenodocategory"].split("/", 1))
+    if data["upload_type"].find("/") > 0:
+        typ, subtyp = tuple(data["upload_type"].split("/", 1))
         data["upload_type"] = typ
         data["{}_type".format(typ)] = subtyp
-        del data["zenodocategory"]
 
     try:
         del data["@context"]

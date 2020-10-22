@@ -108,6 +108,7 @@ def patch(project_id):
         output = depoResponse.json()
 
         logger.debug("output: {}".format(output))
+
         try:
             output["metadata"] = to_jsonld(output["metadata"])
 
