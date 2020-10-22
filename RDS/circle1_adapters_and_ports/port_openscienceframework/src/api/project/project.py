@@ -76,6 +76,11 @@ def delete(project_id):
 def patch(project_id):
     req = request.get_json(force=True, cache=True).get("metadata")
 
+    try:
+        req = from_jsonld(req)
+    except Exception as e:
+        logger.error(e, exc_info=True)
+
     project = g.osf.project(project_id)
 
     if project.update(req):
