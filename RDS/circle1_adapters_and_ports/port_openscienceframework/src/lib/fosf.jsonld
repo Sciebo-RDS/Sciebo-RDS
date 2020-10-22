@@ -6,7 +6,7 @@
             "osfcategory": "https://www.research-data-services.org/jsonld/osfcategory",
             "category": {
                 "@id": "osfcategory"
-            },
+            }
         }
     ],
     "@explicit": "true",
