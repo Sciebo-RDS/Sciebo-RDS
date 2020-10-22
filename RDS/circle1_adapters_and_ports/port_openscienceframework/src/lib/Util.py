@@ -73,12 +73,18 @@ def require_api_key(api_method):
 
 
 def from_jsonld(req):
+    logger.debug("before transformation data: {}".format(req))
+
     try:
         frame = json.load(open("src/lib/fosf.jsonld"))
     except:
         frame = json.load(open("lib/fosf.jsonld"))
 
-    done = jsonld.frame(req, json.load(open("frame_osf.json")))
+    logger.debug("used frame: {}".format(frame))
+
+    done = jsonld.frame(req, frame)
+    logger.debug("after framing data: {}".format(done))
+
     done["title"] = done["name"]
     del done["name"]
 
@@ -91,4 +97,8 @@ def from_jsonld(req):
     except:
         pass
 
-    req = {"data": {"type": "nodes", "attributes": done}}
+    data = {"data": {"type": "nodes", "attributes": done}}
+
+    logger.debug("after transformation data: {}".format(data))
+
+    return data

@@ -202,9 +202,8 @@ def from_jsonld(jsonld_data):
     except:
         pass
 
-    logger.debug("after transformation data: {}".format(data))
-
     data["description"] = data["description"].replace("\n", "<br>")
+    logger.debug("after transformation data: {}".format(data))
 
     return data
 
