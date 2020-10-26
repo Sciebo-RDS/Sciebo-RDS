@@ -53,7 +53,7 @@ def require_api_key(api_method):
         logger.debug("req data: {}".format(req))
 
         if apiKey is None and userId is not None:
-            apiKey = loadAccessToken(userId, "OpenScienceFramework")
+            apiKey = loadAccessToken(userId, "Openscienceframework")
 
         if apiKey is None:
             logger.error("apiKey or userId not found.")

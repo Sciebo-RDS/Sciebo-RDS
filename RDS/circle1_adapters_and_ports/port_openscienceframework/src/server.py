@@ -15,7 +15,7 @@ osf_oauth_authorize = "{}/oauth2/authorize?response_type=code&redirect_uri={}&cl
 )
 
 register_service(
-    "OpenScienceFramework",
+    "Openscienceframework",
     osf_oauth_authorize,
     osf_oauth_token_url,
     osf_oauth_id,

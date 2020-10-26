@@ -1,4 +1,4 @@
 ---
-title: OpenScienceFramework Category
+title: Openscienceframework Category
 subtitle: osf-specific category
 ---
