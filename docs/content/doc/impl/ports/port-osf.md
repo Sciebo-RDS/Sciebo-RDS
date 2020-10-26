@@ -1,6 +1,6 @@
 ---
-title: Port Zenodo
-subtitle: Export your package to a Zenodo repository.
+title: Port OpenScienceFramework
+subtitle: Export your package to a OpenScienceFramework repository.
 
 menu:
   doc:
@@ -10,7 +10,7 @@ weight: 601
 
 # Mission
 
-This service handles all communication with the configured Zenodo instance and makes its files available to the RDS system.
+This service handles all communication with the configured OpenScienceFramework address and makes its files available to the RDS system.
 
 When creating research projects, this service can be configured as source and target service.
 
@@ -20,6 +20,4 @@ When creating research projects, this service can be configured as source and ta
 
 ## Implementation
 
-The following class implements a library to use the Invenio installation "Zenodo".
-
-{{% code file="doc/impl/ports/port-invenio-docstring.md" %}}
+{{% code file="doc/impl/ports/port-osf-docstring.md" %}}
