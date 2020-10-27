@@ -28,12 +28,12 @@ The plugin can be found in the official [marketplace of ownCloud](https://market
 
 ### Manually
 
-The plugin is located in the [Git-Repo in the plugins folder](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud). The repository must be copied and then the *rds* folder must be moved to the *Apps* folder of the owncloud instance. The following commands copy the git repo to the current folder and copy the necessary files. Assume that the owncloud instance is located at */var/www/html/owncloud*. This can be adjusted in the first line.
+The plugin is located in a [separated Git-Repository](https://github.com/Sciebo-RDS/plugin-ownCloud.git). The repository must be copied and then the *rds* folder must be moved to the *Apps* folder of the owncloud instance. The following commands copy the git repo to the current folder and copy the necessary files. Assume that the owncloud instance is located at */var/www/html/owncloud*. This can be adjusted in the first line.
 
 ```bash
 export OWNCLOUD_INSTALLATION=/var/www/html/owncloud
-git clone https://github.com/Sciebo-RDS/Sciebo-RDS.git
-cp -r Sciebo-RDS/plugins/ownCloud/rds $OWNCLOUD_INSTALLATION/apps/
+git clone https://github.com/Sciebo-RDS/plugin-ownCloud.git
+cp -r rds $OWNCLOUD_INSTALLATION/apps/
 ```
 
 Now the *RDS* app can be activated in the administrator account (`https://localhost/owncloud/index.php/settings/admin?sectionid=apps&category=disabled`). Then the administrator has to configure the RDS app in the administrator settings, as described below.

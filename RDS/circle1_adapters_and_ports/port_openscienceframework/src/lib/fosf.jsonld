@@ -1,0 +1,17 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.0/context",
+        {
+            "@vocab": "https://schema.org/",
+            "osfcategory": "https://www.research-data-services.org/jsonld/osfcategory",
+            "category": {
+                "@id": "osfcategory"
+            }
+        }
+    ],
+    "@explicit": "true",
+    "@type": "Dataset",
+    "name": {},
+    "category": {},
+    "description": {}
+}

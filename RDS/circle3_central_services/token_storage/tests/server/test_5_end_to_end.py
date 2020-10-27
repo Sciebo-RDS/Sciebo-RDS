@@ -30,7 +30,7 @@ class test_end_to_end(unittest.TestCase):
         self.driver = webdriver.Remote(
             command_executor=server, desired_capabilities=desired_capabilities
         )
-        self.driver.implicitly_wait(5)
+        self.driver.implicitly_wait(10)
 
     def tearDown(self):
         self.driver.quit()
@@ -195,7 +195,6 @@ class test_end_to_end(unittest.TestCase):
         storage.refresh_service(owncloud)
         tokens = storage.getTokens(oauthuser2)
         checkToken = tokens[0]
-        self.assertGreaterEqual(checkToken.expiration_date, oauthtoken2.expiration_date)
         self.assertEqual(checkToken, oauthtoken2)
 
         # safe the current oauthtoken for reuse to test refresh token after a bigger period.

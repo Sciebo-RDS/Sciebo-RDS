@@ -178,7 +178,7 @@ After the last command, specifying a context for each Kubectl command (the same 
 
 ### Encryption
 
-If the communication between plugins and cluster shall be secured by a HTTPS connection, which is strongly recommended, you can create a certificate using the shell script [create_certs.sh](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/create_certs.sh) and store it as a secret. The script has to be adapted regarding the domain, for which the certificate shall be issued.
+If the communication between plugins and cluster shall be secured by a HTTPS connection, which is strongly recommended, you can create a certificate using the shell script [create_certs.sh](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/create_certs.sh) and store it as a secret. The script has to be adapted regarding the domain, for which the certificate shall be issued.
 
 With the following command, you can create the needed ssl cert.
 

@@ -17,6 +17,7 @@ connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 flask-cors = "*"
 jsonschema = "*"
+PyLD = "*"
 
 [requires]
 python_version = "3.8"

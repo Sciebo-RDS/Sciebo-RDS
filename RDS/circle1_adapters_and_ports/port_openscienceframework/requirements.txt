@@ -1,0 +1,52 @@
+-i https://pypi.org/simple
+apscheduler==3.6.3
+attrs==20.2.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+cachetools==4.1.1; python_version ~= '3.5'
+certifi==2020.6.20
+chardet==3.0.4
+click==7.1.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+clickclick==20.10.2
+connexion-plus==0.41
+connexion[swagger-ui]==2.7.0
+contextlib2==0.6.0.post1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+flask-apscheduler==1.11.0
+flask-cors==3.0.9
+flask-opentracing==1.1.0
+flask==1.1.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+frozendict==1.2
+future==0.18.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
+gevent==20.9.0
+git+https://github.com/Sciebo-RDS/osfclient.git@2914dcc68cd80862a80b1c0142c4498ded0e34d8#egg=osfclient
+greenlet==0.4.17; platform_python_implementation == 'CPython'
+htmlmin==0.1.12
+idna==2.10; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+inflection==0.5.1; python_version >= '3.5'
+itsdangerous==1.1.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+jaeger-client==4.3.0
+jinja2==2.11.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+jsonschema==3.2.0
+lxml==4.6.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+markupsafe==1.1.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+openapi-spec-validator==0.2.9
+opentracing-instrumentation==3.3.1
+opentracing==2.3.0
+prometheus-client==0.8.0
+prometheus-flask-exporter==0.18.1
+pyld==2.0.3
+pyrsistent==0.17.3; python_version >= '3.5'
+python-dateutil==2.8.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+pytz==2020.1
+pyyaml==5.3.1
+requests==2.24.0
+six==1.15.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+swagger-ui-bundle==0.0.8
+threadloop==1.0.2
+thrift==0.13.0
+tornado==5.1.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+tqdm==4.51.0; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
+tzlocal==2.1
+urllib3==1.25.11; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
+werkzeug==1.0.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+wrapt==1.12.1
+zope.event==4.5.0
+zope.interface==5.1.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'

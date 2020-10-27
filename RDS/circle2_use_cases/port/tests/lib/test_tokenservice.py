@@ -471,14 +471,14 @@ class Test_TokenService(unittest.TestCase):
         with self.assertRaises(InvalidSignatureError):
             req = jwt.decode(req_list[0]["jwt"], key, algorithms="HS256")
 
-        """
+        
         pact.given(
             'one service was registered.'
         ).upon_receiving(
             'a request to get all services and secret is okay.'
         ).with_request(
             'GET', "/service"
-        ) .will_respond_with(200, body={"length": 1, "list": [json.dumps(self.service1)]})"""
+        ) .will_respond_with(200, body={"length": 1, "list": [json.dumps(self.service1)]})
 
         self.tokenService.secret = key
         req_list = self.tokenService.getAllServices()
@@ -659,7 +659,7 @@ class Test_TokenService(unittest.TestCase):
         )
 
         with self.assertRaises(ValueError):
-            self.tokenService.exchangeAuthCodeToAccessToken(code, Service("localhost"))
+            self.tokenService.exchangeAuthCodeToAccessToken(code, Service("localhost"), self.user1.username)
 
         body = {
             "access_token": "1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ",
@@ -690,7 +690,7 @@ class Test_TokenService(unittest.TestCase):
             200, body={"success": True}
         )
 
-        token = self.tokenService.exchangeAuthCodeToAccessToken(code, service)
+        token = self.tokenService.exchangeAuthCodeToAccessToken(code, service, self.user1.username)
 
         self.assertEqual(token, expected)
 
@@ -707,7 +707,7 @@ class Test_TokenService(unittest.TestCase):
             200, body={"success": True}
         )
 
-        token = self.tokenService.exchangeAuthCodeToAccessToken(code, service)
+        token = self.tokenService.exchangeAuthCodeToAccessToken(code, service, self.user1.username)
 
         self.assertEqual(token, expected)
 
@@ -719,7 +719,7 @@ class Test_TokenService(unittest.TestCase):
         )
 
         with self.assertRaises(ServiceNotFoundError):
-            self.tokenService.exchangeAuthCodeToAccessToken(code, service.servicename)
+            self.tokenService.exchangeAuthCodeToAccessToken(code, service.servicename, self.user1.username)
 
         self.tokenService._storage = {}
 
@@ -738,7 +738,7 @@ class Test_TokenService(unittest.TestCase):
         )
 
         with self.assertRaises(CodeNotExchangeable):
-            self.tokenService.exchangeAuthCodeToAccessToken(code, service.servicename)
+            self.tokenService.exchangeAuthCodeToAccessToken(code, service.servicename, self.user1.username)
 
     def test_serviceprojects(self):
         proj1 = {"projectId": 0, "projectName": "Project1"}
