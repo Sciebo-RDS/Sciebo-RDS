@@ -7,7 +7,6 @@ site_name: "My Documentation"
 generate:
 - port-zenodo.md:
   - lib.upload_zenodo++
-  - lib.Datacite++
   - lib.Util++
 
 # MkDocs pages configuration. The `<<` operator is sugar added by pydocmd
