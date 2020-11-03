@@ -111,8 +111,11 @@ def to_jsonld(metadata):
 
     creators = []
 
-    for creator in metadata["creators"]:
-        creators.append(parse_creator(creator))
+    try:
+        for creator in metadata["creators"]:
+            creators.append(parse_creator(creator))
+    except:
+        creators.append(parse_creator(metadata["creators"]))
 
     jsonld = {zenodo_to_jsonld["creators"]: creators}
 
@@ -174,10 +177,12 @@ def from_jsonld(jsonld_data):
 
     data["creators"] = []
 
-    data["publication_date"] = data[zenodo_to_jsonld["publication_date"].replace("https://schema.org/", "")]
+    data["publication_date"] = data[
+        zenodo_to_jsonld["publication_date"].replace("https://schema.org/", "")
+    ]
     del data[zenodo_to_jsonld["publication_date"].replace("https://schema.org/", "")]
 
-    for creator in data["creator"]:
+    def read_creator(creator):
         try:
             del creator["@id"]
             del creator["@type"]
@@ -187,10 +192,17 @@ def from_jsonld(jsonld_data):
         try:
             creator["affiliation"] = creator["affiliation"]["name"]
         except Exception as e:
-            del creator["affiliation"]
+            if "affiliation" in creator:
+                del creator["affiliation"]
             logger.error(e, exc_info=True)
 
         data["creators"].append(creator)
+
+    if isinstance(data["creator"], list):
+        for creator in data["creator"]:
+            read_creator(creator)
+    else:
+        read_creator(data["creator"])
 
     del data["creator"]
 

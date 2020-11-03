@@ -2,6 +2,7 @@ import unittest
 
 from lib.Util import from_jsonld, to_jsonld
 from constant import req, result
+import copy
 
 jsonld = {
     "https://schema.org/creator": [
@@ -22,8 +23,25 @@ jsonld = {
 
 
 class TestJsonLd(unittest.TestCase):
-    def test_from_jsonld(self):
+    def test_from_jsonld_multiple_creator(self):
         self.assertEqual(from_jsonld(req["metadata"]), result)
+
+    def test_from_jsonld_single_creator(self):
+        singleld = copy.deepcopy(result)
+        del singleld["creators"][1]
+        singlereq = copy.deepcopy(req)
+        del singlereq["metadata"]["@graph"][1]["creator"][1]
+        del singlereq["metadata"]["@graph"][4]
+
+        self.assertEqual(from_jsonld(singlereq["metadata"]), singleld)
+
+        singleld = copy.deepcopy(result)
+        del singleld["creators"][0]
+        singlereq = copy.deepcopy(req)
+        del singlereq["metadata"]["@graph"][1]["creator"][0]
+        del singlereq["metadata"]["@graph"][2]
+
+        self.assertEqual(from_jsonld(singlereq["metadata"]), singleld)
 
     def test_to_jsonld(self):
         self.assertDictContainsSubset(to_jsonld(result), jsonld)
