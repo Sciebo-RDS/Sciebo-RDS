@@ -139,7 +139,7 @@ To build a container, your service needs a *dockerfile* ([Example: Owncloud](htt
 
 This is where you can define the build process, which packages and programs will be installed and your software will run.
 
-### Cubernetes and Helm Chart
+### Kubernetes and Helm Chart
 
 In RDS we use Helm Charts to generate the configuration files for Kubernetes. Therefore your service needs a corresponding [Helm Chart](https://helm.sh/). In the [deploy](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy) folder of the Git repository you will find all available charts and a [Makefile](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile) which allows you to apply the available charts to an existing Kubernetes cluster.
 
