@@ -353,18 +353,12 @@ paths:
                     example: zip
                   credentials:
                     type: object
-                    description: 'it defines, if the user can enter userId and / or password, if this is needed. Most times, you will need userId and password.'
+                    description: 'it defines, if the user can enter userId and / or password, if this is needed. Most times, you will need userId and password, when oauth2 workflow not sent in registering while boot up. When oauth2 informations were provided in starts up, this will be ignored.'
                     properties:
                       userId:
                         type: boolean
                       password:
                         type: boolean
-                      token:
-                        type: string
-                        description: |-
-                          if token is set, password will be ignored automatically. Token should be set to a workflow. supported protocols: [oauth2]
-
-                          If token is not set or empty, it is assumed to be equal to False.
       description: returns relevant informations about this port implementation.
 components:
   schemas:
