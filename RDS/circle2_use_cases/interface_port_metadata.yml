@@ -41,7 +41,10 @@ paths:
                     type:
                       resourceType: ''
                       resourceTypeGeneral: Poster
-      description: "Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. \n\nSee the examples to see, how to use it."
+      description: |-
+        Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. 
+
+        See the examples to see, how to use it.
       requestBody:
         content:
           application/json:
@@ -321,7 +324,48 @@ paths:
                 properties:
                   needsZip:
                     type: boolean
-      description: 'Returns, if it is needed to use zip files for folder in folder data upload.'
+      description: 'Returns a boolean, which represents if it is needed to use zip files for folder in folder data upload.'
+  /informations:
+    get:
+      summary: Informations about this port implementation
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fileTransferMode:
+                    type: integer
+                    description: 'Set value between 0=active and 1=passive. This is relevant for file transfer, because active will trigger the upload via RDS (push mode). Passive will trigger the upload via the service (pull mode).'
+                    example: 0
+                    minimum: 0
+                    maximum: 1
+                  fileTransferArchive:
+                    type: string
+                    description: |-
+                      If empty, all files will be transfered one by one to the service.
+                      If set to one of the followed algorithms, it will be used to store all files to one archive and then transmitted within one call.
+
+                      Supported Algorithms: [zip]
+                    example: zip
+                  credentials:
+                    type: object
+                    description: 'it defines, if the user can enter userId and / or password, if this is needed. Most times, you will need userId and password.'
+                    properties:
+                      userId:
+                        type: boolean
+                      password:
+                        type: boolean
+                      token:
+                        type: string
+                        description: |-
+                          if token is set, password will be ignored automatically. Token should be set to a workflow. supported protocols: [oauth2]
+
+                          If token is not set or empty, it is assumed to be equal to False.
+      description: returns relevant informations about this port implementation.
 components:
   schemas:
     File:
@@ -346,6 +390,8 @@ components:
     Metadata:
       title: Metadata
       type: object
+      x-examples:
+        example-1: {}
   securitySchemes:
     oauth-key:
       type: oauth2
