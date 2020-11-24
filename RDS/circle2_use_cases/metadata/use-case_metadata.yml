@@ -97,15 +97,18 @@ paths:
           content:
             application/json:
               schema:
-                type: object
                 description: 'This will returns only the updated fields, because this service redirects only the output from ports.'
-                properties:
-                  length:
-                    type: integer
-                  list:
-                    type: array
-                    items:
-                      type: object
+                oneOf:
+                  - type: object
+                    properties:
+                      length:
+                        type: integer
+                      list:
+                        type: array
+                        items:
+                          type: object
+                  - type: 'null'
+                    properties: {}
               examples:
                 example-1:
                   value:
@@ -118,6 +121,11 @@ paths:
                         type:
                           resourceType: ''
                           resourceTypeGeneral: Poster
+        '202':
+          description: Created
+        '404':
+          description: Not found a ro-crate file in the configured EFSS folder.
+      description: 'If no metadata were sent, the RO-Crate file will be used in the configured EFSS folder.'
     put:
       summary: Finish research
       responses:
@@ -169,7 +177,10 @@ paths:
                               resourceType: ''
                               resourceTypeGeneral: Poster
       operationId: ''
-      description: "Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. \n\nSee the examples to see, how to use it."
+      description: |-
+        Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. 
+
+        See the examples to see, how to use it.
       requestBody:
         content:
           application/json:
@@ -230,7 +241,10 @@ paths:
                   type:
                     resourceType: ''
                     resourceTypeGeneral: Poster
-      description: "Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. \n\nSee the examples to see, how to use it."
+      description: |-
+        Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. 
+
+        See the examples to see, how to use it.
 info:
   version: '1.0'
   title: Metadata Service
