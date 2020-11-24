@@ -11,29 +11,50 @@ mermaid: true
 
 Dieser Plugin stellt die erste Integration von RDS in ein anderes Ökosystem dar. Um die Bedienbarkeit zu gewährleisten und möglichst niedrigschwellig zu gestalten, wird darauf geachtet, möglichst sämtliche Funktionsmöglichkeiten der Plattform zu verwenden und durch RDS zu erweitern.
 
-# Installation
+## Abhängigkeiten
 
-Das Plugin liegt im [Git-Repo im Ordner plugins](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud). Das Repositorium muss kopiert und anschließend der *rds*-Ordner in den *Apps*-Ordner der Owncloud-Instanz verschoben werden.
+Es wird die [OAuth2-App](https://marketplace.owncloud.com/apps/oauth2) von ownCloud benötigt.
 
-{{<callout "info">}}
-Aktuell ist das RDS Plugin nicht im offiziellen Owncloud Marketplace für Apps verfügbar. Dies ist aktuell in Vorbereitung. Daher sind die manuellen Schritte notwendig.
-{{</callout>}}
+Achtung: Die OAuth2-App benötigt das PHP-Modul `php-gmp`.
 
-Die folgenden Befehle kopieren das Git-Repo in den aktuellen Ordner und kopieren die notwendigen Dateien. Angenommen wird, dass die Owncloud-Instanz sich unter */var/www/html/owncloud* befindet. Dies kann in der ersten Zeile angepasst werden.
+## Installation
+
+Es gibt zwei Wege, das Plugin auf einer ownCloud Instanz zu aktivieren.
+
+### offizieller Marktplatz
+
+Das Plugin kann auf dem offiziellen [Marktplatz von ownCloud](https://marketplace.owncloud.com/apps/rds) gefunden und von daaus installiert werden. [In der offiziellen Dokumentation](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html) wird beschrieben, wie ein Plugin installiert wird.
+
+### Manuell
+
+Das Plugin liegt in einem [separaten Git-Repo](https://github.com/Sciebo-RDS/plugin-ownCloud.git). Das Repositorium muss kopiert und anschließend der *rds*-Ordner in den *Apps*-Ordner der Owncloud-Instanz verschoben werden. Die folgenden Befehle kopieren das Git-Repo in den aktuellen Ordner und kopieren die notwendigen Dateien. Angenommen wird, dass die Owncloud-Instanz sich unter */var/www/html/owncloud* befindet. Dies kann in der ersten Zeile angepasst werden.
 
 ```bash
 export OWNCLOUD_INSTALLATION=/var/www/html/owncloud
-git clone https://github.com/Sciebo-RDS/Sciebo-RDS.git
-cp -r Sciebo-RDS/plugins/ownCloud/rds $OWNCLOUD_INSTALLATION/apps/
+git clone https://github.com/Sciebo-RDS/plugin-ownCloud.git
+cp -r rds $OWNCLOUD_INSTALLATION/apps/
 ```
 
-Nun kann die *RDS*-App in den Einstellungen aktiviert (https://localhost/owncloud/index.php/settings/admin?sectionid=apps&category=disabled) werden. Anschließend muss der Administrator in den Administratoreneinstellungen die RDS App konfigurieren, wie im folgenden beschrieben.
+Nun kann die *RDS*-App in den Einstellungen aktiviert (`https://localhost/owncloud/index.php/settings/admin?sectionid=apps&category=disabled`) werden. Anschließend muss der Administrator in den Administratoreneinstellungen die RDS App konfigurieren, wie im folgenden beschrieben.
 
-### Einstellungen Administratorensicht
+## Einstellungen
 
-Sobald das Plugin in Owncloud, zum Beispiel aus dem Apps Market, installiert und aktiviert wurde (siehe [hier wie](https://doc.owncloud.com/server/admin_manual/installation/apps_management_installation.html)), muss das RDS System in den Einstellungen konfiguriert werden.
+### SELinux
 
-![Administratorensicht](/images/oc-plugin-view-admin.png)
+Falls SELinux zum Einsatz kommt, so muss dem `httpd`-Server die Erlaubnis gegeben werden, Netzwerkanfragen machen zu dürfen. Dies kann mit dem folgenden Befehl durchgeführt werden. Es wird kein Neustart benötigt.
+
+```bash
+sudo setsebool -P httpd_can_network_connect on
+```
+
+### Administratorensicht
+
+Sobald das Plugin in Owncloud, zum Beispiel aus dem Apps Market, muss das RDS System in den Einstellungen konfiguriert werden.
+
+Hier müssen Sie den Namen der anderen Anwendung eingeben, den Sie bei der Installation von kubernetes für das rds-System festgelegt haben. Im folgenden Beispielbild wurde sie `sciebords` genannt. Die in diesem Beispiel verwendete Konfiguration ist auf dem zweiten Bild zu sehen.
+
+![Administrator view](/images/oc-plugin-view-admin.png)
+![Administrator Oauth view](/images/oc-plugin-view-admin-oauth.png)
 
 ### Einstellungen Nutzersicht
 

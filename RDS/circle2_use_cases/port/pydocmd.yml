@@ -7,9 +7,6 @@ site_name: "My Documentation"
 generate:
 - port-service.md:
   - TokenService:
-    - lib.User++
-    - lib.Token++
-    - lib.Service++
     - lib.TokenService++     # (+ to include members)
     - lib.Exceptions.ServiceException+++
     - Util+

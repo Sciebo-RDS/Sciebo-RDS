@@ -139,7 +139,7 @@ In dieser kannst Du den Bauprozess definieren, welche Pakete und Programme insta
 
 ### Kubernetes und Helm Chart
 
-In RDS nutzen wir Helm Charts, um die Konfigurationsdateien für Kubernetes zu erzeugen. Daher benötigt auch dein Service einen entsprechenden [Helm Chart](https://helm.sh/). Im Ordner [deploy](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/deploy) des Git-Repositoriums findest Du alle bisher verfügbaren Charts, sowie eine [Makefile](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/Makefile) mithilfe dessen Du die verfügbaren Charts auf einen existierenden Kubernetes Cluster anwenden kannst.
+In RDS nutzen wir Helm Charts, um die Konfigurationsdateien für Kubernetes zu erzeugen. Daher benötigt auch dein Service einen entsprechenden [Helm Chart](https://helm.sh/). Im Ordner [deploy](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy) des Git-Repositoriums findest Du alle bisher verfügbaren Charts, sowie eine [Makefile](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile) mithilfe dessen Du die verfügbaren Charts auf einen existierenden Kubernetes Cluster anwenden kannst.
 
 Erzeuge Dir zuerst einen Ordner, dessen Namen der Konvention entspricht: *circle[1,2,3]_servicename*. Anschließend folge dem [Helm Developers Guide](https://helm.sh/docs/chart_template_guide/), um Dir einen eigenen Chart im neuen Ordner zu erzeugen und zu konfigurieren.
 
@@ -147,13 +147,13 @@ Anschließend ergänze die Makefile im *deploy*-Ordner, damit dein Service im Ku
 - die erste installiert oder erneuert deinen Service und
 - die zweite deinstalliert deinen Service
 
-Am besten hat deine zweite Prozedur denselben Namen wie die erste, nur mit dem Zusatz *remove\_* davor (Beispiel: [port_owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/Makefile#L44) und [remove_port_owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/Makefile#L77)). Anschließend fügst du deine erste Prozedur der entsprechenden Prozedur *circle1*, *circle2* oder *circle3* ([siehe Makefile](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/Makefile#L62)) zu. Gleiches gilt auch für deine *remove\_* Prozedur, welche zu einer der folgenden Prozeduren angefügt wird: *uninstall_circle1*, *uninstall_circle2* oder *uninstall_circle3* ([siehe Makefile](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/deploy/Makefile#L95))
+Am besten hat deine zweite Prozedur denselben Namen wie die erste, nur mit dem Zusatz *remove\_* davor (Beispiel: [port_owncloud](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L44) und [remove_port_owncloud](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L77)). Anschließend fügst du deine erste Prozedur der entsprechenden Prozedur *circle1*, *circle2* oder *circle3* ([siehe Makefile](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L62)) zu. Gleiches gilt auch für deine *remove\_* Prozedur, welche zu einer der folgenden Prozeduren angefügt wird: *uninstall_circle1*, *uninstall_circle2* oder *uninstall_circle3* ([siehe Makefile](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L95))
 
 # Integration in GUI Plugins
 
 Aktuell ist es notwendig, solltest Du einen neuen Dienst in Schicht 2 oder 3 implementieren, selbst Hand anzulegen in den Plugins, da diese zum aktuellen Zeitpunkt keinerlei Automatismus besitzen, um die neuen Endpunkte zu integrieren. Alle verfügbaren Plugins findest Du im gleichnamigen Ordner im root-Verzeichnis des Git Repositoriums. Die Dienste in Schicht 1, welche als Port Service bezeichnet werden, werden automatisch durch den Token Storage angeboten, dem Research Manager verbunden und durch den Metadata- und Exporter-Service verwendet.
 
-Wähle ein Plugin aus ([Beispiel: Owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/plugins/ownCloud)) und siehe Dir die Integration an. (Owncloud bietet selbst einen [Developer Handbuch](https://doc.owncloud.com/server/developer_manual/) an.)
+Wähle ein Plugin aus ([Beispiel: Owncloud](https://github.com/Sciebo-RDS/plugin-ownCloud)) und siehe Dir die Integration an. (Owncloud bietet selbst ein [Developer Handbuch](https://doc.owncloud.com/server/developer_manual/) an.)
 
 # Beispielservice
 

@@ -2,11 +2,14 @@ import Singleton
 from flask import jsonify, request
 
 import logging
+
 logger = logging.getLogger()
 
 
 def index(user_id, research_id):
-    return jsonify(Singleton.ProjectService.getProject(user_id, int(research_id)).getPortIn())
+    return jsonify(
+        Singleton.ProjectService.getProject(user_id, int(research_id)).getPortIn()
+    )
 
 
 def post(user_id, research_id):
@@ -27,20 +30,30 @@ def post(user_id, research_id):
         elif prop.get("portType", "") == "customProperties":
             cp = prop["value"]
 
-    logger.debug(
-        f"parsed data: port: {portname}, fs: {fs}, metadata: {md}, cp: {cp}")
+    logger.debug(f"parsed data: port: {portname}, fs: {fs}, metadata: {md}, cp: {cp}")
 
     p = Port(portname, fileStorage=fs, metadata=md, customProperties=cp)
 
-    Singleton.ProjectService.getProject(user_id, int(research_id)).addPortIn(p)
-    return jsonify(Singleton.ProjectService.getProject(user_id, int(research_id)).getPortIn())
+    project = Singleton.ProjectService.getProject(user_id, int(research_id))
+    project.addPortIn(p)
+    Singleton.ProjectService.setProject(user_id, project)
+    return jsonify(
+        Singleton.ProjectService.getProject(user_id, int(research_id)).getPortIn()
+    )
 
 
 def get(user_id, research_id, port_id):
-    return jsonify(Singleton.ProjectService.getProject(user_id, int(research_id)).getPortIn().get(int(port_id)))
+    return jsonify(
+        Singleton.ProjectService.getProject(user_id, int(research_id))
+        .getPortIn()
+        .get(int(port_id))
+    )
 
 
 def delete(user_id, research_id, port_id):
-    Singleton.ProjectService.getProject(
-        user_id, int(research_id)).removePortIn(int(port_id))
-    return jsonify(Singleton.ProjectService.getProject(user_id, int(research_id)).getPortIn())
+    project = Singleton.ProjectService.getProject(user_id, int(research_id))
+    project.removePortIn(int(port_id))
+    Singleton.ProjectService.setProject(user_id, project)
+    return jsonify(
+        Singleton.ProjectService.getProject(user_id, int(research_id)).getPortIn()
+    )

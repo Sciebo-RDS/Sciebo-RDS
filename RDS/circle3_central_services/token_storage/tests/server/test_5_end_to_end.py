@@ -1,3 +1,4 @@
+from time import sleep
 import unittest
 import os
 import json
@@ -29,7 +30,7 @@ class test_end_to_end(unittest.TestCase):
         self.driver = webdriver.Remote(
             command_executor=server, desired_capabilities=desired_capabilities
         )
-        self.driver.implicitly_wait(5)
+        self.driver.implicitly_wait(10)
 
     def tearDown(self):
         self.driver.quit()
@@ -39,13 +40,13 @@ class test_end_to_end(unittest.TestCase):
         # prepare service
         storage = Storage()
 
-        redirect = "https://10.14.28.90/owncloud/index.php/apps/rds/oauth"
+        redirect = "https://10.14.29.60/owncloud/index.php/apps/rds/oauth"
         owncloud = OAuth2Service(
             "owncloud-local",
-            "https://10.14.28.90/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
+            "https://10.14.29.60/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
                 os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"), redirect
             ),
-            "https://10.14.28.90/owncloud/index.php/apps/oauth2/api/v1/token",
+            "https://10.14.29.60/owncloud/index.php/apps/oauth2/api/v1/token",
             os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"),
             os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET"),
         )
@@ -65,7 +66,7 @@ class test_end_to_end(unittest.TestCase):
             self.driver.get(owncloud.authorize_url)
 
             if self.driver.current_url.startswith(
-                "https://10.14.28.90/owncloud/index.php/login"
+                "https://10.14.29.60/owncloud/index.php/login"
             ):
                 # it redirects to login form
                 field_username = self.driver.find_element_by_xpath('//*[@id="user"]')
@@ -77,20 +78,51 @@ class test_end_to_end(unittest.TestCase):
 
                 field_password.clear()
                 field_password.send_keys(token.access_token)
+
+                old_url = self.driver.current_url
+                url = self.driver.current_url
+
                 field_password.send_keys(Keys.RETURN)
+
+                retry = 0
+                while old_url == url and retry < 5:
+                    sleep(1)
+                    retry += 1
+                    url = self.driver.current_url
+                    logger.info("url: {}".format(url))
+
+                if retry >= 5:
+                    raise Exception("url not redirect!")
 
             btn = self.driver.find_element_by_xpath(
                 "/html/body/div[1]/div/span/form/button"
             )
+            old_url = self.driver.current_url
+            url = self.driver.current_url
+
             btn.click()
 
-            url = self.driver.current_url
+            retry = 0
+            while old_url == url and retry < 5:
+                sleep(1)
+                retry += 1
+                url = self.driver.current_url
+                logger.info("url: {}".format(url))
+
+            if retry >= 5:
+                raise Exception("url not redirect!")
 
             self.driver.delete_all_cookies()  # remove all cookies
 
             from urllib.parse import urlparse, parse_qs
 
-            code = parse_qs(urlparse(url).query)["code"]
+            query = urlparse(url).query
+            logger.info("query: {}".format(query))
+
+            parse = parse_qs(query)
+            logger.info("parse: {}".format(parse))
+
+            code = parse["code"]
 
             data = {
                 "grant_type": "authorization_code",
@@ -163,7 +195,6 @@ class test_end_to_end(unittest.TestCase):
         storage.refresh_service(owncloud)
         tokens = storage.getTokens(oauthuser2)
         checkToken = tokens[0]
-        self.assertGreaterEqual(checkToken.expiration_date, oauthtoken2.expiration_date)
         self.assertEqual(checkToken, oauthtoken2)
 
         # safe the current oauthtoken for reuse to test refresh token after a bigger period.
@@ -216,15 +247,32 @@ class test_end_to_end(unittest.TestCase):
             btn = self.driver.find_element_by_xpath(
                 "/html/body/div[2]/div[2]/div/div/div/div/div[2]/div[2]/form/button[1]"
             )
+            old_url = self.driver.current_url
+            url = self.driver.current_url
+
             btn.click()
 
-            url = self.driver.current_url
+            retry = 0
+            while old_url == url and retry < 5:
+                sleep(1)
+                retry += 1
+                url = self.driver.current_url
+                logger.info("url: {}".format(url))
+
+            if retry >= 5:
+                raise Exception("url not redirect!")
 
             self.driver.delete_all_cookies()  # remove all cookies
 
             from urllib.parse import urlparse, parse_qs
 
-            code = parse_qs(urlparse(url).query)["code"]
+            query = urlparse(url).query
+            logger.info("query: {}".format(query))
+
+            parse = parse_qs(query)
+            logger.info("parse: {}".format(parse))
+
+            code = parse["code"]
 
             data = {
                 "grant_type": "authorization_code",

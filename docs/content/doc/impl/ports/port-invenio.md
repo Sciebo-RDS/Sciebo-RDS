@@ -10,7 +10,7 @@ weight: 601
 
 # Mission
 
-This service handles all communication with the configured Owncloud instance and makes its files available to the RDS system.
+This service handles all communication with the configured Zenodo instance and makes its files available to the RDS system.
 
 When creating research projects, this service can be configured as source and target service.
 

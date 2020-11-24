@@ -447,12 +447,6 @@ class TestStorageService(unittest.TestCase):
         )
         self.assertEqual(self.empty_storage.getService(self.service1), self.service1)
 
-        _, index = self.empty_storage.getService(self.service1, index=True)
-        self.assertEqual(index, 0)
-
-        _, index = self.empty_storage.getService(self.service2, index=True)
-        self.assertIsNone(index)
-
         from RDS.ServiceException import ServiceExistsAlreadyError
 
         with self.assertRaises(ServiceExistsAlreadyError):
@@ -470,9 +464,6 @@ class TestStorageService(unittest.TestCase):
         expected.append(self.service2)
         self.empty_storage.addService(self.service2)
         self.assertEqual(self.empty_storage.getServices(), expected)
-
-        _, index = self.empty_storage.getService(self.service1, index=True)
-        self.assertEqual(index, 0)
 
         # remove a not existing service
         self.assertFalse(self.empty_storage.removeService(self.service3))

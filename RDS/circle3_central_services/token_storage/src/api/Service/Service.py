@@ -20,6 +20,7 @@ init_object = Util.try_function_on_dict(
 def index():
     services = utility.storage.getServices()
     data = {"length": len(services), "list": services}
+
     return jsonify(data)
 
 
@@ -45,3 +46,13 @@ def post():
         raise
 
     return jsonify({"success": True})
+
+
+def delete(servicename: str):
+    output = False
+    try:
+        output = utility.storage.removeService(servicename)
+    except:
+        pass
+
+    return jsonify({"success": output})

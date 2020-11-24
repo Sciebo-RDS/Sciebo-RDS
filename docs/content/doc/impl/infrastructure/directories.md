@@ -11,7 +11,7 @@ weight: 500
 
 ## Domain
 
-The domain is defined in the central configuration file, [as described here](/doc/getting-started/config/). The following definitions are specified as folders under this domain. If your domain is `example.com', then an example service `folder' can be found as follows: `example.com/folder' .
+The domain is defined in the central configuration file, [as described here](/doc/getting-started/config/). The following definitions are specified as folders under this domain. If your domain is `example.com`, then an example service `folder` can be found as follows: `example.com/folder` .
 
 ## Path definitions
 
@@ -22,5 +22,6 @@ The following path definitions are defined by the respective services and can th
 | Port Service     | /port-service   |
 | Exporter Service | /exporter       |
 | Metadata Service | /metadata       |
+| Research Manager | /research       |
 
 The service-specific subfolders and endpoints are defined in the respective OpenAPI file and can be viewed in this documentation.

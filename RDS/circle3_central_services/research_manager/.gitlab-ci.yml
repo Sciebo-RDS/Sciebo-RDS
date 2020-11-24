@@ -12,6 +12,8 @@ test:central_service_research_manager3.8:
   extends: .tests_central_service_research_manager
 
 build:central_service_research_manager:
+  needs:
+    - test:central_service_research_manager3.8
   extends:
     - .builds
     - .central_service_research_manager
@@ -22,6 +24,8 @@ build:central_service_research_manager:
       - RDS/circle3_central_services/research_manager/**/*
 
 doc:central_service_research_manager:
+  needs:
+    - build:central_service_research_manager
   image: python:3.8
   extends:
     - .documentation

@@ -17,6 +17,27 @@ def append(self, value):
     self[str(self.size())] = value
 
 
+def keys(self):
+    prefix = self.prefixer("")
+    for k in self._keys():
+        val = k.replace(prefix, "", 1)
+        yield val
+
+
+def load_service_with_tokens(jsonStr):
+    d = json.loads(jsonStr)
+    user = User.from_json(json.dumps(d["data"]))
+    tokens = []
+    for t in d["tokens"]:
+        tokens.append(
+            Util.try_function_on_dict([OAuth2Token.from_json, Token.from_json])(
+                json.dumps(t)
+            )
+        )
+
+    return {"data": user, "tokens": tokens}
+
+
 class Storage:
     """
     Represents a Safe for Tokens.
@@ -25,46 +46,80 @@ class Storage:
     _storage = None
     _services = None
 
-    def __init__(self, rc=None):
-        logger.info("use redis.")
+    def __init__(self, rc=None, use_in_memory_on_failure=True):
+        logger.info("try to use redis as backend.")
         try:
             import redis_pubsub_dict, functools
 
-            def wraps(fn, methodname, *methodargs, **methodkwargs):
-                @functools.wraps(fn)
-                def wrapper(*args, **kwargs):
-                    obj = fn(*args, **kwargs)
-                    try:
-                        return getattr(obj, methodname)(
-                            *methodargs, **methodkwargs
-                        )
-                    except AttributeError:
-                        return obj
-
-
-                return wrapper
-
-            redis_pubsub_dict.dumps = wraps(json.dumps, "encode")
-            redis_pubsub_dict.loads = Util.initialize_object_from_dict(wraps(json.loads, "decode", "utf-8"))
-
-            from rediscluster import RedisCluster
+            redis_pubsub_dict.dumps = lambda x: json.dumps(x)
+            redis_pubsub_dict.loads = lambda x: Util.try_function_on_dict(
+                [
+                    User.from_json,
+                    OAuth2Service.from_json,
+                    Service.from_json,
+                    OAuth2Token.from_json,
+                    Token.from_json,
+                    load_service_with_tokens,
+                ]
+            )(x)
+            redis_pubsub_dict.RedisDict.to_json = lambda x: dict(x.items())
+            redis_pubsub_dict.RedisDict.__eq__ = (
+                lambda x, other: dict(x.items()) == other
+            )
+            redis_pubsub_dict.RedisDict.keys = keys
 
             # runs in RDS ecosystem, use redis as backend
             if rc is None:
-                rc = RedisCluster(
-                    startup_nodes=[
-                        {
-                            "host": os.getenv("REDIS_HOST", "localhost"),
-                            "port": os.getenv("REDIS_PORT", "6379"),
-                        }
-                    ]
-                )
+                logger.debug("No redis client was given. Create one.")
+
+                startup_nodes = [
+                    {
+                        "host": os.getenv("REDIS_HOST", "localhost"),
+                        "port": os.getenv("REDIS_PORT", "6379"),
+                    }
+                ]
+
+                try:
+                    logger.debug("first try cluster")
+                    from rediscluster import RedisCluster
+
+                    rc = RedisCluster(
+                        startup_nodes=startup_nodes,
+                        decode_responses=True,
+                        skip_full_coverage_check=True,
+                        cluster_down_retry_attempts=1,
+                    )
+                    rc.cluster_info()  # provoke an error message
+                except Exception as e:
+                    logger.error(e)
+                    logger.debug("Cluster has an error, try standalone redis")
+                    from redis import Redis
+
+                    rc = Redis(
+                        **(startup_nodes[0]),
+                        db=0,
+                        decode_responses=True,
+                        cluster_down_retry_attempts=1,
+                    )
+                    rc.info()  # provoke an error message
+
+            logger.debug("set redis backed dict")
             self._storage = redis_pubsub_dict.RedisDict(rc, "tokenstorage_storage")
             self._services = redis_pubsub_dict.RedisDict(rc, "tokenstorage_services")
 
-            self._services.append = append.__get__(self._services, type(self._services))
-        except Exception:
-            logger.info("no redis found. use memory")
+            logger.debug("set methods to redis backed dict to use it as list")
+            self._services.append = append.__get__(self._services)
+        except Exception as e:
+            logger.error(e)
+            logger.info("no redis found.")
+
+            if not use_in_memory_on_failure:
+                logger.info("exit...")
+                import sys
+
+                sys.exit()
+
+            logger.info("use in-memory")
             self._storage = {}
             self._services = []
 
@@ -79,7 +134,13 @@ class Storage:
     @property
     def services(self):
         try:
-            return self._services.values()
+            servicelist = [self._services[str(i)] for i in range(0, self._services.size())]
+            logger.debug(
+                "got services: {}".format(
+                    [service.to_json() for service in servicelist]
+                )
+            )
+            return servicelist
         except:
             return self._services
 
@@ -188,7 +249,7 @@ class Storage:
         """
         return self.services
 
-    def getService(self, service: Union[str, Service], index: bool = False):
+    def getService(self, service: Union[str, Service]):
         """
         Returns the service object with the given servicename. If not found, returns None
 
@@ -204,11 +265,13 @@ class Storage:
             service = Service(service)
 
         try:
-            k = self.internal_find_service(service.servicename, self.services)
-            svc = self._services[k]
-            return (svc, k) if index is True else svc
+            services = self.services
+            _, svc = self.internal_find_service(
+                service.servicename, services, return_object=True
+            )
+            return svc
         except:
-            return (None, None) if index is True else None
+            return None
 
     def addService(self, service: Service, Force=False):
         """
@@ -224,14 +287,30 @@ class Storage:
         if not isinstance(service, (Service, OAuth2Service)):
             raise ValueError("parameter not a service object.")
 
-        svc, index = self.getService(service, index=True)
+        try:
+            index, svc = self.internal_find_service(
+                service.servicename, self.services, return_object=True
+            )
+        except:
+            index = 0
+            svc = None
+
+        logger.debug("use index: {}, svc: {}".format(index, svc))
+
         if svc is not None:
+            logger.debug("service found")
             if Force is True:
-                self._services[index] = service
+                logger.debug("found Force, update service")
+                
+                try:
+                    self._services[str(index)] = service
+                except TypeError as identifier:
+                    self._services[index] = service
                 return True
 
             from RDS.ServiceException import ServiceExistsAlreadyError
 
+            logger.debug("raise ServiceExistsAlreadyError")
             raise ServiceExistsAlreadyError(service)
 
         self._services.append(service)
@@ -339,7 +418,9 @@ class Storage:
                     if index == 0:
                         del self._storage[user.username]
                     else:
-                        del self._storage[user.username]["tokens"][index]
+                        data = self._storage[user.username]
+                        del data["tokens"][index]
+                        self._storage[user.username] = data
                     break
         except ValueError:
             from .Exceptions.StorageException import TokenNotExistsError
@@ -398,7 +479,9 @@ class Storage:
                 raise UserNotExistsError(self, user)
 
         try:
+            logger.debug("Try to find index")
             index = self._storage[user.username]["tokens"].index(token)
+            logger.debug(f"found index {index}")
 
             """
             obsolete since model update
@@ -408,7 +491,9 @@ class Storage:
             """
 
             if Force:
-                self._storage[user.username]["tokens"][index] = token
+                data = self._storage[user.username]
+                data["tokens"][index] = token
+                self._storage[user.username] = data
                 logger.debug(f"overwrite token for user {user}")
 
             else:
@@ -416,9 +501,18 @@ class Storage:
 
                 raise UserHasTokenAlreadyError(self, user, token)
 
-        except ValueError:
+        except ValueError as e:
+            logger.error(e, exc_info=True)
+
             # token not found in storage, so we can add it here.
-            self._storage[user.username]["tokens"].append(token)
+            data = self._storage[user.username]
+            data["tokens"].append(token)
+            self._storage[user.username] = data
+            logger.debug(
+                "token {} not found for user {}. Append it to tokens.".format(
+                    token.servicename, user.username
+                )
+            )
 
         return True
 
@@ -477,7 +571,12 @@ class Storage:
 
             try:
                 new_token = token.refresh()
-                self.addTokenToUser(new_token, user, Force=True)
+                logger.debug(
+                    "add new token {} to user {}".format(
+                        new_token, user or new_token.user
+                    )
+                )
+                self.addTokenToUser(new_token, user or new_token.user, Force=True)
                 found = True
 
             except TokenNotValidError as e:
@@ -491,7 +590,9 @@ class Storage:
 
         return found
 
-    def internal_find_service(self, servicename: str, services: list):
+    def internal_find_service(
+        self, servicename: str, services: list, return_object: bool = False
+    ):
         """
         Tries to find the given servicename in the list of services.
 
@@ -506,7 +607,14 @@ class Storage:
             raise ValueError("Services is not of type list.")
 
         for index, service in enumerate(services):
+            logger.debug(
+                "Is {} equal to {}?, result: {}".format(
+                    servicename, service.servicename, service.servicename == servicename
+                )
+            )
             if service.servicename == servicename:
+                if return_object:
+                    return index, service
                 return index
 
         raise ValueError(

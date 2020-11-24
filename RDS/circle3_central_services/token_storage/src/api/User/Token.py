@@ -18,7 +18,7 @@ def index(user_id):
 
     data = {"length": len(tokens), "list": tokens}
 
-    logger.debug(f"Found services: {data}")
+    logger.debug(f"Found tokens: {json.dumps(data)}")
     return jsonify(data)
 
 

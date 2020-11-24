@@ -22,6 +22,8 @@ test:central_service_token_storage3.8:
   extends: .tests_central_service_token_storage
 
 build:central_service_token_storage:
+  needs:
+    - test:central_service_token_storage3.8
   extends:
     - .builds
     - .central_service_token_storage
@@ -32,6 +34,8 @@ build:central_service_token_storage:
       - RDS/circle3_central_services/token_storage/**/*
 
 doc:central_service_token_storage:
+  needs:
+    - build:central_service_token_storage
   image: python:3.8
   extends:
     - .documentation

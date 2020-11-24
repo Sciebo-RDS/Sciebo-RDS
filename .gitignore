@@ -8,6 +8,7 @@ _build
 .vscode
 deploy/secrets.yaml
 values.yaml
+values-dev.yaml
 kustomization.yaml
 .coverage
 coverage.xml
@@ -15,3 +16,6 @@ coverage
 create_certs.sh
 namespace.yaml
 configuration.yaml
+configuration-dev.yaml
+*-demo.yaml
+values-osf.yaml
