@@ -5,7 +5,7 @@ info:
     name: Peter Heiss
     email: peter.heiss@uni-muenster.de
     url: 'http://www.research-data-services.org'
-  description: 'This file describes the interface for the central service "token storage".'
+  description: This file describes the interface for the central service "token storage".
   license:
     name: MIT
 servers:
@@ -233,6 +233,13 @@ paths:
         name: servicename
         in: path
         required: true
+    delete:
+      summary: ''
+      operationId: ''
+      responses:
+        '200':
+          description: OK
+      description: Removes the given service.
   /service:
     get:
       summary: Returns all services

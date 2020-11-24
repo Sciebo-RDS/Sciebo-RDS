@@ -366,6 +366,7 @@ components:
                           type: string
       required:
         - port
+      x-examples: {}
 servers:
   - url: 'http://central-service_research-manager:3000/research'
     description: ''
