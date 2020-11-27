@@ -66,12 +66,12 @@ class Service:
             bool: True, if you have to send zip for folder in folders.
         """
         json = requests.get(
-            f"{self.portaddress}/metadata/zip",
+            f"{self.portaddress}/metadata/informations",
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         ).json()
 
-        status = json.get("needsZip")
-        return bool(status)
+        status = json.get("fileTransferArchive")
+        return bool(status == "zip")
 
     def getFilepath(self):
         filepath = self.getProperty("filepath")
