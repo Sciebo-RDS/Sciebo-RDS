@@ -112,11 +112,12 @@ class TokenService:
         dictWithState = self.internal_getDictWithStateFromService(svc)
 
         if informations:
-            port = get_port_string(service.servicename)
-            if self.address.startswith("http://localhost"):
-                port = self.address
-            informationsDict = requests.get("{}/metadata/informations".format(port)).json()
-            dictWithState["informations"] = informationsDict
+            if informations and not hasattr(svc, "informations"):
+                port = get_port_string(svc.servicename)
+                if self.address.startswith("http://localhost"):
+                    port = self.address
+                svc.informations = requests.get(f"{port}/metadata/informations",verify=(os.environ.get("VERIFY_SSL", "True") == "True"),).json()
+            dictWithState["informations"] = svc.informations
 
         return dictWithState
 
@@ -150,11 +151,12 @@ class TokenService:
             dictWithState = self.internal_getDictWithStateFromService(svc)
 
             if informations:
-                port = get_port_string(service.servicename)
-                if self.address.startswith("http://localhost"):
-                    port = self.address
-                informationsDict = requests.get("{}/metadata/informations".format(port)).json()
-                dictWithState["informations"] = informationsDict
+                if not hasattr(svc, "informations"):
+                    port = get_port_string(svc.servicename)
+                    if self.address.startswith("http://localhost"):
+                        port = self.address
+                    svc.informations = requests.get(f"{port}/metadata/informations",verify=(os.environ.get("VERIFY_SSL", "True") == "True"),).json()
+                dictWithState["informations"] = svc.informations
 
             result_list.append(dictWithState)
 

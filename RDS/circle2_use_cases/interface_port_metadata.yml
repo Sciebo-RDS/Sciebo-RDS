@@ -334,7 +334,7 @@ paths:
                       If empty, all files will be transfered one by one to the service.
                       If set to one of the followed algorithms, it will be used to store all files to one archive and then transmitted within one call.
 
-                      Supported Algorithms: [zip]
+                      Supported Algorithms: ["", "zip"]
                     example: zip
                   loginMode:
                     type: integer
