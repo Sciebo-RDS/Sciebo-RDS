@@ -3,7 +3,7 @@ from RDS import FileTransferMode, LoginMode
 
 def index():
     data = {
-        "fileTransferArchive":True,
+        "fileTransferArchive":"zip",
         "fileTransferMode":FileTransferMode.active,
         "loginMode":LoginMode.oauth
     }

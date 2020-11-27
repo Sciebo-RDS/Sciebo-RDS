@@ -105,9 +105,13 @@ class Test_Service(unittest.TestCase):
         pact.given(
             f"set zipStatus for service {service}, if it needs zip for folder in folder"
         ).upon_receiving("service responds with zipStatus").with_request(
-            "GET", f"/metadata/zip"
+            "GET", f"/metadata/informations"
         ).will_respond_with(
-            200, body={"needsZip": status}
+            200, body={
+                "fileTransferArchive":"zip",
+                "fileTransferMode":0,
+                "loginMode":1
+            }
         )
 
     def test_init(self):
