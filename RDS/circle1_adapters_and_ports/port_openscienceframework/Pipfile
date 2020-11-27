@@ -17,6 +17,7 @@ connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 osfclient = {editable = false, git = "https://github.com/Sciebo-RDS/osfclient.git"}
 pyld = "*"
+research-data-services-common = {extras = ["flask"], version = "*"}
 
 [requires]
 python_version = "3.8"
