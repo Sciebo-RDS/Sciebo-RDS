@@ -89,7 +89,7 @@ class TokenService:
 
         return [svc.authorize_url for svc in self._services]
 
-    def getService(self, servicename: str, clean=False) -> Service:
+    def getService(self, servicename: str, clean=False, informations=False) -> Service:
         """
         Returns a dict like self.getAllServices, but for only a single servicename (str).
 
@@ -109,9 +109,18 @@ class TokenService:
         if clean:
             return svc
 
-        return self.internal_getDictWithStateFromService(svc)
+        dictWithState = self.internal_getDictWithStateFromService(svc)
 
-    def getAllServices(self, clean=False) -> list:
+        if informations:
+            port = get_port_string(service.servicename)
+            if self.address.startswith("http://localhost"):
+                port = self.address
+            informationsDict = requests.get("{}/metadata/informations".format(port)).json()
+            dictWithState["informations"] = informationsDict
+
+        return dictWithState
+
+    def getAllServices(self, clean=False, informations=False) -> list:
         """
         Returns a `list` of `dict` which represents all registered services.
 
@@ -138,7 +147,16 @@ class TokenService:
         result_list = []
 
         for svc in services:
-            result_list.append(self.internal_getDictWithStateFromService(svc))
+            dictWithState = self.internal_getDictWithStateFromService(svc)
+
+            if informations:
+                port = get_port_string(service.servicename)
+                if self.address.startswith("http://localhost"):
+                    port = self.address
+                informationsDict = requests.get("{}/metadata/informations".format(port)).json()
+                dictWithState["informations"] = informationsDict
+
+            result_list.append(dictWithState)
 
         logger.warning(result_list)
 

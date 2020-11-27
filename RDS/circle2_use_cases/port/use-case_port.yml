@@ -108,6 +108,9 @@ paths:
                   properties:
                     jwt:
                       type: string
+                    informations:
+                      type: object
+                      description: A proxy for the informations from every port.
       description: Returns all available services.
   '/user/{user-id}/service':
     parameters:
