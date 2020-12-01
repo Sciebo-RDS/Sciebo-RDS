@@ -18,6 +18,7 @@ connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 pyjwt = "*"
 pathos = "*"
+research-data-services-common = {extras = ["flask"], version = "*"}
 
 [requires]
 python_version = "3.8"

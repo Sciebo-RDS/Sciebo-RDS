@@ -5,6 +5,8 @@ import logging
 import zipfile
 from io import BytesIO
 import os
+from RDS import FileTransferMode, LoginMode
+
 
 logger = logging.getLogger()
 
@@ -101,6 +103,10 @@ class Research:
             b = self.removeAllFiles()
             logger.debug("Removed all files? {}".format(b))
 
+        self.triggerPassivePorts()
+        self.processActivePorts()
+
+    def processActivePorts(self):
         for svc in self.importServices:
             logger.debug("import service: {}".format(svc.getJSON()))
 
@@ -148,9 +154,17 @@ class Research:
                         "{}_{}.zip".format(svc.servicename, urlify(svc.getFilepath())),
                         mem_zip,
                     )
-                    for exportSvc in self.exportServices
-                    if exportSvc.zipForFolder
+                    for exportSvc in self.getExportServices()
+                    if (exportSvc.zipForFolder)
                 ]
+
+    def triggerPassivePorts(self):
+        for importSvc in self.importServices:
+            for exportSvc in [svc for svc in self.getExportServices(mode=FileTransferMode.passive)]:
+                exportSvc.triggerPassiveMode(importSvc.getFilepath())
+
+    def getExportServices(self, mode=FileTransferMode.active):
+        return [svc for svc in self.exportServices if svc.fileTransferMode == mode]
 
     def addFile(self, *args, **kwargs):
         """
@@ -180,7 +194,7 @@ class Research:
 
         return [
             svc.addFile(*args, **kwargs)
-            for svc in self.exportServices
+            for svc in self.getExportServices()
             if not (folderInFolder and svc.zipForFolder)
         ]
 

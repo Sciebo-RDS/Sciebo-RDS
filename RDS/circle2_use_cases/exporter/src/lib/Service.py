@@ -1,6 +1,8 @@
 import requests
 import os
 import logging
+from RDS import FileTransferMode, LoginMode
+
 
 logger = logging.getLogger()
 
@@ -57,21 +59,22 @@ class Service:
 
         if self.metadata:
             # TODO: metadata ports can also response with files
-            self.useZipForFolder = self.getZipStatusForFolders()
+            self.reloadInformations()
 
-    def getZipStatusForFolders(self):
-        """Returns True, if you have to send zip files, when there are folder in folders. Otherwise False.
-
-        Returns:
-            bool: True, if you have to send zip for folder in folders.
+    def reloadInformations(self):
+        """Updates all metadata informations from port.
         """
         json = requests.get(
             f"{self.portaddress}/metadata/informations",
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         ).json()
 
-        status = json.get("fileTransferArchive")
-        return bool(status == "zip")
+        self.useZipForFolder =  bool(json.get("fileTransferArchive", "") == "zip")
+        self.fileTransferMode =  FileTransferMode(json.get("fileTransferMode", 0))
+        self.loginMode = LoginMode(json.get("loginMode", 1))
+
+        if self.loginMode == 0:
+            self.credentials = json.get("credentials", {})
 
     def getFilepath(self):
         filepath = self.getProperty("filepath")
@@ -137,6 +140,35 @@ class Service:
             pass
 
         return BytesIO(b"")
+
+    def triggerPassiveMode(self, folder):
+        """Trigger passive upload for given folder
+
+        Args:
+            folder (str): Set the folder.
+
+        Returns:
+            bool: Return True, if the trigger was successfully, otherwise False.
+        """
+        data = {"userId": self.userId, "folder": folder}
+
+        logger.debug(
+            "start passive mode with data {} in service {}".format(data, self.getJSON())
+        )
+
+        if self.metadata:
+            response_to = requests.post(
+                f"{self.portaddress}/metadata/project/{self.getProjectId()}/files",
+                data=data,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
+
+            if response_to.status_code >= 300:
+                logger.error(response_to.json())
+                return False
+            pass
+
+        return True
 
     def addFile(self, filename, fileContent):
         """Adds given file with filename to this service.
