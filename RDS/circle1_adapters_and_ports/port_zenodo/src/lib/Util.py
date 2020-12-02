@@ -5,6 +5,11 @@ import os
 import requests
 import logging
 
+
+from pyld import jsonld
+import json
+
+
 logger = logging.getLogger()
 
 
@@ -153,11 +158,6 @@ def to_jsonld(metadata):
         jsonld[zenodo_to_jsonld["access_right"]] = True
 
     return jsonld
-
-
-from pyld import jsonld
-import json
-
 
 def from_jsonld(jsonld_data):
     if jsonld_data is None:
