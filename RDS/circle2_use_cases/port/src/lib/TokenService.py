@@ -116,7 +116,8 @@ class TokenService:
                 port = get_port_string(svc.servicename)
                 if self.address.startswith("http://localhost"):
                     port = self.address
-                svc.informations = requests.get(f"{port}/metadata/informations",verify=(os.environ.get("VERIFY_SSL", "True") == "True"),).json()
+                svc.informations = requests.get(f"{port}/metadata/informations", verify=(
+                    os.environ.get("VERIFY_SSL", "True") == "True"),).json()
             dictWithState["informations"] = svc.informations
 
         return dictWithState
@@ -139,7 +140,7 @@ class TokenService:
         """
 
         self.refreshServices()
-        
+
         services = self._services
 
         if clean:
@@ -155,7 +156,8 @@ class TokenService:
                     port = get_port_string(svc.servicename)
                     if self.address.startswith("http://localhost"):
                         port = self.address
-                    svc.informations = requests.get(f"{port}/metadata/informations",verify=(os.environ.get("VERIFY_SSL", "True") == "True"),).json()
+                    svc.informations = requests.get(f"{port}/metadata/informations", verify=(
+                        os.environ.get("VERIFY_SSL", "True") == "True"),).json()
                 dictWithState["informations"] = svc.informations
 
             result_list.append(dictWithState)
