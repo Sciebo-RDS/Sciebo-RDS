@@ -213,12 +213,36 @@ class TokenService:
                         "access_token": token.access_token,
                         "projects": self.getProjectsForToken(token),
                         "implements": token._service.implements,
+                        "informations": self.getInformationsForToken(token)
                     }
                 )
         except:
             raise UserNotFoundError(user)
 
         return services
+
+    def getInformationsForToken(self, token: Token) -> dict:
+        """Returns informations from port
+
+        Args:
+            token (Token): Token
+
+        Returns:
+            dict: The informations.
+        """        
+        port = get_port_string(token.servicename)
+        if self.address.startswith("http://localhost"):
+            port = self.address
+
+        req = requests.get(
+            f"{port}/metadata/informations",
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        )
+
+        if req.status_code >= 300:
+            return {}
+
+        return req.json()
 
     def getProjectsForToken(self, token: Token) -> list:
         """
