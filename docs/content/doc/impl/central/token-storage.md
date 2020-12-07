@@ -83,6 +83,6 @@ Due to the easier handling, the data is currently only stored in the memory. Thi
 
 # OpenAPI v3
 
-{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle3_central_services/token_storage/central-service_token-storage.yml"  >}}
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/informations-ep/RDS/circle3_central_services/token_storage/central-service_token-storage.yml"  >}}
 
 {{% code file="doc/impl/central/token-storage-docstring.md" %}}

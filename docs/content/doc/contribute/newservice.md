@@ -59,7 +59,7 @@ sequenceDiagram
 
 Your port service should do the login as one of the first steps before starting the API service. When logging on, you must specify which interface (more on this in a moment) has been implemented. This interface is important because your service will be used later by other microservices. RDS uses several OpenAPIv3 specifications to ensure communication between the microservices.
 
-Since your service is in layer 1, it can be used by other microservices than [files](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_file_storage.yml)- ([example: Owncloud](/doc/impl/ports/port-owncloud/)) and / or [metadata store](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_metadata.yml) ([example: Zenodo](/doc/impl/ports/port-invenio/)).
+Since your service is in layer 1, it can be used by other microservices than [files](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/informations-ep/RDS/circle2_use_cases/interface_port_file_storage.yml)- ([example: Owncloud](/doc/impl/ports/port-owncloud/)) and / or [metadata store](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/informations-ep/RDS/circle2_use_cases/interface_port_metadata.yml) ([example: Zenodo](/doc/impl/ports/port-invenio/)).
 
 With the following Python function you can register your service with *Token Storage*.
 

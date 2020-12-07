@@ -59,7 +59,7 @@ sequenceDiagram
 
 Dein Port Service sollte die Anmeldung als einer der ersten Schritte machen, bevor der API-Service gestartet wird. Bei der Anmeldung musst Du angeben, welches Interface (dazu gleich mehr) implementiert wurde. Dieses Interface ist wichtig, da dein Service später durch andere Microservices verwendet werden soll. RDS benutzt mehrere OpenAPIv3 Spezifikation, um die Kommunikation zwischen den Microservices zu gewährleisten.
 
-Da dein Dienst in Schicht 1 liegt, kann er von anderen Microservices als [Dateien](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_file_storage.yml)- ([Beispiel: Owncloud](/de/doc/impl/ports/port-owncloud/)) und / oder [Metadatenspeicher](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_metadata.yml) ([Beispiel: Zenodo](/de/doc/impl/ports/port-invenio/)) verwendet werden.
+Da dein Dienst in Schicht 1 liegt, kann er von anderen Microservices als [Dateien](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/informations-ep/RDS/circle2_use_cases/interface_port_file_storage.yml)- ([Beispiel: Owncloud](/de/doc/impl/ports/port-owncloud/)) und / oder [Metadatenspeicher](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/informations-ep/RDS/circle2_use_cases/interface_port_metadata.yml) ([Beispiel: Zenodo](/de/doc/impl/ports/port-invenio/)) verwendet werden.
 
 Mit der folgenden Python-Funktion kannst Du deinen Service beim *Token Storage* anmelden.
 

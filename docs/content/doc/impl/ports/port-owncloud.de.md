@@ -16,7 +16,7 @@ Aktuell kann dieser Service bei der Konfiguration von Forschungsprojekten ledigl
 
 ## OpenAPI v3
 
-{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_file_storage.yml"  >}}
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/informations-ep/RDS/circle2_use_cases/interface_port_file_storage.yml"  >}}
 
 ## Implementierung
 
