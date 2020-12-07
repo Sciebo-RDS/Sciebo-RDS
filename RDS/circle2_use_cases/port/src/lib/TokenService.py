@@ -166,7 +166,7 @@ class TokenService:
             if req.status_code < 300:
                 svc.informations = req.json()
             else:
-                svc.informations = None
+                svc.informations = {}
 
         return svc.informations
 
