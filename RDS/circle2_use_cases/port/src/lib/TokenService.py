@@ -112,13 +112,7 @@ class TokenService:
         dictWithState = self.internal_getDictWithStateFromService(svc)
 
         if informations:
-            if informations and not hasattr(svc, "informations"):
-                port = get_port_string(svc.servicename)
-                if self.address.startswith("http://localhost"):
-                    port = self.address
-                svc.informations = requests.get(f"{port}/metadata/informations", verify=(
-                    os.environ.get("VERIFY_SSL", "True") == "True"),).json()
-            dictWithState["informations"] = svc.informations
+            dictWithState["informations"] = self.getInformations(svc)
 
         return dictWithState
 
@@ -152,19 +146,29 @@ class TokenService:
             dictWithState = self.internal_getDictWithStateFromService(svc)
 
             if informations:
-                if not hasattr(svc, "informations"):
-                    port = get_port_string(svc.servicename)
-                    if self.address.startswith("http://localhost"):
-                        port = self.address
-                    svc.informations = requests.get(f"{port}/metadata/informations", verify=(
-                        os.environ.get("VERIFY_SSL", "True") == "True"),).json()
-                dictWithState["informations"] = svc.informations
+                dictWithState["informations"] = self.getInformations(svc)
 
             result_list.append(dictWithState)
 
         logger.warning(result_list)
 
         return result_list
+
+    def getInformations(self, svc: Service) -> dict:
+        if not hasattr(svc, "informations"):
+            port = get_port_string(svc.servicename)
+            if self.address.startswith("http://localhost"):
+                port = self.address
+
+            req = requests.get(f"{port}/metadata/informations", verify=(
+                os.environ.get("VERIFY_SSL", "True") == "True"),)
+
+            if req.status_code < 300:
+                svc.informations = req.json()
+            else:
+                svc.informations = None
+
+        return svc.informations
 
     def internal_getDictWithStateFromService(self, service: Service) -> dict:
         """
@@ -213,7 +217,7 @@ class TokenService:
                         "access_token": token.access_token,
                         "projects": self.getProjectsForToken(token),
                         "implements": token._service.implements,
-                        "informations": self.getInformationsForToken(token)
+                        "informations": self.getInformations(token.service)
                     }
                 )
         except Exception as e:
@@ -221,29 +225,6 @@ class TokenService:
             raise UserNotFoundError(user)
 
         return services
-
-    def getInformationsForToken(self, token: Token) -> dict:
-        """Returns informations from port
-
-        Args:
-            token (Token): Token
-
-        Returns:
-            dict: The informations.
-        """
-        port = get_port_string(token.servicename)
-        if self.address.startswith("http://localhost"):
-            port = self.address
-
-        req = requests.get(
-            f"{port}/metadata/informations",
-            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
-        )
-
-        if req.status_code >= 300:
-            return {}
-
-        return req.json()
 
     def getProjectsForToken(self, token: Token) -> list:
         """
