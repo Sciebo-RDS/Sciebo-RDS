@@ -46,7 +46,7 @@ class TokenService:
             if not service in self._services:
                 raise ServiceNotFoundError(service)
 
-        return service.authorize_url
+        return getattr(service, "authorize_url", None)
 
     def refreshServices(self) -> bool:
         response = requests.get(
@@ -87,7 +87,7 @@ class TokenService:
 
         self.refreshServices()
 
-        return [svc.authorize_url for svc in self._services]
+        return [getattr(svc, "authorize_url", None) for svc in self._services]
 
     def getService(self, servicename: str, clean=False, informations=False) -> Service:
         """
@@ -178,7 +178,7 @@ class TokenService:
 
         data = {
             "servicename": service.servicename,
-            "authorize_url": service.authorize_url,
+            "authorize_url": getattr(service, "authorize_url", None),
             "date": date,
             "implements": service.implements,
         }
@@ -230,7 +230,7 @@ class TokenService:
 
         Returns:
             dict: The informations.
-        """        
+        """
         port = get_port_string(token.servicename)
         if self.address.startswith("http://localhost"):
             port = self.address
