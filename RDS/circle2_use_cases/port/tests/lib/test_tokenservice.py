@@ -103,7 +103,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         all_services = self.tokenService.getAllOAuthURIForService()
-        self.assertEqual(all_services, [self.url1, self.url2], msg=all_services)
+        self.assertEqual(
+            all_services, [self.url1, self.url2], msg=all_services)
 
     def test_get_specific_service(self):
         # test to get one specific service, where no service is
@@ -160,7 +161,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         with pact:
-            self.assertEqual(self.tokenService.getAllServicesForUser(self.user1), [])
+            self.assertEqual(
+                self.tokenService.getAllServicesForUser(self.user1), [])
 
         # test to get all services from one user, with one service
         pact.given("one service was registered.").upon_receiving(
@@ -178,6 +180,20 @@ class Test_TokenService(unittest.TestCase):
             200, body=expected_projects
         )
 
+        dataInformations = {
+            "fileTransferArchive": "zip",
+            "fileTransferMode": 0,
+            "loginMode": 1
+        }
+
+        pact.given("Given token to access port").upon_receiving(
+            "informations from port taken from token with proj length {}".format(
+                len(expected_projects)
+            )
+        ).with_request("GET", f"/metadata/informations").will_respond_with(
+            200, body=dataInformations
+        )
+
         with pact:
             data = self.tokenService.getAllServicesForUser(self.user1)
         self.assertEqual(
@@ -189,6 +205,7 @@ class Test_TokenService(unittest.TestCase):
                     "access_token": self.token1.access_token,
                     "projects": [],
                     "implements": [],
+                    "informations": dataInformations
                 }
             ],
             msg=str(data[0]),
@@ -214,6 +231,14 @@ class Test_TokenService(unittest.TestCase):
             200, body=expected_projects
         )
 
+        pact.given("Given token to access port 1").upon_receiving(
+            "informations from port taken from token with proj length {}".format(
+                len(expected_projects)
+            )
+        ).with_request("GET", f"/metadata/informations").will_respond_with(
+            200, body=dataInformations
+        )
+
         expected_projects = []
         pact.given("Given token to access port 2").upon_receiving(
             "projects from port taken from token with proj length {}".format(
@@ -221,6 +246,15 @@ class Test_TokenService(unittest.TestCase):
             )
         ).with_request("GET", f"/metadata/project").will_respond_with(
             200, body=expected_projects
+        )
+
+        
+        pact.given("Given token to access port 2").upon_receiving(
+            "informations from port taken from token with proj length {}".format(
+                len(expected_projects)
+            )
+        ).with_request("GET", f"/metadata/informations").will_respond_with(
+            200, body=dataInformations
         )
 
         with pact:
@@ -233,6 +267,7 @@ class Test_TokenService(unittest.TestCase):
                         "access_token": self.token1.access_token,
                         "projects": [],
                         "implements": [],
+                        "informations": dataInformations
                     },
                     {
                         "id": 1,
@@ -240,6 +275,7 @@ class Test_TokenService(unittest.TestCase):
                         "access_token": self.token2.access_token,
                         "projects": [],
                         "implements": [],
+                        "informations": dataInformations
                     },
                 ],
             )
@@ -441,7 +477,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         self.assertEqual(
-            self.tokenService.removeTokenFromUser(self.token1, self.user1), True
+            self.tokenService.removeTokenFromUser(
+                self.token1, self.user1), True
         )
 
     def test_get_all_service_jwt(self):
@@ -471,7 +508,6 @@ class Test_TokenService(unittest.TestCase):
         with self.assertRaises(InvalidSignatureError):
             req = jwt.decode(req_list[0]["jwt"], key, algorithms="HS256")
 
-        
         pact.given(
             'one service was registered.'
         ).upon_receiving(
@@ -553,7 +589,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         with self.assertRaises(ServiceNotFoundError):
-            self.tokenService.getTokenForServiceFromUser(self.service1, self.user1)
+            self.tokenService.getTokenForServiceFromUser(
+                self.service1, self.user1)
 
         # test get token, if one token, but not same is there
         pact.given("one token was registered.").upon_receiving(
@@ -569,7 +606,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         with self.assertRaises(ServiceNotFoundError):
-            self.tokenService.getTokenForServiceFromUser(self.service1, self.user1)
+            self.tokenService.getTokenForServiceFromUser(
+                self.service1, self.user1)
 
         # test, get token successful
         pact.given("one searched token was registered.").upon_receiving(
@@ -581,7 +619,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         self.assertEqual(
-            self.tokenService.getTokenForServiceFromUser(self.service1, self.user1),
+            self.tokenService.getTokenForServiceFromUser(
+                self.service1, self.user1),
             self.token1,
         )
 
@@ -594,10 +633,12 @@ class Test_TokenService(unittest.TestCase):
             200, body=json.dumps(self.token2)
         )
 
-        reduced_token = Token(self.user1, self.token2.service, self.token2.access_token)
+        reduced_token = Token(
+            self.user1, self.token2.service, self.token2.access_token)
 
         self.assertEqual(
-            self.tokenService.getTokenForServiceFromUser(self.service1, self.user1),
+            self.tokenService.getTokenForServiceFromUser(
+                self.service1, self.user1),
             reduced_token,
         )
 
@@ -616,7 +657,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         with self.assertRaises(ServiceNotFoundError):
-            self.tokenService.removeTokenForServiceFromUser(self.service1, self.user1)
+            self.tokenService.removeTokenForServiceFromUser(
+                self.service1, self.user1)
 
         # remove the token, if one different token for it is there
         pact.given("one token was registered.").upon_receiving(
@@ -632,7 +674,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         with self.assertRaises(ServiceNotFoundError):
-            self.tokenService.removeTokenForServiceFromUser(self.service1, self.user1)
+            self.tokenService.removeTokenForServiceFromUser(
+                self.service1, self.user1)
 
         # remove the token, if the searched token for it is there
         pact.given("the search token was registered.").upon_receiving(
@@ -644,7 +687,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         self.assertEqual(
-            self.tokenService.removeTokenForServiceFromUser(self.service1, self.user1),
+            self.tokenService.removeTokenForServiceFromUser(
+                self.service1, self.user1),
             True,
         )
 
@@ -659,7 +703,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         with self.assertRaises(ValueError):
-            self.tokenService.exchangeAuthCodeToAccessToken(code, Service("localhost"), self.user1.username)
+            self.tokenService.exchangeAuthCodeToAccessToken(
+                code, Service("localhost"), self.user1.username)
 
         body = {
             "access_token": "1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ",
@@ -690,7 +735,8 @@ class Test_TokenService(unittest.TestCase):
             200, body={"success": True}
         )
 
-        token = self.tokenService.exchangeAuthCodeToAccessToken(code, service, self.user1.username)
+        token = self.tokenService.exchangeAuthCodeToAccessToken(
+            code, service, self.user1.username)
 
         self.assertEqual(token, expected)
 
@@ -707,7 +753,8 @@ class Test_TokenService(unittest.TestCase):
             200, body={"success": True}
         )
 
-        token = self.tokenService.exchangeAuthCodeToAccessToken(code, service, self.user1.username)
+        token = self.tokenService.exchangeAuthCodeToAccessToken(
+            code, service, self.user1.username)
 
         self.assertEqual(token, expected)
 
@@ -719,7 +766,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         with self.assertRaises(ServiceNotFoundError):
-            self.tokenService.exchangeAuthCodeToAccessToken(code, service.servicename, self.user1.username)
+            self.tokenService.exchangeAuthCodeToAccessToken(
+                code, service.servicename, self.user1.username)
 
         self.tokenService._storage = {}
 
@@ -738,7 +786,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         with self.assertRaises(CodeNotExchangeable):
-            self.tokenService.exchangeAuthCodeToAccessToken(code, service.servicename, self.user1.username)
+            self.tokenService.exchangeAuthCodeToAccessToken(
+                code, service.servicename, self.user1.username)
 
     def test_serviceprojects(self):
         proj1 = {"projectId": 0, "projectName": "Project1"}

@@ -216,7 +216,8 @@ class TokenService:
                         "informations": self.getInformationsForToken(token)
                     }
                 )
-        except:
+        except Exception as e:
+            logger.error(e)
             raise UserNotFoundError(user)
 
         return services
