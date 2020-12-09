@@ -555,3 +555,35 @@ class TokenService:
             )
 
         return oauthtoken
+
+
+def addTokenToUser(
+    self, token: Union[str, Token]
+) -> bool:
+    """Add the given Token to user.
+
+    Args:
+        token: The token, which should be added.
+        user (str): The username, which sould get the token.
+
+    Raises:
+        ValueError: The servicename was not valid.
+        ServiceNotFoundError: The servicename was not found.
+
+    Returns:
+        Bool: True, when everything works. Otherwise false.
+    """
+
+    # save the access_token in tokenStorage
+    logger.info(f"request token body: {token}")
+    headers = {"Content-type": "application/json"}
+
+    response = requests.post(
+        f"{self.address}/user/{token.user.username}/token",
+        data=json.dumps(token),
+        headers=headers,
+        verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+    )
+    logger.info(f"response oauthtoken body: {response.text}")
+
+    return (response.status_code >= 300)
