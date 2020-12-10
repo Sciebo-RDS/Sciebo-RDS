@@ -8,6 +8,11 @@ def post():
 
     user = User(data.get("username"))
     service = Util.tokenService.getService(data.get("servicename"), clean=True)
-    token = Token(user, service, data.get("password"))
+
+    password = data.get("password")
+    if password == "":
+        password = "---"
+
+    token = Token(user, service, password)
 
     return Util.tokenService.addTokenToUser(token)
