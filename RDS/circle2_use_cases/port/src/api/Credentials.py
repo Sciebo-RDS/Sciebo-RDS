@@ -6,7 +6,7 @@ import Util
 def post():
     data = request.json
 
-    user = data.get("userId")
+    user = User(data.get("userId"))
     service = Util.tokenService.getService(data.get("servicename"), clean=True)
 
     password = data.get("password")
