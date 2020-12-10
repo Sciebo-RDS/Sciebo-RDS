@@ -365,7 +365,7 @@ class TokenService:
         )
         data = response.json()
 
-        if response.status_code != 200:
+        if response.status_code >= 300:
             if "error" in data:
                 if data["error"] == "UserHasTokenAlreadyError":
                     raise UserHasTokenAlreadyError(user, token)
