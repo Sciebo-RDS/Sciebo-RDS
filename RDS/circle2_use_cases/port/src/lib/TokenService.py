@@ -353,9 +353,14 @@ class TokenService:
         Raise a `ServiceNotFoundError`, if service not found.
         """
 
+        headers = {
+            'content-type': 'application/json'
+        }
+
         response = requests.post(
             f"{self.address}/user/{user.username}/token",
             data=json.dumps(token),
+            headers=headers,
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
         data = response.json()
