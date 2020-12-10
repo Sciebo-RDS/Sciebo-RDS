@@ -15,4 +15,4 @@ def post():
 
     token = Token(user, service, password)
 
-    return Util.tokenService.addTokenToUser(token)
+    return Util.tokenService.addTokenToUser(token, user)
