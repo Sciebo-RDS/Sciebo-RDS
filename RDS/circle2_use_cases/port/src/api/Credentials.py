@@ -6,13 +6,13 @@ import Util
 def post():
     data = request.json
 
-    user = User(data.get("username"))
+    user = data.get("userId")
     service = Util.tokenService.getService(data.get("servicename"), clean=True)
 
     password = data.get("password")
     if password == "":
         password = "---"
 
-    token = Token(user, service, password)
+    token = Token(User(data.get("username")), service, password)
 
     return Util.tokenService.addTokenToUser(token, user)
