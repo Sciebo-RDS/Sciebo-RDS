@@ -231,6 +231,9 @@ class TokenService:
         Returns a `list` with all projects for given service and user.
         """
 
+        if token.access_token == "---":
+            return []
+
         port = get_port_string(token.servicename)
         if self.address.startswith("http://localhost"):
             port = self.address
