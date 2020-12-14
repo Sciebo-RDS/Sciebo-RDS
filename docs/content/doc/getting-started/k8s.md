@@ -73,7 +73,7 @@ make dependencies_fedora
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 choco install -y make
 make dependencies_windows
-# You cannot use all commands in the following, please translate from linux to windows commands by yourself.
+# You cannot use all commands in the following, please translate from linux to windows commands by yourself and send your code to us, please. We will build in your contribution.
 {{</tab>}}
 {{</tabs>}}
 
@@ -83,11 +83,11 @@ Note: Since Helm v3 no Tillerserver is [required](https://helm.sh/blog/helm-3-re
 
 ## Configuration
 
-You need the folder `deploy` from the Github repository.
+You need the `deploy` folder from the `getting-started` Github repository.
 
 ```bash
-git clone https://github.com/Sciebo-RDS/Sciebo-RDS.git
-cd ScieboRDS/deploy
+git clone https://github.com/Sciebo-RDS/getting-started/
+cd getting-started/deploy
 ```
 
 It contains all the files which are required for configuration and installation.
@@ -131,8 +131,9 @@ The following assumes that your owncloud installation is available under `ownclo
 
 | Service  | oauth application creation url                                           |
 | -------- | ------------------------------------------------------------------------ |
-| Zenodo   | https://(sandbox.)zenodo.org/account/settings/applications/              |
+| Zenodo   | https://`(sandbox.)`zenodo.org/account/settings/applications/              |
 | ownCloud | https://`owncloud.local`/index.php/settings/admin?sectionid=authentication |
+| Open Science Framework | https://`(test.)`osf.io/settings/applications |
 
 The application creation requires an `redirect url`. This needs to be adjusted to your used plugin, which integrates your RDS instance into client user interfaces. The following endpoint needs to be used for your installation, when you use the given plugin.
 
