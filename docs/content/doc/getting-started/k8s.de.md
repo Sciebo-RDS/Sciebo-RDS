@@ -73,6 +73,7 @@ make dependencies_fedora
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 choco install -y make
 make dependencies_windows
+# Du kannst nicht alle Befehle verwenden, welche im Folgenden gezeigt werden, da diese für Linux sind. Bitte konvertiere sie selbst nach Windows und sende uns dann das Ergebnis, damit wir das hier einbauen können.
 {{</tab>}}
 {{</tabs>}}
 
@@ -82,12 +83,11 @@ Hinweis: Seit Helm v3 wird kein Tillerserver mehr auf Seiten des Kubernetes [ben
 
 ## Konfiguration
 
-
-Man benötigt den Ordner "deploy" aus dem Github Repositorium.
+Man benötigt den Ordner `deploy` aus dem `getting-started` Github Repositorium.
 
 ```bash
-git clone https://github.com/Sciebo-RDS/Sciebo-RDS.git
-cd ScieboRDS/deploy
+git clone https://github.com/Sciebo-RDS/getting-started/
+cd getting-started/deploy
 ```
 
 Darin sind sämtliche Dateien enthalten, welche zur Konfiguration und Installation benötigt werden.
@@ -131,8 +131,9 @@ Im Folgenden wird davon ausgegangen, dass Ihre eigene Cloud-Installation unter `
 
 | Service  | oauth application creation url                                             |
 | -------- | -------------------------------------------------------------------------- |
-| Zenodo   | https://(sandbox.)zenodo.org/account/settings/applications/                |
+| Zenodo   | https://`(sandbox.)`zenodo.org/account/settings/applications/                |
 | ownCloud | https://`owncloud.local`/index.php/settings/admin?sectionid=authentication |
+| Open Science Framework | https://`(test.)`osf.io/settings/applications |
 
 Die Erstellung der Anwendung erfordert eine `Redirect url`. Diese muss an das von Ihnen verwendete Plugin angepasst werden, das Ihre RDS-Instanz in Client-Benutzeroberflächen integriert. Der folgende Endpunkt muss für Ihre Installation verwendet werden, wenn Sie das angegebene Plugin verwenden.
 
