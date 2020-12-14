@@ -353,9 +353,9 @@ paths:
                         type: boolean
                       password:
                         type: boolean
+                required:
                   - fileTransferMode
                   - fileTransferArchive
-                required:
                   - loginMode
       description: returns relevant informations about this port implementation.
 components:
