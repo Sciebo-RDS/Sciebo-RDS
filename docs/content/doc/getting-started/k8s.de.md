@@ -214,7 +214,7 @@ Sofern die vorherigen Schritte vollständig ausgeführt wurden, kann nun die Kon
 ## Installation
 
 {{<callout "warning">}}
-In diesem Kapitel werden einige Konfigurationen benötigt, welche durch das vorherige Kapitel vollzogen wurden. Falls die erforderlichen Dateien und Informationen nicht vorhanden sind, wird es zu Fehlermeldungen kommen. Es bereits die [Konfigurationsanleitung](/de/doc/getting-started/config/) ausgeführt worden sein.
+In diesem Kapitel werden einige Konfigurationen benötigt, welche durch das vorherige Kapitel vollzogen wurden. Falls die erforderlichen Dateien und Informationen nicht vorhanden sind, wird es zu Fehlermeldungen kommen. Stellen Sie sicher, dass Sie bereits die [Konfigurationsanleitung](/de//doc/getting-started/k8s/#configuration) durchlaufen haben.
 {{</callout>}}
 
 Nun kann mit folgendem Befehl das RDS-Ökosystem auf den Cluster geladen werden:

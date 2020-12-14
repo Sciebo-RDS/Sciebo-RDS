@@ -214,7 +214,7 @@ If you follow the previous steps, you can now apply the configuration to your ku
 ## Installation
 
 {{<callout "warning">}}
-The commands in this chapter needs some configuration, which you made in the previous chapter. If you did not create the needed files, you will get a lot of error messages now. So please be sure to follow the steps from the [configuration tutorial](/doc/getting-started/config/).
+The commands in this chapter needs some configuration, which you made in the previous chapter. If you did not create the needed files, you will get a lot of error messages now. So please be sure to follow the steps from the [configuration tutorial](/doc/getting-started/k8s/#configuration).
 {{</callout>}}
 
 Now the RDS ecosystem can be loaded onto the cluster with the following command:
