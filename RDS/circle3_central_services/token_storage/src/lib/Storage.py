@@ -136,11 +136,6 @@ class Storage:
     def services(self):
         try:
             servicelist = self._services.values()
-            logger.debug(
-                "got services: {}".format(
-                    [service.to_json() for service in servicelist]
-                )
-            )
             return servicelist
         except Exception as e:
             logger.error(e)
