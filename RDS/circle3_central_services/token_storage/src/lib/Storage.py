@@ -67,6 +67,7 @@ class Storage:
                 lambda x, other: dict(x.items()) == other
             )
             redis_pubsub_dict.RedisDict.keys = keys
+            redis_pubsub_dict.RedisDict.__len__ = lambda self: self.size()
 
             # runs in RDS ecosystem, use redis as backend
             if rc is None:
