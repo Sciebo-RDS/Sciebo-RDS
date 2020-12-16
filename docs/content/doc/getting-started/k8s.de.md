@@ -2,8 +2,8 @@
 title: Kubernetes subtitle: Helm Chart und Installationsanleitung
 
 menu:
-doc:
-parent: installation
+  doc:
+    parent: installation
 
 weight: 300
 ---
