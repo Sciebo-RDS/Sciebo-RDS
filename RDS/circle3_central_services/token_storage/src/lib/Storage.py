@@ -135,7 +135,7 @@ class Storage:
     @property
     def services(self):
         try:
-            servicelist = [self._services[str(i)] for i in range(0, len(self._services))]
+            servicelist = self._services.values()
             logger.debug(
                 "got services: {}".format(
                     [service.to_json() for service in servicelist]
