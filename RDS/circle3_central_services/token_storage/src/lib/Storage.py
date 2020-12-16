@@ -135,7 +135,7 @@ class Storage:
     @property
     def services(self):
         try:
-            servicelist = self._services.values()
+            servicelist = list(self._services.values())
             return servicelist
         except Exception as e:
             logger.error(e)
