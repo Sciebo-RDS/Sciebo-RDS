@@ -1,10 +1,10 @@
 ---
 title: Kubernetes subtitle: Requirements, Configuration and Helm Charts
+weight: 300
 
 menu:
-    doc:
-        parent: installation 
-weight: 300
+  doc:
+    parent: installation 
 ---
 
 In the following, we will show you how to install the RDS system in your Kubernetes Cluster.

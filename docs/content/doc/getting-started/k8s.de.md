@@ -1,10 +1,10 @@
 ---
 title: Kubernetes subtitle: Helm Chart und Installationsanleitung
+weight: 300
 
 menu:
   doc:
     parent: installation
-weight: 300
 ---
 
 Nachfolgend wird gezeigt, wie das RDS System in einem Kubernetes Cluster installiert werden kann.
