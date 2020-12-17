@@ -100,11 +100,21 @@ class Research:
         """
 
         if self.applyChanges:
-            b = self.removeAllFiles()
-            logger.debug("Removed all files? {}".format(b))
+            try:
+                b = self.removeAllFiles()
+                logger.debug("Removed all files? {}".format(b))
+            except Exception as e:
+                logger.exception(e)
 
-        self.triggerPassivePorts()
-        self.processActivePorts()
+        try:
+            self.triggerPassivePorts()
+        except Exception as e:
+            logger.exception(e)
+            
+        try:
+            self.processActivePorts()
+        except Exception as e:
+            logger.exception(e)
 
     def processActivePorts(self):
         for svc in self.importServices:
