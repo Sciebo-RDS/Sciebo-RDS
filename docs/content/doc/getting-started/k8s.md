@@ -1,5 +1,6 @@
 ---
-title: Kubernetes subtitle: Requirements, Configuration and Helm Charts
+title: "Kubernetes"
+subtitle: "Requirements, Configuration and Helm Charts"
 weight: 300
 
 menu:
@@ -81,10 +82,6 @@ make dependencies_windows
 # You cannot use all commands in the following, please translate from linux to windows commands by yourself and send your code to us, please. We will build in your contribution.
 {{</tab>}}
 {{</tabs>}}
-
-# You cannot use all commands in the following, please translate from linux to windows commands by yourself and send your code to us, please. We will build in your contribution.
-
-{{</tab>}} {{</tabs>}}
 
 {{<callout "tip">}} Note: Since Helm v3 no Tillerserver is [required](https://helm.sh/blog/helm-3-released/) on the
 Kubernetes side. {{</callout>}}

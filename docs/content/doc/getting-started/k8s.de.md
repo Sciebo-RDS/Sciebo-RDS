@@ -1,5 +1,6 @@
 ---
-title: Kubernetes subtitle: Helm Chart und Installationsanleitung
+title: Kubernetes
+subtitle: Helm Chart und Installationsanleitung
 weight: 300
 
 menu:
@@ -82,10 +83,6 @@ make dependencies_windows
 # Du kannst nicht alle Befehle verwenden, welche im Folgenden gezeigt werden, da diese für Linux sind. Bitte konvertiere sie selbst nach Windows und sende uns dann das Ergebnis, damit wir das hier einbauen können.
 {{</tab>}}
 {{</tabs>}}
-
-# Du kannst nicht alle Befehle verwenden, welche im Folgenden gezeigt werden, da diese für Linux sind. Bitte konvertiere sie selbst nach Windows und sende uns dann das Ergebnis, damit wir das hier einbauen können.
-
-{{</tab>}} {{</tabs>}}
 
 {{<callout "tip">}} Hinweis: Seit Helm v3 wird kein Tillerserver mehr auf Seiten des
 Kubernetes [benötigt](https://helm.sh/blog/helm-3-released/). {{</callout>}}
