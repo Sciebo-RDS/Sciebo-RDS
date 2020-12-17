@@ -135,14 +135,10 @@ class Storage:
     @property
     def services(self):
         try:
-            servicelist = [self._services[str(i)] for i in range(0, self._services.size())]
-            logger.debug(
-                "got services: {}".format(
-                    [service.to_json() for service in servicelist]
-                )
-            )
+            servicelist = list(self._services.values())
             return servicelist
-        except:
+        except Exception as e:
+            logger.error(e)
             return self._services
 
     @property

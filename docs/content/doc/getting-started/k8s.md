@@ -73,10 +73,13 @@ too.
 
 {{<tab "bash" "Fedora/CentOS">}}sudo dnf install make -y make dependencies_fedora {{</tab>}}
 
-{{<tab "bash" "Windows 10 Powershell">}}Set-ExecutionPolicy AllSigned Set-ExecutionPolicy Bypass -Scope Process
--Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor
-3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-choco install -y make make dependencies_windows
+{{<tab "bash" "Windows 10 Powershell">}}Set-ExecutionPolicy AllSigned
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+choco install -y make
+make dependencies_windows
+# You cannot use all commands in the following, please translate from linux to windows commands by yourself and send your code to us, please. We will build in your contribution.
+{{</tab>}}
+{{</tabs>}}
 
 # You cannot use all commands in the following, please translate from linux to windows commands by yourself and send your code to us, please. We will build in your contribution.
 
@@ -145,8 +148,8 @@ this to your needs. {{</callout>}}
 
 | Service  | oauth application creation url                                           |
 | -------- | ------------------------------------------------------------------------ |
-| ownCloud | https://`owncloud.local`/index.php/settings/admin?sectionid=authentication |
 | Zenodo   | https://`(sandbox.)`zenodo.org/account/settings/applications/              |
+| ownCloud | https://`owncloud.local`/index.php/settings/admin?sectionid=authentication |
 | Open Science Framework | https://`(test.)`osf.io/settings/applications |
 
 The application creation requires an `redirect url`. This needs to be adjusted to your used plugin, which integrates

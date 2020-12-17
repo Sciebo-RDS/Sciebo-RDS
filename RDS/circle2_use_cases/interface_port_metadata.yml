@@ -41,10 +41,7 @@ paths:
                     type:
                       resourceType: ''
                       resourceTypeGeneral: Poster
-      description: |-
-        Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. 
-
-        See the examples to see, how to use it.
+      description: "Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. \n\nSee the examples to see, how to use it."
       requestBody:
         content:
           application/json:
@@ -382,8 +379,6 @@ components:
     Metadata:
       title: Metadata
       type: object
-      x-examples:
-        example-1: {}
   securitySchemes:
     oauth-key:
       type: oauth2

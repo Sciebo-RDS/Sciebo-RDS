@@ -4,7 +4,6 @@ title: Kubernetes subtitle: Helm Chart und Installationsanleitung
 menu:
   doc:
     parent: installation
-
 weight: 300
 ---
 
@@ -76,10 +75,13 @@ Befehlen erledigt werden.
 
 {{<tab "bash" "Fedora/CentOS">}}sudo dnf install make -y make dependencies_fedora {{</tab>}}
 
-{{<tab "bash" "Windows 10 Powershell">}}Set-ExecutionPolicy AllSigned Set-ExecutionPolicy Bypass -Scope Process
--Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor
-3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-choco install -y make make dependencies_windows
+{{<tab "bash" "Windows 10 Powershell">}}Set-ExecutionPolicy AllSigned
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+choco install -y make
+make dependencies_windows
+# Du kannst nicht alle Befehle verwenden, welche im Folgenden gezeigt werden, da diese für Linux sind. Bitte konvertiere sie selbst nach Windows und sende uns dann das Ergebnis, damit wir das hier einbauen können.
+{{</tab>}}
+{{</tabs>}}
 
 # Du kannst nicht alle Befehle verwenden, welche im Folgenden gezeigt werden, da diese für Linux sind. Bitte konvertiere sie selbst nach Windows und sende uns dann das Ergebnis, damit wir das hier einbauen können.
 
