@@ -123,6 +123,19 @@ paths:
                     type: array
                     items:
                       type: string
+              examples:
+                requests "/":
+                  value:
+                    files:
+                      - /folder1/
+                      - /folder2/
+                      - /file1
+                requests "/folder1":
+                  value:
+                    files:
+                      - /folder1/file1
+                      - /folder1/file2
+                      - /folder1/innerFolder1/
       requestBody:
         content:
           application/json:
@@ -135,7 +148,12 @@ paths:
                   type: string
                 apiKey:
                   type: string
-      description: 'Returns all files within filepath, if it is a folder. Otherwise the array is empty.'
+      description: |-
+        Returns all files and folders within filepath, if it is a folder. Otherwise the array is empty.
+
+        The paths needs to be absolute, so the user can request the returned elements without any string modifcations.
+        Folders are marked with slash / at the end. Files does not have this slash. 
+        The lookup for files and folders is not recursive. The user make a request by himself for the recursive folder lookup for your returned array. 
     parameters: []
 tags:
   - name: deposit
