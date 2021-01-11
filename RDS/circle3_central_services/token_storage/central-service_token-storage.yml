@@ -280,7 +280,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
+              anyOf:
                 - $ref: '#/components/schemas/Service'
                 - $ref: '#/components/schemas/OAuthService'
                 - $ref: '#/components/schemas/JSONService'
