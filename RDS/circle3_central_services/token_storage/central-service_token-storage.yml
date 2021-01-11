@@ -280,7 +280,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JSONService'
+              oneOf:
+                - $ref: '#/components/schemas/Service'
+                - $ref: '#/components/schemas/OAuthService'
         description: ''
   '/user/{user-id}/token/{token-id}':
     parameters:

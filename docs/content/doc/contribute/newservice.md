@@ -64,13 +64,13 @@ Since your service is in layer 1, it can be used by other microservices than [fi
 With the following Python function you can register your service with *Token Storage*.
 
 ``` python
-def register_service(service name: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
+def register_service(servicename: str, authorize_url: str, refresh_url: str, client_id: str, client_secret: str):
     tokenStorage = os.getenv("CENTRAL_SERVICE_TOKEN_STORAGE")
     if tokenStorage is None:
         return False
 
     data = {
-        "service name": service name,
+        "servicename": servicename,
         "authorize_url": authorize_url,
         "refresh_url": refresh_url,
         "client_id": client_id,
