@@ -283,6 +283,7 @@ paths:
               oneOf:
                 - $ref: '#/components/schemas/Service'
                 - $ref: '#/components/schemas/OAuthService'
+                - $ref: '#/components/schemas/JSONService'
         description: ''
   '/user/{user-id}/token/{token-id}':
     parameters:
