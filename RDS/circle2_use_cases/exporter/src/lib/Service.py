@@ -105,9 +105,10 @@ class Service:
                 yield file
 
     def getProperty(self, key):
-        for prop in self.customProperties:
-            if prop["key"] == key:
-                return prop["value"]
+        if self.customProperties is not None:
+            for prop in self.customProperties:
+                if prop["key"] == key:
+                    return prop["value"]
 
         return None
 
