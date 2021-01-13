@@ -125,6 +125,7 @@ class Service:
         file = self.files[file_id]
 
         if self.fileStorage:
+            # this condition is for ports, which does not comply to the doc for urls
             path = "{}/{}".format(self.getFilepath(), file)
             if str(file).startswith(self.getFilepath()):
                 path = file

@@ -58,6 +58,7 @@ class Test_ExporterService(unittest.TestCase):
                 "Owncloud", "Zenodo", "testfile.txt", "admin")
         self.assertTrue(result)
 
+    @unittest.skip("not used in production")
     def test_export_zenodo_from_owncloud_unknown(self):
         exporter = ExporterService(testing=True)
 
@@ -69,6 +70,7 @@ class Test_ExporterService(unittest.TestCase):
             exporter.export(
                 "Owncloud", "not-known", "testfile.txt", "admin")
 
+    @unittest.skip("not used in production")
     def test_export_zenodo_from_owncloud_no_token_for_service_from(self):
         exporter = ExporterService(testing=True)
 
@@ -86,6 +88,7 @@ class Test_ExporterService(unittest.TestCase):
                 "Owncloud", "Zenodo", "testfile.txt", "admin")
         self.assertFalse(result)
 
+    @unittest.skip("not used in production")
     def test_export_zenodo_from_owncloud_no_token_for_service_to(self):
         exporter = ExporterService(testing=True)
 
@@ -113,7 +116,7 @@ class Test_ExporterService(unittest.TestCase):
         self.assertFalse(result)
 
     # TODO: this test cannot be handled, because pactman can only emulate json, nothing else.
-    @unittest.skip
+    @unittest.skip("not used in production")
     def test_export_server(self):
         # call to get file from owncloud
         pact.given(
