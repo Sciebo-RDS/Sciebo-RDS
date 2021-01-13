@@ -122,7 +122,7 @@ class Storage:
 
             logger.info("use in-memory")
             self._storage = {}
-            self._services = []
+            self._services = [] 
 
     @property
     def users(self):
@@ -298,11 +298,7 @@ class Storage:
             logger.debug("service found")
             if Force is True:
                 logger.debug("found Force, update service")
-                
-                try:
-                    self._services[str(index)] = service
-                except TypeError as identifier:
-                    self._services[index] = service
+                self._services[index] = service
                 return True
 
             from RDS.ServiceException import ServiceExistsAlreadyError

@@ -308,6 +308,8 @@ paths:
                   type: string
                 username:
                   type: string
+                userId:
+                  type: string
 components:
   schemas:
     oauth_uri:
