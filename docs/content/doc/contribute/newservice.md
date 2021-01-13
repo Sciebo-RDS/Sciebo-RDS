@@ -114,6 +114,14 @@ Your service does not require registration, because it is called directly via GU
 
 In order to make working with Python in conjunction with Flask much easier, we started with Connexion, as it directly builds an API server from an OpenAPIv3 specification using Flask. By adding functionality and extending some more libraries [Connexion-Plus](https://pypi.org/project/connexion-plus/) was created. It is strongly recommended to use this library, because many functions like opentracing and Prometheus metrics are added automatically, which are needed for a successful integration (see [Contribute](/doc/contribute/)).
 
+## Logging with Opentracing
+
+In the microservice universe, jaeger on top of opentracing is a very popular choice for distributed logging. It is very benefecial and user-friendly to implemend this in your service. Please take a look to the [manual for jaeger](https://www.jaegertracing.io/docs/1.21/client-libraries/#supported-libraries) for more.
+
+## Prometheus
+
+Please provide some internal numbers from your service via prometheus metrics via */metrics* endpoint. This helps to find problems within the RDS system and your service.
+
 ## Gitlab CI
 
 RDS uses Gitlab and its CI System to test the source code and call other functions, including creating and publishing containers.

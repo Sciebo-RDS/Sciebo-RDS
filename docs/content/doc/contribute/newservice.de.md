@@ -113,6 +113,16 @@ Dein Dienst benötigt keine Anmeldung, da er direkt per GUI aufgerufen wird oder
 
 Um die Arbeit mit Python in Verbindung mit Flask erheblich zu vereinfachen, wurde zu Beginn auf Connexion zurückgegriffen, da dies aus einer OpenAPIv3-Spezifikation direkt einen API-Server mittels Flask aufsetzt. Durch das Hinzufügen von Funktionalitäten und Erweitern von einigen weiteren Bibliotheken entstand [Connexion-Plus](https://pypi.org/project/connexion-plus/). Es wird dringend empfohlen, diese Bibliothek zu verwenden, da viele Funktionen wie Opentracing und Prometheus-Metriken automatisch hinzugefügt werden, welche für eine erfolgreiche Integration benötigt werden (siehe [Beitragen](/de/doc/contribute/)).
 
+## Protokollierung mit Opentracing
+
+Im Microservice-Universum ist jaeger auf Grundlage von opentracing eine sehr beliebte Wahl für verteiltes Logging. Es ist sehr vorteilhaft und benutzerfreundlich, dies in Ihrem Service zu implementieren. Bitte werfen Sie einen Blick ins jaeger [Handbuch für ihre Programmiersprache](https://www.jaegertracing.io/docs/1.21/client-libraries/#supported-libraries).
+
+## Prometheus
+
+Bitte stellen Sie einige interne Zahlen aus Ihrem Dienst via Prometheus Metrics über den */metrics* Endpunkt zur Verfügung. Dies hilft, Probleme innerhalb des RDS-Systems und Ihres Dienstes zu finden.
+
+Übersetzt mit www.DeepL.com/Translator (kostenlose Version)
+
 ## Gitlab CI
 
 RDS nutzt Gitlab und dessen CI System, um den Quelltext zu testen und weitere Funktionen aufzurufen, u.a. das Erzeugen von Containern und das Publizieren derselbigen.
