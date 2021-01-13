@@ -14,7 +14,8 @@ logger = logging.getLogger()
 class Research:
     def __init__(self, userId=None, researchIndex=None, researchId=None, testing=False):
         if (userId is None or researchIndex is None) and researchId is None:
-            raise ValueError("(userId or researchIndex) and researchId are None.")
+            raise ValueError(
+                "(userId or researchIndex) and researchId are None.")
 
         self.importServices = []
         self.exportServices = []
@@ -110,7 +111,7 @@ class Research:
             self.triggerPassivePorts()
         except Exception as e:
             logger.exception(e)
-            
+
         try:
             self.processActivePorts()
         except Exception as e:
@@ -123,12 +124,14 @@ class Research:
             useZipForContent = False
 
             if isFolderInFiles(svc.getFiles()):
-                logger.debug("use zipfile, because the folder holds folders again")
+                logger.debug(
+                    "use zipfile, because the folder holds folders again")
                 useZipForContent = True
 
             if useZipForContent:
                 mem_zip = BytesIO()
-                zip = zipfile.ZipFile(mem_zip, mode="w", compression=zipfile.ZIP_STORED)
+                zip = zipfile.ZipFile(
+                    mem_zip, mode="w", compression=zipfile.ZIP_STORED)
 
             for fileTuple in svc.getFiles(getContent=True):
                 logger.debug(
@@ -161,7 +164,8 @@ class Research:
 
                 results = [
                     exportSvc.addFile(
-                        "{}_{}.zip".format(svc.servicename, urlify(svc.getFilepath())),
+                        "{}_{}.zip".format(
+                            svc.servicename, urlify(svc.getFilepath())),
                         mem_zip,
                     )
                     for exportSvc in self.getExportServices()
@@ -250,7 +254,8 @@ class Research:
         return list(
             set(
                 reduce(
-                    lambda x, y: x + y, [svc.getFiles() for svc in self.importServices]
+                    lambda x, y: x + y, [svc.getFiles()
+                                         for svc in self.importServices]
                 )
             )
         )
@@ -258,7 +263,7 @@ class Research:
 
 def isFolderInFiles(files):
     for file in files:
-        if "/" in file or "\\" in file:
+        if str(file).endswith("/") or str(file).endswith("\\"):
             return True
 
     return False
