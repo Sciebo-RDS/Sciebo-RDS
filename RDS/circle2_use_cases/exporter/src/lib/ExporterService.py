@@ -21,13 +21,6 @@ class ExporterService:
         from_service = from_service.lower()
         to_service = to_service.lower()
 
-        # download file from from_service via port for from_service, if it exists
-        if not from_service.startswith("owncloud"):
-            raise ValueError("From-Service is unknown")
-
-        if not to_service.startswith("invenio") and not to_service.startswith("zenodo"):
-            raise ValueError("To-Service is unknown")
-
         url = (
             f"http://circle1-port-{from_service}"
             if not self.testing

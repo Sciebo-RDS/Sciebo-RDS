@@ -56,7 +56,7 @@ class Service:
                 # for convenience
                 req = requests.get(f"{self.portaddress}/folder", json=data, verify=(
                     os.environ.get("VERIFY_SSL", "True") == "True"))
-                    
+
             json = req.json()
 
             self.files = json.get("files")
@@ -125,9 +125,13 @@ class Service:
         file = self.files[file_id]
 
         if self.fileStorage:
+            path = "{}/{}".format(self.getFilepath(), file)
+            if str(file).startswith(self.getFilepath()):
+                path = file
+
             data = {
                 "userId": self.userId,
-                "filepath": "{}/{}".format(self.getFilepath(), file),
+                "filepath": path,
             }
 
             logger.debug("request data {}".format(data))
@@ -149,16 +153,18 @@ class Service:
 
         return BytesIO(b"")
 
-    def triggerPassiveMode(self, folder):
+    def triggerPassiveMode(self, folder, servicename):
         """Trigger passive upload for given folder
 
         Args:
             folder (str): Set the folder.
+            servicename (str): Given port, where files should be taken from.
 
         Returns:
             bool: Return True, if the trigger was successfully, otherwise False.
         """
-        data = {"userId": self.userId, "folder": folder}
+        data = {"userId": self.userId,
+                "folder": folder, "service": servicename}
 
         logger.debug(
             "start passive mode with data {} in service {}".format(
