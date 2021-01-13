@@ -49,11 +49,15 @@ class Service:
     def reload(self):
         if self.fileStorage:
             data = {"filepath": self.getFilepath(), "userId": self.userId}
-            json = requests.get(
-                f"{self.portaddress}/storage/folder",
-                json=data,
-                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
-            ).json()
+            req = requests.get(f"{self.portaddress}/storage/folder", json=data, verify=(
+                os.environ.get("VERIFY_SSL", "True") == "True"))
+
+            if req.status_code >= 300:
+                # for convenience
+                req = requests.get(f"{self.portaddress}/folder", json=data, verify=(
+                    os.environ.get("VERIFY_SSL", "True") == "True"))
+                    
+            json = req.json()
 
             self.files = json.get("files")
 
@@ -69,8 +73,10 @@ class Service:
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         ).json()
 
-        self.useZipForFolder =  bool(json.get("fileTransferArchive", "") == "zip")
-        self.fileTransferMode =  FileTransferMode(json.get("fileTransferMode", 0))
+        self.useZipForFolder = bool(
+            json.get("fileTransferArchive", "") == "zip")
+        self.fileTransferMode = FileTransferMode(
+            json.get("fileTransferMode", 0))
         self.loginMode = LoginMode(json.get("loginMode", 1))
 
         if self.loginMode == 0:
@@ -96,7 +102,8 @@ class Service:
         for index, file in enumerate(self.files):
             if getContent:
                 logger.debug(
-                    "get file {} from service {}".format(file, self.servicename)
+                    "get file {} from service {}".format(
+                        file, self.servicename)
                 )
                 content = self.getFile(index)
 
@@ -154,7 +161,8 @@ class Service:
         data = {"userId": self.userId, "folder": folder}
 
         logger.debug(
-            "start passive mode with data {} in service {}".format(data, self.getJSON())
+            "start passive mode with data {} in service {}".format(
+                data, self.getJSON())
         )
 
         if self.metadata:
@@ -185,7 +193,8 @@ class Service:
         data = {"userId": self.userId, "filename": filename}
 
         logger.debug(
-            "add file {} with data {} in service {}".format(files, data, self.getJSON())
+            "add file {} with data {} in service {}".format(
+                files, data, self.getJSON())
         )
 
         if self.metadata:
@@ -271,7 +280,8 @@ class Service:
 
     def getDict(self):
 
-        obj = {"servicename": self.servicename, "files": [x for x in self.getFiles()]}
+        obj = {"servicename": self.servicename,
+               "files": [x for x in self.getFiles()]}
 
         return obj
 
@@ -305,4 +315,3 @@ class Service:
             return False
 
         return self.getDict() == obj.getDict()
-
