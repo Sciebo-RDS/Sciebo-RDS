@@ -140,9 +140,12 @@ class Research:
                     )
                 )
 
+                logger.debug("write to zipfile? {}".format(useZipForContent))
+
                 # TODO: needs tests
                 if useZipForContent:
                     zip.writestr(fileTuple[0], fileTuple[1].read())
+                    logger.debug("done writing to zipfile")
 
                 # useZipForContent skips services, which needs zip, if folder in folder found.
                 self.addFile(folderInFolder=useZipForContent, *fileTuple)
@@ -175,7 +178,7 @@ class Research:
     def triggerPassivePorts(self):
         for importSvc in self.importServices:
             for exportSvc in [svc for svc in self.getExportServices(mode=FileTransferMode.passive)]:
-                exportSvc.triggerPassiveMode(importSvc.getFilepath())
+                exportSvc.triggerPassiveMode(importSvc.getFilepath(), importSvc.servicename)
 
     def getExportServices(self, mode=FileTransferMode.active):
         return [svc for svc in self.exportServices if svc.fileTransferMode == mode]
