@@ -67,7 +67,7 @@ class Metadata:
                 continue
 
             apiKey = loadAccessToken(
-                research.userId, port["port"].replace("port-", "").capitalize()
+                research.userId, port["port"].replace("port-", "").lower()
             )
 
             logger.debug(f"work on port {port} with apiKey {apiKey}")
@@ -133,7 +133,7 @@ class Metadata:
                 continue
 
             apiKey = loadAccessToken(
-                research.userId, port["port"].replace("port-", "").capitalize()
+                research.userId, port["port"].replace("port-", "").lower()
             )
 
             logger.debug("work on port {}".format(port))
@@ -229,7 +229,7 @@ class Metadata:
                 continue
 
             apiKey = loadAccessToken(
-                research.userId, port["port"].replace("port-", "").capitalize()
+                research.userId, port["port"].replace("port-", "").lower()
             )
 
             logger.debug("work on port {}".format(port))

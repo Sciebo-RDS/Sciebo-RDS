@@ -33,7 +33,7 @@ class Service:
         self.userId = userId
         self.researchIndex = researchIndex
 
-        self.port = servicename
+        self.port = servicename.lower()
         self.fileStorage = fileStorage
         self.metadata = metadata
         self.customProperties = customProperties
@@ -46,6 +46,34 @@ class Service:
     def zipForFolder(self):
         return self.useZipForFolder
 
+    @staticmethod
+    def loadAccessToken(userId: str, service: str) -> str:
+        # FIXME make localhost dynamic for pactman
+        tokenStorageURL = os.getenv(
+            "USE_CASE_SERVICE_PORT_SERVICE", "http://localhost:3000"
+        )
+        # load access token from token-storage
+        result = requests.get(
+            f"{tokenStorageURL}/user/{userId}/service/{service}",
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        )
+
+        if result.status_code > 200:
+            return None
+
+        access_token = result.json()
+        logger.debug(f"got: {access_token}")
+
+        if "type" in access_token and access_token["type"].endswith("Token"):
+            access_token = access_token["data"]["access_token"]
+
+        logger.debug(
+            "userId: {}, token: {}, service: {}".format(
+                userId, access_token, service)
+        )
+
+        return access_token
+
     def reload(self):
         if self.fileStorage:
             data = {"filepath": self.getFilepath(), "userId": self.userId}
@@ -54,8 +82,13 @@ class Service:
 
             if req.status_code >= 300:
                 # for convenience
-                req = requests.get(f"{self.portaddress}/folder", json=data, verify=(
+                data["userId"] = "{}://{}:{}".format(
+                    self.port, self.userId, self.loadAccessToken(self.userId, self.port))
+                req = requests.get(f"{self.portaddress}/storage/folder", json=data, verify=(
                     os.environ.get("VERIFY_SSL", "True") == "True"))
+
+                if req.status_code >= 300:
+                    return False
 
             json = req.json()
 

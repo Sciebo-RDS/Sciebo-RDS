@@ -25,6 +25,7 @@ def index():
 
 
 def get(servicename: str):
+    servicename = servicename.lower()
     svc = utility.storage.getService(servicename)
     if svc is not None:
         return jsonify(svc)

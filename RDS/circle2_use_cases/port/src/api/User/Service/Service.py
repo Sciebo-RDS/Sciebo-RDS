@@ -13,7 +13,7 @@ def index(user_id):
 def get(user_id, servicename):
     return jsonify(
         Util.tokenService.getTokenForServiceFromUser(
-            Service(servicename), User(user_id)
+            Service(servicename.lower()), User(user_id)
         )
     )
 

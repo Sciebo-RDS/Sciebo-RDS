@@ -232,7 +232,7 @@ class Test_Metadata(unittest.TestCase):
                 f'A call to get the access token for user {userId}.'
             ).with_request(
                 'GET', "/user/{}/service/{}".format(
-                    userId, port.replace("port-", "").capitalize())
+                    userId, port.replace("port-", "").lower())
             ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
             pact.given(
