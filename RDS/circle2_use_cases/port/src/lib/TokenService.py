@@ -99,7 +99,7 @@ class TokenService:
         svc = None
 
         for service in self._services:
-            if servicename == service.servicename:
+            if servicename == service.servicename.lower():
                 svc = service
                 break
 
