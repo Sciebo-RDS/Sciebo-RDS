@@ -136,35 +136,53 @@
         }
     },
     "typeDefinitions": {
-        "Person":{
-            metadata: {
-                allowAdditionalProperties: true,
+        "Person": {
+            "metadata": {
+                "allowAdditionalProperties": true
             },
-            inputs: [
+            "inputs": [
                 {
-                    property: "name",
+                    "property": "name",
                     "@type": "Text",
-                    required: true,
-                    multiple: false,
-                    group: "important",
+                    "required": true,
+                    "multiple": false,
+                    "group": "important"
                 },
-                { property: "familyName", "@type": "Text", multiple: false },
-                { property: "givenName", "@type": "Text", multiple: false },
                 {
-                    property: "contactPoint",
+                    "property": "familyName",
                     "@type": "Text",
-                    multiple: false,
+                    "multiple": false
                 },
-                { property: "email", "@type": "Text", multiple: false },
-                { property: "affiliation", "@type": "Organization", multiple: true, required: true, group: "important" },
                 {
-                    property: "http://purl.org/spar/pro/withRole",
-                    label: "Role",
+                    "property": "givenName",
+                    "@type": "Text",
+                    "multiple": false
+                },
+                {
+                    "property": "contactPoint",
+                    "@type": "Text",
+                    "multiple": false
+                },
+                {
+                    "property": "email",
+                    "@type": "Text",
+                    "multiple": false
+                },
+                {
+                    "property": "affiliation",
+                    "@type": "Organization",
+                    "multiple": true,
+                    "required": true,
+                    "group": "important"
+                },
+                {
+                    "property": "http://purl.org/spar/pro/withRole",
+                    "label": "Role",
                     "@type": "Role",
-                    multiple: true,
-                },
-            ],
-        };
+                    "multiple": true
+                }
+            ]
+        }
     },
     "dataPacks": []
 }
