@@ -8,4 +8,4 @@ def index():
 
 
 def get(servicename):
-    return jsonify(Util.tokenService.getService(servicename, informations=True))
+    return jsonify(Util.tokenService.getService(servicename.lower(), informations=True))
