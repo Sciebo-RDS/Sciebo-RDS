@@ -36,7 +36,7 @@ paths:
                 filepath:
                   type: string
                 userId:
-                  type: string
+                  $ref: '#/components/schemas/portusername'
                 apiKey:
                   type: string
                   description: ''
@@ -58,7 +58,7 @@ paths:
                 filepath:
                   type: string
                 userId:
-                  type: string
+                  $ref: '#/components/schemas/portusername'
                 apiKey:
                   type: string
                 files:
@@ -81,11 +81,12 @@ paths:
                 filepath:
                   type: string
                 userId:
-                  type: string
+                  $ref: '#/components/schemas/portusername'
                 apiKey:
                   type: string
               required:
                 - filepath
+        description: ''
     patch:
       summary: ''
       responses:
@@ -102,7 +103,7 @@ paths:
                 filepath:
                   type: string
                 userId:
-                  type: string
+                  $ref: '#/components/schemas/portusername'
                 apiKey:
                   type: string
               required:
@@ -145,7 +146,7 @@ paths:
                 filepath:
                   type: string
                 userId:
-                  type: string
+                  $ref: '#/components/schemas/portusername'
                 apiKey:
                   type: string
       description: |-
@@ -162,3 +163,18 @@ tags:
     description: All about user and deposition creators
   - name: misc
     description: Everything else.
+components:
+  schemas:
+    portusername:
+      title: username for port
+      type: string
+      description: |-
+        This field is very special, because this helps very much to work with ports. So it has 2 different styles: The session and the normal format. The normal format will be used, when the port have to make the search by themself for example against the token storage.
+        The session format will be used to provide the login credentials through the RDS system directly to the port, without the need to lookup from port. The first part <port-name> symbolize, which port should parse the following credentials and is equal to the name, which set the port by themself in the registration-process at startup. It can be ignored by the port, but should not. The username and password are the user inputs from the web ui provided by token storage.
+        Beware: Do not use a token (e.g. for oauth) as password, because this is used in the token field.
+
+        session format:
+        <port-name>://<username>:<password>
+
+        normal format:
+        <username>
