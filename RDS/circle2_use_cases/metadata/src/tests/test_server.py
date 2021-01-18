@@ -168,7 +168,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the access token for user {userId}.'
         ).with_request(
-            'GET', f"/user/{userId}/service/Zenodo"
+            'GET', f"/user/{userId}/service/zenodo"
         ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
@@ -216,7 +216,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the access token for user {userId}.'
         ).with_request(
-            'GET', f"/user/{userId}/service/Zenodo"
+            'GET', f"/user/{userId}/service/zenodo"
         ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
@@ -292,7 +292,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the access token for user {userId}.'
         ).with_request(
-            'GET', f"/user/{userId}/service/Zenodo"
+            'GET', f"/user/{userId}/service/zenodo"
         ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         metadata = {
@@ -342,7 +342,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the access token for user {userId}.'
         ).with_request(
-            'GET', f"/user/{userId}/service/Zenodo"
+            'GET', f"/user/{userId}/service/zenodo"
         ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
@@ -435,7 +435,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the access token for user {userId}.'
         ).with_request(
-            'GET', f"/user/{userId}/service/Zenodo"
+            'GET', f"/user/{userId}/service/zenodo"
         ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
@@ -488,7 +488,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the access token for user {userId}.'
         ).with_request(
-            'GET', f"/user/{userId}/service/Zenodo"
+            'GET', f"/user/{userId}/service/zenodo"
         ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
 
         pact.given(
