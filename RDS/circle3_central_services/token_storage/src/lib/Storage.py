@@ -49,7 +49,8 @@ class Storage:
     def __init__(self, rc=None, use_in_memory_on_failure=True):
         logger.info("try to use redis as backend.")
         try:
-            import redis_pubsub_dict, functools
+            import redis_pubsub_dict
+            import functools
 
             redis_pubsub_dict.dumps = lambda x: json.dumps(x)
             redis_pubsub_dict.loads = lambda x: Util.try_function_on_dict(
@@ -105,8 +106,10 @@ class Storage:
                     rc.info()  # provoke an error message
 
             logger.debug("set redis backed dict")
-            self._storage = redis_pubsub_dict.RedisDict(rc, "tokenstorage_storage")
-            self._services = redis_pubsub_dict.RedisDict(rc, "tokenstorage_services")
+            self._storage = redis_pubsub_dict.RedisDict(
+                rc, "tokenstorage_storage")
+            self._services = redis_pubsub_dict.RedisDict(
+                rc, "tokenstorage_services")
 
             logger.debug("set methods to redis backed dict to use it as list")
             self._services.append = append.__get__(self._services)
@@ -122,7 +125,7 @@ class Storage:
 
             logger.info("use in-memory")
             self._storage = {}
-            self._services = [] 
+            self._services = []
 
     @property
     def users(self):
@@ -473,7 +476,11 @@ class Storage:
 
         try:
             logger.debug("Try to find index")
-            index = self._storage[user.username]["tokens"].index(token)
+            try:
+                index = self._storage[user.username]["tokens"].index(token)
+            except:
+                logger.debug("append index")
+                index = -1
             logger.debug(f"found index {index}")
 
             """
@@ -483,9 +490,13 @@ class Storage:
                 raise TokenNotForUser(self, user, token)
             """
 
-            if Force:
+            if Force or index < 0:
                 data = self._storage[user.username]
-                data["tokens"][index] = token
+
+                if index < 0:
+                    data["tokens"].append(token)
+                else:
+                    data["tokens"][index] = token
                 self._storage[user.username] = data
                 logger.debug(f"overwrite token for user {user}")
 
@@ -569,7 +580,8 @@ class Storage:
                         new_token, user or new_token.user
                     )
                 )
-                self.addTokenToUser(new_token, user or new_token.user, Force=True)
+                self.addTokenToUser(
+                    new_token, user or new_token.user, Force=True)
                 found = True
 
             except TokenNotValidError as e:
