@@ -41,7 +41,10 @@ paths:
                     type:
                       resourceType: ''
                       resourceTypeGeneral: Poster
-      description: "Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. \n\nSee the examples to see, how to use it."
+      description: |-
+        Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. 
+
+        See the examples to see, how to use it.
       requestBody:
         content:
           application/json:
@@ -307,54 +310,6 @@ paths:
                   type: string
                 userId:
                   type: string
-  /informations:
-    get:
-      summary: Informations about this port implementation
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  fileTransferMode:
-                    type: integer
-                    description: 'Set value between 0=active and 1=passive. This is relevant for file transfer, because active will trigger the upload via RDS (push mode). Passive will trigger the upload via the service (pull mode).'
-                    example: 0
-                    minimum: 0
-                    maximum: 1
-                  fileTransferArchive:
-                    type: string
-                    description: |-
-                      If empty, all files will be transfered one by one to the service.
-                      If set to one of the followed algorithms, it will be used to store all files to one archive and then transmitted within one call.
-
-                      Supported Algorithms: ["", "zip"]
-                    example: zip
-                  loginMode:
-                    type: integer
-                    description: |-
-                      Describe, if it needs credentials (0) or oauth (1).
-
-                      If set to 0, look at credentials field to know, what needs to be captured from the user. 
-                      Otherwise credentials can be leave out.
-
-                      Because the workflow with oauth in bootstrap, this is only a reminder for the web frontend, because it can handle the loginMode easier with such a field, instead of looking in the userServices to find out, if there are oauth token or not.
-                  credentials:
-                    type: object
-                    description: 'it defines, if the user can enter userId and / or password, if this is needed. Most times, you will need userId and password, when oauth2 workflow not sent in registering while boot up. When oauth2 informations were provided in starts up, this will be ignored.'
-                    properties:
-                      userId:
-                        type: boolean
-                      password:
-                        type: boolean
-                required:
-                  - fileTransferMode
-                  - fileTransferArchive
-                  - loginMode
-      description: returns relevant informations about this port implementation.
 components:
   schemas:
     File:
