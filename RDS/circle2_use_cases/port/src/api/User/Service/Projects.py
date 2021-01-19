@@ -5,6 +5,7 @@ from flask import jsonify, abort
 
 
 def index(user_id, servicename):
+    servicename = servicename.lower()
     listOfServices = Util.tokenService.getAllServicesForUser(User(user_id))
 
     for svc in listOfServices:
