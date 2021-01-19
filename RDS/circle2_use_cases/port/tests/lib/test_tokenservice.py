@@ -152,6 +152,18 @@ class Test_TokenService(unittest.TestCase):
         svc = self.tokenService.getOAuthURIForService(self.service1)
         self.assertEqual(svc, self.url1)
 
+        # test to get one specific service, where the same services are
+        pact.given("one service was registered.").upon_receiving(
+            "a request to get this one specific service."
+        ).with_request(
+            "GET", f"/service/{self.service1.servicename}"
+        ).will_respond_with(
+            200, body=json.dumps(self.service1)
+        )
+
+        svc = self.tokenService.getOAuthURIForService(self.service1)
+        self.assertEqual(svc, self.url1)
+
     def test_get_services_for_user(self):
         # test to get all services from one user, with no service
         pact.given("no service was registered.").upon_receiving(
