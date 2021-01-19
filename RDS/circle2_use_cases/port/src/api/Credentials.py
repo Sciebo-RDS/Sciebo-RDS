@@ -7,7 +7,7 @@ def post():
     data = request.json
 
     user = User(data.get("userId"))
-    service = Util.tokenService.getService(data.get("servicename"), clean=True)
+    service = Util.tokenService.getService(data.get("servicename").lower(), clean=True)
 
     password = data.get("password")
     if password == "":

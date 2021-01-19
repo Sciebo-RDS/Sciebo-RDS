@@ -11,6 +11,7 @@ def index(user_id):
 
 
 def get(user_id, servicename):
+    servicename = servicename.lower()
     return jsonify(
         Util.tokenService.getTokenForServiceFromUser(
             Service(servicename.lower()), User(user_id)
@@ -19,6 +20,7 @@ def get(user_id, servicename):
 
 
 def delete(user_id, servicename):
+    servicename = servicename.lower()
     return jsonify(
         {
             "success": Util.tokenService.removeTokenForServiceFromUser(

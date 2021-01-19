@@ -51,7 +51,7 @@ def index():
         logger.debug(f"decoded state: {data}")
 
         Util.tokenService.exchangeAuthCodeToAccessToken(
-            code, Util.tokenService.getService(data["servicename"], clean=True), user=state_dict.get("user"))
+            code, Util.tokenService.getService(data["servicename"].lower(), clean=True), user=state_dict.get("user"))
 
         url = getURL() + "/authorization-success"
         return redirect(url)

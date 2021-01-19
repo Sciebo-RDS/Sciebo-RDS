@@ -20,7 +20,7 @@ def post():
         unverified = jwt.decode(master_jwt, algorithms="HS256", options={"verify_signature": False})
         logger.debug("unverified: {}".format(unverified))
 
-        servicename = unverified.get("servicename")
+        servicename = unverified.get("servicename").lower()
         service = Util.tokenService.getService(servicename, clean=True)
 
         master_data = jwt.decode(master_jwt, service.client_secret, algorithms="HS256")

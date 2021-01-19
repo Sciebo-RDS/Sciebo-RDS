@@ -14,6 +14,7 @@ def index(user_id, servicename):
 
 
 def get(user_id, servicename, projects_id):
+    servicename = servicename.lower()
     projects_id = int(projects_id)
     listOfServices = Util.tokenService.getAllServicesForUser(User(user_id))
 
@@ -25,11 +26,13 @@ def get(user_id, servicename, projects_id):
 
 
 def post(user_id, servicename):
+    servicename = servicename.lower()
     Util.tokenService.createProjectForUserInService(User(user_id), Service(servicename))
     return None, 204
 
 
 def delete(user_id, servicename, projects_id):
+    servicename = servicename.lower()
     if Util.tokenService.removeProjectForUserInService(
         User(user_id), Service(servicename), projects_id
     ):
