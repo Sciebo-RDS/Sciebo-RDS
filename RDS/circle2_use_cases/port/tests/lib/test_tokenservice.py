@@ -464,8 +464,9 @@ class Test_TokenService(unittest.TestCase):
             500, body={"error": "TokenNotExistsError"}
         )
 
-        with self.assertRaises(TokenNotFoundError):
-            self.tokenService.removeTokenFromUser(self.token1, self.user1)
+        with pact:
+            with self.assertRaises(TokenNotFoundError):
+                self.tokenService.removeTokenFromUser(self.token1, self.user1)
 
         # test to remove one token, where the same token is
         pact.given("the token registered.").upon_receiving(
@@ -489,7 +490,8 @@ class Test_TokenService(unittest.TestCase):
             200, body={"length": 0, "list": []}
         )
 
-        self.assertEqual(self.tokenService.getAllServices(), [])
+        with pact:
+            self.assertEqual(self.tokenService.getAllServices(), [])
 
         # test, if one service was registered
         pact.given("one service was registered.").upon_receiving(
@@ -500,7 +502,8 @@ class Test_TokenService(unittest.TestCase):
 
         key = "abc"
 
-        req_list = self.tokenService.getAllServices()
+        with pact:
+            req_list = self.tokenService.getAllServices()
 
         # should raise an invalid signature error
         from jwt.exceptions import InvalidSignatureError
@@ -530,7 +533,7 @@ class Test_TokenService(unittest.TestCase):
         state = jwt.encode(data, key, algorithm="HS256")
 
         new_obj = {}
-        new_obj["jwt"] = state.decode("utf-8")
+        new_obj["jwt"] = state
 
         expected = [new_obj]
 
@@ -559,7 +562,7 @@ class Test_TokenService(unittest.TestCase):
         state = jwt.encode(data, key, algorithm="HS256")
 
         new_obj = {}
-        new_obj["jwt"] = state.decode("utf-8")
+        new_obj["jwt"] = state
 
         expected = new_obj
 

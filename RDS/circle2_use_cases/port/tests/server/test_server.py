@@ -107,7 +107,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         self.assertEqual(response.status_code, 200, msg=response.get_data(as_text=True))
 
         # ignore signature
-        resp_state = jwt.decode(response.json["jwt"], "secret", verify=False)
+        resp_state = jwt.decode(response.json["jwt"], "secret", algorithms="HS256", options={"verify_signature": False})
         logger.info(resp_state)
 
         self.assertEqual(resp_state["servicename"], service.servicename)
@@ -120,7 +120,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         self.assertEqual(response.status_code, 200, msg=response.get_data(as_text=True))
 
         # ignore signature
-        resp_state = jwt.decode(response.json["jwt"], "secret", verify=False)
+        resp_state = jwt.decode(response.json["jwt"], "secret", algorithms="HS256", options={"verify_signature": False})
         logger.info(resp_state)
 
         self.assertEqual(resp_state["servicename"], service.servicename)
@@ -139,13 +139,13 @@ class Test_TokenServiceServer(unittest.TestCase):
         stateReal = jwt.encode(data, key, algorithm="HS256")
         state = base64.b64encode(
             json.dumps(
-                {"jwt": stateReal.decode("utf-8"), "user": user.username}
+                {"jwt": stateReal, "user": user.username}
             ).encode("utf-8")
         )
 
         pluginDict = {
             "servicename": service.servicename,
-            "state": stateReal.decode("utf-8"),
+            "state": stateReal,
             "userId": user.username,
             "code": code,
         }
@@ -169,7 +169,7 @@ class Test_TokenServiceServer(unittest.TestCase):
 
         with pact:
             response = self.client.post(
-                "/port-service/exchange", json={"jwt": jwtEncode.decode("utf-8")}
+                "/port-service/exchange", json={"jwt": jwtEncode}
             )
 
         self.assertEqual(response.status_code, 204, msg=response.get_data())
@@ -210,7 +210,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         proj2 = {"projectId": 1, "metadata": {}}
 
         userId = "admin"
-        servicename = "Zenodo"
+        servicename = "zenodo"
 
         expected_project = proj1
 
@@ -254,7 +254,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         proj1 = {"projectId": 0, "metadata": {}}
 
         userId = "admin"
-        servicename = "Zenodo"
+        servicename = "zenodo"
 
         pact.given("one searched token was registered.").upon_receiving(
             "a request to get a specific token for service from user."

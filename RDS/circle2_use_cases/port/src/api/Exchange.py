@@ -17,7 +17,7 @@ def post():
         master_jwt = request.json.get("jwt")
         logger.debug("jwt: {}".format(master_jwt))
 
-        unverified = jwt.decode(master_jwt, verify=False)
+        unverified = jwt.decode(master_jwt, algorithms="HS256", options={"verify_signature": False})
         logger.debug("unverified: {}".format(unverified))
 
         servicename = unverified.get("servicename")
