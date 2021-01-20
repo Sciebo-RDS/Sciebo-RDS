@@ -8,10 +8,9 @@ WORKDIR /app
 ADD ./requirements.txt ./
 RUN pip install -r requirements.txt
 
-ENV OPENAPI_MULTIPLE_FILES      "interface_port_metadata.yml;interface_port_token_storage.yml"
+ENV OPENAPI_MULTIPLE_FILES      "interface_port_metadata.yml"
 
 ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/informations-ep/RDS/circle2_use_cases/interface_port_metadata.yml" ./
-ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/informations-ep/RDS/circle3_central_services/interface_port_token_storage.yml" ./
 
 # now add everything else, which changes often
 ADD src ./

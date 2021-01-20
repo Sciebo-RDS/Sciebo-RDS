@@ -6,7 +6,7 @@
 #
 
 -i https://pypi.org/simple
-apscheduler==3.6.3
+apscheduler==3.7.0
 attrs==20.3.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 certifi==2020.12.5
 chardet==4.0.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
@@ -42,12 +42,12 @@ pyrsistent==0.17.3; python_version >= '3.5'
 python-dateutil==2.8.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 python-jsonschema-objects==0.3.13
 pytz==2020.5
-pyyaml==5.3.1
+pyyaml==5.4; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'
 redis-pubsub-dict==0.0.2
 redis-py-cluster==2.1.0
 redis==3.5.3
 requests==2.25.1
-research-data-services-common[flask]==0.21
+research-data-services-common[flask]==0.23
 six==1.15.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 swagger-ui-bundle==0.0.8
 threadloop==1.0.2

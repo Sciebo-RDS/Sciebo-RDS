@@ -19,7 +19,6 @@ def bootstrap(name="MicroService", *args, **kwargs):
         os.getenv(
             "OPENAPI_MULTIPLE_FILES",
             "../../circle2_use_cases/interface_port_metadata.yml;"
-            + "../../circle3_central_services/interface_port_token_storage.yml",
         )
     )
 

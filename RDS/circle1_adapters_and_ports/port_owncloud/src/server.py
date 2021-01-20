@@ -15,13 +15,18 @@ owncloud_oauth_authorize = "{}/index.php/apps/oauth2/authorize%3Fredirect_uri={}
     owncloud_installation_url, owncloud_redirect_uri, owncloud_oauth_id
 )
 
-register_service(
-    "Owncloud",
-    owncloud_oauth_authorize,
-    owncloud_oauth_token_url,
-    owncloud_oauth_id,
-    owncloud_oauth_secret,
+from RDS import Util, OAuth2Service, FileTransferMode, FileTransferArchive
+service = OAuth2Service(
+    servicename="Owncloud",
+    implements=["fileStorage"],
+    fileTransferMode=FileTransferMode.active,
+    fileTransferArchive=FileTransferArchive.none,
+    authorize_url=owncloud_oauth_authorize,
+    refresh_url=owncloud_oauth_token_url,
+    client_id=owncloud_oauth_id,
+    client_secret=owncloud_oauth_secret,
 )
+Util.register_service(service)
 
 # set the WSGI application callable to allow using uWSGI:
 # uwsgi --http :8080 -w app
