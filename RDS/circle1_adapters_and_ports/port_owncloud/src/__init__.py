@@ -18,7 +18,7 @@ def bootstrap(name="MicroService", *args, **kwargs):
     list_openapi = Util.load_oai(
         os.getenv(
             "OPENAPI_MULTIPLE_FILES",
-            "../../circle2_use_cases/interface_port_file_storage.yml;"
+            "../../circle2_use_cases/interface_port_file_storage.yml"
         )
     )
 
