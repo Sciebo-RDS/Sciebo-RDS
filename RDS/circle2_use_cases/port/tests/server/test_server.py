@@ -11,7 +11,7 @@ from lib.TokenService import TokenService
 import Util
 import jwt
 import datetime
-from RDS import User, OAuth2Service, Service, OAuth2Token, Token
+from RDS import User, OAuth2Service, BaseService, OAuth2Token, Token
 
 func = [Util.initialize_object_from_json, Util.initialize_object_from_dict]
 load_object = Util.try_function_on_dict(func)
@@ -57,9 +57,9 @@ class Test_TokenServiceServer(unittest.TestCase):
             "GET", f"/metadata/informations"
         ).will_respond_with(
             200, body={
-                "fileTransferArchive":"zip",
-                "fileTransferMode":0,
-                "loginMode":1
+                "fileTransferArchive": "zip",
+                "fileTransferMode": 0,
+                "loginMode": 1
             }
         )
 
@@ -68,10 +68,11 @@ class Test_TokenServiceServer(unittest.TestCase):
         user = User("user")
         service = OAuth2Service(
             "local",
-            f"{Util.tokenService.address}/oauth/authorize",
-            f"{Util.tokenService.address}/oauth/token",
-            "ABC",
-            "XYZ",
+            implements=["metadata"],
+            authorize_url=f"{Util.tokenService.address}/oauth/authorize",
+            refresh_url=f"{Util.tokenService.address}/oauth/token",
+            client_id="ABC",
+            client_secret="XYZ",
         )
 
         body = {
@@ -96,18 +97,21 @@ class Test_TokenServiceServer(unittest.TestCase):
             "GET", "/metadata/informations"
         ).will_respond_with(
             200, body={
-                "fileTransferArchive":"zip",
-                "fileTransferMode":0,
-                "loginMode":1
+                "fileTransferArchive": "zip",
+                "fileTransferMode": 0,
+                "loginMode": 1
             }
         )
 
         with pact:
-            response = self.client.get(f"/port-service/service/{service.servicename}")
-        self.assertEqual(response.status_code, 200, msg=response.get_data(as_text=True))
+            response = self.client.get(
+                f"/port-service/service/{service.servicename}")
+        self.assertEqual(response.status_code, 200,
+                         msg=response.get_data(as_text=True))
 
         # ignore signature
-        resp_state = jwt.decode(response.json["jwt"], "secret", algorithms="HS256", options={"verify_signature": False})
+        resp_state = jwt.decode(response.json["jwt"], "secret", algorithms="HS256", options={
+                                "verify_signature": False})
         logger.info(resp_state)
 
         self.assertEqual(resp_state["servicename"], service.servicename)
@@ -116,11 +120,14 @@ class Test_TokenServiceServer(unittest.TestCase):
         date = resp_state["date"]
 
         # following request should not be needed a new pact, because its cached and date shuld be the same.
-        response = self.client.get(f"/port-service/service/{service.servicename}")
-        self.assertEqual(response.status_code, 200, msg=response.get_data(as_text=True))
+        response = self.client.get(
+            f"/port-service/service/{service.servicename}")
+        self.assertEqual(response.status_code, 200,
+                         msg=response.get_data(as_text=True))
 
         # ignore signature
-        resp_state = jwt.decode(response.json["jwt"], "secret", algorithms="HS256", options={"verify_signature": False})
+        resp_state = jwt.decode(response.json["jwt"], "secret", algorithms="HS256", options={
+                                "verify_signature": False})
         logger.info(resp_state)
 
         self.assertEqual(resp_state["servicename"], service.servicename)
@@ -149,7 +156,8 @@ class Test_TokenServiceServer(unittest.TestCase):
             "userId": user.username,
             "code": code,
         }
-        jwtEncode = jwt.encode(pluginDict, service.client_secret, algorithm="HS256")
+        jwtEncode = jwt.encode(
+            pluginDict, service.client_secret, algorithm="HS256")
 
         # need pact for exchange for code
         pact.given("Client ID and secret was registered.").upon_receiving(
@@ -217,7 +225,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         pact.given("one searched token was registered.").upon_receiving(
             "a request to get a specific token for service from user."
         ).with_request("GET", f"/user/{userId}/token/{servicename}").will_respond_with(
-            200, body=json.dumps(Token(User(userId), Service(servicename), "ABC"))
+            200, body=json.dumps(Token(User(userId), BaseService(servicename, implements=["metadata"]), "ABC"))
         )
 
         pact.given("service with project support").upon_receiving(
@@ -228,7 +236,8 @@ class Test_TokenServiceServer(unittest.TestCase):
 
         with pact:
             code = self.client.post(
-                "/port-service/user/{}/service/{}/projects".format(userId, servicename)
+                "/port-service/user/{}/service/{}/projects".format(
+                    userId, servicename)
             ).status_code
 
         self.assertEqual(code, 204)
@@ -236,7 +245,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         pact.given("one searched token was registered.").upon_receiving(
             "a request to get a specific token for service from user."
         ).with_request("GET", f"/user/{userId}/token/{servicename}").will_respond_with(
-            200, body=json.dumps(Token(User(userId), Service(servicename), "ABC"))
+            200, body=json.dumps(Token(User(userId), BaseService(servicename, implements=["metadata"]), "ABC"))
         )
 
         pact.given("Given token to access port").upon_receiving(
@@ -245,7 +254,8 @@ class Test_TokenServiceServer(unittest.TestCase):
 
         with pact:
             code = self.client.post(
-                "/port-service/user/{}/service/{}/projects".format(userId, servicename)
+                "/port-service/user/{}/service/{}/projects".format(
+                    userId, servicename)
             ).status_code
 
         self.assertEqual(code, 500)
@@ -259,7 +269,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         pact.given("one searched token was registered.").upon_receiving(
             "a request to get a specific token for service from user."
         ).with_request("GET", f"/user/{userId}/token/{servicename}").will_respond_with(
-            200, body=json.dumps(Token(User(userId), Service(servicename), "ABC"))
+            200, body=json.dumps(Token(User(userId), BaseService(servicename, implements=["metadata"]), "ABC"))
         )
 
         pact.given("Given token to access port").upon_receiving(
@@ -282,7 +292,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         pact.given("one searched token was registered.").upon_receiving(
             "a request to get a specific token for service from user."
         ).with_request("GET", f"/user/{userId}/token/{servicename}").will_respond_with(
-            200, body=json.dumps(Token(User(userId), Service(servicename), "ABC"))
+            200, body=json.dumps(Token(User(userId), BaseService(servicename, implements=["metadata"]), "ABC"))
         )
 
         pact.given("Given token to access port").upon_receiving(

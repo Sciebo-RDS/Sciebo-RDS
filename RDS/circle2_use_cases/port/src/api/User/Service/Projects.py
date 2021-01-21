@@ -1,5 +1,5 @@
 import Util
-from RDS import Service, User
+from RDS import BaseService, User
 
 from flask import jsonify, abort
 
@@ -28,14 +28,14 @@ def get(user_id, servicename, projects_id):
 
 def post(user_id, servicename):
     servicename = servicename.lower()
-    Util.tokenService.createProjectForUserInService(User(user_id), Service(servicename))
+    Util.tokenService.createProjectForUserInService(User(user_id), BaseService(servicename, implements=["metadata"]))
     return None, 204
 
 
 def delete(user_id, servicename, projects_id):
     servicename = servicename.lower()
     if Util.tokenService.removeProjectForUserInService(
-        User(user_id), Service(servicename), projects_id
+        User(user_id), BaseService(servicename, implements=["metadata"]), projects_id
     ):
         return None, 204
     abort(404)

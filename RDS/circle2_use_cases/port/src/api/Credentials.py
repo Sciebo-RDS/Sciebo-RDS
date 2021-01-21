@@ -1,18 +1,13 @@
 from flask import request
-from RDS import Service, User, Token
+from RDS import Service, User, LoginToken
 import Util
 
 
 def post():
     data = request.json
 
-    user = User(data.get("userId"))
+    rootUser = User(data.get("userId"))
     service = Util.tokenService.getService(data.get("servicename").lower(), clean=True)
+    token = LoginToken(User(data.get("username")), service, data.get("password"))
 
-    password = data.get("password")
-    if password == "":
-        password = "---"
-
-    token = Token(User(data.get("username")), service, password)
-
-    return Util.tokenService.addTokenToUser(token, user)
+    return Util.tokenService.addTokenToUser(token, rootUser)

@@ -2,7 +2,7 @@ import requests
 import os
 import json
 from flask import jsonify
-from RDS import Service, OAuth2Service, User, Token, OAuth2Token
+from RDS import BaseService, LoginService, OAuth2Service, User, LoginToken, OAuth2Token, Token, Util
 from lib.Exceptions.ServiceException import *
 import jwt
 import datetime
@@ -35,7 +35,7 @@ class TokenService:
 
         self._services = []
 
-    def getOAuthURIForService(self, service: Service) -> str:
+    def getOAuthURIForService(self, service: BaseService) -> str:
         """
         Returns authorize-url as `String` for the given service.
         """
@@ -54,26 +54,31 @@ class TokenService:
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
         data = response.json()
-        services = [Service.init(svc) for svc in data["list"]]
+        services = [Util.getServiceObject(svc) for svc in data["list"]]
 
         if len(services) is not len(self._services):
             self._services = services
             return True
         return False
 
-    def refreshService(self, service: Union[str, Service]) -> bool:
-        if isinstance(service, Service):
-            service = service.servicename
+    def refreshService(self, service: Union[str, BaseService]) -> bool:
+        try:
+            servicename = service.servicename
+        except:
+            servicename = service
 
         response = requests.get(
-            f"{self.address}/service/{service}",
+            f"{self.address}/service/{servicename}",
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
         if response.status_code != 200:
-            raise ServiceNotFoundError(Service(service))
+            try:
+                raise ServiceNotFoundError(service)
+            except:
+                raise ServiceNotFoundError(BaseService(servicename, implements=["metadata"]))
 
-        svc = Service.init(response.json())
+        svc = Util.getServiceObject(response.json())
 
         if not svc in self._services:
             self._services.append(svc)
@@ -89,7 +94,7 @@ class TokenService:
 
         return [getattr(svc, "authorize_url", None) for svc in self._services]
 
-    def getService(self, servicename: str, clean=False, informations=False) -> Service:
+    def getService(self, servicename: str, clean=False, informations=False) -> BaseService:
         """
         Returns a dict like self.getAllServices, but for only a single servicename (str).
 
@@ -154,7 +159,7 @@ class TokenService:
 
         return result_list
 
-    def getInformations(self, svc: Service) -> dict:
+    def getInformations(self, svc: BaseService) -> dict:
         if not hasattr(svc, "informations"):
             port = get_port_string(svc.servicename)
             if self.address.startswith("http://localhost"):
@@ -170,7 +175,7 @@ class TokenService:
 
         return svc.informations
 
-    def internal_getDictWithStateFromService(self, service: Service) -> dict:
+    def internal_getDictWithStateFromService(self, service: BaseService) -> dict:
         """
         **Internal use only**
 
@@ -209,7 +214,7 @@ class TokenService:
         services = []
         try:
             for index, l in enumerate(data["list"]):
-                token = Token.init(l)
+                token = Util.getTokenObject(l)
                 services.append(
                     {
                         "id": index,
@@ -249,7 +254,7 @@ class TokenService:
 
         return req.json()
 
-    def createProjectForUserInService(self, user: User, service: Service) -> int:
+    def createProjectForUserInService(self, user: User, service: BaseService) -> int:
         """
         Create a project in service, which the token is for.
         Returns the id for the new created project. If something went wrong, raise an ProjectNotCreated
@@ -275,7 +280,7 @@ class TokenService:
         raise ProjectNotCreatedError(service)
 
     def removeProjectForUserInService(
-        self, user: User, service: Service, project_id: int
+        self, user: User, service: BaseService, project_id: int
     ) -> bool:
         """
         Remove the project with id for user in service.
@@ -296,7 +301,7 @@ class TokenService:
 
         return req.status_code == 204
 
-    def removeService(self, service: Service) -> bool:
+    def removeService(self, service: BaseService) -> bool:
         """
         Remove a registered service.
 
@@ -396,7 +401,7 @@ class TokenService:
         return self.internal_removeTokenForStringFromUser(token.service, user)
 
     def internal_removeTokenForStringFromUser(
-        self, service: Service, user: User
+        self, service: BaseService, user: User
     ) -> bool:
         response = requests.delete(
             f"{self.address}/user/{user.username}/token/{service.servicename}",
@@ -416,7 +421,7 @@ class TokenService:
 
         return data["success"]
 
-    def getTokenForServiceFromUser(self, service: Service, user: User) -> Token:
+    def getTokenForServiceFromUser(self, service: BaseService, user: User) -> Token:
         """
         Returns the token from type Token (struct: servicename: str, access_token: str) for given service from given user.
 
@@ -445,10 +450,10 @@ class TokenService:
         data["type"] = "Token"
         # remove client_secret infos
         data["data"]["service"]["type"] = "Service"
-        token = Token.init(data)
+        token = Util.getTokenObject(data)
         return token
 
-    def removeTokenForServiceFromUser(self, service: Service, user: User) -> bool:
+    def removeTokenForServiceFromUser(self, service: BaseService, user: User) -> bool:
         """
         Remove the token for service from user.
 
@@ -559,7 +564,7 @@ class TokenService:
 
         if response.status_code >= 300:
             raise CodeNotExchangeable(
-                response.status_code, Service(service.servicename), msg=response.text
+                response.status_code, service, msg=response.text
             )
 
         return oauthtoken

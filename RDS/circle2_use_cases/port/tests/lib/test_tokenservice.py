@@ -7,7 +7,7 @@ import json
 from lib.TokenService import TokenService
 from pactman import Consumer, Provider
 from src import bootstrap
-from RDS import Token, OAuth2Token, Service, OAuth2Service, User
+from RDS import Token, OAuth2Token, BaseService, OAuth2Service, User
 from lib.Exceptions.ServiceException import *
 
 
@@ -53,18 +53,20 @@ class Test_TokenService(unittest.TestCase):
 
         self.service1 = OAuth2Service(
             self.servicename1,
-            self.url1,
-            "https://10.14.29.60/owncloud/index.php/apps/oauth2/api/v1/token",
-            "ABC",
-            "XYZ",
+            ["fileStorage"],
+            authorize_url=self.url1,
+            refresh_url="https://10.14.29.60/owncloud/index.php/apps/oauth2/api/v1/token",
+            client_id="ABC",
+            client_secret="XYZ",
         )
 
         self.service2 = OAuth2Service(
             self.servicename2,
-            self.url2,
-            "https://sandbox.zenodo.org/oauth/token",
-            "DEF",
-            "UVW",
+            ["metadata"],
+            authorize_url=self.url2,
+            refresh_url="https://sandbox.zenodo.org/oauth/token",
+            client_id="DEF",
+            client_secret="UVW",
         )
 
         self.token1 = Token(self.user1, self.service1, "ABC")
@@ -216,7 +218,7 @@ class Test_TokenService(unittest.TestCase):
                     "servicename": self.servicename1,
                     "access_token": self.token1.access_token,
                     "projects": [],
-                    "implements": [],
+                    "implements": self.token1.service.implements,
                     "informations": dataInformations
                 }
             ],
@@ -260,7 +262,6 @@ class Test_TokenService(unittest.TestCase):
             200, body=expected_projects
         )
 
-        
         pact.given("Given token to access port 2").upon_receiving(
             "informations from port taken from token with proj length {}".format(
                 len(expected_projects)
@@ -278,7 +279,7 @@ class Test_TokenService(unittest.TestCase):
                         "servicename": self.servicename1,
                         "access_token": self.token1.access_token,
                         "projects": [],
-                        "implements": [],
+                        "implements": self.token1.service.implements,
                         "informations": dataInformations
                     },
                     {
@@ -286,7 +287,7 @@ class Test_TokenService(unittest.TestCase):
                         "servicename": self.servicename2,
                         "access_token": self.token2.access_token,
                         "projects": [],
-                        "implements": [],
+                        "implements": self.token2.service.implements,
                         "informations": dataInformations
                     },
                 ],
@@ -539,7 +540,7 @@ class Test_TokenService(unittest.TestCase):
             "servicename": self.service1.servicename,
             "authorize_url": self.service1.authorize_url,
             "date": req["date"],
-            "implements": [],
+            "implements": ["fileStorage"],
         }
 
         state = jwt.encode(data, key, algorithm="HS256")
@@ -568,7 +569,7 @@ class Test_TokenService(unittest.TestCase):
             "servicename": self.service1.servicename,
             "authorize_url": self.service1.authorize_url,
             "date": req["date"],
-            "implements": [],
+            "implements": ["fileStorage"],
         }
 
         state = jwt.encode(data, key, algorithm="HS256")
@@ -711,15 +712,16 @@ class Test_TokenService(unittest.TestCase):
         code = "XYZABC"
         service = OAuth2Service(
             "localhost",
-            f"{self.tokenService.address}/authorize",
-            f"{self.tokenService.address}/oauth2/token",
-            "ABC",
-            "XYZ",
+            ["metadata"],
+            authorize_url=f"{self.tokenService.address}/authorize",
+            refresh_url=f"{self.tokenService.address}/oauth2/token",
+            client_id="ABC",
+            client_secret="XYZ",
         )
 
         with self.assertRaises(ValueError):
             self.tokenService.exchangeAuthCodeToAccessToken(
-                code, Service("localhost"), self.user1.username)
+                code, BaseService("localhost", ["metadata"]), self.user1.username)
 
         body = {
             "access_token": "1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ",

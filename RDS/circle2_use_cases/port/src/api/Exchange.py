@@ -21,7 +21,7 @@ def post():
         logger.debug("unverified: {}".format(unverified))
 
         servicename = unverified.get("servicename").lower()
-        service = Util.tokenService.getService(servicename, clean=True)
+        service = Util.tokenService.getService(servicename.lower(), clean=True)
 
         master_data = jwt.decode(master_jwt, service.client_secret, algorithms="HS256")
         logger.debug("verified: {}".format(master_data))
@@ -37,7 +37,7 @@ def post():
 
         Util.tokenService.exchangeAuthCodeToAccessToken(
             code,
-            Util.tokenService.getService(state["servicename"], clean=True),
+            Util.tokenService.getService(state["servicename"].lower(), clean=True),
             user=userId,
         )
 
