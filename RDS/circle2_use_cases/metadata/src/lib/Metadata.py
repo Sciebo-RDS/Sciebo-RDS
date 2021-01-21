@@ -1,7 +1,7 @@
 import requests
 import logging, json, os
 from lib.Research import Research
-from lib.Util import loadAccessToken
+from RDS import Util
 
 logger = logging.getLogger()
 
@@ -66,7 +66,7 @@ class Metadata:
             if projectId is None:
                 continue
 
-            apiKey = loadAccessToken(
+            apiKey = Util.loadToken(
                 research.userId, port["port"].replace("port-", "").lower()
             )
 
@@ -132,7 +132,7 @@ class Metadata:
             if projectId is None:
                 continue
 
-            apiKey = loadAccessToken(
+            apiKey = Util.loadToken(
                 research.userId, port["port"].replace("port-", "").lower()
             )
 
@@ -228,7 +228,7 @@ class Metadata:
             if projectId is None:
                 continue
 
-            apiKey = loadAccessToken(
+            apiKey = Util.loadToken(
                 research.userId, port["port"].replace("port-", "").lower()
             )
 
