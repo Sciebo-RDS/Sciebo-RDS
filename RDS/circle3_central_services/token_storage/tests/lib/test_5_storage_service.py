@@ -1,5 +1,5 @@
 import unittest
-from RDS import Service, OAuth2Service, Token, OAuth2Token, User
+from RDS import LoginService, OAuth2Service, Token, OAuth2Token, User
 from RDS.ServiceException import *
 from lib.Storage import Storage
 from pactman import Consumer, Provider
@@ -29,9 +29,9 @@ class TestStorageService(unittest.TestCase):
         self.user2 = User("Mimi Mimikri")
         self.user3 = User("Karla Kolumda")
 
-        self.service1 = Service("MusterService")
-        self.service2 = Service("BetonService")
-        self.service3 = Service("FahrService")
+        self.service1 = LoginService("MusterService", ["metadata"])
+        self.service2 = LoginService("BetonService", ["metadata"])
+        self.service3 = LoginService("FahrService", ["metadata"])
 
         # owncloud
         self.oauthservice1 = OAuth2Service.from_service(
@@ -254,7 +254,7 @@ class TestStorageService(unittest.TestCase):
 
         # test for missing service
         self.assertFalse(
-            self.filled_storage.refresh_services([Service("NotFoundService")])
+            self.filled_storage.refresh_services([BaseService("NotFoundService", ["metadata"])])
         )
 
     """ Currently not implemented and no idea how to solve.
@@ -438,7 +438,7 @@ class TestStorageService(unittest.TestCase):
         self.assertEqual(self.empty_storage.getServices(), expected)
 
         self.assertIsInstance(
-            self.empty_storage.getService(self.service1.servicename), Service
+            self.empty_storage.getService(self.service1.servicename), BaseService
         )
         self.assertEqual(
             self.empty_storage.getService(self.service1.servicename),

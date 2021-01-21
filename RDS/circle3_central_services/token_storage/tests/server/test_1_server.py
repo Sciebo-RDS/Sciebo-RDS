@@ -4,7 +4,7 @@ import os
 import json
 from pactman import Consumer, Provider
 from lib.Storage import Storage
-from RDS import Token, OAuth2Token, User, Service, OAuth2Service, Util
+from RDS import Token, OAuth2Token, User, LoginService, OAuth2Service, Util
 
 
 def create_app():
@@ -36,9 +36,9 @@ class TestTokenStorageServer(unittest.TestCase):
         self.user2 = User("Mimi Mimikri")
         self.user3 = User("Karla Kolumda")
 
-        self.service1 = Service("MusterService")
-        self.service2 = Service("BetonService", ["metadata"])
-        self.service3 = Service("FahrService")
+        self.service1 = LoginService("MusterService", ["metadata"])
+        self.service2 = LoginService("BetonService", ["metadata"])
+        self.service3 = LoginService("FahrService", ["metadata"])
 
         self.oauthservice1 = OAuth2Service.from_service(
             self.service1,
@@ -474,7 +474,7 @@ class TestTokenStorageServer(unittest.TestCase):
             data=json.dumps(self.oauthtoken1),
             content_type="application/json",
         )
-        self.assertNotEqual(response.status_code, 200)
+        self.assertNotEqual(response.status_code, 200, msg=result.json)
 
         # add an oauthtoken to user
         expected = {"length": 2, "list": [self.token1, self.token2]}

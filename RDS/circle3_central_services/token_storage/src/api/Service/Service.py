@@ -1,7 +1,7 @@
 from flask import jsonify, request, Response
 import json
 
-from RDS import Service, OAuth2Service, Util
+from RDS import BaseService, LoginService, OAuth2Service, Util
 from RDS.ServiceException import (
     ServiceExistsAlreadyError,
     ServiceNotExistsError,
@@ -13,7 +13,7 @@ import utility
 logger = logging.getLogger(__name__)
 
 init_object = Util.try_function_on_dict(
-    [OAuth2Service.from_dict, Service.from_dict, Util.initialize_object_from_json]
+    [OAuth2Service.from_dict, LoginService.from_dict, Util.initialize_object_from_json]
 )
 
 
@@ -30,13 +30,13 @@ def get(servicename: str):
     if svc is not None:
         return jsonify(svc)
 
-    raise ServiceNotExistsError(Service(servicename))
+    raise ServiceNotExistsError(BaseService(servicename))
 
 
 def post():
     data = request.json
     logger.debug("got: {}".format(data))
-    svc = Service.init(data)
+    svc = Util.getServiceObject(data)
 
     try:
         utility.storage.addService(svc)

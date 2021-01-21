@@ -1,4 +1,4 @@
-from RDS import User, Token, OAuth2Token, Service, OAuth2Service, Util
+from RDS import User, Token, LoginToken, OAuth2Token, BaseService, LoginService, OAuth2Service, Util
 from typing import Union
 from RDS.ServiceException import (
     ServiceExistsAlreadyError,
@@ -57,7 +57,7 @@ class Storage:
                 [
                     User.from_json,
                     OAuth2Service.from_json,
-                    Service.from_json,
+                    LoginService.from_json,
                     OAuth2Token.from_json,
                     Token.from_json,
                     load_service_with_tokens,
@@ -101,7 +101,6 @@ class Storage:
                         **(startup_nodes[0]),
                         db=0,
                         decode_responses=True,
-                        cluster_down_retry_attempts=1,
                     )
                     rc.info()  # provoke an error message
 
@@ -249,7 +248,7 @@ class Storage:
         """
         return self.services
 
-    def getService(self, service: Union[str, Service]):
+    def getService(self, service: Union[str, BaseService]):
         """
         Returns the service object with the given servicename. If not found, returns None
 
@@ -258,11 +257,11 @@ class Storage:
         Set parameter `index` to True to get the index as the second return value in tuple.
         """
 
-        if not isinstance(service, (str, Service)):
+        if not isinstance(service, (str, BaseService)):
             raise ValueError("given parameter not string or service.")
 
-        if not isinstance(service, (Service)):
-            service = Service(service)
+        if not isinstance(service, (BaseService)):
+            service = BaseService(service, ["metadata"])
 
         try:
             services = self.services
@@ -273,7 +272,7 @@ class Storage:
         except:
             return None
 
-    def addService(self, service: Service, Force=False):
+    def addService(self, service: BaseService, Force=False):
         """
         Add the given service to the list of services.
 
@@ -284,7 +283,7 @@ class Storage:
 
         Raise an error, if parameter not a service object.
         """
-        if not isinstance(service, (Service, OAuth2Service)):
+        if not isinstance(service, (BaseService, OAuth2Service)):
             raise ValueError("parameter not a service object.")
 
         try:
@@ -312,17 +311,17 @@ class Storage:
         self._services.append(service)
         return True
 
-    def removeService(self, service: Union[str, Service]):
+    def removeService(self, service: Union[str, BaseService]):
         """
         Removes the service with servicename.
 
         Returns True if a service was found and removed. Otherwise false.
         """
 
-        if not isinstance(service, (str, Service)):
+        if not isinstance(service, (str, BaseService)):
             raise ValueError("given parameter not string or service.")
 
-        if isinstance(service, Service):
+        if isinstance(service, BaseService):
             service = service.servicename
 
         index = None
@@ -455,7 +454,7 @@ class Storage:
         try:
             self.internal_find_service(token.servicename, self.services)
         except ValueError:
-            raise ServiceNotExistsError(Service(token.servicename))
+            raise ServiceNotExistsError(token.service)
         logger.debug("service found")
 
         # if user is None, user wants to add a superuser or refresh its token
@@ -476,11 +475,7 @@ class Storage:
 
         try:
             logger.debug("Try to find index")
-            try:
-                index = self._storage[user.username]["tokens"].index(token)
-            except:
-                logger.debug("append index")
-                index = -1
+            index = self._storage[user.username]["tokens"].index(token)
             logger.debug(f"found index {index}")
 
             """
@@ -490,15 +485,13 @@ class Storage:
                 raise TokenNotForUser(self, user, token)
             """
 
-            if Force or index < 0:
+            if Force:
                 data = self._storage[user.username]
 
-                if index < 0:
-                    data["tokens"].append(token)
-                else:
-                    data["tokens"][index] = token
+                data["tokens"][index] = token
                 self._storage[user.username] = data
-                logger.debug(f"overwrite token for user {user}")
+                logger.debug(
+                    "overwrite token for user {} with data {}".format(user, json.dumps(data)))
 
             else:
                 from .Exceptions.StorageException import UserHasTokenAlreadyError
@@ -520,7 +513,7 @@ class Storage:
 
         return True
 
-    def refresh_service(self, service: Service):
+    def refresh_service(self, service: BaseService):
         """
         Refresh all tokens, which corresponds to given service.
 

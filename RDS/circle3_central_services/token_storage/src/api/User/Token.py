@@ -27,7 +27,7 @@ def post(user_id):
 
     from RDS import Token
 
-    token = Token.init(request.json)
+    token = Util.getTokenObject(request.json)
 
     logger.debug(f"parsed token: {token}.")
 

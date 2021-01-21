@@ -43,12 +43,13 @@ class test_end_to_end(unittest.TestCase):
         redirect = "https://10.14.29.60/owncloud/index.php/apps/rds/oauth"
         owncloud = OAuth2Service(
             "owncloud-local",
-            "https://10.14.29.60/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
+            ["metadata"],
+            authorize_url="https://10.14.29.60/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
                 os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"), redirect
             ),
-            "https://10.14.29.60/owncloud/index.php/apps/oauth2/api/v1/token",
-            os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"),
-            os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET"),
+            refresh_url="https://10.14.29.60/owncloud/index.php/apps/oauth2/api/v1/token",
+            client_id=os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"),
+            client_secret=os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET"),
         )
 
         storage.addService(owncloud)
@@ -69,7 +70,8 @@ class test_end_to_end(unittest.TestCase):
                 "https://10.14.29.60/owncloud/index.php/login"
             ):
                 # it redirects to login form
-                field_username = self.driver.find_element_by_xpath('//*[@id="user"]')
+                field_username = self.driver.find_element_by_xpath(
+                    '//*[@id="user"]')
                 field_password = self.driver.find_element_by_xpath(
                     '//*[@id="password"]'
                 )
@@ -232,7 +234,8 @@ class test_end_to_end(unittest.TestCase):
 
             if self.driver.current_url.startswith("https://sandbox.zenodo.org/login"):
                 # it redirects to login form
-                field_username = self.driver.find_element_by_xpath('//*[@id="email"]')
+                field_username = self.driver.find_element_by_xpath(
+                    '//*[@id="email"]')
                 field_password = self.driver.find_element_by_xpath(
                     '//*[@id="password"]'
                 )

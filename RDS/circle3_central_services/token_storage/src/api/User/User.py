@@ -1,6 +1,6 @@
 from flask import jsonify, request, abort
 from werkzeug.exceptions import HTTPException
-from RDS import User
+from RDS import User, Util
 import utility
 import logging
 
@@ -21,7 +21,7 @@ def get(user_id):
 def post():
     user = None
     try:
-        user = User.init(request.json)
+        user = Util.getUserObject(request.json)
     except:
         abort(400, description=f"Request not give a valid user object: {request.json}")
 
