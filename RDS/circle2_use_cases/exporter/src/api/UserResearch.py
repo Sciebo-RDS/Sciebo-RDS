@@ -1,7 +1,6 @@
 from lib.Research import Research
 from flask import jsonify, current_app
 
-
 def index(user_id):
     pass
 

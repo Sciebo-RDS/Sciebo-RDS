@@ -240,7 +240,7 @@ class TokenService:
 
         req = requests.get(
             f"{port}/metadata/project",
-            json={"apiKey": token.access_token},
+            json=Util.parseToken(token),
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
@@ -256,7 +256,7 @@ class TokenService:
         """
 
         token = self.getTokenForServiceFromUser(service, user)
-        data = {"apiKey": token.access_token}
+        data = Util.parseToken(token)
 
         port = get_port_string(service.servicename)
         if self.address.startswith("http://localhost"):
@@ -282,7 +282,8 @@ class TokenService:
         Returns True when success. Otherwise False.
         """
         token = self.getTokenForServiceFromUser(service, user)
-        data = {"apiKey": token.access_token}
+
+        data = Util.parseToken(token)
 
         port = get_port_string(service.servicename)
         if self.address.startswith("http://localhost"):

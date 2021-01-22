@@ -1,5 +1,7 @@
 import requests
-import logging, json, os
+import logging
+import json
+import os
 from lib.Research import Research
 from RDS import Util
 
@@ -66,16 +68,19 @@ class Metadata:
             if projectId is None:
                 continue
 
-            apiKey = Util.loadToken(
+            token = Util.loadToken(
                 research.userId, port["port"].replace("port-", "").lower()
-            ).access_token
+            )
 
-            logger.debug(f"work on port {port} with apiKey {apiKey}")
+            data = Util.parseToken(token)
+            data["metadata"] = metadataFields
+
+            logger.debug(f"work on port {port} with apiKey {token}")
             port = port["port"]
             metadata = self.getMetadataForProjectFromPort(
                 port,
                 projectId,
-                apiKeyMetadata={"apiKey": apiKey, "metadata": metadataFields},
+                apiKeyMetadata=data,
             )
             d = {"port": port, "metadata": metadata}
             allMetadata.append(d)
@@ -132,15 +137,18 @@ class Metadata:
             if projectId is None:
                 continue
 
-            apiKey = Util.loadToken(
+            token = Util.loadToken(
                 research.userId, port["port"].replace("port-", "").lower()
-            ).access_token
+            )
 
             logger.debug("work on port {}".format(port))
             port = port["port"]
 
+            data = Util.parseToken(token)
+            data["metadata"] = updateMetadata
+
             metadata = self.updateMetadataForResearchFromPort(
-                port, projectId, {"apiKey": apiKey, "metadata": updateMetadata}
+                port, projectId, data
             )
             d = {"port": port, "metadata": metadata}
             allMetadata.append(d)
@@ -200,14 +208,16 @@ class Metadata:
         """
         # TODO: needs tests
 
-        def publishInPort(port, projectId, apiKey):
+        def publishInPort(port, projectId, token):
             headers = {"content-type": "application/json"}
+
+            data = Util.parseToken(token)
 
             req = requests.put(
                 "http://{}/metadata/project/{}".format(
                     self.getPortString(port), projectId
                 ),
-                data=json.dumps({"apiKey": apiKey.access_token}),
+                data=json.dumps(data),
                 headers=headers,
                 verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
             )

@@ -21,12 +21,12 @@ class Service:
 
         self.servicename = servicename
 
-        if not servicename.startswith("port-"):
-            servicename = "port-" + servicename.lower()
-        else:
+        if servicename.startswith("port-"):
             self.servicename = servicename.replace("port-", "", 1)
+        else:
+            servicename = "port-" + servicename.lower()
 
-        self.portaddress = f"http://circle1-{servicename.lower()}"
+        self.portaddress = f"http://circle1-{servicename}"
 
         if testing is not False:
             self.portaddress = testing
@@ -34,7 +34,7 @@ class Service:
         self.userId = userId
         self.researchIndex = researchIndex
 
-        self.port = servicename.lower()
+        self.port = servicename
         self.fileStorage = fileStorage
         self.metadata = metadata
         self.customProperties = customProperties

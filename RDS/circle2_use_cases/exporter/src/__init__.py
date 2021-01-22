@@ -35,7 +35,6 @@ def monkeypatch():
     to_default.default = JSONEncoder.default  # Save unmodified default.
     JSONEncoder.default = to_default  # Replace it.
 
-
 def bootstrap(name="MicroService", *args, **kwargs):
     list_openapi = Util.load_oai("use-case_exporter.yml")
 
