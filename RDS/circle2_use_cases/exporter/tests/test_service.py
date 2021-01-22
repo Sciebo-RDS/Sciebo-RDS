@@ -102,22 +102,29 @@ class Test_Service(unittest.TestCase):
 
     @staticmethod
     def zipStatusGET(pact, service: str, status: bool):
+        service = service.replace("port-", "", 1)
         pact.given(
             f"set zipStatus for service {service}, if it needs zip for folder in folder"
         ).upon_receiving("service responds with zipStatus").with_request(
-            "GET", f"/metadata/informations"
+            "GET", "/port-service/service/{}".format(service)
         ).will_respond_with(
             200, body={
-                "fileTransferArchive":"zip",
-                "fileTransferMode":0,
-                "loginMode":1
+                "servicename": service,
+                "implements": ["metadata"],
+                "fileTransferArchive": 0,
+                "fileTransferMode": 0,
+                "authorize_url": "http://localhost:3000/auth",
+                "refresh_url": "http://localhost:3000/token",
+                "client_id": "ABC",
+                "client_secret": "X_ABC",
             }
         )
 
     def test_init(self):
         expected = {"servicename": "Owncloud", "files": []}
 
-        self.requestStorageFolderGET(pact, "/test folder", "admin", expected["files"])
+        self.requestStorageFolderGET(
+            pact, "/test folder", "admin", expected["files"])
 
         with pact:
             s = Service(
@@ -125,15 +132,18 @@ class Test_Service(unittest.TestCase):
                 "admin",
                 1,
                 fileStorage=True,
-                customProperties=self.getOwncloudPort(1)[0]["properties"][0]["value"],
+                customProperties=self.getOwncloudPort(
+                    1)[0]["properties"][0]["value"],
                 testing=testingaddress,
             )
         self.assertEqual(s.getDict(), expected)
         self.assertEqual(s.getJSON(), json.dumps(expected))
 
-        expected = {"servicename": "Owncloud", "files": ["/test folder/testfile.txt"]}
+        expected = {"servicename": "Owncloud",
+                    "files": ["/test folder/testfile.txt"]}
 
-        self.requestStorageFolderGET(pact, "/test folder", "admin", expected["files"])
+        self.requestStorageFolderGET(
+            pact, "/test folder", "admin", expected["files"])
 
         with pact:
             s = Service(
@@ -141,7 +151,8 @@ class Test_Service(unittest.TestCase):
                 "admin",
                 1,
                 fileStorage=True,
-                customProperties=self.getOwncloudPort(1)[0]["properties"][0]["value"],
+                customProperties=self.getOwncloudPort(
+                    1)[0]["properties"][0]["value"],
                 testing=testingaddress,
             )
 
@@ -155,9 +166,11 @@ class Test_Service(unittest.TestCase):
             (expected_content[0], f'"{expected_content[1]}"'.encode("utf-8"))
         ]
 
-        self.requestStorageFolderGET(pact, "/test folder", "admin", expected["files"])
+        self.requestStorageFolderGET(
+            pact, "/test folder", "admin", expected["files"])
 
-        self.requestStorageFileGET(pact, expected["files"][0], "admin", "Lorem ipsum")
+        self.requestStorageFileGET(
+            pact, expected["files"][0], "admin", "Lorem ipsum")
 
         with pact:
             s = Service(
@@ -165,7 +178,8 @@ class Test_Service(unittest.TestCase):
                 "admin",
                 1,
                 fileStorage=True,
-                customProperties=self.getOwncloudPort(1)[0]["properties"][0]["value"],
+                customProperties=self.getOwncloudPort(
+                    1)[0]["properties"][0]["value"],
                 testing=testingaddress,
             )
             files = [(x, y.getvalue()) for x, y in s.getFiles(getContent=True)]
@@ -173,9 +187,11 @@ class Test_Service(unittest.TestCase):
 
     @unittest.skip("needs to be fixed, because delete is not currently tested")
     def test_removeFile(self):
-        expected = {"servicename": "Owncloud", "files": ["/test folder/testfile.txt"]}
+        expected = {"servicename": "Owncloud",
+                    "files": ["/test folder/testfile.txt"]}
 
-        self.requestStorageFolderGET(pact, "/test folder", "admin", expected["files"])
+        self.requestStorageFolderGET(
+            pact, "/test folder", "admin", expected["files"])
 
         with pact:
             s = Service(
@@ -183,7 +199,8 @@ class Test_Service(unittest.TestCase):
                 "admin",
                 1,
                 fileStorage=True,
-                customProperties=self.getOwncloudPort(1)[0]["properties"][0]["value"],
+                customProperties=self.getOwncloudPort(
+                    1)[0]["properties"][0]["value"],
                 testing=testingaddress,
             )
 
@@ -191,7 +208,8 @@ class Test_Service(unittest.TestCase):
 
         del expected["files"][0]
         self.requestStorageFileDELETE(pact, "admin", "/testfile.txt")
-        self.requestStorageFileGET(pact, "/testfile.txt", "admin", "", code=404)
+        self.requestStorageFileGET(
+            pact, "/testfile.txt", "admin", "", code=404)
 
         self.requestMetadataFileDELETE(
             pact,
@@ -207,7 +225,8 @@ class Test_Service(unittest.TestCase):
     @unittest.skip("Unhandled body content type with post files")
     def test_addFile(self):
         userId = "admin"
-        expected = {"servicename": "Owncloud", "folder": "/test folder/", "files": []}
+        expected = {"servicename": "Owncloud",
+                    "folder": "/test folder/", "files": []}
 
         self.requestStorageFolderGET(pact, "/", userId, [])
         with pact:
@@ -216,7 +235,8 @@ class Test_Service(unittest.TestCase):
                 userId,
                 1,
                 metadata=True,
-                customProperties=self.getZenodoPort(1)[0]["properties"][0]["value"],
+                customProperties=self.getZenodoPort(
+                    1)[0]["properties"][0]["value"],
                 testing=testingaddress,
             )
 

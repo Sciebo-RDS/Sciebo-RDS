@@ -1,7 +1,7 @@
 import requests
 import os
 import logging
-from RDS import FileTransferMode, LoginMode, Util
+from RDS import Util, FileTransferMode, FileTransferArchive, LoginService, OAuth2Service
 
 logger = logging.getLogger()
 
@@ -23,6 +23,8 @@ class Service:
 
         if not servicename.startswith("port-"):
             servicename = "port-" + servicename.lower()
+        else:
+            self.servicename = servicename.replace("port-", "", 1)
 
         self.portaddress = f"http://circle1-{servicename.lower()}"
 
@@ -72,19 +74,21 @@ class Service:
     def reloadInformations(self):
         """Updates all metadata informations from port.
         """
-        json = requests.get(
-            f"{self.portaddress}/metadata/informations",
-            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
-        ).json()
+
+        json = requests.get("{}/port-service/service/{}".format(os.getenv(
+            "USE_CASE_SERVICE_PORT_SERVICE", "http://localhost:3000"), self.servicename)).json()
+
+        svc = Util.getServiceObject(json)
 
         self.useZipForFolder = bool(
-            json.get("fileTransferArchive", "") == "zip")
-        self.fileTransferMode = FileTransferMode(
-            json.get("fileTransferMode", 0))
-        self.loginMode = LoginMode(json.get("loginMode", 1))
+            svc.fileTransferArchive == FileTransferArchive.zip)
+        self.fileTransferMode = svc.fileTransferMode
 
-        if self.loginMode == 0:
-            self.credentials = json.get("credentials", {})
+        if isinstance(svc, OAuth2Service):
+            self.loginMode = 0
+            self.credentials = svc.to_dict().get("credentials", {})
+        else:
+            self.loginMode = 1
 
     def getFilepath(self):
         filepath = self.getProperty("filepath")
