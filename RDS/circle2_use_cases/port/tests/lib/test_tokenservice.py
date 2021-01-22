@@ -194,19 +194,8 @@ class Test_TokenService(unittest.TestCase):
             200, body=expected_projects
         )
 
-        dataInformations = {
-            "fileTransferArchive": "zip",
-            "fileTransferMode": 0,
-            "loginMode": 1
-        }
-
-        pact.given("Given token to access port").upon_receiving(
-            "informations from port taken from token with proj length {}".format(
-                len(expected_projects)
-            )
-        ).with_request("GET", f"/metadata/informations").will_respond_with(
-            200, body=dataInformations
-        )
+        info = self.token1.service.to_dict()
+        del info["client_secret"]
 
         with pact:
             data = self.tokenService.getAllServicesForUser(self.user1)
@@ -219,7 +208,7 @@ class Test_TokenService(unittest.TestCase):
                     "access_token": self.token1.access_token,
                     "projects": [],
                     "implements": self.token1.service.implements,
-                    "informations": dataInformations
+                    "informations": info
                 }
             ],
             msg=str(data[0]),
@@ -245,14 +234,6 @@ class Test_TokenService(unittest.TestCase):
             200, body=expected_projects
         )
 
-        pact.given("Given token to access port 1").upon_receiving(
-            "informations from port taken from token with proj length {}".format(
-                len(expected_projects)
-            )
-        ).with_request("GET", f"/metadata/informations").will_respond_with(
-            200, body=dataInformations
-        )
-
         expected_projects = []
         pact.given("Given token to access port 2").upon_receiving(
             "projects from port taken from token with proj length {}".format(
@@ -262,13 +243,11 @@ class Test_TokenService(unittest.TestCase):
             200, body=expected_projects
         )
 
-        pact.given("Given token to access port 2").upon_receiving(
-            "informations from port taken from token with proj length {}".format(
-                len(expected_projects)
-            )
-        ).with_request("GET", f"/metadata/informations").will_respond_with(
-            200, body=dataInformations
-        )
+        info1 = self.token1.service.to_dict()
+        del info1["client_secret"]
+
+        info2 = self.token2.service.to_dict()
+        del info2["client_secret"]
 
         with pact:
             self.assertEqual(
@@ -280,7 +259,7 @@ class Test_TokenService(unittest.TestCase):
                         "access_token": self.token1.access_token,
                         "projects": [],
                         "implements": self.token1.service.implements,
-                        "informations": dataInformations
+                        "informations": info1
                     },
                     {
                         "id": 1,
@@ -288,7 +267,7 @@ class Test_TokenService(unittest.TestCase):
                         "access_token": self.token2.access_token,
                         "projects": [],
                         "implements": self.token2.service.implements,
-                        "informations": dataInformations
+                        "informations": info2
                     },
                 ],
             )

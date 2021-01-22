@@ -76,7 +76,8 @@ class TokenService:
             try:
                 raise ServiceNotFoundError(service)
             except:
-                raise ServiceNotFoundError(BaseService(servicename, implements=["metadata"]))
+                raise ServiceNotFoundError(BaseService(
+                    servicename, implements=["metadata"]))
 
         svc = Util.getServiceObject(response.json())
 
@@ -160,20 +161,14 @@ class TokenService:
         return result_list
 
     def getInformations(self, svc: BaseService) -> dict:
-        if not hasattr(svc, "informations"):
-            port = get_port_string(svc.servicename)
-            if self.address.startswith("http://localhost"):
-                port = self.address
+        informations = svc.to_dict()
 
-            req = requests.get(f"{port}/metadata/informations", verify=(
-                os.environ.get("VERIFY_SSL", "True") == "True"),)
+        try:
+            del informations["client_secret"]
+        except:
+            pass
 
-            if req.status_code < 300:
-                svc.informations = req.json()
-            else:
-                svc.informations = {}
-
-        return svc.informations
+        return informations
 
     def internal_getDictWithStateFromService(self, service: BaseService) -> dict:
         """

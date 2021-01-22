@@ -49,20 +49,6 @@ class Test_TokenServiceServer(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client()
 
-    @staticmethod
-    def zipStatusGET(pact, service: str, status: bool):
-        pact.given(
-            f"set zipStatus for service {service}, if it needs zip for folder in folder"
-        ).upon_receiving("service responds with zipStatus").with_request(
-            "GET", f"/metadata/informations"
-        ).will_respond_with(
-            200, body={
-                "fileTransferArchive": "zip",
-                "fileTransferMode": 0,
-                "loginMode": 1
-            }
-        )
-
     def test_redirect(self):
         code = "XYZABC"
         user = User("user")
@@ -89,18 +75,6 @@ class Test_TokenServiceServer(unittest.TestCase):
             "A request to get this oauthservice."
         ).with_request("GET", f"/service/{service.servicename}").will_respond_with(
             200, body=service.to_json()
-        )
-
-        pact.given(
-            f"set zipStatus for service {service}, if it needs zip for folder in folder"
-        ).upon_receiving("service responds with zipStatus").with_request(
-            "GET", "/metadata/informations"
-        ).will_respond_with(
-            200, body={
-                "fileTransferArchive": "zip",
-                "fileTransferMode": 0,
-                "loginMode": 1
-            }
         )
 
         with pact:
