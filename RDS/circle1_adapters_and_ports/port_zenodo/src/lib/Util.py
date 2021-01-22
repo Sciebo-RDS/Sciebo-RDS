@@ -10,6 +10,7 @@ from RDS import Util
 
 logger = logging.getLogger()
 
+
 def require_api_key(api_method):
     @wraps(api_method)
     def check_api_key(*args, **kwargs):
@@ -21,13 +22,12 @@ def require_api_key(api_method):
             logger.error(e, exc_info=True)
             req = request.form.to_dict()
 
-        apiKey = req.get("apiKey")
-        userId = req.get("userId")
+        try:
+            service, userId, apiKey = Util.parseUserId(req.get("userId"))
+        except:
+            apiKey = Util.loadToken(req.get("userId"), "Zenodo").access_token
 
         logger.debug("req data: {}".format(req))
-
-        if apiKey is None and userId is not None:
-            apiKey = Util.loadToken(userId, "Zenodo")
 
         if apiKey is None:
             logger.error("apiKey or userId not found.")
@@ -79,7 +79,8 @@ def to_jsonld(metadata):
 
     try:
         zenodocategory = "{}/{}".format(
-            metadata["upload_type"], metadata["{}_type".format(metadata["upload_type"])]
+            metadata["upload_type"], metadata["{}_type".format(
+                metadata["upload_type"])]
         )
     except:
         zenodocategory = metadata["upload_type"]
@@ -129,6 +130,7 @@ def to_jsonld(metadata):
 
     return jsonld
 
+
 def from_jsonld(jsonld_data):
     if jsonld_data is None:
         return
@@ -142,7 +144,8 @@ def from_jsonld(jsonld_data):
     data = jsonld.frame(jsonld_data, frame)
     logger.debug("after framing: {}".format(data))
 
-    data["title"] = data[zenodo_to_jsonld["title"].replace("https://schema.org/", "")]
+    data["title"] = data[zenodo_to_jsonld["title"].replace(
+        "https://schema.org/", "")]
     del data[zenodo_to_jsonld["title"].replace("https://schema.org/", "")]
 
     data["creators"] = []
@@ -150,7 +153,8 @@ def from_jsonld(jsonld_data):
     data["publication_date"] = data[
         zenodo_to_jsonld["publication_date"].replace("https://schema.org/", "")
     ]
-    del data[zenodo_to_jsonld["publication_date"].replace("https://schema.org/", "")]
+    del data[zenodo_to_jsonld["publication_date"].replace(
+        "https://schema.org/", "")]
 
     def read_creator(creator):
         try:
@@ -192,4 +196,3 @@ def from_jsonld(jsonld_data):
     logger.debug("after transformation data: {}".format(data))
 
     return data
-

@@ -21,13 +21,12 @@ def require_api_key(api_method):
         except:
             req = request.form.to_dict()
 
-        apiKey = req.get("apiKey")
-        userId = req.get("userId")
+        try:
+            service, userId, apiKey = Util.parseUserId(req.get("userId"))
+        except:
+            apiKey = Util.loadToken(req.get("userId"), "Openscienceframework").access_token
 
         logger.debug("req data: {}".format(req))
-
-        if apiKey is None and userId is not None:
-            apiKey = Util.loadToken(userId, "Openscienceframework")
 
         if apiKey is None:
             logger.error("apiKey or userId not found.")

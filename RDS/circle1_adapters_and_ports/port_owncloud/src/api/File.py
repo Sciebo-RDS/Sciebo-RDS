@@ -2,6 +2,7 @@ from lib.ownCloudUser import OwncloudUser
 from flask import request, send_file
 import logging
 from connexion_plus import FlaskOptimize
+from RDS import Util
 
 logger = logging.getLogger()
 
@@ -10,8 +11,10 @@ logger = logging.getLogger()
 @FlaskOptimize.do_not_compress()
 def index():
     json = request.json
-    userId = json.get("userId")
-    apiKey = json.get("apiKey")
+    try:
+        service, userId, apiKey = Util.parseUserId(json.get("userId"))
+    except:
+        apiKey = Util.loadToken(json.get("userId"), "owncloud").access_token
     filepath = json.get("filepath")
     logger.debug(f"userid {userId}")
 

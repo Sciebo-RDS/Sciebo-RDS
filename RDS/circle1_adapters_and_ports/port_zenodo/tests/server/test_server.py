@@ -65,7 +65,7 @@ class TestPortZenodo(unittest.TestCase):
 
         result = None
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.get("/metadata/project", json=data)
 
         self.assertEqual(result.json, expected)
@@ -86,7 +86,7 @@ class TestPortZenodo(unittest.TestCase):
 
         result = None
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.get(f"/metadata/project/{projectId}", json=data)
 
         self.assertEqual(result.json, expected)
@@ -132,7 +132,7 @@ class TestPortZenodo(unittest.TestCase):
         )
 
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.get("/metadata/project", json=data)
             self.assertEqual(result.status_code, 401, msg=result.json)
 
@@ -150,7 +150,7 @@ class TestPortZenodo(unittest.TestCase):
         )
 
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.get(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 404, msg=result.json)
 
@@ -186,7 +186,7 @@ class TestPortZenodo(unittest.TestCase):
         )
 
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.get("/metadata/project", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(
@@ -236,7 +236,7 @@ class TestPortZenodo(unittest.TestCase):
         )
 
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.get("/metadata/project", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertNotEqual(
@@ -282,7 +282,7 @@ class TestPortZenodo(unittest.TestCase):
         )
 
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.get(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(result.json, expected_body["metadata"])
@@ -337,7 +337,7 @@ class TestPortZenodo(unittest.TestCase):
         )
 
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.get(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertNotEqual(result.json, expected_body["metadata"])
@@ -402,7 +402,7 @@ class TestPortZenodo(unittest.TestCase):
         )
 
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.patch(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(result.json, result_metadata)
@@ -416,7 +416,7 @@ class TestPortZenodo(unittest.TestCase):
         )
 
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA", "metadata": {"title": ""}}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA", "metadata": {"title": ""}}
             result = self.client.patch(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(result.json, result_metadata)
@@ -433,7 +433,7 @@ class TestPortZenodo(unittest.TestCase):
         )
 
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.delete(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 204)
 
@@ -468,7 +468,7 @@ class TestPortZenodo(unittest.TestCase):
         )
 
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.post("/metadata/project", json=data)
             self.assertEqual(result.status_code, 200)
 
@@ -496,7 +496,7 @@ class TestPortZenodo(unittest.TestCase):
         )
 
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA", "metadata": updated_metadata}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA", "metadata": updated_metadata}
             result = self.client.post("/metadata/project", json=data)
             self.assertEqual(result.status_code, 200)
 
@@ -586,7 +586,7 @@ class TestPortZenodo(unittest.TestCase):
 
         # should return jsonld
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.get(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(result.json, metadata)
@@ -603,7 +603,7 @@ class TestPortZenodo(unittest.TestCase):
 
         # should return zenodo specific api dataset, because there was an error in transfomration
         with pact:
-            data = {"apiKey": "ASD123GANZSICHA"}
+            data = {"userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.get(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(result.json, expected_body["metadata"])
@@ -666,7 +666,7 @@ class TestPortZenodo(unittest.TestCase):
         expected_body["metadata"] = metadata
 
         with pact:
-            data = {"metadata": metadata, "apiKey": "ASD123GANZSICHA"}
+            data = {"metadata": metadata, "userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.patch(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(result.json, expected_body["metadata"])

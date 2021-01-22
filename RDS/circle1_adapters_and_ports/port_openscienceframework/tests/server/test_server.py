@@ -302,7 +302,7 @@ class TestPortOSF(unittest.TestCase):
         expected_body["metadata"] = metadata
 
         with pact:
-            data = {"metadata": metadata, "apiKey": "ASD123GANZSICHA"}
+            data = {"metadata": metadata, "userId": "zenodo://user:ASD123GANZSICHA"}
             result = self.client.patch(f"/metadata/project/{projectId}", json=data)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(result.json, expected_body["metadata"])
