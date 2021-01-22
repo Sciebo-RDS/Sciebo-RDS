@@ -281,7 +281,7 @@ paths:
           application/json:
             schema:
               anyOf:
-                - $ref: '#/components/schemas/Service'
+                - $ref: '#/components/schemas/LoginService'
                 - $ref: '#/components/schemas/OAuthService'
                 - $ref: '#/components/schemas/JSONService'
         description: ''
@@ -341,7 +341,7 @@ components:
         - token
       properties:
         service:
-          $ref: '#/components/schemas/Service'
+          $ref: '#/components/schemas/LoginService'
         access_token:
           type: string
           description: 'The token, which can be used as password for username in service.'
