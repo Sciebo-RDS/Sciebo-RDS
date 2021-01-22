@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-from __init__ import app, register_service
+from RDS import Util, OAuth2Service, FileTransferMode, FileTransferArchive
+from __init__ import app
+from RDS import Util
 import os
 
 owncloud_installation_url = os.getenv("OWNCLOUD_INSTALLATION_URL", "")
@@ -15,7 +17,6 @@ owncloud_oauth_authorize = "{}/index.php/apps/oauth2/authorize%3Fredirect_uri={}
     owncloud_installation_url, owncloud_redirect_uri, owncloud_oauth_id
 )
 
-from RDS import Util, OAuth2Service, FileTransferMode, FileTransferArchive
 service = OAuth2Service(
     servicename="Owncloud",
     implements=["fileStorage"],
