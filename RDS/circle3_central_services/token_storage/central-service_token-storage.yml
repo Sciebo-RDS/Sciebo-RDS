@@ -402,6 +402,25 @@ components:
         - fileTransferMode
         - fileTransferArchive
         - credentials
+      x-examples:
+        example-1:
+          servicename: Owncloud
+          implements:
+            - fileStorage
+          fileTransferMode: 0
+          fileTransferArchive: 0
+          credentials:
+            userId: true
+            password: true
+        example-2:
+          servicename: Zenodo
+          implements:
+            - metadata
+          fileTransferMode: 0
+          fileTransferArchive: 1
+          credentials:
+            userId: true
+            password: true
     JSONService:
       title: JSONService
       type: object
