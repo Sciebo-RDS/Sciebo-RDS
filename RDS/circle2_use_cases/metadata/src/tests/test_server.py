@@ -1,7 +1,7 @@
 import unittest
 from pactman import Consumer, Provider
-
-
+from RDS import OAuth2Service, OAuth2Token, User, Util
+import json
 testing_address = "localhost:3000"
 
 
@@ -25,18 +25,26 @@ class TestMetadata(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client()
 
+        self.user1 = User("MaxMustermann")
+        self.service1 = OAuth2Service("TestService",
+                                      implements=["metadata"],
+                                      authorize_url="http://localhost/oauth/authorize",
+                                      refresh_url="http://localhost/oauth/token",
+                                      client_id="MNO",
+                                      client_secret="UVW")
+        self.token1 = OAuth2Token(self.user1, self.service1, "ABC", "X_ABC")
+
     def test_userProject(self):
         """
         In this unit, we test the endpoint to get the corresponding researchId
         """
 
-        userId = 0
         researchIndex = 0
         researchId = 1
         projectId = 22
 
         research = {
-            "userId": userId,
+            "userId": self.user1.username,
             "status": 1,
             "portIn": [],
             "portOut": [],
@@ -49,11 +57,11 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             'A call to get the research with researchId.'
         ).with_request(
-            'GET', f"/research/user/{userId}/research/{researchIndex}"
+            'GET', f"/research/user/{self.user1.username}/research/{researchIndex}"
         ).will_respond_with(200, body=research)
 
         research = {
-            "userId": userId,
+            "userId": self.user1.username,
             "status": 1,
             "portIn": [],
             "portOut": [],
@@ -87,7 +95,7 @@ class TestMetadata(unittest.TestCase):
 
         with pact:
             result = self.client.get(
-                f"/metadata/user/{userId}/research/{researchIndex}").json
+                f"/metadata/user/{self.user1.username}/research/{researchIndex}").json
 
         self.assertEqual(result, expectedListMetadata)
 
@@ -102,7 +110,7 @@ class TestMetadata(unittest.TestCase):
         projectId = 5
 
         research = {
-            "userId": userId,
+            "userId": self.user1.username,
             "status": 1,
             "portIn": [],
             "portOut": [],
@@ -161,15 +169,13 @@ class TestMetadata(unittest.TestCase):
             'GET', f"/research/id/{researchId}"
         ).will_respond_with(200, body=research)
 
-        apiKey = "ASDB12345"
-
         pact.given(
             'An access token for userid.'
         ).upon_receiving(
-            f'A call to get the access token for user {userId}.'
+            f'A call to get the access token for user {self.user1.username}.'
         ).with_request(
-            'GET', f"/user/{userId}/service/zenodo"
-        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+            'GET', f"/user/{self.user1.username}/service/zenodo"
+        ).will_respond_with(200, body=json.dumps(self.token1))
 
         pact.given(
             'A port with metadata informations.'
@@ -177,23 +183,23 @@ class TestMetadata(unittest.TestCase):
             f'A call to get the empty metadata from specific projectId {projectId}.'
         ).with_request(
             'GET', f"/metadata/project/{projectId}"
-        ).will_respond_with(200, body=metadata)
+        ).will_respond_with(200, body = metadata)
 
         with pact:
-            result = self.client.get(
+            result=self.client.get(
                 f"/metadata/research/{researchId}").json
 
         expectedListMetadata["list"].append({
             "port": research["portIn"][0]["port"],
             "metadata": metadata
         })
-        expectedListMetadata["length"] = 1
+        expectedListMetadata["length"]=1
         self.assertEqual(result, expectedListMetadata)
 
         ####
         # try to get metadata, if there is a port, which is used as in- and output
 
-        research["portOut"] = [{
+        research["portOut"]=[{
             "port": "port-zenodo",
             "properties": [{
                     "portType": "metadata", "value": True
@@ -209,15 +215,13 @@ class TestMetadata(unittest.TestCase):
             'GET', f"/research/id/{researchId}"
         ).will_respond_with(200, body=research)
 
-        apiKey = "ASDB12345"
-
         pact.given(
             'An access token for userid.'
         ).upon_receiving(
-            f'A call to get the access token for user {userId}.'
+            f'A call to get the access token for user {self.user1.username}.'
         ).with_request(
-            'GET', f"/user/{userId}/service/zenodo"
-        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+            'GET', f"/user/{self.user1.username}/service/zenodo"
+        ).will_respond_with(200, body=json.dumps(self.token1))
 
         pact.given(
             'A port with metadata informations.'
@@ -240,7 +244,7 @@ class TestMetadata(unittest.TestCase):
         projectId = 5
 
         research = {
-            "userId": userId,
+            "userId": self.user1.username,
             "status": 1,
             "portIn": [],
             "portOut": [{
@@ -285,15 +289,13 @@ class TestMetadata(unittest.TestCase):
             "Titles": [{"title": "This is a test title", "lang": "de"}]
         }
 
-        apiKey = "ASDB12345"
-
         pact.given(
             'An access token for userid.'
         ).upon_receiving(
-            f'A call to get the access token for user {userId}.'
+            f'A call to get the access token for user {self.user1.username}.'
         ).with_request(
-            'GET', f"/user/{userId}/service/zenodo"
-        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+            'GET', f"/user/{self.user1.username}/service/zenodo"
+        ).will_respond_with(200, body=json.dumps(self.token1))
 
         metadata = {
             "Creators": metadataFull["Creators"]
@@ -335,15 +337,13 @@ class TestMetadata(unittest.TestCase):
             'GET', f"/research/id/{researchId}"
         ).will_respond_with(200, body=research)
 
-        apiKey = "ASDB12345"
-
         pact.given(
             'An access token for userid.'
         ).upon_receiving(
-            f'A call to get the access token for user {userId}.'
+            f'A call to get the access token for user {self.user1.username}.'
         ).with_request(
-            'GET', f"/user/{userId}/service/zenodo"
-        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+            'GET', f"/user/{self.user1.username}/service/zenodo"
+        ).will_respond_with(200, body=json.dumps(self.token1))
 
         pact.given(
             'A port with metadata informations.'
@@ -376,7 +376,7 @@ class TestMetadata(unittest.TestCase):
         """
         In this unit, we test the endpoint for given creators to get and update a specific entry.
         """
-        userId = 0
+        userId = self.user1.username
         researchIndex = 0
         researchId = 1
         projectId = 5
@@ -428,7 +428,7 @@ class TestMetadata(unittest.TestCase):
             'GET', f"/research/id/{researchId}"
         ).will_respond_with(200, body=research)
 
-        apiKey = "ASDB12345"
+        
 
         pact.given(
             'An access token for userid.'
@@ -436,7 +436,7 @@ class TestMetadata(unittest.TestCase):
             f'A call to get the access token for user {userId}.'
         ).with_request(
             'GET', f"/user/{userId}/service/zenodo"
-        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+        ).will_respond_with(200, body=json.dumps(self.token1))
 
         pact.given(
             'A port with metadata informations.'
@@ -481,15 +481,13 @@ class TestMetadata(unittest.TestCase):
             'GET', f"/research/id/{researchId}"
         ).will_respond_with(200, body=research)
 
-        apiKey = "ASDB12345"
-
         pact.given(
             'An access token for userid.'
         ).upon_receiving(
             f'A call to get the access token for user {userId}.'
         ).with_request(
             'GET', f"/user/{userId}/service/zenodo"
-        ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+        ).will_respond_with(200, body=json.dumps(self.token1))
 
         pact.given(
             'A port with metadata informations.'

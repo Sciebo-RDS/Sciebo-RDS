@@ -355,8 +355,8 @@ components:
           type: string
       x-tags:
         - User
-    Service:
-      title: Service
+    LoginService:
+      title: LoginService
       type: object
       x-tags:
         - Service
@@ -411,7 +411,7 @@ components:
         data:
           anyOf:
             - $ref: '#/components/schemas/OAuthService'
-            - $ref: '#/components/schemas/Service'
+            - $ref: '#/components/schemas/LoginService'
             - $ref: '#/components/schemas/Error'
     OAuthService:
       title: OAuthService

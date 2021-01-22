@@ -2,6 +2,7 @@ from lib.Metadata import Metadata
 from pactman import Consumer, Provider
 import unittest
 import json
+from RDS import OAuth2Service, OAuth2Token, User, Util
 
 
 pact = Consumer('UseCaseMetadata').has_pact_with(
@@ -11,8 +12,19 @@ testing_address = "localhost:3000"
 
 unittest.TestCase.maxDiff = None
 
+Util.monkeypatch()
+
 
 class Test_Metadata(unittest.TestCase):
+    def setUp(self):
+        self.user1 = User("MaxMustermann")
+        self.service1 = OAuth2Service("TestService",
+                                      implements=["metadata"],
+                                      authorize_url="http://localhost/oauth/authorize",
+                                      refresh_url="http://localhost/oauth/token",
+                                      client_id="MNO",
+                                      client_secret="UVW")
+        self.token1 = OAuth2Token(self.user1, self.service1, "ABC", "X_ABC")
 
     def test_metadata_init(self):
         """
@@ -224,16 +236,14 @@ class Test_Metadata(unittest.TestCase):
 
             port = ports["port"]
 
-            apiKey = "ASDB12345"
-
             pact.given(
                 'An access token for userid.'
             ).upon_receiving(
-                f'A call to get the access token for user {userId}.'
+                f'A call to get the access token for user {userId} for metadata.'
             ).with_request(
                 'GET', "/user/{}/service/{}".format(
                     userId, port.replace("port-", "").lower())
-            ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+            ).will_respond_with(200, body=json.dumps(self.token1, cls=Util.get_json_encoder()))
 
             pact.given(
                 'A port with metadata informations.'
@@ -381,15 +391,13 @@ class Test_Metadata(unittest.TestCase):
                 if skip:
                     continue
 
-                apiKey = "ASDB12345"
-
                 pact.given(
                     'An access token for userid.'
                 ).upon_receiving(
-                    f'A call to get the access token for user {userId}.'
+                    f'A call to get the access token for user {userId} for project.'
                 ).with_request(
                     'GET', f"/user/{userId}/service/zenodo"
-                ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+                ).will_respond_with(200, body=json.dumps(self.token1, cls=Util.get_json_encoder()))
 
                 portname = port["port"]
 
@@ -515,15 +523,13 @@ class Test_Metadata(unittest.TestCase):
             if skip:
                 continue
 
-            apiKey = "ASDB12345"
-
             pact.given(
                 'An access token for userid.'
             ).upon_receiving(
-                f'A call to get the access token for user {userId}.'
+                f'A call to get the access token for user {userId} for metadata usage.'
             ).with_request(
                 'GET', f"/user/{userId}/service/zenodo"
-            ).will_respond_with(200, body={"type": "Token", "data": {"access_token": apiKey}})
+            ).will_respond_with(200, body=json.dumps(self.token1, cls=Util.get_json_encoder()))
 
             port = ports["port"]
             pact.given(
@@ -544,7 +550,6 @@ class Test_Metadata(unittest.TestCase):
                 researchId=researchId, metadataFields=wanted_metadata)
         self.assertEqual(result, expected_metadata)
 
-    
     def test_metadata_publish(self):
         # TODO: implement me
         pass

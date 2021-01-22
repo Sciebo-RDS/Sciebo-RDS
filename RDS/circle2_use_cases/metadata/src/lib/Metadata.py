@@ -68,7 +68,7 @@ class Metadata:
 
             apiKey = Util.loadToken(
                 research.userId, port["port"].replace("port-", "").lower()
-            )
+            ).access_token
 
             logger.debug(f"work on port {port} with apiKey {apiKey}")
             port = port["port"]
@@ -134,7 +134,7 @@ class Metadata:
 
             apiKey = Util.loadToken(
                 research.userId, port["port"].replace("port-", "").lower()
-            )
+            ).access_token
 
             logger.debug("work on port {}".format(port))
             port = port["port"]
@@ -207,7 +207,7 @@ class Metadata:
                 "http://{}/metadata/project/{}".format(
                     self.getPortString(port), projectId
                 ),
-                data=json.dumps({"apiKey": apiKey}),
+                data=json.dumps({"apiKey": apiKey.access_token}),
                 headers=headers,
                 verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
             )
@@ -230,7 +230,7 @@ class Metadata:
 
             apiKey = Util.loadToken(
                 research.userId, port["port"].replace("port-", "").lower()
-            )
+            ).access_token
 
             logger.debug("work on port {}".format(port))
             port = port["port"]
