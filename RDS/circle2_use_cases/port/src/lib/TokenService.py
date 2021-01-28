@@ -521,18 +521,18 @@ class TokenService:
         response_with_access_token = response.json()
 
         # FIXME: need here some solution, where the response will be evaluated by the corresponding port
-        """ Do not need the userid for oauth, because token is the only information for login
         try:
             # owncloud / oauth2 spec
             user_id = response_with_access_token["user_id"]
         except:
             # zenodo specific
-            user_id = response_with_access_token["user"]["id"]
+            #user_id = response_with_access_token["user"]["id"]
+            pass
+        # TODO: add here more cloud storage provider for username
 
         # if no user was set, then this token will be used for superuser
         if user is None:
             user = user_id
-        """
 
         access_token = response_with_access_token["access_token"]
         refresh_token = response_with_access_token["refresh_token"]

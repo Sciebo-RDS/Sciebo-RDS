@@ -288,6 +288,8 @@ paths:
           servicename holds the name of the service, which client secret was used to sign the jwt.
 
           The jwt has to be signed with the oauth2 client secret for rds from service.
+
+          If userId is not present in jwt, the user_id field in response from oauth2 provider will be used as userId.
       description: ''
   /credentials:
     post:
