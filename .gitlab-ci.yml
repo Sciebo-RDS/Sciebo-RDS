@@ -1,8 +1,5 @@
 image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8
 
-before_script:
-  - docker login -u "$CI_DEPENDENCY_PROXY_USER" -p "$CI_DEPENDENCY_PROXY_PASSWORD" "$CI_DEPENDENCY_PROXY_SERVER"
-
 stages:
   - test
   - build
