@@ -23,6 +23,7 @@ variables:
   stage: test
 
   before_script:
+    - docker login -u "$CI_DEPENDENCY_PROXY_USER" -p "$CI_DEPENDENCY_PROXY_PASSWORD" "$CI_DEPENDENCY_PROXY_SERVER"
     - cd $FOLDER
 
   script:
@@ -53,6 +54,9 @@ variables:
 
 .builds:
   image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:19.03
+
+  before_script:
+    - docker login -u "$CI_DEPENDENCY_PROXY_USER" -p "$CI_DEPENDENCY_PROXY_PASSWORD" "$CI_DEPENDENCY_PROXY_SERVER"
 
   stage: build
 
@@ -127,6 +131,8 @@ hugo:test:
 
 .documentation:
   stage: documentation
+  before_script:
+    - docker login -u "$CI_DEPENDENCY_PROXY_USER" -p "$CI_DEPENDENCY_PROXY_PASSWORD" "$CI_DEPENDENCY_PROXY_SERVER"
   only:
     refs:
       - master

@@ -14,7 +14,7 @@
       - $FOLDER/user_refresh.token
 
   services:
-    - name: selenium/standalone-firefox
+    - name: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/selenium/standalone-firefox
       alias: selenium
 
 test:central_service_token_storage3.8:
