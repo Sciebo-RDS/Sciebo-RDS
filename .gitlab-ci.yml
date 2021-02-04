@@ -1,4 +1,4 @@
-image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers//python:3.8
+image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8
 
 stages:
   - test
@@ -49,7 +49,7 @@ variables:
   #    - $FOLDER/**/*
 
 .builds:
-  image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers//docker:19.03
+  image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:19.03
 
   stage: build
 
