@@ -8,7 +8,7 @@
     - .use_case_exporter
 
 test:use_case_exporter3.8:
-  image: python:3.8
+  image:  ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.8
   extends: .tests_use_case_exporter
 
 build:use_case_exporter:
@@ -26,7 +26,7 @@ build:use_case_exporter:
 doc:use_case_exporter:
   needs:
     - build:use_case_exporter
-  image: python:3.8
+  image:  ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.8
   extends:
     - .documentation
     - .use_case_exporter

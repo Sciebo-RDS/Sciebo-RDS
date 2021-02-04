@@ -1,4 +1,4 @@
-image: python:3.8
+image:  ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.8
 
 stages:
   - test
@@ -49,7 +49,7 @@ variables:
   #    - $FOLDER/**/*
 
 .builds:
-  image: docker:19.03
+  image:  ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/docker:19.03
 
   stage: build
 

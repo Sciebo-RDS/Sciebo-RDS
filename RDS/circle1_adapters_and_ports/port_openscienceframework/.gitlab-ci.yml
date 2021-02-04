@@ -10,7 +10,7 @@
 
 test:port_openscienceframework3.8:
   extends: .tests_port_openscienceframework
-  image: python:3.8
+  image:  ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.8
 
 build:port_openscienceframework:
   extends:
@@ -25,7 +25,7 @@ build:port_openscienceframework:
       - RDS/circle3_central_services/interface_port_token_storage.yml
 
 doc:port_openscienceframework:
-  image: python:3.8
+  image:  ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.8
   extends:
     - .documentation
     - .port_openscienceframework

@@ -8,7 +8,7 @@
     - .use_case_port_service
 
 test:use_case_port_service3.8:
-  image: python:3.8
+  image:  ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.8
   extends: .tests_use_case_port_service
 
 build:use_case_port_service:
@@ -25,7 +25,7 @@ build:use_case_port_service:
       - RDS/circle2_use_cases/port/**/*
 
 doc:use_case_port_service:
-  image: python:3.8
+  image:  ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.8
   needs:
     - build:use_case_port_service
   extends:
