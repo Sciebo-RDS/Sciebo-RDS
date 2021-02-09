@@ -10,10 +10,6 @@ class Port():
         if not isinstance(portName, str):
             raise ValueError("Portname has to be string.")
 
-        if not str(portName).startswith("port-"):
-            raise ValueError(
-                "portName has to starts with \"port-\" to use it as a domain.")
-
         self.port = portName
         self.fileStorage = fileStorage
         self.metadata = metadata
