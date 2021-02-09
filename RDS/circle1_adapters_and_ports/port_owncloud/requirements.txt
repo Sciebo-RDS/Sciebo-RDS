@@ -27,7 +27,7 @@ idna==2.10; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.
 inflection==0.5.1; python_version >= '3.5'
 itsdangerous==1.1.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 jaeger-client==4.4.0
-jinja2==2.11.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+jinja2==2.11.3; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 jsonschema==3.2.0
 lxml==4.6.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 markdown==3.3.3; python_version >= '3.6'
@@ -40,17 +40,17 @@ prometheus-flask-exporter==0.18.1
 pyrsistent==0.17.3; python_version >= '3.5'
 python-dateutil==2.8.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 python-jsonschema-objects==0.3.13
-pytz==2020.5
+pytz==2021.1
 pyyaml==5.4.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'
 requests==2.25.1
-research-data-services-common[flask]==0.30
+research-data-services-common[flask]==0.31
 six==1.15.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 swagger-ui-bundle==0.0.8
 threadloop==1.0.2
 thrift==0.13.0
 tornado==5.1.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 tzlocal==2.1
-urllib3==1.26.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
+urllib3==1.26.3; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
 webdavclient3==3.14.5
 werkzeug==1.0.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 wrapt==1.12.1
