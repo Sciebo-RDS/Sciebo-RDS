@@ -5,8 +5,6 @@ from lib.Port import Port
 class Test_Port(unittest.TestCase):
 
     def test_port_init(self):
-        with self.assertRaises(ValueError):
-            Port("owncloud")
 
         portSmall = Port("port-owncloud")
         portOwncloud = Port("port-owncloud", fileStorage=True)
