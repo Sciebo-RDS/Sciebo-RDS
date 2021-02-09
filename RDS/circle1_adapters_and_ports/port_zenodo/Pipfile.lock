@@ -478,11 +478,11 @@
                 "flask"
             ],
             "hashes": [
-                "sha256:e0c32c02566323dfa672aa68335190cf3a183114401a57fa00da602635be4cc4",
-                "sha256:f0745d03892122de60ea8f2590f4e0b4a491aa1df970817af746d76f2f40e248"
+                "sha256:a198e6cc14e9e4a123d62b04b4c7a084f92c7755d128aa805604fa8463a42223",
+                "sha256:a5bf6647822bf94948908d50f0f65710ec59bbcf2f19971135c0fa469d6abc6e"
             ],
             "index": "pypi",
-            "version": "==0.31"
+            "version": "==0.32"
         },
         "six": {
             "hashes": [
@@ -747,11 +747,11 @@
         },
         "joblib": {
             "hashes": [
-                "sha256:75ead23f13484a2a414874779d69ade40d4fa1abe62b222a23cd50d4bc822f6f",
-                "sha256:7ad866067ac1fdec27d51c8678ea760601b70e32ff1881d4dc8e1171f2b64b24"
+                "sha256:9c17567692206d2f3fb9ecf5e991084254fe631665c450b443761c4186a613f7",
+                "sha256:feeb1ec69c4d45129954f1b7034954241eedfd6ba39b5e9e4b6883be3332d5e5"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.0.0"
+            "version": "==1.0.1"
         },
         "livereload": {
             "hashes": [
