@@ -1,5 +1,5 @@
 from flask import request
-from RDS import Service, User, LoginToken
+from RDS import LoginService, User, LoginToken
 import Util
 
 

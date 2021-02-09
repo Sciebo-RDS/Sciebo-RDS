@@ -1,4 +1,4 @@
-from RDS import Service, User, Token
+from RDS import LoginService, User, Token
 
 
 class ServiceNotFoundError(Exception):
@@ -6,7 +6,7 @@ class ServiceNotFoundError(Exception):
     Represents an error, when a service was not found.
     """
 
-    def __init__(self, service: Service, msg=None):
+    def __init__(self, service: LoginService, msg=None):
         if msg is None:
             msg = f"{service} not found"
 
@@ -19,7 +19,7 @@ class ProjectNotCreatedError(Exception):
     Represents an error, when a project in service could not created.
     """
 
-    def __init__(self, service: Service, msg=None):
+    def __init__(self, service: LoginService, msg=None):
         if msg is None:
             msg = f"project in {service} could not be created."
 

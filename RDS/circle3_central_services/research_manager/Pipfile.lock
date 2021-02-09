@@ -588,11 +588,11 @@
                 "flask"
             ],
             "hashes": [
-                "sha256:a198e6cc14e9e4a123d62b04b4c7a084f92c7755d128aa805604fa8463a42223",
-                "sha256:a5bf6647822bf94948908d50f0f65710ec59bbcf2f19971135c0fa469d6abc6e"
+                "sha256:0ad930f7fbf1ef49c4ccc1f988cf07cdb5e6fa57d8e715303ab48a20d7df2a1d",
+                "sha256:f7938901225006e9d283af6e1aa07b9e20978097b78b4dd3177aca96951bf3d7"
             ],
             "index": "pypi",
-            "version": "==0.32"
+            "version": "==0.33"
         },
         "six": {
             "hashes": [
@@ -637,11 +637,11 @@
         },
         "tqdm": {
             "hashes": [
-                "sha256:4621f6823bab46a9cc33d48105753ccbea671b68bab2c50a9f0be23d4065cb5a",
-                "sha256:fe3d08dd00a526850568d542ff9de9bbc2a09a791da3c334f3213d8d0bbbca65"
+                "sha256:2874fa525c051177583ec59c0fb4583e91f28ccd3f217ffad2acdb32d2c789ac",
+                "sha256:ab9b659241d82b8b51b2269ee243ec95286046bf06015c4e15a947cc15914211"
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-            "version": "==4.56.0"
+            "version": "==4.56.1"
         },
         "tzlocal": {
             "hashes": [
@@ -1202,11 +1202,11 @@
         },
         "tqdm": {
             "hashes": [
-                "sha256:4621f6823bab46a9cc33d48105753ccbea671b68bab2c50a9f0be23d4065cb5a",
-                "sha256:fe3d08dd00a526850568d542ff9de9bbc2a09a791da3c334f3213d8d0bbbca65"
+                "sha256:2874fa525c051177583ec59c0fb4583e91f28ccd3f217ffad2acdb32d2c789ac",
+                "sha256:ab9b659241d82b8b51b2269ee243ec95286046bf06015c4e15a947cc15914211"
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-            "version": "==4.56.0"
+            "version": "==4.56.1"
         },
         "unidecode": {
             "hashes": [
