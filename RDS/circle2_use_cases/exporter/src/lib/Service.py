@@ -275,6 +275,7 @@ class Service:
         userParsedToken = Util.parseToken(Util.loadToken(
             self.userId, self.port.replace("port-", "").lower()
         ))
+        
         logger.debug("remove files in service {}".format(self.servicename))
         data = {"userId": userParsedToken}
 

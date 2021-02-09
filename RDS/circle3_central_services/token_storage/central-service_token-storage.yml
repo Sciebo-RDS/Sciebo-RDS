@@ -361,9 +361,29 @@ components:
       x-tags:
         - Service
       description: 'This handles a username:password service, where the UI will show the user a form to make inputs corresponding to your entries here.'
+      x-examples:
+        example-1:
+          servicename: Owncloud
+          implements:
+            - fileStorage
+          fileTransferMode: 0
+          fileTransferArchive: 0
+          credentials:
+            userId: true
+            password: true
+        example-2:
+          servicename: Zenodo
+          implements:
+            - metadata
+          fileTransferMode: 0
+          fileTransferArchive: 1
+          credentials:
+            userId: true
+            password: true
       properties:
         servicename:
           type: string
+          description: Needs to start with "port-" e.g. "port-zenodo"
         implements:
           type: array
           description: |-
@@ -402,25 +422,6 @@ components:
         - fileTransferMode
         - fileTransferArchive
         - credentials
-      x-examples:
-        example-1:
-          servicename: Owncloud
-          implements:
-            - fileStorage
-          fileTransferMode: 0
-          fileTransferArchive: 0
-          credentials:
-            userId: true
-            password: true
-        example-2:
-          servicename: Zenodo
-          implements:
-            - metadata
-          fileTransferMode: 0
-          fileTransferArchive: 1
-          credentials:
-            userId: true
-            password: true
     JSONService:
       title: JSONService
       type: object
@@ -438,6 +439,7 @@ components:
       properties:
         servicename:
           type: string
+          description: Needs to start with "port-" e.g. "port-zenodo"
         authorize_url:
           type: string
         refresh_url:
@@ -467,6 +469,11 @@ components:
             - 0: none
             - 1: zip
           type: integer
+      required:
+        - servicename
+        - authorize_url
+        - refresh_url
+        - client_id
     JSONToken:
       title: JSONToken
       type: object
