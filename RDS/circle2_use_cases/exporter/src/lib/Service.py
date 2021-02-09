@@ -55,8 +55,9 @@ class Service:
 
             if req.status_code >= 300:
                 # for convenience
-                data["userId"] = "{}://{}:{}".format(
-                    self.port, self.userId, Util.loadToken(self.userId, self.port))
+                data["userId"] = Util.parseToken(Util.loadToken(
+                    self.userId, self.port.replace("port-", "").lower()
+                ))
                 req = requests.get(f"{self.portaddress}/storage/folder", json=data, verify=(
                     os.environ.get("VERIFY_SSL", "True") == "True"))
 
@@ -204,8 +205,11 @@ class Service:
         Returns:
             bool: Return True, if the file was uploaded successfully, otherwise False.
         """
+        userParsedToken = Util.parseToken(Util.loadToken(
+            self.userId, self.port.replace("port-", "").lower()
+        ))
         files = {"file": (filename, fileContent.getvalue())}
-        data = {"userId": self.userId, "filename": filename}
+        data = {"userId": userParsedToken, "filename": filename}
 
         logger.debug(
             "add file {} with data {} in service {}".format(
@@ -235,7 +239,11 @@ class Service:
 
         file = self.files[file_id]
 
-        data = {"userId": self.userId}
+        userParsedToken = Util.parseToken(Util.loadToken(
+            self.userId, self.port.replace("port-", "").lower()
+        ))
+
+        data = {"userId": userParsedToken}
         if self.fileStorage:
             data["filepath"] = "{}/{}".format(self.getFilepath(), file)
             req = requests.delete(
@@ -264,8 +272,11 @@ class Service:
         return False
 
     def removeAllFiles(self):
+        userParsedToken = Util.parseToken(Util.loadToken(
+            self.userId, self.port.replace("port-", "").lower()
+        ))
         logger.debug("remove files in service {}".format(self.servicename))
-        data = {"userId": self.userId}
+        data = {"userId": userParsedToken}
 
         found = False
 
