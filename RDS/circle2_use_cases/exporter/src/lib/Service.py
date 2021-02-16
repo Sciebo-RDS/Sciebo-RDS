@@ -149,6 +149,15 @@ class Service:
                 verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
             )
 
+            if response_to.status_code >= 300:
+                data["userId"] = Util.parseToken(
+                    Util.loadToken(self.userId, self.port))
+                response_to = requests.get(
+                    f"{self.portaddress}/storage/file",
+                    json=data,
+                    verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+                )
+
             cnt = response_to.content
             logger.debug("got content size: {}".format(len(cnt)))
 
@@ -170,7 +179,7 @@ class Service:
         Returns:
             bool: Return True, if the trigger was successfully, otherwise False.
         """
-        data = {"userId": self.userId,
+        data = {"userId": Util.parseToken(Util.loadToken(self.userId, self.port)),
                 "folder": folder, "service": servicename}
 
         logger.debug(
