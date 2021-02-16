@@ -2,6 +2,7 @@ import unittest
 from lib.Service import Service
 from pactman import Consumer, Provider
 import json
+from RDS import FileTransferArchive, FileTransferMode
 
 pact = Consumer("ServiceExporter").has_pact_with(Provider("Zenodo"), port=3000)
 testingaddress = "http://localhost:3000"
@@ -138,6 +139,7 @@ class Test_Service(unittest.TestCase):
                     1)[0]["properties"][0]["value"],
                 testing=testingaddress,
             )
+
         self.assertEqual(s.getDict(), expected)
         self.assertEqual(s.getJSON(), json.dumps(expected))
 
@@ -254,3 +256,27 @@ class Test_Service(unittest.TestCase):
 
         self.assertEqual(s.getDict(), expected)
         self.assertEqual(s.getJSON(), json.dumps(expected))
+
+    def test_init(self):
+        expected = {"servicename": "port-zenodo", "files": []}
+
+        self.zipStatusGET(pact, "port-zenodo", True)
+        self.requestStorageFolderGET(
+            pact, "/test folder", "admin", expected["files"])
+
+        with pact:
+            s = Service(
+                expected["servicename"],
+                "admin",
+                1,
+                metadata=True,
+                customProperties=self.getZenodoPort(
+                    1)[0]["properties"][0]["value"],
+                testing=testingaddress,
+            )
+
+        self.assertEqual(s.getDict(), expected)
+        self.assertEqual(s.getJSON(), json.dumps(expected))
+        self.assertNotEqual(s.fileTransferMode, FileTransferArchive.none)
+        self.assertEqual(s.fileTransferMode, FileTransferMode.active)
+        self.assertEqual(s.useZipForFolder, False)

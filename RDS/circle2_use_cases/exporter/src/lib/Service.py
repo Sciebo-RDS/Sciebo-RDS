@@ -26,8 +26,10 @@ class Service:
 
         self.portaddress = f"http://circle1-{servicename}"
 
+        self.testing = None
         if testing is not False:
             self.portaddress = testing
+            self.testing = testing
 
         self.userId = userId
         self.researchIndex = researchIndex
@@ -74,7 +76,7 @@ class Service:
         """
 
         json = requests.get("{}/service/{}".format(os.getenv(
-            "USE_CASE_SERVICE_PORT_SERVICE", "http://localhost:3000/port-service"), self.port)).json()
+            "USE_CASE_SERVICE_PORT_SERVICE", "{}/port-service".format(self.portaddress)), self.port)).json()
 
         svc = Util.getServiceObject(json["informations"])
 
