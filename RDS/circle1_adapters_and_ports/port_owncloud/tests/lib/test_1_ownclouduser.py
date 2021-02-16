@@ -55,7 +55,7 @@ class Test_OwncloudUser(unittest.TestCase):
         ).upon_receiving(
             "send access token."
         ).with_request(
-            "GET", f"/user/{expected_user}/service/Owncloud"
+            "GET", f"/user/{expected_user}/service/port-owncloud"
         ).will_respond_with(200, body=expected_token_dict)
 
         pact.given(
@@ -156,7 +156,7 @@ class Test_OwncloudUser(unittest.TestCase):
         ).upon_receiving(
             "send access token."
         ).with_request(
-            "GET", f"/user/{expected_user}/service/Owncloud"
+            "GET", f"/user/{expected_user}/service/port-owncloud"
         ).will_respond_with(200, body=expected_token_dict)
 
         pact.given(
@@ -226,7 +226,7 @@ class Test_OwncloudUser(unittest.TestCase):
         ).upon_receiving(
             "send access token."
         ).with_request(
-            "GET", f"/user/{expected_user}/service/Owncloud"
+            "GET", f"/user/{expected_user}/service/port-owncloud"
         ).will_respond_with(200, body=expected_token_dict)
 
         pact.given(
@@ -293,7 +293,7 @@ class Test_OwncloudUser(unittest.TestCase):
         ).upon_receiving(
             "send access token."
         ).with_request(
-            "GET", f"/user/{expected_user}/service/Owncloud"
+            "GET", f"/user/{expected_user}/service/port-owncloud"
         ).will_respond_with(200, body=expected_token_dict)
 
         expected_files = ["/owncloud/remote.php/webdav/Documents/Paris.jpg",

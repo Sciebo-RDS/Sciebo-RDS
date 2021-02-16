@@ -21,9 +21,7 @@ class Service:
 
         self.servicename = servicename
 
-        if servicename.startswith("port-"):
-            self.servicename = servicename.replace("port-", "", 1)
-        else:
+        if not servicename.startswith("port-"):
             servicename = "port-" + servicename.lower()
 
         self.portaddress = f"http://circle1-{servicename}"
@@ -55,9 +53,8 @@ class Service:
 
             if req.status_code >= 300:
                 # for convenience
-                data["userId"] = Util.parseToken(Util.loadToken(
-                    self.userId, self.port.replace("port-", "").lower()
-                ))
+                data["userId"] = Util.parseToken(
+                    Util.loadToken(self.userId, self.port))
                 req = requests.get(f"{self.portaddress}/storage/folder", json=data, verify=(
                     os.environ.get("VERIFY_SSL", "True") == "True"))
 
@@ -206,7 +203,7 @@ class Service:
             bool: Return True, if the file was uploaded successfully, otherwise False.
         """
         userParsedToken = Util.parseToken(Util.loadToken(
-            self.userId, self.port.replace("port-", "").lower()
+            self.userId, self.port
         ))
         files = {"file": (filename, fileContent.getvalue())}
         data = {"userId": userParsedToken, "filename": filename}
@@ -240,7 +237,7 @@ class Service:
         file = self.files[file_id]
 
         userParsedToken = Util.parseToken(Util.loadToken(
-            self.userId, self.port.replace("port-", "").lower()
+            self.userId, self.port
         ))
 
         data = {"userId": userParsedToken}
@@ -273,9 +270,9 @@ class Service:
 
     def removeAllFiles(self):
         userParsedToken = Util.parseToken(Util.loadToken(
-            self.userId, self.port.replace("port-", "").lower()
+            self.userId, self.port
         ))
-        
+
         logger.debug("remove files in service {}".format(self.servicename))
         data = {"userId": userParsedToken}
 

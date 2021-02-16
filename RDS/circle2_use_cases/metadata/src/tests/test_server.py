@@ -174,7 +174,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the access token for user {self.user1.username}.'
         ).with_request(
-            'GET', f"/user/{self.user1.username}/service/zenodo"
+            'GET', f"/user/{self.user1.username}/service/port-zenodo"
         ).will_respond_with(200, body=json.dumps(self.token1))
 
         pact.given(
@@ -220,7 +220,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the access token for user {self.user1.username}.'
         ).with_request(
-            'GET', f"/user/{self.user1.username}/service/zenodo"
+            'GET', f"/user/{self.user1.username}/service/port-zenodo"
         ).will_respond_with(200, body=json.dumps(self.token1))
 
         pact.given(
@@ -294,7 +294,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the access token for user {self.user1.username}.'
         ).with_request(
-            'GET', f"/user/{self.user1.username}/service/zenodo"
+            'GET', f"/user/{self.user1.username}/service/port-zenodo"
         ).will_respond_with(200, body=json.dumps(self.token1))
 
         metadata = {
@@ -342,7 +342,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the access token for user {self.user1.username}.'
         ).with_request(
-            'GET', f"/user/{self.user1.username}/service/zenodo"
+            'GET', f"/user/{self.user1.username}/service/port-zenodo"
         ).will_respond_with(200, body=json.dumps(self.token1))
 
         pact.given(
@@ -433,7 +433,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the access token for user {userId}.'
         ).with_request(
-            'GET', f"/user/{userId}/service/zenodo"
+            'GET', f"/user/{userId}/service/port-zenodo"
         ).will_respond_with(200, body=json.dumps(self.token1))
 
         pact.given(
@@ -484,7 +484,7 @@ class TestMetadata(unittest.TestCase):
         ).upon_receiving(
             f'A call to get the access token for user {userId}.'
         ).with_request(
-            'GET', f"/user/{userId}/service/zenodo"
+            'GET', f"/user/{userId}/service/port-zenodo"
         ).will_respond_with(200, body=json.dumps(self.token1))
 
         pact.given(

@@ -68,8 +68,13 @@ class Metadata:
             if projectId is None:
                 continue
 
+            portname = port["port"]
+
+            if not portname.startswith("port-"):
+                portname = "port-{}".format(portname)
+
             token = Util.loadToken(
-                research.userId, port["port"].replace("port-", "").lower()
+                research.userId, portname
             )
 
             data = Util.parseToken(token)
@@ -137,12 +142,17 @@ class Metadata:
             if projectId is None:
                 continue
 
+            portname = port["port"]
+
+            if not portname.startswith("port-"):
+                portname = "port-{}".format(portname)
+
             token = Util.loadToken(
-                research.userId, port["port"].replace("port-", "").lower()
+                research.userId, portname
             )
 
             logger.debug("work on port {}".format(port))
-            port = port["port"]
+            port = portname
 
             data = Util.parseToken(token)
             data["metadata"] = updateMetadata
@@ -238,8 +248,13 @@ class Metadata:
             if projectId is None:
                 continue
 
+            portname = port["port"]
+
+            if not portname.startswith("port-"):
+                portname = "port-{}".format(portname)
+
             apiKey = Util.loadToken(
-                research.userId, port["port"].replace("port-", "").lower()
+                research.userId, portname
             ).access_token
 
             logger.debug("work on port {}".format(port))

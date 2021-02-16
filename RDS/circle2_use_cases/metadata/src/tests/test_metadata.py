@@ -242,7 +242,7 @@ class Test_Metadata(unittest.TestCase):
                 f'A call to get the access token for user {userId} for metadata.'
             ).with_request(
                 'GET', "/user/{}/service/{}".format(
-                    userId, port.replace("port-", "").lower())
+                    userId, port)
             ).will_respond_with(200, body=json.dumps(self.token1, cls=Util.get_json_encoder()))
 
             pact.given(
@@ -396,7 +396,7 @@ class Test_Metadata(unittest.TestCase):
                 ).upon_receiving(
                     f'A call to get the access token for user {userId} for project.'
                 ).with_request(
-                    'GET', f"/user/{userId}/service/zenodo"
+                    'GET', f"/user/{userId}/service/port-zenodo"
                 ).will_respond_with(200, body=json.dumps(self.token1, cls=Util.get_json_encoder()))
 
                 portname = port["port"]
@@ -528,7 +528,7 @@ class Test_Metadata(unittest.TestCase):
             ).upon_receiving(
                 f'A call to get the access token for user {userId} for metadata usage.'
             ).with_request(
-                'GET', f"/user/{userId}/service/zenodo"
+                'GET', f"/user/{userId}/service/port-zenodo"
             ).will_respond_with(200, body=json.dumps(self.token1, cls=Util.get_json_encoder()))
 
             port = ports["port"]

@@ -102,7 +102,9 @@ class Test_Service(unittest.TestCase):
 
     @staticmethod
     def zipStatusGET(pact, service: str, status: bool):
-        service = service.replace("port-", "", 1)
+        if not service.startswith("port-"):
+            service = "port-{}".format(service)
+
         pact.given(
             f"set zipStatus for service {service}, if it needs zip for folder in folder"
         ).upon_receiving("service responds with zipStatus").with_request(
@@ -161,7 +163,8 @@ class Test_Service(unittest.TestCase):
 
     def test_getFilesContent(self):
         expected_content = ("/test folder/testfile.txt", "Lorem ipsum")
-        expected = {"servicename": "port-owncloud", "files": [expected_content[0]]}
+        expected = {"servicename": "port-owncloud",
+                    "files": [expected_content[0]]}
         expected_content = [
             (expected_content[0], f'"{expected_content[1]}"'.encode("utf-8"))
         ]

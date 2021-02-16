@@ -14,8 +14,11 @@ logger = logging.getLogger()
 
 
 def get_port_string(name):
-    service = name.replace("port-", "").lower()
-    return f"http://circle1-port-{service}"
+    service = name
+    if not "port-" in name:
+        service = "port-{}".format(name)
+
+    return "http://circle1-port-{}".format(service.lower())
 
 
 class TokenService:
