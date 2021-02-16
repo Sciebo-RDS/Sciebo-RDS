@@ -45,7 +45,7 @@ class TestPortZenodo(unittest.TestCase):
             "data": {
                 "access_token": "ASD123GANZSICHA",
                 "user": user,
-                "service": {"data": {"servicename": "Zenodo"}},
+                "service": {"data": {"servicename": "port-zenodo"}},
             },
         }
 
@@ -53,7 +53,7 @@ class TestPortZenodo(unittest.TestCase):
 
         pact.given("user admin has a token in rds").upon_receiving(
             "the currently available token"
-        ).with_request("GET", "/user/admin/service/Zenodo").will_respond_with(
+        ).with_request("GET", "/user/admin/service/port-zenodo").will_respond_with(
             200, body=admintoken
         )
 
@@ -74,7 +74,7 @@ class TestPortZenodo(unittest.TestCase):
 
         pact.given("user admin has a token in rds").upon_receiving(
             "the currently available token"
-        ).with_request("GET", "/user/admin/service/Zenodo").will_respond_with(
+        ).with_request("GET", "/user/admin/service/port-zenodo").will_respond_with(
             200, body=admintoken
         )
 
@@ -506,12 +506,12 @@ class TestPortZenodo(unittest.TestCase):
 
         pact.given("user admin has a token in rds").upon_receiving(
             "the currently available token"
-        ).with_request("GET", "/user/admin/service/Zenodo").will_respond_with(
+        ).with_request("GET", "/user/admin/service/port-zenodo").will_respond_with(
             200,
             body={
                 "data": {
                     "access_token": api_key,
-                    "service": {"data": {"servicename": "Zenodo"}},
+                    "service": {"data": {"servicename": "port-zenodo"}},
                 }
             },
         )

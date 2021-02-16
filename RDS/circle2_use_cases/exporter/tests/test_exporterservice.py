@@ -55,7 +55,7 @@ class Test_ExporterService(unittest.TestCase):
 
         with pact:
             result = exporter.export(
-                "Owncloud", "Zenodo", "testfile.txt", "admin")
+                "port-owncloud", "port-zenodo", "testfile.txt", "admin")
         self.assertTrue(result)
 
     @unittest.skip("not used in production")
@@ -64,11 +64,11 @@ class Test_ExporterService(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             exporter.export(
-                "not-known", "Zenodo", "testfile.txt", "admin")
+                "not-known", "port-zenodo", "testfile.txt", "admin")
 
         with self.assertRaises(ValueError):
             exporter.export(
-                "Owncloud", "not-known", "testfile.txt", "admin")
+                "port-owncloud", "not-known", "testfile.txt", "admin")
 
     @unittest.skip("not used in production")
     def test_export_zenodo_from_owncloud_no_token_for_service_from(self):
@@ -85,7 +85,7 @@ class Test_ExporterService(unittest.TestCase):
 
         with pact:
             result = exporter.export(
-                "Owncloud", "Zenodo", "testfile.txt", "admin")
+                "port-owncloud", "port-zenodo", "testfile.txt", "admin")
         self.assertFalse(result)
 
     @unittest.skip("not used in production")
@@ -112,7 +112,7 @@ class Test_ExporterService(unittest.TestCase):
 
         with pact:
             result = exporter.export(
-                "Owncloud", "Zenodo", "testfile.txt", "admin")
+                "port-owncloud", "port-zenodo", "testfile.txt", "admin")
         self.assertFalse(result)
 
     # TODO: this test cannot be handled, because pactman can only emulate json, nothing else.
@@ -147,5 +147,5 @@ class Test_ExporterService(unittest.TestCase):
         ) .will_respond_with(200, body={"success": True})
 
         with pact:
-            result = self.client.post("/exporter/export/Zenodo", data={"user_id": "admin", "from_service":"Owncloud", "filename":"testfile.txt"})
+            result = self.client.post("/exporter/export/port-zenodo", data={"user_id": "admin", "from_service":"port-owncloud", "filename":"testfile.txt"})
         self.assertEqual(result.json, {"success": True})

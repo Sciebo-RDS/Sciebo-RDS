@@ -24,7 +24,7 @@ def require_api_key(api_method):
         try:
             service, userId, apiKey = Util.parseUserId(req.get("userId"))
         except:
-            apiKey = Util.loadToken(req.get("userId"), "Openscienceframework").access_token
+            apiKey = Util.loadToken(req.get("userId"), "port-openscienceframework").access_token
 
         logger.debug("req data: {}".format(req))
 

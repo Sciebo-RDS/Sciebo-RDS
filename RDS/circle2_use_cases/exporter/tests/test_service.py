@@ -121,7 +121,7 @@ class Test_Service(unittest.TestCase):
         )
 
     def test_init(self):
-        expected = {"servicename": "Owncloud", "files": []}
+        expected = {"servicename": "port-owncloud", "files": []}
 
         self.requestStorageFolderGET(
             pact, "/test folder", "admin", expected["files"])
@@ -139,7 +139,7 @@ class Test_Service(unittest.TestCase):
         self.assertEqual(s.getDict(), expected)
         self.assertEqual(s.getJSON(), json.dumps(expected))
 
-        expected = {"servicename": "Owncloud",
+        expected = {"servicename": "port-owncloud",
                     "files": ["/test folder/testfile.txt"]}
 
         self.requestStorageFolderGET(
@@ -161,7 +161,7 @@ class Test_Service(unittest.TestCase):
 
     def test_getFilesContent(self):
         expected_content = ("/test folder/testfile.txt", "Lorem ipsum")
-        expected = {"servicename": "Owncloud", "files": [expected_content[0]]}
+        expected = {"servicename": "port-owncloud", "files": [expected_content[0]]}
         expected_content = [
             (expected_content[0], f'"{expected_content[1]}"'.encode("utf-8"))
         ]
@@ -187,7 +187,7 @@ class Test_Service(unittest.TestCase):
 
     @unittest.skip("needs to be fixed, because delete is not currently tested")
     def test_removeFile(self):
-        expected = {"servicename": "Owncloud",
+        expected = {"servicename": "port-owncloud",
                     "files": ["/test folder/testfile.txt"]}
 
         self.requestStorageFolderGET(
@@ -225,7 +225,7 @@ class Test_Service(unittest.TestCase):
     @unittest.skip("Unhandled body content type with post files")
     def test_addFile(self):
         userId = "admin"
-        expected = {"servicename": "Owncloud",
+        expected = {"servicename": "port-owncloud",
                     "folder": "/test folder/", "files": []}
 
         self.requestStorageFolderGET(pact, "/", userId, [])

@@ -363,7 +363,7 @@ components:
       description: 'This handles a username:password service, where the UI will show the user a form to make inputs corresponding to your entries here.'
       x-examples:
         example-1:
-          servicename: Owncloud
+          servicename: port-owncloud
           implements:
             - fileStorage
           fileTransferMode: 0
@@ -372,7 +372,7 @@ components:
             userId: true
             password: true
         example-2:
-          servicename: Zenodo
+          servicename: port-zenodo
           implements:
             - metadata
           fileTransferMode: 0
