@@ -9,4 +9,7 @@ def index():
 
 def get(servicename):
     servicename = servicename.lower()
+    if not servicename.startswith("port-"):
+        servicename = "port-{}".format(servicename)
+
     return jsonify(Util.tokenService.getService(servicename, informations=True))

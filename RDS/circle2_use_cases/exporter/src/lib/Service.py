@@ -74,7 +74,7 @@ class Service:
         """
 
         json = requests.get("{}/port-service/service/{}".format(os.getenv(
-            "USE_CASE_SERVICE_PORT_SERVICE", "http://localhost:3000"), self.servicename)).json()
+            "USE_CASE_SERVICE_PORT_SERVICE", "http://localhost:3000"), self.port)).json()
 
         svc = Util.getServiceObject(json)
 
@@ -304,7 +304,7 @@ class Service:
 
     def getDict(self):
 
-        obj = {"servicename": self.servicename,
+        obj = {"servicename": self.port,
                "files": [x for x in self.getFiles()]}
 
         return obj
