@@ -53,8 +53,8 @@ class Service:
 
             if req.status_code >= 300:
                 # for convenience
-                data["userId"] = Util.parseToken(
-                    Util.loadToken(self.userId, self.port))
+                data.update(Util.parseToken(
+                    Util.loadToken(self.userId, self.port)))
                 req = requests.get(f"{self.portaddress}/storage/folder", json=data, verify=(
                     os.environ.get("VERIFY_SSL", "True") == "True"))
 
@@ -141,9 +141,6 @@ class Service:
                 "filepath": path,
             }
 
-            data["userId"] = Util.parseToken(
-                Util.loadToken(self.userId, self.port))
-
             logger.debug("request data {}".format(data))
 
             response_to = requests.get(
@@ -151,6 +148,18 @@ class Service:
                 json=data,
                 verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
             )
+
+            if response_to.status_code >= 300:
+                data.update(Util.parseToken(
+                    Util.loadToken(self.userId, self.port)))
+
+                logger.debug("request data {}".format(data))
+
+                response_to = requests.get(
+                    f"{self.portaddress}/storage/file",
+                    json=data,
+                    verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+                )
 
             cnt = response_to.content
             logger.debug("got content size: {}".format(len(cnt)))
@@ -173,8 +182,9 @@ class Service:
         Returns:
             bool: Return True, if the trigger was successfully, otherwise False.
         """
-        data = {"userId": Util.parseToken(Util.loadToken(self.userId, self.port)),
-                "folder": folder, "service": servicename}
+        data = {"userId": Util.parseToken(
+            Util.loadToken(self.userId, self.port))}
+        data.update({"folder": folder, "service": servicename})
 
         logger.debug(
             "start passive mode with data {} in service {}".format(
@@ -205,11 +215,11 @@ class Service:
         Returns:
             bool: Return True, if the file was uploaded successfully, otherwise False.
         """
-        userParsedToken = Util.parseToken(Util.loadToken(
+        data = Util.parseToken(Util.loadToken(
             self.userId, self.port
         ))
         files = {"file": (filename, fileContent.getvalue())}
-        data = {"userId": userParsedToken, "filename": filename}
+        data["filename"] = filename
 
         logger.debug(
             "add file {} with data {} in service {}".format(
@@ -239,11 +249,10 @@ class Service:
 
         file = self.files[file_id]
 
-        userParsedToken = Util.parseToken(Util.loadToken(
+        data = Util.parseToken(Util.loadToken(
             self.userId, self.port
         ))
 
-        data = {"userId": userParsedToken}
         if self.fileStorage:
             data["filepath"] = "{}/{}".format(self.getFilepath(), file)
             req = requests.delete(
@@ -272,12 +281,11 @@ class Service:
         return False
 
     def removeAllFiles(self):
-        userParsedToken = Util.parseToken(Util.loadToken(
+        data = Util.parseToken(Util.loadToken(
             self.userId, self.port
         ))
 
         logger.debug("remove files in service {}".format(self.servicename))
-        data = {"userId": userParsedToken}
 
         found = False
 
