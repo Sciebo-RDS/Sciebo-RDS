@@ -16,7 +16,7 @@ zenodo_oauth_authorize = "{}/oauth/authorize%3Fredirect_uri={}&response_type=cod
 
 from RDS import Util, OAuth2Service, FileTransferMode, FileTransferArchive
 service = OAuth2Service(
-    servicename="Zenodo",
+    servicename="port-zenodo",
     implements=["metadata"],
     fileTransferMode=FileTransferMode.active,
     fileTransferArchive=FileTransferArchive.zip,

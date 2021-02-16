@@ -18,7 +18,7 @@ owncloud_oauth_authorize = "{}/index.php/apps/oauth2/authorize%3Fredirect_uri={}
 )
 
 service = OAuth2Service(
-    servicename="Owncloud",
+    servicename="port-owncloud",
     implements=["fileStorage"],
     fileTransferMode=FileTransferMode.active,
     fileTransferArchive=FileTransferArchive.none,

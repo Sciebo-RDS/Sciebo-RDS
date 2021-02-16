@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from RDS import Util, OAuth2Service, FileTransferMode, FileTransferArchive
 from __init__ import app
 import os
 
@@ -15,9 +16,8 @@ osf_oauth_authorize = "{}/oauth2/authorize?response_type=code&redirect_uri={}&cl
     osf_address, redirect_uri, osf_oauth_id, "offline"
 )
 
-from RDS import Util, OAuth2Service, FileTransferMode, FileTransferArchive
 service = OAuth2Service(
-    servicename="Openscienceframework",
+    servicename="port-openscienceframework",
     implements=["metadata"],
     fileTransferMode=FileTransferMode.active,
     fileTransferArchive=FileTransferArchive.none,
