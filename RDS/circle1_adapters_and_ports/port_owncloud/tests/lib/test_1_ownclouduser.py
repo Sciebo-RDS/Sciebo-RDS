@@ -41,7 +41,7 @@ class Test_OwncloudUser(unittest.TestCase):
                         "service": {
                             "type": "Service",
                             "data": {
-                                "servicename": "Owncloud"
+                                "servicename": "port-owncloud"
                             }
                         },
                         "access_token": expected_token
@@ -142,7 +142,7 @@ class Test_OwncloudUser(unittest.TestCase):
                         "service": {
                             "type": "Service",
                             "data": {
-                                "servicename": "Owncloud"
+                                "servicename": "port-owncloud"
                             }
                         },
                         "access_token": expected_token
@@ -212,7 +212,7 @@ class Test_OwncloudUser(unittest.TestCase):
                         "service": {
                             "type": "Service",
                             "data": {
-                                "servicename": "Owncloud"
+                                "servicename": "port-owncloud"
                             }
                         },
                         "access_token": expected_token
@@ -279,7 +279,7 @@ class Test_OwncloudUser(unittest.TestCase):
                         "service": {
                             "type": "Service",
                             "data": {
-                                "servicename": "Owncloud"
+                                "servicename": "port-owncloud"
                             }
                         },
                         "access_token": expected_token

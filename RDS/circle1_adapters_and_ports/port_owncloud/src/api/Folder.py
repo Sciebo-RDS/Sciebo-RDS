@@ -15,7 +15,7 @@ def index():
     try:
         service, userId, apiKey = Util.parseUserId(json.get("userId"))
     except:
-        apiKey = Util.loadToken(json.get("userId"), "owncloud").access_token
+        apiKey = Util.loadToken(json.get("userId"), "port-owncloud").access_token
     filepath = json.get("filepath")
     logger.debug(f"userid {userId}")
 

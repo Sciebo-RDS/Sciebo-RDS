@@ -1,11 +1,10 @@
+from RDS import Util
 import os
 import requests
 import logging
 from webdav3.client import Client
 
 logger = logging.getLogger()
-
-from RDS import Util
 
 
 class OwncloudUser:
@@ -19,7 +18,8 @@ class OwncloudUser:
     def __init__(self, userId, apiKey=None):
         self._user_id = userId
         self._access_token = (
-            apiKey if apiKey is not None else Util.loadToken(userId, "Owncloud")
+            apiKey if apiKey is not None else Util.loadToken(
+                userId, "port-owncloud")
         )
 
         options = {
@@ -60,7 +60,8 @@ class OwncloudUser:
                 # save index for later removal, because we do not want the folderpaths
                 indexList.append(index)
                 fullname = file
-                logger.debug(f"recursive getFolder for inner folders: {fullname}")
+                logger.debug(
+                    f"recursive getFolder for inner folders: {fullname}")
                 tmpFiles = self.getFolder(foldername + "/" + fullname)
 
                 for appendFile in tmpFiles:
