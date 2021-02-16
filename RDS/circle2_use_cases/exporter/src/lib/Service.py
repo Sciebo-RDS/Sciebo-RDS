@@ -141,6 +141,9 @@ class Service:
                 "filepath": path,
             }
 
+            data["userId"] = Util.parseToken(
+                Util.loadToken(self.userId, self.port))
+
             logger.debug("request data {}".format(data))
 
             response_to = requests.get(
@@ -148,15 +151,6 @@ class Service:
                 json=data,
                 verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
             )
-
-            if response_to.status_code >= 300:
-                data["userId"] = Util.parseToken(
-                    Util.loadToken(self.userId, self.port))
-                response_to = requests.get(
-                    f"{self.portaddress}/storage/file",
-                    json=data,
-                    verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
-                )
 
             cnt = response_to.content
             logger.debug("got content size: {}".format(len(cnt)))

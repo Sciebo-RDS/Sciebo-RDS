@@ -21,13 +21,14 @@ def require_api_key(api_method):
         except Exception as e:
             logger.error(e, exc_info=True)
             req = request.form.to_dict()
+        logger.debug("got request data: {}".format(req))
 
         try:
             service, userId, apiKey = Util.parseUserId(req.get("userId"))
-        except:
-            apiKey = Util.loadToken(req.get("userId"), "port-zenodo").access_token
-
-        logger.debug("req data: {}".format(req))
+        except Exception as e:
+            logger.error(e, exc_info=True)
+            apiKey = Util.loadToken(
+                req.get("userId"), "port-zenodo").access_token
 
         if apiKey is None:
             logger.error("apiKey or userId not found.")
