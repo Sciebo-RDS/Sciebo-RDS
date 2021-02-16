@@ -53,7 +53,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         code = "XYZABC"
         user = User("user")
         service = OAuth2Service(
-            "local",
+            "port-local",
             implements=["metadata"],
             authorize_url=f"{Util.tokenService.address}/oauth/authorize",
             refresh_url=f"{Util.tokenService.address}/oauth/token",
@@ -192,7 +192,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         proj2 = {"projectId": 1, "metadata": {}}
 
         userId = "admin"
-        servicename = "zenodo"
+        servicename = "port-zenodo"
 
         expected_project = proj1
 
@@ -238,7 +238,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         proj1 = {"projectId": 0, "metadata": {}}
 
         userId = "admin"
-        servicename = "zenodo"
+        servicename = "port-zenodo"
 
         pact.given("one searched token was registered.").upon_receiving(
             "a request to get a specific token for service from user."
