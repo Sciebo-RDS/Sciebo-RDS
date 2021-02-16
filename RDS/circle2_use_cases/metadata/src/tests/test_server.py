@@ -183,23 +183,23 @@ class TestMetadata(unittest.TestCase):
             f'A call to get the empty metadata from specific projectId {projectId}.'
         ).with_request(
             'GET', f"/metadata/project/{projectId}"
-        ).will_respond_with(200, body = metadata)
+        ).will_respond_with(200, body=metadata)
 
         with pact:
-            result=self.client.get(
+            result = self.client.get(
                 f"/metadata/research/{researchId}").json
 
         expectedListMetadata["list"].append({
             "port": research["portIn"][0]["port"],
             "metadata": metadata
         })
-        expectedListMetadata["length"]=1
+        expectedListMetadata["length"] = 1
         self.assertEqual(result, expectedListMetadata)
 
         ####
         # try to get metadata, if there is a port, which is used as in- and output
 
-        research["portOut"]=[{
+        research["portOut"] = [{
             "port": "port-zenodo",
             "properties": [{
                     "portType": "metadata", "value": True
@@ -428,8 +428,6 @@ class TestMetadata(unittest.TestCase):
             'GET', f"/research/id/{researchId}"
         ).will_respond_with(200, body=research)
 
-        
-
         pact.given(
             'An access token for userid.'
         ).upon_receiving(
@@ -570,28 +568,3 @@ class TestMetadata(unittest.TestCase):
         In this unit, we test the endpoint for resourcetype to get and update entries.
         """
         pass
-
-    def test_jsonschema(self):
-        result = self.client.get("/metadata/jsonschema").json
-
-        with open("zenodo_schema.json", "r") as file:
-            import json
-            d = json.load(file)
-
-            # schema in result should be string
-            expected = {
-                "kernelversion": "4.3", "schema": json.dumps(d)
-            }
-            self.assertEqual(result, expected)
-
-            # schema in result should be not a dict
-            expected = {
-                "kernelversion": "4.3", "schema": d
-            }
-            self.assertNotEqual(result, expected)
-
-            # schema in result should be not a bytestring
-            expected = {
-                "kernelversion": "4.3", "schema": str(json.dumps(d)).encode("utf-8")
-            }
-            self.assertNotEqual(result, expected)
