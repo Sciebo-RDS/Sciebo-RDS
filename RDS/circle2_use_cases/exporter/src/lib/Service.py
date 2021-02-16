@@ -73,8 +73,8 @@ class Service:
         """Updates all metadata informations from port.
         """
 
-        json = requests.get("{}/port-service/service/{}".format(os.getenv(
-            "USE_CASE_SERVICE_PORT_SERVICE", "http://localhost:3000"), self.port)).json()
+        json = requests.get("{}/service/{}".format(os.getenv(
+            "USE_CASE_SERVICE_PORT_SERVICE", "http://localhost:3000/port-service"), self.port)).json()
 
         svc = Util.getServiceObject(json)
 
