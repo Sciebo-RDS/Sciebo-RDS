@@ -103,6 +103,7 @@ class TokenService:
         Returns a dict like self.getAllServices, but for only a single servicename (str).
 
         If clean is True, it returns the service object, otherwise it returns the a state object for registration process.
+        If informations is True, it returns a field "informations" which stored informations about service
         """
 
         svc = None

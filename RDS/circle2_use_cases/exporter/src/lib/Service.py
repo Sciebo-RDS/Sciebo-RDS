@@ -76,7 +76,7 @@ class Service:
         json = requests.get("{}/service/{}".format(os.getenv(
             "USE_CASE_SERVICE_PORT_SERVICE", "http://localhost:3000/port-service"), self.port)).json()
 
-        svc = Util.getServiceObject(json)
+        svc = Util.getServiceObject(json["informations"])
 
         self.useZipForFolder = bool(
             svc.fileTransferArchive == FileTransferArchive.zip)

@@ -110,7 +110,7 @@ class Test_Service(unittest.TestCase):
         ).upon_receiving("service responds with zipStatus").with_request(
             "GET", "/port-service/service/{}".format(service)
         ).will_respond_with(
-            200, body={
+            200, body={"informations": {
                 "servicename": service,
                 "implements": ["metadata"],
                 "fileTransferArchive": 0,
@@ -119,7 +119,7 @@ class Test_Service(unittest.TestCase):
                 "refresh_url": "http://localhost:3000/token",
                 "client_id": "ABC",
                 "client_secret": "X_ABC",
-            }
+            }, "jwt": "ABCXYZ"}
         )
 
     def test_init(self):
