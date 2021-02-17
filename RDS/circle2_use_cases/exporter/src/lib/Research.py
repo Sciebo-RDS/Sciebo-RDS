@@ -43,6 +43,7 @@ class Research:
         )
 
         json = req.json()
+        logger.debug("reload in Research got: {}".format(json))
 
         self.importServices = []
         for port in json.get("portIn"):
@@ -128,6 +129,9 @@ class Research:
                     "use zipfile, because the folder holds folders again")
                 useZipForContent = True
 
+            logger.debug(
+                "use zipfile, because the folder holds folders again? {}".format(useZipForContent))
+
             if useZipForContent:
                 mem_zip = BytesIO()
                 zip = zipfile.ZipFile(
@@ -178,7 +182,8 @@ class Research:
     def triggerPassivePorts(self):
         for importSvc in self.importServices:
             for exportSvc in [svc for svc in self.getExportServices(mode=FileTransferMode.passive)]:
-                exportSvc.triggerPassiveMode(importSvc.getFilepath(), importSvc.servicename)
+                exportSvc.triggerPassiveMode(
+                    importSvc.getFilepath(), importSvc.servicename)
 
     def getExportServices(self, mode=FileTransferMode.active):
         return [svc for svc in self.exportServices if svc.fileTransferMode == mode]

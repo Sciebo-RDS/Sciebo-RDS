@@ -39,6 +39,8 @@ class Service:
         self.metadata = metadata
         self.customProperties = customProperties
 
+        logger.debug("got customProperties: {}".format(customProperties))
+
         self.useZipForFolder = False
 
         self.reload()
@@ -65,6 +67,8 @@ class Service:
 
             json = req.json()
 
+            logger.debug("reload fileStorage in Service got: {}".format(json))
+
             self.files = json.get("files")
 
         if self.metadata:
@@ -78,17 +82,22 @@ class Service:
         json = requests.get("{}/service/{}".format(os.getenv(
             "USE_CASE_SERVICE_PORT_SERVICE", "{}/port-service".format(self.portaddress)), self.port)).json()
 
+        logger.debug("reload metadata informations: got {}".format(json))
+
         svc = Util.getServiceObject(json["informations"])
 
-        self.useZipForFolder = bool(
-            svc.fileTransferArchive == FileTransferArchive.zip)
+        self.useZipForFolder = svc.fileTransferArchive == FileTransferArchive.zip
         self.fileTransferMode = svc.fileTransferMode
+        self.fileTransferArchive = svc.fileTransferArchive
 
         if isinstance(svc, OAuth2Service):
             self.loginMode = 0
             self.credentials = svc.to_dict().get("credentials", {})
         else:
             self.loginMode = 1
+
+        logger.debug("got svc: {}, loginmode: {}".format(
+            svc.to_dict(), self.loginMode))
 
     def getFilepath(self):
         filepath = self.getProperty("filepath")
@@ -324,6 +333,9 @@ class Service:
 
     @classmethod
     def fromDict(cls, portDict, userId=None, researchIndex=None, testing=None):
+        logger.debug(
+            "initialize service from dict, got dict: {}".format(portDict))
+
         portName = portDict["port"]
         fileStorage = False
         metadata = False

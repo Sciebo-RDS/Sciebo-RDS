@@ -114,7 +114,7 @@ class Test_Service(unittest.TestCase):
             200, body={"informations": {
                 "servicename": service,
                 "implements": ["metadata"],
-                "fileTransferArchive": 0,
+                "fileTransferArchive": 1,
                 "fileTransferMode": 0,
                 "authorize_url": "http://localhost:3000/auth",
                 "refresh_url": "http://localhost:3000/token",
@@ -275,8 +275,12 @@ class Test_Service(unittest.TestCase):
                 testing=testingaddress,
             )
 
+        self.assertEqual(s.metadata, True)
         self.assertEqual(s.getDict(), expected)
         self.assertEqual(s.getJSON(), json.dumps(expected))
         self.assertNotEqual(s.fileTransferMode, FileTransferArchive.none)
         self.assertEqual(s.fileTransferMode, FileTransferMode.active)
-        self.assertEqual(s.useZipForFolder, False)
+        self.assertEqual(s.fileTransferArchive, FileTransferArchive.zip)
+        self.assertEqual(s.useZipForFolder, True)
+        self.assertNotEqual(s.useZipForFolder, False)
+        self.assertEqual(s.getProjectId(), 123)
