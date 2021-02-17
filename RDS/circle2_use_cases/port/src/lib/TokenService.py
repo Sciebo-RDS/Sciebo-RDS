@@ -18,7 +18,7 @@ def get_port_string(name):
     if not "port-" in name:
         service = "port-{}".format(name)
 
-    return "http://circle1-port-{}".format(service.lower())
+    return "http://circle1-{}".format(service.lower())
 
 
 class TokenService:
