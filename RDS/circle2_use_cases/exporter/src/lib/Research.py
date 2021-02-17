@@ -125,8 +125,6 @@ class Research:
             useZipForContent = False
 
             if isFolderInFiles(svc.getFiles()):
-                logger.debug(
-                    "use zipfile, because the folder holds folders again")
                 useZipForContent = True
 
             logger.debug(
@@ -213,6 +211,8 @@ class Research:
             del kwargs["folderInFolder"]
         except:
             folderInFolder = False
+
+        logger.debug("folderInFolder: {}".format(folderInFolder))
 
         return [
             svc.addFile(*args, **kwargs)
