@@ -147,20 +147,15 @@ class Metadata:
             if not portname.startswith("port-"):
                 portname = "port-{}".format(portname)
 
-            token = Util.loadToken(
-                research.userId, portname
-            )
-
             logger.debug("work on port {}".format(port))
-            port = portname
 
-            data = Util.parseToken(token)
+            data = Util.parseToken(Util.loadToken(research.userId, portname))
             data["metadata"] = updateMetadata
 
             metadata = self.updateMetadataForResearchFromPort(
-                port, projectId, data
+                portname, projectId, data
             )
-            d = {"port": port, "metadata": metadata}
+            d = {"port": portname, "metadata": metadata}
             allMetadata.append(d)
 
         return allMetadata
@@ -253,13 +248,11 @@ class Metadata:
             if not portname.startswith("port-"):
                 portname = "port-{}".format(portname)
 
-            apiKey = Util.loadToken(
+            token = Util.loadToken(
                 research.userId, portname
-            ).access_token
-
+            )
             logger.debug("work on port {}".format(port))
-            port = port["port"]
 
-            publishInPort(port, projectId, apiKey)
+            publishInPort(portname, projectId, token)
 
         return True
