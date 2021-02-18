@@ -450,6 +450,11 @@ class TokenService:
         data["type"] = "Token"
         # remove client_secret infos
         data["data"]["service"]["type"] = "Service"
+        try:
+            del service["data"]["service"]["data"]["client_secret"]
+        except:
+            pass
+
         token = Util.getTokenObject(data)
         return token
 
