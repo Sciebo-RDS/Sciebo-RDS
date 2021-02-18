@@ -447,7 +447,7 @@ class TokenService:
             raise Exception(data)
 
         # remove refresh token
-        data["type"] = "Token"
+        data["type"] = "OAuth2Token"
         # remove client_secret infos
         data["data"]["service"]["type"] = "Service"
         data["data"]["service"]["data"]["client_secret"] = ""
