@@ -447,9 +447,9 @@ class TokenService:
             raise Exception(data)
 
         # remove refresh token
-        data["type"] = "OAuth2Token"
+        data["type"] = "Token"
         # remove client_secret infos
-        data["data"]["service"]["type"] = "Service"
+        data["data"]["service"]["type"] = "BaseService"
         data["data"]["service"]["data"]["client_secret"] = ""
 
         token = Util.getTokenObject(data)
