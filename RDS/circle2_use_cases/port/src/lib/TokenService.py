@@ -450,7 +450,7 @@ class TokenService:
         data["type"] = "Token"
         # remove client_secret infos
         data["data"]["service"]["type"] = "OAuth2Service"
-        service["data"]["service"]["data"]["client_secret"] = ""
+        data["data"]["service"]["data"]["client_secret"] = ""
 
         token = Util.getTokenObject(data)
         return token
