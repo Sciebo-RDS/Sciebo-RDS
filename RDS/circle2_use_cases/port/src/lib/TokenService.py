@@ -449,11 +449,8 @@ class TokenService:
         # remove refresh token
         data["type"] = "Token"
         # remove client_secret infos
-        data["data"]["service"]["type"] = "Service"
-        try:
-            del service["data"]["service"]["data"]["client_secret"]
-        except:
-            pass
+        data["data"]["service"]["type"] = "OAuth2Service"
+        service["data"]["service"]["data"]["client_secret"] = ""
 
         token = Util.getTokenObject(data)
         return token
