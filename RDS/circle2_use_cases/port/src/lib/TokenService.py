@@ -451,6 +451,9 @@ class TokenService:
         if isinstance(token.service, OAuth2Service):
             token.service._client_secret = ""
 
+        if isinstance(token, OAuth2Token):
+            token._refresh_token = ""
+
         return token
 
     def removeTokenForServiceFromUser(self, service: BaseService, user: User) -> bool:

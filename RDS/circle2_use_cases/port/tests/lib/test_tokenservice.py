@@ -635,11 +635,15 @@ class Test_TokenService(unittest.TestCase):
         reduced_token = Token(
             self.user1, self.token2.service, self.token2.access_token)
 
+        testtoken2 = self.tokenService.getTokenForServiceFromUser(
+            self.service1, self.user1)
+
         self.assertEqual(
-            self.tokenService.getTokenForServiceFromUser(
-                self.service1, self.user1),
+            testtoken2,
             reduced_token,
         )
+
+        self.assertEqual(testtoken2.refresh_token, "")
 
     def test_remove_token_for_service_from_user(self):
         # remove the token, if no token for it is there
