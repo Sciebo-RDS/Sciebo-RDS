@@ -10,7 +10,7 @@
 
 test:port_owncloud3.8:
     extends: .tests_port_owncloud
-  
+
 build:port_owncloud:
     needs:
         - test:port_owncloud3.8
@@ -28,6 +28,6 @@ build:port_owncloud:
 doc:port_owncloud:
     needs:
         - build:port_owncloud
-      extends:
+    extends:
         - .documentation
         - .port_owncloud
