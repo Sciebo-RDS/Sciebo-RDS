@@ -393,3 +393,40 @@ components:
           description: 'ex. ["fileStorage", "metadata"]'
           items:
             type: string
+        informations:
+          type: object
+          required:
+            - fileTransferArchive
+            - fileTransferMode
+            - implements
+          properties:
+            credentials:
+              type: object
+              properties:
+                userId:
+                  type: string
+                password:
+                  type: string
+            fileTransferArchive:
+              type: integer
+            fileTransferMode:
+              type: integer
+            implements:
+              type: array
+              items:
+                type: string
+            authorize_url:
+              type: string
+            refresh_url:
+              type: string
+            client_id:
+              type: string
+            servicename:
+              type: string
+      required:
+        - id
+        - servicename
+        - access_token
+        - projects
+        - implements
+        - informations
