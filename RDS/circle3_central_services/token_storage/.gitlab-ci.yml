@@ -18,7 +18,6 @@
       alias: selenium
 
 test:central_service_token_storage3.8:
-  image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8
   extends: .tests_central_service_token_storage
 
 build:central_service_token_storage:
@@ -36,7 +35,6 @@ build:central_service_token_storage:
 doc:central_service_token_storage:
   needs:
     - build:central_service_token_storage
-  image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8
   extends:
     - .documentation
     - .central_service_token_storage

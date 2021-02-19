@@ -8,7 +8,6 @@
     - .central_service_research_manager
 
 test:central_service_research_manager3.8:
-  image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8
   extends: .tests_central_service_research_manager
 
 build:central_service_research_manager:
@@ -26,7 +25,6 @@ build:central_service_research_manager:
 doc:central_service_research_manager:
   needs:
     - build:central_service_research_manager
-  image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8
   extends:
     - .documentation
     - .central_service_research_manager
