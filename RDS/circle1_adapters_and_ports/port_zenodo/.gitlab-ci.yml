@@ -8,12 +8,12 @@
     - .tests
     - .port_zenodo
 
-test:port_zenodo3.8:
+test:port_zenodo:
   extends: .tests_port_zenodo
 
 build:port_zenodo:
   needs:
-    - test:port_zenodo3.8
+    - test:port_zenodo
   extends:
     - .builds
     - .port_zenodo

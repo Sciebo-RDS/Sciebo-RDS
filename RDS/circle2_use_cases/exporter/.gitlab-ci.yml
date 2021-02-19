@@ -7,12 +7,12 @@
     - .tests
     - .use_case_exporter
 
-test:use_case_exporter3.8:
+test:use_case_exporter:
   extends: .tests_use_case_exporter
 
 build:use_case_exporter:
   needs:
-    - test:use_case_exporter3.8
+    - test:use_case_exporter
   extends:
     - .builds
     - .use_case_exporter

@@ -8,7 +8,7 @@
     - .tests
     - .port_openscienceframework
 
-test:port_openscienceframework3.8:
+test:port_openscienceframework:
   extends: .tests_port_openscienceframework
 
 build:port_openscienceframework:

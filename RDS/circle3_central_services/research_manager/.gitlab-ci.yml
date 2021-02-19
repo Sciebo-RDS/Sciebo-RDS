@@ -7,12 +7,12 @@
     - .tests
     - .central_service_research_manager
 
-test:central_service_research_manager3.8:
+test:central_service_research_manager:
   extends: .tests_central_service_research_manager
 
 build:central_service_research_manager:
   needs:
-    - test:central_service_research_manager3.8
+    - test:central_service_research_manager
   extends:
     - .builds
     - .central_service_research_manager

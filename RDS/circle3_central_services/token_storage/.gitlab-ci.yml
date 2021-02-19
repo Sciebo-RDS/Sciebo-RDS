@@ -17,12 +17,12 @@
     - name: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/selenium/standalone-firefox
       alias: selenium
 
-test:central_service_token_storage3.8:
+test:central_service_token_storage:
   extends: .tests_central_service_token_storage
 
 build:central_service_token_storage:
   needs:
-    - test:central_service_token_storage3.8
+    - test:central_service_token_storage
   extends:
     - .builds
     - .central_service_token_storage

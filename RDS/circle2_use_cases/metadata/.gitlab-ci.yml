@@ -7,12 +7,12 @@
     - .tests
     - .use_case_metadata
 
-test:use_case_metadata3.8:
+test:use_case_metadata:
   extends: .tests_use_case_metadata
 
 build:use_case_metadata:
   needs:
-    - test:use_case_metadata3.8
+    - test:use_case_metadata
   extends:
     - .builds
     - .use_case_metadata
