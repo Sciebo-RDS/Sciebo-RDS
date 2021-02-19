@@ -613,11 +613,15 @@ class Test_TokenService(unittest.TestCase):
             200, body=json.dumps(self.token1)
         )
 
+        testToken1 = self.tokenService.getTokenForServiceFromUser(
+            self.service1, self.user1)
+
         self.assertEqual(
-            self.tokenService.getTokenForServiceFromUser(
-                self.service1, self.user1),
+            testToken1,
             self.token1,
         )
+
+        self.assertEqual(testToken1.service.client_secret, "")
 
         # test, get oauthtoken successful, but it have to be reduced to token
         pact.given("one searched oauthtoken was registered.").upon_receiving(

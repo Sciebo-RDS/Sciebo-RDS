@@ -446,13 +446,11 @@ class TokenService:
                     raise ServiceNotFoundError(service)
             raise Exception(data)
 
-        # remove refresh token
-        data["type"] = "Token"
-        # remove client_secret infos
-        data["data"]["service"]["type"] = "BaseService"
-        data["data"]["service"]["data"]["client_secret"] = ""
-
         token = Util.getTokenObject(data)
+
+        if isinstance(token.service, OAuth2Service):
+            token.service._client_secret = ""
+
         return token
 
     def removeTokenForServiceFromUser(self, service: BaseService, user: User) -> bool:
