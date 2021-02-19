@@ -1,4 +1,4 @@
-image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.9
+image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8
 
 stages:
   - test
