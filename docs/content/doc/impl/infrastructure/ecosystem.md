@@ -33,6 +33,8 @@ graph TD;
 
       PInvenio[Port Zenodo]
       POwncloud[Port Owncloud]
+      POSF[Port OSF]
+      PReva[Port Reva]
 
       subgraph Use Cases
         UCExporter[Exporter Service]
@@ -55,6 +57,8 @@ graph TD;
 
   click PInvenio "/doc/impl/ports/port-invenio"
   click POwncloud "/doc/impl/ports/port-storage"
+  click PReva "/doc/impl/ports/port-reva"
+  click POSF "/doc/impl/ports/port-osf"
 
   click UCPort "/doc/impl/use-cases/port-service"
   click UCExporter "/doc/impl/use-cases/exporter"
@@ -75,9 +79,11 @@ graph TD;
   %% UCExporter --> UCProject
   %% UCProject --> CSProject
 
-  CSToken --- PInvenio & POwncloud
-  UCExporter & UCMetadata & UCPort --> PInvenio & POwncloud & CSProject & CSToken
+  CSToken --- PInvenio & POwncloud & PReva & POSF
+  UCExporter & UCMetadata & UCPort --> PInvenio & POwncloud & PReva & POSF & CSProject & CSToken
 
   PInvenio --> WWWO
   POwncloud --> WWWO
+  PReva --> WWWO
+  POSF --> WWWO
 ```
