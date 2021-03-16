@@ -42,7 +42,7 @@ def post():
         utility.storage.addService(svc)
 
     except ServiceExistsAlreadyError:
-        utility.storage.addService(svc, Force=True)
+        return jsonify({"success": False}), 409
     except:
         raise
 

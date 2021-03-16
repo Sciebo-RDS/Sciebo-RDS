@@ -79,9 +79,9 @@ classDiagram
 
 Aktuell kann jeder User nur einen Token für jeden Service besitzen. Dies wird aktuell dadurch gewährleistet, dass Tokens bereits dadurch gleich sind, wenn ihre Servicename übereinstimmen.
 
-## Planungen
+# Services aktualisieren
 
-Durch die einfachere Handhabung werden aktuell die Daten nur im Speicher abgelegt. Das heißt, sobald der Service abbricht, gehen auch sämtliche Daten verloren, wodurch alle Nutzer sich nocheinmal neu anmelden müssen. Dies soll in Zukunft durch eine persistente und clusterübergreifende Speicherung behoben werden.
+Falls ein Dienst, welches bereits im Token Storage hinterlegt wurde, aktualisiert werden soll, so muss es vorher gelöscht werden. Andernfalls erhält der Client eine 409 (Conflict) im HTTP Statuscode, welches aufzeigt, dass der Service nicht aktualisiert wurde. Anschließend sollte eine Anfrage mit der Methode DELETE für den jeweiligen Service gestellt werden. Anschließend kann die erste Anfrage erneut gestellt werden und sollte eine 200 (OK) Antwort erzeugen.
 
 # OpenAPI v3
 

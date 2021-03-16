@@ -77,9 +77,9 @@ classDiagram
 
 Currently, each user can only have one token for each service. This is currently ensured by the fact that tokens are already identical if their service names match.
 
-## Schedules
+# Update services
 
-Due to the easier handling, the data is currently only stored in the memory. This means that as soon as the service is interrupted, all data is also lost, which means that all users have to log in again. In the future, this will be remedied by persistent and cross-cluster storage.
+If a service that has already been stored in the token storage is to be updated, it must be deleted beforehand. Otherwise, the client will receive a 409 (Conflict) in the HTTP status code, indicating that the service has not been updated. A request should then be made using the DELETE method for the service in question. Then the previous request can be made again and should generate a 200 (OK) response.
 
 # OpenAPI v3
 

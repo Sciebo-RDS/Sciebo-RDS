@@ -69,12 +69,15 @@ class TestTokenStorageServer(unittest.TestCase):
         self.token2 = Token(self.user2, self.service2, "XYZ")
         self.token3 = Token(self.user1, self.service3, "GHI")
 
-        self.oauthtoken1 = OAuth2Token(self.user1, self.oauthservice1, "ABC", "X_ABC")
+        self.oauthtoken1 = OAuth2Token(
+            self.user1, self.oauthservice1, "ABC", "X_ABC")
         self.oauthtoken_like_token1 = OAuth2Token(
             self.user1, self.oauthservice1, "X_DEF"
         )
-        self.oauthtoken2 = OAuth2Token(self.user2, self.oauthservice2, "XYZ", "X_XYZ")
-        self.oauthtoken3 = OAuth2Token(self.user1, self.oauthservice3, "GHI", "X_GHI")
+        self.oauthtoken2 = OAuth2Token(
+            self.user2, self.oauthservice2, "XYZ", "X_XYZ")
+        self.oauthtoken3 = OAuth2Token(
+            self.user1, self.oauthservice3, "GHI", "X_GHI")
 
         self.services = [
             self.service1,
@@ -100,7 +103,8 @@ class TestTokenStorageServer(unittest.TestCase):
         self.filled_storage.addUser(self.user1)
         self.filled_storage.addTokenToUser(self.token1, self.user1)
         self.filled_storage.addTokenToUser(self.token3, self.user1)
-        self.filled_storage.addTokenToUser(self.oauthtoken1, self.user1, Force=True)
+        self.filled_storage.addTokenToUser(
+            self.oauthtoken1, self.user1, Force=True)
 
         # user2 is only filled with token
         self.filled_storage.addUser(self.user2)
@@ -141,7 +145,8 @@ class TestTokenStorageServer(unittest.TestCase):
 
         for k, v in enumerate(self.get("/service")):
             self.assertEqual(
-                v, expected["list"][k], msg="{} {}".format(v, expected["list"][k])
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
             )
 
         # add the same service as oauth, should be an update
@@ -152,23 +157,51 @@ class TestTokenStorageServer(unittest.TestCase):
             data=json.dumps(self.oauthservice1),
             content_type="application/json",
         )
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.status_code, 409)
 
         for k, v in enumerate(self.get("/service")):
             self.assertEqual(
-                v, expected["list"][k], msg="{} {}".format(v, expected["list"][k])
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
             )
 
         # add a simple service, there should be 2 services now
         expected = {"length": 2, "list": [self.oauthservice1, self.service2]}
 
+        result = self.client.post(
+            "/service", data=json.dumps(self.service2), content_type="application/json"
+        )
+        self.assertEqual(result.status_code, 409)
+
+        for k, v in enumerate(self.get("/service")):
+            self.assertEqual(
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
+            )
+
+        # add the same simple service, there should be 2 services
         self.client.post(
             "/service", data=json.dumps(self.service2), content_type="application/json"
         )
 
         for k, v in enumerate(self.get("/service")):
             self.assertEqual(
-                v, expected["list"][k], msg="{} {}".format(v, expected["list"][k])
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
+            )
+
+        # add the same oauth service, there should be 2 services
+        result = self.client.post(
+            "/service",
+            data=json.dumps(self.oauthservice1),
+            content_type="application/json",
+        )
+        self.assertEqual(result.status_code, 409)
+
+        for k, v in enumerate(self.get("/service")):
+            self.assertEqual(
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
             )
 
     def test_list_user(self):
@@ -193,7 +226,8 @@ class TestTokenStorageServer(unittest.TestCase):
 
         for k, v in enumerate(self.get("/user")):
             self.assertEqual(
-                v, expected["list"][k], msg="{} {}".format(v, expected["list"][k])
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
             )
 
         req = self.client.get(f"/user/{self.user1.username}")
@@ -202,7 +236,8 @@ class TestTokenStorageServer(unittest.TestCase):
         # get the added user
         d = self.client.get(f"/user/{self.user1.username}")
         self.assertEqual(
-            Util.initialize_object_from_json(json.dumps(d.get_data(as_text=True))),
+            Util.initialize_object_from_json(
+                json.dumps(d.get_data(as_text=True))),
             self.user1,
         )
 
@@ -214,13 +249,15 @@ class TestTokenStorageServer(unittest.TestCase):
         )
         for k, v in enumerate(self.get("/user")):
             self.assertEqual(
-                v, expected["list"][k], msg="{} {}".format(v, expected["list"][k])
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
             )
 
         # the first user should be there
         d = self.client.get(f"/user/{self.user1.username}")
         self.assertEqual(
-            Util.initialize_object_from_json(json.dumps(d.get_data(as_text=True))),
+            Util.initialize_object_from_json(
+                json.dumps(d.get_data(as_text=True))),
             self.user1,
         )
 
@@ -231,7 +268,8 @@ class TestTokenStorageServer(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         for k, v in enumerate(self.get("/user")):
             self.assertEqual(
-                v, expected["list"][k], msg="{} {}".format(v, expected["list"][k])
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
             )
 
         self.assertEqual(
@@ -367,7 +405,8 @@ class TestTokenStorageServer(unittest.TestCase):
         # list compare doesn't work properly, so we have to iterate.
         for k, v in enumerate(self.get("/token")):
             self.assertEqual(
-                v, expected["list"][k], msg="{} {}".format(v, expected["list"][k])
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
             )
 
         # should response with http code not equal to 200, because user has already a token for this service
@@ -389,7 +428,8 @@ class TestTokenStorageServer(unittest.TestCase):
 
         for k, v in enumerate(self.get("/token")):
             self.assertEqual(
-                v, expected["list"][k], msg="{} {}".format(v, expected["list"][k])
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
             )
 
         # check, if we can find a token by its servicename
@@ -416,12 +456,14 @@ class TestTokenStorageServer(unittest.TestCase):
 
         expected = {"length": 1, "list": [self.token2]}
 
-        result = self.client.delete(f"/user/{self.user1.username}/token/{index}")
+        result = self.client.delete(
+            f"/user/{self.user1.username}/token/{index}")
         self.assertEqual(result.status_code, 200, msg=f"{result.json}")
 
         for k, v in enumerate(self.get("/token")):
             self.assertEqual(
-                v, expected["list"][k], msg="{} {}".format(v, expected["list"][k])
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
             )
 
     def test_get_tokens_for_user(self):
@@ -465,7 +507,8 @@ class TestTokenStorageServer(unittest.TestCase):
         # list compare doesn't work properly, so we have to iterate.
         for k, v in enumerate(self.get("/token")):
             self.assertEqual(
-                v, expected["list"][k], msg="{} {}".format(v, expected["list"][k])
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
             )
 
         # should response with http code not equal to 200, because user has already a token for this service
@@ -487,7 +530,8 @@ class TestTokenStorageServer(unittest.TestCase):
 
         for k, v in enumerate(self.get("/token")):
             self.assertEqual(
-                v, expected["list"][k], msg="{} {}".format(v, expected["list"][k])
+                v, expected["list"][k], msg="{} {}".format(
+                    v, expected["list"][k])
             )
 
         # check, if we can find a token by its servicename
