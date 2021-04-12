@@ -46,8 +46,17 @@ class Project:
     def addPort(port, portList):
         """
         Adds port (type `Port`) to given portList.
+        If the portname already exists in list, it will be replaced.
         """
-        portList.append(port)
+        index = None
+        for i, searchport in enumerate(portList):
+            if searchport.portname == port.portname:
+                index = i
+
+        if index is not None:
+            portList[index] = port
+        else:
+            portList.append(port)
 
     @staticmethod
     def removePort(port, portList):
@@ -117,7 +126,7 @@ class Project:
                 fixedData = json.loads(data)
             except:
                 fixedData = data
-                
+
             fixedData["user"] = fixedData["userId"]
             del fixedData["userId"]
 

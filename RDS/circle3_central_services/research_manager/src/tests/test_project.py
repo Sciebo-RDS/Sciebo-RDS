@@ -46,6 +46,38 @@ class Test_Project(unittest.TestCase):
         project3.addPortOut(portOwncloud)
         self.assertEqual(project3, projOwncloud3)
 
+    def test_project_changePort(self):
+        project1 = Project("admin")
+        project2 = Project("admin", portIn=[])
+        project3 = Project("admin", portIn=[], portOut=[])
+
+        portOwncloud = Port("port-owncloud")
+        portOwncloud2 = Port("port-owncloud")
+        portOwncloud3 = Port("port-owncloud")
+
+        projOwncloud1 = Project("admin", portIn=[portOwncloud])
+        project1.addPortIn(portOwncloud)
+        self.assertEqual(project1, projOwncloud1)
+
+        custom = [
+            {
+                "key": "filepath",
+                "value": "/filepath/"
+            }
+        ]
+
+        projOwncloud2 = Project("admin", portIn=[portOwncloud2])
+
+        portOwncloud.setProperty("customProperties", custom)
+        project4 = Project("admin", portIn=[portOwncloud])
+        projOwncloud1.addPortIn(portOwncloud)
+        self.assertEqual(project4, projOwncloud1)
+        self.assertNotEqual(projOwncloud1, projOwncloud2)
+        portOwncloud2.setProperty("customProperties", custom)
+        self.assertEqual(projOwncloud1, projOwncloud2)
+        projOwncloud2.addPortIn(portOwncloud3)
+        self.assertNotEqual(projOwncloud1, projOwncloud2)
+
     def test_project_removePort(self):
         project1 = Project("admin")
         project2 = Project("admin", portIn=[])

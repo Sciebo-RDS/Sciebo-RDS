@@ -23,7 +23,7 @@ class Port():
         """
         Returns True, if portType was found and set to value. Otherwise false.
 
-        portType has to be a string, value has to be boolean.
+        portType has to be a string, value can be anything.
         """
         if not isinstance(portType, str):
             raise ValueError("parameter \"portType\" is not of type string.")

@@ -115,6 +115,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Port'
+      description: Add or replace the given port in body.
   '/user/{user-id}/research/{research-id}/imports':
     parameters:
       - schema:
@@ -155,6 +156,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Port'
+      description: Add or replace the given port in body.
   '/user/{user-id}/research/{research-id}/imports/{port-id}':
     parameters:
       - schema:
