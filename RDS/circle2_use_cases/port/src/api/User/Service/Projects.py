@@ -37,9 +37,9 @@ def post(user_id, servicename):
     if not servicename.startswith("port-"):
         servicename = "port-{}".format(servicename)
 
-    Util.tokenService.createProjectForUserInService(
+    projectId, project = Util.tokenService.createProjectForUserInService(
         User(user_id), BaseService(servicename, implements=["metadata"]))
-    return None, 204
+    return projectId, 204
 
 
 def delete(user_id, servicename, projects_id):

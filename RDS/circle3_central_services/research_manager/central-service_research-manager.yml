@@ -339,9 +339,8 @@ components:
       title: Port
       description: 'This model represents a port, which can be used in a research.'
       type: object
+      x-examples: {}
       properties:
-        id:
-          type: string
         port:
           type: string
         properties:
@@ -368,7 +367,6 @@ components:
                           type: string
       required:
         - port
-      x-examples: {}
 servers:
   - url: 'http://central-service_research-manager:3000/research'
     description: ''
