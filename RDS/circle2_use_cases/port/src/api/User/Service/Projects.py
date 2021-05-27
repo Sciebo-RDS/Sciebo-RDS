@@ -39,7 +39,7 @@ def post(user_id, servicename):
 
     projectId, project = Util.tokenService.createProjectForUserInService(
         User(user_id), BaseService(servicename, implements=["metadata"]))
-    return projectId, 204
+    return str(projectId), 204
 
 
 def delete(user_id, servicename, projects_id):
