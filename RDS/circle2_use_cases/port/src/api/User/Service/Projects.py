@@ -2,6 +2,9 @@ import Util
 from RDS import BaseService, User
 
 from flask import jsonify, abort
+import logging
+
+logger = logging.getLogger()
 
 
 def index(user_id, servicename):
@@ -40,7 +43,10 @@ def post(user_id, servicename):
 
     projectId, project = Util.tokenService.createProjectForUserInService(
         User(user_id), BaseService(servicename, implements=["metadata"]))
-    return jsonify({"projectId": str(projectId)}), 204
+
+    resp = {"projectId": str(projectId)}
+    logger.debug("sent: {}".format(resp))
+    return jsonify(resp), 204
 
 
 def delete(user_id, servicename, projects_id):
