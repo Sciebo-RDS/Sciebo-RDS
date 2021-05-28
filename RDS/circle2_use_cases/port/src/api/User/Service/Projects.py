@@ -29,6 +29,7 @@ def get(user_id, servicename, projects_id):
         projects = svc.get("projects", [])
         if svc.get("servicename", "") == servicename and projects_id < len(projects):
             return jsonify(projects[projects_id])
+            
     abort(404)
 
 

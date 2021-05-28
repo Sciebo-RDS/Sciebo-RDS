@@ -170,7 +170,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/service'
+                $ref: '#/components/schemas/JsonService'
         '404':
           description: Not Found
         '500':
@@ -393,11 +393,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/serviceprojects'
-        implements:
-          type: array
-          description: 'ex. ["fileStorage", "metadata"]'
-          items:
-            type: string
         informations:
           type: object
           required:
@@ -418,6 +413,7 @@ components:
               type: integer
             implements:
               type: array
+              description: 'ex. ["fileStorage", "metadata"]'
               items:
                 type: string
             authorize_url:
@@ -432,5 +428,114 @@ components:
         - servicename
         - access_token
         - projects
-        - implements
         - informations
+    JsonService:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          data:
+            access_token: IY6EObhyvqEHezdDzAQ3bGn8kT2MEg5CCR7kHa4yJn1GjrPOTgs9Zlezzc8XuMLP
+            expiration_date: '2021-05-27 18:56:53.466014'
+            refresh_token: ''
+            service:
+              data:
+                authorize_url: 'https://sciebords.uni-muenster.de/index.php/apps/oauth2/authorize%3Fredirect_uri=https://sciebords.uni-muenster.de/rds&response_type=code&client_id=H693PGgehViYbyPVjzMkhHPIGNE7JaxRKmm58oLQKNjgUQXyRopsGfPxC6czTq3H'
+                client_id: H693PGgehViYbyPVjzMkhHPIGNE7JaxRKmm58oLQKNjgUQXyRopsGfPxC6czTq3H
+                client_secret: ''
+                fileTransferArchive: 0
+                fileTransferMode: 0
+                implements:
+                  - fileStorage
+                refresh_url: 'https://sciebords.uni-muenster.de/index.php/apps/oauth2/api/v1/token'
+                servicename: port-owncloud
+              type: OAuth2Service
+            user:
+              data:
+                username: admin
+              type: User
+          type: OAuth2Token
+      title: ''
+      properties:
+        data:
+          type: object
+          required:
+            - access_token
+            - expiration_date
+            - refresh_token
+            - service
+            - user
+          properties:
+            access_token:
+              type: string
+              minLength: 1
+            expiration_date:
+              type: string
+              minLength: 1
+            refresh_token:
+              type: string
+            service:
+              type: object
+              required:
+                - data
+                - type
+              properties:
+                data:
+                  type: object
+                  required:
+                    - authorize_url
+                    - client_id
+                    - client_secret
+                    - fileTransferArchive
+                    - fileTransferMode
+                    - implements
+                    - servicename
+                  properties:
+                    authorize_url:
+                      type: string
+                      minLength: 1
+                    client_id:
+                      type: string
+                      minLength: 1
+                    client_secret:
+                      type: string
+                    fileTransferArchive:
+                      type: number
+                    fileTransferMode:
+                      type: number
+                    implements:
+                      type: array
+                      description: 'ex. ["fileStorage", "metadata"]'
+                      items:
+                        type: string
+                    refresh_url:
+                      type: string
+                      minLength: 1
+                    servicename:
+                      type: string
+                      minLength: 1
+                type:
+                  type: string
+                  minLength: 1
+            user:
+              type: object
+              required:
+                - data
+                - type
+              properties:
+                data:
+                  type: object
+                  required:
+                    - username
+                  properties:
+                    username:
+                      type: string
+                      minLength: 1
+                type:
+                  type: string
+                  minLength: 1
+        type:
+          type: string
+          minLength: 1
+      required:
+        - type
