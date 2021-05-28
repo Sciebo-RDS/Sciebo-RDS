@@ -234,6 +234,12 @@ paths:
                 properties:
                   projectId:
                     type: string
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+        '500':
+          description: Internal Server Error
   '/user/{user-id}/service/{servicename}/projects/{projects-id}':
     parameters:
       - schema:

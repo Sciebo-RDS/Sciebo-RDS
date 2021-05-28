@@ -214,7 +214,7 @@ class Test_TokenServiceServer(unittest.TestCase):
                     userId, servicename)
             ).status_code
 
-        self.assertEqual(code, 204)
+        self.assertEqual(code, 200)
 
         pact.given("one searched token was registered.").upon_receiving(
             "a request to get a specific token for service from user."
