@@ -100,7 +100,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Port'
     post:
-      summary: ''
+      summary: Create or replace a Research Export
       responses:
         '200':
           description: OK
@@ -141,7 +141,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Port'
     post:
-      summary: Create a Research Import
+      summary: Create or replace a Research Import
       responses:
         '200':
           description: OK
