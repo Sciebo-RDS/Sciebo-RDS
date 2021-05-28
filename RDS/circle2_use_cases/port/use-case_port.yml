@@ -224,8 +224,8 @@ paths:
     post:
       summary: Creates a new project in given service for given user
       responses:
-        '204':
-          description: No Content
+        '200':
+          description: OK
           content:
             application/json:
               schema:
