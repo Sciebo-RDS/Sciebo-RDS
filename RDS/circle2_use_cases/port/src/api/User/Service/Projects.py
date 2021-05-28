@@ -29,7 +29,7 @@ def get(user_id, servicename, projects_id):
         projects = svc.get("projects", [])
         if svc.get("servicename", "") == servicename and projects_id < len(projects):
             return jsonify(projects[projects_id])
-            
+
     abort(404)
 
 
@@ -40,7 +40,7 @@ def post(user_id, servicename):
 
     projectId, project = Util.tokenService.createProjectForUserInService(
         User(user_id), BaseService(servicename, implements=["metadata"]))
-    return str(projectId), 204
+    return jsonify({"projectId": str(projectId)}), 204
 
 
 def delete(user_id, servicename, projects_id):

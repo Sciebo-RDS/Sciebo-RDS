@@ -229,8 +229,11 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                type: object
                 description: The projectId of the created project.
+                properties:
+                  projectId:
+                    type: string
   '/user/{user-id}/service/{servicename}/projects/{projects-id}':
     parameters:
       - schema:
