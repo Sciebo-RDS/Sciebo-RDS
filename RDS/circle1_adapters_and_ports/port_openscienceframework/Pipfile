@@ -18,6 +18,7 @@ connexion-plus = "*"
 osfclient = {editable = false, git = "https://github.com/Sciebo-RDS/osfclient.git"}
 pyld = "*"
 research-data-services-common = {extras = ["flask"], version = "*"}
+openapi-spec-validator = "<0.3"
 
 [requires]
 python_version = "3.8"

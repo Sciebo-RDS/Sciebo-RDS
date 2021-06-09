@@ -14,6 +14,7 @@ requests = "*"
 jaeger-client = "*"
 gevent = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
+openapi-spec-validator = "<0.3"
 connexion-plus = "*"
 flask-cors = "*"
 jsonschema = "*"

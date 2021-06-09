@@ -16,6 +16,7 @@ gevent = "*"
 python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
+openapi-spec-validator = "<0.3"
 pyjwt = "*"
 pathos = "*"
 research-data-services-common = {extras = ["flask"], version = "*"}

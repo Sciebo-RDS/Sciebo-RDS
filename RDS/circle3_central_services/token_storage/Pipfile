@@ -23,6 +23,7 @@ research-data-services-common = {extras = ["flask"], version = "*"}
 redis-pubsub-dict = "*"
 redis = "*"
 redis-py-cluster = "*"
+openapi-spec-validator = "<0.3"
 
 [requires]
 python_version = "3.8"
