@@ -52,18 +52,22 @@ paths:
               type: object
               properties:
                 metadata:
-                  anyOf:
-                    - type: object
-                    - type: 'null'
+                  type: object
                 userId:
                   $ref: '#/components/schemas/portusername'
             examples:
               example-1:
                 value:
-                  titles: ''
-                  publisher: ''
-                  type: ''
-        description: ''
+                  userId: admin
+                  metadata:
+                    titles: ''
+                    publisher: ''
+                    type: ''
+              example-2:
+                value:
+                  metadata: {}
+                  userId: admin
+        description: The metadata request object
     delete:
       summary: Remove a project from this service
       responses:
@@ -78,7 +82,7 @@ paths:
                 userId:
                   $ref: '#/components/schemas/portusername'
     patch:
-      summary: ''
+      summary: Update metadata in service for projectId
       responses:
         '200':
           description: OK
@@ -123,7 +127,7 @@ paths:
                       resourceTypeGeneral: Poster
         description: The given body has to be valid against the datacite jsonschema (without required fields).
     put:
-      summary: ''
+      summary: Publishes in service for projectId
       responses:
         '204':
           description: No Content

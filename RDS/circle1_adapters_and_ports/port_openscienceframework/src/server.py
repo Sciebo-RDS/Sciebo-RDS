@@ -25,6 +25,7 @@ service = OAuth2Service(
     refresh_url=osf_oauth_token_url,
     client_id=osf_oauth_id,
     client_secret=osf_oauth_secret,
+    description="OSF is a free, open platform to support your research and enable collaboration."
 )
 Util.register_service(service)
 

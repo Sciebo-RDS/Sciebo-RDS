@@ -416,6 +416,9 @@ components:
               type: boolean
             password:
               type: boolean
+        description:
+          type: string
+          description: A small description of the given service.
       required:
         - servicename
         - implements
@@ -469,11 +472,18 @@ components:
             - 0: none
             - 1: zip
           type: integer
+        description:
+          type: string
+          description: A small description of the given service.
       required:
         - servicename
         - authorize_url
         - refresh_url
         - client_id
+        - client_secret
+        - implements
+        - fileTransferMode
+        - fileTransferArchive
     JSONToken:
       title: JSONToken
       type: object

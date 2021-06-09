@@ -26,6 +26,7 @@ service = OAuth2Service(
     refresh_url=owncloud_oauth_token_url,
     client_id=owncloud_oauth_id,
     client_secret=owncloud_oauth_secret,
+    description="ownCloud is a suite of client–server software for creating and using file hosting services."
 )
 Util.register_service(service)
 

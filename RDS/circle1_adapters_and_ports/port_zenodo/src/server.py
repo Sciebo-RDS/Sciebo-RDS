@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from RDS import Util, OAuth2Service, FileTransferMode, FileTransferArchive
 from __init__ import app, register_service
 import os
 
@@ -14,7 +15,6 @@ zenodo_oauth_authorize = "{}/oauth/authorize%3Fredirect_uri={}&response_type=cod
     zenodo_address, redirect_uri, zenodo_oauth_id
 )
 
-from RDS import Util, OAuth2Service, FileTransferMode, FileTransferArchive
 service = OAuth2Service(
     servicename="port-zenodo",
     implements=["metadata"],
@@ -24,11 +24,10 @@ service = OAuth2Service(
     refresh_url=zenodo_oauth_token_url,
     client_id=zenodo_oauth_id,
     client_secret=zenodo_oauth_secret,
+    description="Zenodo is a general-purpose open-access repository developed under the European OpenAIRE program and operated by CERN. It allows researchers to deposit data sets, research software, reports, and any other research related digital artifacts."
 )
 Util.register_service(service)
 
 # set the WSGI application callable to allow using uWSGI:
 # uwsgi --http :8080 -w app
 app.run(port=8080, server='gevent')
-
-
