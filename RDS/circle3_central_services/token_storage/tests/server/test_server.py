@@ -174,7 +174,7 @@ class TestTokenStorageServer(unittest.TestCase):
         result = self.client.post(
             "/service", data=json.dumps(self.service2), content_type="application/json"
         )
-        self.assertEqual(result.status_code, 409)
+        self.assertEqual(result.status_code, 200)
 
         for k, v in enumerate(self.get("/service")):
             self.assertEqual(

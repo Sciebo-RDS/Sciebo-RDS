@@ -273,6 +273,8 @@ paths:
                 $ref: '#/components/schemas/JSONResponse'
         '400':
           description: Bad Request
+        '409':
+          description: Conflict
       tags:
         - Service
       description: Adds a new service to storage.
@@ -417,8 +419,18 @@ components:
             password:
               type: boolean
         description:
-          type: string
+          type: object
           description: A small description of the given service.
+        icon:
+          type: string
+          nullable: true
+        infoUrl:
+          type: string
+        helpUrl:
+          type: string
+        displayName:
+          type: string
+          nullable: true
       required:
         - servicename
         - implements
@@ -473,8 +485,18 @@ components:
             - 1: zip
           type: integer
         description:
-          type: string
+          type: object
           description: A small description of the given service.
+        icon:
+          type: string
+          nullable: true
+        displayName:
+          type: string
+          nullable: true
+        infoUrl:
+          type: string
+        helpUrl:
+          type: string
       required:
         - servicename
         - authorize_url
