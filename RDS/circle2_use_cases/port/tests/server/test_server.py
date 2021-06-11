@@ -199,7 +199,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         pact.given("one searched token was registered.").upon_receiving(
             "a request to get a specific token for service from user."
         ).with_request("GET", f"/user/{userId}/token/{servicename}").will_respond_with(
-            200, body=json.dumps(Token(User(userId), BaseService(servicename, implements=["metadata"]), "ABC"))
+            200, body=json.dumps(Token(User(userId), BaseService(servicename=servicename, implements=["metadata"]), "ABC"))
         )
 
         pact.given("service with project support").upon_receiving(
@@ -219,7 +219,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         pact.given("one searched token was registered.").upon_receiving(
             "a request to get a specific token for service from user."
         ).with_request("GET", f"/user/{userId}/token/{servicename}").will_respond_with(
-            200, body=json.dumps(Token(User(userId), BaseService(servicename, implements=["metadata"]), "ABC"))
+            200, body=json.dumps(Token(User(userId), BaseService(servicename=servicename, implements=["metadata"]), "ABC"))
         )
 
         pact.given("Given token to access port").upon_receiving(
@@ -243,7 +243,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         pact.given("one searched token was registered.").upon_receiving(
             "a request to get a specific token for service from user."
         ).with_request("GET", f"/user/{userId}/token/{servicename}").will_respond_with(
-            200, body=json.dumps(Token(User(userId), BaseService(servicename, implements=["metadata"]), "ABC"))
+            200, body=json.dumps(Token(User(userId), BaseService(servicename=servicename, implements=["metadata"]), "ABC"))
         )
 
         pact.given("Given token to access port").upon_receiving(
@@ -266,7 +266,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         pact.given("one searched token was registered.").upon_receiving(
             "a request to get a specific token for service from user."
         ).with_request("GET", f"/user/{userId}/token/{servicename}").will_respond_with(
-            200, body=json.dumps(Token(User(userId), BaseService(servicename, implements=["metadata"]), "ABC"))
+            200, body=json.dumps(Token(User(userId), BaseService(servicename=servicename, implements=["metadata"]), "ABC"))
         )
 
         pact.given("Given token to access port").upon_receiving(

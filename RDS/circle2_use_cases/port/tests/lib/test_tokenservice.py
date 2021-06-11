@@ -708,7 +708,7 @@ class Test_TokenService(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self.tokenService.exchangeAuthCodeToAccessToken(
-                code, BaseService("localhost", ["metadata"]), self.user1.username)
+                code, BaseService(servicename="localhost", implements=["metadata"]), self.user1.username)
 
         body = {
             "access_token": "1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ",

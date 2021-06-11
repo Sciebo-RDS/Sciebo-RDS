@@ -36,9 +36,12 @@ class TestTokenStorageServer(unittest.TestCase):
         self.user2 = User("Mimi Mimikri")
         self.user3 = User("Karla Kolumda")
 
-        self.service1 = LoginService("MusterService", ["metadata"])
-        self.service2 = LoginService("BetonService", ["metadata"])
-        self.service3 = LoginService("FahrService", ["metadata"])
+        self.service1 = LoginService(
+            servicename="MusterService", implements=["metadata"])
+        self.service2 = LoginService(
+            servicename="BetonService", implements=["metadata"])
+        self.service3 = LoginService(
+            servicename="FahrService", implements=["metadata"])
 
         self.oauthservice1 = OAuth2Service.from_service(
             self.service1,

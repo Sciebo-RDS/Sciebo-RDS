@@ -80,7 +80,7 @@ class TokenService:
                 raise ServiceNotFoundError(service)
             except:
                 raise ServiceNotFoundError(BaseService(
-                    servicename, implements=["metadata"]))
+                    servicename=servicename, implements=["metadata"]))
 
         svc = Util.getServiceObject(response.json())
 

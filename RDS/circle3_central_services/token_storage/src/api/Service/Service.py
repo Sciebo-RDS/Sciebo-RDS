@@ -30,7 +30,7 @@ def get(servicename: str):
     if svc is not None:
         return jsonify(svc)
 
-    raise ServiceNotExistsError(BaseService(servicename))
+    raise ServiceNotExistsError(BaseService(servicename=servicename))
 
 
 def post():

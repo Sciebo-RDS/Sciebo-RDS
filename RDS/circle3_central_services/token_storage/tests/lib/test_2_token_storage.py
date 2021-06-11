@@ -34,10 +34,12 @@ def make_test_case(use_redis=False):
             self.user1 = User("Max Mustermann")
             self.user2 = User("Mimi Mimikri")
 
-            self.service1 = LoginService("MusterService", implements=["metadata"])
-            self.service2 = LoginService("FahrService", implements=["metadata"])
+            self.service1 = LoginService(
+                servicename="MusterService", implements=["metadata"])
+            self.service2 = LoginService(
+                servicename="FahrService", implements=["metadata"])
             self.oauthservice1 = OAuth2Service(
-                "BetonService",
+                servicename="BetonService",
                 implements=["metadata"],
                 authorize_url="http://localhost/oauth/authorize",
                 refresh_url="http://localhost/oauth/token",
@@ -345,7 +347,8 @@ def make_test_case(use_redis=False):
 
         def test_tokenstorage_service_implementstype(self):
             empty_storage = Storage(**get_opts())
-            service = LoginService("longname", ["fileStorage", "metadata"])
+            service = LoginService(servicename="longname", implements=[
+                                   "fileStorage", "metadata"])
 
             empty_storage.addUser(self.user1)
             token1 = Token(self.user1, service, "ISADF")

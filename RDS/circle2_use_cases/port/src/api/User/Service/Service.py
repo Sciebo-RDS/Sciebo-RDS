@@ -17,7 +17,7 @@ def get(user_id, servicename):
 
     return jsonify(
         Util.tokenService.getTokenForServiceFromUser(
-            BaseService(servicename, implements=["metadata"]), User(user_id)
+            BaseService(servicename=servicename, implements=["metadata"]), User(user_id)
         )
     )
 
@@ -30,7 +30,7 @@ def delete(user_id, servicename):
     return jsonify(
         {
             "success": Util.tokenService.removeTokenForServiceFromUser(
-                BaseService(servicename, implements=[
+                BaseService(servicename=servicename, implements=[
                             "metadata"]), User(user_id)
             )
         }

@@ -503,11 +503,11 @@
                 "flask"
             ],
             "hashes": [
-                "sha256:3300e406ca0842e57c36d7e7501b8a498fc95f74748819bd39b8c65af35a9a4c",
-                "sha256:48ad74351c82a2a5fcca4b3c6a1c5a93524efebf918cf6a373d53872f39c6270"
+                "sha256:2d373c546be421d5a82c445ddd9709635ac7ef70ccff6b02f123422345c5cd74",
+                "sha256:4ada1e0f8389a32629576cb167ff32df134b926e5797b88e640d97c8e13c5ed2"
             ],
             "index": "pypi",
-            "version": "==0.38"
+            "version": "==0.39"
         },
         "six": {
             "hashes": [
@@ -845,11 +845,11 @@
         },
         "mkdocs": {
             "hashes": [
-                "sha256:0a194e98f7c8e83b0f538ce3d1f2a903bdc3271e2038d5032f786c7b1ebf43aa",
-                "sha256:26118adefe1d311b306f14bc2fae313cffcddc2f724d498fb40c26473c7f0017"
+                "sha256:11141126e5896dd9d279b3e4814eb488e409a0990fb638856255020406a8e2e7",
+                "sha256:6e0ea175366e3a50d334597b0bc042b8cebd512398cdd3f6f34842d0ef524905"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.2"
+            "version": "==1.2.1"
         },
         "packaging": {
             "hashes": [

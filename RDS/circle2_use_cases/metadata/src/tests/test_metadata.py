@@ -18,7 +18,7 @@ Util.monkeypatch()
 class Test_Metadata(unittest.TestCase):
     def setUp(self):
         self.user1 = User("MaxMustermann")
-        self.service1 = OAuth2Service("TestService",
+        self.service1 = OAuth2Service(servicename="TestService",
                                       implements=["metadata"],
                                       authorize_url="http://localhost/oauth/authorize",
                                       refresh_url="http://localhost/oauth/token",

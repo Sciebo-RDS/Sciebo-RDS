@@ -26,7 +26,7 @@ class TestMetadata(unittest.TestCase):
         self.client = self.app.test_client()
 
         self.user1 = User("MaxMustermann")
-        self.service1 = OAuth2Service("TestService",
+        self.service1 = OAuth2Service(servicename="TestService",
                                       implements=["metadata"],
                                       authorize_url="http://localhost/oauth/authorize",
                                       refresh_url="http://localhost/oauth/token",

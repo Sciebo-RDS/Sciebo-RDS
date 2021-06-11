@@ -261,7 +261,7 @@ class Storage:
             raise ValueError("given parameter not string or service.")
 
         if not isinstance(service, (BaseService)):
-            service = BaseService(service, ["metadata"])
+            service = BaseService(servicename=service, implements=["metadata"])
 
         try:
             services = self.services

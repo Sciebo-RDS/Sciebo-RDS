@@ -42,7 +42,7 @@ def post(user_id, servicename):
         servicename = "port-{}".format(servicename)
 
     projectId, project = Util.tokenService.createProjectForUserInService(
-        User(user_id), BaseService(servicename, implements=["metadata"]))
+        User(user_id), BaseService(servicename=servicename, implements=["metadata"]))
 
     resp = {
         "projectId": str(projectId)
@@ -58,7 +58,7 @@ def delete(user_id, servicename, projects_id):
         servicename = "port-{}".format(servicename)
 
     if Util.tokenService.removeProjectForUserInService(
-        User(user_id), BaseService(servicename,
+        User(user_id), BaseService(servicename=servicename,
                                    implements=["metadata"]), projects_id
     ):
         return None, 204
