@@ -47,7 +47,7 @@ def make_test_case(use_redis=False):
                 client_secret="UVW",
             )
             self.oauthservice2 = OAuth2Service(
-                "FlugService",
+                servicename="FlugService",
                 implements=["metadata"],
                 authorize_url="http://localhost21/oauth/authorize",
                 refresh_url="http://localhost21/oauth/token",

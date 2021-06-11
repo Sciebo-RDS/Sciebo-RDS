@@ -42,8 +42,8 @@ class test_end_to_end(unittest.TestCase):
 
         redirect = "https://10.14.29.60/owncloud/index.php/apps/rds/oauth"
         owncloud = OAuth2Service(
-            "owncloud-local",
-            ["metadata"],
+            servicename="owncloud-local",
+            implements=["metadata"],
             authorize_url="https://10.14.29.60/owncloud/index.php/apps/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(
                 os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"), redirect
             ),
@@ -214,13 +214,13 @@ class test_end_to_end(unittest.TestCase):
         storage = Storage()
 
         zenodo = OAuth2Service(
-            "sandbox.zenodo.org",
-            "https://sandbox.zenodo.org/oauth/authorize?scope=deposit%3Awrite+deposit%3Aactions&state=CHANGEME&redirect_uri=http%3A%2F%2Flocalhost%3A8080&response_type=code&client_id={}".format(
+            servicename="sandbox.zenodo.org",
+            authorize_url="https://sandbox.zenodo.org/oauth/authorize?scope=deposit%3Awrite+deposit%3Aactions&state=CHANGEME&redirect_uri=http%3A%2F%2Flocalhost%3A8080&response_type=code&client_id={}".format(
                 os.getenv("ZENODO_OAUTH_CLIENT_ID")
             ),
-            "https://sandbox.zenodo.org/oauth/token",
-            os.getenv("ZENODO_OAUTH_CLIENT_ID"),
-            os.getenv("ZENODO_OAUTH_CLIENT_SECRET"),
+            refresh_url="https://sandbox.zenodo.org/oauth/token",
+            client_id=os.getenv("ZENODO_OAUTH_CLIENT_ID"),
+            client_secret=os.getenv("ZENODO_OAUTH_CLIENT_SECRET"),
         )
 
         # TODO: needs valid user in env var in gitlab

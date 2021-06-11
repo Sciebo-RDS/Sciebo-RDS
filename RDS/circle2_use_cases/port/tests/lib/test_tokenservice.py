@@ -52,8 +52,8 @@ class Test_TokenService(unittest.TestCase):
         self.user2 = User("user_refresh")
 
         self.service1 = OAuth2Service(
-            self.servicename1,
-            ["fileStorage"],
+            servicename=self.servicename1,
+            implements=["fileStorage"],
             authorize_url=self.url1,
             refresh_url="https://10.14.29.60/owncloud/index.php/apps/oauth2/api/v1/token",
             client_id="ABC",
@@ -61,8 +61,8 @@ class Test_TokenService(unittest.TestCase):
         )
 
         self.service2 = OAuth2Service(
-            self.servicename2,
-            ["metadata"],
+            servicename=self.servicename2,
+            implements=["metadata"],
             authorize_url=self.url2,
             refresh_url="https://sandbox.zenodo.org/oauth/token",
             client_id="DEF",
@@ -698,8 +698,8 @@ class Test_TokenService(unittest.TestCase):
     def test_exchange_code(self):
         code = "XYZABC"
         service = OAuth2Service(
-            "localhost",
-            ["metadata"],
+            servicename="localhost",
+            implements=["metadata"],
             authorize_url=f"{self.tokenService.address}/authorize",
             refresh_url=f"{self.tokenService.address}/oauth2/token",
             client_id="ABC",

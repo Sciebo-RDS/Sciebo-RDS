@@ -53,7 +53,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         code = "XYZABC"
         user = User("user")
         service = OAuth2Service(
-            "port-local",
+            servicename="port-local",
             implements=["metadata"],
             authorize_url=f"{Util.tokenService.address}/oauth/authorize",
             refresh_url=f"{Util.tokenService.address}/oauth/token",
