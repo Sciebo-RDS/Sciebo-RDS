@@ -24,7 +24,11 @@ service = OAuth2Service(
     refresh_url=zenodo_oauth_token_url,
     client_id=zenodo_oauth_id,
     client_secret=zenodo_oauth_secret,
-    description="Zenodo is a general-purpose open-access repository developed under the European OpenAIRE program and operated by CERN. It allows researchers to deposit data sets, research software, reports, and any other research related digital artifacts."
+    description="Zenodo is a general-purpose open-access repository developed under the European OpenAIRE program and operated by CERN. It allows researchers to deposit data sets, research software, reports, and any other research related digital artifacts.",
+    displayName="Zenodo",
+    infoUrl="https://about.zenodo.org/",
+    helpUrl="https://help.zenodo.org/",
+    icon="./zenodo.svg"
 )
 Util.register_service(service)
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="595.27502" height="311.11099" id="svg8944">
+  <defs id="defs8946"/>
+  <rect width="595.27502" height="311.11099" x="0" y="0" id="rect236" style="fill:#1d2d44;fill-opacity:1;"/>
+  <circle cx="97.311996" cy="225.17101" r="21.999001" transform="translate(2.0703125e-7,-1.1660156e-5)" id="circle238" style="fill:none;stroke:#ffffff;stroke-width:4;stroke-opacity:1;"/>
+  <circle cx="364.82501" cy="225.17101" r="22.000999" transform="translate(2.0703125e-7,-1.1660156e-5)" id="circle240" style="fill:none;stroke:#ffffff;stroke-width:4;stroke-opacity:1;"/>
+  <path d="m 135.313,202.96599 v 30.074 c 0,7.801 6.324,14.123 14.123,14.123 7.803,0 14.125,-6.322 14.125,-14.123 0,-0.004 0,-30.074 0,-30.074" id="path242" style="fill:none;stroke:#ffffff;stroke-width:4;stroke-opacity:1;"/>
+  <path d="m 163.561,202.96599 v 30.074 c 0,7.801 6.324,14.123 14.125,14.123 7.801,0 14.125,-6.322 14.125,-14.123 0,-0.004 0,-30.074 0,-30.074" id="path244" style="fill:none;stroke:#ffffff;stroke-width:4;stroke-opacity:1;"/>
+  <path d="m 319.578,162.96199 v 70.078 c 0,7.801 6.322,14.123 14.123,14.123" id="path246" style="fill:none;stroke:#ffffff;stroke-width:4;stroke-opacity:1;"/>
+  <path d="m 208.317,247.16899 v -22.201 c 0,-12.15 9.85,-22 22,-22 12.152,0 22.002,9.85 22.002,22 0,0.006 0,22.201 0,22.201" id="path248" style="fill:none;stroke:#ffffff;stroke-width:4;stroke-opacity:1;"/>
+  <path d="m 401.322,202.96599 v 22.205 c 0,12.148 9.85,21.998 22,21.998 12.15,0 22.002,-9.85 22.002,-21.998 0,-0.008 0,-22.205 0,-22.205" id="path250" style="fill:none;stroke:#ffffff;stroke-width:4;stroke-opacity:1;"/>
+  <path d="m 303.146,176.83899 c -19.421,0 -35.167,15.744 -35.167,35.166 0,19.422 15.746,35.164 35.167,35.164" id="path252" style="fill:none;stroke:#ffffff;stroke-width:4;stroke-opacity:1;"/>
+  <polyline points="504.596,162.962 504.596,203.134 504.596,202.155 " id="polyline254" style="fill:none;stroke:#ffffff;stroke-width:4;stroke-opacity:1;" transform="translate(2.0703125e-7,-1.1660156e-5)"/>
+  <path d="m 490.236,247.15699 c -4.275,0 -7.844,0 -7.848,0 -12.15,0 -22,-9.85 -22,-21.998 0,-12.15 9.85,-22 22,-22 l 22.207,-0.025 c 0,0 0.137,22.342 0,29.895 -0.138,7.552 -7.968,14.128 -14.359,14.128 z" id="path256" style="fill:none;stroke:#ffffff;stroke-width:4;stroke-opacity:1;"/>
+  <circle cx="288.49399" cy="78.911003" r="20.332001" transform="translate(2.0703125e-7,-1.1660156e-5)" id="circle265" style="fill:#ffffff;fill-opacity:1;stroke:#1d2d44;stroke-width:4;stroke-opacity:1;"/>
+  <circle cx="251.211" cy="149.577" r="37.242001" transform="translate(2.0703125e-7,-1.1660156e-5)" id="circle272" style="fill:#ffffff;fill-opacity:1;stroke:#1d2d44;stroke-width:4;stroke-opacity:1;"/>
+  <circle cx="293.22501" cy="124.796" r="40.261002" transform="translate(2.0703125e-7,-1.1660156e-5)" id="circle279" style="fill:#ffffff;fill-opacity:1;stroke:#1d2d44;stroke-width:4;stroke-opacity:1;"/>
+  <circle cx="375.33401" cy="108.472" r="37.242001" transform="translate(2.0703125e-7,-1.1660156e-5)" id="circle286" style="fill:#ffffff;fill-opacity:1;stroke:#1d2d44;stroke-width:4;stroke-opacity:1;"/>
+  <circle cx="334.49301" cy="79.503998" r="37.241001" transform="translate(2.0703125e-7,-1.1660156e-5)" id="circle293" style="fill:#ffffff;fill-opacity:1;stroke:#1d2d44;stroke-width:4;stroke-opacity:1;"/>
+  <circle cx="458.427" cy="163.95799" r="21.299999" transform="translate(2.0703125e-7,-1.1660156e-5)" id="circle300" style="fill:#ffffff;fill-opacity:1;stroke:#1d2d44;stroke-width:4;stroke-opacity:1;"/>
+  <circle cx="413.16299" cy="147.563" r="40.261002" transform="translate(2.0703125e-7,-1.1660156e-5)" id="circle307" style="fill:#ffffff;fill-opacity:1;stroke:#1d2d44;stroke-width:4;stroke-opacity:1;"/>
+  <circle cx="290.76199" cy="166.011" r="21.299" transform="translate(2.0703125e-7,-1.1660156e-5)" id="circle314" style="fill:#ffffff;fill-opacity:1;stroke:#1d2d44;stroke-width:4;stroke-opacity:1;"/>
+  <path d="m 398.107,135.66899 c 0,28.348 -22.984,51.328 -51.334,51.328 -28.35,0 -51.333,-22.98 -51.333,-51.328 0,-28.351 22.984,-51.333002 51.333,-51.333002 28.349,0 51.334,22.982002 51.334,51.333002 z" id="path321" style="fill:#ffffff;fill-opacity:1;stroke:#1d2d44;stroke-width:4;stroke-opacity:1;"/>
+</svg>

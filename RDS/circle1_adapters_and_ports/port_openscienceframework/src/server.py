@@ -25,8 +25,13 @@ service = OAuth2Service(
     refresh_url=osf_oauth_token_url,
     client_id=osf_oauth_id,
     client_secret=osf_oauth_secret,
-    description="OSF is a free, open platform to support your research and enable collaboration."
+    description="OSF is a free, open platform to support your research and enable collaboration.",
+    displayName="OpenScienceFramework",
+    infoUrl="https://osf.io/",
+    helpUrl="https://help.osf.io/hc/en-us",
+    icon="./osf.png"
 )
+
 Util.register_service(service)
 
 # set the WSGI application callable to allow using uWSGI:

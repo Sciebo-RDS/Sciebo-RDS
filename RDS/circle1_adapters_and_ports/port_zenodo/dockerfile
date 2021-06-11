@@ -5,7 +5,7 @@ EXPOSE 8080
 RUN apk update && apk add --no-cache --virtual .build-deps build-base g++ python3-dev libffi-dev openssl-dev libxml2-dev libxslt-dev
 
 WORKDIR /app
-ADD ./requirements.txt ./
+ADD ./requirements.txt ./zenodo.svg ./
 RUN pip install -r requirements.txt
 
 ENV OPENAPI_MULTIPLE_FILES      "interface_port_metadata.yml"
