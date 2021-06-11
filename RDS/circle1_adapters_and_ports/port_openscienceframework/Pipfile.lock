@@ -505,11 +505,11 @@
                 "flask"
             ],
             "hashes": [
-                "sha256:1390cfa5ccd921e56f22e1543e7ac043fa914b21f41477542d9b5356fd330066",
-                "sha256:8a5f9cc88f3a7d8f4dddfdf11b5dbf1d370025ed57dc7a37ed2a0848ff49b524"
+                "sha256:2b7ef07f73c7be05ad92f41f41c3b79d3e1c7704e2082b26c4e77dbb46004fd3",
+                "sha256:db1cfea1232638a9d532c5e454d69df2570f4f52ed8b0813ecd78f94ff53c3bd"
             ],
             "index": "pypi",
-            "version": "==0.41"
+            "version": "==0.42"
         },
         "six": {
             "hashes": [
