@@ -154,7 +154,7 @@ paths:
                             type:
                               resourceType: ''
                               resourceTypeGeneral: Poster
-      operationId: ''
+      
       description: |-
         Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. 
 
@@ -175,7 +175,7 @@ paths:
         description: 'If no keys are given, it returns all metadata.'
     patch:
       summary: Modify a research
-      operationId: ''
+      
       responses:
         '200':
           description: OK

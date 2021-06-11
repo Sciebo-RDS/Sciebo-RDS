@@ -79,7 +79,7 @@ paths:
     parameters: []
     post:
       summary: Adds a new user
-      operationId: ''
+      
       responses:
         '200':
           description: OK
@@ -119,7 +119,7 @@ paths:
       description: Returns the user with specified id.
     delete:
       summary: Remove user
-      operationId: ''
+      
       responses:
         '200':
           description: OK
@@ -197,7 +197,7 @@ paths:
       description: Returns all tokens for the specified user.
     post:
       summary: Add a token
-      operationId: ''
+      
       responses:
         '200':
           description: OK
@@ -235,7 +235,7 @@ paths:
         required: true
     delete:
       summary: ''
-      operationId: ''
+      
       responses:
         '200':
           description: OK
@@ -259,11 +259,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/JSONService'
-      operationId: ''
+      
       description: Returns all registered services.
     post:
       summary: Adds a new service
-      operationId: ''
+      
       responses:
         '200':
           description: OK
@@ -312,14 +312,14 @@ paths:
                 $ref: '#/components/schemas/JSONToken'
         '404':
           description: Not Found
-      operationId: ''
+      
       description: |-
         Returns the specified token from the specified user.
 
         If the token-id is a string, it will returns the corresponding token for the given servicename. Otherwise it needs to be an int and it returns the token in the given position.
     delete:
       summary: Remove token
-      operationId: ''
+      
       responses:
         '200':
           description: OK
