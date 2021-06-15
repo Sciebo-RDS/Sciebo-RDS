@@ -20,7 +20,7 @@ connexion-plus==0.41
 connexion[swagger-ui]==2.7.0
 contextlib2==0.6.0.post1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 coverage==5.5; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
-dill==0.3.3; python_version >= '2.6' and python_version != '3.0'
+dill==0.3.4; python_version >= '2.7' and python_version != '3.0'
 flask-apscheduler==1.12.2
 flask-cors==3.0.10
 flask-opentracing==1.1.0
@@ -43,17 +43,17 @@ markdown==3.3.4; python_version >= '3.6'
 markupsafe==2.0.1; python_version >= '3.6'
 mergedeep==1.3.4; python_version >= '3.6'
 mkdocs==1.2.1; python_version >= '3.6'
-multiprocess==0.70.11.1
+multiprocess==0.70.12.2
 openapi-schema-validator==0.1.5; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 openapi-spec-validator==0.2.10
 opentracing-instrumentation==3.3.1
 opentracing==2.4.0
 packaging==20.9; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 pactman==2.28.0
-pathos==0.2.7
+pathos==0.2.8
 pluggy==0.13.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
-pox==0.2.9
-ppft==1.6.6.3
+pox==0.3.0
+ppft==1.6.6.4
 prometheus-client==0.11.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 prometheus-flask-exporter==0.18.2
 py==1.10.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
@@ -71,7 +71,7 @@ pytz==2021.1
 pyyaml-env-tag==0.1; python_version >= '3.6'
 pyyaml==5.4.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'
 requests==2.25.1
-research-data-services-common[flask]==0.43
+research-data-services-common[flask]==0.44
 restnavigator==1.0.1
 semver==2.13.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 six==1.16.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
