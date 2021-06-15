@@ -413,9 +413,9 @@ components:
               type: object
               properties:
                 userId:
-                  type: string
+                  type: boolean
                 password:
-                  type: string
+                  type: boolean
             fileTransferArchive:
               type: integer
             fileTransferMode:
