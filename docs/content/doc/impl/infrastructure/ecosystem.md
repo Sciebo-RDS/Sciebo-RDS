@@ -20,12 +20,11 @@ graph TD;
   %% define nodes
 
   subgraph Plugins
-      OP[Owncloud App]
+      OP[Frontend App]
   end
 
-
   subgraph RDS
-    Ingress
+    Ingress[Backend Edge Server]
 
     subgraph Adapters & Ports
       %% SPAEx[SPA Exporter]
