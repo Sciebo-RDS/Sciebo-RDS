@@ -32,6 +32,9 @@ graph TD;
 
       PInvenio[Port Zenodo]
       POwncloud[Port Owncloud]
+      POSF[Port OSF]
+      PReva[Port Reva]
+      PDatasafe[Port Datasafe]
 
       subgraph Use Cases
         UCExporter[Exporter Service]
@@ -50,17 +53,20 @@ graph TD;
   WWWI[hereinkommende Verbindungen]
   WWWO[ausgehende Verbindungen]
 
-  click OP "/de/doc/impl/plugins/owncloud/"
+  click OP "/doc/impl/plugins/owncloud/"
 
-  click PInvenio "/de/doc/impl/ports/port-invenio"
-  click POwncloud "/de/doc/impl/ports/port-storage"
+  click PInvenio "/doc/impl/ports/port-invenio"
+  click POwncloud "/doc/impl/ports/port-storage"
+  click PReva "https://github.com/Sciebo-RDS/port-reva"
+  click POSF "/doc/impl/ports/port-osf"
+  click PDatasafe "https://github.com/Sciebo-RDS/port_datasafe"
 
-  click UCPort "/de/doc/impl/use-cases/port-service"
-  click UCExporter "/de/doc/impl/use-cases/exporter"
-  click UCMetadata "/de/doc/impl/use-cases/metadata"
+  click UCPort "/doc/impl/use-cases/port-service"
+  click UCExporter "/doc/impl/use-cases/exporter"
+  click UCMetadata "/doc/impl/use-cases/metadata"
 
-  click CSProject "/de/doc/impl/central/research-manager"
-  click CSToken ""/de/doc/impl/central/token-storage""
+  click CSProject "/doc/impl/central/research-manager"
+  click CSToken ""/doc/impl/central/token-storage""
 
   %% define connections
   WWWI --> OP
@@ -74,9 +80,8 @@ graph TD;
   %% UCExporter --> UCProject
   %% UCProject --> CSProject
 
-  CSToken --- PInvenio & POwncloud
-  UCExporter & UCMetadata & UCPort --> PInvenio & POwncloud & CSProject & CSToken
+  CSToken --- PInvenio & POwncloud & PReva & POSF & PDatasafe
+  UCExporter & UCMetadata & UCPort --> PInvenio & POwncloud & PReva & POSF & PDatasafe & CSProject & CSToken
 
-  PInvenio --> WWWO
-  POwncloud --> WWWO
+  PInvenio & PDatasafe & POwncloud & PReva & POSF --> WWWO
 ```

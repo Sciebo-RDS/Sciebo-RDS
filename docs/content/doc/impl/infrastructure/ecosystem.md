@@ -35,6 +35,7 @@ graph TD;
       POwncloud[Port Owncloud]
       POSF[Port OSF]
       PReva[Port Reva]
+      PDatasafe[Port Datasafe]
 
       subgraph Use Cases
         UCExporter[Exporter Service]
@@ -57,8 +58,9 @@ graph TD;
 
   click PInvenio "/doc/impl/ports/port-invenio"
   click POwncloud "/doc/impl/ports/port-storage"
-  click PReva "/doc/impl/ports/port-reva"
+  click PReva "https://github.com/Sciebo-RDS/port-reva"
   click POSF "/doc/impl/ports/port-osf"
+  click PDatasafe "https://github.com/Sciebo-RDS/port_datasafe"
 
   click UCPort "/doc/impl/use-cases/port-service"
   click UCExporter "/doc/impl/use-cases/exporter"
@@ -79,11 +81,8 @@ graph TD;
   %% UCExporter --> UCProject
   %% UCProject --> CSProject
 
-  CSToken --- PInvenio & POwncloud & PReva & POSF
-  UCExporter & UCMetadata & UCPort --> PInvenio & POwncloud & PReva & POSF & CSProject & CSToken
+  CSToken --- PInvenio & POwncloud & PReva & POSF & PDatasafe
+  UCExporter & UCMetadata & UCPort --> PInvenio & POwncloud & PReva & POSF & PDatasafe & CSProject & CSToken
 
-  PInvenio --> WWWO
-  POwncloud --> WWWO
-  PReva --> WWWO
-  POSF --> WWWO
+  PInvenio & PDatasafe & POwncloud & PReva & POSF --> WWWO
 ```
