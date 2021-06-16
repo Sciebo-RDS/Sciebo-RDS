@@ -20,7 +20,7 @@ graph TD;
   %% define nodes
 
   subgraph Plugins
-      OP[Frontend App]
+      OP[Owncloud App]
   end
 
   subgraph RDS
@@ -69,8 +69,7 @@ graph TD;
   click CSToken ""/doc/impl/central/token-storage""
 
   %% define connections
-  WWWI --> OP
-  OP --> Ingress
+  WWWI --> OP --> Ingress
 
   %% Ingress --> SPAEx --> UCExporter
   %% Ingress --> SPATS --> CSToken

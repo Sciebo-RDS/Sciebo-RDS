@@ -20,7 +20,7 @@ graph TD;
   %% define nodes
   
   subgraph Plugins
-      OP[Frontend App]
+      OP[Owncloud App]
   end
 
   subgraph RDS
