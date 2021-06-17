@@ -17,13 +17,17 @@ def post():
         master_jwt = request.json.get("jwt")
         logger.debug("jwt: {}".format(master_jwt))
 
-        unverified = jwt.decode(master_jwt, algorithms="HS256", options={"verify_signature": False})
+        unverified = jwt.decode(master_jwt, algorithms="HS256", options={
+                                "verify_signature": False})
         logger.debug("unverified: {}".format(unverified))
 
         servicename = unverified.get("servicename").lower()
         service = Util.tokenService.getService(servicename.lower(), clean=True)
+        
+        logger.debug("got service: {}".format(service.to_dict()))
 
-        master_data = jwt.decode(master_jwt, service.client_secret, algorithms="HS256")
+        master_data = jwt.decode(
+            master_jwt, service.client_secret, algorithms="HS256")
         logger.debug("verified: {}".format(master_data))
 
         userId = master_data.get("userId")
@@ -31,13 +35,15 @@ def post():
         logger.debug("code: {}, userId: {}".format(code, userId))
 
         stateJWT = master_data.get("state")
-        state = jwt.decode(stateJWT, Util.tokenService.secret, algorithms="HS256")
+        state = jwt.decode(
+            stateJWT, Util.tokenService.secret, algorithms="HS256")
 
         logger.debug("state: {}, decoded state: {}".format(stateJWT, state))
 
         Util.tokenService.exchangeAuthCodeToAccessToken(
             code,
-            Util.tokenService.getService(state["servicename"].lower(), clean=True),
+            Util.tokenService.getService(
+                state["servicename"].lower(), clean=True),
             user=userId,
         )
 
