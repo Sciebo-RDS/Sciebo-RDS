@@ -13,7 +13,8 @@ import utility
 logger = logging.getLogger(__name__)
 
 init_object = Util.try_function_on_dict(
-    [OAuth2Service.from_dict, LoginService.from_dict, Util.initialize_object_from_json]
+    [OAuth2Service.from_dict, LoginService.from_dict,
+        Util.initialize_object_from_json]
 )
 
 
@@ -42,9 +43,9 @@ def post():
         utility.storage.addService(svc)
 
     except ServiceExistsAlreadyError:
-        return jsonify({"success": False}), 409
+        return jsonify({"success": False, "message": "ServiceExistsAlreadyError"}), 200
     except:
-        raise
+        return jsonify({"success": False, "message": "BadRequest"}), 400
 
     return jsonify({"success": True})
 
