@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from RDS import Util, OAuth2Service, FileTransferMode, FileTransferArchive
-from __init__ import app, register_service
+from __init__ import app
 import os
 
 
