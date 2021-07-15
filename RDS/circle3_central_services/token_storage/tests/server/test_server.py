@@ -160,7 +160,8 @@ class TestTokenStorageServer(unittest.TestCase):
             data=json.dumps(self.oauthservice1),
             content_type="application/json",
         )
-        self.assertEqual(result.status_code, 409)
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json["message"], "ServiceExistsAlreadyError")
 
         for k, v in enumerate(self.get("/service")):
             self.assertEqual(
@@ -199,7 +200,8 @@ class TestTokenStorageServer(unittest.TestCase):
             data=json.dumps(self.oauthservice1),
             content_type="application/json",
         )
-        self.assertEqual(result.status_code, 409)
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json["message"], "ServiceExistsAlreadyError")
 
         for k, v in enumerate(self.get("/service")):
             self.assertEqual(
