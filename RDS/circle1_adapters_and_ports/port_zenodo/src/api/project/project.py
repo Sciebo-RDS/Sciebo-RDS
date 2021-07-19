@@ -4,18 +4,11 @@ from lib.upload_zenodo import Zenodo
 from flask import jsonify, request, g, current_app
 from werkzeug.exceptions import abort
 from lib.Util import require_api_key, to_jsonld, from_jsonld
-from connexion_plus import FlaskOptimize
 
 logger = logging.getLogger()
 
-KEY = "ZenodoProjectsCaching"
-KEYS = [KEY]
-REPLACEFORMAT = "{}_ID_{}"
-
 
 @require_api_key
-@FlaskOptimize.set_key(KEY)
-@FlaskOptimize.set_cache_timeout()
 def index():
     req = request.json.get("metadata")
 
@@ -40,12 +33,7 @@ def index():
 
 
 @require_api_key
-@FlaskOptimize.set_cache_timeout()
 def get(project_id):
-    KEYID = REPLACEFORMAT.format(KEY, project_id)
-    KEYS[KEYID] = ""
-    current_app.optimize.set_key_inline(KEYID)
-
     req = request.json.get("metadata")
 
     depoResponse = g.zenodo.get_deposition(
@@ -68,9 +56,6 @@ def get(project_id):
 
 @require_api_key
 def post():
-    for k in KEYS.keys():
-        current_app.optimize.clear_key(k)
-        del KEYS[k]
 
     req = request.json.get("metadata")
 
@@ -105,10 +90,6 @@ def delete(project_id):
 
 @require_api_key
 def patch(project_id):
-    KEYID = REPLACEFORMAT.format(KEY, project_id)
-    KEYS[KEYID] = ""
-    current_app.optimize.set_key_inline(KEYID)
-
     req = request.get_json(force=True)
 
     logger.debug("request data: {}".format(req))
@@ -139,7 +120,6 @@ def patch(project_id):
 
         logger.debug("finished output: {}".format(output))
 
-        current_app.optimize.set_cache_inline(jsonify(output["metadata"]))
         return jsonify(output["metadata"])
 
     abort(depoResponse.status_code)
