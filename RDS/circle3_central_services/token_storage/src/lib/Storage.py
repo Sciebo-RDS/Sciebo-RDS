@@ -110,6 +110,8 @@ class Storage:
             self._services = redis_pubsub_dict.RedisDict(
                 rc, "tokenstorage_services")
 
+            self.__rc = rc
+
             logger.debug("set methods to redis backed dict to use it as list")
             self._services.append = append.__get__(self._services)
         except Exception as e:
@@ -536,6 +538,14 @@ class Storage:
 
         return self.internal_refresh_services(services)
 
+    def __publishTokenInRedis(self, token: Token):
+        try:
+            logger.debug("publish token in redis:")
+            self.__rc.publish("TokenStorage_Refresh_Token", json.dumps(token))
+            logger.debug("done")
+        except Exception as e:
+            logger.debug("failure")
+
     def internal_refresh_services(self, services: list):
         """
         *Only for internal use. Do not use it in another class.*
@@ -577,6 +587,8 @@ class Storage:
                     new_token, user or new_token.user, Force=True)
                 found = True
 
+                self.__publishTokenInRedis(new_token)
+
             except TokenNotValidError as e:
                 logging.getLogger().error(e)
             except OAuth2UnsuccessfulResponseError as e:
@@ -584,6 +596,7 @@ class Storage:
             except requests.exceptions.RequestException as e:
                 logging.getLogger().error(e)
             except Exception as e:
+                logging.getLogger().error(e)
                 return False
 
         return found
