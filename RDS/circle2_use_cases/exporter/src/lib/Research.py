@@ -1,12 +1,12 @@
 from lib.Service import Service
-from pathos.multiprocessing import ProcessingPool as Pool
 import requests
 import logging
 import zipfile
 from io import BytesIO
 import os
+import threading
 from RDS import FileTransferMode, LoginMode
-
+from .Util import threadsafe_iter
 
 logger = logging.getLogger()
 
@@ -135,22 +135,52 @@ class Research:
                 zip = zipfile.ZipFile(
                     mem_zip, mode="w", compression=zipfile.ZIP_STORED)
 
-            for fileTuple in svc.getFiles(getContent=True):
-                logger.debug(
-                    "file: {}, contentlength: {}".format(
-                        fileTuple[0], fileTuple[1].getbuffer().nbytes
+            files = threadsafe_iter(svc.getFiles(getContent=True))
+            zipLock = threading.Lock()
+
+            def loop(files, i):
+                """Runs the given function n times in a loop.
+                """
+                logger.debug(f"Thread {i}: Starts thread")
+
+                for fileTuple in files:
+                    logger.debug(
+                        "Thread {}: file: {}, contentlength: {}".format(
+                            i,fileTuple[0], fileTuple[1].getbuffer().nbytes
+                        )
                     )
-                )
 
-                logger.debug("write to zipfile? {}".format(useZipForContent))
+                    logger.debug(f"Thread {i}: write to zipfile? {useZipForContent}")
 
-                # TODO: needs tests
-                if useZipForContent:
-                    zip.writestr(fileTuple[0], fileTuple[1].read())
-                    logger.debug("done writing to zipfile")
+                    # TODO: needs tests
+                    if useZipForContent:
+                        with zipLock:
+                            zip.writestr(fileTuple[0], fileTuple[1].read())
+                            logger.debug(f"Thread {i}: done writing to zipfile")
 
-                # useZipForContent skips services, which needs zip, if folder in folder found.
-                self.addFile(folderInFolder=useZipForContent, *fileTuple)
+                    logger.debug(f"Thread {i}: Send file to exportservices")
+                    # useZipForContent skips services, which needs zip, if folder in folder found.
+                    self.addFile(folderInFolder=useZipForContent, *fileTuple)
+                    logger.debug(f"Thread {i}: Finish sending file to exportservices")
+
+                logger.debug(f"Thread {i}: Finished thread")
+                
+            threads = [
+                threading.Thread(target=loop, args=(files, i)) 
+                for i in os.cpu_count() / 2 + 1
+            ]
+
+            logger.debug("starts threading")
+
+            # start threads
+            for t in threads:
+                t.start()
+
+            # wait for threads to finish
+            for t in threads:
+                t.join()
+
+            logger.debug("finished threading")
 
             if useZipForContent:
                 import re

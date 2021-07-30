@@ -251,7 +251,7 @@ class Service:
 
         if self.fileStorage:
             # TODO: fileStorage can also add files
-            pass
+            return False
 
         return True
 
