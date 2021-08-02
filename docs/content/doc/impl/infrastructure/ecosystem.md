@@ -18,34 +18,40 @@ Incoming connections are established by the plugins (currently Owncloud). Furthe
 ```mermaid
 graph TD;
   %% define nodes
-
+  
   subgraph Plugins
       OP[Owncloud App]
   end
 
-  subgraph RDS
-    Ingress[Backend Edge Server]
+  subgraph "RDS (Layer0)"
+    Ingress[Ingress]
+    Describo[Describo Online]
+    Web[RDS Web]
+    Helper[RDS Token Updater]
+    DescriboDB[PostgreSQL Datenbank]
+    RedisH[Redis Master Helper]
 
-    subgraph Adapters & Ports
-      %% SPAEx[SPA Exporter]
-      %% SPATS[SPA Token Storage]
-
+    subgraph "Adapters & Ports (Layer1)"
       PInvenio[Port Zenodo]
       POwncloud[Port Owncloud]
       POSF[Port OSF]
       PReva[Port Reva]
       PDatasafe[Port Datasafe]
 
-      subgraph Use Cases
+      subgraph "Use Cases (Layer2)"
         UCExporter[Exporter Service]
         UCPort[Port Service]
         UCMetadata[Metadata Service]
         %% UCProject[Project Service]
 
-        subgraph Central Services
+        subgraph "Central Services (Layer3)"
+          Redis[Redis Cluster]
           CSToken[Token Storage]
           CSProject[Research Manager]
         end
+
+        Centralservices(" ")
+        Ports(" ")
       end
     end
   end
@@ -54,6 +60,9 @@ graph TD;
   WWWO[outgoing connections]
 
   click OP "/doc/impl/plugins/owncloud/"
+  click Describo "https://github.com/Arkisto-Platform/describo-online"
+  click Helper "https://github.com/Sciebo-RDS/RDS-Web/tree/rework/helper"
+  click Web "https://github.com/Sciebo-RDS/RDS-Web"
 
   click PInvenio "/doc/impl/ports/port-invenio"
   click POwncloud "/doc/impl/ports/port-storage"
@@ -66,21 +75,26 @@ graph TD;
   click UCMetadata "/doc/impl/use-cases/metadata"
 
   click CSProject "/doc/impl/central/research-manager"
-  click CSToken ""/doc/impl/central/token-storage""
+  click CSToken "/doc/impl/central/token-storage"
 
   %% define connections
-  WWWI --> OP --> Ingress
+  WWWI --> OP
+  OP --> Ingress --> Describo & Web
 
-  %% Ingress --> SPAEx --> UCExporter
-  %% Ingress --> SPATS --> CSToken
-  %% Ingress -->|Nur für die Registration von neuen Tokens| ARegister
-  Ingress --> CSProject & UCExporter & UCMetadata & UCPort
+  Web --> CSProject & UCExporter & UCMetadata & UCPort & Describo
+  CSToken & UCExporter & UCMetadata & UCPort --- Ports
+  UCExporter & UCMetadata & UCPort --- Centralservices
+  Ports --> PInvenio & POwncloud & PReva & POSF & PDatasafe
+  Centralservices --> CSProject & CSToken
 
-  %% UCExporter --> UCProject
-  %% UCProject --> CSProject
+  CSProject --> Redis
 
-  CSToken --- PInvenio & POwncloud & PReva & POSF & PDatasafe
-  UCExporter & UCMetadata & UCPort --> PInvenio & POwncloud & PReva & POSF & PDatasafe & CSProject & CSToken
+  Helper --> Describo & RedisH
+  CSToken --> RedisH & Redis
+  Describo --> DescriboDB
 
   PInvenio & PDatasafe & POwncloud & PReva & POSF --> WWWO
+
+classDef SkipLevel width:0px;
+class Ports,Centralservices SkipLevel
 ```

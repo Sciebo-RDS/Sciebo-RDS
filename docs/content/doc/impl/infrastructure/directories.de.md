@@ -19,11 +19,11 @@ Die Domain wird in der zentralen Konfigurationsdatei, [wie hier beschrieben](/de
 
 Die folgenden Pfaddefinierungen werden von den jeweiligen Diensten ausdefiniert und sind somit von außen zu erreichen.
 
-| Dienst           | Pfadangabe    |
-| ---------------- | ------------- |
-| Port Service     | /port-service |
-| Exporter Service | /exporter     |
-| Metadata Service | /metadata     |
-| Research Manager | /research     |
+| Dienst          | Pfadangabe |
+| --------------- | ---------- |
+| RDS Web         | /          |
+| Describo Online | /describo  |
 
 Die dienstspezifischen Unterordner und Endpunkte werden in den jeweiligen OpenAPI-Datei definiert und können in dieser Dokumenation eingesehen werden.
+
+In einer früheren Version gab es wesentlich mehr Dienste, welche nach außen verfügbar waren. Dies wurde aber geändert, um eine einfachere und sicherere Handhabung durch den RDS Web Dienst zu gewährleisten.

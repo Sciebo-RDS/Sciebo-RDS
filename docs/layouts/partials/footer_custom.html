@@ -1,11 +1,9 @@
 {{ if (.Params.mermaid) }}
 <script>
   // disable code block for mermaid
-  jQuery(document).ready(function() {
-    $("code.language-mermaid").each(function(index, element) {
-      var content = $(element)
-        .html()
-        .replace(/&amp;/g, "&");
+  jQuery(document).ready(function () {
+    $("code.language-mermaid").each(function (index, element) {
+      var content = $(element).html().replace(/&amp;/g, "&");
       $(element)
         .parent()
         .replaceWith(
@@ -15,5 +13,17 @@
   });
 </script>
 <script src="{{ .Site.BaseURL }}js/mermaid.min.js"></script>
-<script>mermaid.initialize(logLevel:0, startOnLoad: true, themeCSS:'.label { font-family: Source Sans Pro,Helvetica Neue,Arial,sans-serif; }' }, ".language-mermaid");</script>
+<script>
+  var config = {
+    logLevel: 0,
+    startOnLoad: true,
+    flowchart: {
+      useMaxWidth: true,
+      curve: "basis",
+    },
+    themeCSS:
+      ".label { font-family: Source Sans Pro,Helvetica Neue,Arial,sans-serif; }",
+  };
+  mermaid.initialize(config, ".language-mermaid");
+</script>
 {{ end }}

@@ -17,11 +17,11 @@ The domain is defined in the central configuration file, [as described here](/do
 
 The following path definitions are defined by the respective services and can therefore be accessed from outside.
 
-| Service          | Path definition |
-| ---------------- | --------------- |
-| Port Service     | /port-service   |
-| Exporter Service | /exporter       |
-| Metadata Service | /metadata       |
-| Research Manager | /research       |
+| Service         | Path definition |
+| --------------- | --------------- |
+| RDS Web         | /               |
+| Describo Online | /describo       |
 
 The service-specific subfolders and endpoints are defined in the respective OpenAPI file and can be viewed in this documentation.
+
+In a previous version, there were a lot more services available for a public connection. This was removed in favor of an easier and increased security of RDS Web.

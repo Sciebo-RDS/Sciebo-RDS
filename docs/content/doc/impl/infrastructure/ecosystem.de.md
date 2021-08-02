@@ -23,29 +23,35 @@ graph TD;
       OP[Owncloud App]
   end
 
-  subgraph RDS
-    Ingress[Backend Edge Server]
+  subgraph "RDS (Layer0)"
+    Ingress[Ingress]
+    Describo[Describo Online]
+    Web[RDS Web]
+    Helper[RDS Token Updater]
+    DescriboDB[PostgreSQL Datenbank]
+    RedisH[Redis Master Helper]
 
-    subgraph Adapters & Ports
-      %% SPAEx[SPA Exporter]
-      %% SPATS[SPA Token Storage]
-
+    subgraph "Adapters & Ports (Layer1)"
       PInvenio[Port Zenodo]
       POwncloud[Port Owncloud]
       POSF[Port OSF]
       PReva[Port Reva]
       PDatasafe[Port Datasafe]
 
-      subgraph Use Cases
+      subgraph "Use Cases (Layer2)"
         UCExporter[Exporter Service]
         UCPort[Port Service]
         UCMetadata[Metadata Service]
         %% UCProject[Project Service]
 
-        subgraph Central Services
+        subgraph "Central Services (Layer3)"
+          Redis[Redis Cluster]
           CSToken[Token Storage]
           CSProject[Research Manager]
         end
+
+        Centralservices(" ")
+        Ports(" ")
       end
     end
   end
@@ -53,35 +59,42 @@ graph TD;
   WWWI[hereinkommende Verbindungen]
   WWWO[ausgehende Verbindungen]
 
-  click OP "/doc/impl/plugins/owncloud/"
+  click OP "/de/doc/impl/plugins/owncloud/"
+  click Describo "https://github.com/Arkisto-Platform/describo-online"
+  click Helper "https://github.com/Sciebo-RDS/RDS-Web/tree/rework/helper"
+  click Web "https://github.com/Sciebo-RDS/RDS-Web"
 
-  click PInvenio "/doc/impl/ports/port-invenio"
-  click POwncloud "/doc/impl/ports/port-storage"
+  click PInvenio "/de/doc/impl/ports/port-invenio"
+  click POwncloud "/de/doc/impl/ports/port-storage"
   click PReva "https://github.com/Sciebo-RDS/port-reva"
-  click POSF "/doc/impl/ports/port-osf"
+  click POSF "/de/doc/impl/ports/port-osf"
   click PDatasafe "https://github.com/Sciebo-RDS/port_datasafe"
 
-  click UCPort "/doc/impl/use-cases/port-service"
-  click UCExporter "/doc/impl/use-cases/exporter"
-  click UCMetadata "/doc/impl/use-cases/metadata"
+  click UCPort "/de/doc/impl/use-cases/port-service"
+  click UCExporter "/de/doc/impl/use-cases/exporter"
+  click UCMetadata "/de/doc/impl/use-cases/metadata"
 
-  click CSProject "/doc/impl/central/research-manager"
-  click CSToken ""/doc/impl/central/token-storage""
+  click CSProject "/de/doc/impl/central/research-manager"
+  click CSToken "/de/doc/impl/central/token-storage"
 
   %% define connections
   WWWI --> OP
-  OP --> Ingress
+  OP --> Ingress --> Describo & Web
 
-  %% Ingress --> SPAEx --> UCExporter
-  %% Ingress --> SPATS --> CSToken
-  %% Ingress -->|Nur für die Registration von neuen Tokens| ARegister
-  Ingress --> CSProject & UCExporter & UCMetadata & UCPort
+  Web --> CSProject & UCExporter & UCMetadata & UCPort & Describo
+  CSToken & UCExporter & UCMetadata & UCPort --- Ports
+  UCExporter & UCMetadata & UCPort --- Centralservices
+  Ports --> PInvenio & POwncloud & PReva & POSF & PDatasafe
+  Centralservices --> CSProject & CSToken
 
-  %% UCExporter --> UCProject
-  %% UCProject --> CSProject
+  CSProject --> Redis
 
-  CSToken --- PInvenio & POwncloud & PReva & POSF & PDatasafe
-  UCExporter & UCMetadata & UCPort --> PInvenio & POwncloud & PReva & POSF & PDatasafe & CSProject & CSToken
+  Helper --> Describo & RedisH
+  CSToken --> RedisH & Redis
+  Describo --> DescriboDB
 
   PInvenio & PDatasafe & POwncloud & PReva & POSF --> WWWO
+
+classDef SkipLevel width:0px;
+class Ports,Centralservices SkipLevel
 ```
