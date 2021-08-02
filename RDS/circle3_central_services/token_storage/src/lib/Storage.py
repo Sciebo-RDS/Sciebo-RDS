@@ -111,6 +111,19 @@ class Storage:
                 rc, "tokenstorage_services")
 
             self.__rc = rc
+            self.__rc_helper = None
+
+            try:
+                rc_helper = Redis(
+                    host=os.getenv("REDIS_HELPER_HOST", "localhost"),
+                    port=os.getenv("REDIS_HELPER_PORT", "6379"),
+                    db=0,
+                    decode_responses=True,
+                )
+                rc_helper.info()  # provoke an error message
+                self.__rc_helper = rc_helper
+            except:
+                logger.error("cannot initialize helper redis conn.")
 
             logger.debug("set methods to redis backed dict to use it as list")
             self._services.append = append.__get__(self._services)
@@ -539,9 +552,11 @@ class Storage:
         return self.internal_refresh_services(services)
 
     def __publishTokenInRedis(self, token: Token):
+        if self.__rc_helper is None:
+            return
         try:
             logger.debug("publish token in redis:")
-            self.__rc.publish("TokenStorage_Refresh_Token", json.dumps(token))
+            self.__rc_helper.publish("TokenStorage_Refresh_Token", json.dumps(token))
             logger.debug("done")
         except Exception as e:
             logger.debug("failure")
