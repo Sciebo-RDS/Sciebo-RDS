@@ -114,6 +114,7 @@ class Storage:
             self.__rc_helper = None
 
             try:
+                logger.debug("try to initialize the helper redis conn.")
                 rc_helper = Redis(
                     host=os.getenv("REDIS_HELPER_HOST", "localhost"),
                     port=os.getenv("REDIS_HELPER_PORT", "6379"),
@@ -122,6 +123,7 @@ class Storage:
                 )
                 rc_helper.info()  # provoke an error message
                 self.__rc_helper = rc_helper
+                logger.debug("initialized helper redis conn.")
             except:
                 logger.error("cannot initialize helper redis conn.")
 
@@ -552,7 +554,7 @@ class Storage:
         return self.internal_refresh_services(services)
 
     def __publishTokenInRedis(self, token: Token):
-        if self.__rc_helper is None:
+        if not hasattr(self, "__rc_helper") or self.__rc_helper is None:
             return
         try:
             logger.debug("publish token in redis:")
