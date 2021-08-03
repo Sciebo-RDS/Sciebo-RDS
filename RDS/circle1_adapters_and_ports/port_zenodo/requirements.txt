@@ -10,16 +10,16 @@ apscheduler==3.7.0; python_version >= '2.7' and python_version not in '3.0, 3.1,
 attrs==21.2.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 cachetools==4.2.2; python_version ~= '3.5'
 certifi==2021.5.30
-charset-normalizer==2.0.3; python_version >= '3'
-click==7.1.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+charset-normalizer==2.0.4; python_version >= '3'
+click==8.0.1; python_version >= '3.6'
 clickclick==20.10.2
 connexion-plus==0.45
-connexion[swagger-ui]==2.9.0
+connexion[swagger-ui]==2.7.0
 contextlib2==21.6.0; python_version >= '3.6'
 flask-apscheduler==1.12.2
 flask-cors==3.0.10
 flask-opentracing==1.1.0
-flask==1.1.4; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+flask==2.0.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 frozendict==2.0.3; python_version >= '3.6'
 future==0.18.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
 gevent==21.1.2
@@ -28,9 +28,9 @@ htmlmin==0.1.12
 idna==3.2; python_version >= '3'
 inflection==0.5.1; python_version >= '3.5'
 isodate==0.6.0
-itsdangerous==1.1.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+itsdangerous==2.0.1; python_version >= '3.6'
 jaeger-client==4.6.0
-jinja2==2.11.3; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+jinja2==3.0.1; python_version >= '3.6'
 jsonschema==3.2.0
 lxml==4.6.3; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 markupsafe==2.0.1; python_version >= '3.6'
@@ -59,7 +59,7 @@ thrift==0.13.0
 tornado==5.1.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 tzlocal==2.1
 urllib3==1.26.6; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
-werkzeug==1.0.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+werkzeug==2.0.1; python_version >= '3.6'
 wrapt==1.12.1
 zope.event==4.5.0
 zope.interface==5.4.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
