@@ -1,4 +1,4 @@
-FROM python:3.8-alpine
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8-alpine
 EXPOSE 8080
 
 # set the base installation, requirements are not changed often
