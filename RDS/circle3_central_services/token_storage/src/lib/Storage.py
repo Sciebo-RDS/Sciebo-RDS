@@ -116,7 +116,7 @@ class Storage:
             try:
                 logger.debug("try to initialize the helper redis conn.")
                 rc_helper = Redis(
-                    host=os.getenv("REDIS_HELPER_HOST", "localhost"),
+                    host="{}-master".format(os.getenv("REDIS_HELPER_HOST", "localhost")),
                     port=os.getenv("REDIS_HELPER_PORT", "6379"),
                     db=0,
                     decode_responses=True,
