@@ -136,6 +136,8 @@ you will find out how. {{</callout>}}
 You have to set `enabled: true` for each service, you want to use. Only for enabled services, you need to set the oauth
 values. Once these adjustments have been made, the system can be installed.
 
+In the `describo` folder you will find the configuration of our used tool for metadata collection. Please adjust it according to its [manual](https://github.com/Arkisto-Platform/describo-online/wiki/General-information-about-configuring-the-application).
+
 ### Generate OAuth2 identifier and secrets
 
 You have to generate the oauth credentials for your used oauth2 service provider. This credentials are generated, when

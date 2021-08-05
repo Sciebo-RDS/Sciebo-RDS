@@ -138,6 +138,8 @@ Abschnitt [OAuth2-Identifier und Secret erzeugen](#oauth2-identifier-und-secret-
 Sie müssen für jeden Dienst, den Sie verwenden möchten, `enabled: true` einstellen. Nur für aktivierte Dienste müssen
 Sie die Oauth Werte einstellen. Sobald diese Einstellungen vorgenommen wurden, kann das System installiert werden.
 
+Im `describo`-Ordner finden Sie die Konfiguration unseres verwendeten Tools für die Metadatenerfassung. Passen Sie diese bitte nach dessen [Handbuch](https://github.com/Arkisto-Platform/describo-online/wiki/General-information-about-configuring-the-application) an.
+
 ### OAuth2-Identifier und Secret erzeugen
 
 Sie müssen die Zugangsdaten für Ihren verwendeten oauth2-Dienstanbieter generieren. Diese Credentials werden generiert,
