@@ -12,7 +12,7 @@ pydoc-markdown = "==2.1.3"
 [packages]
 requests = "*"
 jaeger-client = "*"
-gevent = "==21.1.2"
+gevent = "*"
 connexion = {extras = ["swagger-ui"],version = "==2.7.0"}
 openapi-spec-validator = "<0.3"
 connexion-plus = "==0.41"
@@ -20,7 +20,6 @@ flask-cors = "*"
 jsonschema = "*"
 PyLD = "*"
 research-data-services-common = {extras = ["flask"], version = "==0.44"}
-flask = "==2.0.1"
 
 [requires]
 python_version = "3.8"

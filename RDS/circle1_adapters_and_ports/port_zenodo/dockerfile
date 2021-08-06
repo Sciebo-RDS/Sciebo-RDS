@@ -3,6 +3,7 @@ EXPOSE 8080
 
 # set the base installation, requirements are not changed often
 RUN apk update && apk add --no-cache --virtual .build-deps build-base g++ python3-dev libffi-dev openssl-dev libxml2-dev libxslt-dev
+RUN pip install --upgrade pip setuptools wheel
 
 WORKDIR /app
 ADD ./requirements.txt ./zenodo.svg ./
