@@ -500,7 +500,6 @@ class TokenService:
                     msg=f"No oauthservice for {service} found, so we cannot exchange code.",
                 )
 
-        # FIXME: RDS_OAUTH_REDIRECT_URI needs to be set in dockerfile
         body = {
             "grant_type": "authorization_code",
             "code": code,
