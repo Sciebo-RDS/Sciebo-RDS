@@ -3,12 +3,11 @@ EXPOSE 8080
 
 # set the base installation, requirements are not changed often
 RUN apk update && apk add --no-cache --virtual .build-deps build-base g++ python3-dev libffi-dev openssl-dev libxml2-dev libxslt-dev make gcc libc-dev libevent-dev py3-gevent
-RUN pip install --upgrade pip setuptools wheel PEP517
+RUN pip install --upgrade pip setuptools wheel PEP517 gevent
 
 WORKDIR /app
 ADD ./requirements.txt ./zenodo.svg ./
 RUN pip install -r requirements.txt
-RUN pip install gevent
 
 ENV OPENAPI_MULTIPLE_FILES      "interface_port_metadata.yml"
 
