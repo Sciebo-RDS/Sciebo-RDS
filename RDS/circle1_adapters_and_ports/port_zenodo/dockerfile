@@ -2,7 +2,7 @@ FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8
 EXPOSE 8080
 
 # set the base installation, requirements are not changed often
-RUN apk update && apk add --no-cache --virtual .build-deps build-base g++ python3-dev libffi-dev openssl-dev libxml2-dev libxslt-dev make gcc libc-dev libevent-dev py3-gevent
+RUN apk update && apk add --no-cache --virtual file build-deps build-base g++ python3-dev libffi-dev openssl-dev libxml2-dev libxslt-dev make gcc libc-dev libevent-dev py3-gevent musl-dev
 RUN pip install --upgrade pip setuptools wheel
 
 WORKDIR /app
