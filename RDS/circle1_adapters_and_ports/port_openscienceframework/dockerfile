@@ -1,8 +1,8 @@
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8-alpine
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8
 EXPOSE 8080
 
 # set the base installation, requirements are not changed often
-RUN apk update && apk add --no-cache --virtual .build-deps build-base g++ python3-dev libffi-dev openssl-dev git libxml2-dev libxslt-dev
+RUN pip install --upgrade pip setuptools wheel
 
 WORKDIR /app
 ADD ./requirements.txt ./osf.png ./
