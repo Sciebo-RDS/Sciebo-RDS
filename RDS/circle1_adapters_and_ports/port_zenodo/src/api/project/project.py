@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 from lib.upload_zenodo import Zenodo
@@ -12,7 +13,13 @@ logger = logging.getLogger()
 def index():
     req = request.json.get("metadata")
 
-    depoResponse = g.zenodo.get_deposition(metadataFilter=req)
+    try:
+        depoResponse = g.zenodo.get_deposition(metadataFilter=req)
+    except Exception as e:
+        logger.debug("Error in request to zenodo.")
+        logger.error(e, exc_info=True)
+        return jsonify([])
+
     logger.debug("depo response: {}".format(depoResponse))
 
     output = []
@@ -36,8 +43,13 @@ def index():
 def get(project_id):
     req = request.json.get("metadata")
 
-    depoResponse = g.zenodo.get_deposition(
-        id=int(project_id), metadataFilter=req)
+    try:
+        depoResponse = g.zenodo.get_deposition(
+            id=int(project_id), metadataFilter=req)
+    except Exception as e:
+        logger.debug("Error in request to zenodo.")
+        logger.error(e, exc_info=True)
+        return jsonify([])
 
     logger.debug("depo reponse: {}".format(depoResponse))
 

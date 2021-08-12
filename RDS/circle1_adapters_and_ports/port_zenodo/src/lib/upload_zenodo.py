@@ -94,14 +94,17 @@ class Zenodo(object):
                 f"{self.zenodo_address}/api/deposit/depositions/{id}",
                 headers=headers,
                 verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+                timeout=1
             )
         else:
             r = requests.get(
                 f"{self.zenodo_address}/api/deposit/depositions",
                 headers=headers,
                 verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+                timeout=1
             )
-            self.log.debug("Get Depositions: Status Code: {}".format(r.status_code))
+            self.log.debug(
+                "Get Depositions: Status Code: {}".format(r.status_code))
 
         if return_response:
             return r
@@ -168,7 +171,8 @@ class Zenodo(object):
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
-        self.log.debug("Create new deposition: Status Code: {}".format(r.status_code))
+        self.log.debug(
+            "Create new deposition: Status Code: {}".format(r.status_code))
 
         if r.status_code != 201:
             return {} if not return_response else r
@@ -222,7 +226,8 @@ class Zenodo(object):
             self.log.error(e)
             self.log.debug("Cannot read the content. So maybe it is in cache?")
             # for temporary files
-            files = {"file": (filename, open(os.path.expanduser(path_to_file), "rb"))}
+            files = {"file": (filename, open(
+                os.path.expanduser(path_to_file), "rb"))}
 
         self.log.debug(
             "Submit the following informations to zenodo.\nData: {}, Files: {}".format(
