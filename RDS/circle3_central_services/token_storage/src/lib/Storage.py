@@ -116,7 +116,8 @@ class Storage:
             try:
                 logger.debug("try to initialize the helper redis conn.")
                 rc_helper = Redis(
-                    host="{}-master".format(os.getenv("REDIS_HELPER_HOST", "localhost")),
+                    host="{}-master".format(
+                        os.getenv("REDIS_HELPER_HOST", "localhost")),
                     port=os.getenv("REDIS_HELPER_PORT", "6379"),
                     db=0,
                     decode_responses=True,
@@ -124,8 +125,9 @@ class Storage:
                 rc_helper.info()  # provoke an error message
                 self.__rc_helper = rc_helper
                 logger.debug("initialized helper redis conn.")
-            except:
+            except Exception as e:
                 logger.error("cannot initialize helper redis conn.")
+                logger.error(e, exc_info=True)
 
             logger.debug("set methods to redis backed dict to use it as list")
             self._services.append = append.__get__(self._services)
@@ -556,9 +558,11 @@ class Storage:
     def __publishTokenInRedis(self, token: Token):
         if not hasattr(self, "__rc_helper") or self.__rc_helper is None:
             return
+
         try:
             logger.debug("publish token in redis:")
-            self.__rc_helper.publish("TokenStorage_Refresh_Token", json.dumps(token))
+            self.__rc_helper.publish(
+                "TokenStorage_Refresh_Token", json.dumps(token))
             logger.debug("done")
         except Exception as e:
             logger.debug("failure")
