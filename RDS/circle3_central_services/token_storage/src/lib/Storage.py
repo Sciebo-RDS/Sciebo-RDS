@@ -601,16 +601,18 @@ class Storage:
 
             try:
                 new_token = token.refresh()
+
                 logger.debug(
                     "add new token {} to user {}".format(
                         new_token, user or new_token.user
                     )
                 )
+
+                self.__publishTokenInRedis(new_token)
+
                 self.addTokenToUser(
                     new_token, user or new_token.user, Force=True)
                 found = True
-
-                self.__publishTokenInRedis(new_token)
 
             except TokenNotValidError as e:
                 logging.getLogger().error(e)
@@ -619,7 +621,7 @@ class Storage:
             except requests.exceptions.RequestException as e:
                 logging.getLogger().error(e)
             except Exception as e:
-                logging.getLogger().error(e)
+                logging.getLogger().error(e, exc_info=True)
                 return False
 
         return found
