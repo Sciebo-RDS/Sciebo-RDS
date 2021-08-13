@@ -114,6 +114,8 @@ class Storage:
             self.__rc_helper = None
 
             try:
+                from redis import Redis
+
                 logger.debug("try to initialize the helper redis conn.")
                 rc_helper = Redis(
                     host="{}-master".format(
