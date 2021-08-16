@@ -126,6 +126,8 @@ class Storage:
                 )
                 rc_helper.info()  # provoke an error message
                 self.__rc_helper = rc_helper
+                self.__redis_helper_channel = os.getenv(
+                    "REDIS_CHANNEL", "TokenStorage_Refresh_Token")
                 logger.debug("initialized helper redis conn.")
             except Exception as e:
                 logger.error("cannot initialize helper redis conn.")
@@ -561,7 +563,7 @@ class Storage:
         try:
             logger.debug("publish token in redis:")
             self.__rc_helper.publish(
-                "TokenStorage_Refresh_Token", json.dumps(token))
+                self.__redis_helper_channel, json.dumps(token))
             logger.debug("done")
         except Exception as e:
             logger.error(f"redis helper error: {e}", exc_info=True)
