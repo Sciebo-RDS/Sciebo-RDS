@@ -71,7 +71,7 @@ paths:
       operationId: api.UserResearch.patch
       responses:
         '200':
-          description: OK
+          description: 'OK, metadata used from request body'
           content:
             application/json:
               schema:
@@ -100,7 +100,7 @@ paths:
                           resourceType: ''
                           resourceTypeGeneral: Poster
         '202':
-          description: Created
+          description: 'Created, metadata taken from EFSS folder automatically, because there were no request body'
         '404':
           description: Not found a ro-crate file in the configured EFSS folder.
       description: 'If no metadata were sent, the RO-Crate file will be used in the configured EFSS folder.'
@@ -154,7 +154,6 @@ paths:
                             type:
                               resourceType: ''
                               resourceTypeGeneral: Poster
-      
       description: |-
         Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. 
 
@@ -175,7 +174,6 @@ paths:
         description: 'If no keys are given, it returns all metadata.'
     patch:
       summary: Modify a research
-      
       responses:
         '200':
           description: OK
