@@ -558,16 +558,13 @@ class Storage:
         return self.internal_refresh_services(services)
 
     def __publishTokenInRedis(self, token: Token):
-        if not hasattr(self, "__rc_helper") or self.__rc_helper is None:
-            return
-
         try:
             logger.debug("publish token in redis:")
             self.__rc_helper.publish(
                 "TokenStorage_Refresh_Token", json.dumps(token))
             logger.debug("done")
         except Exception as e:
-            logger.debug("failure")
+            logger.error(f"redis helper error: {e}", exc_info=True)
 
     def internal_refresh_services(self, services: list):
         """
