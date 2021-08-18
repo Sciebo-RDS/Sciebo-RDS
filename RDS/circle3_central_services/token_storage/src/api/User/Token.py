@@ -1,7 +1,8 @@
 from flask import jsonify, request, abort
 import logging
 from RDS import Util, User, Token, OAuth2Token
-import utility, json
+import utility
+import json
 from lib.Exceptions.StorageException import UserHasTokenAlreadyError, UserNotExistsError
 
 init_object = Util.try_function_on_dict(
@@ -48,6 +49,50 @@ def post(user_id):
         code = 201
 
     return jsonify({"success": True}), code
+
+
+def put(user_id, token_id):
+    try:
+        token = utility.storage.getToken(user_id, token_id)
+
+        try:
+            from RDS.ServiceException import (
+                OAuth2UnsuccessfulResponseError,
+                TokenNotValidError,
+            )
+            import requests
+
+            new_token = token.refresh()
+
+            logger.debug(
+                "add new token {} to user {}".format(
+                    new_token, new_token.user
+                )
+            )
+
+            utility.storage.__publishTokenInRedis(new_token)
+
+            utility.storage.addTokenToUser(
+                new_token, new_token.user, Force=True)
+
+            return new_token.to_json()
+        except TokenNotValidError as e:
+            logger.error(e)
+        except OAuth2UnsuccessfulResponseError as e:
+            logger.error(e)
+        except requests.exceptions.RequestException as e:
+            logger.error(e)
+        except Exception as e:
+            logger.error(e, exc_info=True)
+
+    except UserNotExistsError as e:
+        abort(404, description=str(e))
+    except ValueError as e:
+        abort(404, description=str(e))
+    except Exception as e:
+        logger.error(str(e), exc_info=True)
+
+    abort(500)
 
 
 def get(user_id, token_id):

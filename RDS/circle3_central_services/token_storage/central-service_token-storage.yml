@@ -79,7 +79,6 @@ paths:
     parameters: []
     post:
       summary: Adds a new user
-      
       responses:
         '200':
           description: OK
@@ -119,7 +118,6 @@ paths:
       description: Returns the user with specified id.
     delete:
       summary: Remove user
-      
       responses:
         '200':
           description: OK
@@ -197,7 +195,6 @@ paths:
       description: Returns all tokens for the specified user.
     post:
       summary: Add a token
-      
       responses:
         '200':
           description: OK
@@ -235,7 +232,6 @@ paths:
         required: true
     delete:
       summary: ''
-      
       responses:
         '200':
           description: OK
@@ -259,11 +255,9 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/JSONService'
-      
       description: Returns all registered services.
     post:
       summary: Adds a new service
-      
       responses:
         '200':
           description: OK
@@ -314,14 +308,12 @@ paths:
                 $ref: '#/components/schemas/JSONToken'
         '404':
           description: Not Found
-      
       description: |-
         Returns the specified token from the specified user.
 
         If the token-id is a string, it will returns the corresponding token for the given servicename. Otherwise it needs to be an int and it returns the token in the given position.
     delete:
       summary: Remove token
-      
       responses:
         '200':
           description: OK
@@ -334,6 +326,17 @@ paths:
       tags:
         - token
       description: Deletes the specified token from the specified user.
+    put:
+      summary: ''
+      operationId: ''
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      description: 'Refresh the corresponding tokens, if there is a refresh algorithm available (e.g. oauth2).'
 components:
   schemas:
     Token:
