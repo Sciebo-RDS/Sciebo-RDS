@@ -19,7 +19,7 @@ connexion-plus = "==0.41"
 flask-cors = "*"
 jsonschema = "*"
 PyLD = "*"
-research-data-services-common = {extras = ["flask"], version = "==0.44"}
+research-data-services-common = {extras = ["flask"], version = "*"}
 
 [requires]
 python_version = "3.8"

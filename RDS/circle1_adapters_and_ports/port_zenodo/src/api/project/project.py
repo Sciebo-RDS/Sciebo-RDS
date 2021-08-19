@@ -1,3 +1,5 @@
+import json
+from RDS import ROParser
 import logging
 import os
 from lib.upload_zenodo import Zenodo
@@ -54,30 +56,57 @@ def get(project_id):
     return jsonify(output)
 
 
+def zenodo(res):
+    result = {}
+
+    result["title"] = res["name"]
+    result["description"] = res["description"]
+    creator = res["creator"]
+    result["publication_date"] = res["datePublished"]
+
+    result["creators"] = [creator] if not isinstance(
+        creator, list) else creator
+
+    if res["zenodocategory"].find("/") > 0:
+        typ, subtyp = tuple(res["zenodocategory"].split("/", 1))
+        result["upload_type"] = typ
+        result["{}_type".format(typ)] = subtyp
+
+    return result
+
+
 @require_api_key
 def post():
-
-    req = request.json.get("metadata")
-
     try:
-        req = from_jsonld(req)
-    except:
-        pass
+        req = request.json.get("metadata")
 
-    depoResponse = g.zenodo.create_new_deposition_internal(
-        metadata=req, return_response=True
-    )
+        if req is not None:
+            try:
+                doc = ROParser(req)
+                req = zenodo(doc.getElement(
+                    doc.rootIdentifier, expand=True, clean=True))
+            except Exception as e:
+                logger.error(e, exc_info=True)
 
-    if depoResponse.status_code < 300:
-        depoResponse = depoResponse.json()
-        return jsonify(
-            {
-                "projectId": str(depoResponse.get("id")),
-                "metadata": depoResponse.get("metadata"),
-            }
+        logger.debug("send metadata: {}".format(req))
+
+        depoResponse = g.zenodo.create_new_deposition_internal(
+            metadata=req, return_response=True
         )
 
-    abort(depoResponse.status_code)
+        if depoResponse.status_code < 300:
+            depoResponse = depoResponse.json()
+            return jsonify(
+                {
+                    "projectId": str(depoResponse.get("id")),
+                    "metadata": depoResponse.get("metadata"),
+                }
+            )
+
+        abort(depoResponse.status_code)
+    except Exception as e:
+        logger.error(e, exc_info=True)
+        abort(500)
 
 
 @require_api_key

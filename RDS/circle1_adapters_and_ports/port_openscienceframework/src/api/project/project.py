@@ -1,3 +1,5 @@
+import json
+from RDS import ROParser
 import logging
 import os
 from flask import jsonify, request, g, current_app
@@ -30,34 +32,29 @@ def get(project_id):
     return jsonify(depoResponse)
 
 
+def osf(res):
+    result = {}
+
+    result["title"] = res["name"]
+    result["category"] = res["osfcategory"]
+    result["description"] = res["description"].replace("\n", " ")
+
+    return result
+
+
 @require_api_key
 def post():
-    req = request.get_json(force=True)
-    metadata = req.get("metadata")
-
     try:
-        metadata = from_jsonld(metadata)
+        req = request.get_json(force=True)
+        metadata = req.get("metadata")
+
+        doc = ROParser(json.load(metadata))
+        kwargs = doc.getElement(doc.rootIdentifier, expand=True, clean=True)
+
+        logger.debug("send kwargs: {}".format(kwargs))
+        project = g.osf.create_project(**kwargs)
     except Exception as e:
         logger.error(e, exc_info=True)
-
-    try:
-        try:
-            project = g.osf.create_project_jsonld(metadata)
-
-        except:
-            args = (
-                req.get("title", "No title given, Created by Sciebo RDS"),
-                req.get("osf_category", None),
-            )
-            kwargs = {
-                "description": req.get("description", None),
-                "tags": req.get("tags", None),
-            }
-
-            logger.debug("send args: {}, kwargs: {}".format(args, kwargs))
-            project = g.osf.create_project(*args, **kwargs)
-
-    except:
         abort(500)
 
     return jsonify({"projectId": project.id, "metadata": project.metadata(jsonld=True)})

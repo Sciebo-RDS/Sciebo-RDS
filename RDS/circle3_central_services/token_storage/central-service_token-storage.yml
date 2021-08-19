@@ -336,7 +336,7 @@ paths:
           description: Not Found
         '500':
           description: Internal Server Error
-      description: 'Refresh the corresponding tokens, if there is a refresh algorithm available (e.g. oauth2).'
+      description: 'Refresh the corresponding token, if there is a refresh algorithm available (e.g. oauth2).'
 components:
   schemas:
     Token:
