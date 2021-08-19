@@ -55,35 +55,9 @@ def put(user_id, token_id):
     try:
         token = utility.storage.getToken(user_id, token_id)
 
-        try:
-            from RDS.ServiceException import (
-                OAuth2UnsuccessfulResponseError,
-                TokenNotValidError,
-            )
-            import requests
-
-            new_token = token.refresh()
-
-            logger.debug(
-                "add new token {} to user {}".format(
-                    new_token, new_token.user
-                )
-            )
-
-            utility.storage.__publishTokenInRedis(new_token)
-
-            utility.storage.addTokenToUser(
-                new_token, new_token.user, Force=True)
-
-            return new_token.to_json()
-        except TokenNotValidError as e:
-            logger.error(e)
-        except OAuth2UnsuccessfulResponseError as e:
-            logger.error(e)
-        except requests.exceptions.RequestException as e:
-            logger.error(e)
-        except Exception as e:
-            logger.error(e, exc_info=True)
+        return {
+            "success": utility.storage.internal_refresh_token(token)
+        }
 
     except UserNotExistsError as e:
         abort(404, description=str(e))

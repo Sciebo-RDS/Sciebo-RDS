@@ -568,6 +568,43 @@ class Storage:
         except Exception as e:
             logger.error(f"redis helper error: {e}", exc_info=True)
 
+    def internal_refresh_token(self, token, user=None):
+        if not isinstance(token, OAuth2Token) or not isinstance(
+            token.service, OAuth2Service
+        ):
+            return False
+
+        # refresh token
+        from RDS.ServiceException import (
+            OAuth2UnsuccessfulResponseError,
+            TokenNotValidError,
+        )
+
+        try:
+            new_token = token.refresh()
+
+            logger.debug(
+                "add new token {} to user {}".format(
+                    new_token, user or new_token.user
+                )
+            )
+
+            self.__publishTokenInRedis(new_token)
+
+            self.addTokenToUser(new_token, user or new_token.user, Force=True)
+
+            return True
+        except TokenNotValidError as e:
+            logging.getLogger().error(e)
+        except OAuth2UnsuccessfulResponseError as e:
+            logging.getLogger().error(e)
+        except requests.exceptions.RequestException as e:
+            logging.getLogger().error(e)
+        except Exception as e:
+            logging.getLogger().error(e, exc_info=True)
+
+        return False
+
     def internal_refresh_services(self, services: list):
         """
         *Only for internal use. Do not use it in another class.*
@@ -587,41 +624,8 @@ class Storage:
         ]
 
         for user, token in tokens:
-            if not isinstance(token, OAuth2Token) or not isinstance(
-                token.service, OAuth2Service
-            ):
-                continue
-
-            # refresh token
-            from RDS.ServiceException import (
-                OAuth2UnsuccessfulResponseError,
-                TokenNotValidError,
-            )
-
-            try:
-                new_token = token.refresh()
-
-                logger.debug(
-                    "add new token {} to user {}".format(
-                        new_token, user or new_token.user
-                    )
-                )
-
-                self.__publishTokenInRedis(new_token)
-
-                self.addTokenToUser(
-                    new_token, user or new_token.user, Force=True)
+            if self.internal_refresh_token(token, user=user):
                 found = True
-
-            except TokenNotValidError as e:
-                logging.getLogger().error(e)
-            except OAuth2UnsuccessfulResponseError as e:
-                logging.getLogger().error(e)
-            except requests.exceptions.RequestException as e:
-                logging.getLogger().error(e)
-            except Exception as e:
-                logging.getLogger().error(e, exc_info=True)
-                return False
 
         return found
 
