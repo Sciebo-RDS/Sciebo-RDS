@@ -44,18 +44,29 @@ def osf(res):
 
 @require_api_key
 def post():
+    args = []
+    kwargs = {}
+
     try:
         req = request.get_json(force=True)
         metadata = req.get("metadata")
 
         doc = ROParser(json.load(metadata))
         kwargs = doc.getElement(doc.rootIdentifier, expand=True, clean=True)
-
-        logger.debug("send kwargs: {}".format(kwargs))
-        project = g.osf.create_project(**kwargs)
     except Exception as e:
         logger.error(e, exc_info=True)
-        abort(500)
+
+        args = (
+            req.get("title", "No title given, Created by Sciebo RDS"),
+            req.get("osf_category", None),
+        )
+        kwargs = {
+            "description": req.get("description", None),
+            "tags": req.get("tags", None),
+        }
+
+    logger.debug("send args: {}, kwargs: {}".format(args, kwargs))
+    project = g.osf.create_project(*args, **kwargs)
 
     return jsonify({"projectId": project.id, "metadata": project.metadata(jsonld=True)})
 
