@@ -10,7 +10,7 @@ pytest-cov = "*"
 pydoc-markdown = "==2.1.3"
 
 [packages]
-requests = "==2.25"
+requests = "==2.24"
 jaeger-client = "*"
 gevent = "*"
 connexion = {extras = ["swagger-ui"],version = "==2.7.0"}

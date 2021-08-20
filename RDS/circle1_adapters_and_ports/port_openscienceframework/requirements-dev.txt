@@ -67,7 +67,7 @@ python-dateutil==2.8.2; python_version >= '2.7' and python_version not in '3.0, 
 pytz==2021.1
 pyyaml-env-tag==0.1; python_version >= '3.6'
 pyyaml==5.4.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'
-requests==2.25
+requests==2.24
 research-data-services-common[flask]==0.46
 restnavigator==1.0.1
 semver==2.13.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
@@ -81,7 +81,7 @@ tqdm==4.62.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 
 tzlocal==2.1
 unidecode==1.2.0
 uritemplate==3.0.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
-urllib3==1.26.6; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
+urllib3==1.25.11; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
 watchdog==2.1.4; python_version >= '3.6'
 werkzeug==2.0.1; python_version >= '3.6'
 wrapt==1.12.1
