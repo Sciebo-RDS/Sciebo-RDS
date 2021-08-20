@@ -81,6 +81,8 @@ def post():
         req = request.get_json(force=True)
         metadata = req.get("metadata")
 
+        logger.debug(f"got metadata: {metadata}")
+
         if metadata is not None:
             try:
                 doc = ROParser(metadata)
