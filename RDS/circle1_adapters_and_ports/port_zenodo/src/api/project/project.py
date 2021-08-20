@@ -78,20 +78,21 @@ def zenodo(res):
 @require_api_key
 def post():
     try:
-        req = request.get_json(force=True).get("metadata")
+        req = request.get_json(force=True)
+        metadata = req.get("metadata")
 
-        if req is not None:
+        if metadata is not None:
             try:
-                doc = ROParser(req)
-                req = zenodo(doc.getElement(
+                doc = ROParser(metadata)
+                metadata = zenodo(doc.getElement(
                     doc.rootIdentifier, expand=True, clean=True))
             except Exception as e:
                 logger.error(e, exc_info=True)
 
-        logger.debug("send metadata: {}".format(req))
+        logger.debug("send metadata: {}".format(metadata))
 
         depoResponse = g.zenodo.create_new_deposition_internal(
-            metadata=req, return_response=True
+            metadata=metadata, return_response=True
         )
 
         if depoResponse.status_code < 300:
@@ -120,16 +121,18 @@ def delete(project_id):
 @require_api_key
 def patch(project_id):
     req = request.get_json(force=True)
-
     logger.debug("request data: {}".format(req))
-    userId = req.get("userId")
+
     metadata = req.get("metadata")
+    if metadata is not None:
+        try:
+            doc = ROParser(metadata)
+            metadata = zenodo(doc.getElement(
+                doc.rootIdentifier, expand=True, clean=True))
+        except Exception as e:
+            logger.error(e, exc_info=True)
 
-    try:
-        metadata = from_jsonld(metadata)
-    except Exception as e:
-        logger.error(e, exc_info=True)
-
+    userId = req.get("userId")
     logger.debug("transformed data: {}".format(metadata))
 
     depoResponse = g.zenodo.change_metadata_in_deposition_internal(

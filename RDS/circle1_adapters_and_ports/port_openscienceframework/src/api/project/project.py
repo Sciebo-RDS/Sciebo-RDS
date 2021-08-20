@@ -52,7 +52,10 @@ def post():
         metadata = req.get("metadata")
 
         doc = ROParser(metadata)
-        kwargs = doc.getElement(doc.rootIdentifier, expand=True, clean=True)
+        kwargs = osf(doc.getElement(
+            doc.rootIdentifier, expand=True, clean=True))
+        logger.debug("send kwargs: {}".format(kwargs))
+        project = g.osf.create_project(**kwargs)
     except Exception as e:
         logger.error(e, exc_info=True)
 
@@ -65,8 +68,8 @@ def post():
             "tags": req.get("tags", None),
         }
 
-    logger.debug("send args: {}, kwargs: {}".format(args, kwargs))
-    project = g.osf.create_project(*args, **kwargs)
+        logger.debug("send args: {}, kwargs: {}".format(args, kwargs))
+        project = g.osf.create_project(*args, **kwargs)
 
     return jsonify({"projectId": project.id, "metadata": project.metadata(jsonld=True)})
 
@@ -81,16 +84,20 @@ def delete(project_id):
 
 @require_api_key
 def patch(project_id):
-    req = request.get_json(force=True, cache=True).get("metadata")
+    req = request.get_json(force=True)
+    metadata = req.get("metadata")
 
-    try:
-        req = from_jsonld(req)
-    except Exception as e:
-        logger.error(e, exc_info=True)
+    if metadata is not None:
+        try:
+            doc = ROParser(metadata)
+            metadata = osf(doc.getElement(
+                doc.rootIdentifier, expand=True, clean=True))
+        except Exception as e:
+            logger.error(e, exc_info=True)
 
     project = g.osf.project(project_id)
 
-    if project.update(req):
+    if project.update(metadata):
         return jsonify(project.metadata(jsonld=True))
 
     abort(500)
