@@ -130,6 +130,7 @@ class Research:
             logger.debug(
                 "use zipfile, because the folder holds folders again? {}".format(useZipForContent))
 
+            zip = None
             if useZipForContent:
                 mem_zip = BytesIO()
                 zip = zipfile.ZipFile(
