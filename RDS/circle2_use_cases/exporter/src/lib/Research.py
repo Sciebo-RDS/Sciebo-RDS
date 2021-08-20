@@ -146,28 +146,31 @@ class Research:
                 for fileTuple in files:
                     logger.debug(
                         "Thread {}: file: {}, contentlength: {}".format(
-                            i,fileTuple[0], fileTuple[1].getbuffer().nbytes
+                            i, fileTuple[0], fileTuple[1].getbuffer().nbytes
                         )
                     )
 
-                    logger.debug(f"Thread {i}: write to zipfile? {useZipForContent}")
+                    logger.debug(
+                        f"Thread {i}: write to zipfile? {useZipForContent}")
 
                     # TODO: needs tests
                     if useZipForContent:
                         with zipLock:
                             zip.writestr(fileTuple[0], fileTuple[1].read())
-                            logger.debug(f"Thread {i}: done writing to zipfile")
+                            logger.debug(
+                                f"Thread {i}: done writing to zipfile")
 
                     logger.debug(f"Thread {i}: Send file to exportservices")
                     # useZipForContent skips services, which needs zip, if folder in folder found.
                     self.addFile(folderInFolder=useZipForContent, *fileTuple)
-                    logger.debug(f"Thread {i}: Finish sending file to exportservices")
+                    logger.debug(
+                        f"Thread {i}: Finish sending file to exportservices")
 
                 logger.debug(f"Thread {i}: Finished thread")
-                
+
             threads = [
-                threading.Thread(target=loop, args=(files, i)) 
-                for i in os.cpu_count() / 2 + 1
+                threading.Thread(target=loop, args=(files, i))
+                for i in range(0, os.cpu_count() / 2 + 1)
             ]
 
             logger.debug("starts threading")
