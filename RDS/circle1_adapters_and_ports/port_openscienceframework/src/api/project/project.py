@@ -92,12 +92,13 @@ def patch(project_id):
             doc = ROParser(metadata)
             metadata = osf(doc.getElement(
                 doc.rootIdentifier, expand=True, clean=True))
+            metadata = {'data': {'attributes': metadata}}
         except Exception as e:
             logger.error(e, exc_info=True)
 
     project = g.osf.project(project_id)
 
-    if project.update(metadata):
+    if project.update():
         return jsonify(project.metadata(jsonld=True))
 
     abort(500)
