@@ -173,7 +173,7 @@ class Research:
                 for i in range(0, int(os.cpu_count() / 2) + 1)
             ]
 
-            logger.debug("starts threading")
+            logger.debug(f"starts threading: {threads}")
 
             # start threads
             for t in threads:
