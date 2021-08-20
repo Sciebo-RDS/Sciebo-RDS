@@ -100,7 +100,7 @@ def patch(project_id):
 
     project = g.osf.project(project_id)
 
-    if project.update():
+    if project.update(metadata):
         return jsonify(project.metadata(jsonld=True))
 
     abort(500)
