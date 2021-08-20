@@ -78,7 +78,7 @@ def zenodo(res):
 @require_api_key
 def post():
     try:
-        req = request.json.get("metadata")
+        req = request.get_json(force=True).get("metadata")
 
         if req is not None:
             try:

@@ -51,7 +51,7 @@ def post():
         req = request.get_json(force=True)
         metadata = req.get("metadata")
 
-        doc = ROParser(json.load(metadata))
+        doc = ROParser(metadata)
         kwargs = doc.getElement(doc.rootIdentifier, expand=True, clean=True)
     except Exception as e:
         logger.error(e, exc_info=True)
