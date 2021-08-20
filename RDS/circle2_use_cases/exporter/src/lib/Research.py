@@ -130,62 +130,27 @@ class Research:
             logger.debug(
                 "use zipfile, because the folder holds folders again? {}".format(useZipForContent))
 
-            zip = None
             if useZipForContent:
                 mem_zip = BytesIO()
                 zip = zipfile.ZipFile(
                     mem_zip, mode="w", compression=zipfile.ZIP_STORED)
 
-            files = threadsafe_iter(svc.getFiles(getContent=True))
-            zipLock = threading.Lock()
-
-            def loop(files, i, useZipForContent, zip, self, logger, zipLock):
-                logger.debug(f"Thread {i}: Starts thread")
-
-                for fileTuple in files:
-                    logger.debug(
-                        "Thread {}: file: {}, contentlength: {}".format(
-                            i, fileTuple[0], fileTuple[1].getbuffer().nbytes
-                        )
+            for fileTuple in svc.getFiles(getContent=True):
+                logger.debug(
+                    "file: {}, contentlength: {}".format(
+                        fileTuple[0], fileTuple[1].getbuffer().nbytes
                     )
+                )
 
-                    logger.debug(
-                        f"Thread {i}: write to zipfile? {useZipForContent}")
+                logger.debug("write to zipfile? {}".format(useZipForContent))
 
-                    # TODO: needs tests
-                    if useZipForContent:
-                        with zipLock:
-                            zip.writestr(fileTuple[0], fileTuple[1].read())
-                            logger.debug(
-                                f"Thread {i}: done writing to zipfile")
+                # TODO: needs tests
+                if useZipForContent:
+                    zip.writestr(fileTuple[0], fileTuple[1].read())
+                    logger.debug("done writing to zipfile")
 
-                    logger.debug(f"Thread {i}: Send file to exportservices")
-                    # useZipForContent skips services, which needs zip, if folder in folder found.
-                    self.addFile(folderInFolder=useZipForContent, *fileTuple)
-                    logger.debug(
-                        f"Thread {i}: Finish sending file to exportservices")
-
-                logger.debug(f"Thread {i}: Finished thread")
-
-            threads = [
-                threading.Thread(target=loop, args=(
-                    files, i, useZipForContent, zip, self, logger, zipLock))
-                for i in range(0, int(os.cpu_count() / 2) + 1)
-            ]
-
-            logger.debug(f"starts threading: {threads}")
-
-            # start threads
-            for t in threads:
-                logger.debug(f"starting thread: {t}")
-                t.start()
-
-            # wait for threads to finish
-            for t in threads:
-                logger.debug(f"wait for thread: {t}")
-                t.join()
-
-            logger.debug(f"finished threading: {threads}")
+                # useZipForContent skips services, which needs zip, if folder in folder found.
+                self.addFile(folderInFolder=useZipForContent, *fileTuple)
 
             if useZipForContent:
                 import re
