@@ -177,13 +177,15 @@ class Research:
 
             # start threads
             for t in threads:
+                logger.debug(f"starting thread: {t}")
                 t.start()
 
             # wait for threads to finish
             for t in threads:
+                logger.debug(f"wait for thread: {t}")
                 t.join()
 
-            logger.debug("finished threading")
+            logger.debug(f"finished threading: {threads}")
 
             if useZipForContent:
                 import re
