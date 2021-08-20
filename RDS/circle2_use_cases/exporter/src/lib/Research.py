@@ -138,9 +138,7 @@ class Research:
             files = threadsafe_iter(svc.getFiles(getContent=True))
             zipLock = threading.Lock()
 
-            def loop(files, i):
-                """Runs the given function n times in a loop.
-                """
+            def loop(files, i, useZipForContent, zip, self, logger, zipLock):
                 logger.debug(f"Thread {i}: Starts thread")
 
                 for fileTuple in files:
@@ -169,7 +167,8 @@ class Research:
                 logger.debug(f"Thread {i}: Finished thread")
 
             threads = [
-                threading.Thread(target=loop, args=(files, i))
+                threading.Thread(target=loop, args=(
+                    files, i, useZipForContent, zip, self, logger, zipLock))
                 for i in range(0, int(os.cpu_count() / 2) + 1)
             ]
 
