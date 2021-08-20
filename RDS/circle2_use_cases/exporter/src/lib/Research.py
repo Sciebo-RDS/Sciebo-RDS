@@ -170,7 +170,7 @@ class Research:
 
             threads = [
                 threading.Thread(target=loop, args=(files, i))
-                for i in range(0, os.cpu_count() / 2 + 1)
+                for i in range(0, int(os.cpu_count() / 2) + 1)
             ]
 
             logger.debug("starts threading")
