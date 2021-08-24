@@ -433,7 +433,7 @@
         "osfclient": {
             "editable": false,
             "git": "https://github.com/Sciebo-RDS/osfclient.git",
-            "ref": "0f576096c8db8c23540e6775c97c3436150baa44"
+            "ref": "53043bee7d1a16e5029f99b1c88642543e3507ee"
         },
         "prometheus-client": {
             "hashes": [
