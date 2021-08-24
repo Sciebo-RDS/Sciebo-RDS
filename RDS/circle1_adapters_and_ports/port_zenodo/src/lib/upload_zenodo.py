@@ -3,6 +3,28 @@ import json
 import os
 import logging
 from flask import abort
+from functools import wraps
+import time
+
+
+def _rate_limit(func, per_second=1):
+    """Limit number of requests made per second.
+
+    Will sleep for 1/``per_second`` seconds if the last request was
+    made too recently.
+    """
+    @wraps(func)
+    def wrapper(self, url, *args, **kwargs):
+        if self.last_request is not None:
+            now = time.time()
+            delta = now - self.last_request
+            if delta < (1 / per_second):
+                time.sleep(1 - delta)
+
+        self.last_request = time.time()
+        return func(self, url, *args, **kwargs)
+
+    return wrapper
 
 
 class Zenodo(object):
@@ -73,6 +95,7 @@ class Zenodo(object):
 
         return r.status_code == 200
 
+    @_rate_limit(5)
     def get_deposition_internal(
         self, id: int = None, return_response: bool = False, metadataFilter: dict = None
     ):
