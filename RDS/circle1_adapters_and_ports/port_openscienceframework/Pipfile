@@ -15,7 +15,7 @@ jaeger-client = "*"
 gevent = "*"
 connexion = {extras = ["swagger-ui"],version = "==2.7.0"}
 connexion-plus = "==0.41"
-osfclient = {editable = false, git = "https://github.com/Sciebo-RDS/osfclient.git"}
+osfclient = "*"
 pyld = "*"
 research-data-services-common = {extras = ["flask"], version = "*"}
 openapi-spec-validator = "<0.3"

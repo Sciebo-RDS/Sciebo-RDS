@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8aaf10d23c05c5df65c3dd55c38eaa9d4bd80501f8dde40219d522e733ac3094"
+            "sha256": "9ad7e75c4f926b3f27ac5f9bba960aa4c0b565b89b230d8c6542db70dc2bdefc"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -432,9 +432,12 @@
             "version": "==3.3.1"
         },
         "osfclient": {
-            "editable": false,
-            "git": "https://github.com/Sciebo-RDS/osfclient.git",
-            "ref": "4d2aac4456da708725ce4baec61ae974e0a16b44"
+            "hashes": [
+                "sha256:2351a61785f2ad662f1f4e7775d77dc4c185379473553f46fbfcfb65da819b80",
+                "sha256:47c92bbdce57ecc0ed87eabe459025cc549080c48b28ebc86bfc5d82545a75c8"
+            ],
+            "index": "pypi",
+            "version": "==0.0.5"
         },
         "prometheus-client": {
             "hashes": [
