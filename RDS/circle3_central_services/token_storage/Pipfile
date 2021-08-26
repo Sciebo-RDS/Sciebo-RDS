@@ -17,7 +17,7 @@ requests = "*"
 gevent = "*"
 python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
-connexion-plus = "*"
+connexion-plus = "==0.41"
 apscheduler = "*"
 research-data-services-common = {extras = ["flask"], version = "*"}
 redis-pubsub-dict = "*"
