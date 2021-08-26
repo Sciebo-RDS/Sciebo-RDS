@@ -501,13 +501,6 @@ class Storage:
             index = self._storage[user.username]["tokens"].index(token)
             logger.debug(f"found index {index}")
 
-            """
-            obsolete since model update
-            if user is not None:
-                from .Exceptions.StorageException import TokenNotForUser
-                raise TokenNotForUser(self, user, token)
-            """
-
             if Force:
                 data = self._storage[user.username]
 

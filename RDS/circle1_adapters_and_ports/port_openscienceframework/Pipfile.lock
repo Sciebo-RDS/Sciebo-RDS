@@ -438,7 +438,7 @@
                 "sha256:2351a61785f2ad662f1f4e7775d77dc4c185379473553f46fbfcfb65da819b80",
                 "sha256:47c92bbdce57ecc0ed87eabe459025cc549080c48b28ebc86bfc5d82545a75c8"
             ],
-            "ref": "58a811327c2871f91f03d88527e54dab34d5d89b"
+            "ref": "892310faa2c53dac477c72776e2c425e850c3071"
         },
         "prometheus-client": {
             "hashes": [
