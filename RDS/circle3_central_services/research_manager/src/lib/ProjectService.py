@@ -1,6 +1,7 @@
 from lib.Project import Project
 import logging
-import requests, os
+import requests
+import os
 from lib.EnumStatus import Status
 from RDS import Util
 
@@ -19,7 +20,9 @@ class ProjectService:
         # format: {user: [<type project>]}
         try:
             from redis_pubsub_dict import RedisDict
-            import redis_pubsub_dict, functools, json
+            import redis_pubsub_dict
+            import functools
+            import json
 
             redis_pubsub_dict.dumps = lambda x: json.dumps(x)
             redis_pubsub_dict.loads = lambda x: Util.try_function_on_dict(
@@ -51,10 +54,12 @@ class ProjectService:
                     )
                 except Exception as e:
                     logger.error(e)
-                    logger.debug("Cluster has an error, try standardalone redis")
+                    logger.debug(
+                        "Cluster has an error, try standardalone redis")
                     from redis import Redis
 
-                    rc = Redis(**(startup_nodes[0]), db=0, decode_responses=True,)
+                    rc = Redis(**(startup_nodes[0]),
+                               db=0, decode_responses=True,)
                     rc.info()  # provoke an error message
 
             logger.debug("set redis backed dict")
@@ -99,7 +104,8 @@ class ProjectService:
             )
 
         if isinstance(userOrProject, str):
-            userOrProject = Project(userOrProject, portIn=portIn, portOut=portOut)
+            userOrProject = Project(
+                userOrProject, portIn=portIn, portOut=portOut)
 
         researchId = self.highest_index
 
@@ -185,14 +191,25 @@ class ProjectService:
 
         raise NotFoundIDError(user, researchIndex)
 
-    def removeProject(
-        self, user: str = None, researchIndex: int = None, researchId: int = None
+    def setProjectStatus(
+        self, user: str = None, researchIndex: int = None, researchId: int = None, status=Status.DELETED
     ):
-        """
-        This method removes the projects for given user. 
+        """Set the status of the given project.
 
-        If researchIndex was given, only the corresponding researchIndex will be removed (no user required, but it is faster).
-        Returns True if it is successful or raise an exception if user or researchIndex not found. Else returns false.
+        Args:
+            user (str, optional): [description]. Defaults to None.
+            researchIndex (int, optional): [description]. Defaults to None.
+            researchId (int, optional): [description]. Defaults to None.
+            status ([type], optional): [description]. Defaults to Status.DELETED.
+
+        Raises:
+            NotFoundIDError: [description]
+            Exception: [description]
+            NotFoundUserError: [description]
+            NotFoundIDError: [description]
+
+        Returns:
+            [bool]: Returns true, if successfully set. Otherwise false.
         """
         if user is not None:
             if researchIndex is not None:
@@ -204,7 +221,7 @@ class ProjectService:
 
                 try:
                     projects = self.projects[user]
-                    projects[rmv_id].status = Status.DELETED
+                    projects[rmv_id].status = status
                     self.projects[user] = projects
                     # del self.projects[user][rmv_id]
                 except:
@@ -216,7 +233,7 @@ class ProjectService:
 
                     try:
                         projects = self.projects[user]
-                        projects[researchIndex].status = Status.DELETED
+                        projects[researchIndex].status = status
                         self.projects[user] = projects
                         # del self.projects[user][researchIndex]
                         return True
@@ -232,8 +249,8 @@ class ProjectService:
                     found = False
                     projects = self.projects[user]
                     for proj in projects:
-                        if proj.status != Status.DELETED:
-                            proj.status = Status.DELETED
+                        if proj.status != status:
+                            proj.status = status
                             found = True
 
                     self.projects[user] = projects
@@ -259,7 +276,7 @@ class ProjectService:
 
                 try:
                     projects = self.projects[user]
-                    projects[rmv_id].status = Status.DELETED
+                    projects[rmv_id].status = status
                     self.projects[user] = projects
                     # del self.projects[user][rmv_id]
                 except:
@@ -269,6 +286,47 @@ class ProjectService:
                 return True
 
         return False
+
+    def finishProject(self, user: str = None, researchIndex: int = None, researchId: int = None):
+        """Finish a project
+
+        Args:
+            user (str, optional): [description]. Defaults to None.
+            researchIndex (int, optional): [description]. Defaults to None.
+            researchId (int, optional): [description]. Defaults to None.
+
+        Returns:
+            [bool]: Return true, when successfully set, otherwise false.
+        """
+        return self.setProjectStatus(user=user, researchIndex=researchIndex,
+                                     researchId=researchId, status=Status.DONE)
+    
+    def bumpProject(self, user: str = None, researchIndex: int = None, researchId: int = None):
+        """Bump the status of a project.
+
+        Args:
+            user (str, optional): [description]. Defaults to None.
+            researchIndex (int, optional): [description]. Defaults to None.
+            researchId (int, optional): [description]. Defaults to None.
+
+        Returns:
+            [bool]: Return true, when successfully set, otherwise false.
+        """
+        status = self.getProject(user=user, researchIndex=researchIndex,researchId=researchId).status
+        return self.setProjectStatus(user=user, researchIndex=researchIndex,
+                                     researchId=researchId, status=status.succ())
+
+    def removeProject(
+        self, user: str = None, researchIndex: int = None, researchId: int = None
+    ):
+        """
+        This method removes the projects for given user. 
+
+        If researchIndex was given, only the corresponding researchIndex will be removed (no user required, but it is faster).
+        Returns True if it is successful or raise an exception if user or researchIndex not found. Else returns false.
+        """
+        return self.setProjectStatus(user=user, researchIndex=researchIndex,
+                                     researchId=researchId, status=Status.DELETED)
 
     def getJSON(self):
         import json
