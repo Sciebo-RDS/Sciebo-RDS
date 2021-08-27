@@ -110,7 +110,7 @@ def put(user_id, research_index):
     requests.patch(
         "{}/user/{}/research/{}/status".format(
             url, user_id, research_index),
-        verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        verify=(os.environ.get("VERIFY_SSL", "True") == "True"), json={"finish": True}
     )
 
     if resp:
