@@ -41,10 +41,12 @@ def make_test_case(use_redis=False):
                     "status": Status.CREATED.value,
                     "portIn": [],
                     "portOut": [],
+                    "researchname": None,
                 }
             ]
 
-            self.assertEqual([proj.getDict() for proj in md.getProject()], expected)
+            self.assertEqual([proj.getDict()
+                              for proj in md.getProject()], expected)
 
             md.addProject("user")
 
@@ -56,6 +58,7 @@ def make_test_case(use_redis=False):
                     "status": Status.CREATED.value,
                     "portIn": [],
                     "portOut": [],
+                    "researchname": None,
                 },
                 {
                     "userId": "user",
@@ -64,10 +67,12 @@ def make_test_case(use_redis=False):
                     "status": Status.CREATED.value,
                     "portIn": [],
                     "portOut": [],
+                    "researchname": None,
                 },
             ]
 
-            self.assertEqual([proj.getDict() for proj in md.getProject()], expected)
+            self.assertEqual([proj.getDict()
+                              for proj in md.getProject()], expected)
 
             expected = [
                 {
@@ -77,6 +82,7 @@ def make_test_case(use_redis=False):
                     "status": Status.CREATED.value,
                     "portIn": [],
                     "portOut": [],
+                    "researchname": None,
                 }
             ]
 
@@ -92,6 +98,7 @@ def make_test_case(use_redis=False):
                     "status": Status.CREATED.value,
                     "portIn": [],
                     "portOut": [],
+                    "researchname": None,
                 }
             ]
 
@@ -103,7 +110,8 @@ def make_test_case(use_redis=False):
                 md.getProject(user="user", researchIndex="0")
 
             self.assertEqual(
-                md.getProject(user="user", researchIndex=0).getDict(), expected[0]
+                md.getProject(
+                    user="user", researchIndex=0).getDict(), expected[0]
             )
 
         def test_highest_index(self):
@@ -143,6 +151,7 @@ def make_test_case(use_redis=False):
                     "status": Status.CREATED.value,
                     "portIn": [],
                     "portOut": [],
+                    "researchname": None,
                 },
                 {
                     "userId": "admin",
@@ -151,6 +160,7 @@ def make_test_case(use_redis=False):
                     "status": Status.CREATED.value,
                     "portIn": [portOwncloud.getDict()],
                     "portOut": [],
+                    "researchname": None,
                 },
                 {
                     "userId": "user",
@@ -159,6 +169,7 @@ def make_test_case(use_redis=False):
                     "status": Status.CREATED.value,
                     "portIn": [portOwncloud.getDict()],
                     "portOut": [portInvenio.getDict()],
+                    "researchname": None,
                 },
             ]
 
@@ -175,13 +186,15 @@ def make_test_case(use_redis=False):
 
             md.addProject("admin", portIn=[])
             md.addProject("admin", portIn=[portOwncloud])
-            proj = Project(user="user", portIn=[portOwncloud], portOut=[portInvenio])
+            proj = Project(user="user", portIn=[
+                           portOwncloud], portOut=[portInvenio])
             md.addProject(proj)
 
             self.assertEqual(md.getProject(researchId=0), Project("admin"))
             # the following is not equal, because the first project comes with a researchId
             self.assertNotEqual(
-                md.getProject(researchId=0).getDict(), Project("admin").getDict()
+                md.getProject(researchId=0).getDict(), Project(
+                    "admin").getDict()
             )
             self.assertEqual(md.getProject(researchId=2), proj)
 
@@ -235,6 +248,7 @@ def make_test_case(use_redis=False):
                     "status": Status.DELETED.value,
                     "portIn": [],
                     "portOut": [],
+                    "researchname": None,
                 },
                 {
                     "userId": "admin",
@@ -243,6 +257,7 @@ def make_test_case(use_redis=False):
                     "status": Status.CREATED.value,
                     "portIn": [portOwncloud.getDict()],
                     "portOut": [],
+                    "researchname": None,
                 },
                 {
                     "userId": "user",
@@ -251,18 +266,22 @@ def make_test_case(use_redis=False):
                     "status": Status.CREATED.value,
                     "portIn": [portOwncloud.getDict()],
                     "portOut": [portInvenio.getDict()],
+                    "researchname": None,
                 },
             ]
 
-            self.assertEqual([proj.getDict() for proj in md.getProject()], expected)
+            self.assertEqual([proj.getDict()
+                              for proj in md.getProject()], expected)
 
             expected[0]["status"] = Status.DELETED.value
             md.removeProject("admin", 0)
-            self.assertEqual([proj.getDict() for proj in md.getProject()], expected)
+            self.assertEqual([proj.getDict()
+                              for proj in md.getProject()], expected)
 
             expected[2]["status"] = Status.DELETED.value
             md.removeProject("user")
-            self.assertEqual([proj.getDict() for proj in md.getProject()], expected)
+            self.assertEqual([proj.getDict()
+                              for proj in md.getProject()], expected)
 
             from lib.Exceptions.ProjectServiceExceptions import (
                 NotFoundUserError,
@@ -326,7 +345,8 @@ def make_test_case(use_redis=False):
             id1 = md.addProject("admin", portIn=[portOwncloud]).researchId
 
             # we remove the first one, so there are only 2 projects left
-            self.assertEqual([portOwncloud], md.getProject(researchId=id1).getPortIn())
+            self.assertEqual([portOwncloud], md.getProject(
+                researchId=id1).getPortIn())
 
         def test_projectservice_setProject(self):
             """
@@ -342,14 +362,16 @@ def make_test_case(use_redis=False):
             expected_proj1 = Project("admin")
 
             proj1 = md.addProject("admin", portIn=[])
-            self.assertEqual(expected_proj1, md.getProject(researchId=proj1.researchId))
+            self.assertEqual(expected_proj1, md.getProject(
+                researchId=proj1.researchId))
 
             expected_proj1.addPortIn(portOwncloud)
 
             proj1.addPortIn(portOwncloud)
             md.setProject(proj1.user, proj1)
 
-            self.assertEqual(expected_proj1, md.getProject(researchId=proj1.researchId))
+            self.assertEqual(expected_proj1, md.getProject(
+                researchId=proj1.researchId))
 
     return Test_projectserviceService
 

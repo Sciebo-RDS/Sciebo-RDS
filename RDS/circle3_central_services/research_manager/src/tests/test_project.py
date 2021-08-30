@@ -13,7 +13,8 @@ class Test_Project(unittest.TestCase):
             "userId": "admin",
             "status": Status.CREATED.value,
             "portIn": [],
-            "portOut": []
+            "portOut": [],
+            "researchname": None,
         }
         self.assertEqual(proj1.getDict(), expected, msg=proj1.getDict())
 
@@ -108,3 +109,28 @@ class Test_Project(unittest.TestCase):
             last = proj1.status
 
         self.assertEqual(proj1.status, Status.DELETED)
+
+    def test_project_researchname(self):
+        self.assertEqual(Project("admin").researchname, None)
+        self.assertNotEqual(
+            Project("admin", researchname="test1").researchname, None)
+
+        expected_title = "test1"
+        proj1 = Project("admin", researchname=expected_title)
+        self.assertEqual(proj1.researchname, expected_title)
+
+        expected_title = "test2"
+        proj1.setResearchname(expected_title)
+        self.assertEqual(proj1.researchname, expected_title)
+
+        self.assertEqual(proj1, Project("admin", researchname=expected_title))
+        self.assertNotEqual(proj1.getJSON(), Project(
+            "admin").getJSON())
+        self.assertEqual(proj1.getJSON(), Project(
+            "admin", researchname=expected_title).getJSON())
+        self.assertEqual(Project.fromJSON([proj1.getJSON()]), Project.fromJSON([
+            Project("admin", researchname=expected_title).getJSON()]))
+        self.assertEqual(Project.fromJSON(proj1.getJSON()), Project.fromJSON(
+            Project("admin", researchname=expected_title).getJSON()))
+        self.assertNotEqual(Project.fromJSON(proj1.getJSON()), Project.fromJSON(
+            Project("admin").getJSON()))

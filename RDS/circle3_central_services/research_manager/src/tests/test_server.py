@@ -34,7 +34,8 @@ class TestProjectService(unittest.TestCase):
                 "portIn": [],
                 "portOut": [],
                 "researchId": highest_index,
-                "researchIndex": 0
+                "researchIndex": 0,
+                "researchname": None,
             }]
 
             highest_index += 1
@@ -60,21 +61,24 @@ class TestProjectService(unittest.TestCase):
             "portIn": [],
             "portOut": [],
             "researchId": 0,
-            "researchIndex": 0
+            "researchIndex": 0,
+            "researchname": None,
         }, {
             "userId": "admin",
             "status": 1,
             "portIn": [],
             "portOut": [],
             "researchId": 1,
-            "researchIndex": 1
+            "researchIndex": 1,
+            "researchname": None,
         }, {
             "userId": "user",
             "status": 1,
             "portIn": [],
             "portOut": [],
             "researchId": 2,
-            "researchIndex": 0
+            "researchIndex": 0,
+            "researchname": None,
         }]
 
         portZenodo = {
@@ -115,7 +119,8 @@ class TestProjectService(unittest.TestCase):
             "portIn": [],
             "portOut": [],
             "researchId": 0,
-            "researchIndex": 0
+            "researchIndex": 0,
+            "researchname": None,
         }]
 
         # first it should be empty
@@ -153,7 +158,8 @@ class TestProjectService(unittest.TestCase):
             "portIn": [],
             "portOut": [],
             "researchId": 0,
-            "researchIndex": 0
+            "researchIndex": 0,
+            "researchname": None,
         }]
         resp = self.client.post(
             "/research/user/{}".format(expected[0]["userId"]))
@@ -198,7 +204,8 @@ class TestProjectService(unittest.TestCase):
             "portIn": [],
             "portOut": [],
             "researchId": 0,
-            "researchIndex": 0
+            "researchIndex": 0,
+            "researchname": None,
         }]
         resp = self.client.post(
             "/research/user/{}".format(expected[0]["userId"]))
@@ -252,6 +259,7 @@ class TestProjectService(unittest.TestCase):
             "status": 1,
             "portIn": [],
             "portOut": [],
+            "researchname": None,
         }
 
         respProject = self.client.post(
@@ -273,7 +281,8 @@ class TestProjectService(unittest.TestCase):
             "portIn": [],
             "portOut": [],
             "researchId": 0,
-            "researchIndex": 0
+            "researchIndex": 0,
+            "researchname": None,
         }]
         resp = self.client.post(
             "/research/user/{}".format(expected[0]["userId"]))
@@ -321,7 +330,8 @@ class TestProjectService(unittest.TestCase):
             "portIn": [portExpected],
             "portOut": [],
             "researchId": 0,
-            "researchIndex": 0
+            "researchIndex": 0,
+            "researchname": None,
         }]
         resp = self.client.post(
             "/research/user/{}".format(expected[0]["userId"]))
@@ -360,7 +370,8 @@ class TestProjectService(unittest.TestCase):
             "portIn": [portNotExpected],
             "portOut": [],
             "researchId": 0,
-            "researchIndex": 0
+            "researchIndex": 0,
+            "researchname": None,
         }]
         resp = self.client.post(
             "/research/user/{}".format(notExpected[0]["userId"]))

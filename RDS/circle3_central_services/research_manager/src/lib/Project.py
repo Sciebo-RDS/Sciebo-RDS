@@ -7,7 +7,7 @@ logger = logging.getLogger()
 
 
 class Project:
-    def __init__(self, user, status=Status.CREATED, portIn=None, portOut=None):
+    def __init__(self, user, status=Status.CREATED, portIn=None, portOut=None, researchname=None):
         if portIn is None:
             portIn = []
 
@@ -19,6 +19,8 @@ class Project:
 
         self.portIn = []
         self.portOut = []
+
+        self.researchname = researchname
 
         # test, if the port can be converted to port object
         try:
@@ -41,6 +43,9 @@ class Project:
 
     def removePortOut(self, port):
         self.removePort(port, self.portOut)
+
+    def setResearchname(self, researchname):
+        self.researchname = researchname
 
     @staticmethod
     def addPort(port, portList):
@@ -89,6 +94,9 @@ class Project:
     def getPortOut(self):
         return self.portOut
 
+    def getResearchname(self):
+        return self.researchname
+
     def nextStatus(self):
         """
         Set the next status and returns the new value.
@@ -120,8 +128,7 @@ class Project:
         except:
             dataList = dataJson
 
-        l = []
-        for data in dataList:
+        def parseProject(data):
             try:
                 fixedData = json.loads(data)
             except:
@@ -150,9 +157,15 @@ class Project:
             except Exception as e:
                 logger.error("{}, data: {}".format(e, project.dict))
 
-            l.append(project)
+            return project
 
-        return l
+        if isinstance(dataList, list):
+            l = []
+            for data in dataList:
+                l.append(parseProject(data))
+            return l
+
+        return parseProject(dataList)
 
     def getDict(self):
         return self.dict
@@ -164,6 +177,7 @@ class Project:
             "status": self.status.value,
             "portIn": [port.getDict() for port in self.portIn],
             "portOut": [port.getDict() for port in self.portOut],
+            "researchname": self.researchname,
         }
 
         try:
