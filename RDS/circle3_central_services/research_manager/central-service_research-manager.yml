@@ -21,10 +21,8 @@ paths:
                   $ref: '#/components/schemas/Research'
         '404':
           description: Not Found
-      
     post:
       summary: Add a research to user
-      
       responses:
         '200':
           description: OK
@@ -45,7 +43,6 @@ paths:
         '404':
           description: Not Found
       description: 'This removes all research projects for the specified user, which means that this service delete everything about the user.'
-      
   '/user/{user-id}/research/{research-id}':
     parameters:
       - schema:
@@ -68,7 +65,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Research'
-      
       description: ''
     delete:
       summary: Delete a research
@@ -246,7 +242,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Research'
-      
       description: ''
   '/user/{user-id}/research/{research-id}/status':
     parameters:
@@ -273,10 +268,8 @@ paths:
                 properties:
                   status:
                     type: integer
-      
     patch:
       summary: Increase status to the next value
-      
       responses:
         '200':
           description: OK
@@ -288,6 +281,55 @@ paths:
                   status:
                     type: integer
       description: This endpoint push the research to the next step.
+  '/user/{user-id}/research/{research-id}/researchname':
+    parameters:
+      - schema:
+          type: string
+        name: user-id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: research-id
+        in: path
+        required: true
+    get:
+      summary: Returns the name of this project
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  researchname:
+                    type: string
+      description: Returns the name of this project
+    put:
+      summary: Updates the name
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  researchname:
+                    type: string
+        '400':
+          description: Bad Request
+      description: Updates the name
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                researchname:
+                  type: string
 components:
   schemas:
     Research:
