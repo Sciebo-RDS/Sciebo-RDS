@@ -16,6 +16,9 @@ def put(user_id, research_id):
 
     name = req.get("researchname")
 
+    if name == "":
+        name = None
+
     project = Singleton.ProjectService.getProject(user_id, int(research_id))
     project.setResearchname(name)
     Singleton.ProjectService.setProject(user_id, project)
