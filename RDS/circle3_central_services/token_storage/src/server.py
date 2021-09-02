@@ -16,7 +16,7 @@ def fn():
 
 
 def refresh():
-    with app.test_request_context('/refresh'):
+    with app.app.test_request_context('/refresh'):
         fn()
 
 
