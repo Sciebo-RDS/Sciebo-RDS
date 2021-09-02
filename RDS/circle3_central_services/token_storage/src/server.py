@@ -6,10 +6,24 @@ from __init__ import bootstrap, ServerUtil
 # uwsgi --http :8080 -w app
 app = bootstrap("CentralServiceTokenStorage", all=True)
 
+
+@app.tracing.trace()
+def fn():
+    with app.tracing.tracer.start_active_span("Refresh tokens for services") as scope:
+        scope.span.log_kv({'event': 'starts refreshing'})
+        ServerUtil.storage.refresh_services()
+        scope.span.log_kv({'event': 'finished refreshing'})
+
+
+def refresh():
+    with app.test_request_context('/refresh'):
+        fn()
+
+
 # add refresh func for refresh_tokens to scheduler and starts (https://stackoverflow.com/a/52068807)
 app.scheduler.add_job(
     "refresh_service",
-    ServerUtil.storage.refresh_services,
+    refresh,
     trigger="interval",
     minutes=20,
 )

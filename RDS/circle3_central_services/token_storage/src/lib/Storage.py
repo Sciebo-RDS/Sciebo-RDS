@@ -515,8 +515,8 @@ class Storage:
                 raise UserHasTokenAlreadyError(self, user, token)
 
         except ValueError as e:
+            logger.debug("token not found in storage")
             logger.error(e, exc_info=True)
-
             # token not found in storage, so we can add it here.
             data = self._storage[user.username]
             data["tokens"].append(token)
@@ -562,9 +562,11 @@ class Storage:
             logger.error(f"redis helper error: {e}", exc_info=True)
 
     def internal_refresh_token(self, token, user=None):
+        logger.debug("current token: {}, user: {}".format(token, user))
         if not isinstance(token, OAuth2Token) or not isinstance(
             token.service, OAuth2Service
         ):
+            logger.debug("failed")
             return False
 
         # refresh token
@@ -574,7 +576,9 @@ class Storage:
         )
 
         try:
+            logger.debug("start refresh: {}".format(token))
             new_token = token.refresh()
+            logger.debug("finished refresh: {}".format(new_token))
 
             logger.debug(
                 "add new token {} to user {}".format(
@@ -582,9 +586,12 @@ class Storage:
                 )
             )
 
+            logger.debug("publish in redis")
             self.__publishTokenInRedis(new_token)
 
+            logger.debug("published in redis, add token to user")
             self.addTokenToUser(new_token, user or new_token.user, Force=True)
+            logger.debug("finished refresh")
 
             return True
         except TokenNotValidError as e:
@@ -608,6 +615,8 @@ class Storage:
         """
 
         found = False
+        
+        logger.debug("starting refresh services")
 
         # iterate over tokens
         tokens = [
@@ -615,6 +624,8 @@ class Storage:
             for userdata in self._storage.values()
             for token in userdata["tokens"]
         ]
+
+        logger.debug("found tokens: {}".format(tokens))
 
         for user, token in tokens:
             if self.internal_refresh_token(token, user=user):
