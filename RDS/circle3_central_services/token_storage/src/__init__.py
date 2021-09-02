@@ -4,8 +4,6 @@ method and uses it to encode the object if found.
 """
 from lib.Storage import Storage
 import utility as ServerUtil
-from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
-from jaeger_client import Config as jConfig
 from connexion_plus import App, MultipleResourceResolver, Util
 from RDS import Util as CommonUtil
 
