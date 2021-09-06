@@ -219,7 +219,7 @@ class TokenService:
                         "id": index,
                         "servicename": token.servicename,
                         "access_token": token.access_token,
-                        "projects": self.getProjectsForToken(token),
+                        # FIXME: Rate limit, "projects": self.getProjectsForToken(token),
                         "implements": token._service.implements,
                         "informations": self.getInformations(token.service)
                     }
