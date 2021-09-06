@@ -96,9 +96,9 @@ class Zenodo(object):
         """Check the API-Token `api_key`.
 
         Returns `True` if the token is correct and usable, otherwise `False`."""
-        cls.log.debug("Check token: Starts")
+        log.debug("Check token: Starts")
         r = cls(api_key, *args, **kwargs).get_deposition(return_response=True)
-        cls.log.debug("Check Token: Status Code: {}".format(r.status_code))
+        log.debug("Check Token: Status Code: {}".format(r.status_code))
 
         return r.status_code == 200
 
@@ -113,11 +113,11 @@ class Zenodo(object):
 
             Description: Get all depositions for the account, which owns the api-key."""
 
-        self.log.debug(
+        log.debug(
             f"get depositions from zenodo, id? {id}, return response? {return_response}, metadata? {metadataFilter}"
         )
         headers = {"Authorization": f"Bearer {self.api_key}"}
-        self.log.debug("set header, now requests")
+        log.debug("set header, now requests")
 
         if id is not None:
             r = requests.get(
@@ -133,7 +133,7 @@ class Zenodo(object):
                 verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
                 timeout=1
             )
-            self.log.debug(
+            log.debug(
                 "Get Depositions: Status Code: {}".format(r.status_code))
 
         if return_response:
@@ -146,7 +146,7 @@ class Zenodo(object):
 
         if id is not None:
             result = [result]
-        self.log.debug(f"filter only metadata, {result}")
+        log.debug(f"filter only metadata, {result}")
 
         metadataList = []
         for res in result:
@@ -162,7 +162,7 @@ class Zenodo(object):
 
         result = metadataList
 
-        self.log.debug("apply filter")
+        log.debug("apply filter")
         if metadataFilter is not None:
             result = {
                 key: res[key]
@@ -171,9 +171,9 @@ class Zenodo(object):
                 if key in res
             }
 
-        self.log.debug("finished applying filter")
+        log.debug("finished applying filter")
 
-        self.log.debug("return results")
+        log.debug("return results")
 
         if id is not None:
             return result[0]
@@ -187,7 +187,7 @@ class Zenodo(object):
         Description: Creates a new deposition. You can get the id with r.json()['id']
         If metadata is specified, it will changes metadata after creating.
         """
-        self.log.debug("Create new deposition: Starts")
+        log.debug("Create new deposition: Starts")
 
         headers = {
             "Content-Type": "application/json",
@@ -201,7 +201,7 @@ class Zenodo(object):
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
-        self.log.debug(
+        log.debug(
             "Create new deposition: Status Code: {}".format(r.status_code))
 
         if r.status_code != 201:
@@ -249,17 +249,17 @@ class Zenodo(object):
 
             from io import BytesIO
 
-            self.log.debug("Try read the file content.")
+            log.debug("Try read the file content.")
             files = {"file": (filename, BytesIO(file.read()))}
-            self.log.debug("size: {}".format(len(file.read())))
+            log.debug("size: {}".format(len(file.read())))
         except Exception as e:
-            self.log.error(e)
-            self.log.debug("Cannot read the content. So maybe it is in cache?")
+            log.error(e)
+            log.debug("Cannot read the content. So maybe it is in cache?")
             # for temporary files
             files = {"file": (filename, open(
                 os.path.expanduser(path_to_file), "rb"))}
 
-        self.log.debug(
+        log.debug(
             "Submit the following informations to zenodo.\nData: {}, Files: {}".format(
                 data, files
             )
@@ -273,7 +273,7 @@ class Zenodo(object):
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
         )
 
-        self.log.debug("Content: {}".format(r.content))
+        log.debug("Content: {}".format(r.content))
 
         return r.status_code == 201 if not return_response else r
 
@@ -318,7 +318,7 @@ class Zenodo(object):
         data = {}
         data["metadata"] = metadata
 
-        self.log.info(f"send data: {data}")
+        log.info(f"send data: {data}")
 
         r = requests.put(
             f"{self.zenodo_address}/api/deposit/depositions/{deposition_id}",
@@ -340,7 +340,7 @@ class Zenodo(object):
 
     def delete_all_files_from_deposition_internal(self, deposition_id):
         for file in self.get_files_from_deposition(deposition_id):
-            self.log.debug("found file: {}".format(file))
+            log.debug("found file: {}".format(file))
 
             if not self.delete_file_from_deposition_internal(deposition_id, file["id"]):
                 return False
