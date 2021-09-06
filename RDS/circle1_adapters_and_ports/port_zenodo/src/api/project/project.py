@@ -64,8 +64,20 @@ def zenodo(res):
     creator = res["creator"]
     result["publication_date"] = res["datePublished"]
 
-    result["creators"] = [creator] if not isinstance(
-        creator, list) else creator
+    creator = []
+
+    if not isinstance(res["creator"], list):
+        res["creator"] = [res["creator"]]
+
+    for c in res["creator"]:
+        if isinstance(c, str):
+            creator.append({
+                "name": c
+            })
+        else:
+            creator.append(c)
+
+    result["creators"] = creator
 
     if res["zenodocategory"].find("/") > 0:
         typ, subtyp = tuple(res["zenodocategory"].split("/", 1))
