@@ -6,6 +6,8 @@ from flask import abort
 import functools
 import time
 
+log = logging.getLogger()
+
 
 def _rate_limit(func=None, per_second=1):
     """Limit number of requests made per second.
@@ -23,17 +25,17 @@ def _rate_limit(func=None, per_second=1):
             now = time.time()
             delta = now - self.last_request
             if delta < (1 / per_second):
-                time.sleep(1 - delta)
+                waittimer = (1 / per_second) - delta
+                log.debug("rate limiter wait for {}ms", waittimer)
+                time.sleep(waittimer)
 
         self.last_request = time.time()
-        print(func)
         return func(self, *args, **kwargs)
 
     return wrapper
 
 
 class Zenodo(object):
-    log = logging.getLogger()
 
     def __init__(self, api_key, address=None, *args, **kwargs):
         self.zenodo_address = address
