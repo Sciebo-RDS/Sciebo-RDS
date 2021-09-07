@@ -8,6 +8,7 @@ import jwt
 import datetime
 import secrets
 import logging
+import os
 from typing import Union
 
 logger = logging.getLogger()
@@ -37,6 +38,7 @@ class TokenService:
             self.address = testing
 
         self._services = []
+        self.IGNORE_PROJECTS = os.getenv("IGNORE_PROJECTS", "False") == "True"
 
     def getOAuthURIForService(self, service: BaseService) -> str:
         """
@@ -235,7 +237,7 @@ class TokenService:
         Returns a `list` with all projects for given service and user.
         """
 
-        if token.access_token == "---":
+        if self.IGNORE_PROJECTS or token.access_token == "---":
             return []
 
         port = get_port_string(token.servicename)

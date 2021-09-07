@@ -1,6 +1,7 @@
 import jwt
 from datetime import datetime, timedelta
 import unittest
+from unittest import mock
 import pytest
 import os
 import json
@@ -792,6 +793,12 @@ class Test_TokenService(unittest.TestCase):
         with self.assertRaises(CodeNotExchangeable):
             self.tokenService.exchangeAuthCodeToAccessToken(
                 code, service.servicename, self.user1.username)
+
+    @mock.patch.dict(os.environ, {"IGNORE_PROJECTS": "True"})
+    def test_env_ignore_project(self):
+        tokenService = TokenService(testing="http://localhost:3000")
+        projects = tokenService.getProjectsForToken(self.token1)
+        self.assertEqual(projects, [])
 
     def test_serviceprojects(self):
         proj1 = {"projectId": 0, "projectName": "Project1"}
