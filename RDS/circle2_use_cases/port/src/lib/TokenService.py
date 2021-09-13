@@ -542,11 +542,14 @@ class TokenService:
         if user is None:
             user = user_id
 
+        exp_date = response_with_access_token["expires_in"]
+        if exp_date > 3600:
+            exp_date = 3600
+
         access_token = response_with_access_token["access_token"]
         refresh_token = response_with_access_token["refresh_token"]
         exp_date = datetime.datetime.now() + datetime.timedelta(
-            seconds=response_with_access_token["expires_in"]
-        )
+            seconds=exp_date)
 
         oauthtoken = OAuth2Token(
             User(user), service, access_token, refresh_token, exp_date
