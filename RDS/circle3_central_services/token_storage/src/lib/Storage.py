@@ -203,21 +203,17 @@ class Storage:
             return self.tokens
 
         if not isinstance(user, (str, User)):
-            raise ValueError("paremeter user is not string or User.")
+            raise ValueError("parameter user is not string or User.")
 
         if not isinstance(user, User):
-            for u in self.users:
-                if u.username == user:
-                    user = u
-                    break
+            user = self.getUser(user)
+        else:
+            if not user in self.users: # is only needed, if we get a User object as user
+                from .Exceptions.StorageException import UserNotExistsError
+                raise UserNotExistsError(self, user)
 
-        if user in self.users:
-            tokens = self._storage[user.username]["tokens"]
-            return tokens
-
-        from .Exceptions.StorageException import UserNotExistsError
-
-        raise UserNotExistsError(self, user)
+        tokens = self._storage[user.username]["tokens"]
+        return tokens
 
     def getToken(self, user_id: Union[str, User], token_id: Union[str, int]):
         """
@@ -615,7 +611,7 @@ class Storage:
         """
 
         found = False
-        
+
         logger.debug("starting refresh services")
 
         # iterate over tokens
