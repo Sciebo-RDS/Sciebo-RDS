@@ -199,6 +199,7 @@ class Zenodo(object):
             json={},
             headers=headers,
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            timeout=1
         )
 
         log.debug(
@@ -219,6 +220,7 @@ class Zenodo(object):
             f"{self.zenodo_address}/api/deposit/depositions/{id}",
             headers={"Authorization": f"Bearer {self.api_key}"},
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            timeout=1
         )
 
         return r.status_code == 201 if not return_response else r
@@ -271,6 +273,7 @@ class Zenodo(object):
             data=data,
             files=files,
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            timeout=1
         )
 
         log.debug("Content: {}".format(r.content))
@@ -282,6 +285,7 @@ class Zenodo(object):
             f"{self.zenodo_address}/api/deposit/depositions/{deposition_id}/files",
             headers={"Authorization": f"Bearer {self.api_key}"},
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            timeout=1
         )
 
         result = req.json()
@@ -325,6 +329,7 @@ class Zenodo(object):
             data=json.dumps(data),
             headers=headers,
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            timeout=1
         )
 
         return r.status_code == 200 if not return_response else r
@@ -334,6 +339,7 @@ class Zenodo(object):
             f"{self.zenodo_address}/api/deposit/depositions/{deposition_id}/actions/publish",
             headers={"Authorization": f"Bearer {self.api_key}"},
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            timeout=1
         )
 
         return r.status_code == 202 if not return_response else r
@@ -354,6 +360,7 @@ class Zenodo(object):
             ),
             headers={"Authorization": f"Bearer {self.api_key}"},
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            timeout=1
         )
 
         if r.status_code < 300:
