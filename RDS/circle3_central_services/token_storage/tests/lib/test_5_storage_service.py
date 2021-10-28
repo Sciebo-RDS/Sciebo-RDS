@@ -9,6 +9,8 @@ from time import time
 
 import logging
 import sys
+from RDS import Util as CommonUtil
+CommonUtil.monkeypatch()
 
 logger = logging.getLogger()
 logger.level = logging.DEBUG
