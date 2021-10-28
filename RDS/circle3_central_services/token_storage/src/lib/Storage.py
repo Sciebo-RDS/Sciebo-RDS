@@ -208,7 +208,7 @@ class Storage:
         if not isinstance(user, User):
             user = self.getUser(user)
         else:
-            if not user in self.users: # is only needed, if we get a User object as user
+            if not user in self.users:  # is only needed, if we get a User object as user
                 from .Exceptions.StorageException import UserNotExistsError
                 raise UserNotExistsError(self, user)
 
@@ -562,7 +562,7 @@ class Storage:
         if not isinstance(token, OAuth2Token) or not isinstance(
             token.service, OAuth2Service
         ):
-            logger.debug("failed")
+            logger.debug("refresh failed, because it was not an valid oauth2token or oauth2service")
             return False
 
         # refresh token
@@ -590,10 +590,13 @@ class Storage:
             logger.debug("finished refresh")
 
             return True
-        except TokenNotValidError as e:
+        except (TokenNotValidError, OAuth2UnsuccessfulResponseError) as e:
             logging.getLogger().error(e)
-        except OAuth2UnsuccessfulResponseError as e:
-            logging.getLogger().error(e)
+            
+            logger.info("Token was not refreshed. Remove it from user {}.".format(
+                user or new_token.user))
+            self.removeToken(user or new_token.user, token)
+            logger.info("Removed token: {}".format(token))
         except requests.exceptions.RequestException as e:
             logging.getLogger().error(e)
         except Exception as e:
