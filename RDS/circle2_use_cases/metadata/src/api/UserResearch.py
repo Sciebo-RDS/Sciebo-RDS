@@ -5,7 +5,7 @@ import requests
 import os
 import json
 from io import BytesIO
-from RDS import Util
+from RDS import Util, FileTransferMode
 
 
 def get(user_id, research_index):
@@ -71,6 +71,9 @@ def patch(user_id, research_index):
         for crate in crates:
             for port in researchObj.portOut:
                 projectId = ""
+
+                if FileTransferMode(port["fileTransferMode"]) == FileTransferMode.passive:
+                    continue
 
                 for prop in port["properties"]:
                     if prop["portType"] == "customProperties":
