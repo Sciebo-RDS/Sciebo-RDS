@@ -146,11 +146,11 @@ you create an oauth application. The following table redirects you to the corres
 {{<callout info>}} The following assumes that your owncloud installation is available under `owncloud.local`. Adjust
 this to your needs. {{</callout>}}
 
-| Service  | oauth application creation url                                           |
-| -------- | ------------------------------------------------------------------------ |
-| Zenodo   | https://`(sandbox.)`zenodo.org/account/settings/applications/              |
-| ownCloud | https://`owncloud.local`/index.php/settings/admin?sectionid=authentication |
-| Open Science Framework | https://`(test.)`osf.io/settings/applications |
+| Service                | oauth application creation url                                             |
+| ---------------------- | -------------------------------------------------------------------------- |
+| Zenodo                 | https://`(sandbox.)`zenodo.org/account/settings/applications/              |
+| ownCloud               | https://`owncloud.local`/index.php/settings/admin?sectionid=authentication |
+| Open Science Framework | https://`(test.)`osf.io/settings/applications                              |
 
 The application creation requires an `redirect url`. This needs to be adjusted to your used plugin, which integrates
 your RDS instance into client user interfaces. The following endpoint needs to be used for your installation, when you
@@ -159,9 +159,9 @@ use the given plugin.
 {{<callout info>}} Please remember the name, which you give your application in your owncloud installation, because you
 need this name in the configuration of the owncloud plugin. {{</callout>}}
 
-| plugin   | oauth endpoint           | example endpoint                                  |
-| -------- | ------------------------ | ------------------------------------------------- |
-| ownCloud | index.php/apps/rds/oauth | https://`owncloud.local`/index.php/apps/rds/oauth |
+| plugin   | oauth endpoint | example endpoint                              |
+| -------- | -------------- | --------------------------------------------- |
+| ownCloud | /              | https://`your-cluster-domain-for-sciebo-rds`/ |
 
 This url must also be configured in your `configuration.yaml` under the environment variable `RDS_OAUTH_REDIRECT_URI`,
 since this information must be set for each request to your oauth2 service providers.

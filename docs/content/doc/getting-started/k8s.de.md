@@ -145,14 +145,14 @@ Im `describo`-Ordner finden Sie die Konfiguration unseres verwendeten Tools für
 Sie müssen die Zugangsdaten für Ihren verwendeten oauth2-Dienstanbieter generieren. Diese Credentials werden generiert,
 wenn Sie eine oauth-Anwendung anlegen. Die folgende Tabelle leitet Sie zu den entsprechenden Websites weiter.
 
-{{<callout info>}} Im Folgenden wird davon ausgegangen, dass Ihre eigene Cloud-Installation unter `owncloud.local`
-verfügbar ist. Passen Sie diese an Ihre Bedürfnisse an. {{</callout>}}
+{{<callout info>}} Im Folgenden wird davon ausgegangen, dass Ihre eigene Cloud-Installation unter `owncloud.local` und ihr Cluster unter `your-cluster-domain`
+verfügbar sind. Passen Sie diese an Ihre Bedürfnisse an. {{</callout>}}
 
-| Service  | oauth application creation url                                             |
-| -------- | -------------------------------------------------------------------------- |
-| Zenodo   | https://`(sandbox.)`zenodo.org/account/settings/applications/                |
-| ownCloud | https://`owncloud.local`/index.php/settings/admin?sectionid=authentication |
-| Open Science Framework | https://`(test.)`osf.io/settings/applications |
+| Service                | oauth application creation url                                             |
+| ---------------------- | -------------------------------------------------------------------------- |
+| Zenodo                 | https://`(sandbox.)`zenodo.org/account/settings/applications/              |
+| ownCloud               | https://`owncloud.local`/index.php/settings/admin?sectionid=authentication |
+| Open Science Framework | https://`(test.)`osf.io/settings/applications                              |
 
 Die Erstellung der Anwendung erfordert eine `Redirect url`. Diese muss an das von Ihnen verwendete Plugin angepasst
 werden, das Ihre RDS-Instanz in Client-Benutzeroberflächen integriert. Der folgende Endpunkt muss für Ihre Installation
@@ -161,9 +161,9 @@ verwendet werden, wenn Sie das angegebene Plugin verwenden.
 {{<callout info>}} Bitte merken Sie sich den Namen, den Sie Ihrer Anwendung in Ihrer Owncloud-Installation geben, da Sie
 diesen Namen in der Konfiguration des Owncloud-Plugins benötigen. {{</callout>}}
 
-| Plugin   | OAuth Endpunkt           | Beispiel-Endpunkt                                 |
-| -------- | ------------------------ | ------------------------------------------------- |
-| ownCloud | index.php/apps/rds/oauth | https://`owncloud.local`/index.php/apps/rds/oauth |
+| Plugin   | OAuth Endpunkt | Beispiel-Endpunkt                             |
+| -------- | -------------- | --------------------------------------------- |
+| ownCloud | /              | https://`your-cluster-domain-for-sciebo-rds`/ |
 
 Diese Url muss ebenfalls in Ihrer `configuration.yaml` unter der Umgebungsvariablen `RDS_OAUTH_REDIRECT_URI`
 konfiguriert werden, da diese Information bei jeder Anfrage an Ihre oauth2-Dienstanbieter gesetzt werden muss.

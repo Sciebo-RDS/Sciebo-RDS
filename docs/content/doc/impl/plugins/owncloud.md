@@ -54,7 +54,7 @@ sudo setsebool -P httpd_can_network_connect on
 
 Once the plugin has been installed and activated in Owncloud, the RDS system must be configured in the settings.
 
-Here you need to enter the name of the oauth application, which you set for the rds system during the kubernetes installation process. In the following example image, it was named `sciebords`. The oauth configuration, which were used in this example, can be seen in the second image.
+Here you need to enter the name of the oauth application, which you set for the rds system during the kubernetes installation process. As the url, you have to provide your cluster ip, where sciebo RDS is running: https://`your-cluster-domain-for-sciebo-rds`. In the following example image, it was named `sciebords`. The oauth configuration, which were used in this example, can be seen in the second image.
 
 ![Administrator view](/images/oc-plugin-view-admin.png)
 ![Administrator Oauth view](/images/oc-plugin-view-admin-oauth.png)
