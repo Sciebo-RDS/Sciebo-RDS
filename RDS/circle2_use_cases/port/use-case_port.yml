@@ -468,12 +468,6 @@ components:
       properties:
         data:
           type: object
-          required:
-            - access_token
-            - expiration_date
-            - refresh_token
-            - service
-            - user
           properties:
             access_token:
               type: string
@@ -492,9 +486,6 @@ components:
                 data:
                   type: object
                   required:
-                    - authorize_url
-                    - client_id
-                    - client_secret
                     - fileTransferArchive
                     - fileTransferMode
                     - implements
@@ -543,6 +534,10 @@ components:
                 type:
                   type: string
                   minLength: 1
+          required:
+            - access_token
+            - service
+            - user
         type:
           type: string
           minLength: 1
