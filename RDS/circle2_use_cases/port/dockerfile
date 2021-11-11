@@ -10,7 +10,7 @@ RUN pip install -r requirements.txt
 
 ENV CENTRAL_SERVICE_TOKEN_STORAGE "http://circle3-token-storage"
 
-ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/informations-ep/RDS/circle2_use_cases/port/use-case_port.yml" ./
+ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/port/use-case_port.yml" ./
 
 # now add everything else, which changes often
 ADD src ./

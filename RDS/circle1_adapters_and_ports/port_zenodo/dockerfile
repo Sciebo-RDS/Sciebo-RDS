@@ -10,7 +10,7 @@ RUN pip install -r requirements.txt
 
 ENV OPENAPI_MULTIPLE_FILES      "interface_port_metadata.yml"
 
-ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/informations-ep/RDS/circle2_use_cases/interface_port_metadata.yml" ./
+ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_metadata.yml" ./
 
 # now add everything else, which changes often
 ADD src ./
