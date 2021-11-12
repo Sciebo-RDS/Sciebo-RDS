@@ -118,7 +118,13 @@ class Research:
         except Exception as e:
             logger.exception(e)
 
+        return True
+
     def processActivePorts(self):
+        if self.getExportServices().len() == 0:
+            logger.debug("No active exportservice available")
+            return False
+
         for svc in self.importServices:
             logger.debug("import service: {}".format(svc.getJSON()))
 
@@ -176,8 +182,13 @@ class Research:
                     for exportSvc in self.getExportServices()
                     if (exportSvc.zipForFolder)
                 ]
+        return True
 
     def triggerPassivePorts(self):
+        if self.getExportServices(mode=FileTransferMode.passive).len() == 0:
+            logger.debug("No passive exportservice available")
+            return False
+
         for importSvc in self.importServices:
             for exportSvc in [svc for svc in self.getExportServices(mode=FileTransferMode.passive)]:
                 exportSvc.triggerPassiveMode(
