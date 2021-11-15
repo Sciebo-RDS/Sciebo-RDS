@@ -193,8 +193,7 @@ class Service:
         Returns:
             bool: Return True, if the trigger was successfully, otherwise False.
         """
-        data = {"userId": Util.parseToken(
-            Util.loadToken(self.userId, self.port))}
+        data = Util.parseToken(Util.loadToken(self.userId, self.port))
         data.update({"folder": folder, "service": servicename})
 
         logger.debug(
