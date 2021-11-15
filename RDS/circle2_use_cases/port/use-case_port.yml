@@ -471,7 +471,6 @@ components:
           properties:
             access_token:
               type: string
-              minLength: 1
             expiration_date:
               type: string
               minLength: 1
