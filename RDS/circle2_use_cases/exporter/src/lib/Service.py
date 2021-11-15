@@ -193,8 +193,13 @@ class Service:
         Returns:
             bool: Return True, if the trigger was successfully, otherwise False.
         """
-        data = Util.parseToken(Util.loadToken(self.userId, self.port))
-        data.update({"folder": folder, "service": servicename})
+        data = {
+            "folder": folder,
+            "service": servicename,
+            "username": self.userId
+        }
+
+        data.update(Util.parseToken(Util.loadToken(self.userId, self.port)))
 
         logger.debug(
             "start passive mode with data {} in service {}".format(
