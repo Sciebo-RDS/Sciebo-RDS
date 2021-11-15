@@ -27,7 +27,7 @@ class Research:
         self.status = None
 
         self.autoSync = False
-        self.applyChanges = True
+        self.applyChanges = False
 
         self.testing = testing
         self.address = (
@@ -121,7 +121,7 @@ class Research:
         return True
 
     def processActivePorts(self):
-        if self.getExportServices().len() == 0:
+        if len(self.getExportServices()) == 0:
             logger.debug("No active exportservice available")
             return False
 
@@ -185,7 +185,7 @@ class Research:
         return True
 
     def triggerPassivePorts(self):
-        if self.getExportServices(mode=FileTransferMode.passive).len() == 0:
+        if len(self.getExportServices(mode=FileTransferMode.passive)) == 0:
             logger.debug("No passive exportservice available")
             return False
 
