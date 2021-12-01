@@ -7,7 +7,7 @@ openapi.yaml
 _build
 .vscode
 deploy/secrets.yaml
-values.yaml
+#values.yaml
 values-dev.yaml
 kustomization.yaml
 .coverage

@@ -1,0 +1,6 @@
+gitops:
+  manifest_projects:
+  # The `id` is the path to the Git repository holding your manifest files
+  - id: "charts/circle1-port-zenodo"
+    paths:
+    - glob: '/**/*.{yaml,yml,json}'
