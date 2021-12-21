@@ -1,7 +1,7 @@
 .port_openscienceframework:
   variables:
     OPENSCIENCEFRAMEWORK_API_KEY: $GITLAB_OPENSCIENCEFRAMEWORK_API_KEY
-    FOLDER: RDS/circle1_adapters_and_ports/port_openscienceframework
+    FOLDER: RDS/layer1_adapters_and_ports/port_openscienceframework
 
 .tests_port_openscienceframework:
   extends:
@@ -18,10 +18,10 @@ build:port_openscienceframework:
 
   only:
     changes:
-      - RDS/circle1_adapters_and_ports/port_openscienceframework/*
-      - RDS/circle1_adapters_and_ports/port_openscienceframework/**/*
-      - RDS/circle2_use_cases/interface_port_metadata.yml
-      - RDS/circle3_central_services/interface_port_token_storage.yml
+      - RDS/layer1_adapters_and_ports/port_openscienceframework/*
+      - RDS/layer1_adapters_and_ports/port_openscienceframework/**/*
+      - RDS/layer2_use_cases/interface_port_metadata.yml
+      - RDS/layer3_central_services/interface_port_token_storage.yml
 
 doc:port_openscienceframework:
   extends:

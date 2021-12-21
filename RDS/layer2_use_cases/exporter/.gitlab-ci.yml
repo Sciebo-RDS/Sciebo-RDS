@@ -1,6 +1,6 @@
 .use_case_exporter:
   variables:
-    FOLDER: RDS/circle2_use_cases/exporter
+    FOLDER: RDS/layer2_use_cases/exporter
 
 .tests_use_case_exporter:
   extends:
@@ -19,8 +19,8 @@ build:use_case_exporter:
 
   only:
     changes:
-      - RDS/circle2_use_cases/exporter/*
-      - RDS/circle2_use_cases/exporter/**/*
+      - RDS/layer2_use_cases/exporter/*
+      - RDS/layer2_use_cases/exporter/**/*
 
 doc:use_case_exporter:
   needs:

@@ -11,7 +11,7 @@ RUN pip install -r requirements.txt
 # comma separated
 ENV OPENAPI_MULTIPLE_FILES "interface_port_file_storage.yml"
 
-ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_file_storage.yml" ./
+ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/layer2_use_cases/interface_port_file_storage.yml" ./
 
 # now add everything else, which changes often
 ADD src ./

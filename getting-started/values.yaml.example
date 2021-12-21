@@ -15,7 +15,7 @@ rds_oauth_redirect_uri: https://owncloud.local/index.php/apps/rds/oauth
 proxy:
   http_proxy: ""
   https_proxy: ""
-  no_proxy: circle1-port-owncloud,circle1-port-zenodo,circle1-port-openscienceframework,circle1-port-reva,circle2-port-service,circle3-token-storage,circle3-research-manager
+  no_proxy: layer1-port-owncloud,layer1-port-zenodo,layer1-port-openscienceframework,layer1-port-reva,layer2-port-service,layer3-token-storage,layer3-research-manager
 namespace: # creates a namespace on their own, if you wants to
   create: false
   name: "research-data-services"
@@ -47,21 +47,21 @@ layer0-web:
     OWNCLOUD_OAUTH_CLIENT_AUTHORIZE_URL: http://localhost:8000/apps/oauth2/authorize
     DESCRIBO_API_ENDPOINT: http://localhost:9000/api/session/application
     DESCRIBO_API_SECRET: IAMSECRET
-circle1-port-owncloud:
+layer1-port-owncloud:
   enabled: false
   environment:
     # needs to be adjusted to correct values
     ADDRESS: https://owncloud.local/owncloud
     OAUTH_CLIENT_ID: ABC
     OAUTH_CLIENT_SECRET: XYZ
-circle1-port-zenodo:
+layer1-port-zenodo:
   enabled: false
   environment:
     # needs to be adjusted to correct values
     ADDRESS: https://sandbox.zenodo.org
     OAUTH_CLIENT_ID: ABC
     OAUTH_CLIENT_SECRET: XYZ
-circle1-port-openscienceframework:
+layer1-port-openscienceframework:
   enabled: false
   environment:
     ADDRESS: https://accounts.test.osf.io
@@ -69,11 +69,11 @@ circle1-port-openscienceframework:
     # needs to be adjusted to correct values
     OAUTH_CLIENT_ID: ABC
     OAUTH_CLIENT_SECRET: XYZ
-circle2-exporter-service: {}
-circle2-port-service: {}
-circle2-metadata-service: {}
-circle3-research-manager: {}
-circle3-token-storage: {}
+layer2-exporter-service: {}
+layer2-port-service: {}
+layer2-metadata-service: {}
+layer3-research-manager: {}
+layer3-token-storage: {}
 # see: https://github.com/bitnami/charts/tree/master/bitnami/redis-cluster
 redis:
   cluster: {}

@@ -1,6 +1,6 @@
 .central_service_research_manager:
   variables:
-    FOLDER: RDS/circle3_central_services/research_manager
+    FOLDER: RDS/layer3_central_services/research_manager
 
 .tests_central_service_research_manager:
   extends:
@@ -19,8 +19,8 @@ build:central_service_research_manager:
 
   only:
     changes:
-      - RDS/circle3_central_services/research_manager/*
-      - RDS/circle3_central_services/research_manager/**/*
+      - RDS/layer3_central_services/research_manager/*
+      - RDS/layer3_central_services/research_manager/**/*
 
 doc:central_service_research_manager:
   needs:

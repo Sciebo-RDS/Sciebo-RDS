@@ -55,7 +55,7 @@ def patch(user_id, research_index):
                 json.loads(
                     BytesIO(
                         requests.get(
-                            "http://circle1-{}/storage/file".format(
+                            "http://layer1-{}/storage/file".format(
                                 port["port"]),
                             json=data,
                             verify=(os.environ.get(
@@ -82,7 +82,7 @@ def patch(user_id, research_index):
                 data["metadata"] = crate
 
                 requests.patch(
-                    "http://circle1-{}/metadata/project/{}".format(
+                    "http://layer1-{}/metadata/project/{}".format(
                         port["port"], projectId
                     ),
                     json=data,

@@ -30,7 +30,7 @@ class Metadata:
         ).researchId
 
     def getPortString(self, port: str):
-        res = f"circle1-{port}"
+        res = f"layer1-{port}"
 
         if self.testing:
             res = self.testing

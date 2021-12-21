@@ -7,7 +7,7 @@ info:
     email: peter.heiss@uni-muenster.de
   description: 'This file describes a service, which takes oauth2 flow for rds. This is a extra layer for the central service.'
 servers:
-  - url: 'http://circle2-port/port-service'
+  - url: 'http://layer2-port/port-service'
 paths:
   /redirect:
     get:

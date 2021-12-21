@@ -1,6 +1,6 @@
 .use_case_metadata:
   variables:
-    FOLDER: RDS/circle2_use_cases/metadata
+    FOLDER: RDS/layer2_use_cases/metadata
 
 .tests_use_case_metadata:
   extends:
@@ -19,8 +19,8 @@ build:use_case_metadata:
 
   only:
     changes:
-      - RDS/circle2_use_cases/metadata/*
-      - RDS/circle2_use_cases/metadata/**/*
+      - RDS/layer2_use_cases/metadata/*
+      - RDS/layer2_use_cases/metadata/**/*
 
 doc:use_case_metadata:
   needs:

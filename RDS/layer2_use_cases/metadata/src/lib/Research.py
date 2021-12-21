@@ -23,7 +23,7 @@ class Research:
         The parameter testing enables the unittest to make requests to a mock server.
         """
 
-        self.researchManager = "circle3-research-manager"
+        self.researchManager = "layer3-research-manager"
 
         if testing is not None and testing is not False:
             self.researchManager = testing

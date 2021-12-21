@@ -1,6 +1,6 @@
 .use_case_port_service:
   variables:
-    FOLDER: RDS/circle2_use_cases/port
+    FOLDER: RDS/layer2_use_cases/port
 
 .tests_use_case_port_service:
   extends:
@@ -20,8 +20,8 @@ build:use_case_port_service:
 
   only:
     changes:
-      - RDS/circle2_use_cases/port/*
-      - RDS/circle2_use_cases/port/**/*
+      - RDS/layer2_use_cases/port/*
+      - RDS/layer2_use_cases/port/**/*
 
 doc:use_case_port_service:
   needs:

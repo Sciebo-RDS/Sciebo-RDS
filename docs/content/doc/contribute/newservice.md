@@ -59,7 +59,7 @@ sequenceDiagram
 
 Your port service should do the login as one of the first steps before starting the API service. When logging on, you must specify which interface (more on this in a moment) has been implemented. This interface is important because your service will be used later by other microservices. RDS uses several OpenAPIv3 specifications to ensure communication between the microservices.
 
-Since your service is in layer 1, it can be used by other microservices than [files](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_file_storage.yml)- ([example: Owncloud](/doc/impl/ports/port-owncloud/)) and / or [metadata store](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/interface_port_metadata.yml) ([example: Zenodo](/doc/impl/ports/port-invenio/)).
+Since your service is in layer 1, it can be used by other microservices than [files](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/layer2_use_cases/interface_port_file_storage.yml)- ([example: Owncloud](/doc/impl/ports/port-owncloud/)) and / or [metadata store](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/layer2_use_cases/interface_port_metadata.yml) ([example: Zenodo](/doc/impl/ports/port-invenio/)).
 
 With the following Python function you can register your service with *Token Storage*.
 
@@ -126,11 +126,11 @@ Please provide some internal numbers from your service via prometheus metrics vi
 
 RDS uses Gitlab and its CI System to test the source code and call other functions, including creating and publishing containers.
 
-To use the Gitlab CI, a *.gitlab-ci.yaml* is required in the project folder. As an example, you should look into one that already exists ([Example: Owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml)).
+To use the Gitlab CI, a *.gitlab-ci.yaml* is required in the project folder. As an example, you should look into one that already exists ([Example: Owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/RDS/layer1_adapters_and_ports/port_owncloud/.gitlab-ci.yml)).
 
 In this file you can describe how your service is tested, built and stored. To do this, use existing jobs from the central [*.gitlab-ci.yaml* file](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/.gitlab-ci.yml#L68) in the root directory of the git repository. You also place your newly created file in the *includes* in this central file, so that it will be executed by the pipeline on a *pull request*.
 
-If you don't want to use the predefined procedures, you must overwrite them by specifying your own *script* sections. Otherwise, you will need a *Makefile* ([Example: Owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/RDS/circle1_adapters_and_ports/port_owncloud/Makefile)), which will be executed to test and build your service and then offer it in the gitlab's package directory.
+If you don't want to use the predefined procedures, you must overwrite them by specifying your own *script* sections. Otherwise, you will need a *Makefile* ([Example: Owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/RDS/layer1_adapters_and_ports/port_owncloud/Makefile)), which will be executed to test and build your service and then offer it in the gitlab's package directory.
 
 {{<callout warning>}}
 It is strongly recommended to use Makefiles to implement the required processes and not to overwrite the scripts in the .gitlab-ci.yaml file, as this can lead to problems in the pipeline. In Makefiles these errors are avoidable. Note: The pipeline uses Ubuntu as a basis.
@@ -138,12 +138,12 @@ It is strongly recommended to use Makefiles to implement the required processes 
 
 ### Documentation
 
-Your service should automatically keep its own documentation up to date, so that other users can continue to use the documentation. For this you should take a look at an already existing service ([Example: Owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/RDS/circle1_adapters_and_ports/port_owncloud/Makefile#L26)). There you can see how [pydoc-markdown](https://pypi.org/project/pydoc-markdown/) ([Note: Issue 43](https://github.com/Sciebo-RDS/Sciebo-RDS/issues/43)) and Python's DocString can be used to create a markdown file and move it to the correct documentation folder (Note: [pydocmd.yml](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/RDS/circle1_adapters_and_ports/port_owncloud/pydocmd.yml) in the same folder). There you will find another markdown file, which integrates this new markdown file using the code short code ([Example: Owncloud](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/docs/content/doc/impl/ports/port-owncloud.de.md)). You should also implement the same functionality so that when you merge your pull request, the [Website](https://www.research-data-services.org/doc/impl/ports/port-owncloud/) will be updated by the Gitlab CI pipeline. By the way, this applies whenever a change to your code is detected, so not just a merge will trigger this automation.
+Your service should automatically keep its own documentation up to date, so that other users can continue to use the documentation. For this you should take a look at an already existing service ([Example: Owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/RDS/layer1_adapters_and_ports/port_owncloud/Makefile#L26)). There you can see how [pydoc-markdown](https://pypi.org/project/pydoc-markdown/) ([Note: Issue 43](https://github.com/Sciebo-RDS/Sciebo-RDS/issues/43)) and Python's DocString can be used to create a markdown file and move it to the correct documentation folder (Note: [pydocmd.yml](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/RDS/layer1_adapters_and_ports/port_owncloud/pydocmd.yml) in the same folder). There you will find another markdown file, which integrates this new markdown file using the code short code ([Example: Owncloud](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/docs/content/doc/impl/ports/port-owncloud.de.md)). You should also implement the same functionality so that when you merge your pull request, the [Website](https://www.research-data-services.org/doc/impl/ports/port-owncloud/) will be updated by the Gitlab CI pipeline. By the way, this applies whenever a change to your code is detected, so not just a merge will trigger this automation.
 
 
 ### Docker file
 
-To build a container, your service needs a *dockerfile* ([Example: Owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/RDS/circle1_adapters_and_ports/port_owncloud/dockerfile)) in the project folder (the same one where the *.gitlab-ci.yaml* is located, also note that it is case sensitive).
+To build a container, your service needs a *dockerfile* ([Example: Owncloud](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/master/RDS/layer1_adapters_and_ports/port_owncloud/dockerfile)) in the project folder (the same one where the *.gitlab-ci.yaml* is located, also note that it is case sensitive).
 
 This is where you can define the build process, which packages and programs will be installed and your software will run.
 
@@ -157,7 +157,7 @@ Then add the Makefile in the *deploy* folder to set up your service in Kubernete
 - the first one installs or renews your service and
 - the second one uninstalls your service
 
-It is best if your second procedure has the same name as the first, but with the addition *remove\_* in front of it (example: [port_owncloud](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L44) and [remove_port_owncloud](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L77)) Then you add your first procedure to the corresponding procedure *circle1*, *circle2* or *circle3* ([see Makefile](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L62)). The same applies to your *remove\_* procedure, which will be added to one of the following procedures: *uninstall_circle1*, *uninstall_circle2* or *uninstall_circle3* ([see Makefile](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L95))
+It is best if your second procedure has the same name as the first, but with the addition *remove\_* in front of it (example: [port_owncloud](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L44) and [remove_port_owncloud](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L77)) Then you add your first procedure to the corresponding procedure *layer1*, *layer2* or *layer3* ([see Makefile](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L62)). The same applies to your *remove\_* procedure, which will be added to one of the following procedures: *uninstall_layer1*, *uninstall_layer2* or *uninstall_layer3* ([see Makefile](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/Makefile#L95))
 
 # Integration with GUI plugins
 

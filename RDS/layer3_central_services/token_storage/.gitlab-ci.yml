@@ -1,6 +1,6 @@
 .central_service_token_storage:
   variables:
-    FOLDER: RDS/circle3_central_services/token_storage
+    FOLDER: RDS/layer3_central_services/token_storage
 
 .tests_central_service_token_storage:
   extends:
@@ -29,8 +29,8 @@ build:central_service_token_storage:
 
   only:
     changes:
-      - RDS/circle3_central_services/token_storage/*
-      - RDS/circle3_central_services/token_storage/**/*
+      - RDS/layer3_central_services/token_storage/*
+      - RDS/layer3_central_services/token_storage/**/*
 
 doc:central_service_token_storage:
   needs:

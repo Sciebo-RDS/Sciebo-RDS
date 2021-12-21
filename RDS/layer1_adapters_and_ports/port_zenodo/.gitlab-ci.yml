@@ -1,7 +1,7 @@
 .port_zenodo:
   variables:
     ZENODO_API_KEY: $GITLAB_ZENODO_API_KEY
-    FOLDER: RDS/circle1_adapters_and_ports/port_zenodo
+    FOLDER: RDS/layer1_adapters_and_ports/port_zenodo
 
 .tests_port_zenodo:
   extends:
@@ -20,10 +20,10 @@ build:port_zenodo:
 
   only:
     changes:
-      - RDS/circle1_adapters_and_ports/port_zenodo/*
-      - RDS/circle1_adapters_and_ports/port_zenodo/**/*
-      - RDS/circle2_use_cases/interface_port_metadata.yml
-      - RDS/circle3_central_services/interface_port_token_storage.yml
+      - RDS/layer1_adapters_and_ports/port_zenodo/*
+      - RDS/layer1_adapters_and_ports/port_zenodo/**/*
+      - RDS/layer2_use_cases/interface_port_metadata.yml
+      - RDS/layer3_central_services/interface_port_token_storage.yml
 
 doc:port_zenodo:
   needs:

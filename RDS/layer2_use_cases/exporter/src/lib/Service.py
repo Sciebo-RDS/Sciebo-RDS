@@ -24,7 +24,7 @@ class Service:
         if not servicename.startswith("port-"):
             servicename = "port-" + servicename.lower()
 
-        self.portaddress = f"http://circle1-{servicename}"
+        self.portaddress = f"http://layer1-{servicename}"
 
         self.testing = None
         if testing is not False:

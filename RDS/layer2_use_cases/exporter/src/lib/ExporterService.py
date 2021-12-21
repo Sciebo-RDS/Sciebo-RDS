@@ -22,7 +22,7 @@ class ExporterService:
         to_service = to_service.lower()
 
         url = (
-            f"http://circle1-{from_service}"
+            f"http://layer1-{from_service}"
             if not self.testing
             else self.testing_address
         )
@@ -51,7 +51,7 @@ class ExporterService:
 
         # upload file to to_service for user via port for to_service
         url = (
-            f"http://circle1-{to_service}"
+            f"http://layer1-{to_service}"
             if not self.testing
             else self.testing_address
         )

@@ -31,7 +31,7 @@ class Research:
 
         self.testing = testing
         self.address = (
-            "http://circle3-research-manager" if testing is False else testing
+            "http://layer3-research-manager" if testing is False else testing
         )
 
         self.reload()

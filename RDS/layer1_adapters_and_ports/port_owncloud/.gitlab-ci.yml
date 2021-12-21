@@ -1,7 +1,7 @@
 .port_owncloud:
     variables:
         ZENODO_API_KEY: $GITLAB_ZENODO_API_KEY
-        FOLDER: RDS/circle1_adapters_and_ports/port_owncloud
+        FOLDER: RDS/layer1_adapters_and_ports/port_owncloud
 
 .tests_port_owncloud:
     extends:
@@ -20,10 +20,10 @@ build:port_owncloud:
 
     only:
         changes:
-            - RDS/circle1_adapters_and_ports/port_owncloud/*
-            - RDS/circle1_adapters_and_ports/port_owncloud/**/*
-            - RDS/circle2_use_cases/interface_port_file_storage.yml
-            - RDS/circle3_central_services/interface_port_token_storage.yml
+            - RDS/layer1_adapters_and_ports/port_owncloud/*
+            - RDS/layer1_adapters_and_ports/port_owncloud/**/*
+            - RDS/layer2_use_cases/interface_port_file_storage.yml
+            - RDS/layer3_central_services/interface_port_token_storage.yml
 
 doc:port_owncloud:
     needs:
