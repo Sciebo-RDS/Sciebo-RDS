@@ -98,7 +98,7 @@ cd getting-started/deploy
 
 Darin sind sämtliche Dateien enthalten, welche zur Konfiguration und Installation benötigt werden.
 
-{{<callout info>}} Die Helm Charts können im [Repositorium](https://github.com/Sciebo-RDS/charts) eingesehen werden.
+{{<callout info>}} Die Helm Charts können im [Repositorium](https://github.com/Sciebo-RDS/Sciebo-RDS/charts) eingesehen werden.
 {{</callout>}}
 
 Um die Installation anzupassen, sind mehrere Dateien anzupassen. Dafür liegen im `deploy` Ordner mehrere `.example`
@@ -117,7 +117,7 @@ Netzwerkadministrator in Erfahrung gebracht werden können.
 Für alle Microservices, die eingesetzt werden sollen, gilt, dass potentiell weitere Anpassungen vorgenommen werden
 können und müssen. Falls die Standardwerte für den Einsatz ausreichen, so sind keine Änderungen notwendig, außer in den
 Konnektorendiensten. Um Werte abzuändern, ist eine `values.yaml` Datei notwendig. Um alle verfügbaren Parameter
-einzusehen, ist ein Blick in das [Helm Chart Repo](https://github.com/Sciebo-RDS/charts/tree/master/charts) empfohlen.
+einzusehen, ist ein Blick in das [Helm Chart Repo](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/charts) empfohlen.
 
 Da die Konnektorendienste zusätzliche Informationen zur OAuth-Authentifizierung benötigt wie die ID und das Secret,
 benötigen diese eine values.yaml Datei. Im `deploy` Ordner ist wieder eine `example`-Datei vorhanden,

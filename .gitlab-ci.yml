@@ -84,14 +84,16 @@ variables:
     - docker push $CI_IMAGE_JOBID
 
 include:
-  - "/RDS/circle1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
-  - "/RDS/circle1_adapters_and_ports/port_owncloud/.gitlab-ci.yml"
-  - "/RDS/circle1_adapters_and_ports/port_openscienceframework/.gitlab-ci.yml"
-  - "/RDS/circle2_use_cases/exporter/.gitlab-ci.yml"
-  - "/RDS/circle2_use_cases/port/.gitlab-ci.yml"
-  - "/RDS/circle2_use_cases/metadata/.gitlab-ci.yml"
-  - "/RDS/circle3_central_services/token_storage/.gitlab-ci.yml"
-  - "/RDS/circle3_central_services/research_manager/.gitlab-ci.yml"
+  - "/charts/.gitlab-ci.yml"
+  - "/RDS/layer0_ingress/web/.gitlab-ci.yml"
+  - "/RDS/layer1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
+  - "/RDS/layer1_adapters_and_ports/port_owncloud/.gitlab-ci.yml"
+  - "/RDS/layer1_adapters_and_ports/port_openscienceframework/.gitlab-ci.yml"
+  - "/RDS/layer2_use_cases/exporter/.gitlab-ci.yml"
+  - "/RDS/layer2_use_cases/port/.gitlab-ci.yml"
+  - "/RDS/layer2_use_cases/metadata/.gitlab-ci.yml"
+  - "/RDS/layer3_central_services/token_storage/.gitlab-ci.yml"
+  - "/RDS/layer3_central_services/research_manager/.gitlab-ci.yml"
 
 upload_test_coverage:
   stage: documentation
@@ -148,9 +150,8 @@ pages:
   script:
     - cd docs
     - hugo
-    - mv public ../
   artifacts:
     paths:
-      - public
+      - /docs/public
   only:
     - master

@@ -1,0 +1,116 @@
+global:
+  domain: localhost
+  ingress:
+    tls:
+      secretName: sciebords-tls-public
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+  REDIS_HELPER_HOST: redis-helper
+  REDIS_HELPER_PORT: 6379
+  REDIS_CHANNEL: TokenStorage_Refresh_Token
+
+# Set this to DEBUG and restart your applications to get more informations in logs. Default: INFO
+loglevel: INFO
+# If you set this to "False", SSL will not be verified in all https requests. Default: "True"
+verify_ssl: "True"
+# The URL, which you configured in your oauth providers
+rds_oauth_redirect_uri: https://owncloud.local/index.php/apps/rds/oauth
+proxy:
+  http_proxy: ""
+  https_proxy: ""
+  no_proxy: circle1-port-owncloud,circle1-port-zenodo,circle1-port-openscienceframework,circle1-port-reva,circle2-port-service,circle3-token-storage,circle3-research-manager
+namespace:
+  create: false
+  name: "research-data-services"
+
+feature:
+  jaeger: true
+  redis: true
+layer0-web:
+  enabled: true
+layer0-describo:
+  enabled: true
+layer0-helper-describo-token-updater:
+  enabled: true
+circle1-port-zenodo:
+  enabled: false
+circle1-port-owncloud:
+  enabled: false
+circle1-port-openscienceframework:
+  enabled: false
+circle1-port-datasafe:
+  enabled: false
+circle1-port-reva:
+  enabled: false
+circle2-exporter-service: {}
+circle2-port-service: {}
+circle2-metadata-service: {}
+circle3-token-storage: {}
+circle3-research-manager: {}
+jaeger:
+  ## All jaeger options: https://github.com/jaegertracing/helm-charts
+  fullnameOverride: jaeger
+  schema:
+    activeDeadlineSeconds: 600
+redis:
+  ## All redis-cluster options: https://github.com/bitnami/charts/tree/master/bitnami/redis-cluster
+  fullnameOverride: redis
+  usePassword: false
+  persistence:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
+    annotations: {}
+  redis:
+    config:
+      ## All redis options: http://download.redis.io/redis-stable/redis.conf
+      min-replicas-to-write: 1
+      min-replicas-max-lag: 5
+      maxmemory: "0"
+      maxmemory-policy: "volatile-lru"
+      save: "60 1"
+      repl-diskless-sync: "yes"
+      rdbcompression: "yes"
+      rdbchecksum: "yes"
+redis-helper:
+  ## All redis-cluster options: https://github.com/bitnami/charts/tree/master/bitnami/redis
+  fullnameOverride: redis-helper
+  usePassword: false
+  master:
+    persistence:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+      annotations: {}
+  replica:
+    persistence:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+      annotations: {}
+  redis:
+    config:
+      ## All redis options: http://download.redis.io/redis-stable/redis.conf
+      min-replicas-to-write: 1
+      min-replicas-max-lag: 5
+      maxmemory: "0"
+      maxmemory-policy: "volatile-lru"
+      save: "60 1"
+      repl-diskless-sync: "yes"
+      rdbcompression: "yes"
+      rdbchecksum: "yes"
+postgresql:
+  image:
+    tag: 10.8.0
+  service:
+    port: "5432"
+  fullnameOverride: postgresql
+  postgresqlDatabase: "describo"
+  postgresqlUsername: "admin"
+  postgresqlPassword: "admin"
+  persistance:
+    enabled: true
+    size: 1Gi

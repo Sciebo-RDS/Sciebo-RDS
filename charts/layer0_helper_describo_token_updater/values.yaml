@@ -1,0 +1,40 @@
+# Default values for circle3_token_storage.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: zivgitlab.wwu.io/sciebo-rds/rds-web/port_helper_describo_token_updater
+  tag: latest
+  pullPolicy: Always
+
+labels:
+  app.kubernetes.io/component: research-data-services.org
+  app.kubernetes.io/part-of: service
+  research-data-services.org/layer: layer0
+
+fullnameOverride: layer0-helper-describo-token-updater
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+environment:
+  DESCRIBO_API_ENDPOINT: http://layer0-describo:80/api/session/application
+  DESCRIBO_API_SECRET: XYZ

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  {{- with .Values.service.annotations }}
+  annotations:
+  {{ toYaml . | indent 4 }}
+  {{- end }}
+  name: {{ include "circle2_exporter_service.fullname" . }}
+  labels:
+{{ include "circle2_exporter_service.labels" . | indent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "circle2_exporter_service.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

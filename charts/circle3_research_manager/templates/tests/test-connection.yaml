@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "circle3_research_manager.fullname" . }}-test-research"
+  labels:
+{{ include "circle3_research_manager.labels" . | indent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args:  ['{{ include "circle3_research_manager.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never

@@ -1,0 +1,37 @@
+# Do not edit anything here, except you know what you are doing.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mservice
+data:
+  USE_CASE_SERVICE_EXPORTER_SERVICE: "http://circle2-exporter-service/exporter"
+  USE_CASE_SERVICE_METADATA_SERVICE: "http://circle2-metadata-service/metadata"
+  USE_CASE_SERVICE_PORT_SERVICE: "http://circle2-port-service/port-service"
+  CENTRAL_SERVICE_TOKEN_STORAGE: "http://circle3-token-storage"
+  CENTRAL_SERVICE_RESEARCH_MANAGER: "http://circle3-research-manager/research"
+---
+# Global app settings
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: globalenvvar
+data:
+  # Set this to DEBUG and restart your applications to get more informations in logs. Default: INFO
+  LOGLEVEL: {{ .Values.loglevel }}
+  # If you set this to "False", SSL will not be verified in all https requests. Default: "True"
+  VERIFY_SSL: {{ .Values.verify_ssl }}
+  # The URL, which you configured in your oauth providers
+  RDS_OAUTH_REDIRECT_URI: {{ .Values.rds_oauth_redirect_uri }}
+---
+# Proxy Settings
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: proxy
+data:
+  HTTP_PROXY: {{ .Values.proxy.http_proxy }}
+  HTTPS_PROXY: {{ .Values.proxy.https_proxy }}
+  NO_PROXY: {{ .Values.proxy.no_proxy }}
+  http_proxy: {{ .Values.proxy.http_proxy }}
+  https_proxy: {{ .Values.proxy.https_proxy }}
+  no_proxy: {{ .Values.proxy.no_proxy }}

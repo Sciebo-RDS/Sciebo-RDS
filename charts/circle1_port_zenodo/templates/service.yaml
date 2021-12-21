@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  {{- with .Values.service.annotations }}
+  annotations:
+  {{ toYaml . | indent 4 }}
+  {{- end }}
+  name: {{ include "circle1_port_zenodo.fullname" . }}
+  labels:
+{{ include "circle1_port_zenodo.labels" . | indent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "circle1_port_zenodo.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

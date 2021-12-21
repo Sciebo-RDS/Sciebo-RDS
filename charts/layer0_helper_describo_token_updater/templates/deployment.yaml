@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "layer0_helper_describo_token_updater.fullname" . }}
+  labels:
+{{ include "layer0_helper_describo_token_updater.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+{{ include "layer0_helper_describo_token_updater.labels" . | indent 6 }}
+  template:
+    metadata:
+      labels:
+{{ include "layer0_helper_describo_token_updater.labels" . | indent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: REDIS_HELPER_HOST
+            value: {{ .Values.global.REDIS_HELPER_HOST | quote }}
+          - name: REDIS_HELPER_PORT
+            value: {{ .Values.global.REDIS_HELPER_PORT | quote }}
+          - name: "DESCRIBO_API_ENDPOINT"
+            value: {{ .Values.environment.DESCRIBO_API_ENDPOINT | quote }}
+          - name: "DESCRIBO_API_SECRET"
+            value: {{ .Values.environment.DESCRIBO_API_SECRET | quote }}
+          - name: REDIS_CHANNEL
+            value: {{ .Values.global.REDIS_CHANNEL | quote }}
+          envFrom:
+          - configMapRef:
+              name: mservice
+          - configMapRef:
+              name: proxy
+          - configMapRef:
+              name: globalenvvar
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

@@ -1,0 +1,8 @@
+charts:
+  extends: .documentation
+  image: zivgitlab.wwu.io/ulb/devops/skaffold:main
+  script:
+    - mkdir -p ./docs/static/charts
+    - helm package charts/* --destination ./docs/static/charts
+    - helm repo index --url https://www.research-data-services.org/charts ./charts/
+    - mv index.yaml ./docs/static/charts/index.yaml

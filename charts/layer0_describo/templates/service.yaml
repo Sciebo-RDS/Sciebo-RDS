@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  {{- with .Values.service.annotations }}
+  annotations:
+  {{ toYaml . | indent 4 }}
+  {{- end }}
+  name: {{ include "layer0_describo.fullname" . }}
+  labels:
+{{ include "layer0_describo.labels" . | indent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "layer0_describo.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

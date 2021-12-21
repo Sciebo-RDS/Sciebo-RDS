@@ -98,7 +98,7 @@ cd getting-started/deploy
 It contains all the files which are required for configuration and installation.
 
 {{<callout info>}} If you want to see the helm charts, take a look at
-the [charts repo](https://github.com/Sciebo-RDS/charts). {{</callout>}}
+the [charts repo](https://github.com/Sciebo-RDS/Sciebo-RDS/charts). {{</callout>}}
 
 To customize the installation, several files have to be adjusted. For this purpose, there are `.example` files in
 the `deploy` folder which needs to be copied, renamed and adapted as necessary.
@@ -116,7 +116,7 @@ Furthermore, each service that will be used by the RDS system may be adjusted wi
 fine with the standard values, you do not need any changes for your services except connector-services. But if you want
 to change any value, you need to specify it in the `values.yaml` for the corresponding microservice. If you want to see
 every available parameter, please take a look at
-the [chart repo](https://github.com/Sciebo-RDS/charts/tree/master/charts).
+the [chart repo](https://github.com/Sciebo-RDS/Sciebo-RDS/tree/master/charts).
 
 For the connector-services, you need to specify the OAuth-ID and -secret to identify with. There are again an `example`
 file to be found in the `deploy` folder, which is called `values.yaml.example`. This file have to be renamed following
