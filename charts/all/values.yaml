@@ -18,7 +18,7 @@ rds_oauth_redirect_uri: https://owncloud.local/index.php/apps/rds/oauth
 proxy:
   http_proxy: ""
   https_proxy: ""
-  no_proxy: circle1-port-owncloud,circle1-port-zenodo,circle1-port-openscienceframework,circle1-port-reva,circle2-port-service,circle3-token-storage,circle3-research-manager
+  no_proxy: layer1-port-owncloud,layer1-port-zenodo,layer1-port-openscienceframework,layer1-port-reva,layer2-port-service,layer3-token-storage,layer3-research-manager
 namespace:
   create: false
   name: "research-data-services"
@@ -32,21 +32,19 @@ layer0-describo:
   enabled: true
 layer0-helper-describo-token-updater:
   enabled: true
-circle1-port-zenodo:
+layer1-port-zenodo:
   enabled: false
-circle1-port-owncloud:
+layer1-port-owncloud:
   enabled: false
-circle1-port-openscienceframework:
+layer1-port-openscienceframework:
   enabled: false
-circle1-port-datasafe:
+layer1-port-reva:
   enabled: false
-circle1-port-reva:
-  enabled: false
-circle2-exporter-service: {}
-circle2-port-service: {}
-circle2-metadata-service: {}
-circle3-token-storage: {}
-circle3-research-manager: {}
+layer2-exporter-service: {}
+layer2-port-service: {}
+layer2-metadata-service: {}
+layer3-token-storage: {}
+layer3-research-manager: {}
 jaeger:
   ## All jaeger options: https://github.com/jaegertracing/helm-charts
   fullnameOverride: jaeger

@@ -38,13 +38,13 @@ The following table lists the most used configurable parameters of the Sciebo RD
 | `global.REDIS_HELPER_HOST`                                    | This redis host will be used to store values. Standalone redis (Purpose: Pubsub) | redis                                                |
 | `global.REDIS_HELPER_HOST`                                    | This redis port will be used to store values. Standalone redis (Purpose: Pubsub) | 6379                                                 |
 | `global.ingress.tls.secretName`                               | The name of the tls secret within k8s.                                           | "sciebords-tls-public"                               |
-| `circle1-port-zenodo.environment.ZENODO_ADDRESS`              |                                                                                  | https://sandbox.zenodo.org                           |
-| `circle1-port-zenodo.environment.ZENODO_OAUTH_CLIENT_ID`      | Required                                                                         |                                                      |
-| `circle1-port-zenodo.environment.ZENODO_OAUTH_CLIENT_SECRET`  | Required                                                                         |                                                      |
-| `circle1-port-owncloud.environment.OWNCLOUD_INSTALLATION_URL` |                                                                                  | https://localhost/owncloud                           |
-| `circle1-port-owncloud.environment.OWNCLOUD_OAUTH_CLIENT_ID`  | Required                                                                         |                                                      |
-| `circle1-port-owncloud.environment.`                          | Required                                                                         |                                                      |
-| `<circle3-COMPONENT>.environment.IN_MEMORY_AS_FAILOVER`       | If no redis was found, service crashes. With "True" it uses inmemory.            | "False"                                              |
+| `layer1-port-zenodo.environment.ZENODO_ADDRESS`              |                                                                                  | https://sandbox.zenodo.org                           |
+| `layer1-port-zenodo.environment.ZENODO_OAUTH_CLIENT_ID`      | Required                                                                         |                                                      |
+| `layer1-port-zenodo.environment.ZENODO_OAUTH_CLIENT_SECRET`  | Required                                                                         |                                                      |
+| `layer1-port-owncloud.environment.OWNCLOUD_INSTALLATION_URL` |                                                                                  | https://localhost/owncloud                           |
+| `layer1-port-owncloud.environment.OWNCLOUD_OAUTH_CLIENT_ID`  | Required                                                                         |                                                      |
+| `layer1-port-owncloud.environment.`                          | Required                                                                         |                                                      |
+| `<layer3-COMPONENT>.environment.IN_MEMORY_AS_FAILOVER`       | If no redis was found, service crashes. With "True" it uses inmemory.            | "False"                                              |
 | `redis`                                                       | See [Dependencies](#Dependencies)                                                |                                                      |
 | `jaeger`                                                      | See [Dependencies](#Dependencies)                                                |                                                      |
 | `<component>.replicaCount`                                    |                                                                                  | 1                                                    |

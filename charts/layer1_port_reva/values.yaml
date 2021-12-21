@@ -5,16 +5,28 @@
 replicaCount: 1
 
 image:
-  repository: zivgitlab.wwu.io/sciebo-rds/rds-web/port_helper_describo_token_updater
+  repository: omnivox/port-reva
   tag: latest
   pullPolicy: Always
 
 labels:
   app.kubernetes.io/component: research-data-services.org
-  app.kubernetes.io/part-of: service
-  research-data-services.org/layer: layer0
+  app.kubernetes.io/part-of: connector
+  research-data-services.org/layer: layer1
 
-fullnameOverride: layer0-helper-describo-token-updater
+fullnameOverride: layer1-port-reva
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+  annotations:
+    prometheus.io/scrape: "true"
+
+domain: localhost
+ingress:
+  tls:
+    secretName: sciebords-tls-public
 
 resources:
   {}
@@ -36,5 +48,6 @@ tolerations: []
 affinity: {}
 
 environment:
-  DESCRIBO_API_ENDPOINT: http://layer0-describo:80/api/session/application
-  DESCRIBO_API_SECRET: XYZ
+  RDS_REVA_HOST: sciencemesh-test.uni-muenster.de:9600
+  RDS_REVA_USER: ""
+  RDS_REVA_PASSWORD: ""

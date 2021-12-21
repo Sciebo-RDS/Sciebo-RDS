@@ -11,35 +11,32 @@ dependencies:
 - name: layer0-helper-describo-token-updater
   repository: file://../layer0_helper_describo_token_updater
   version: 0.1.5
-- name: circle1-port-openscienceframework
-  repository: file://../circle1_port_openscienceframework
+- name: layer1-port-openscienceframework
+  repository: file://../layer1_port_openscienceframework
   version: 0.2.3
-- name: circle1-port-zenodo
-  repository: file://../circle1_port_zenodo
+- name: layer1-port-zenodo
+  repository: file://../layer1_port_zenodo
   version: 0.2.2
-- name: circle1-port-owncloud
-  repository: file://../circle1_port_owncloud
+- name: layer1-port-owncloud
+  repository: file://../layer1_port_owncloud
   version: 0.2.2
-- name: circle1-port-datasafe
-  repository: file://../circle1_port_datasafe
-  version: 0.2.2
-- name: circle1-port-reva
-  repository: file://../circle1_port_reva
+- name: layer1-port-reva
+  repository: file://../layer1_port_reva
   version: 0.1.5
-- name: circle2-exporter-service
-  repository: file://../circle2_exporter_service
+- name: layer2-exporter-service
+  repository: file://../layer2_exporter_service
   version: 0.2.2
-- name: circle2-port-service
-  repository: file://../circle2_port_service
+- name: layer2-port-service
+  repository: file://../layer2_port_service
   version: 0.2.4
-- name: circle2-metadata-service
-  repository: file://../circle2_metadata_service
+- name: layer2-metadata-service
+  repository: file://../layer2_metadata_service
   version: 0.2.2
-- name: circle3-token-storage
-  repository: file://../circle3_token_storage
+- name: layer3-token-storage
+  repository: file://../layer3_token_storage
   version: 0.2.7
-- name: circle3-research-manager
-  repository: file://../circle3_research_manager
+- name: layer3-research-manager
+  repository: file://../layer3_research_manager
   version: 0.3.2
 - name: jaeger
   repository: https://jaegertracing.github.io/helm-charts
@@ -50,5 +47,5 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 14.8.11
-digest: sha256:d5bd3cb7eb26c97e765c64b8a131115e3251ff27de83860a9b233da4c987c196
-generated: "2021-12-20T17:22:03.9972466+01:00"
+digest: sha256:8d4b9c81e7dc8a55f89928934fba2eeae381a2b498baf54c6130e44277d8f12d
+generated: "2021-12-21T15:12:08.0176966+01:00"

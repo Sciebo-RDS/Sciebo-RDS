@@ -23,61 +23,55 @@ dependencies:
     condition: feature.redis
     tags:
       - layer0
-  - name: circle1-port-openscienceframework
+  - name: layer1-port-openscienceframework
     version: ^0.2.0
-    repository: file://../circle1_port_openscienceframework
-    condition: circle1-port-zenodo.enabled
+    repository: file://../layer1_port_openscienceframework
+    condition: layer1-port-zenodo.enabled
     tags:
-      - circle1
-  - name: circle1-port-zenodo
+      - layer1
+  - name: layer1-port-zenodo
     version: ^0.2.0
-    repository: file://../circle1_port_zenodo
-    condition: circle1-port-zenodo.enabled
+    repository: file://../layer1_port_zenodo
+    condition: layer1-port-zenodo.enabled
     tags:
-      - circle1
-  - name: circle1-port-owncloud
+      - layer1
+  - name: layer1-port-owncloud
     version: ^0.2.0
-    repository: file://../circle1_port_owncloud
-    condition: circle1-port-owncloud.enabled
+    repository: file://../layer1_port_owncloud
+    condition: layer1-port-owncloud.enabled
     tags:
-      - circle1
-  - name: circle1-port-datasafe
-    version: ^0.2.0
-    repository: file://../circle1_port_datasafe
-    condition: circle1-port-datasafe.enabled
-    tags:
-      - circle1
-  - name: circle1-port-reva
+      - layer1
+  - name: layer1-port-reva
     version: ^0.1.0
-    repository: file://../circle1_port_reva
-    condition: circle1-port-reva.enabled
+    repository: file://../layer1_port_reva
+    condition: layer1-port-reva.enabled
     tags:
-      - circle1
-  - name: circle2-exporter-service
+      - layer1
+  - name: layer2-exporter-service
     version: ^0.2.0
-    repository: file://../circle2_exporter_service
+    repository: file://../layer2_exporter_service
     tags:
-      - circle2
-  - name: circle2-port-service
+      - layer2
+  - name: layer2-port-service
     version: ^0.2.0
-    repository: file://../circle2_port_service
+    repository: file://../layer2_port_service
     tags:
-      - circle2
-  - name: circle2-metadata-service
+      - layer2
+  - name: layer2-metadata-service
     version: ^0.2.0
-    repository: file://../circle2_metadata_service
+    repository: file://../layer2_metadata_service
     tags:
-      - circle2
-  - name: circle3-token-storage
+      - layer2
+  - name: layer3-token-storage
     version: ^0.2.0
-    repository: file://../circle3_token_storage
+    repository: file://../layer3_token_storage
     tags:
-      - circle3
-  - name: circle3-research-manager
+      - layer3
+  - name: layer3-research-manager
     version: ^0.3.0
-    repository: file://../circle3_research_manager
+    repository: file://../layer3_research_manager
     tags:
-      - circle3
+      - layer3
   - name: jaeger
     version: ^0.34.0
     repository: https://jaegertracing.github.io/helm-charts

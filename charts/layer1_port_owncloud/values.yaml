@@ -1,20 +1,33 @@
-# Default values for layer3_token_storage.
+# Default values for layer1_port_owncloud.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: zivgitlab.wwu.io/sciebo-rds/rds-web/port_helper_describo_token_updater
-  tag: latest
+  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/port_owncloud
+  tag: 70530
   pullPolicy: Always
 
 labels:
   app.kubernetes.io/component: research-data-services.org
-  app.kubernetes.io/part-of: service
-  research-data-services.org/layer: layer0
+  app.kubernetes.io/part-of: connector
+  research-data-services.org/layer: layer1
 
-fullnameOverride: layer0-helper-describo-token-updater
+nameOverride: ""
+fullnameOverride: layer1-port-owncloud
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+  annotations:
+    prometheus.io/scrape: "true"
+
+domain: localhost
+ingress:
+  tls:
+    secretName: sciebords-tls-public
 
 resources:
   {}
@@ -36,5 +49,6 @@ tolerations: []
 affinity: {}
 
 environment:
-  DESCRIBO_API_ENDPOINT: http://layer0-describo:80/api/session/application
-  DESCRIBO_API_SECRET: XYZ
+  INSTALLATION_URL: https://localhost/owncloud
+  OAUTH_CLIENT_ID: ""
+  OAUTH_CLIENT_SECRET: ""
