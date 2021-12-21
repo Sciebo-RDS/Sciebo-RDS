@@ -1,0 +1,68 @@
+image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8
+
+stages:
+  - build
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  FOLDER: ./
+
+.builds_web:
+  image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:19.03
+
+  stage: build
+
+  services:
+    - name: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:19.03-dind
+      alias: docker
+
+  tags:
+    - docker-in-docker
+
+  variables:
+    CI_PROJECT_PATH: $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_SERVER_URL
+    - docker info
+    - cd $FOLDER
+    - export DOCKERTAGNAME=$(echo "$CI_JOB_NAME" | cut -d":" -f2)
+    - export CI_PROJECT_PATH=$CI_PROJECT_PATH/$DOCKERTAGNAME
+    - export CI_IMAGE_LATEST=$CI_PROJECT_PATH:latest
+    - export CI_IMAGE_SHA=$CI_PROJECT_PATH:$CI_COMMIT_SHORT_SHA
+    - export CI_IMAGE_BRANCH=$CI_PROJECT_PATH:$CI_COMMIT_BRANCH
+    - export CI_IMAGE_JOBID=$CI_PROJECT_PATH:$CI_PIPELINE_ID
+    - docker pull --quiet $CI_IMAGE_BRANCH || true
+    - docker build --cache-from $CI_IMAGE_BRANCH --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_BRANCH  --tag $CI_IMAGE_JOBID --file=$DOCKERFILENAME .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker info
+    - docker push $CI_IMAGE_BRANCH
+    - docker push $CI_IMAGE_LATEST
+    - docker push $CI_IMAGE_JOBID
+
+build:rds_web:
+  variables:
+    DOCKERFILENAME: Dockerfile.rds-standalone
+
+  only:
+    changes:
+      - server/*
+      - server/**/*
+      - client/*
+      - client/**/*
+
+  extends:
+    - .builds_web
+
+build:port_helper_describo_token_updater:
+  variables:
+    FOLDER: helper/
+    DOCKERFILENAME: dockerfile
+
+  only:
+    changes:
+      - helper/*
+      - helper/**/*
+
+  extends:
+    - .builds_web

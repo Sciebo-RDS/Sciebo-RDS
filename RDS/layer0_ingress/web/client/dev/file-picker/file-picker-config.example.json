@@ -1,0 +1,8 @@
+{
+  "server": "http://host.docker.internal:8080",
+  "auth" : {
+    "clientId": "EFB5Z5lBsFX4ejcRaCeSKAbn3171i09WpvSX5voC1iB2KwRzrrsZ3S3xnsPTWfrP",
+    "url": "http://host.docker.internal:8080/index.php/apps/oauth2/api/v1/token",
+    "authUrl": "http://host.docker.internal:8080/index.php/apps/oauth2/authorize"
+  }
+}

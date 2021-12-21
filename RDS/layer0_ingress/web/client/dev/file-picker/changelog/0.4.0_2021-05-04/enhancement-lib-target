@@ -1,0 +1,5 @@
+Enhancement: Build File picker as a library
+
+We've added a build script which creates a library bundle with the File picker. This bundle can be directly imported during build time into any Vuejs app.
+
+https://github.com/owncloud/file-picker/pull/32

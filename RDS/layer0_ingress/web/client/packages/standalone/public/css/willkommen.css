@@ -1,0 +1,251 @@
+html {
+  font-family: sans-serif;
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+
+body, html {
+    width: 100%;
+	height: 100%;
+}
+
+body, p {
+	color: #6b747b;
+	font: 400 1rem/1rem "Open Sans", sans-serif;
+}
+
+h1 {
+	color: #252c38;
+	font-weight: 700;
+	font-size: 2.5rem;
+	line-height: 2.5rem;
+	letter-spacing: -0.5px;
+}
+
+h2 {
+	color: #252c38;
+	font-weight: 700;
+	font-size: 1.5rem;
+	letter-spacing: -0.5px;	
+	line-height: 100%;
+}
+
+.header {
+    text-align: left;
+}
+
+
+.container, .container-fluid, .container-sm, .container-md, .container-lg, .container-xl {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col, .col-auto, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm, .col-sm-auto, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md, .col-md-auto, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg, .col-lg-auto, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl, .col-xl-auto {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+body, p {
+    color: #6b747b;
+    font: 400 1rem/1rem "Open Sans", sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+}
+
+body, p {
+    color: #6b747b;
+    font: 400 1rem/1rem "Open Sans", sans-serif;
+}
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: nowrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+
+.col-lg-6 {
+		-ms-flex: 0 0 50%;
+		flex: 0 0 50%;
+		max-width: 50%;
+}
+
+
+.header {
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    background-color: #FFFFFF;
+    text-align: left;
+}
+
+.header {
+    padding-top: 3rem;
+}
+
+
+
+.header .text-container {
+    margin-bottom: 0rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+.container, .container-sm, .container-md, .container-lg {
+    max-width: 960px;
+}
+
+
+.container,
+.container-fluid,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.p-large {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+	text-align:left;
+}
+
+.p-second{
+	font-size: 1.125rem;
+    line-height: 1rem;
+	text-align:left;
+	color: #6b747b;
+}
+
+.image-container {
+    min-height: 393.867px;
+}
+
+.header .img-fluid {
+    min-width: 379px;
+    min-height: 393px;
+}
+
+a:hover {
+	background-color: #f1f9fc;
+	color: #6b747b;;
+}
+
+.img-fluid {
+    max-width: 60%;
+    height: auto;
+}
+
+img {
+    vertical-align: middle;
+    border-style: none;
+}
+
+.click{
+	border-radius: 5px;
+	background-color: #f1f9fc;
+	max-width: 120px;
+}
+
+.cards-1 {
+    padding-top: 2rem;
+    padding-bottom: 1.5rem;
+    text-align: left;
+}
+
+.cards-1 .container .row .col-lg-12 .überpfeil {
+    flex-wrap: nowrap;
+}
+
+.col-lg-12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 195px;
+}
+
+.cards-1 .card {
+    display: inline-block;
+    width: 180px;
+    vertical-align: top;
+}
+
+.cards-1 .card {
+    margin-bottom: 1rem;
+    padding: 1rem 1rem 1rem 1rem;
+    border: none;
+    border-radius: 16px;
+    background-color: #f1f9fc;
+}
+
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    max-height: 180px;
+}
+
+.taste{
+	width: 148px;
+	min-height: 148px;
+	text-align: center;
+	background-color: #f1f9fc;
+	border-radius: 5px;
+	color: #6b747b;
+	
+}
+
+.card .pfeil{
+	float: left;
+}
+
+.pfeil{
+	max-width: 100%;
+	
+}
+
+.überpfeil{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+    max-width: 40px;
+    padding-right: 0px;
+    padding-left: 0px;
+	max-height: 180px;
+}
+
+

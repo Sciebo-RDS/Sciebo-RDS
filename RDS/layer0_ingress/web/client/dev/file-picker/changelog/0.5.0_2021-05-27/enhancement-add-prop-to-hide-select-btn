@@ -1,0 +1,5 @@
+Enhancement: Add a prop to hide the select button
+
+We've added a new prop `isSelectBtnDisplayed` which can be used to hiding the select button.
+
+https://github.com/owncloud/file-picker/pull/60

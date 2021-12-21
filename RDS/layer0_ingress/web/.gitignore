@@ -1,0 +1,46 @@
+.DS_Store
+node_modules
+/dist
+
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+/.env
+.env.*
+!.env.example
+
+.pytest_cache
+responses.json
+dist
+
+vendor
+owncloud/web/ocis
+owncloud/web/web
+flask_session
+/tunnel.sh
+client/packages/classic/php/js/app.js
+
+web.config.json
+production-configuration.json
+/sign.sh
+/rds
+/server/tests
+
+# rust
+target

@@ -1,0 +1,5 @@
+Enhancement: Bootstrap Vue
+
+We've bootstrapped Vue to add access to the file picker via window.
+
+https://github.com/owncloud/file-picker/pull/19

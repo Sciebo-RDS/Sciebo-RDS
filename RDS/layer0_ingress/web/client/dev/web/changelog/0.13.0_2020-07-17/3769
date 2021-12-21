@@ -1,0 +1,6 @@
+Bugfix: Fix translations string
+
+Allow better translations of various strings.
+
+https://github.com/owncloud/web/pull/3766
+https://github.com/owncloud/web/pull/3769

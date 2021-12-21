@@ -1,0 +1,6 @@
+Enhancement: Allow string as configObject attribute
+
+The property/attribute "configObject" is now allowed to be a string. We'll parse it as JSON.
+
+https://github.com/owncloud/file-picker/pull/27
+https://github.com/owncloud/file-picker/pull/28

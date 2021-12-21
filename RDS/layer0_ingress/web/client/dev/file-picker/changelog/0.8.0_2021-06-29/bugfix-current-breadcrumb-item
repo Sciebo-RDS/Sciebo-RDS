@@ -1,0 +1,6 @@
+Bugfix: Current breadcrumb item shouldn't be interactable
+
+We've fixed the last item in the breadcrumb which is equal to the current folder so that it is not interactable anymore.
+
+https://github.com/owncloud/file-picker/issues/64
+https://github.com/owncloud/file-picker/pull/76

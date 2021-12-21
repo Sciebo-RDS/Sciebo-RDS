@@ -1,0 +1,5 @@
+Enhancement: Add accessible location select
+
+We've added a hidden button that becomes visible only when focused via keyboard navigation to ensure it is possible to select a location also when using a screen reader only.
+
+https://github.com/owncloud/file-picker/pull/54

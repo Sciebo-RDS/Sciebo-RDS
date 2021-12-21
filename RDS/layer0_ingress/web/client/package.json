@@ -1,0 +1,85 @@
+{
+  "name": "rds",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "serve": "yarn workspace @rds/standalone run serve",
+    "build": "yarn workspaces build",
+    "standalone": "yarn workspace @rds/standalone run build",
+    "classic": "yarn workspace @rds/classic run build",
+    "web": "yarn workspace @rds/web run build",
+    "test:unit": "yarn workspace @rds/codebase run test --setupTestFrameworkScriptFile=./tests/setup.js",
+    "lint": "vue-cli-service lint",
+    "test": "npm run test:unit",
+    "localize-extract": "yarn workspace @rds/codebase run localize-extract",
+    "localize-compile": "yarn workspace @rds/codebase run localize-compile"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "core-js": "^3.6.5",
+    "dotenv-webpack": "^6.0.4",
+    "socket.io-client": "^3.1.1",
+    "vue": "^2.6.11",
+    "vue-axios": "^3.2.4",
+    "vue-gettext": "^2.1.12",
+    "vue-native-websocket": "^2.0.14",
+    "vue-oidc-client": "^0.4.2",
+    "vue-router": "^3.2.0",
+    "vue-socket.io-extended": "^4.0.6",
+    "vuetify": "^2.4.0",
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^4.0.0-beta.3"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "^4.5.11",
+    "@vue/cli-plugin-unit-jest": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/test-utils": "^1.0.3",
+    "babel-eslint": "^10.1.0",
+    "dotenv": "^8.2.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "sass": "^1.32.0",
+    "sass-loader": "^10.0.0",
+    "vue-cli-plugin-vuetify": "~2.1.0",
+    "vue-gettext-cli": "^1.0.5",
+    "vue-template-compiler": "^2.6.11",
+    "vuetify-loader": "^1.7.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

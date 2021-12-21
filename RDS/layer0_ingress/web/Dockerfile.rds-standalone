@@ -1,0 +1,46 @@
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:14-alpine3.10 AS staging
+WORKDIR /src
+RUN apk add findutils
+COPY client .
+RUN mkdir -p ./pkg/ \
+    && find . -type d -name node_modules -prune -false -o \( -name "package.json" -o -name "yarn.lock" -o -name "package-lock.json" \)  -exec install -D '{}' './pkg/{}' \;
+
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:14-alpine3.10 AS web
+WORKDIR /app
+ENV VUE_APP_BASE_URL $VUE_APP_BASE_URL
+WORKDIR /app
+RUN apk add gettext
+COPY --from=staging /src/pkg ./
+RUN yarn install --non-interactive
+COPY client .
+RUN yarn standalone
+
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8-alpine
+WORKDIR /srv
+
+EXPOSE 80
+
+ENV JSFOLDER=/usr/share/nginx/html/js/*.js
+
+ENV SOCKETIO_HOST=http://localhost:80
+ENV REDIS_HELPER_HOST=http://owncloud_redis
+ENV REDIS_HELPER_PORT=6379
+ENV PROMETHEUS_MULTIPROC_DIR=/tmp
+
+RUN apk add --no-cache nginx gcc musl-dev python3-dev libffi-dev openssl-dev cargo g++ gettext bash supervisor
+RUN mkdir -p /run/nginx
+RUN mkdir -p /var/lib/nginx/tmp
+RUN pip install setuptools wheel setuptools-rust gunicorn[eventlet] pipenv
+
+COPY ./server/requirements.txt ./server/Pipfile ./server/Pipfile.lock /srv/
+RUN pipenv install --system
+
+COPY --from=web /app/packages/standalone/dist /usr/share/nginx/html
+COPY ./setup/misc/supervisord.rds.conf /etc/supervisor/supervisord.conf
+COPY ./setup/misc/start-nginx.nginx.sh /usr/bin/start-nginx.sh
+RUN chmod +x /usr/bin/start-nginx.sh
+COPY ./setup/misc/nginx/gunicorn.conf /etc/nginx/nginx.conf
+COPY ./server/starter.py ./server/gunicorn.conf.py /srv/
+COPY ./server/src /srv/src
+
+ENTRYPOINT [ "supervisord", "-c" , "/etc/supervisor/supervisord.conf"]

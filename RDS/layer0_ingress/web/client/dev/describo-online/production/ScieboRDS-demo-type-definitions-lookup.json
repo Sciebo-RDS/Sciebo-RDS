@@ -1,0 +1,16 @@
+[
+    { "name": "Person", "help": "A person (alive, dead, undead, or fictional)." },
+    { "name": "Thing", "help": "The most generic type of item." },
+    {
+        "name": "Organization",
+        "help": "An organization such as a school, NGO, corporation, club, etc."
+    },
+    {
+        "name": "CreativeWork",
+        "help": "The most generic kind of creative work, including books, movies, photographs, software programs, etc."
+    },
+    {
+        "name": "Dataset",
+        "help": "A body of structured information describing some topic(s) of interest."
+    }
+]

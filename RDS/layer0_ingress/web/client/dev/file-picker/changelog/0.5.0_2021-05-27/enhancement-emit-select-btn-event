@@ -1,0 +1,5 @@
+Enhancement: Emit event when clicking the select button
+
+We've started emitting `select` event when the select button is clicked.
+
+https://github.com/owncloud/file-picker/pull/60

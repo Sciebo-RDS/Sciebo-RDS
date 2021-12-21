@@ -1,0 +1,5 @@
+Change: Remove focus management
+
+We've removed the initial focus management and shift the responsibility to the consuming app.
+
+https://github.com/owncloud/file-picker/pull/61

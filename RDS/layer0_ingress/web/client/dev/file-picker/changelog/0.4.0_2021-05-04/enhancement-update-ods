@@ -1,0 +1,6 @@
+Enhancement: Update ODS to 6.2.0
+
+We've updated ODS to version 6.2.0. This version brings new components that we used to make the location picker an actual table of resources.
+
+https://github.com/owncloud/owncloud-design-system/releases/tag/v6.2.0
+https://github.com/owncloud/file-picker/pull/36

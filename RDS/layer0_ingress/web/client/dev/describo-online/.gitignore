@@ -1,0 +1,7 @@
+node_modules
+dist
+coverage
+
+configuration.json
+development-configuration.json
+production-configuration.json

@@ -1,0 +1,5 @@
+Enhancement: Make it possible to select folder via keyboard
+
+We've made the table row in the File picker focusable and the selection of folder in location picker triggerable by hitting enter.
+
+https://github.com/owncloud/file-picker/pull/51

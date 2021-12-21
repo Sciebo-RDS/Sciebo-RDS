@@ -1,0 +1,5 @@
+Enhancement: Select button label
+
+It is now possible to provide a dedicated label overriding the default Select button label.
+
+https://github.com/owncloud/file-picker/pull/29

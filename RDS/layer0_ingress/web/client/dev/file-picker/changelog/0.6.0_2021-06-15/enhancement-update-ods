@@ -1,0 +1,6 @@
+Enhancement: Update ODS to 7.2.0
+
+We've updated ODS to version 7.2.0. This version brings fix for a wrong selected background css custom property.
+
+https://github.com/owncloud/owncloud-design-system/releases/tag/v7.2.0
+https://github.com/owncloud/file-picker/pull/65

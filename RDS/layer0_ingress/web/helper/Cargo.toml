@@ -1,0 +1,13 @@
+[package]
+name = "helper"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+redis = { version="0.21.0" }
+reqwest = { version = "0.11", features = ["blocking", "json"] }
+serde = {version ="1.0.126", features = ["derive"]}
+openssl = "0.10.35"
+serde_json = "1.0.64"

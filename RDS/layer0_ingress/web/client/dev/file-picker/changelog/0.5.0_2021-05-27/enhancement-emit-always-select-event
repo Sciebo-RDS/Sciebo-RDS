@@ -1,0 +1,5 @@
+Enhancement: Always emit event when a resource is selected
+
+We've started emitting `update` event every time a resource or location is selected or deselected.
+
+https://github.com/owncloud/file-picker/pull/60
