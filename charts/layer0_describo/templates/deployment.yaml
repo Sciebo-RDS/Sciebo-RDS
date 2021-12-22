@@ -48,28 +48,15 @@ spec:
               mountPath: /srv/type-definitions.json
               subPath: type-definitions.json
               readOnly: true
-          env:
-          - name: "DB_HOST"
-            value: {{ .Values.environment.DB_HOST | quote }}
-          - name: "DB_PORT"
-            value: {{ .Values.environment.DB_PORT | quote }}
-          - name: "DB_USER"
-            value: {{ .Values.environment.DB_USER | quote }}
-          - name: "DB_PASSWORD"
-            value: {{ .Values.environment.DB_PASSWORD | quote }}
-          - name: "DB_DATABASE"
-            value: {{ .Values.environment.DB_DATABASE | quote }}
-          - name: "NODE_ENV"
-            value: "production"
-          - name: "LOG_LEVEL"
-            value: {{ .Values.environment.LOG_LEVEL | quote}}
           envFrom:
           - configMapRef:
-              name: mservice
+            name: mservice
           - configMapRef:
-              name: proxy
+            name: proxy
           - configMapRef:
-              name: globalenvvar
+            name: globalenvvar
+          - configMapRef:
+            name: describoconfig
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: "ui"

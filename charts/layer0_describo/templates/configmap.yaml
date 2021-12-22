@@ -1,0 +1,13 @@
+# Do not edit anything here, except you know what you are doing.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: describoconfig
+data:
+    DB_HOST: {{ .Values.postgresql.fullnameOverride | quote }}
+    DB_PORT: {{ .Values.postgresql.service.port | quote }}
+    DB_USER: {{ .Values.postgresql.postgresqlUsername | quote }}
+    DB_PASSWORD: {{ .Values.postgresql.postgresqlPassword | quote }}
+    DB_DATABASE: {{ .Values.postgresql.postgresqlDatabase | quote }}
+    NODE_ENV: "production"
+    LOG_LEVEL: {{ .Values.environment.LOG_LEVEL | quote}}

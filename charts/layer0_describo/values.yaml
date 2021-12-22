@@ -8,7 +8,7 @@ image:
   repository: arkisto/
   api: describo-online-api
   ui: describo-online-ui
-  tag: 0.3.0
+  tag: latest
   pullPolicy: Always
 
 labels:
@@ -25,11 +25,21 @@ service:
 
 domain: localhost
 ingress:
-  path: /describo
+  path: /
   tls:
     secretName: sciebords-tls-public
   annotations:
-    kubernetes.io/ingress.class: nginx-internal
+    nginx.org/server-snippets: |
+      location /socket.io/ {
+          proxy_http_version 1.1;
+          proxy_redirect off;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+          proxy_set_header        Host                    $host;
+          proxy_set_header        X-Real-IP               $remote_addr;
+          proxy_set_header        X-Forwarded-For         $proxy_add_x_forwarded_for;
+          proxy_pass http://layer0-describo/socket.io/;
+      }
 resources:
   {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -57,12 +67,7 @@ persistence:
   annotations: {}
 
 environment:
-  DB_HOST: "postgresql"
-  DB_PORT: "5432"
-  DB_DATABASE: "describo"
-  DB_USER: "admin"
-  DB_PASSWORD: "admin"
-  LOG_LEVEL: "debug"
+  LOG_LEVEL: "info"
 
 postgresql:
   image:

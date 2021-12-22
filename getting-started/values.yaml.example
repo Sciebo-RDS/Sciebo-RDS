@@ -19,19 +19,15 @@ proxy:
 namespace: # creates a namespace on their own, if you wants to
   create: false
   name: "research-data-services"
-
 layer0-describo:
   enabled: true
-  image:
-    tag: main
-  environment:
-    EMBED_MODE: true
   postgresql:
     postgresqlDatabase: "describo"
     postgresqlUsername: "admin"
     postgresqlPassword: "admin"
-    persistance:
-      storageClassName: cinderbronze-delete
+  domain: separate-domain.your-institution.org
+  environment:
+    LOG_LEVEL: "info"
 layer0-web:
   enabled: true
   image:
