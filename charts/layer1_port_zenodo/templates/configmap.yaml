@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: portzenodoconfig
+data:
+  ZENODO_OAUTH_CLIENT_ID: {{ .Values.environment.OAUTH_CLIENT_ID | quote }}
+  ZENODO_ADDRESS: {{ .Values.environment.ADDRESS | quote }}
+  ZENODO_OAUTH_CLIENT_SECRET: {{ .Values.environment.OAUTH_CLIENT_SECRET | quote }}

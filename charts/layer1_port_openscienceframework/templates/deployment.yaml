@@ -22,22 +22,15 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-          - name: "OPENSCIENCEFRAMEWORK_OAUTH_CLIENT_ID"
-            value: "{{ .Values.environment.OAUTH_CLIENT_ID }}"
-          - name: "OPENSCIENCEFRAMEWORK_ADDRESS"
-            value: "{{ .Values.environment.ADDRESS }}"
-          - name: "OPENSCIENCEFRAMEWORK_API_ADDRESS"
-            value: "{{ .Values.environment.API_ADDRESS }}"
-          - name: "OPENSCIENCEFRAMEWORK_OAUTH_CLIENT_SECRET"
-            value: "{{ .Values.environment.OAUTH_CLIENT_SECRET }}"
           envFrom:
           - configMapRef:
-              name: mservice
+            name: mservice
           - configMapRef:
-              name: proxy
+            name: proxy
           - configMapRef:
-              name: globalenvvar
+            name: globalenvvar
+          - configMapRef:
+            name: portosfconfig
           ports:
             - name: http
               containerPort: 8080

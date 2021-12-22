@@ -22,16 +22,15 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-          - name: "IGNORE_PROJECTS"
-            value: {{ .Values.environment.IGNORE_PROJECTS | quote }}
           envFrom:
           - configMapRef:
-              name: mservice
+            name: mservice
           - configMapRef:
-              name: proxy
+            name: proxy
           - configMapRef:
-              name: globalenvvar
+            name: globalenvvar
+          - configMapRef:
+            name: serviceportconfig
           ports:
             - name: http
               containerPort: 8080

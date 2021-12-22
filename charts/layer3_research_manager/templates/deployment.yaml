@@ -27,16 +27,13 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-          - name: REDIS_HOST
-            value: {{ .Values.global.REDIS_HOST | quote }}
-          - name: REDIS_PORT
-            value: {{ .Values.global.REDIS_PORT | quote }}
           envFrom:
           - configMapRef:
-              name: proxy
+            name: proxy
           - configMapRef:
-              name: globalenvvar
+            name: globalenvvar
+          - configMapRef:
+            name: layer3researchconfig
           ports:
             - name: http
               containerPort: 8080

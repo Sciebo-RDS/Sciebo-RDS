@@ -22,24 +22,15 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-          - name: REDIS_HELPER_HOST
-            value: {{ .Values.global.REDIS_HELPER_HOST | quote }}
-          - name: REDIS_HELPER_PORT
-            value: {{ .Values.global.REDIS_HELPER_PORT | quote }}
-          - name: "DESCRIBO_API_ENDPOINT"
-            value: {{ .Values.environment.DESCRIBO_API_ENDPOINT | quote }}
-          - name: "DESCRIBO_API_SECRET"
-            value: {{ .Values.environment.DESCRIBO_API_SECRET | quote }}
-          - name: REDIS_CHANNEL
-            value: {{ .Values.global.REDIS_CHANNEL | quote }}
           envFrom:
           - configMapRef:
-              name: mservice
+            name: mservice
           - configMapRef:
-              name: proxy
+            name: proxy
           - configMapRef:
-              name: globalenvvar
+            name: globalenvvar
+          - configMapRef:
+            name: describohelperconfig
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

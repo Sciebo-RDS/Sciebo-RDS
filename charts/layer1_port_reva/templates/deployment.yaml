@@ -26,20 +26,15 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-          - name: "RDS_REVA_HOST"
-            value: "{{ .Values.environment.RDS_REVA_HOST }}"
-          - name: "RDS_REVA_USER"
-            value: "{{ .Values.environment.RDS_REVA_USER }}"
-          - name: "RDS_REVA_PASSWORD"
-            value: "{{ .Values.environment.RDS_REVA_PASSWORD }}"
           envFrom:
           - configMapRef:
-              name: mservice
+            name: mservice
           - configMapRef:
-              name: proxy
+            name: proxy
           - configMapRef:
-              name: globalenvvar
+            name: globalenvvar
+          - configMapRef:
+            name: portrevaconfig
           ports:
             - name: http
               containerPort: 80

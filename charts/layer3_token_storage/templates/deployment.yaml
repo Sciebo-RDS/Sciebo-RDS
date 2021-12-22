@@ -27,24 +27,13 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-          - name: REDIS_HOST
-            value: {{ .Values.global.REDIS_HOST | quote }}
-          - name: REDIS_PORT
-            value: {{ .Values.global.REDIS_PORT | quote }}
-          - name: REDIS_HELPER_HOST
-            value: {{ .Values.global.REDIS_HELPER_HOST | quote }}
-          - name: REDIS_HELPER_PORT
-            value: {{ .Values.global.REDIS_HELPER_PORT | quote }}
-          - name: use_inmemory_as_fallover
-            value: {{ .Values.environment.IN_MEMORY_AS_FAILOVER | quote }}
-          - name: REDIS_CHANNEL
-            value: {{ .Values.global.REDIS_CHANNEL | quote }}
           envFrom:
           - configMapRef:
-              name: proxy
+            name: proxy
           - configMapRef:
-              name: globalenvvar
+            name: globalenvvar
+          - configMapRef:
+            name: layer3tokenconfig
           ports:
             - name: http
               containerPort: 8080

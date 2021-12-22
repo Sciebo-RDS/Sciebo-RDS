@@ -22,20 +22,15 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-          - name: "ZENODO_OAUTH_CLIENT_ID"
-            value: "{{ .Values.environment.OAUTH_CLIENT_ID }}"
-          - name: "ZENODO_ADDRESS"
-            value: "{{ .Values.environment.ADDRESS }}"
-          - name: "ZENODO_OAUTH_CLIENT_SECRET"
-            value: "{{ .Values.environment.OAUTH_CLIENT_SECRET }}"
           envFrom:
           - configMapRef:
-              name: mservice
+            name: mservice
           - configMapRef:
-              name: proxy
+            name: proxy
           - configMapRef:
-              name: globalenvvar
+            name: globalenvvar
+          - configMapRef:
+            name: portzenodoconfig
           ports:
             - name: http
               containerPort: 8080

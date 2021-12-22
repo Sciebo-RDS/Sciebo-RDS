@@ -22,54 +22,15 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-          - name: "EMBED_MODE"
-            value: "{{ .Values.environment.EMBED_MODE }}"
-          - name: "FLASK_ORIGINS"
-            value: {{ .Values.environment.FLASK_ORIGINS | toJson | squote }}
-          - name: "SECRET_KEY"
-            value: "{{ .Values.environment.SECRET_KEY }}"
-          - name: "OWNCLOUD_URL"
-            value: "{{ .Values.environment.OWNCLOUD_URL }}"
-          - name: "OWNCLOUD_OAUTH_CLIENT_ID"
-            value: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_ID }}"
-          - name: "OWNCLOUD_OAUTH_CLIENT_SECRET"
-            value: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_SECRET }}"
-          - name: "OWNCLOUD_OAUTH_CLIENT_REDIRECT"
-            value: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_REDIRECT }}"
-          - name: "OWNCLOUD_OAUTH_CLIENT_AUTHORIZE_URL"
-            value: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_AUTHORIZE_URL }}"
-          - name: "DESCRIBO_API_ENDPOINT"
-            value: "{{ .Values.environment.DESCRIBO_API_ENDPOINT }}"
-          - name: "DESCRIBO_API_SECRET"
-            value: "{{ .Values.environment.DESCRIBO_API_SECRET }}"
-          - name: "VUE_APP_DESCRIBO_URL"
-            value: "{{ .Values.environment.VUE_APP_DESCRIBO_URL }}"
-          - name: "VUE_APP_FRONTENDHOST"
-            value: "{{ .Values.environment.VUE_APP_FRONTENDHOST }}"
-          - name: "VUE_APP_SOCKETIO_HOST"
-            value: "{{ .Values.environment.VUE_APP_SOCKETIO_HOST }}"
-          - name: "SOCKETIO_HOST"
-            value: "{{ .Values.environment.SOCKETIO_HOST }}"
-          - name: "SOCKETIO_PATH"
-            value: "{{ .Values.environment.SOCKETIO_PATH }}"
-          - name: "VUE_APP_BASE_URL"
-            value: "{{ .Values.environment.VUE_APP_BASE_URL }}"
-          - name: "REDIS_HELPER_HOST"
-            value: {{ .Values.global.REDIS_HELPER_HOST | quote }}
-          - name: "REDIS_HELPER_PORT"
-            value: {{ .Values.global.REDIS_HELPER_PORT | quote }}
-          - name: REDIS_HOST
-            value: {{ .Values.global.REDIS_HOST | quote }}
-          - name: REDIS_PORT
-            value: {{ .Values.global.REDIS_PORT | quote }}
           envFrom:
           - configMapRef:
-              name: mservice
+            name: mservice
           - configMapRef:
-              name: proxy
+            name: proxy
           - configMapRef:
-              name: globalenvvar
+            name: globalenvvar
+          - configMapRef:
+            name: webconfig
           ports:
             - name: http
               containerPort: {{ .Values.service.targetPort }}
