@@ -89,12 +89,19 @@ Kubernetes [benötigt](https://helm.sh/blog/helm-3-released/). {{</callout>}}
 
 ## Konfiguration
 
-Man benötigt den Ordner `deploy` aus dem `getting-started` Github Repositorium.
+Sie benötigen den Ordner "getting-started" aus dem Github-Repository. Wenn Sie nicht den gesamten Quellcode über Git herunterladen möchten, können Sie [DownGit](https://downgit.github.io/#/home?url=https:%2F%2Fgithub.com%2FSciebo-RDS%2FSciebo-RDS%2Ftree%2Frestructure%2Fgetting-started&fileName=scieboRDS-getting-started) verwenden, um die benötigten Dateien herunterzuladen. Öffnen Sie den Link in Ihrem Browser, da es sich um eine Javascript-Anwendung handelt, so dass wget oder curl nicht richtig funktionieren werden.
+Entpacken Sie die Datei in ein schnell auffindbares Verzeichnis.
+
 
 ```bash
-git clone https://github.com/Sciebo-RDS/getting-started/
-cd getting-started/deploy
+# Laden Sie den Getting-Started-Ordner mit Ihrem Browser herunter und legen Sie ihn irgendwo ab, wo Sie ihn mit Ihrem CLI finden können.
+# Richten Sie Ihr CLI auf diesen Ordner.
+# Installieren Sie unzip: sudo apt install unzip
+unzip scieboRDS-getting-started.zip -d scieboRDS-getting-started
+cd scieboRDS-getting-started
 ```
+
+Übersetzt mit www.DeepL.com/Translator (kostenlose Version)
 
 Darin sind sämtliche Dateien enthalten, welche zur Konfiguration und Installation benötigt werden.
 
@@ -103,16 +110,6 @@ Darin sind sämtliche Dateien enthalten, welche zur Konfiguration und Installati
 
 Um die Installation anzupassen, sind mehrere Dateien anzupassen. Dafür liegen im `deploy` Ordner mehrere `.example`
 Dateien, welche kopiert und umbenannt werden sollen und anschließend ggfs. inhaltlich anzupassen sind.
-
-```bash
-cp configuration.yaml.example configuration.yaml
-nano configuration.yaml
-```
-
-In der `configuration.yaml` werden u.a. die Proxies definiert, welche möglicherweise in der Umgebung notwendig sind.
-Dadurch können die Microservices auch außerhalb des Clusters verfügbare Services erreichen, falls der Cluster keine
-eigene weltweite IP besitzen sollte. Falls unbekannt, sollten Details zur Proxykonfiguration beim lokalen
-Netzwerkadministrator in Erfahrung gebracht werden können.
 
 Für alle Microservices, die eingesetzt werden sollen, gilt, dass potentiell weitere Anpassungen vorgenommen werden
 können und müssen. Falls die Standardwerte für den Einsatz ausreichen, so sind keine Änderungen notwendig, außer in den
@@ -135,8 +132,8 @@ miteinander verbunden werden sollen, korrekt funktionieren. Im folgenden
 Abschnitt [OAuth2-Identifier und Secret erzeugen](#oauth2-identifier-und-secret-erzeugen) erfahren Sie, wie das geht.
 {{</callout>}}
 
-Sie müssen für jeden Dienst, den Sie verwenden möchten, `enabled: true` einstellen. Nur für aktivierte Dienste müssen
-Sie die Oauth Werte einstellen. Sobald diese Einstellungen vorgenommen wurden, kann das System installiert werden.
+Sie müssen für jeden Dienst, den Sie verwenden möchten, `enabled: true` einstellen. Nur für aktivierte Dienste müssen Sie die Oauth Werte einstellen. Sobald diese Einstellungen vorgenommen wurden, kann das System installiert werden.
+Falls sie wissen, was sie tun, können sie auch Dienste deaktivieren, indem sie `enabled: false` für z.B. den Dienst `layer0-web` setzen. Dies hat aber weitreichende Folgen für die Funktionsweise von Sciebo RDS.
 
 Im `describo`-Ordner finden Sie die Konfiguration unseres verwendeten Tools für die Metadatenerfassung. Passen Sie diese bitte nach dessen [Handbuch](https://github.com/Arkisto-Platform/describo-online/wiki/General-information-about-configuring-the-application) an.
 

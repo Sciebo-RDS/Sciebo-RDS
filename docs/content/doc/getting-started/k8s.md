@@ -88,11 +88,18 @@ Kubernetes side. {{</callout>}}
 
 ## Configuration
 
-You need the `deploy` folder from the `getting-started` Github repository.
+You need the `getting-started` folder from the Github repository. If you do not want to download all sourcecode via git, you can use [DownGit](https://downgit.github.io/#/home?url=https:%2F%2Fgithub.com%2FSciebo-RDS%2FSciebo-RDS%2Ftree%2Frestructure%2Fgetting-started&fileName=scieboRDS-getting-started) to download the needed files. Open the link in your browser, because it is a javascript application, so wget or curl will not work properly.
+Unzip the file to a nice named directory, which you can easy find later.
+
 
 ```bash
-git clone https://github.com/Sciebo-RDS/getting-started/
-cd getting-started/deploy
+# Download the getting-started folder with your browser and place it somewhere, you can find it with your CLI.
+# Direct your CLI to this folder.
+# install unzip: sudo apt install unzip
+unzip scieboRDS-getting-started.zip
+rm scieboRDS-getting-started.zip
+mv getting-started scieboRDS-getting-started
+cd scieboRDS-getting-started
 ```
 
 It contains all the files which are required for configuration and installation.
@@ -103,16 +110,7 @@ the [charts repo](https://github.com/Sciebo-RDS/Sciebo-RDS/charts). {{</callout>
 To customize the installation, several files have to be adjusted. For this purpose, there are `.example` files in
 the `deploy` folder which needs to be copied, renamed and adapted as necessary.
 
-```bash
-cp configuration.yaml.example configuration.yaml
-nano configuration.yaml
-```
-
-In `configuration.yaml` the proxies that may be necessary in the environment are to be defined. This allows the
-microservices to reach services available outside of the cluster, if the cluster does not have its own global IP. You
-might want to ask your local network administrator concerning the correct proxy configuration for your environment.
-
-Furthermore, each service that will be used by the RDS system may be adjusted with respect to local needs. If you are
+Each service that will be used by the RDS system may be adjusted with respect to local needs. If you are
 fine with the standard values, you do not need any changes for your services except connector-services. But if you want
 to change any value, you need to specify it in the `values.yaml` for the corresponding microservice. If you want to see
 every available parameter, please take a look at
@@ -134,7 +132,7 @@ connected. In the following section [Generate OAuth2 Identifier and Secrets](#ge
 you will find out how. {{</callout>}}
 
 You have to set `enabled: true` for each service, you want to use. Only for enabled services, you need to set the oauth
-values. Once these adjustments have been made, the system can be installed.
+values. Once these adjustments have been made, the system can be installed. Some services can be disabled too (like the `layer0-web` service), but if you do not know what you are doing, you should not do that. So only touch services in layer1.
 
 In the `describo` folder you will find the configuration of our used tool for metadata collection. Please adjust it according to its [manual](https://github.com/Arkisto-Platform/describo-online/wiki/General-information-about-configuring-the-application).
 
