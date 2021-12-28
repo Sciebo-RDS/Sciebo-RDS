@@ -12,6 +12,8 @@ test:port_openscienceframework:
   extends: .tests_port_openscienceframework
 
 build:port_openscienceframework:
+  needs:
+    - test:port_openscienceframework
   extends:
     - .builds
     - .port_openscienceframework
