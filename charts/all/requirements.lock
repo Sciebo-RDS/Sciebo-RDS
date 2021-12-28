@@ -10,7 +10,7 @@ dependencies:
   version: 0.1.31
 - name: layer0-helper-describo-token-updater
   repository: file://../layer0_helper_describo_token_updater
-  version: 0.1.5
+  version: 0.1.6
 - name: layer1-port-openscienceframework
   repository: file://../layer1_port_openscienceframework
   version: 0.2.3
@@ -47,5 +47,5 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 14.8.11
-digest: sha256:b139b6d0b097629b05d4be69eb3369d65af52005552ccda758613ed87f4be315
-generated: "2021-12-22T16:23:43.3526281+01:00"
+digest: sha256:895601b2d39031f95892399b821c13f0909b4f12c7c7dbfb153aa9eeebddb449
+generated: "2021-12-22T16:50:14.1681304+01:00"
