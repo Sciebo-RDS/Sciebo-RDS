@@ -22,19 +22,27 @@
       <v-expansion-panel v-for="(project, i) in projects" :key="i">
         <v-expansion-panel-header>
           <v-row>
-            <v-col cols="auto" v-if="!!project.researchname">
-              {{ project.researchname }}
-            </v-col>
-            <v-col cols="auto" v-else>
-              <translate
-                :translate-params="{
-                  researchIndex: project.researchIndex + 1,
+            <v-col class="d-inline-flex" style="max-width: fit-content !important;">
+            <ProjectTitle v-bind:project="project" v-bind:active="panel === i" />
+              </v-col>
+            <v-col>
+              <ProjectStatusChip
+                v-bind:status="project.status"
+                v-bind:class="{
+                  'mt-2': panel === i && project.status < 4,
+                  'mt-3': titleEdit && panel === i && project.status < 4,
                 }"
-              >
-                Project %{ researchIndex }
-              </translate>
+                class="hidden-sm-and-down"
+              />
+              <ProjectStatusChip
+                v-bind:status="project.status"
+                class="hidden-md-and-up"
+                v-bind:class="{
+                  'mt-2': panel === i,
+                  'hidden-md-and-down': titleEdit,
+                }"
+              />
             </v-col>
-            <ProjectStatusChip v-bind:status="project.status" />
           </v-row>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
@@ -62,6 +70,7 @@
 <script>
 import ProjectSetting from "./Setting.vue";
 import ProjectStatusChip from "./StatusChip.vue";
+import ProjectTitle from "./ProjectTitle.vue";
 import { mapGetters } from "vuex";
 import { mapState } from "vuex";
 
@@ -69,6 +78,7 @@ export default {
   components: {
     ProjectSetting,
     ProjectStatusChip,
+    ProjectTitle,
   },
   data() {
     return {

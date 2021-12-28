@@ -12,27 +12,7 @@
             height="150px"
           >
             <v-card-subtitle v-translate>
-              1. Enter your working title here
-            </v-card-subtitle>
-            <v-spacer></v-spacer>
-            <v-card-actions>
-              <v-text-field
-                :label="$gettext('Working title')"
-                @input="changeResearchname"
-                v-model="workingTitle"
-              />
-            </v-card-actions>
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card
-            flat
-            outlined
-            class="mb-12 text-center d-flex flex-column"
-            height="150px"
-          >
-            <v-card-subtitle v-translate>
-              2. Which folder do you want to publish?
+              1. Which folder do you want to publish?
             </v-card-subtitle>
             <v-spacer></v-spacer>
             <v-card-actions class="mb-5 pl-5">
@@ -63,7 +43,7 @@
             height="150px"
           >
             <v-card-subtitle v-translate>
-              3. Which Services do you want to publish to?
+              2. Which Services do you want to publish to?
             </v-card-subtitle>
             <v-spacer></v-spacer>
             <v-card-actions>
@@ -139,9 +119,6 @@ export default {
     window.removeEventListener("message", this.eventloop);
   },
   methods: {
-    changeResearchname() {
-      this.$emit("changeResearchname", this.workingTitle);
-    },
     eventloop(event) {
       if (event.data.length > 0) {
         var payload = JSON.parse(event.data);

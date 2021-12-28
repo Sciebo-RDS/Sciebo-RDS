@@ -406,15 +406,15 @@ class RDSNamespace(Namespace):
             app.logger.debug(f"send sessionId: {sessionId}")
 
             emit("SessionId", sessionId)
+            try:
+                app.logger.debug("try to save sessionId in redis")
+                rc.set(current_user.userId, json.dumps(describoObj))
+            except Exception as e:
+                app.logger.debug("saving sessionId in redis gone wrong")
+                app.logger.error(e, exc_info=True)
         except Exception as e:
             app.logger.error(e, exc_info=True)
 
-        try:
-            app.logger.debug("try to save sessionId in redis")
-            rc.set(current_user.userId, json.dumps(describoObj))
-        except Exception as e:
-            app.logger.debug("saving sessionId in redis gone wrong")
-            app.logger.error(e, exc_info=True)
 
         app.logger.debug(f"return sessionId: {sessionId}")
         return sessionId
