@@ -24,13 +24,13 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
           - configMapRef:
-            name: mservice
+              name: mservice
           - configMapRef:
-            name: proxy
+              name: proxy
           - configMapRef:
-            name: globalenvvar
+              name: globalenvvar
           - configMapRef:
-            name: describohelperconfig
+              name: describohelperconfig
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

@@ -29,11 +29,11 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
           - configMapRef:
-            name: proxy
+              name: proxy
           - configMapRef:
-            name: globalenvvar
+              name: globalenvvar
           - configMapRef:
-            name: layer3researchconfig
+              name: layer3researchconfig
           ports:
             - name: http
               containerPort: 8080

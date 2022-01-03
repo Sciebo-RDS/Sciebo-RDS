@@ -50,13 +50,13 @@ spec:
               readOnly: true
           envFrom:
           - configMapRef:
-            name: mservice
+              name: mservice
           - configMapRef:
-            name: proxy
+              name: proxy
           - configMapRef:
-            name: globalenvvar
+              name: globalenvvar
           - configMapRef:
-            name: describoconfig
+              name: describoconfig
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: "ui"

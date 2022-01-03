@@ -28,13 +28,13 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
           - configMapRef:
-            name: mservice
+              name: mservice
           - configMapRef:
-            name: proxy
+              name: proxy
           - configMapRef:
-            name: globalenvvar
+              name: globalenvvar
           - configMapRef:
-            name: portrevaconfig
+              name: portrevaconfig
           ports:
             - name: http
               containerPort: 80
