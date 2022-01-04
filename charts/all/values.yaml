@@ -8,6 +8,11 @@ global:
   REDIS_HELPER_HOST: redis-helper
   REDIS_HELPER_PORT: 6379
   REDIS_CHANNEL: TokenStorage_Refresh_Token
+  
+  postgresql:
+    postgresqlDatabase: "describo"
+    postgresqlUsername: "d9oNHWc41tVUIR4778Qsgi9kmi6c5FD2"
+    postgresqlPassword: "9hMh0QMKfpRTNWkktwPReyLWJkt9bDmE"
 
 # Set this to DEBUG and restart your applications to get more informations in logs. Default: INFO
 loglevel: INFO
@@ -16,13 +21,12 @@ verify_ssl: "True"
 # The URL, which you configured in your oauth providers
 rds_oauth_redirect_uri: https://owncloud.local/index.php/apps/rds/oauth
 proxy:
-  http_proxy: ""
-  https_proxy: ""
+  http_proxy: "''" # empty field
+  https_proxy: "''" # empty field
   no_proxy: layer1-port-owncloud,layer1-port-zenodo,layer1-port-openscienceframework,layer1-port-reva,layer2-port-service,layer3-token-storage,layer3-research-manager
 namespace:
   create: false
   name: "research-data-services"
-
 feature:
   jaeger: true
   redis: true

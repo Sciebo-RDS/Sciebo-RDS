@@ -5,12 +5,6 @@ dependencies:
     condition: layer0-describo.enabled
     tags:
       - layer0
-  - name: postgresql
-    version: ^10.8.0
-    repository: https://charts.bitnami.com/bitnami
-    condition: layer0-describo.enabled
-    tags:
-      - storage
   - name: layer0-web
     version: ^0.1.0
     repository: file://../layer0_web

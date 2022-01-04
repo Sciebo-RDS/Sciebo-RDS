@@ -1,13 +1,10 @@
 dependencies:
 - name: layer0-describo
   repository: file://../layer0_describo
-  version: 0.1.29
-- name: postgresql
-  repository: https://charts.bitnami.com/bitnami
-  version: 10.13.14
+  version: 0.1.32
 - name: layer0-web
   repository: file://../layer0_web
-  version: 0.1.31
+  version: 0.1.32
 - name: layer0-helper-describo-token-updater
   repository: file://../layer0_helper_describo_token_updater
   version: 0.1.6
@@ -47,5 +44,5 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 14.8.11
-digest: sha256:895601b2d39031f95892399b821c13f0909b4f12c7c7dbfb153aa9eeebddb449
-generated: "2021-12-22T16:50:14.1681304+01:00"
+digest: sha256:4c5f853404ffd787eb7b8936216defe9546b08db436537a32020ac419651cd68
+generated: "2022-01-04T12:42:17.7036267+01:00"

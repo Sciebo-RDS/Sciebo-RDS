@@ -21,5 +21,6 @@ data:
     VUE_APP_BASE_URL: "{{ .Values.environment.VUE_APP_BASE_URL }}"
     REDIS_HELPER_HOST: {{ .Values.global.REDIS_HELPER_HOST | quote }}
     REDIS_HELPER_PORT: {{ .Values.global.REDIS_HELPER_PORT | quote }}
-    EDIS_HOS: {{ .Values.global.REDIS_HOST | quote }}
-    EDIS_POR: {{ .Values.global.REDIS_PORT | quote }}
+    REDIS_HOST: {{ .Values.global.REDIS_HOST | quote }}
+    REDIS_PORT: {{ .Values.global.REDIS_PORT | quote }}
+    PROMETHEUS_MULTIPROC_DIR: "/tmp"
