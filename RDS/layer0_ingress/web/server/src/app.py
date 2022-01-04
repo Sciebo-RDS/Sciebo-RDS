@@ -9,7 +9,6 @@ from flask import request
 from functools import wraps
 import opentracing
 from flask_opentracing import FlaskTracing
-from prometheus_flask_exporter.multiprocess import GunicornPrometheusMetrics
 import redis_pubsub_dict
 from rediscluster import RedisCluster
 from flask import Flask
@@ -129,9 +128,10 @@ app.logger.setLevel(gunicorn_logger.level)
 app.config.update(flask_config)
 
 try:
+    from prometheus_flask_exporter.multiprocess import GunicornPrometheusMetrics
     metrics = GunicornPrometheusMetrics(app)
-except:
-    print("error in prometheus setup")
+except Exception as e:
+    print(f"error in prometheus setup: {e}")
 Session(app)
 
 socketio = SocketIO(
