@@ -4,10 +4,10 @@ dependencies:
   version: 0.1.37
 - name: layer0-web
   repository: file://../layer0_web
-  version: 0.1.34
+  version: 0.1.35
 - name: layer0-helper-describo-token-updater
   repository: file://../layer0_helper_describo_token_updater
-  version: 0.1.6
+  version: 0.1.7
 - name: layer1-port-openscienceframework
   repository: file://../layer1_port_openscienceframework
   version: 0.2.3
@@ -31,7 +31,7 @@ dependencies:
   version: 0.2.2
 - name: layer3-token-storage
   repository: file://../layer3_token_storage
-  version: 0.2.7
+  version: 0.2.8
 - name: layer3-research-manager
   repository: file://../layer3_research_manager
   version: 0.3.2
@@ -44,5 +44,5 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 14.8.11
-digest: sha256:74db33b0e7b05f7b6822310630412e1f43dd24ccf003e867f22e368a8d820b0f
-generated: "2022-01-06T13:26:06.3940943+01:00"
+digest: sha256:490d25b318d9ee61ad2b9bca7a9ad61d9edfe33846eab535a4007bf320ec5e08
+generated: "2022-01-06T13:57:33.626251+01:00"
