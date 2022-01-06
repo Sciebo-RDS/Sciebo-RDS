@@ -10,11 +10,14 @@ menu:
 
 In the following, we will show you how to install the RDS system in your Kubernetes Cluster.
 
-{{<callout "info">}} If you not already know, what RDS is and how does it work, you should take a look into
+{{<callout "info">}} If you do not already know, what RDS is and how does it work, you should take a look into
 this [article](/doc/). {{</callout>}}
 
 At the beginning of this guide, you will need to fulfill the requirements. After that, you will need to configure the
 RDS system to your needs. Last but not least, you will install the RDS system on your configured kubernetes cluster.
+
+{{<callout "info">}} In earlier versions of this document, we used make(-file). This has been replaced in favor of more transparent `helm` commands. They are compatible with the commands in the makefile, so you do not have to replace your current setup. But the helm charts were updated by alot. So you should use `helm repo update` and `helm upgrade` command [we use later in this document](#installation) to get to the latest version.
+{{</callout>}}
 
 ## Assumptions
 
@@ -49,7 +52,7 @@ permissions.
 
 The following rights are optional, but highly recommended:
 
-- creation of Namespaces
+- creation of Namespaces (Also can be done through your cluster administtrator)
 
 {{<callout "info">}} Use `minikube` for test purposes, otherwise ask the cluster administrator for access informations.
 {{</callout>}}
@@ -67,30 +70,20 @@ minikube addons enable ingress
 
 ### Required programs
 
-We use the program `make` to configure and deploy our software with a Makefile, which can be found in the `deploy`
-folder. If `helm` or `kubectl` have not yet been installed, you can easily install them with the following commands,
-too.
+You need the following tools installed and configured:
 
-{{<tabs>}} {{<tab "bash" "Ubuntu/Debian">}}sudo apt install make -y make dependencies_ubuntu {{</tab>}}
-
-{{<tab "bash" "Fedora/CentOS">}}sudo dnf install make -y make dependencies_fedora {{</tab>}}
-
-{{<tab "bash" "Windows 10 Powershell">}}Set-ExecutionPolicy AllSigned
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-choco install -y make
-make dependencies_windows
-# You cannot use all commands in the following, please translate from linux to windows commands by yourself and send your code to us, please. We will build in your contribution.
-{{</tab>}}
-{{</tabs>}}
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [helm](https://helm.sh/docs/intro/install/)
+- vim (or any other text editor like nano)
+- unzip
 
 {{<callout "tip">}} Note: Since Helm v3 no Tillerserver is [required](https://helm.sh/blog/helm-3-released/) on the
 Kubernetes side. {{</callout>}}
 
 ## Configuration
 
-You need the `getting-started` folder from the Github repository. If you do not want to download all sourcecode via git, you can use [DownGit](https://downgit.github.io/#/home?url=https:%2F%2Fgithub.com%2FSciebo-RDS%2FSciebo-RDS%2Ftree%2Frestructure%2Fgetting-started&fileName=scieboRDS-getting-started) to download the needed files. Open the link in your browser, because it is a javascript application, so wget or curl will not work properly.
-Unzip the file to a nice named directory, which you can easy find later.
-
+You need the `getting-started` folder from the Github repository. If you do not want to download all sourcecode via git, you can use [DownGit](https://downgit.github.io/#/home?url=https:%2F%2Fgithub.com%2FSciebo-RDS%2FSciebo-RDS%2Ftree%2Frestructure%2Fgetting-started&fileName=scieboRDS-getting-started) to download the needed files (the provided link downloads the needed folder directly). Open the link in your browser, because it is a javascript application, so wget or curl will not work properly.
+Unzip the file to a nice named directory, so you can find later easily.
 
 ```bash
 # Download the getting-started folder with your browser and place it somewhere, you can find it with your CLI.
@@ -174,23 +167,32 @@ It is recommended to create a
 separate [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) for RDS in
 Kubernetes (e.g. named *research-data-services*).
 
-{{<callout warning>}} If you do not follow the commands in this section, all commands must be completed respectively and
-the tools provided in what follows cannot be used straightforwardly. So you need to adjust all commands in the makefile
-to your needs or execute them manually and at your chosen namespace per hand. {{</callout>}}
-
 If you want to create a namespace, rename the file "namespace.yaml.example" to "namespace.yaml" and apply it. You can
 use the following commands to do this.
 
-{{<tabs>}} {{<tab "bash" "Apply namespace">}}cp namespace.yaml.example namespace.yaml nano namespace.yaml make
-install_namespace kubectl config set-context --current --namespace=$(grep 'name:' namespace.yaml | tail -n1 | awk '{
+{{<tabs>}} {{<tab "bash" "Apply namespace">}}cp namespace.yaml.example namespace.yaml nano namespace.yaml 
+kubectl apply -f namespace.yaml
+kubectl config set-context --current --namespace=$(grep 'name:' namespace.yaml | tail -n1 | awk '{
 print $2}')
 {{</tab>}}
 
-{{<tab "bash" "Remove namespace">}}kubectl config set-context --current --namespace=default make uninstall_namespace
+{{<tab "bash" "Remove namespace">}}kubectl config set-context --current --namespace=default
+kubectl delete -f namespace.yaml
 {{</tab>}} {{</tabs>}}
 
 After the last command, specifying a context for each Kubectl command (the same with helm) becomes obsolete because the
 specified namespace is used as a default.
+
+### Helm Repo
+
+We use helm charts (we said it earlier in this documentation). So you have to add the repository to your helm list.
+
+{{<tabs>}}
+{{<tab "bash" "Add helm charts">}}helm repo add sciebo-rds https://www.research-data-services.org/charts/
+{{</tab>}}
+{{<tab "bash" "Remove helm charts">}}helm repo remove sciebo-rds
+{{</tab>}}
+{{</tabs>}}
 
 ### Encryption
 
@@ -202,9 +204,9 @@ as a secret. The script has to be adapted regarding the domain, for which the ce
 With the following command, you can create the needed ssl cert.
 
 {{<tabs>}} {{<tab "bash" "Create and apply ssl cert">}}cp create_certs.sh.example create_certs.sh nano create_certs.sh
-make install_tls {{</tab>}}
+chmod +x create_certs.sh && ./create_certs.sh {{</tab>}}
 
-{{<tab "bash" "Delete ssl cert">}}make uninstall_tls {{</tab>}} {{</tabs>}}
+{{<tab "bash" "Delete ssl cert">}}kubectl delete secret $(sed -n 's/CERT_NAME=\(.*\)/\1/p' < create_certs.sh) {{</tab>}} {{</tabs>}}
 
 {{<callout info>}} If you want to use an already existing certificate, please store it as secret in the RDS namespace
 with the name `sciebords-tls-public`. See the shell script `create_certs.sh` for an example. If you want to change the
@@ -215,9 +217,9 @@ system. {{</callout>}}
 
 If you follow the previous steps, you can now apply the configuration to your kubernetes cluster.
 
-{{<tabs>}} {{<tab "bash" "Apply configuration">}}make install_configuration {{</tab>}}
+{{<tabs>}} {{<tab "bash" "Apply configuration">}}kubectl create configmap describo-configuration-file --from-file describo/configuration.json --from-file describo/type-definitions-lookup.json --from-file describo/type-definitions.json --from-file describo/nginx.conf{{</tab>}}
 
-{{<tab "bash" "Undoing configuration">}}make uninstall_configuration {{</tab>}} {{</tabs>}}
+{{<tab "bash" "Undoing configuration">}}kubectl delete configmap describo-configuration-file {{</tab>}} {{</tabs>}}
 
 ## Installation
 
@@ -227,9 +229,9 @@ from the [configuration tutorial](/doc/getting-started/k8s/#configuration). {{</
 
 Now the RDS ecosystem can be loaded onto the cluster with the following command:
 
-{{<tabs>}} {{<tab "bash" "Install RDS">}}make install {{</tab>}}
+{{<tabs>}} {{<tab "bash" "Install RDS">}}helm upgrade sciebo-rds sciebo-rds/all -i --values values.yaml {{</tab>}}
 
-{{<tab "bash" "Uninstall RDS">}}make uninstall {{</tab>}} {{</tabs>}}
+{{<tab "bash" "Uninstall RDS">}}helm uninstall sciebo-rds {{</tab>}} {{</tabs>}}
 
 ### Monitoring
 
@@ -237,7 +239,9 @@ The system automatically installs a Jaeger instance for tracking log messages. Y
 following command and then call up the displayed IP address in the browser:
 
 ```bash
-make jaeger
+$(eval POD_JAEGER=$(shell kubectl get pods -l "app.kubernetes.io/name=jaeger,app.kubernetes.io/component=query" -o jsonpath="{.items[0].metadata.name}")) 
+echo http://127.0.0.1:8080/
+kubectl port-forward $(POD_JAEGER) 8080:16686
 ```
 
 Jaeger is particularly well suited for identifying errors or problems within the ecosystem.
@@ -252,15 +256,11 @@ your local hosts-file to redirect a domainlookup-request to your `localhost`. Wi
 configure this. It assumed, that the local domain, which was configured previously, was `rds.local`. If you changed it
 in the configuration process, you have to change it here approparly.
 
-{{<tabs>}} {{<tab "bash" "Linux">}}export RDS_DOMAIN=rds.local echo "$(minikube ip) $RDS_DOMAIN" | sudo tee -a
-/etc/hosts {{</tab>}}
+{{<tabs>}} {{<tab "bash" "Linux">}}export RDS_DOMAIN=rds.local echo "$(minikube ip) $RDS_DOMAIN" | sudo tee -a /etc/hosts {{</tab>}}
 
 {{<tab "bash" "Windows">}}minikube.exe ip # remember that
-
 # we open Notepad for you with admin priviliges and you have to append the following to the file
-
 # <minikube-ip> rds.local
-
 start -verb runas notepad.exe C:\Windows\system32\drivers\etc\hosts {{</tab>}} {{</tabs>}}
 
 Now you can open your browser and enter `https://rds.local/port-service/service`. Now you should see a list with some
