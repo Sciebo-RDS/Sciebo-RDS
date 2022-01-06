@@ -33,7 +33,7 @@ spec:
     {{- end }}
       containers:
         - name: "api"
-          image: "{{ .Values.image.repository }}{{ .Values.image.api }}:{{ .Values.image.tag }}"
+          image: {{ template "describo.apiImage" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: describo-configuration
@@ -60,7 +60,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: "ui"
-          image: "{{ .Values.image.repository }}{{ .Values.image.ui }}:{{ .Values.image.tag }}"
+          image: {{ template "describo.uiImage" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: describo-configuration

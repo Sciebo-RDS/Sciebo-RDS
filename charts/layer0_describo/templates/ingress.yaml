@@ -13,11 +13,7 @@ spec:
   tls:
     - hosts:
         - {{ .Values.domain }}
-      {{- if hasKey .Values "global" }}
-      secretName: {{ .Values.global.ingress.tls.secretName | quote }}
-      {{- else }}
-      secretName: {{ .Values.ingress.tls.secretName | quote }}
-      {{- end}}
+      secretName: {{ template "describo.tlsSecretName" . }}
   rules:
     - host: {{ .Values.domain }}
       http:

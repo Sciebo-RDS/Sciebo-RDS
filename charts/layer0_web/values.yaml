@@ -35,8 +35,6 @@ ingress:
   path: /
   tls:
     secretName: sciebords-tls-public
-  annotations:
-    kubernetes.io/ingress.class: nginx-internal
 resources:
   {}
   # We usually recommend not to specify default resources and to leave this as a conscious

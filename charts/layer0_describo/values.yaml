@@ -4,12 +4,14 @@
 
 replicaCount: 1
 
+global:
+  imageRegistry: asd
+
 image:
-  repository: arkisto/
-  api: describo-online-api
-  ui: describo-online-ui
   tag: latest
   pullPolicy: Always
+  uiRepository: arkisto/describo-online-ui
+  apiRepository: arkisto/describo-online-api
 
 labels:
   app.kubernetes.io/component: research-data-services.org
@@ -71,7 +73,7 @@ environment:
 
 postgresql:
   image:
-    tag: 10.8.0
+    tag: 14.1.0
   service:
     port: "5432"
   fullnameOverride: postgresql

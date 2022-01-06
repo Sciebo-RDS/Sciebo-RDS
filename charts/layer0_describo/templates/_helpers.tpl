@@ -32,6 +32,51 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Return the proper image name
+{{ include "common.images.image" ( dict "imageRoot" .Values.path.to.the.image "global" $) }}
+*/}}
+{{- define "common.image" -}}
+{{- $registryName := .imageRoot.registry -}}
+{{- $repositoryName := .repository -}}
+{{- $tag := .imageRoot.tag | toString -}}
+{{- if .global }}
+    {{- if .global.imageRegistry }}
+     {{- $registryName = .global.imageRegistry -}}
+    {{- end -}}
+{{- end -}}
+{{- if $registryName }}
+{{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}
+{{- else -}}
+{{- printf "%s:%s" $repositoryName $tag -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the proper describo image name
+*/}}
+{{- define "describo.apiImage" -}}
+{{ include "common.image" (dict "imageRoot" .Values.image "global" .Values.global "repository" .Values.image.apiRepository) }}
+{{- end -}}
+
+{{- define "describo.uiImage" -}}
+{{ include "common.image" (dict "imageRoot" .Values.image "global" .Values.global "repository" .Values.image.uiRepository ) }}
+{{- end -}}
+
+{{- define "describo.tlsSecretName" -}}
+{{- $secretName := .Values.ingress.tls.secretName -}}
+{{- if .global }}
+    {{- if .global.ingress }}
+        {{- if .global.ingress.tls }}
+            {{- if .global.ingress.tls.secretName }}
+                {{- $secretName = .global.ingress.tls.secretName -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- printf "%s" $secretName -}}
+{{- end -}}
+
+{{/*
 Common labels
 */}}
 {{- define "layer0_describo.labels" -}}

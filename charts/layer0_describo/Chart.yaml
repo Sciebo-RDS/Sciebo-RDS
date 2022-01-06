@@ -2,7 +2,7 @@ apiVersion: v1
 appVersion: "1.0"
 description: A Helm chart for Kubernetes
 name: layer0-describo
-version: 0.1.32
+version: 0.1.35
 home: https://www.research-data-services.org/
 engine: gotpl
 keywords:
