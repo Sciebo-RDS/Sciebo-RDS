@@ -5,15 +5,13 @@ metadata:
   name: {{ $fullName }}
   labels:
 {{ include "layer0_describo.labels" . | indent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+{{ include "layer0_describo.ingressAnnotations" . | indent 4 }}
 spec:
   tls:
     - hosts:
         - {{ .Values.domain }}
-      secretName: {{ template "describo.tlsSecretName" . }}
+      secretName: {{ template "layer0_describo.tlsSecretName" . }}
   rules:
     - host: {{ .Values.domain }}
       http:

@@ -5,10 +5,8 @@ metadata:
   name: {{ $fullName }}
   labels:
 {{ include "layer0_web.labels" . | indent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+{{- include "layer0_web.ingressAnnotations" . |  nindent 4 }}
 spec:
   tls:
     - hosts:

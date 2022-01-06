@@ -54,15 +54,15 @@ Return the proper image name
 {{/*
 Return the proper describo image name
 */}}
-{{- define "describo.apiImage" -}}
+{{- define "layer0_describo.apiImage" -}}
 {{ include "common.image" (dict "imageRoot" .Values.image "global" .Values.global "repository" .Values.image.apiRepository) }}
 {{- end -}}
 
-{{- define "describo.uiImage" -}}
+{{- define "layer0_describo.uiImage" -}}
 {{ include "common.image" (dict "imageRoot" .Values.image "global" .Values.global "repository" .Values.image.uiRepository ) }}
 {{- end -}}
 
-{{- define "describo.tlsSecretName" -}}
+{{- define "layer0_describo.tlsSecretName" -}}
 {{- $secretName := .Values.ingress.tls.secretName -}}
 {{- if .global }}
     {{- if .global.ingress }}
@@ -74,6 +74,21 @@ Return the proper describo image name
     {{- end -}}
 {{- end -}}
 {{- printf "%s" $secretName -}}
+{{- end -}}
+
+{{- define "layer0_describo.ingressAnnotations" -}}
+{{- $annotations := dict -}}
+{{- with .Values.ingress.annotations }}
+    {{- $annotations = . -}}
+{{- end -}}
+{{- if .Values.global }}
+    {{- if .Values.global.ingress }}
+        {{- if .Values.global.ingress.annotations }}
+            {{- $annotations = mustMergeOverwrite .Values.global.ingress.annotations $annotations -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- toYaml $annotations -}}
 {{- end -}}
 
 {{/*

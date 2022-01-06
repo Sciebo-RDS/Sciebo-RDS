@@ -38,6 +38,21 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s" $secretName -}}
 {{- end -}}
 
+{{- define "layer0_web.ingressAnnotations" -}}
+{{- $annotations := dict -}}
+{{- with .Values.ingress.annotations }}
+    {{- $annotations = . -}}
+{{- end -}}
+{{- if .Values.global }}
+    {{- if .Values.global.ingress }}
+        {{- if .Values.global.ingress.annotations }}
+            {{- $annotations = mustMergeOverwrite .Values.global.ingress.annotations $annotations -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- toYaml $annotations -}}
+{{- end -}}
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}
