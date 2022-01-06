@@ -3,9 +3,11 @@ kind: ConfigMap
 metadata:
   name: layer3tokenconfig
 data:
-    REDIS_HOST: {{ .Values.global.REDIS_HOST | quote }}
-    REDIS_PORT: {{ .Values.global.REDIS_PORT | quote }}
-    REDIS_HELPER_HOST: {{ .Values.global.REDIS_HELPER_HOST | quote }}
-    REDIS_HELPER_PORT: {{ .Values.global.REDIS_HELPER_PORT | quote }}
+    {{- with (mustMergeOverwrite (.Values.global | default dict) .Values.environment) }}
+    REDIS_HELPER_HOST: {{ .REDIS_HELPER_HOST | default "redis" | quote }}
+    REDIS_HELPER_PORT: {{ .REDIS_HELPER_PORT | default "6379" | quote }}
+    REDIS_HOST: {{ .REDIS_HOST | default "redis" | quote }}
+    REDIS_PORT: {{ .REDIS_PORT | default "6379" | quote }}
+    REDIS_CHANNEL: {{ .REDIS_CHANNEL | default "TokenStorage_Refresh_Token" | quote }}
+    {{- end }}
     use_inmemory_as_fallover: {{ .Values.environment.IN_MEMORY_AS_FAILOVER | quote }}
-    REDIS_CHANNEL: {{ .Values.global.REDIS_CHANNEL | quote }}
