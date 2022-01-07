@@ -170,7 +170,8 @@ Kubernetes (e.g. named *research-data-services*).
 If you want to create a namespace, rename the file "namespace.yaml.example" to "namespace.yaml" and apply it. You can
 use the following commands to do this.
 
-{{<tabs>}} {{<tab "bash" "Apply namespace">}}cp namespace.yaml.example namespace.yaml nano namespace.yaml 
+{{<tabs>}} {{<tab "bash" "Apply namespace">}}cp namespace.yaml.example namespace.yaml
+nano namespace.yaml 
 kubectl apply -f namespace.yaml
 kubectl config set-context --current --namespace=$(grep 'name:' namespace.yaml | tail -n1 | awk '{
 print $2}')
@@ -203,7 +204,8 @@ as a secret. The script has to be adapted regarding the domain, for which the ce
 
 With the following command, you can create the needed ssl cert.
 
-{{<tabs>}} {{<tab "bash" "Create and apply ssl cert">}}cp create_certs.sh.example create_certs.sh nano create_certs.sh
+{{<tabs>}} {{<tab "bash" "Create and apply ssl cert">}}cp create_certs.sh.example create_certs.sh
+nano create_certs.sh
 chmod +x create_certs.sh && ./create_certs.sh {{</tab>}}
 
 {{<tab "bash" "Delete ssl cert">}}kubectl delete secret $(sed -n 's/CERT_NAME=\(.*\)/\1/p' < create_certs.sh) {{</tab>}} {{</tabs>}}
