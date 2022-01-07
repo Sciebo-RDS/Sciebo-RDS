@@ -30,35 +30,41 @@ helm upgrade sciebo-rds sciebo-rds/all --install --values values.yaml
 
 The following table lists the most used configurable parameters of the Sciebo RDS chart and their default values.
 
-| Parameter                                                     | Description                                                                      | Default                                              |
-| ------------------------------------------------------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| `global.domain`                                               |                                                                                  | https://localhost                                    |
-| `global.REDIS_HOST`                                           | This redis host will be used to store values. Redis-Cluster instance             | redis                                                |
-| `global.REDIS_PORT`                                           | This redis port will be used to store values. Redis-Cluster instance             | 6379                                                 |
-| `global.REDIS_HELPER_HOST`                                    | This redis host will be used to store values. Standalone redis (Purpose: Pubsub) | redis                                                |
-| `global.REDIS_HELPER_HOST`                                    | This redis port will be used to store values. Standalone redis (Purpose: Pubsub) | 6379                                                 |
-| `global.ingress.tls.secretName`                               | The name of the tls secret within k8s.                                           | "sciebords-tls-public"                               |
-| `layer1-port-zenodo.environment.ZENODO_ADDRESS`              |                                                                                  | https://sandbox.zenodo.org                           |
-| `layer1-port-zenodo.environment.ZENODO_OAUTH_CLIENT_ID`      | Required                                                                         |                                                      |
-| `layer1-port-zenodo.environment.ZENODO_OAUTH_CLIENT_SECRET`  | Required                                                                         |                                                      |
-| `layer1-port-owncloud.environment.OWNCLOUD_INSTALLATION_URL` |                                                                                  | https://localhost/owncloud                           |
-| `layer1-port-owncloud.environment.OWNCLOUD_OAUTH_CLIENT_ID`  | Required                                                                         |                                                      |
-| `layer1-port-owncloud.environment.`                          | Required                                                                         |                                                      |
-| `<layer3-COMPONENT>.environment.IN_MEMORY_AS_FAILOVER`       | If no redis was found, service crashes. With "True" it uses inmemory.            | "False"                                              |
-| `redis`                                                       | See [Dependencies](#Dependencies)                                                |                                                      |
-| `jaeger`                                                      | See [Dependencies](#Dependencies)                                                |                                                      |
-| `<component>.replicaCount`                                    |                                                                                  | 1                                                    |
-| `<component>.image.repository`                                |                                                                                  | `zivgitlab.wwu.io/sciebo-rds/sciebo-rds/<component>` |
-| `<component>.image.tag`                                       |                                                                                  | master                                               |
-| `<component>.image.pullPolicy`                                |                                                                                  | Always                                               |
-| `<component>.service.type`                                    |                                                                                  | ClusterIP                                            |
-| `<component>.service.port`                                    |                                                                                  | 80                                                   |
-| `<component>.service.targetPort`                              |                                                                                  | 8080                                                 |
-| `<component>.service.annotations`                             |                                                                                  | prometheus.io/scrape: "true"                         |
-| `<component>.resources.*`                                     | Set Limits and request resources                                                 | {}                                                   |
-| `<component>.nodeSelector.*`                                  |                                                                                  | {}                                                   |
-| `<component>.tolerations.*`                                   |                                                                                  | []                                                   |
-| `<component>.affinity.*`                                      |                                                                                  | {}                                                   |
+| Parameter                                              | Description                                                                      | Default / Example                                    |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `global.domain`                                        |                                                                                  | https://localhost                                    |
+| `global.REDIS_HOST`                                    | This redis host will be used to store values. Redis-Cluster instance             | redis                                                |
+| `global.REDIS_PORT`                                    | This redis port will be used to store values. Redis-Cluster instance             | 6379                                                 |
+| `global.REDIS_HELPER_HOST`                             | This redis host will be used to store values. Standalone redis (Purpose: Pubsub) | redis                                                |
+| `global.REDIS_HELPER_HOST`                             | This redis port will be used to store values. Standalone redis (Purpose: Pubsub) | 6379                                                 |
+| `global.ingress.tls.secretName`                        | The name of the tls secret within k8s.                                           | "sciebords-tls-public"                               |
+| `global.ingress.annotations`                           | Annotations for ingress. Will be merged with local annotations.                  | {}                                                   |
+| `global.storageClass`                                  | Can be used to set a global storageClass. Local values will not be overwrite.    | ""                                                   |
+| `layer1-port-zenodo.environment.ADDRESS`               |                                                                                  | https://sandbox.zenodo.org                           |
+| `layer1-port-zenodo.environment.OAUTH_CLIENT_ID`       | Required                                                                         |                                                      |
+| `layer1-port-zenodo.environment.OAUTH_CLIENT_SECRET`   | Required                                                                         |                                                      |
+| `layer1-port-openscienceframework.ADDRESS`             |                                                                                  | https://accounts.test.osf.io                         |
+| `layer1-port-openscienceframework.API_ADDRESS`         |                                                                                  | https://api.test.osf.io/v2                           |
+| `layer1-port-openscienceframework.OAUTH_CLIENT_ID`     | Required                                                                         |                                                      |
+| `layer1-port-openscienceframework.OAUTH_CLIENT_SECRET` | Required                                                                         |                                                      |
+| `layer1-port-owncloud.environment.ADDRESS`             |                                                                                  | https://localhost/owncloud                           |
+| `layer1-port-owncloud.environment.OAUTH_CLIENT_ID`     | Required                                                                         |                                                      |
+| `layer1-port-owncloud.environment.OAUTH_CLIENT_SECRET` | Required                                                                         |                                                      |
+| `<layer3-COMPONENT>.environment.IN_MEMORY_AS_FAILOVER` | If no redis was found, service crashes. With "True" it uses inmemory.            | "False"                                              |
+| `redis`                                                | See [Dependencies](#Dependencies)                                                |                                                      |
+| `jaeger`                                               | See [Dependencies](#Dependencies)                                                |                                                      |
+| `<component>.replicaCount`                             |                                                                                  | 1                                                    |
+| `<component>.image.repository`                         |                                                                                  | `zivgitlab.wwu.io/sciebo-rds/sciebo-rds/<component>` |
+| `<component>.image.tag`                                |                                                                                  | master                                               |
+| `<component>.image.pullPolicy`                         |                                                                                  | Always                                               |
+| `<component>.service.type`                             |                                                                                  | ClusterIP                                            |
+| `<component>.service.port`                             |                                                                                  | 80                                                   |
+| `<component>.service.targetPort`                       |                                                                                  | 8080                                                 |
+| `<component>.service.annotations`                      |                                                                                  | prometheus.io/scrape: "true"                         |
+| `<component>.resources.*`                              | Set Limits and request resources                                                 | {}                                                   |
+| `<component>.nodeSelector.*`                           |                                                                                  | {}                                                   |
+| `<component>.tolerations.*`                            |                                                                                  | []                                                   |
+| `<component>.affinity.*`                               |                                                                                  | {}                                                   |
 If you need more parameters, please take a look into the values.yaml of the corresponding service.
 
 ### Dependencies
