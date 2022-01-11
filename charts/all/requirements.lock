@@ -1,13 +1,13 @@
 dependencies:
 - name: layer0-describo
   repository: file://../layer0_describo
-  version: 0.1.37
+  version: 0.1.38
 - name: layer0-web
   repository: file://../layer0_web
-  version: 0.1.35
+  version: 0.1.36
 - name: layer0-helper-describo-token-updater
   repository: file://../layer0_helper_describo_token_updater
-  version: 0.1.7
+  version: 0.1.8
 - name: layer1-port-openscienceframework
   repository: file://../layer1_port_openscienceframework
   version: 0.2.3
@@ -16,25 +16,25 @@ dependencies:
   version: 0.2.2
 - name: layer1-port-owncloud
   repository: file://../layer1_port_owncloud
-  version: 0.2.2
+  version: 0.2.3
 - name: layer1-port-reva
   repository: file://../layer1_port_reva
-  version: 0.1.5
+  version: 0.2.0
 - name: layer2-exporter-service
   repository: file://../layer2_exporter_service
-  version: 0.2.2
+  version: 0.2.3
 - name: layer2-port-service
   repository: file://../layer2_port_service
   version: 0.2.4
 - name: layer2-metadata-service
   repository: file://../layer2_metadata_service
-  version: 0.2.2
+  version: 0.2.3
 - name: layer3-token-storage
   repository: file://../layer3_token_storage
-  version: 0.2.8
+  version: 0.2.9
 - name: layer3-research-manager
   repository: file://../layer3_research_manager
-  version: 0.3.2
+  version: 0.3.3
 - name: jaeger
   repository: https://jaegertracing.github.io/helm-charts
   version: 0.34.1
@@ -44,5 +44,5 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 14.8.11
-digest: sha256:490d25b318d9ee61ad2b9bca7a9ad61d9edfe33846eab535a4007bf320ec5e08
-generated: "2022-01-06T13:57:33.626251+01:00"
+digest: sha256:7413235b8173109979f51f86c2e2cb38ccd61f06bffb412f26f16f29f23cb244
+generated: "2022-01-11T09:32:33.6035831+01:00"

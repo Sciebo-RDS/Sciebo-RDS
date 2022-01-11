@@ -24,35 +24,6 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 {{- end -}}
 
-{{- define "layer0_web.tlsSecretName" -}}
-{{- $secretName := .Values.ingress.tls.secretName -}}
-{{- if .global }}
-    {{- if .global.ingress }}
-        {{- if .global.ingress.tls }}
-            {{- if .global.ingress.tls.secretName }}
-                {{- $secretName = .global.ingress.tls.secretName -}}
-            {{- end -}}
-        {{- end -}}
-    {{- end -}}
-{{- end -}}
-{{- printf "%s" $secretName -}}
-{{- end -}}
-
-{{- define "layer0_web.ingressAnnotations" -}}
-{{- $annotations := dict -}}
-{{- with .Values.ingress.annotations }}
-    {{- $annotations = . -}}
-{{- end -}}
-{{- if .Values.global }}
-    {{- if .Values.global.ingress }}
-        {{- if .Values.global.ingress.annotations }}
-            {{- $annotations = mustMergeOverwrite .Values.global.ingress.annotations $annotations -}}
-        {{- end -}}
-    {{- end -}}
-{{- end -}}
-{{- toYaml $annotations -}}
-{{- end -}}
-
 {{/*
 Create chart name and version as used by the chart label.
 */}}
@@ -83,4 +54,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- else if hasKey .Values "domain" }}
 {{- .Values.domain -}}
 {{- else }}"localhost"{{- end -}}
+{{- end -}}
+
+{{- define "layer0_web.image" -}}
+{{ include "common.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
 {{- end -}}

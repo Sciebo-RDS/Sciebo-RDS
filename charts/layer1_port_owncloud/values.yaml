@@ -5,8 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/port_owncloud
-  tag: 70530
+  registry: zivgitlab.wwu.io
+  repository: sciebo-rds/sciebo-rds/port_owncloud
+  tag: v0.1-fix-ci
   pullPolicy: Always
 
 labels:

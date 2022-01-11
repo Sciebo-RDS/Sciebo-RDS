@@ -6,12 +6,12 @@ metadata:
   labels:
 {{ include "layer0_web.labels" . | indent 4 }}
   annotations:
-{{- include "layer0_web.ingressAnnotations" . |  nindent 4 }}
+{{- include "common.ingressAnnotations" . |  nindent 4 }}
 spec:
   tls:
     - hosts:
         - {{ .Values.domain }}
-      secretName: {{ template "layer0_web.tlsSecretName" . }}
+      secretName: {{ template "common.tlsSecretName" . }}
   rules:
     - host: {{ .Values.domain }}
       http:

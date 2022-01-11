@@ -6,12 +6,12 @@ metadata:
   labels:
 {{ include "layer0_describo.labels" . | indent 4 }}
   annotations:
-{{ include "layer0_describo.ingressAnnotations" . | indent 4 }}
+{{ include "common.ingressAnnotations" . | indent 4 }}
 spec:
   tls:
     - hosts:
         - {{ .Values.domain }}
-      secretName: {{ template "layer0_describo.tlsSecretName" . }}
+      secretName: {{ template "common.tlsSecretName" . }}
   rules:
     - host: {{ .Values.domain }}
       http:

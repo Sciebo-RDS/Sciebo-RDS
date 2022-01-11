@@ -5,8 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: zivgitlab.wwu.io/sciebo-rds/sciebo-rds/use_case_metadata
-  tag: 70530
+  registry: zivgitlab.wwu.io
+  repository: sciebo-rds/sciebo-rds/use_case_metadata
+  tag: v0.1-fix-ci
   pullPolicy: Always
 
 labels:

@@ -1,5 +1,7 @@
 global:
   domain: localhost
+  image:
+    tag: v0.1-fix-ci
   ingress:
     tls:
       secretName: sciebords-tls-public

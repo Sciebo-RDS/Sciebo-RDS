@@ -3,9 +3,9 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-
 image:
-  repository: zivgitlab.wwu.io/sciebo-rds/rds-web/rds_web
+  registry: zivgitlab.wwu.io
+  repository: sciebo-rds/rds-web/rds_web
   tag: latest
   pullPolicy: Always
 
