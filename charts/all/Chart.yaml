@@ -37,7 +37,7 @@ dependencies:
   - name: layer1-port-openscienceframework
     version: ^0.2.0
     repository: file://../layer1_port_openscienceframework
-    condition: layer1-port-zenodo.enabled
+    condition: layer1-port-openscienceframework.enabled
     tags:
       - layer1
   - name: layer1-port-zenodo

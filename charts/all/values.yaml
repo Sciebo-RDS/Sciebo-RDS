@@ -43,7 +43,7 @@ layer1-port-zenodo:
 layer1-port-owncloud:
   enabled: false
 layer1-port-openscienceframework:
-  enabled: false
+  enabled: true
 layer1-port-reva:
   enabled: false
 layer2-exporter-service: {}
