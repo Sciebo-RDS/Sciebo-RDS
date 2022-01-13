@@ -21,3 +21,4 @@ values-osf.yaml
 .idea
 *.intern
 *-ng.yaml
+*.enc.yaml
