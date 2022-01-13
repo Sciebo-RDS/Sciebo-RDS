@@ -31,7 +31,10 @@ Create chart name and version as used by the chart label.
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "layer0_describo.image " -}}
+{{/*
+Return the proper describo image name
+*/}}
+{{- define "image" -}}
 {{- $registryName := .imageRoot.registry -}}
 {{- $repositoryName := .imageRoot.repository -}}
 {{- if .repository -}}
@@ -40,7 +43,7 @@ Create chart name and version as used by the chart label.
 {{- $tag := .imageRoot.tag | toString -}}
 {{- if .global }}
     {{- if .global.image }}
-        {{- if .global.image.registry }}
+        {{- if .global.image.registry }}    
             {{- $registryName = .global.image.registry -}}
         {{- end -}}
     {{- end -}}
@@ -56,11 +59,11 @@ Create chart name and version as used by the chart label.
 Return the proper describo image name
 */}}
 {{- define "layer0_describo.apiImage" -}}
-{{ include "layer0_describo.image" (dict "imageRoot" .Values.image "global" .Values.global "repository" .Values.image.apiRepository) }}
+{{- include "image" (dict "imageRoot" .Values.image "global" .Values.global "repository" .Values.image.apiRepository) -}}
 {{- end -}}
 
 {{- define "layer0_describo.uiImage" -}}
-{{ include "layer0_describo.image" (dict "imageRoot" .Values.image "global" .Values.global "repository" .Values.image.uiRepository ) }}
+{{ include "image" (dict "imageRoot" .Values.image "global" .Values.global "repository" .Values.image.uiRepository ) }}
 {{- end -}}
 
 {{/*
