@@ -16,6 +16,9 @@ variables:
   - chmod +x ./cc-test-reporter
   - python -m pip install awscli
 
+.deploy:
+  stage: deploy
+
 .tests:
   stage: test
 
