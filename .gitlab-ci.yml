@@ -117,17 +117,13 @@ upload_test_coverage:
 hugo:test:
   extends: .tests
   image: registry.gitlab.com/pages/hugo:0.68.3
-
   variables:
     FOLDER: docs/
-
   before_script:
     - apk add --update --no-cache git
-
   script:
     - cd $FOLDER
     - hugo
-
   only:
     changes:
       - docs/*
@@ -137,7 +133,7 @@ hugo:test:
   stage: documentation
   only:
     refs:
-      - master
+      - release
   artifacts:
     untracked: true
     expire_in: 1 days
@@ -152,7 +148,6 @@ pages:
   stage: pages
   before_script:
     - apk add --update --no-cache git
-
   script:
     - cd docs
     - hugo
@@ -160,4 +155,4 @@ pages:
     paths:
       - /docs/public
   only:
-    - master
+    - release
