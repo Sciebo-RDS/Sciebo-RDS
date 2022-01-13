@@ -16,4 +16,4 @@ deploy:
     - mkdir -p ~/.kube
     - cat "$KUBE_CONFIG" | base64 -d - > ~/.kube/config
     - export KUBECONFIG=~/.kube/config
-    - helm secrets upgrade -i charts/all sciebords --values $HELM_DEPLOY_VALUES -n sciebo-rds-dev
+    - helm secrets upgrade -i sciebords charts/all --values $HELM_DEPLOY_VALUES -n sciebo-rds-dev
