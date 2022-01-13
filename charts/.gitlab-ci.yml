@@ -16,4 +16,5 @@ deploy:
     - mkdir -p ~/.kube
     - cat "$KUBE_CONFIG" | base64 -d - > ~/.kube/config
     - export KUBECONFIG=~/.kube/config
+    - kubectl config use-context gitlab@zivkube
     - helm secrets upgrade -i sciebords charts/all --values $HELM_DEPLOY_VALUES -n sciebo-rds-dev
