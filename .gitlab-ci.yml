@@ -19,6 +19,9 @@ variables:
 .deploy:
   stage: deploy
 
+  only:
+    - master
+
 .tests:
   stage: test
 
