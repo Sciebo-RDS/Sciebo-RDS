@@ -20,7 +20,7 @@ variables:
   stage: deploy
 
   only:
-    - master
+    - develop
 
 .tests:
   stage: test
