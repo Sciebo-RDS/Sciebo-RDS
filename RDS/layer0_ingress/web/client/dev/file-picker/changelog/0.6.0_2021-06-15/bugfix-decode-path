@@ -1,0 +1,5 @@
+Bugfix: Decode path
+
+We've started decoding the path to the resource so that loading folders when using breadcumbs navigation can work properly.
+
+https://github.com/owncloud/file-picker/pull/69

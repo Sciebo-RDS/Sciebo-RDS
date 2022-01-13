@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: describohelperconfig
+data:
+    {{- with (mustMergeOverwrite (.Values.global | default dict) .Values.environment) }}
+    REDIS_HELPER_HOST: {{ .REDIS_HELPER_HOST | default "redis" | quote }}
+    REDIS_HELPER_PORT: {{ .REDIS_HELPER_PORT | default "6379" | quote }}
+    REDIS_CHANNEL: {{ .REDIS_CHANNEL | default "TokenStorage_Refresh_Token" | quote }}
+    {{- end }}
+    DESCRIBO_API_ENDPOINT: {{ .Values.environment.DESCRIBO_API_ENDPOINT | quote }}
+    DESCRIBO_API_SECRET: {{ .Values.environment.DESCRIBO_API_SECRET | quote }}

@@ -1,0 +1,6 @@
+Enhancement: Add memory storage option
+
+We've added an option to store the Bearer token in memory storage instead of session storage.
+
+https://github.com/owncloud/file-picker/issues/67
+https://github.com/owncloud/file-picker/pull/74

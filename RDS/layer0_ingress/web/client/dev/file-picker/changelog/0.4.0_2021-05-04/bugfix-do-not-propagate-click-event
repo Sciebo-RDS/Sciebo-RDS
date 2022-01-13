@@ -1,0 +1,6 @@
+Bugfix: Do not propagate click event on checkbox
+
+When clicking on the checkbox to select a resource, it hasn't been selected because a click on the row would have been caught as well which would reset the selection again.
+We've fixed this issue by not propagating the click event on checkbox to the parent.
+
+https://github.com/owncloud/file-picker/pull/53

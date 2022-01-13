@@ -1,0 +1,23 @@
+{
+    "name": "github-pages",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build && cp ../docs/index.html ../docs/404.html"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.14.0",
+        "@fortawesome/fontawesome-svg-core": "^1.2.34",
+        "core-js": "^3.6.4",
+        "tailwindcss": "^1.6.2",
+        "vue": "^2.6.11",
+        "vue-router": "^3.3.4"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "^4.4.6",
+        "@vue/cli-plugin-router": "^4.4.6",
+        "@vue/cli-service": "^4.4.6",
+        "vue-template-compiler": "^2.6.11"
+    }
+}

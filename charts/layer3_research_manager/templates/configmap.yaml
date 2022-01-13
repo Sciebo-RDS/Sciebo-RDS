@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: layer3researchconfig
+data:
+  REDIS_HOST: {{ .Values.global.REDIS_HOST | quote }}
+  REDIS_PORT: {{ .Values.global.REDIS_PORT | quote }}

@@ -1,0 +1,49 @@
+{
+    "ui": {
+        "siteName": "{ your site name here }",
+        "logo": "http://www.researchobject.org/ro-crate/assets/img/ro-crate.svg",
+        "services": {
+            "okta": {
+                "domain": "https://{okta_domain}",
+                "clientId": "{okta Client ID}",
+                "redirectUri": "http://localhost:9000/okta-login"
+            },
+            "onedrive": {
+                "clientId": "{microsoft Client ID}",
+                "tenantId": "",
+                "redirectUri": "http://localhost:9000/onedrive-callback"
+            },
+            "owncloud": {}
+        },
+        "maxSessionLifetime": "86400",
+        "maxEntitiesPerTemplate": "100"
+    },
+    "api": {
+        "port": 8080,
+        "services": {
+            "owncloud": [
+                {
+                    "name": "{ the name of your owncloud }",
+                    "url": "http://localhost:8000",
+                    "internalUrl": "http://owncloud_server:8080",
+                    "clientId": "{ the client id for this app to use with oauth }",
+                    "clientSecret": "{ the client secret for this app to use with oauth }",
+                    "redirectUri": "http://localhost:9000/owncloud-callback",
+                    "oauthAuthoriseEndpoint": "/index.php/apps/oauth2/authorize",
+                    "oauthTokenEndpoint": "/index.php/apps/oauth2/api/v1/token",
+                    "webdavEndpoint": "/remote.php/dav"
+                }
+            ]
+        },
+        "applications": [
+            {
+                "name": "{ the name of your application }",
+                "secret": "{ a secret shared between describo and your application",
+                "postCrateTo": {
+                    "url": "https://{your url}",
+                    "headers": { "Authorization": "Bearer yyy", "Content-Type": "application/json" }
+                }
+            }
+        ]
+    }
+}

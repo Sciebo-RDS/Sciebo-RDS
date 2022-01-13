@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "layer1_port_reva.fullname" . }}-test-research"
+  labels:
+{{ include "layer1_port_reva.labels" . | indent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args:  ['{{ include "layer1_port_reva.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never

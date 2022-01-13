@@ -1,0 +1,5 @@
+Bugfix: Authentication fixes
+
+We've fixed a bug causing the file-picker becoming stuck on the loading spinner when the access token is already expired.
+
+https://github.com/owncloud/file-picker/pull/92

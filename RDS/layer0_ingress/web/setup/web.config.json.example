@@ -1,0 +1,56 @@
+{
+    "server": "http://localhost:80",
+    "theme": "owncloud",
+    "version": "0.1.0",
+    "auth": {
+        "clientId": "AfRGQ5ywVhNQDlfGVbntjDOn2rLPTjg0SYEVBlvuYV4UrtDmmgIvKWktIMDP5Dqq",
+        "url": "http://localhost:80/index.php/apps/oauth2/api/v1/token",
+        "authUrl": "http://localhost:80/index.php/apps/oauth2/authorize"
+    },
+    "apps": [
+        "files",
+        "media-viewer"
+    ],
+    "applications": [
+        {
+            "title": {
+                "en": "Classic Design",
+                "de": "Dateien",
+                "fr": "Fichiers",
+                "zh_CN": "文件"
+            },
+            "target": "_self",
+            "icon": "switch_ui",
+            "url": "http://localhost/index.php/apps/files"
+        },
+        {
+            "icon": "application",
+            "menu": "user",
+            "target": "_self",
+            "title": {
+                "de": "Einstellungen",
+                "en": "Settings"
+            },
+            "url": "http://localhost/index.php/settings/personal"
+        }
+    ],
+    "external_apps": [
+        {
+            "id": "rds",
+            "path": "http://localhost/integrator/index.js",
+            "config": {
+                "url": "http://localhost/rds",
+                "describo": "http://localhost/describo"
+            }
+        },
+        {
+            "id": "draw-io",
+            "path": "web-app-draw-io",
+            "config": {
+                "url": "https://embed.diagrams.net",
+                "autosave": false,
+                "theme": "minimal"
+            }
+        }
+    ]
+}

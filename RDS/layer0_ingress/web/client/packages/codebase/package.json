@@ -1,0 +1,67 @@
+{
+  "name": "@rds/codebase",
+  "version": "1.0.0",
+  "private": true,
+  "sideEffects": false,
+  "main": "src/main.js",
+  "scripts": {
+    "test": "vue-cli-service test --setupTestFrameworkScriptFile=./tests/setup.js",
+    "lint": "vue-cli-service lint",
+    "localize-compile": "vue-gettext-cli compile --locales en de --combined",
+    "localize-extract": "vue-gettext-cli extract --locales en de"
+  },
+  "dependencies": {
+    "@mdi/font": "^5.9.55",
+    "@rds/functionality": "*",
+    "@vue/test-utils": "^1.0.3",
+    "axios": "^0.21.1",
+    "core-js": "^3.6.5",
+    "dompurify": "^2.3.0",
+    "dotenv-webpack": "^6.0.4",
+    "marked": "^2.1.1",
+    "sass": "^1.32.0",
+    "socket.io-client": "^3.1.1",
+    "vue": "^2.6.11",
+    "vue-axios": "^3.2.4",
+    "vue-gettext": "^2.1.12",
+    "vue-native-websocket": "^2.0.14",
+    "vue-oidc-client": "^0.4.2",
+    "vue-router": "^3.2.0",
+    "vue-socket.io-extended": "^4.0.6",
+    "vue-template-compiler": "^2.6.11",
+    "vuetify": "^2.4.0",
+    "vuetify-loader": "^1.7.0",
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^4.0.0-beta.3"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

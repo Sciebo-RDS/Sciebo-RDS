@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ "$#" != 1 ] ; then
+    echo "Usage $0 [ gendata | test ]"
+fi
+
+if [ "$1" == "gendata" ] ; then
+    docker-compose -f ./docker-compose-datagen.yml up
+fi
+if [ "$1" == "test" ] ; then
+    docker-compose -f ./docker-compose-test.yml up
+fi

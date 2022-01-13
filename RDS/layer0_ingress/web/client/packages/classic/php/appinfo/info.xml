@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<info>
+    <id>rds</id>
+    <name>Research Data Services</name>
+    <description>The Research Data Services App built an infrastructure to connect multiple, very different services to communicate with each other. Please take a look into our documentation for an installation manual.</description>
+    <summary>Integrates the RDS infrastructure into the ownCloud.</summary>
+    <licence>AGPL</licence>
+    <author>Peter Heiss</author>
+    <version>2.0</version>
+    <namespace>RDS</namespace>
+    <category>integration</category>
+    <dependencies>
+        <owncloud min-version="10" max-version="10" />
+    </dependencies>
+    <website>https://www.research-data-services.org</website>
+    <repository type="git">https://github.com/Sciebo-RDS/Sciebo-RDS</repository>
+    <bugs>https://github.com/Sciebo-RDS/Sciebo-RDS/issues</bugs>
+    <documentation>
+        <user>https://www.research-data-services.org/doc/manual/faq/</user>
+        <admin>https://www.research-data-services.org/doc/getting-started/k8s/</admin>
+        <developer>https://www.research-data-services.org/doc/arc42/indroduction/</developer>
+    </documentation>
+    <settings>
+        <admin>OCA\RDS\Panels\AdminPanel</admin>
+    </settings>
+     <settings-sections>
+        <admin>OCA\RDS\Panels\AdminSection</admin>
+    </settings-sections>
+    <commands>
+        <command>OCA\RDS\Commands\SetUrl</command>
+        <command>OCA\RDS\Commands\SetOauthname</command>
+    </commands>
+    <screenshot>https://www.research-data-services.org/images/oc-plugin-view-user-research-context.png</screenshot>
+    <screenshot>https://www.research-data-services.org/images/oc-plugin-view-admin.png</screenshot>
+</info>
+
+

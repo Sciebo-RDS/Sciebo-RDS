@@ -1,0 +1,7 @@
+{
+    "require": {
+        "web-token/jwt-easy": "^2.2",
+        "web-token/jwt-signature-algorithm-rsa": "^2.2",
+        "web-token/jwt-key-mgmt": "^2.2"
+    }
+}

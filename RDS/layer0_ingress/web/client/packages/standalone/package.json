@@ -1,0 +1,11 @@
+{
+  "name": "@rds/standalone",
+  "version": "1.0.0",
+  "dependencies": {
+    "@rds/codebase": "*"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve --port 8085",
+    "build": "vue-cli-service build --mode production"
+  }
+}

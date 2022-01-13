@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask-socketio = "*"
+flask-login = "*"
+requests = "*"
+eventlet = "==0.30.2"
+python-dotenv = "*"
+flask-cors = "*"
+pyjwt = {extras = ["crypto"],version = "*"}
+flask-session = "*"
+redis-py-cluster = "*"
+redis-pubsub-dict = "*"
+prometheus-flask-exporter = "*"
+flask-opentracing = "*"
+opentracing-instrumentation = "*"
+jaeger-client = "*"
+
+[dev-packages]
+black = "==20.8b1"
+
+[requires]
+python_version = "3.8"

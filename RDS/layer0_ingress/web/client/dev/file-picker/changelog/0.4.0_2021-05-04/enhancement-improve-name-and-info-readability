@@ -1,0 +1,5 @@
+Enhancement: Improve resource name and info readability
+
+We've added paragraph elements for resource name and info so that the readability is improved when using screen readers.
+
+https://github.com/owncloud/file-picker/pull/55

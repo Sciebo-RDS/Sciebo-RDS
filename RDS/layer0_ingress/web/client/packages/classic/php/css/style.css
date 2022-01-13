@@ -1,0 +1,17 @@
+.icon-rds-research-small {
+    background-image: url("../img/research-black-small.svg");
+}
+
+.icon-rds-research {
+    background-image: url("../img/research-black.svg");
+}
+
+.icon-rds-research-white {
+    background-image: url("../img/research-white.svg");
+}
+
+#owncloud-rds-app {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}

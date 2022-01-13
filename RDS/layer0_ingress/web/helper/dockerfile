@@ -1,0 +1,18 @@
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.53 as builder
+
+WORKDIR /app
+COPY Cargo.lock Cargo.toml ./
+
+RUN mkdir src && echo "fn main() {println!(\"if you see this, the build broke\")}" > src/main.rs
+RUN cargo build --release
+
+COPY . .
+RUN cargo build --release
+RUN cargo install --path .
+
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/debian:buster-slim
+
+RUN apt-get update && apt install -y openssl && apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
+COPY --from=builder /usr/local/cargo/bin/helper /usr/local/bin/helper
+
+CMD ["helper"]

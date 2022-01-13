@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Webpage Title -->
+    <title>Welcome to sciebo RDS</title>
+
+    <!-- Styles -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="./../../css/bootstrap.css" rel="stylesheet">
+    <link href="./../../css/fontawesome-all.css" rel="stylesheet">
+    <link href="./../../css/swiper.css" rel="stylesheet">
+	<link href="./../../css/magnific-popup.css" rel="stylesheet">
+	<link href="./../../css/styles.css" rel="stylesheet">
+
+	<!-- Favicon  -->
+    <link rel="icon" href="./../../img/favicon.png">
+</head>
+<body data-spy="scroll" data-target=".fixed-top">
+
+    <!-- Header -->
+    <header id="header" class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="text-container">
+                        <h1 class="h1-large">Welcome to sciebo RDS!</h1><br>
+						<h4 class= "h4">Your sciebo extension for managing research data</h4>
+						<br>
+						<br>
+                        <p class="p-large">sciebo Research Data Services (sciebo RDS) is a non-commercial service for research, studies and teaching and offers you the possibility to easily manage your research data.
+						</p>
+						<br>
+                        <p class="p-large">Via sciebo RDS you can access your data located in the university cloud sciebo, bundle them in projects, add meta information and publish your data sets.
+						</p>
+							<br>
+							<p class= "p-large"><a target="_blank" href="https://www.research-data-services.org/en/">Learn more...</a></p>
+							<br><br>
+							<p class= "p">Get started immediately: <button type="button" class="btn btn-outline-primary click" type="button" id="newProject">New Project</button></p>
+							<p class= "p">Further information: <button type="button" class="btn btn-outline-info click" type="button" id="getHelp">Help</button></p>
+						
+
+                    </div> <!-- end of text-container -->
+                </div> <!-- end of col -->
+                <div class="col-lg-6">
+                    <div class="image-container">
+                        <img class="img-fluid" src="./../../img/model_en.png" alt="alternative">
+                    </div> <!-- end of image-container -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </header> <!-- end of header -->
+    <!-- end of header -->
+
+    <!-- Features -->
+    <div id="features" class="cards-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-image">
+                            <img class="img-fluid" src="./../../img/maus2.png" alt="alternative">
+                        </div><br>
+                        <div class="card-body">
+                            <h5 class="card-title">1. Step</h5><br>
+                            <p>Create and configure your project</p>
+                        </div>
+                    </div>
+                    <!-- end of card -->
+
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-image">
+                            <img class="img-fluid" src="./../../img/dokument2.png" alt="alternative">
+                        </div><br>
+                        <div class="card-body">
+                            <h5 class="card-title">2. Step</h5><br>
+                            <p>Collect and manage data</p>
+                        </div>
+                    </div>
+                    <!-- end of card -->
+
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-image">
+                            <img class="img-fluid" src="./../../img/edit2.png" alt="alternative">
+                        </div><br>
+                        <div class="card-body">
+                            <h5 class="card-title">3. Step</h5><br>
+                            <p>Edit metadata</p>
+                        </div>
+                    </div>
+                    <!-- end of card -->
+
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-image">
+                            <img class="img-fluid" src="./../../img/arrow2.png" alt="alternative">
+                        </div><br>
+                        <div class="card-body">
+                            <h5 class="card-title">4. Step</h5><br>
+                            <p>End project and transfer data to other services</p>
+                        </div>
+                    </div>
+                    <!-- end of card -->
+
+
+    <!-- Scripts -->
+    <script src="./../../js/jquery.min.js"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
+    <script src="./../../js/bootstrap.min.js"></script> <!-- Bootstrap framework -->
+    <script src="./../../js/jquery.easing.min.js"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
+    <script src="./../../js/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
+    <script src="./../../js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
+    <script src="./../../js/scripts.js"></script> <!-- Custom scripts -->
+	
+	<script type="text/javascript">
+		var newProjectButton = document.getElementById("newProject");
+		var getHelpButton = document.getElementById("getHelp");
+		newProjectButton.onclick = function() {
+			window.parent.postMessage({
+				'func': 'redirect',
+        		'target': 'projects'
+     		}, "*");
+		};
+		getHelpButton.onclick = function() {
+			window.parent.postMessage({
+				'func': 'redirect',
+        		'target': 'help'
+     		}, "*");
+		};
+	</script>
+				
+</body>
+
+</html>

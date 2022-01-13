@@ -1,0 +1,5 @@
+Enhancement: Do not import Vue
+
+We've stopped importing Vue because it is not bundled during the build process and needs to be included as a global variable in the target web application.
+
+https://github.com/owncloud/file-picker/pull/16

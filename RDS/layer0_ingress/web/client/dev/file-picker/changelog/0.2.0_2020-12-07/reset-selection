@@ -1,0 +1,6 @@
+Bugfix: Reset resource selection when opening folder
+
+We've added reset of selected resources when a folder is opened.
+This prevents from having selected resources which are not visible.
+
+https://github.com/owncloud/file-picker/pull/11

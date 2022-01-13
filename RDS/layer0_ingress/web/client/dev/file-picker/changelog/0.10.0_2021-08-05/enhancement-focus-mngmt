@@ -1,0 +1,7 @@
+Enhancement: focus last breadcrumb item
+
+We've added focus management so that the last breadcrumb item will be focused after a folder has been loaded.
+By default, this focus management is disabled on the first load when opening the file picker.
+To enable it also during the first load, set prop `isInitialFocusEnabled` to `true`.
+
+https://github.com/owncloud/file-picker/pull/79

@@ -1,0 +1,6 @@
+Enhancement: Emit update on location change
+
+If a new folder in Location picker is loaded, emit it in the `update` event so that in case of hidden select button, consuming app can still receive the location.
+
+https://github.com/owncloud/file-picker/issues/71
+https://github.com/owncloud/file-picker/pull/72

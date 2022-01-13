@@ -1,0 +1,200 @@
+{
+    "Person": {
+        "id": "http://schema.org/Person",
+        "name": "Person",
+        "help": "A person (alive, dead, undead, or fictional).",
+        "subClassOf": [
+            "Thing"
+        ],
+        "allowAdditionalProperties": false,
+        "inputs": [
+            {
+                "id": "http://schema.org/address",
+                "name": "address",
+                "help": "Physical address of the item.",
+                "multiple": false,
+                "type": [
+                    "Text"
+                ]
+            },
+            {
+                "id": "http://schema.org/affiliation",
+                "name": "affiliation",
+                "help": "An organization that this person is affiliated with. For example, a school/university, a club, or a team.",
+                "multiple": false,
+                "type": [
+                    "Organization"
+                ]
+            },
+            {
+                "id": "http://schema.org/email",
+                "name": "email",
+                "help": "Email address.",
+                "multiple": false,
+                "type": [
+                    "Text"
+                ]
+            },
+            {
+                "id": "http://schema.org/familyName",
+                "name": "familyName",
+                "help": "Family name. In the U.S., the last name of a Person.",
+                "multiple": false,
+                "type": [
+                    "Text"
+                ]
+            },
+            {
+                "id": "http://schema.org/givenName",
+                "name": "givenName",
+                "help": "Given name. In the U.S., the first name of a Person.",
+                "multiple": false,
+                "type": [
+                    "Text"
+                ]
+            }
+        ],
+        "linksTo": [
+            "Organization"
+        ],
+        "hierarchy": [
+            "Person",
+            "Thing"
+        ]
+    },
+    "Thing": {
+        "id": "http://schema.org/Thing",
+        "name": "Thing",
+        "help": "The most generic type of item.",
+        "subClassOf": [],
+        "allowAdditionalProperties": false,
+        "inputs": [
+            {
+                "id": "http://schema.org/description",
+                "name": "description",
+                "help": "A description of the item.",
+                "multiple": false,
+                "type": [
+                    "Text"
+                ]
+            },
+            {
+                "id": "http://schema.org/name",
+                "name": "name",
+                "help": "The name of the item.",
+                "multiple": false,
+                "type": [
+                    "Text"
+                ]
+            }
+        ],
+        "linksTo": [
+            "CreativeWork",
+            "Organization",
+            "Person"
+        ],
+        "hierarchy": [
+            "Thing"
+        ]
+    },
+    "Organization": {
+        "id": "http://schema.org/Organization",
+        "name": "Organization",
+        "help": "An organization such as a school, NGO, corporation, club, etc.",
+        "subClassOf": [
+            "Thing"
+        ],
+        "allowAdditionalProperties": false,
+        "inputs": [
+            {
+                "id": "http://schema.org/address",
+                "name": "address",
+                "help": "Physical address of the item.",
+                "multiple": false,
+                "type": [
+                    "Text"
+                ]
+            }
+        ],
+        "linksTo": [],
+        "hierarchy": [
+            "Organization",
+            "Thing"
+        ]
+    },
+    "CreativeWork": {
+        "id": "http://schema.org/CreativeWork",
+        "name": "CreativeWork",
+        "help": "The most generic kind of creative work, including books, movies, photographs, software programs, etc.",
+        "subClassOf": [
+            "Thing"
+        ],
+        "allowAdditionalProperties": false,
+        "inputs": [
+            {
+                "id": "http://schema.org/author",
+                "name": "creator",
+                "help": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably. ",
+                "multiple": false,
+                "type": [
+                    "Person",
+                    "Organization"
+                ]
+            }
+        ],
+        "linksTo": [
+            "Organization",
+            "Person"
+        ],
+        "hierarchy": [
+            "CreativeWork",
+            "Thing"
+        ]
+    },
+    "Dataset": {
+        "id": "http://schema.org/Dataset",
+        "name": "Dataset",
+        "help": "A body of structured information describing some topic(s) of interest.",
+        "subClassOf": [
+            "CreativeWork"
+        ],
+        "allowAdditionalProperties": false,
+        "inputs": [
+            {
+                "id": "http://schema.org/datePublished",
+                "name": "datePublished",
+                "help": "Date of first broadcast/publication.",
+                "multiple": false,
+                "type": [
+                    "Date"
+                ]
+            },
+            {
+                "id": "http://schema.org/zenodocategory",
+                "name": "zenodocategory",
+                "help": "The Zenodo Category: [ 'publication/book', 'publication section', '...', 'dataset', 'image/plot', '...' ]",
+                "multiple": false,
+                "type": [
+                    "Text"
+                ]
+            },
+            {
+                "id": "http://schema.org/osfcategory",
+                "name": "osfcategory",
+                "help": "The OSF Category: [ 'analysis', 'communication', '...', 'procedure', 'instrumentation', '...' ]",
+                "multiple": false,
+                "type": [
+                    "Text"
+                ]
+            }
+        ],
+        "linksTo": [
+            "CreativeWork"
+        ],
+        "hierarchy": [
+            "Dataset",
+            "CreativeWork",
+            "Thing"
+        ]
+    }
+}

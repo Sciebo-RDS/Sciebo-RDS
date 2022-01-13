@@ -1,0 +1,12 @@
+{
+  "ignores": [
+    "web-runtime",
+    "easygettext",
+    "luxon",
+    "uikit",
+    "vue-datetime",
+    "webfontloader",
+    "weekstart",
+    "vue-inline-svg"
+  ]
+}

@@ -1,0 +1,7 @@
+Enhancement: Cancelling the file picker
+
+We added two options for emitting a `cancel` event from the file picker:
+- pressing ESC on the keyboard while the file picker is focussed
+- clicking the new `Cancel` button which appears in the top bar as soon as a `cancelBtnLabel` is provided
+
+https://github.com/owncloud/file-picker/pull/29

@@ -1,0 +1,22 @@
+{{- $fullName := include "layer0_web.fullname" . -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+{{ include "layer0_web.labels" . | indent 4 }}
+  annotations:
+{{- include "common.ingressAnnotations" . |  nindent 4 }}
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.domain }}
+      secretName: {{ template "common.tlsSecretName" . }}
+  rules:
+    - host: {{ .Values.domain }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.path }}
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: http

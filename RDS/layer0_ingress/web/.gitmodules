@@ -1,0 +1,20 @@
+[submodule "client/dev/ocis"]
+	path = client/dev/ocis
+	url = https://github.com/owncloud/ocis.git
+[submodule "client/dev/web"]
+	path = client/dev/web
+	url = https://github.com/owncloud/web.git
+[submodule "client/dev/describo-ui-plugins"]
+	path = client/dev/describo-ui-plugins
+	url = https://github.com/Arkisto-Platform/describo-ui-plugins
+	branch = reva_auth
+[submodule "client/dev/describo-online"]
+	path = client/dev/describo-online
+	url = https://github.com/Arkisto-Platform/describo-online
+	branch = reva_auth
+[submodule "client/dev/reva"]
+	path = client/dev/reva
+	url = https://github.com/cs3org/reva
+[submodule "client/dev/file-picker"]
+	path = client/dev/file-picker
+	url = https://github.com/owncloud/file-picker.git

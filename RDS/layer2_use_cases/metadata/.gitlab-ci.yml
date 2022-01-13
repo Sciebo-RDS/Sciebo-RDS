@@ -1,0 +1,30 @@
+.use_case_metadata:
+  variables:
+    FOLDER: RDS/layer2_use_cases/metadata
+
+.tests_use_case_metadata:
+  extends:
+    - .tests
+    - .use_case_metadata
+
+test:use_case_metadata:
+  extends: .tests_use_case_metadata
+
+build:use_case_metadata:
+  needs:
+    - test:use_case_metadata
+  extends:
+    - .builds
+    - .use_case_metadata
+
+  only:
+    changes:
+      - RDS/layer2_use_cases/metadata/*
+      - RDS/layer2_use_cases/metadata/**/*
+
+doc:use_case_metadata:
+  needs:
+    - build:use_case_metadata
+  extends:
+    - .documentation
+    - .use_case_metadata

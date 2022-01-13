@@ -1,0 +1,47 @@
+version: "2"
+
+volumes:
+    describo_online_db_test:
+        driver: local
+
+services:
+    db:
+        image: postgres:13-alpine
+        hostname: db
+        tty: true
+        environment:
+            TERM: "xterm-256color"
+            NODE_ENV: "development"
+            POSTGRES_DB: "dbtest"
+            POSTGRES_USER: "dbtest"
+            POSTGRES_PASSWORD: "dbtest"
+            PGDATA: /postgresql/data
+        volumes:
+            - describo_online_db_test:/postgresql
+        ports:
+            - 5432:5432
+
+    api:
+        image: node:14-stretch
+        hostname: api
+        tty: true
+        environment:
+            TERM: "xterm-256color"
+            NODE_ENV: "development"
+            DB_HOST: "db"
+            DB_PORT: "5432"
+            DB_USER: "dbtest"
+            DB_PASSWORD: "dbtest"
+            DB_DATABASE: "dbtest"
+        volumes:
+            - $PWD/..:/srv:delegated
+            - $PWD/../../.git:/srv/.git:delegated
+        working_dir: /srv
+        command:
+            [
+                "./scripts/wait-for-postgres.sh",
+                "./node_modules/.bin/jest",
+                "--watch",
+                "--runInBand",
+                "--rootDir dbTest",
+            ]

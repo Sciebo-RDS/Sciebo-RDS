@@ -1,0 +1,5 @@
+Enhancement: Add initial focus
+
+We've added an initial focus so that when the File picker is mounted, it immediately becomes focused.
+
+https://github.com/owncloud/file-picker/pull/44

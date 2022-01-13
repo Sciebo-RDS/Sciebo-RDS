@@ -19,6 +19,6 @@ The service can also be used as importer by swapping the export services in the 
 
 ## OpenAPI
 
-{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/exporter/use-case_exporter.yml" >}}
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/layer2_use_cases/exporter/use-case_exporter.yml" >}}
 
 {{% code file="doc/impl/use-cases/exporter-service-docstring.md" %}}

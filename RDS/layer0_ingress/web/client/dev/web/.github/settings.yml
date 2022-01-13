@@ -1,0 +1,26 @@
+---
+_extends: gh-labels
+
+repository:
+  name: web
+  description: ':dragon_face: Next generation frontend for ownCloud X and Infinite Scale'
+  homepage: https://owncloud.dev/clients/web/
+  has_wiki: false
+
+labels:
+  - name: Topic:Accessibility
+    oldname: Accessibility
+    color: "#ccf4ff"
+  - name: Topic:Extensions-framework
+    oldname: extensions framework
+    color: "#ccf4ff"
+  - name: feature:files
+    color: "#d4c5f9"
+  - name: feature:markdown-editor
+    color: "#d4c5f9"
+  - name: feature:pdf-viewer
+    color: "#d4c5f9"
+  - name: feature:media-viewer
+    color: "#d4c5f9"
+
+...

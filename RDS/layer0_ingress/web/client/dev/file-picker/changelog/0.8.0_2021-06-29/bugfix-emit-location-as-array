@@ -1,0 +1,7 @@
+Bugfix: Emit location as an array
+
+When loading new folder in Location picker, we are emitting an "update" with the current route as an argument.
+We've fixed that the argument has type array now so that it is consistent with all other arguments returned in the "update" event.
+
+https://github.com/owncloud/file-picker/issues/71
+https://github.com/owncloud/file-picker/pull/75

@@ -1,0 +1,189 @@
+version: "3"
+
+volumes:
+  files:
+    driver: local
+  mysql:
+    driver: local
+  redis:
+    driver: local
+  database_volume:
+    driver: local
+
+services:
+  describodb:
+    container_name: describo_db
+    image: postgres:13-alpine
+    hostname: db
+    tty: true
+    environment:
+      TERM: "xterm-256color"
+      POSTGRES_DB: "describo"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "admin"
+      PGDATA: /postgresql/data
+    volumes:
+      - database_volume:/postgresql
+
+  describoapi:
+    container_name: describo_api
+    image: arkisto/describo-online-api:latest
+    hostname: api
+    restart: always
+    tty: true
+    environment:
+      TERM: "xterm-256color"
+      DB_HOST: "db"
+      DB_PORT: "5432"
+      DB_USER: "admin"
+      DB_PASSWORD: "admin"
+      DB_DATABASE: "describo"
+    volumes:
+      - ./production-configuration.json:/srv/configuration.json
+
+  describoui:
+    container_name: describo_ui
+    image: arkisto/describo-online-ui:latest
+    restart: always
+    hostname: ui
+    depends_on:
+      - describoapi
+    tty: true
+    environment:
+      TERM: "xterm-256color"
+      NODE_ENV: "production"
+    volumes:
+      - ./misc/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./misc/wait-for-it.sh:/wait-for-it.sh
+    command:
+      [
+        "/wait-for-it.sh",
+        "api:8080",
+        "-t",
+        "10",
+        "--",
+        "nginx",
+        "-g",
+        "daemon off;",
+      ]
+    ports:
+      - 8080:80
+
+  web:
+    container_name: owncloud_web
+    hostname: owncloud_web
+    image: owncloud/web
+    restart: always
+    build:
+      context: ../
+      dockerfile: Dockerfile.oc-web
+    depends_on:
+      - owncloud
+    ports:
+      - 9100:80
+    volumes:
+      - ./web.config.json:/usr/share/nginx/html/config.json
+
+  owncloud:
+    image: heiss/owncloud_server
+    build:
+      context: ../
+      dockerfile: Dockerfile.oc-rds-app
+    container_name: owncloud_server
+    hostname: owncloud_server
+    restart: always
+    ports:
+      - ${HTTP_PORT}:8080
+    depends_on:
+      - mariadb
+      - redis
+    environment:
+      - OWNCLOUD_DOMAIN=${OWNCLOUD_DOMAIN}:${HTTP_PORT}
+      - OWNCLOUD_DB_TYPE=mysql
+      - OWNCLOUD_DB_NAME=owncloud
+      - OWNCLOUD_DB_USERNAME=owncloud
+      - OWNCLOUD_DB_PASSWORD=owncloud
+      - OWNCLOUD_DB_HOST=mariadb
+      - OWNCLOUD_ADMIN_USERNAME=${ADMIN_USERNAME}
+      - OWNCLOUD_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - OWNCLOUD_MYSQL_UTF8MB4=true
+      - OWNCLOUD_REDIS_ENABLED=true
+      - OWNCLOUD_REDIS_HOST=redis
+    healthcheck:
+      test: ["CMD", "/usr/bin/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - files:/mnt/data
+
+  mariadb:
+    image: mariadb:10.5
+    container_name: owncloud_mariadb
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=owncloud
+      - MYSQL_USER=owncloud
+      - MYSQL_PASSWORD=owncloud
+      - MYSQL_DATABASE=owncloud
+    command: ["--max-allowed-packet=128M", "--innodb-log-file-size=64M"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=owncloud"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mysql:/var/lib/mysql
+
+  redis:
+    image: redis:6
+    container_name: owncloud_redis
+    hostname: owncloud_redis
+    restart: always
+    command: ["--databases", "1"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - redis:/data
+
+  integrator:
+    build:
+      context: ../
+      dockerfile: Dockerfile.oc-web-integrator
+    restart: always
+    container_name: owncloud_web_integrator
+    depends_on:
+      - owncloud
+    ports:
+      - 8082:80
+    env_file:
+      - ../.env
+
+  rds:
+    container_name: rds_web
+    image: heiss/rds-web
+    build:
+      context: ../
+      dockerfile: Dockerfile.rds-standalone
+      args:
+        - VUE_APP_BASE_URL=/rds/
+    hostname: rds
+    restart: always
+    depends_on:
+      - owncloud
+      - describoui
+    ports:
+      - 8008:80
+    env_file:
+      - ../.env
+
+  edge:
+    container_name: edge
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./misc/nginx/nginx.edge.conf:/etc/nginx/conf.d/default.conf

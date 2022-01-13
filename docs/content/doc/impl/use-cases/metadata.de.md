@@ -17,6 +17,6 @@ Dieser Dienst stellt Funktionen zur Anzeige und Bearbeitung von Metadaten für D
 
 ## OpenAPI
 
-{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/circle2_use_cases/metadata/use-case_metadata.yml"  >}}
+{{< swagger-spec url="https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/layer2_use_cases/metadata/use-case_metadata.yml"  >}}
 
 {{% code file="doc/impl/use-cases/metadata-service-docstring.md" %}}

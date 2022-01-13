@@ -1,0 +1,48 @@
+release/*
+
+**/l10n/locale
+**/l10n/template.pot
+
+build/version.json
+
+/hugo
+
+.idea
+*.bundle.js
+*.bundle.js.map
+*.chunk.js
+*.chunk.js.map
+
+config.json
+package-lock.json
+
+node_modules
+dist
+
+*.log
+.DS_Store
+.envrc
+
+tests/reports
+tests/ocis
+tests/testing-app
+
+/webpack.json
+/webpack-build-log.json
+
+/coverage
+
+# visual regression testing artifacts
+/tests/vrt/diff
+/tests/vrt/latest
+
+# acceptance test artifacts
+logfile.txt
+comments.file
+
+# drone CI is in .drone.star, do not let someone accidentally commit a local .drone.yml
+.drone.yml
+
+# Themes
+/packages/web-runtime/themes/**
+!/packages/web-runtime/themes/owncloud/**

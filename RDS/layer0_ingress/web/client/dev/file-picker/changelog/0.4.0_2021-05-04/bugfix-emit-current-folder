@@ -1,0 +1,6 @@
+Bugfix: Emit current folder
+
+When selecting the current folder in the location picker, an empty array has been emitted.
+We've fixed this by emitting the current folder.
+
+https://github.com/owncloud/file-picker/pull/42

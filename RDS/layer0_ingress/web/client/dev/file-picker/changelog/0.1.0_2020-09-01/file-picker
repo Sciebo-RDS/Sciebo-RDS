@@ -1,0 +1,6 @@
+Enhancement: Add basic implementation of file picker
+
+We've added a basic implementation of ownCloud file picker.
+File picker is a web component which can be integrated into existing products and is firing event providing array of selected resources
+
+https://github.com/owncloud/file-picker/pull/2

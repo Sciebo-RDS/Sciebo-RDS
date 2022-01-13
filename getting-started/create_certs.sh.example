@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# edit this
+HOST=localhost
+
+# let this
+KEY_FILE=tls.key
+CERT_FILE=tls.crt
+CA_CERT_FILE=ca.crt
+CERT_NAME=sciebords-tls-public
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}"
+
+if test -f "$CA_CERT_FILE"; then
+	kubectl create secret generic ${CERT_NAME} --from-file=tls.key=${KEY_FILE} --from-file=tls.crt=${CERT_FILE} --from-file=ca.crt=${CA_CERT_FILE}
+else
+	kubectl create secret tls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
+fi

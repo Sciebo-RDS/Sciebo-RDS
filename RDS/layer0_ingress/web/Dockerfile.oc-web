@@ -1,0 +1,17 @@
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:14-alpine3.10 AS staging
+WORKDIR /src
+RUN apk add findutils
+ADD client .
+RUN mkdir -p ./pkg/ \
+    && find . -type d -name node_modules -prune -false -o \( -name "package.json" -o -name "yarn.lock" -o -name "package-lock.json" \)  -exec install -D '{}' './pkg/{}' \;
+
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:14-alpine3.10 AS web
+WORKDIR /app
+RUN apk add git
+COPY --from=staging /src/pkg/dev/web .
+RUN yarn install --non-interactive
+COPY client/dev/web /app
+RUN yarn build
+
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/nginx:latest
+COPY --from=web /app/dist /usr/share/nginx/html

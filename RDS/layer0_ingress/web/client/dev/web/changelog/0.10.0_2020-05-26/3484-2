@@ -1,0 +1,5 @@
+Change: Use language setting
+
+We've changed web to make use of the language the authenticated user has chosen in the settings.
+
+https://github.com/owncloud/web/pull/3484

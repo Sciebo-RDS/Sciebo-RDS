@@ -1,0 +1,79 @@
+# Default values for layer3_token_storage.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+
+image:
+  tag: 0.4.7
+  pullPolicy: Always
+  registry: docker.io
+  uiRepository: arkisto/describo-online-ui
+  apiRepository: arkisto/describo-online-api
+
+labels:
+  app.kubernetes.io/component: research-data-services.org
+  app.kubernetes.io/part-of: service
+  research-data-services.org/layer: layer0
+
+fullnameOverride: layer0-describo
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+
+domain: localhost
+ingress:
+  path: /
+  tls:
+    secretName: sciebords-tls-public
+  annotations:
+    nginx.org/server-snippets: |
+      location /socket.io/ {
+          proxy_http_version 1.1;
+          proxy_redirect off;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+          proxy_set_header        Host                    $host;
+          proxy_set_header        X-Real-IP               $remote_addr;
+          proxy_set_header        X-Forwarded-For         $proxy_add_x_forwarded_for;
+          proxy_pass http://layer0-describo/socket.io/;
+      }
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+persistence:
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+  annotations: {}
+
+environment:
+  LOG_LEVEL: "info"
+
+postgresql:
+  image:
+    tag: 14.1.0
+  service:
+    port: "5432"
+  fullnameOverride: postgresql
+  postgresqlDatabase: "describo"
+  postgresqlUsername: "admin"
+  postgresqlPassword: "admin"

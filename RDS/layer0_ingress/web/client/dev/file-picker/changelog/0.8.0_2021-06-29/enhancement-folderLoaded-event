@@ -1,0 +1,7 @@
+Enhancement: Emit current folder in "folderLoaded" event
+
+We've added event called "folderLoaded" that is emitted every time a loading of any folder has ended.
+It is emitting the current folder as an argument.
+
+https://github.com/owncloud/file-picker/issues/71
+https://github.com/owncloud/file-picker/pull/75
