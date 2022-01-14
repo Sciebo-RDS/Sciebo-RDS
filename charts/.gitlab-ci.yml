@@ -2,10 +2,13 @@ charts:
   extends: .documentation
   image: zivgitlab.wwu.io/ulb/devops/skaffold:main
   script:
+    - apt install -y python3 python3-pip
+    - pip3 install awscli
     - mkdir -p ./docs/static/charts
-    - helm package charts/* --destination ./docs/static/charts
-    - helm repo index --url https://www.research-data-services.org/charts ./charts/
-    - mv index.yaml ./docs/static/charts/index.yaml
+    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts ./docs/static/charts
+    - for i in charts/*;do helm package --destination ./docs/static/charts "$i" ;done
+    - helm repo index --url https://www.research-data-services.org/charts --merge ./docs/static/charts/index.yaml ./docs/static/charts/
+    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp ./docs/static/charts s3://sciebords-charts
 
 deploy:
   extends: .deploy
@@ -16,4 +19,4 @@ deploy:
     - mkdir -p ~/.kube
     - cat "$KUBE_CONFIG" | base64 -d - > ~/.kube/config
     - export KUBECONFIG=~/.kube/config
-    - helm secrets upgrade -i sciebo-rds charts/all --values $HELM_DEPLOY_VALUES -n sciebo-rds-dev
+    - helm secrets upgrade -i sciebo-rds charts/all --values $HELM_DEPLOY_VALUES
