@@ -2,6 +2,7 @@ charts:
   extends: .documentation
   image: zivgitlab.wwu.io/ulb/devops/skaffold:main
   script:
+    - apt update
     - apt install -y python3 python3-pip
     - pip3 install awscli
     - mkdir -p ./docs/static/charts

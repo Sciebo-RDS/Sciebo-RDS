@@ -19,6 +19,8 @@ build:port_openscienceframework:
     - .port_openscienceframework
 
 doc:port_openscienceframework:
+  needs:
+    - build:port_openscienceframework
   extends:
     - .documentation
     - .port_openscienceframework
