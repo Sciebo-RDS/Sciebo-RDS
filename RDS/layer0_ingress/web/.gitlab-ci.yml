@@ -9,19 +9,14 @@ variables:
 
 .builds_web:
   image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:19.03
-
   stage: build
-
   services:
     - name: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:19.03-dind
       alias: docker
-
   tags:
     - docker-in-docker
-
   variables:
     CI_PROJECT_PATH: $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
-
   script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_SERVER_URL
     - docker info
@@ -42,27 +37,24 @@ variables:
 
 build:rds_web:
   variables:
+    FOLDER: RDS/layer0_ingress/web/
     DOCKERFILENAME: Dockerfile.rds-standalone
-
   only:
     changes:
-      - server/*
-      - server/**/*
-      - client/*
-      - client/**/*
-
+      - RDS/layer0_ingress/web/server/*
+      - RDS/layer0_ingress/web/server/**/*
+      - RDS/layer0_ingress/web/client/*
+      - RDS/layer0_ingress/web/client/**/*
   extends:
     - .builds_web
 
 build:port_helper_describo_token_updater:
   variables:
-    FOLDER: helper/
+    FOLDER: RDS/layer0_ingress/web/helper/
     DOCKERFILENAME: dockerfile
-
   only:
     changes:
-      - helper/*
-      - helper/**/*
-
+      - RDS/layer0_ingress/web/helper/*
+      - RDS/layer0_ingress/web/helper/**/*
   extends:
     - .builds_web

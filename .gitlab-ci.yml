@@ -24,27 +24,21 @@ variables:
 
 .tests:
   stage: test
-
   before_script:
     - cd $FOLDER
-
   script:
     - test -f requirements.txt && pip install -r requirements.txt
     - test -f requirements-dev.txt && pip install -r requirements-dev.txt
     - make test
-
   after_script:
     - *install_cc_tester
     - ./cc-test-reporter format-coverage -o coverage/$CI_COMMIT_SHORT_SHA/codeclimate.$CI_JOB_NAME.json -t coverage.py $FOLDER/coverage.xml
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp coverage s3://Testresults --recursive
-
   tags:
     - autoscaling
-
   except:
     refs:
       - /^translations_plugins-.*$/i # ignore, if it comes from transifex
-
   # https://gitlab.com/gitlab-org/gitlab/issues/8177
   # not supported currently
   #only:
@@ -56,21 +50,16 @@ variables:
 
 .builds:
   image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:19.03
-
   stage: build
-
   services:
     - name: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:19.03-dind
       alias: docker
-
   tags:
     - docker-in-docker
-
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
     CI_PROJECT_PATH: $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
-
   script: # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#using-docker-caching
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_SERVER_URL
     - docker info
@@ -103,10 +92,8 @@ include:
 
 upload_test_coverage:
   stage: documentation
-
   before_script:
     - *install_cc_tester
-
   script:
     - mkdir -p coverage
     - ls -la coverage
@@ -132,8 +119,7 @@ hugo:test:
 .documentation:
   stage: documentation
   only:
-    refs:
-      - release
+    - release
   artifacts:
     untracked: true
     expire_in: 1 days
