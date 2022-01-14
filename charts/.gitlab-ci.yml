@@ -1,6 +1,10 @@
 charts:
   stage: deploy
   image: zivgitlab.wwu.io/ulb/devops/skaffold:main
+  artifacts:
+    untracked: true
+    paths:
+      - ./docs/static/charts
   only:
     - release
   script:
