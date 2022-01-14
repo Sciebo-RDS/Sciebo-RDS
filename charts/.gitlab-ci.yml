@@ -1,6 +1,8 @@
 charts:
-  extends: .documentation
+  stage: deploy
   image: zivgitlab.wwu.io/ulb/devops/skaffold:main
+  only:
+    - release
   script:
     - apt update
     - apt install -y python3 python3-pip
