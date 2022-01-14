@@ -18,13 +18,6 @@ build:port_zenodo:
     - .builds
     - .port_zenodo
 
-  only:
-    changes:
-      - RDS/layer1_adapters_and_ports/port_zenodo/*
-      - RDS/layer1_adapters_and_ports/port_zenodo/**/*
-      - RDS/layer2_use_cases/interface_port_metadata.yml
-      - RDS/layer3_central_services/interface_port_token_storage.yml
-
 doc:port_zenodo:
   needs:
     - build:port_zenodo

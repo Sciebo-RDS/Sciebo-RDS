@@ -17,11 +17,6 @@ build:use_case_exporter:
     - .builds
     - .use_case_exporter
 
-  only:
-    changes:
-      - RDS/layer2_use_cases/exporter/*
-      - RDS/layer2_use_cases/exporter/**/*
-
 doc:use_case_exporter:
   needs:
     - build:use_case_exporter

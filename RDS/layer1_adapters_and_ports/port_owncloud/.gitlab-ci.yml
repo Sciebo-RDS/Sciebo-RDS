@@ -18,13 +18,6 @@ build:port_owncloud:
         - .builds
         - .port_owncloud
 
-    only:
-        changes:
-            - RDS/layer1_adapters_and_ports/port_owncloud/*
-            - RDS/layer1_adapters_and_ports/port_owncloud/**/*
-            - RDS/layer2_use_cases/interface_port_file_storage.yml
-            - RDS/layer3_central_services/interface_port_token_storage.yml
-
 doc:port_owncloud:
     needs:
         - build:port_owncloud

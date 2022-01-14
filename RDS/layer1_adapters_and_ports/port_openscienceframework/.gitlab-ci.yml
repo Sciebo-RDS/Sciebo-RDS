@@ -18,13 +18,6 @@ build:port_openscienceframework:
     - .builds
     - .port_openscienceframework
 
-  only:
-    changes:
-      - RDS/layer1_adapters_and_ports/port_openscienceframework/*
-      - RDS/layer1_adapters_and_ports/port_openscienceframework/**/*
-      - RDS/layer2_use_cases/interface_port_metadata.yml
-      - RDS/layer3_central_services/interface_port_token_storage.yml
-
 doc:port_openscienceframework:
   extends:
     - .documentation

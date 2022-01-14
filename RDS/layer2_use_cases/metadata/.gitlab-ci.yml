@@ -17,11 +17,6 @@ build:use_case_metadata:
     - .builds
     - .use_case_metadata
 
-  only:
-    changes:
-      - RDS/layer2_use_cases/metadata/*
-      - RDS/layer2_use_cases/metadata/**/*
-
 doc:use_case_metadata:
   needs:
     - build:use_case_metadata

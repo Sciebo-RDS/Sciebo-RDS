@@ -13,15 +13,9 @@ test:use_case_port_service:
 build:use_case_port_service:
   needs:
     - test:use_case_port_service
-
   extends:
     - .builds
     - .use_case_port_service
-
-  only:
-    changes:
-      - RDS/layer2_use_cases/port/*
-      - RDS/layer2_use_cases/port/**/*
 
 doc:use_case_port_service:
   needs:

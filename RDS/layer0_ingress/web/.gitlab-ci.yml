@@ -39,12 +39,6 @@ build:rds_web:
   variables:
     FOLDER: RDS/layer0_ingress/web/
     DOCKERFILENAME: Dockerfile.rds-standalone
-  only:
-    changes:
-      - RDS/layer0_ingress/web/server/*
-      - RDS/layer0_ingress/web/server/**/*
-      - RDS/layer0_ingress/web/client/*
-      - RDS/layer0_ingress/web/client/**/*
   extends:
     - .builds_web
 
@@ -52,9 +46,5 @@ build:port_helper_describo_token_updater:
   variables:
     FOLDER: RDS/layer0_ingress/web/helper/
     DOCKERFILENAME: dockerfile
-  only:
-    changes:
-      - RDS/layer0_ingress/web/helper/*
-      - RDS/layer0_ingress/web/helper/**/*
   extends:
     - .builds_web
