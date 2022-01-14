@@ -138,6 +138,6 @@ pages:
     - hugo
   artifacts:
     paths:
-      - /docs/public
+      - docs/public
   only:
     - release
