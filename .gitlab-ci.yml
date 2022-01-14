@@ -136,8 +136,9 @@ pages:
   script:
     - cd docs
     - hugo
+    - mv public ../
   artifacts:
     paths:
-      - docs/public
+      - public
   only:
     - release
