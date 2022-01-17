@@ -7,7 +7,13 @@ This repo holds all charts for the sciebo rds microservices.
 Add this charts to your repository list.
 
 ```bash
-helm repo add sciebo-rds https://www.research-data-services.org/charts/
+helm repo add sciebo-rds https://zivgitlab.uni-muenster.de/api/v4/projects/sciebo-rds/sciebo-rds/packages/helm/stable
+```
+
+For develop versions, you have to use the following command:
+
+```bash
+helm repo add sciebo-rds https://zivgitlab.uni-muenster.de/api/v4/projects/sciebo-rds/sciebo-rds/packages/helm/develop
 ```
 
 Verify that the repo finds the charts
@@ -23,7 +29,7 @@ If you want to install the whole system, you can use the *all* chart, which depe
 The following commands will add the needed repository, opens the `values.yaml` with vi and after you enter your credentials, it will try to install the chart with all services under the name "sciebo-rds" in your configured cluster with your `values.yaml`. If you changed something in the `values.yaml`, you only need to run the last command again.
 
 ```bash
-helm repo add sciebo-rds https://www.research-data-services.org/charts/
+helm repo add sciebo-rds https://zivgitlab.uni-muenster.de/api/v4/projects/sciebo-rds/sciebo-rds/packages/helm/stable
 vi values.yaml
 helm upgrade sciebo-rds sciebo-rds/all --install --values values.yaml
 ```

@@ -189,7 +189,7 @@ specified namespace is used as a default.
 We use helm charts (we said it earlier in this documentation). So you have to add the repository to your helm list.
 
 {{<tabs>}}
-{{<tab "bash" "Add helm charts">}}helm repo add sciebo-rds https://www.research-data-services.org/charts/
+{{<tab "bash" "Add helm charts">}}helm repo add sciebo-rds https://zivgitlab.uni-muenster.de/api/v4/projects/sciebo-rds/sciebo-rds/packages/helm/stable
 {{</tab>}}
 {{<tab "bash" "Remove helm charts">}}helm repo remove sciebo-rds
 {{</tab>}}
