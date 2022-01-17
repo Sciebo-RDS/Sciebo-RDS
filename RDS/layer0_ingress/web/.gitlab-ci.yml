@@ -51,8 +51,6 @@ build:port_helper_describo_token_updater:
 
 .oc_plugin:
   stage: deploy
-  rules:
-    - if: $CI_COMMIT_TAG
   variables:
     FOLDER: RDS/layer0_ingress/web/
     PACKAGED_FILE: rds.tar.gz
@@ -66,6 +64,8 @@ build:oc_plugin_release:
   needs:
     - build:oc_plugin
   image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: $CI_COMMIT_TAG
   script:
     - echo "running release_job" # TODO: publish release on owncloud marketplace
   release:
@@ -81,6 +81,12 @@ build:oc_plugin_release:
 build:oc_plugin:
   variables:
     DOCKERFILENAME: Dockerfile.oc-rds-app
+    PACKAGE_VERSION: dev
+  rules:
+    - if: $CI_COMMIT_TAG
+      variables:
+        PACKAGE_VERSION: $CI_COMMIT_TAG
+    - when: always
   extends:
     - .oc_plugin
     - .builds_web
