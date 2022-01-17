@@ -5,7 +5,7 @@
 replicaCount: 1
 image:
   registry: zivgitlab.wwu.io
-  repository: sciebo-rds/rds-web/rds_web
+  repository: sciebo-rds/sciebo-rds/rds_web
   tag: latest
   pullPolicy: Always
 
