@@ -44,7 +44,7 @@ uninstall_tls:
 	kubectl delete secret $(sed -n 's/CERT_NAME=\(.*\)/\1/p' < create_certs.sh)
 
 dep_charts:
-	helm repo add sciebo-rds https://zivgitlab.uni-muenster.de/api/v4/projects/sciebo-rds/sciebo-rds/packages/helm/stable
+	helm repo add sciebo-rds https://zivgitlab.uni-muenster.de/api/v4/projects/1770/packages/helm/stable
 
 upgrade_helm:
 	helm upgrade sciebo-rds sciebo-rds/all -i --values values.yaml
