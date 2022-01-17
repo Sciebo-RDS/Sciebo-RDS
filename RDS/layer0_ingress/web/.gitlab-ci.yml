@@ -57,7 +57,7 @@ build:port_helper_describo_token_updater:
     FOLDER: RDS/layer0_ingress/web/
     PACKAGED_FILE: rds.tar.gz
     PACKAGE_VERSION: ${CI_COMMIT_TAG}
-    OWNCLOUD_APP_BUNDLE: oc-rds-plugin-${PACKAGE_VERSION}
+    OWNCLOUD_APP_BUNDLE: oc-rds-plugin.tar.gz
     PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/rds/${PACKAGE_VERSION}"
 
 build:oc_plugin_release:
@@ -67,7 +67,7 @@ build:oc_plugin_release:
     - build:oc_plugin
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   script:
-    - echo "running release_job"
+    - echo "running release_job" # TODO: publish release on owncloud marketplace
   release:
     name: "Release $CI_COMMIT_TAG"
     description: "Created using the release-cli $EXTRA_DESCRIPTION"
