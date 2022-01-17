@@ -105,7 +105,7 @@ build:oc_plugin:
     - docker pull --quiet $CI_IMAGE_BRANCH || true
     - docker build --cache-from $CI_IMAGE_BRANCH --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_BRANCH  --tag $CI_IMAGE_JOBID --file=$DOCKERFILENAME .
     - docker run -d --rm --name owncloud $CI_IMAGE_BRANCH
-    - docker exec $CI_IMAGE_BRANCH tar cfvz $PACKAGED_FILE -C /var/www/owncloud/apps rds/
+    - docker exec owncloud "tar cfvz $PACKAGED_FILE -C /var/www/owncloud/apps rds/"
     - docker cp owncloud:$PACKAGED_FILE $PACKAGED_FILE
     - |
       curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${PACKAGED_FILE} ${PACKAGE_REGISTRY_URL}/${OWNCLOUD_APP_BUNDLE}
