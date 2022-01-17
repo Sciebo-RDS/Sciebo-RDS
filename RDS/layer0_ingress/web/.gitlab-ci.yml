@@ -93,7 +93,7 @@ build:oc_plugin:
     - .oc_plugin
     - .builds_web
   before_script:
-    - apt update && apt install -y curl
+    - apk add curl
   script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_SERVER_URL
     - docker info
