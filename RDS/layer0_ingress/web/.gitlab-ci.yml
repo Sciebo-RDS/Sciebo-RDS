@@ -48,3 +48,58 @@ build:port_helper_describo_token_updater:
     DOCKERFILENAME: dockerfile
   extends:
     - .builds_web
+
+.oc_plugin:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_TAG
+  variables:
+    FOLDER: RDS/layer0_ingress/web/
+    PACKAGED_FILE: rds.tar.gz
+    PACKAGE_VERSION: ${CI_COMMIT_TAG}
+    OWNCLOUD_APP_BUNDLE: oc-rds-plugin-${PACKAGE_VERSION}
+    PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/rds/${PACKAGE_VERSION}"
+
+build:oc_plugin_release:
+  extends:
+    - .oc_plugin
+  needs:
+    - build:oc_plugin
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  script:
+    - echo "running release_job"
+  release:
+    name: "Release $CI_COMMIT_TAG"
+    description: "Created using the release-cli $EXTRA_DESCRIPTION"
+    tag_name: "$CI_COMMIT_TAG"
+    ref: "$CI_COMMIT_TAG"
+    assets:
+      links:
+        - name: "$OWNCLOUD_APP_BUNDLE"
+          url: "$PACKAGE_REGISTRY_URL/$OWNCLOUD_APP_BUNDLE"
+
+build:oc_plugin:
+  variables:
+    DOCKERFILENAME: Dockerfile.oc-rds-app
+  extends:
+    - .oc_plugin
+    - .builds_web
+  before_script:
+    - apt update && apt install -y curl
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_SERVER_URL
+    - docker info
+    - cd $FOLDER
+    - export DOCKERTAGNAME=$(echo "$CI_JOB_NAME" | cut -d":" -f2)
+    - export CI_PROJECT_PATH=$CI_PROJECT_PATH/$DOCKERTAGNAME
+    - export CI_IMAGE_LATEST=$CI_PROJECT_PATH:latest
+    - export CI_IMAGE_SHA=$CI_PROJECT_PATH:$CI_COMMIT_SHORT_SHA
+    - export CI_IMAGE_BRANCH=$CI_PROJECT_PATH:$CI_COMMIT_REF_NAME
+    - export CI_IMAGE_JOBID=$CI_PROJECT_PATH:$CI_PIPELINE_ID
+    - docker pull --quiet $CI_IMAGE_BRANCH || true
+    - docker build --cache-from $CI_IMAGE_BRANCH --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_BRANCH  --tag $CI_IMAGE_JOBID --file=$DOCKERFILENAME .
+    - docker run -d --rm --name owncloud $CI_IMAGE_BRANCH
+    - docker exec $CI_IMAGE_BRANCH tar cfvz $PACKAGED_FILE -C /var/www/owncloud/apps rds/
+    - docker cp owncloud:$PACKAGED_FILE $PACKAGED_FILE
+    - |
+      curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${PACKAGED_FILE} ${PACKAGE_REGISTRY_URL}/${OWNCLOUD_APP_BUNDLE}
