@@ -13,7 +13,7 @@ helm repo add sciebo-rds https://zivgitlab.uni-muenster.de/api/v4/projects/1770/
 For develop versions, you have to use the following command:
 
 ```bash
-helm repo add sciebo-rds https://zivgitlab.uni-muenster.de/api/v4/projects/1770/packages/helm/develop
+    helm repo add sciebo-rds-dev https://zivgitlab.uni-muenster.de/api/v4/projects/1770/packages/helm/develop
 ```
 
 Verify that the repo finds the charts
