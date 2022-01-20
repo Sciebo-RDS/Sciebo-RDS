@@ -7,6 +7,15 @@ from webdav3.client import Client
 logger = logging.getLogger()
 
 
+def parseCloudId(cloudId: str):
+    username, _, domain = cloudId.rpartition("@")
+
+    if not username:
+        raise ValueError("given cloudId was not correct")
+
+    return username, domain
+
+
 class OwncloudUser:
     """
     This represents an owncloud user. It initialize only one connection to owncloud for one user and holds the current access token.
@@ -15,19 +24,22 @@ class OwncloudUser:
     _access_token = None
     _user_id = None
 
-    def __init__(self, userId, apiKey=None):
+    def __init__(self, userId, apiKey=None, owncloudWebdav=None, path=None):
         self._user_id = userId
         self._access_token = (
             apiKey if apiKey is not None else Util.loadToken(
                 userId, "port-owncloud")
         )
 
+        owncloudWebdav = owncloudWebdav or "{}/remote.php/webdav".format(os.getenv(
+            "OWNCLOUD_INSTALLATION_URL", "http://localhost:3000"
+        ))
+        
         options = {
-            "webdav_hostname": "{}/remote.php/webdav".format(
-                os.getenv("OWNCLOUD_INSTALLATION_URL", "http://localhost:3000")
-            ),
+            "webdav_hostname": f"{owncloudWebdav}",
             "webdav_token": self._access_token,
         }
+
         self.client = Client(options)
         self.client.verify = os.environ.get("VERIFY_SSL", "True") == "True"
 

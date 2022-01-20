@@ -6,3 +6,4 @@ data:
   OWNCLOUD_OAUTH_CLIENT_ID: {{ .Values.environment.OAUTH_CLIENT_ID | quote }}
   OWNCLOUD_INSTALLATION_URL: {{ .Values.environment.ADDRESS | quote }}
   OWNCLOUD_OAUTH_CLIENT_SECRET: {{ .Values.environment.OAUTH_CLIENT_SECRET | quote }}
+  WEBDAVSERVER_FILE: /webdav.json

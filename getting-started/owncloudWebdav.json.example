@@ -1,0 +1,14 @@
+{
+    "instance1.org": {
+        "webdav": "https://instance1.org/remote.php/webdav",
+        "oauth": "https://instance1.org/apps/oauth2",
+        "client_id": "XYZ",
+        "client_secret": "ABC"
+    },
+    "instance2.org": {
+        "webdav": "https://instance2.org/remote.php/webdav",
+        "oauth": "https://instance2.org/apps/oauth2",
+        "client_id": "XYZ",
+        "client_secret": "ABC"
+    }
+}

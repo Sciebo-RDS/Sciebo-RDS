@@ -1,5 +1,6 @@
+from multiprocessing.sharedctypes import Value
 import unittest
-from lib.ownCloudUser import OwncloudUser
+from lib.ownCloudUser import OwncloudUser, parseCloudId
 from pactman import Consumer, Provider
 from urllib.parse import quote
 import atexit
@@ -18,6 +19,20 @@ def create_app():
     app.config.update({"TESTING": True})
 
     return app
+
+class Test_parseCloudId(unittest.TestCase):
+    def test_cloudId(self):
+        expected = ("username", "domain.tld")
+        self.assertEqual(expected, parseCloudId(expected[0] + "@" + expected[1]))
+        
+        expected = ("username@random.tld", "domain.tld")
+        self.assertEqual(expected, parseCloudId(expected[0] + "@" + expected[1]))
+        
+        with self.assertRaises(ValueError):
+            parseCloudId("")
+        
+        with self.assertRaises(ValueError):
+            parseCloudId("username")
 
 # TODO: Needs tests!!!
 class Test_OwncloudUser(unittest.TestCase):
