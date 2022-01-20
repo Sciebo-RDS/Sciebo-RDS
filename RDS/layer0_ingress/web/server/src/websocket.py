@@ -80,7 +80,7 @@ def exchangeCodeData(data):
         "userId": current_user.userId
     }
 
-    # TODO exchange it in the background for user and redirect to wizard / projects
+    # TODO use client secret for cloudId domain
 
     jwtEncode = jwt.encode(body, os.getenv(
         "OWNCLOUD_OAUTH_CLIENT_SECRET"), algorithm="HS256")

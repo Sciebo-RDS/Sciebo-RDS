@@ -25,6 +25,8 @@ login_manager.init_app(app)
 login_manager.login_view = "index"
 socketio.on_namespace(RDSNamespace("/"))
 
+# TODO: add parseCloudId to get domain
+# TODO: get publickey for every domain in webdavServer dict
 req = requests.get(
     "{}/apps/rds/api/1.0/publickey".format(
         os.getenv("OWNCLOUD_URL",
@@ -130,7 +132,7 @@ def login():
 
             user = User(
                 id=str(uuid.uuid4()),
-                userId=decoded["name"]
+                userId=decoded["cloudID"]
             )
 
             session["informations"] = decoded
