@@ -14,6 +14,13 @@ spec:
       labels:
 {{ include "layer0_web.labels" . | indent 8 }}
     spec:
+      volumes:
+        - name: domains_config
+          configMap:
+            name: domains_config
+            items:
+            - key: domains.json
+              path: domains.json
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -22,6 +29,11 @@ spec:
         - name: {{ .Chart.Name }}
           image: {{ template "layer0_web.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: domains_config
+              mountPath: /srv/domains.json
+              subPath: domains.json
+              readOnly: true
           envFrom:
           - configMapRef:
               name: mservice

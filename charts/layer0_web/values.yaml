@@ -25,6 +25,12 @@ service:
     prometheus.io/port: "9999"
 
 domain: localhost
+domains:
+  - name: owncloud.local
+    ADDRESS: https://owncloud.local/owncloud
+    OAUTH_CLIENT_ID: ABC
+    OAUTH_CLIENT_SECRET: XYZ
+    
 ingress:
   path: /
   tls:

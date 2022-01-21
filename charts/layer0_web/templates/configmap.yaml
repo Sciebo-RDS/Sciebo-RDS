@@ -1,3 +1,9 @@
+{{- $domains := .Values.domains -}}
+{{- if .Values.global }}
+    {{- if .Values.global.domains }}
+        {{- $domains = .Values.global.domains -}}
+    {{- end -}}
+{{- end -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -26,3 +32,11 @@ data:
     REDIS_PORT: {{ .REDIS_PORT | default "6379" | quote }}
     {{- end }}
     PROMETHEUS_MULTIPROC_DIR: "/tmp"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: domains_config
+data:
+  domains.json: |-
+{{- $domains | toJson | nindent 4 }}
