@@ -72,7 +72,11 @@ environment:
 api_secret: "IAMSECRET"
 
 # domains for webdav addresses (currently owncloud only)
-domains: []
+domains:
+  - name: owncloud.local
+    ADDRESS: https://owncloud.local/owncloud
+    OAUTH_CLIENT_ID: ABC
+    OAUTH_CLIENT_SECRET: XYZ
 
 postgresql:
   image:
