@@ -1,8 +1,25 @@
+{{- $domains := .Values.domains -}}
+{{- if .Values.global }}
+    {{- if .Values.global.domains }}
+        {{- $domains = .Values.global.domains -}}
+    {{- end -}}
+{{- end -}}
+
+{{- range $domains }}
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: portowncloudconfig
+  name: portowncloudconfig-{{ .name }}
 data:
-  OWNCLOUD_OAUTH_CLIENT_ID: {{ .Values.environment.OAUTH_CLIENT_ID | quote }}
-  OWNCLOUD_INSTALLATION_URL: {{ .Values.environment.ADDRESS | quote }}
-  OWNCLOUD_OAUTH_CLIENT_SECRET: {{ .Values.environment.OAUTH_CLIENT_SECRET | quote }}
+  OWNCLOUD_OAUTH_CLIENT_ID: {{ .OAUTH_CLIENT_ID | quote }}
+  OWNCLOUD_INSTALLATION_URL: {{ .ADDRESS | quote }}
+  OWNCLOUD_OAUTH_CLIENT_SECRET: {{ .OAUTH_CLIENT_SECRET | quote }}
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: portowncloudconfigs
+data:
+  AVAILABLE_CONFIGS: {{include "layer1_port_owncloud.domainlist" $domains | quote -}}

@@ -49,7 +49,10 @@ tolerations: []
 
 affinity: {}
 
-environment:
-  INSTALLATION_URL: https://localhost/owncloud
-  OAUTH_CLIENT_ID: ""
-  OAUTH_CLIENT_SECRET: ""
+# Domains you want to use as input, currently only owncloud supported,
+# overwrites layer1-port-owncloud environment and bootsup multiple pods
+domains:
+  - name: localhost
+    ADDRESS: https://localhost/owncloud
+    OAUTH_CLIENT_ID: ""
+    OAUTH_CLIENT_SECRET: ""
