@@ -3,10 +3,71 @@ kind: ConfigMap
 metadata:
   name: describoconfig
 data:
-    DB_HOST: {{ .Values.postgresql.fullnameOverride | quote }}
-    DB_PORT: {{ .Values.postgresql.service.port | quote }}
-    DB_USER: {{ .Values.postgresql.postgresqlUsername | quote }}
-    DB_PASSWORD: {{ .Values.postgresql.postgresqlPassword | quote }}
-    DB_DATABASE: {{ .Values.postgresql.postgresqlDatabase | quote }}
-    NODE_ENV: "production"
-    LOG_LEVEL: {{ .Values.environment.LOG_LEVEL | quote}}
+  DB_HOST: {{ .Values.postgresql.fullnameOverride | quote }}
+  DB_PORT: {{ .Values.postgresql.service.port | quote }}
+  DB_USER: {{ .Values.postgresql.postgresqlUsername | quote }}
+  DB_PASSWORD: {{ .Values.postgresql.postgresqlPassword | quote }}
+  DB_DATABASE: {{ .Values.postgresql.postgresqlDatabase | quote }}
+  NODE_ENV: "production"
+  LOG_LEVEL: {{ .Values.environment.LOG_LEVEL | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: describo-configuration-file
+data:
+  {{- $files := .Files }}
+  {{- range tuple "nginx.conf" "type-definitions-lookup.json" "type-definitions.json" }}
+  {{ . }}: |-
+{{ printf "defaults/%s" . | $files.Get | indent 4 }}
+  {{- end }}
+  {{- $domains := .Values.domains -}}
+  {{- if .Values.global }}
+      {{- if .Values.global.domains }}
+          {{- $domains = .Values.global.domains -}}
+      {{- end -}}
+  {{- end -}}
+  configuration.json: |-
+    {
+      "ui": {
+          "siteName": "Sciebo - Describo Online",
+          "logo": "http://www.researchobject.org/ro-crate/assets/img/ro-crate.svg",
+          "login": "",
+          "services": {
+              "owncloud": false,
+              "reva": false,
+              "s3": false,
+              "onedrive": false
+          },
+          "basePath": "/",
+          "maxSessionLifetime": "86400",
+          "maxEntitiesPerTemplate": "100"
+      },
+      "api": {
+        "port": 8080,
+        "periodicProcessInterval": 300,
+        "services": {
+          {{- range $i, $_ := $domains }}
+          "{{- .name -}}": [
+                {
+                    "name": "Sciebo - {{- .name -}}",
+                    "url": "{{- .ADDRESS -}}",
+                    "internalUrl": "{{- .ADDRESS -}}",
+                    "clientId": "{{- .OAUTH_CLIENT_ID -}}",
+                    "clientSecret": "{{- .OAUTH_CLIENT_SECRET -}}",
+                    "redirectUri": "{{- $.Values.domain -}}/owncloud-callback",
+                    "oauthAuthoriseEndpoint": "/index.php/apps/oauth2/authorize",
+                    "oauthTokenEndpoint": "/index.php/apps/oauth2/api/v1/token",
+                    "webdavEndpoint": "/remote.php/dav"
+                }
+            ]{{if lt (add1 $i) (len $.Values.domains)}},{{end}}      
+          {{- end -}}
+        },
+        "applications": [
+          {
+              "name": "Owncloud ScieboRDS",
+              "secret": "{{- include "apiSecret" . -}}"
+          }
+        ]
+      }
+    }
