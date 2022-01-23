@@ -6,11 +6,13 @@ from .app import app
 
 def getSessionId(access_token=None, folder=None):
     informations = session["informations"]
+    default = "{}/remote.php/dav".format(os.getenv(
+        "OWNCLOUD_URL", "http://localhost:8000")
+    )
+
     data = {
         "user_id": informations["UID"],
-        "url": "{}/remote.php/dav".format(
-            os.getenv("OWNCLOUD_URL", "http://localhost:8000")
-        ),
+        "url": informations.get("webdav") or default,
     }
 
     if access_token is not None:
@@ -21,7 +23,7 @@ def getSessionId(access_token=None, folder=None):
 
     payload = {
         "email": informations["email"],
-        "name": informations["name"],
+        "name": informations["cloudID"],
         "session": {
             "owncloud": data
         }

@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, session
 from flask_socketio import emit, disconnect, Namespace
 from flask_login import current_user, logout_user
 from .Util import parseResearch, parseResearchBack, parsePortBack, removeDuplicates, checkForEmpty
@@ -395,9 +395,12 @@ class RDSNamespace(Namespace):
         sessionId = None
 
         try:
+            informations = session["informations"]
+            _, _, servername = str(informations.get("cloudID")).rpartition("@")
+
             token = json.loads(httpManager.makeRequest(
                 "getServiceForUser", {
-                    "servicename": "port-owncloud"
+                    "servicename": f"port-owncloud-{servername}"
                 }
             ))["data"]["access_token"]
             describoObj = getSessionId(token, jsonData.get("folder"))
@@ -414,7 +417,6 @@ class RDSNamespace(Namespace):
                 app.logger.error(e, exc_info=True)
         except Exception as e:
             app.logger.error(e, exc_info=True)
-
 
         app.logger.debug(f"return sessionId: {sessionId}")
         return sessionId
