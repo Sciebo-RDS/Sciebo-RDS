@@ -89,6 +89,9 @@ import ServiceCard from "./Card.vue";
 export default {
   components: { ServiceCard },
   computed: {
+    ...mapGetters({
+      ownCloudServicename: "getOwnCloudServername",
+    }),
     revokeText() {
       return this
         .$gettext(`If you want to remove all access in once or remove the access for your
@@ -100,7 +103,7 @@ export default {
     }),
     filteredServices() {
       return this.excludeServices(this.servicelist, this.userservicelist).sort(
-        function (left, right) {
+        function(left, right) {
           return left.servicename.localeCompare(right.servicename);
         }
       );
@@ -110,7 +113,7 @@ export default {
         {
           servicename: "port-owncloud",
         },
-      ]).sort(function (left, right) {
+      ]).sort(function(left, right) {
         return left.servicename.localeCompare(right.servicename);
       });
     },
@@ -125,7 +128,7 @@ export default {
     uninstallRDS() {
       this.$store.dispatch(
         "removeService",
-        this.getInformations("port-owncloud")
+        this.getInformations("port-owncloud-" + this.ownCloudServicename)
       );
     },
   },

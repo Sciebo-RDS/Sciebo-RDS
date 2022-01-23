@@ -47,7 +47,7 @@ export default {
     filteredServiceList() {
       var filtered = [];
       for (var i of this.servicelist) {
-        if (i.servicename !== "port-owncloud") {
+        if (!i.servicename.startsWith("port-owncloud")) {
           filtered.push(i);
         }
       }

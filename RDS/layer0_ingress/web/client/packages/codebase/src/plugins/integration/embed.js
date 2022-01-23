@@ -1,3 +1,5 @@
+import store from "store"
+
 export default {
     install(Vue) {
         let parWindow = window.parent;
@@ -13,7 +15,11 @@ export default {
                     var payload = JSON.parse(event.data);
                     switch (payload.event) {
                         case "informations":
-                            let info = JSON.parse(payload.data).jwt
+                            let parsed = JSON.parse(payload.data)
+                            let info = parsed.jwt
+
+                            store.commit("setOwnCloudServername", parsed.serverName)
+
                             Vue.prototype.$http.post(`${Vue.config.server}/login`, { informations: info }).then(
                                 (resp) => {
                                     clearInterval(timer)

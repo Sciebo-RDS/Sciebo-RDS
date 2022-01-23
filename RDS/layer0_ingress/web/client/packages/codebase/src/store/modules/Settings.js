@@ -13,7 +13,8 @@ const getDefaultState = () => {
         language: language(),
         finishedWizard: false,
         showAllProjects: false,
-        questions: {}
+        questions: {},
+        ownCloudServerName: undefined
     }
 }
 
@@ -55,6 +56,9 @@ export default {
         },
         showAllProjects(state) {
             return state.showAllProjects
+        },
+        getOwnCloudServername(state) {
+            return state.ownCloudServerName
         }
     },
 
@@ -89,6 +93,9 @@ export default {
         },
         showAllProjects(state, payload) {
             state.showAllProjects = payload;
+        },
+        setOwnCloudServername(state, payload) {
+            state.ownCloudServerName = payload
         }
     },
     actions: {
@@ -116,6 +123,6 @@ export default {
             context.commit('setTimeMode', {
                 timeMode: state.timeMode
             })
-        }
+        },
     }
 };

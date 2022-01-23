@@ -9,11 +9,16 @@
 <script>
 export default {
   name: "RevokeButton",
+  computed: {
+    ...mapGetters({
+      ownCloudServicename: "getOwnCloudServername",
+    }),
+  },
   methods: {
     uninstallRDS() {
       this.$store.dispatch(
         "removeService",
-        this.getInformations("port-owncloud")
+        this.getInformations("port-owncloud-" + this.ownCloudServicename)
       );
     },
   },

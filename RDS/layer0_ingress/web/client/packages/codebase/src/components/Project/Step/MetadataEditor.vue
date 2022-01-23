@@ -37,6 +37,9 @@ export default {
     sessionId: undefined,
   }),
   computed: {
+    ...mapGetters({
+      ownCloudServicename: "getOwnCloudServername",
+    }),
     editor() {
       return this.$refs.describoWindow.contentWindow;
     },
@@ -57,7 +60,10 @@ export default {
         return "";
       }
 
-      const service = this.getService(this.project.portIn, "port-owncloud");
+      const service = this.getService(
+        this.project.portIn,
+        "port-owncloud-" + this.ownCloudServicename
+      );
       if (service !== undefined) {
         return service.properties.customProperties.filepath;
       }

@@ -37,12 +37,17 @@ export default {
       gettingStarted: "https://localhost:8000",
     };
   },
+  computed: {
+    ...mapGetters({
+      ownCloudServicename: "getOwnCloudServername",
+    }),
+  },
   methods: {
     uninstallRDS() {
       this.$store.dispatch(
         "removeService",
         this.getInformations(
-          "port-owncloud",
+          "port-owncloud-" + this.ownCloudServicename,
           this.$store.getters.getUserServiceList
         )
       );

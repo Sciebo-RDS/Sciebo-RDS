@@ -20,10 +20,7 @@
                 <translate> Select Folder </translate>
               </v-btn>
 
-              <div
-                class="pl-4 pt-0"
-                v-if="!!currentFilePath"
-              >
+              <div class="pl-4 pt-0" v-if="!!currentFilePath">
                 <translate
                   :translate-params="{
                     filePath: currentFilePath,
@@ -51,7 +48,9 @@
                 v-model="selectedPorts"
                 @change="emitChanges"
                 :items="
-                  ports.filter((i) => i['servicename'] !== 'port-owncloud')
+                  ports.filter(
+                    (i) => !i['servicename'].startsWith('port-owncloud')
+                  )
                 "
                 :item-text="(item) => parseServicename(item.servicename)"
                 :item-value="(item) => item"
@@ -80,6 +79,7 @@ export default {
   computed: {
     ...mapGetters({
       ports: "getUserServiceList",
+      ownCloudServicename: "getOwnCloudServername",
     }),
     selectAllPorts() {
       return this.selectedPorts.length === this.ports.length;
@@ -177,7 +177,10 @@ export default {
       let add = [];
       if (this.project.portIn.length == 0) {
         return [
-          { servicename: "port-owncloud", filepath: this.currentFilePath },
+          {
+            servicename: "port-owncloud-" + this.ownCloudServicename,
+            filepath: this.currentFilePath,
+          },
         ];
       }
       for (let i of this.project["portIn"]) {
@@ -201,7 +204,10 @@ export default {
       if (!project.portIn.length) {
         return "";
       }
-      const service = this.getService(project.portIn, "port-owncloud");
+      const service = this.getService(
+        project.portIn,
+        "port-owncloud-" + this.ownCloudServicename
+      );
       if (service !== undefined) {
         return service.properties.customProperties.filepath;
       }

@@ -35,7 +35,11 @@
             <translate>Permit RDS to access your ownCloud files.</translate>
           </v-card>
           <v-btn
-            @click="grantAccess(getInformations('port-owncloud'))"
+            @click="
+              grantAccess(
+                getInformations('port-owncloud-' + ownCloudServicename)
+              )
+            "
             color="primary"
             :disabled="!auth.loggedIn"
           >
@@ -132,15 +136,20 @@ export default {
   mounted() {
     if (
       this.$config.predefined_user ||
-      this.getInformations("port-owncloud", this.userservicelist) !== undefined
+      this.getInformations(
+        "port-owncloud-" + this.ownCloudServicename,
+        this.userservicelist
+      ) !== undefined
     ) {
       this.finishWizard();
     }
 
     let timer = setInterval(() => {
       if (
-        this.getInformations("port-owncloud", this.userservicelist) !==
-        undefined
+        this.getInformations(
+          "port-owncloud-" + this.ownCloudServicename,
+          this.userservicelist
+        ) !== undefined
       ) {
         console.log("found ownCloud in storage");
         clearInterval(timer);
@@ -152,6 +161,7 @@ export default {
     ...mapState({
       userservicelist: (state) => state.RDSStore.userservicelist,
       servicelist: (state) => state.RDSStore.servicelist,
+      ownCloudServicename: (state) => state.SettingsStore.ownCloudServicename,
     }),
     filteredServices() {
       return this.excludeServices(this.servicelist, this.userservicelist);
@@ -160,8 +170,10 @@ export default {
       if (this.$store.getters.isWizardFinished) {
         return 3;
       } else if (
-        this.getInformations("port-owncloud", this.userservicelist) !==
-        undefined
+        this.getInformations(
+          "port-owncloud-" + this.ownCloudServicename,
+          this.userservicelist
+        ) !== undefined
       ) {
         return 2;
       }
@@ -174,7 +186,9 @@ export default {
       if (process.env.NODE_ENV === "development" && this.currentStep > 1) {
         this.clickedStarted = true;
       } else {
-        this.grantAccess(this.getInformations("port-owncloud"));
+        this.grantAccess(
+          this.getInformations("port-owncloud-" + this.ownCloudServicename)
+        );
       }
     },
     grantAccess(service) {
