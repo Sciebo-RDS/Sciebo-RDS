@@ -17,7 +17,7 @@ sources:
 icon: https://www.research-data-services.org/img/sciebo.png
 dependencies:
   - name: layer0-describo
-    version: ^0.1.0
+    version: ^0.2.0
     repository: file://../layer0_describo
     condition: layer0-describo.enabled
     tags:
@@ -47,7 +47,7 @@ dependencies:
     tags:
       - layer1
   - name: layer1-port-owncloud
-    version: ^0.2.0
+    version: ^0.3.0
     repository: file://../layer1_port_owncloud
     condition: layer1-port-owncloud.enabled
     tags:

@@ -46,23 +46,7 @@ data:
       "api": {
         "port": 8080,
         "periodicProcessInterval": 300,
-        "services": {
-          {{- range $i, $_ := $domains }}
-          "{{- .name -}}": [
-                {
-                    "name": "Sciebo - {{- .name -}}",
-                    "url": "{{- .ADDRESS -}}",
-                    "internalUrl": "{{- .ADDRESS -}}",
-                    "clientId": "{{- .OAUTH_CLIENT_ID -}}",
-                    "clientSecret": "{{- .OAUTH_CLIENT_SECRET -}}",
-                    "redirectUri": "{{- $.Values.domain -}}/owncloud-callback",
-                    "oauthAuthoriseEndpoint": "/index.php/apps/oauth2/authorize",
-                    "oauthTokenEndpoint": "/index.php/apps/oauth2/api/v1/token",
-                    "webdavEndpoint": "/remote.php/dav"
-                }
-            ]{{if lt (add1 $i) (len $.Values.domains)}},{{end}}      
-          {{- end -}}
-        },
+        "services": {},
         "applications": [
           {
               "name": "Owncloud ScieboRDS",
