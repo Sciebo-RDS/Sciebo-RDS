@@ -149,7 +149,8 @@ class RdsApiController extends ApiController
             return [
                 "jwt" => $token,
                 "cloudURL" => \OC::$server->getConfig()->getAppValue("rds", "cloudURL"),
-                "language" => $activeLangCode
+                "language" => $activeLangCode,
+                "serverName" => $data["serverName"]
             ];
         });
     }
