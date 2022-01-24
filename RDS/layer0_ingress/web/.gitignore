@@ -40,7 +40,8 @@ web.config.json
 production-configuration.json
 /sign.sh
 /rds
-/server/tests
+/server/dumps
+/server/domains.json
 
 # rust
 target
