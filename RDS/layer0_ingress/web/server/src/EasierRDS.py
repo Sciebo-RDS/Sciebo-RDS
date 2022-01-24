@@ -104,7 +104,7 @@ class HTTPRequest:
 
         if use_tests_folder:
             req = AttrDict({
-                "text": open("tests/{}.json".format(url.split("{}/".format(os.getenv("RDS_INSTALLATION_DOMAIN")))[-1])).read(),
+                "text": open("dumps/{}.json".format(url.split("{}/".format(os.getenv("RDS_INSTALLATION_DOMAIN")))[-1])).read(),
                 "status_code": 200,
             })
 

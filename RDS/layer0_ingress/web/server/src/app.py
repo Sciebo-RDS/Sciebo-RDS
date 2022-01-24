@@ -24,7 +24,7 @@ env_path = Path('..') / '.env'
 load_dotenv(dotenv_path=env_path)
 
 use_predefined_user = (os.getenv('DEV_USE_PREDEFINED_USER', 'False') == 'True')
-use_tests_folder = (os.getenv('DEV_USE_TESTS_FOLDER', 'False') == 'True')
+use_tests_folder = (os.getenv('DEV_USE_DUMPS_FOLDER', 'False') == 'True')
 
 use_embed_mode = (os.getenv('EMBED_MODE', 'False') == 'True')
 use_proxy = (os.getenv('DEV_USE_PROXY', 'False') == 'True')
