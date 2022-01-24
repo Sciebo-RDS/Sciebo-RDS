@@ -10,7 +10,7 @@ global:
   # Domains you want to use as input, currently only owncloud supported,
   # this enables to use multiple owncloud instances with a single sciebo RDS
   domains:
-    - name: owncloud.local
+    - name: owncloud.local # name needs to be exact the same as the second part after last @ in the cloudId
       ADDRESS: https://owncloud.local/owncloud
       OAUTH_CLIENT_ID: ABC
       OAUTH_CLIENT_SECRET: XYZ
