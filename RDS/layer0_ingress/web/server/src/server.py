@@ -75,30 +75,32 @@ class User(UserMixin):
         self.userId = userId
         self.token = token
 
-        if userId is None:
+        if userId is None and token is not None:
             headers = {
                 "Authorization": f"Bearer {token}"
             }
 
-            req = requests.get(
-                "{}/apps/rds/api/1.0/informations".format(
-                    os.getenv("OWNCLOUD_URL",
-                              "https://10.14.29.60/owncloud/index.php")
-                ),
-                headers=headers,
-                verify=os.getenv("VERIFY_SSL", "False") == "True",
-            )
+            for domain in domains:
+                url = domain["ADDRESS"] or os.getenv(
+                    "OWNCLOUD_URL", "https://10.14.29.60/owncloud/index.php")
 
-            if req.status_code == 200:
-                text = req.json()["jwt"]
-
-                data = jwt.decode(
-                    text, publickey, algorithms=["RS256"]
+                req = requests.get(
+                    f"{url}/apps/rds/api/1.0/informations",
+                    headers=headers,
+                    verify=os.getenv("VERIFY_SSL", "False") == "True",
                 )
-                app.logger.debug(data)
 
-                self.userId = data["name"]
-                return
+                if req.status_code == 200:
+                    text = req.json()["jwt"]
+
+                    data = jwt.decode(
+                        text, domain["publickey"], algorithms=["RS256"]
+                    )
+                    app.logger.debug(data)
+
+                    self.userId = data["cloudID"]
+                    return
+
             raise ValueError
 
 
@@ -144,7 +146,7 @@ def login():
 
             user = User(
                 id=str(uuid.uuid4()),
-                userId=decoded["name"]
+                userId=decoded["cloudID"]
             )
 
             session["informations"] = decoded
