@@ -27,6 +27,7 @@
 
 <script>
 import queryString from "querystring";
+import { mapGetters } from "vuex";
 
 export default {
   props: ["project"],

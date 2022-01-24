@@ -83,8 +83,9 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import ServiceCard from "./Card.vue";
+
 
 export default {
   components: { ServiceCard },

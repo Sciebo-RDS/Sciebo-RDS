@@ -1,4 +1,12 @@
-import store from "store"
+
+const parseJwt = (token) => {
+    try {
+        let decoded = JSON.parse(atob(token.split('.')[1]))
+        return decoded;
+    } catch (e) {
+        return null;
+    }
+};
 
 export default {
     install(Vue) {
@@ -17,9 +25,9 @@ export default {
                         case "informations":
                             let parsed = JSON.parse(payload.data)
                             let info = parsed.jwt
+                            let servername = parseJwt(info).cloudID.split("@").splice(-1)[0]
 
-                            store.commit("setOwnCloudServername", parsed.serverName)
-
+                            Vue.prototype.$store.commit("setOwnCloudServername", servername)
                             Vue.prototype.$http.post(`${Vue.config.server}/login`, { informations: info }).then(
                                 (resp) => {
                                     clearInterval(timer)

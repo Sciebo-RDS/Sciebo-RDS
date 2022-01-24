@@ -31,6 +31,7 @@ export default {
             if (services === undefined) {
                 services = this.servicelist;
             }
+            
             for (const service of services) {
                 if (service.servicename == servicename) {
                     return service;

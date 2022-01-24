@@ -161,7 +161,7 @@ export default {
     ...mapState({
       userservicelist: (state) => state.RDSStore.userservicelist,
       servicelist: (state) => state.RDSStore.servicelist,
-      ownCloudServicename: (state) => state.SettingsStore.ownCloudServicename,
+      ownCloudServicename: (state) => state.SettingsStore.ownCloudServerName,
     }),
     filteredServices() {
       return this.excludeServices(this.servicelist, this.userservicelist);

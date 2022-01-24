@@ -25,6 +25,7 @@
 <script>
 // @ is an alias to /src
 import Frame from "../components/Frame.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Help",

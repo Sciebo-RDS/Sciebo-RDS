@@ -14,7 +14,7 @@ const getDefaultState = () => {
         finishedWizard: false,
         showAllProjects: false,
         questions: {},
-        ownCloudServerName: undefined
+        ownCloudServerName: (process.env.NODE_ENV !== "production") ? "localhost:8000" : undefined
     }
 }
 
@@ -95,6 +95,7 @@ export default {
             state.showAllProjects = payload;
         },
         setOwnCloudServername(state, payload) {
+            console.log("set owncloudname to ", payload)
             state.ownCloudServerName = payload
         }
     },
@@ -124,5 +125,8 @@ export default {
                 timeMode: state.timeMode
             })
         },
+        setOwnCloudServername(context, payload) {
+            context.commit("setOwnCloudServername", payload)
+        }
     }
 };
