@@ -95,7 +95,6 @@ export default {
             state.showAllProjects = payload;
         },
         setOwnCloudServername(state, payload) {
-            console.log("set owncloudname to ", payload)
             state.ownCloudServerName = payload
         }
     },
