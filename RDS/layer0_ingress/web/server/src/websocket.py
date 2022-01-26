@@ -3,7 +3,7 @@ from flask_socketio import emit, disconnect, Namespace
 from flask_login import current_user, logout_user
 from .Util import parseResearch, parseResearchBack, parsePortBack, removeDuplicates, checkForEmpty
 from .EasierRDS import parseDict
-from .app import socketio, clients, rc, tracing, tracer_obj, app
+from .app import socketio, clients, rc, tracing, tracer_obj, app, trans_tbl
 from .Describo import getSessionId
 import logging
 import functools
@@ -397,6 +397,7 @@ class RDSNamespace(Namespace):
         try:
             informations = session["informations"]
             _, _, servername = str(informations.get("cloudID")).rpartition("@")
+            servername = servername.trans(trans_tbl)
 
             token = json.loads(httpManager.makeRequest(
                 "getServiceForUser", {

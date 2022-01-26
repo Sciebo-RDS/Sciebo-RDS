@@ -16,9 +16,10 @@ owncloud_oauth_secret = os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET", "ABC")
 owncloud_oauth_authorize = "{}/index.php/apps/oauth2/authorize%3Fredirect_uri={}&response_type=code&client_id={}".format(
     owncloud_installation_url, owncloud_redirect_uri, owncloud_oauth_id
 )
+servicename = os.getenv("SERVICENAME")
 
 service = OAuth2Service(
-    servicename="port-owncloud",
+    servicename=f"port-owncloud-{servicename}",
     implements=["fileStorage"],
     fileTransferMode=FileTransferMode.active,
     fileTransferArchive=FileTransferArchive.none,

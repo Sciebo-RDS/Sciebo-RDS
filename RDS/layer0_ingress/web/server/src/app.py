@@ -46,6 +46,8 @@ startup_nodes = [
     }
 ]
 
+repl = ".:"
+trans_tbl = "".maketrans(repl, "-" * len(repl))
 
 try:
     from redis import Redis

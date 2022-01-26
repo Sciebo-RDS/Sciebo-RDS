@@ -10,11 +10,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: portowncloudconfig-{{ .name }}
+  name: portowncloudconfig-{{ .name | replace "." "-" | replace ":" "-" }}
 data:
   OWNCLOUD_OAUTH_CLIENT_ID: {{ .OAUTH_CLIENT_ID | quote }}
   OWNCLOUD_INSTALLATION_URL: {{ .ADDRESS | quote }}
   OWNCLOUD_OAUTH_CLIENT_SECRET: {{ .OAUTH_CLIENT_SECRET | quote }}
+  SERVICENAME: {{ .name | replace "." "-" | replace ":" "-" }}
 {{- end }}
 ---
 apiVersion: v1

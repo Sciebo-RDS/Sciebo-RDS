@@ -25,7 +25,7 @@ export default {
                         case "informations":
                             let parsed = JSON.parse(payload.data)
                             let info = parsed.jwt
-                            let servername = parseJwt(info).cloudID.split("@").splice(-1)[0]
+                            let servername = parseJwt(info).cloudID.split("@").splice(-1)[0].replace(/[:.]/g,"-")
 
                             Vue.prototype.$store.commit("setOwnCloudServername", servername)
                             Vue.prototype.$http.post(`${Vue.config.server}/login`, { informations: info }).then(

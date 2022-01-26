@@ -15,9 +15,9 @@ spec:
 {{ include "layer0_web.labels" . | indent 8 }}
     spec:
       volumes:
-        - name: domains_config
+        - name: domainsconfig
           configMap:
-            name: domains_config
+            name: domainsconfig
             items:
             - key: domains.json
               path: domains.json
@@ -30,7 +30,7 @@ spec:
           image: {{ template "layer0_web.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
-            - name: domains_config
+            - name: domainsconfig
               mountPath: /srv/domains.json
               subPath: domains.json
               readOnly: true

@@ -13,7 +13,7 @@ metadata:
   annotations:
   {{ toYaml . | indent 4 }}
   {{- end }}
-  name: {{ include "layer1_port_owncloud.fullname" $ }}-{{ .name }}
+  name: {{ include "layer1_port_owncloud.fullname" $ }}-{{ .name | replace "." "-" | replace ":" "-" }}
   labels:
 {{ include "layer1_port_owncloud.labels" $ | indent 4 }}
 spec:
@@ -24,6 +24,6 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "layer1_port_owncloud.name" $ }}-{{ .name }}
+    app.kubernetes.io/name: {{ include "layer1_port_owncloud.name" $ }}-{{ .name | replace "." "-" | replace ":" "-" }}
     app.kubernetes.io/instance: {{ $.Release.Name }}
 {{- end }}

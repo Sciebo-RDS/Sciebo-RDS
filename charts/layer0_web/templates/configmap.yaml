@@ -36,7 +36,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: domains_config
+  name: domainsconfig
 data:
   domains.json: |-
 {{- $domains | toJson | nindent 4 }}

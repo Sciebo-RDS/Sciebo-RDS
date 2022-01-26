@@ -8,7 +8,7 @@ from flask_login import (
     logout_user,
     current_user,
 )
-from .app import app, socketio, user_store, use_predefined_user, use_embed_mode, use_proxy, redirect_url
+from .app import app, socketio, user_store, use_predefined_user, use_embed_mode, use_proxy, redirect_url, trans_tbl
 from .websocket import exchangeCodeData, RDSNamespace
 import json
 import requests
@@ -25,7 +25,6 @@ login_manager.init_app(app)
 login_manager.login_view = "index"
 socketio.on_namespace(RDSNamespace("/"))
 
-# TODO make this multi owncloud ready
 domains = [{
     "name": "localhost",
     "ADDRESS": os.getenv("OWNCLOUD_URL", "https://10.14.29.60/owncloud/index.php")
@@ -43,7 +42,7 @@ for i in range(len(domains)):
 
     domains[i]["publickey"] = req.get("publickey", "").replace("\\n", "\n")
 
-domains = {val["name"]: val for val in domains}
+domains = {val["name"].translate(trans_tbl): val for val in domains}
 
 
 def proxy(host, path):
@@ -137,6 +136,8 @@ def login():
     unverified = jwt.decode(data, options={"verify_signature": False})
 
     _, _, servername = unverified["cloudID"].rpartition("@")
+    servername = servername.translate(trans_tbl)
+
     publickey = domains[servername].get("publickey") or ""
 
     user = None

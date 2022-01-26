@@ -9,7 +9,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "layer1_port_owncloud.fullname" $ }}-{{ .name }}
+  name: {{ include "layer1_port_owncloud.fullname" $ }}-{{ .name | replace "." "-" | replace ":" "-" }}
   labels:
 {{ include "layer1_port_owncloud.labels" $ | indent 4 }}
 spec:
@@ -38,7 +38,7 @@ spec:
           - configMapRef:
               name: globalenvvar
           - configMapRef:
-              name: portowncloudconfig-{{ .name }}
+              name: portowncloudconfig-{{ .name | replace "." "-" | replace ":" "-" }}
           ports:
             - name: http
               containerPort: 8080
