@@ -119,7 +119,7 @@ pub fn start_lookup_userid_in_redis(
                 }
             };
 
-            if t.data.service.data.servicename != "port-owncloud" {
+            if !t.data.service.data.servicename.starts_with("port-owncloud") {
                 println!("skip: It is not for owncloud");
                 continue;
             }
