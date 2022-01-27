@@ -3,7 +3,7 @@ from flask_socketio import emit, disconnect, Namespace
 from flask_login import current_user, logout_user
 from .Util import parseResearch, parseResearchBack, parsePortBack, removeDuplicates, checkForEmpty
 from .EasierRDS import parseDict
-from .app import socketio, clients, rc, tracing, tracer_obj, app, trans_tbl, domains
+from .app import socketio, clients, rc, tracing, tracer_obj, app, trans_tbl
 from .Describo import getSessionId
 import logging
 import functools
@@ -81,7 +81,7 @@ def exchangeCodeData(data):
     }
 
     # TODO exchange it in the background for user and redirect to wizard / projects
-    oauth_secret = domains.get(session["servername"], {}).get("OAUTH_CLIENT_SECRET") or os.getenv(
+    oauth_secret = session["oauth"].get("OAUTH_CLIENT_SECRET") or os.getenv(
         "OWNCLOUD_OAUTH_CLIENT_SECRET")
     jwtEncode = jwt.encode(body, oauth_secret, algorithm="HS256")
 
