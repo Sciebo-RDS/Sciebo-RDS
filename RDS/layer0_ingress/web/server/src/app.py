@@ -13,6 +13,7 @@ import redis_pubsub_dict
 from rediscluster import RedisCluster
 from flask import Flask
 import uuid
+import requests
 import os
 import json
 from flask_socketio import SocketIO
@@ -48,6 +49,27 @@ startup_nodes = [
 
 repl = ".:"
 trans_tbl = "".maketrans(repl, "-" * len(repl))
+
+
+domains = [{
+    "name": "localhost",
+    "ADDRESS": os.getenv("OWNCLOUD_URL", "https://10.14.29.60/owncloud/index.php")
+}]
+
+with open("domains.json") as f:
+    domains = json.load(f)
+
+for i in range(len(domains)):
+    url = domains[i]["ADDRESS"]
+    req = requests.get(
+        f"{url}/apps/rds/api/1.0/publickey",
+        verify=os.getenv("VERIFY_SSL", "False") == "True"
+    ).json()
+
+    domains[i]["publickey"] = req.get("publickey", "").replace("\\n", "\n")
+
+domains = {val["name"].translate(trans_tbl): val for val in domains}
+
 
 try:
     from redis import Redis

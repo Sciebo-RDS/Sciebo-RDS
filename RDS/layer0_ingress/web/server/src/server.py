@@ -8,7 +8,7 @@ from flask_login import (
     logout_user,
     current_user,
 )
-from .app import app, socketio, user_store, use_predefined_user, use_embed_mode, use_proxy, redirect_url, trans_tbl
+from .app import app, socketio, user_store, use_predefined_user, use_embed_mode, use_proxy, redirect_url, trans_tbl, domains
 from .websocket import exchangeCodeData, RDSNamespace
 import json
 import requests
@@ -24,25 +24,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "index"
 socketio.on_namespace(RDSNamespace("/"))
-
-domains = [{
-    "name": "localhost",
-    "ADDRESS": os.getenv("OWNCLOUD_URL", "https://10.14.29.60/owncloud/index.php")
-}]
-
-with open("domains.json") as f:
-    domains = json.load(f)
-
-for i in range(len(domains)):
-    url = domains[i]["ADDRESS"]
-    req = requests.get(
-        f"{url}/apps/rds/api/1.0/publickey",
-        verify=os.getenv("VERIFY_SSL", "False") == "True"
-    ).json()
-
-    domains[i]["publickey"] = req.get("publickey", "").replace("\\n", "\n")
-
-domains = {val["name"].translate(trans_tbl): val for val in domains}
 
 
 def proxy(host, path):
