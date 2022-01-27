@@ -14,7 +14,7 @@ const getDefaultState = () => {
         finishedWizard: false,
         showAllProjects: false,
         questions: {},
-        ownCloudServerName: (process.env.NODE_ENV !== "production") ? "localhost:8000" : undefined
+        ownCloudServerName: (process.env.NODE_ENV !== "production") ? "localhost:8000" : ""
     }
 }
 
