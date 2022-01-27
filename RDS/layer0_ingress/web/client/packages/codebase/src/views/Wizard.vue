@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import CredentialsInput from "../components/Settings/CredentialsInput.vue";
 import Frame from "../components/Frame.vue";
 
@@ -161,7 +161,9 @@ export default {
     ...mapState({
       userservicelist: (state) => state.RDSStore.userservicelist,
       servicelist: (state) => state.RDSStore.servicelist,
-      ownCloudServicename: (state) => state.SettingsStore.ownCloudServerName,
+    }),
+    ...mapGetters({
+      ownCloudServicename: "getOwnCloudServername",
     }),
     filteredServices() {
       return this.excludeServices(this.servicelist, this.userservicelist);

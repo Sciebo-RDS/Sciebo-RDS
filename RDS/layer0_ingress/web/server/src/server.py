@@ -151,6 +151,7 @@ def login():
             )
 
             session["informations"] = decoded
+            session["servername"] = servername
         except Exception as e:
             app.logger.error(e, exc_info=True)
 

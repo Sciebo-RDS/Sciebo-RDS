@@ -3,7 +3,8 @@ const getDefaultState = () => {
         userservicelist: [],
         servicelist: [],
         projectlist: [],
-        sessionID: null
+        sessionID: null,
+        ownCloudServerName: ""
     }
 }
 
@@ -15,7 +16,8 @@ export default {
         getUserServiceList: (state) => state.userservicelist,
         getServiceList: (state) => state.servicelist,
         getProjectlist: (state) => state.projectlist,
-        getSessionId: (state) => state.sessionID
+        getSessionId: (state) => state.sessionID,
+        getOwnCloudServername: (state) => state.ownCloudServerName
     },
     mutations: {
         setUserServiceList: (state, payload) => { state.userservicelist = payload.servicelist },
@@ -25,8 +27,16 @@ export default {
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
+        setServerName(state, payload) {
+            state.ownCloudServerName = payload
+        }
     },
     actions: {
+        SOCKET_ServerName(context, state) {
+            context.commit("setServerName", {
+                state
+            })
+        },
         SOCKET_UserServiceList(context, state) {
             let servicelist = []
             try {
