@@ -154,7 +154,7 @@ class RDSNamespace(Namespace):
         current_user.websocketId = request.sid
         clients[current_user.userId] = current_user
 
-        emit("ServerName", session["servername"])
+        emit("ServerName", {"servername": session["servername"]})
         emit("ServiceList", httpManager.makeRequest("getServicesList"))
         emit("UserServiceList", httpManager.makeRequest("getUserServices"))
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))

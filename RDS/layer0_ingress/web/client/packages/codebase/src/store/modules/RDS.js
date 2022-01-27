@@ -27,14 +27,12 @@ export default {
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
-        setServerName(state, payload) {
-            state.ownCloudServerName = payload
-        }
+        setOwnCloudServername(state, payload) { state.ownCloudServerName = payload.serverName }
     },
     actions: {
         SOCKET_ServerName(context, state) {
-            context.commit("setServerName", {
-                state
+            context.commit("setOwnCloudServername", {
+                serverName: state.servername
             })
         },
         SOCKET_UserServiceList(context, state) {
