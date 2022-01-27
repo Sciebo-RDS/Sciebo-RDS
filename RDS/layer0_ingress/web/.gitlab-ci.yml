@@ -110,6 +110,7 @@ build:oc_plugin:
     - cat $OWNCLOUD_SIGN_PRIVATE_KEY | base64 -d - > sign/key
     - cat $OWNCLOUD_SIGN_CERTIFICATE | base64 -d - > sign/crt
     - docker run -d --rm -v $(pwd)/sign:/var/www/owncloud/signing --name owncloud $CI_IMAGE_BRANCH
+    - sleep 20
     - docker exec owncloud occ integrity:sign-app --privateKey=/var/www/owncloud/signing/key --certificate=/var/www/owncloud/signing/crt --path=/var/www/owncloud/apps/rds
     - docker exec owncloud tar cfvz $PACKAGED_FILE -C /var/www/owncloud/apps rds/
     - docker cp owncloud:/var/www/owncloud/$PACKAGED_FILE $PACKAGED_FILE
