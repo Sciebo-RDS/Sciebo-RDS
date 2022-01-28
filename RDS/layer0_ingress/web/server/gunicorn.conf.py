@@ -6,8 +6,8 @@ workers = multiprocessing.cpu_count() * 2 + 1
 loglevel = "debug"
 enable_stdio_inheritance = True
 capture_output = True
-errorlog = "/var/log/gunicorn.error.log"
-accesslog = "/var/log/gunicorn.access.log"
+errorlog = "/dev/stdout"
+accesslog = "/dev/stdout"
 worker_class = "eventlet"
 
 
