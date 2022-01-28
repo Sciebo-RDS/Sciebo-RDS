@@ -7,6 +7,21 @@ Expand the name of the chart.
 {{- end -}}
 
 {{/*
+Return the proper describo secret
+*/}}
+{{- define "apiSecret" -}}
+{{- $secret := .Values.api_secret -}}
+{{- if .Values.global }}
+    {{- if .Values.global.describo }}
+        {{- if .Values.global.describo.api_secret }}    
+            {{- $secret = .Values.global.describo.api_secret -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- $secret -}}
+{{- end -}}
+
+{{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.

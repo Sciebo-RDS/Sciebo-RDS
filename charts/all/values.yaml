@@ -10,7 +10,8 @@ global:
   REDIS_HELPER_HOST: redis-helper
   REDIS_HELPER_PORT: 6379
   REDIS_CHANNEL: TokenStorage_Refresh_Token
-  
+  describo:
+    api_secret: IAMSECRET
   postgresql:
     postgresqlDatabase: "describo"
     postgresqlUsername: "d9oNHWc41tVUIR4778Qsgi9kmi6c5FD2"

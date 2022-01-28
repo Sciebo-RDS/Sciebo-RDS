@@ -38,4 +38,5 @@ affinity: {}
 
 environment:
   DESCRIBO_API_ENDPOINT: http://layer0-describo:80/api/session/application
-  DESCRIBO_API_SECRET: XYZ
+  
+api_secret: XYZ
