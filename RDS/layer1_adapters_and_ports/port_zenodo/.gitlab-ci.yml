@@ -10,6 +10,7 @@
 
 test:port_zenodo:
   extends: .tests_port_zenodo
+  allow_failure: true
 
 build:port_zenodo:
   needs:
