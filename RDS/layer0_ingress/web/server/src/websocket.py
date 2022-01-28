@@ -74,7 +74,7 @@ httpManager = parseDict(data, socketio=socketio)
 
 def exchangeCodeData(data):
     body = {
-        'servicename': "port-owncloud",
+        'servicename': "port-owncloud-{}".format(session["servername"]),
         'code': data["code"],
         'state': data["state"],
         "userId": current_user.userId
