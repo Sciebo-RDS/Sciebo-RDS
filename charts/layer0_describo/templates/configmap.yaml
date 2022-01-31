@@ -46,7 +46,6 @@ data:
       "api": {
         "port": 8080,
         "periodicProcessInterval": 300,
-        "services": {},
         "applications": [
           {
               "name": "Owncloud ScieboRDS",

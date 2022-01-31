@@ -10,9 +10,15 @@ def getSessionId(access_token=None, folder=None):
         "OWNCLOUD_URL", "http://localhost:8000")
     )
 
+    _, _, servername = informations["cloudID"].rpartition("@")
+
+    if servername is not None:
+        servername = "https://{}/remote.php/dav".format(servername)
+
     data = {
+        # needs to be UID, because webdav checks against UID
         "user_id": informations["UID"],
-        "url": informations.get("webdav") or default,
+        "url": servername or default,
     }
 
     if access_token is not None:
