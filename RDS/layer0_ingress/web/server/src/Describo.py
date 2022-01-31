@@ -43,7 +43,7 @@ def getSessionId(access_token=None, folder=None):
     app.logger.debug("send payload: {}, headers: {}".format(payload, headers))
 
     req = requests.post(
-        os.getenv("DESCRIBO_API_ENDPOINT"),
+        os.getenv("DESCRIBO_API_ENDPOINT", "http://layer0-describo/api/session/application"),
         json=payload,
         headers=headers
     )

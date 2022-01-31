@@ -34,38 +34,43 @@ layer0-describo:
     postgresqlDatabase: "describo"
     postgresqlUsername: "admin"
     postgresqlPassword: "admin"
+  # describo needs a separate domain from sciebords. set the exact same value later in layer0-web for VUE_APP_DESCRIBO_URL
   domain: separate-domain-for-describo.your-institution.org
   environment:
     LOG_LEVEL: "info"
 layer0-helper-describo-token-updater:
   enabled: true
-  environment:
-    DESCRIBO_API_ENDPOINT: http://layer0-describo/api/session/application
+  environment: {}
+    # advanced settings
+    # DESCRIBO_API_ENDPOINT: http://layer0-describo/api/session/application
 layer0-web:
   enabled: true
   environment:
-    EMBED_MODE: true
+    # the password, which will be used to encrypt all user data
+    SECRET_KEY: 1234
+    # describo needs a separate domain from sciebords
+    VUE_APP_DESCRIBO_URL: separate-domain-for-describo.your-institution.org
+    # should be changed to all known access origins to sciebo RDS backend. e.g. web proxies
+    # Onwcloud-Domains will be included automatically from global.domains in bootup process.
     FLASK_ORIGINS:
       [
         "http://localhost:8080",
-        "http://localhost:8085",
-        "http://localhost:8000",
-        "http://localhost:9100",
       ]
-    SECRET_KEY: 1234
-    DESCRIBO_API_ENDPOINT: http://layer0-describo/api/session/application
-    VUE_APP_DESCRIBO_URL: separate-domain-for-describo.your-institution.org
+    # advanced settings
+    EMBED_MODE: true
+    # DESCRIBO_API_ENDPOINT: http://layer0-describo/api/session/application
 layer1-port-owncloud:
-  enabled: false
+  # ownCloud will be configured through global.domains, because this way you need to configure it only once
+  enabled: true
 layer1-port-zenodo:
-  enabled: false
+  enabled: true
   environment:
     # needs to be adjusted to correct values
     ADDRESS: https://sandbox.zenodo.org
     OAUTH_CLIENT_ID: ABC
     OAUTH_CLIENT_SECRET: XYZ
 layer1-port-openscienceframework:
-  enabled: false
+  enabled: true
   environment:
     ADDRESS: https://accounts.test.osf.io
     API_ADDRESS: https://api.test.osf.io/v2

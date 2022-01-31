@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 import logging
 from .TracingHandler import TracingHandler
 from opentracing_instrumentation.client_hooks import install_all_patches
@@ -158,8 +159,15 @@ except Exception as e:
     print(f"error in prometheus setup: {e}")
 Session(app)
 
+origins = set(json.loads(os.getenv("FLASK_ORIGINS")))
+origins.update({"{}://{}".format(v.scheme, v.netloc)
+                for v in [urlparse(v["ADDRESS"])
+                          for v in domains.values()
+                          ]
+                })
+
 socketio = SocketIO(
     app,
-    cors_allowed_origins=json.loads(os.getenv("FLASK_ORIGINS")),
+    cors_allowed_origins=origins,
     manage_session=False
 )
