@@ -31,6 +31,7 @@ namespace: # creates a namespace on its own, if you wants to
 layer0-describo:
   enabled: true
   postgresql:
+    # starts its own postgresql database.
     postgresqlDatabase: "describo"
     postgresqlUsername: "admin"
     postgresqlPassword: "admin"
