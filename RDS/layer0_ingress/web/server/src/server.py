@@ -8,7 +8,7 @@ from flask_login import (
     logout_user,
     current_user,
 )
-from .app import app, socketio, user_store, use_predefined_user, use_embed_mode, use_proxy, redirect_url, trans_tbl, domains
+from .app import app, socketio, user_store, use_predefined_user, use_embed_mode, use_proxy, redirect_url, trans_tbl, domains, origins
 from .websocket import exchangeCodeData, RDSNamespace
 import json
 import requests
@@ -17,7 +17,7 @@ import os
 import os
 import jwt
 
-CORS(app, origins=json.loads(os.getenv("FLASK_ORIGINS")), supports_credentials=True)
+CORS(app, origins=origins, supports_credentials=True)
 
 
 login_manager = LoginManager()
