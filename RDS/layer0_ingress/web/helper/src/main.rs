@@ -25,7 +25,7 @@ fn main() {
                 .expect("Error: Envvar 'USE_CASE_SERVICE_PORT_SERVICE' not present, too.")
         }
     };
-    let describo = env::var("DESCRIBO_API_ENDPOINT").unwrap_or("http://layer0-describo/api/session/application");
+    let describo = env::var("DESCRIBO_API_ENDPOINT").unwrap_or("http://layer0-describo/api/session/application".to_string());
 
     let secret =
         env::var("DESCRIBO_API_SECRET").expect("Error: Envvar 'DESCRIBO_API_SECRET' not present.");
