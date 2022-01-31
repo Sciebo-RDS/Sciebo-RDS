@@ -13,9 +13,9 @@ metadata:
   annotations:
   {{ toYaml . | indent 4 }}
   {{- end }}
-  name: {{ include "layer1_port_owncloud.fullname" $ }}-{{ .name | replace "." "-" | replace ":" "-" }}
+  name: {{ include "layer1_port_owncloud.fullname" (mergeOverwrite $ .) }}
   labels:
-{{ include "layer1_port_owncloud.labels" $ | indent 4 }}
+{{ include "layer1_port_owncloud.labels" (mergeOverwrite $ .) | indent 4 }}
 spec:
   type: {{ $.Values.service.type }}
   ports:
@@ -24,6 +24,6 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "layer1_port_owncloud.name" $ }}-{{ .name | replace "." "-" | replace ":" "-" }}
+    app.kubernetes.io/name: {{ include "layer1_port_owncloud.name" (mergeOverwrite $ .) }}
     app.kubernetes.io/instance: {{ $.Release.Name }}
 {{- end }}

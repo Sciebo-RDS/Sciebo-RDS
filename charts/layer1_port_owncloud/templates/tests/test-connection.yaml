@@ -1,9 +1,17 @@
+{{- $domains := .Values.domains -}}
+{{- if .Values.global }}
+    {{- if .Values.global.domains }}
+        {{- $domains = .Values.global.domains -}}
+    {{- end -}}
+{{- end -}}
+{{- range $domains }}
+---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "layer1_port_owncloud.fullname" . }}-test-research"
+  name: "{{ include "layer1_port_owncloud.fullname" (mergeOverwrite $ .) }}-test-research"
   labels:
-{{ include "layer1_port_owncloud.labels" . | indent 4 }}
+{{ include "layer1_port_owncloud.labels" (mergeOverwrite $ .) | indent 4 }}
   annotations:
     "helm.sh/hook": test-success
 spec:
@@ -11,5 +19,6 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ include "layer1_port_owncloud.fullname" . }}:{{ .Values.service.port }}']
+      args:  ['{{ include "layer1_port_owncloud.fullname" (mergeOverwrite $ .) }}:{{ $.Values.service.port }}']
   restartPolicy: Never
+{{- end -}}

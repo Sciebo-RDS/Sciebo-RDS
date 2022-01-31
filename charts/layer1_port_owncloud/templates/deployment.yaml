@@ -9,18 +9,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "layer1_port_owncloud.fullname" $ }}-{{ .name | replace "." "-" | replace ":" "-" }}
+  name: {{ include "layer1_port_owncloud.fullname"  (mergeOverwrite $ .) }}
   labels:
-{{ include "layer1_port_owncloud.labels" $ | indent 4 }}
+{{ include "layer1_port_owncloud.labels" (mergeOverwrite $ .) | indent 4 }}
 spec:
   replicas: {{ $.Values.replicaCount }}
   selector:
     matchLabels:
-{{ include "layer1_port_owncloud.labels" $ | indent 6 }}
+{{ include "layer1_port_owncloud.labels" (mergeOverwrite $ .) | indent 6 }}
   template:
     metadata:
       labels:
-{{ include "layer1_port_owncloud.labels" $ | indent 8 }}
+{{ include "layer1_port_owncloud.labels" (mergeOverwrite $ .) | indent 8 }}
     spec:
     {{- with $.Values.imagePullSecrets }}
       imagePullSecrets:
@@ -28,7 +28,7 @@ spec:
     {{- end }}
       containers:
         - name: {{ $.Chart.Name }}
-          image: {{ template "layer1_port_owncloud.image" $ }}
+          image: {{ template "layer1_port_owncloud.image"  $ }}
           imagePullPolicy: {{ $.Values.image.pullPolicy }}
           envFrom:
           - configMapRef:

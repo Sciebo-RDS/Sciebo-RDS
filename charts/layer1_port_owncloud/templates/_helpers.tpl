@@ -3,7 +3,7 @@
 Expand the name of the chart.
 */}}
 {{- define "layer1_port_owncloud.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" (default .Chart.Name .Values.nameOverride) (.name | replace "." "-" | replace ":" "-") -}}
 {{- end -}}
 
 {{- define "layer1_port_owncloud.image" -}}
@@ -17,7 +17,7 @@ If release name contains chart name it will be used as a full name.
 */}}
 {{- define "layer1_port_owncloud.fullname" -}}
 {{- if .Values.fullnameOverride -}}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" (.Values.fullnameOverride | trunc 63 | trimSuffix "-") (.name | replace "." "-" | replace ":" "-") -}}
 {{- else -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
 {{- if contains $name .Release.Name -}}
