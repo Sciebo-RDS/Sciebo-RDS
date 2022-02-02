@@ -33,8 +33,6 @@ domains:
     
 ingress:
   path: /
-  tls:
-    secretName: sciebords-tls-public
   annotations:
     nginx.org/server-snippets: |
       location /socket.io/ {

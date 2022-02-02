@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v2
 appVersion: "1.0"
 description: The storage for tokens and passwords for services.
 name: layer3-token-storage

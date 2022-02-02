@@ -44,7 +44,14 @@ Return the proper image name
 
 
 {{- define "common.tlsSecretName" -}}
-{{- $secretName := .Values.ingress.tls.secretName -}}
+{{- $secretName := "" -}}
+{{- if .Values.ingress }}
+    {{- if .Values.ingress.tls }}
+        {{- if .Values.ingress.tls.secretName }}
+            {{- $secretName = .Values.ingress.tls.secretName -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
 {{- if .global }}
     {{- if .global.ingress }}
         {{- if .global.ingress.tls }}

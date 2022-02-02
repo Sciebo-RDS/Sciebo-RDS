@@ -8,10 +8,12 @@ metadata:
   annotations:
 {{- include "common.ingressAnnotations" . |  nindent 4 }}
 spec:
+  {{- with (include "common.tlsSecretName" .) }}
   tls:
     - hosts:
-        - {{ .Values.domain }}
-      secretName: {{ template "common.tlsSecretName" . }}
+        - {{ $.Values.domain }}
+      secretName: {{ . }}
+  {{- end }}
   rules:
     - host: {{ .Values.domain }}
       http:
