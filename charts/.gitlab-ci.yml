@@ -12,8 +12,7 @@ charts:
     - mkdir -p ./pkgs
     - helm plugin install https://github.com/chartmuseum/helm-push.git
     - helm repo add --username gitlab-ci-token --password ${CI_JOB_TOKEN} ${CI_PROJECT_NAME} ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/${HELM_BRANCH}
-    - for i in charts/*/;do helm package --destination ./pkgs "$i" ;done
-    - for i in pkgs/*;do helm cm-push --force "$i" ${CI_PROJECT_NAME} ;done
+    - for i in charts/*/;do helm cm-push --force "$i" ${CI_PROJECT_NAME} ;done
 
 deploy:
   extends: .deploy
