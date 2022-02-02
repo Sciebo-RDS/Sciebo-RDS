@@ -71,6 +71,11 @@ class PageController extends Controller
     {
         $policy = new \OCP\AppFramework\Http\EmptyContentSecurityPolicy();
         $url = parse_url(\OC::$server->getConfig()->getAppValue("rds", "cloudURL"));
+
+        if (!isset($url["port"])) {
+            $url["port"] = ($url["scheme"] == "http") ? "80" : "443";
+        }
+
         $http = $url["scheme"] . "://" . $url["host"] . ":" . $url["port"];
         $ws  = str_replace($url["scheme"], "http", "ws") . "://" . $url["host"] . ":" . $url["port"];
         $policy->addAllowedConnectDomain($http);
