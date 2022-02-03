@@ -4,6 +4,7 @@ description: A Helm chart for Kubernetes
 name: layer0-describo
 version: 0.2.2
 home: https://www.research-data-services.org/
+type: application
 keywords:
   - research
   - data

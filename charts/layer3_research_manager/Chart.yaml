@@ -4,6 +4,7 @@ description: The project manager to manage projects within RDS
 name: layer3-research-manager
 version: 0.3.3
 home: https://www.research-data-services.org/
+type: application
 keywords:
 - research
 - data

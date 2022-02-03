@@ -4,6 +4,7 @@ description: The storage for tokens and passwords for services.
 name: layer3-token-storage
 version: 0.2.9
 home: https://www.research-data-services.org/
+type: application
 keywords:
 - research
 - data

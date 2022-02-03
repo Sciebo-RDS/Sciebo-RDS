@@ -4,6 +4,7 @@ description: A single chart for installing whole sciebo rds ecosystem.
 name: all
 version: 0.2.0
 home: https://www.research-data-services.org/
+type: application
 keywords:
   - research
   - data
