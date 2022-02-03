@@ -6,15 +6,15 @@ version: 0.2.3
 home: https://www.research-data-services.org/
 type: application
 keywords:
-- research
-- data
-- services
-- zenodo
+  - research
+  - data
+  - services
+  - zenodo
 maintainers:
-- email: peter.heiss@uni-muenster.de
-  name: Heiss
+  - email: peter.heiss@uni-muenster.de
+    name: Heiss
 sources:
-- https://www.research-data-services.org/
+  - https://github.com/Sciebo-RDS/Sciebo-RDS
 icon: https://www.research-data-services.org/img/sciebo.png
 dependencies:
   - name: common

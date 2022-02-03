@@ -14,7 +14,7 @@ maintainers:
   - email: peter.heiss@uni-muenster.de
     name: Heiss
 sources:
-  - https://www.research-data-services.org/
+  - https://github.com/Sciebo-RDS/Sciebo-RDS
 icon: https://www.research-data-services.org/img/sciebo.png
 dependencies:
   - name: postgresql

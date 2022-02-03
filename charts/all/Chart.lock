@@ -31,7 +31,7 @@ dependencies:
   version: 0.2.3
 - name: layer3-token-storage
   repository: file://../layer3_token_storage
-  version: 0.2.9
+  version: 0.3.0
 - name: layer3-research-manager
   repository: file://../layer3_research_manager
   version: 0.3.3
@@ -44,5 +44,5 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 14.8.11
-digest: sha256:f1f1301e59fb2811583794a3b604b4695f1b61171caa792ef4a24faee722d719
-generated: "2022-02-02T15:29:16.6886935+01:00"
+digest: sha256:c05ec50e9138cef9b0d1aa0eee9d5ad5c2e648a8921ee689679a0c77924fd29f
+generated: "2022-02-03T17:24:32.3354194+01:00"

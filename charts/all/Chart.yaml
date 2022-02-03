@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: "1.0"
 description: A single chart for installing whole sciebo rds ecosystem.
 name: all
-version: 0.2.0
+version: 0.2.1
 home: https://www.research-data-services.org/
 type: application
 keywords:
@@ -14,7 +14,7 @@ maintainers:
   - email: peter.heiss@uni-muenster.de
     name: Heiss
 sources:
-  - https://www.research-data-services.org/
+  - https://github.com/Sciebo-RDS/Sciebo-RDS
 icon: https://www.research-data-services.org/img/sciebo.png
 dependencies:
   - name: layer0-describo
@@ -75,7 +75,7 @@ dependencies:
     tags:
       - layer2
   - name: layer3-token-storage
-    version: ^0.2.0
+    version: ^0.3.0
     repository: file://../layer3_token_storage
     tags:
       - layer3
