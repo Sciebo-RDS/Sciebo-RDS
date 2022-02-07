@@ -117,8 +117,9 @@ hugo:test:
 
 .documentation:
   stage: documentation
-  only:
-    - release
+  rules:
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+    - if: '$CI_COMMIT_BRANCH == "release"'
   artifacts:
     untracked: true
     expire_in: 1 days
@@ -131,14 +132,26 @@ hugo:test:
 pages:
   image: registry.gitlab.com/pages/hugo:0.68.3
   stage: pages
+  artifacts:
+    paths:
+      - public
+  variables:
+    DOC_FOLDER: dev
+  rules:
+    - if: "$CI_COMMIT_BRANCH  == $CI_DEFAULT_BRANCH"
+    - if: '$CI_COMMIT_BRANCH == "release"'
+    - if: "$CI_COMMIT_TAG"
+      variables:
+        DOC_FOLDER: .
   before_script:
     - apk add --update --no-cache git
   script:
     - cd docs
+    - | 
+      if [ "$CI_COMMIT_BRANCH"  == "$CI_DEFAULT_BRANCH" ]; then
+        sed -i "s/baseurl/#baseurl/" config.toml
+        echo 'baseurl = "https://www.research-data-services.org/dev"' > config.toml
+      fi
     - hugo
-    - mv public ../
-  artifacts:
-    paths:
-      - public
-  only:
-    - release
+    - mkdir -p ../${DOC_FOLDER}
+    - mv public ../${DOC_FOLDER}

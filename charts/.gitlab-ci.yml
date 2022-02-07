@@ -4,19 +4,57 @@ charts:
   variables:
     HELM_BRANCH: develop
   rules:
-    - if: $CI_COMMIT_TAG
+    - if: '$CI_COMMIT_BRANCH  == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH == "release"'
+    - if: '$CI_COMMIT_TAG'
       variables:
         HELM_BRANCH: stable
-    - when: always
   script:
     - mkdir -p ./pkgs
     - helm plugin install https://github.com/chartmuseum/helm-push.git
     - helm repo add --username gitlab-ci-token --password ${CI_JOB_TOKEN} ${CI_PROJECT_NAME} ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/${HELM_BRANCH}
     - for i in charts/*/;do helm cm-push --force "$i" ${CI_PROJECT_NAME} ;done
 
+charts_pages:
+  stage: deploy
+  image: zivgitlab.wwu.io/ulb/devops/skaffold:main
+  cache:
+    paths:
+    - ./docs/static/charts
+  artifacts:
+    untracked: true
+    expire_in: 1 days
+    paths:
+      - ./docs/static/charts
+  variables:
+    HELM_BRANCH: develop
+  rules:
+    - if: '$CI_COMMIT_BRANCH  == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH == "release"'
+    - if: '$CI_COMMIT_TAG'
+      variables:
+        HELM_BRANCH: stable
+  script:
+    - apt update
+    - apt install -y python3 python3-pip
+    - pip3 install awscli
+    - mkdir -p ./docs/static/charts
+    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts/${HELM_BRANCH} ./docs/static/charts --recursive
+    - for i in charts/*/;do helm package --destination ./docs/static/charts "$i" ;done
+    - helm repo index --url https://www.research-data-services.org/charts --merge ./docs/static/charts/index.yaml ./docs/static/charts/
+    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp ./docs/static/charts s3://sciebords-charts/${HELM_BRANCH} --recursive
+    - rm -r ./docs/static/charts
+    - mkdir -p ./docs/static/charts
+    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts ./docs/static/charts --recursive
+
+
 deploy:
   extends: .deploy
   image: zivgitlab.wwu.io/ulb/devops/skaffold:main
+  rules:
+  - if: '$CI_COMMIT_BRANCH  == $CI_DEFAULT_BRANCH'
+  - if: '$CI_COMMIT_BRANCH == "release"'
+  - if: '$CI_COMMIT_TAG'
   script:
     - mkdir -p ~/.config/sops/age
     - cat "$AGE_KEYS" | base64 -d - > ~/.config/sops/age/keys.txt
