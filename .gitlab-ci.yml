@@ -151,5 +151,5 @@ pages:
         echo 'baseurl = "https://www.research-data-services.org/dev"' > config.toml
       fi
     - hugo
-    - mkdir -p ../${DOC_FOLDER}
-    - mv public ../${DOC_FOLDER}
+    - mkdir -p ../public/${DOC_FOLDER}
+    - mv public ../public/${DOC_FOLDER}
