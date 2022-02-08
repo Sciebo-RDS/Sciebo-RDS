@@ -142,7 +142,7 @@ pages:
       variables:
         DOC_FOLDER: .
   before_script:
-    - apk add --update --no-cache git python3 python3-pip py3-pip
+    - apk add --update --no-cache git python3 py3-pip
     - python3 -m pip install awscli
   script:
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://rds-page ./public --recursive
