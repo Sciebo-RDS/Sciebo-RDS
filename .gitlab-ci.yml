@@ -153,5 +153,7 @@ pages:
         echo 'baseurl = "https://www.research-data-services.org/dev"' > config.toml
       fi
     - hugo
-    - mv public/* ../public/${DOC_FOLDER}
+    - mv public ../public/${DOC_FOLDER}
+    - cd ..
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp ./public s3://rds-page --recursive
+    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts ./public/charts --recursive

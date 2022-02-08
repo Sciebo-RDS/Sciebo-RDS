@@ -18,14 +18,6 @@ charts:
 charts_pages:
   stage: deploy
   image: zivgitlab.wwu.io/ulb/devops/skaffold:main
-  cache:
-    paths:
-    - ./docs/static/charts
-  artifacts:
-    untracked: true
-    expire_in: 1 days
-    paths:
-      - ./docs/static/charts
   variables:
     HELM_BRANCH: develop
   rules:
@@ -43,10 +35,6 @@ charts_pages:
     - for i in charts/*/;do helm package --destination ./docs/static/charts "$i" ;done
     - helm repo index --url https://www.research-data-services.org/charts --merge ./docs/static/charts/index.yaml ./docs/static/charts/
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp ./docs/static/charts s3://sciebords-charts/${HELM_BRANCH} --recursive
-    - rm -r ./docs/static/charts
-    - mkdir -p ./docs/static/charts
-    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts ./docs/static/charts --recursive
-
 
 deploy:
   extends: .deploy
