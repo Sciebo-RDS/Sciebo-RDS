@@ -142,7 +142,7 @@ pages:
       variables:
         DOC_FOLDER: .
   before_script:
-    - apk add --update --no-cache git python3 py3-pip
+    - apk add --update --no-cache git python3 py3-pip rsync
     - python3 -m pip install awscli
   script:
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://rds-page ./public --recursive
@@ -153,7 +153,7 @@ pages:
         echo 'baseurl = "https://www.research-data-services.org/dev"' >> config.toml
       fi
     - hugo
-    - mv public ../public/${DOC_FOLDER}
+    - rsync -avh public ../public/${DOC_FOLDER}
     - cd ..
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp ./public s3://rds-page --recursive
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts ./public/charts --recursive
