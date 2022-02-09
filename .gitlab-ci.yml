@@ -153,7 +153,9 @@ pages:
     - | 
       if [ "$CI_COMMIT_BRANCH"  == "$CI_DEFAULT_BRANCH" ]; then
         sed -i "s/baseurl/#baseurl/" config.toml
-        echo 'baseurl = "https://www.research-data-services.org/dev"' >> config.toml
+        mv config.toml config.toml.bak
+        echo 'baseurl = "https://www.research-data-services.org/dev/"' > config.toml
+        cat config.toml.bak >> config.toml
       fi
     - hugo
     - rsync -avh ./public/ ../public/${DOC_FOLDER}
