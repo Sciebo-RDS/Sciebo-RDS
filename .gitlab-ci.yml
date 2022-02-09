@@ -155,6 +155,5 @@ pages:
       fi
     - hugo
     - rsync -avh ./public/ ../public/${DOC_FOLDER}
-    - mv ./public ../public/${FOLDER}
     - cd ..
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts ./public/charts --recursive
