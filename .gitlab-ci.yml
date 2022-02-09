@@ -128,7 +128,7 @@ hugo:test:
     - make doc
 
 pages:
-  image: registry.gitlab.com/pages/hugo:0.68.3
+  image: registry.gitlab.com/pages/hugo/hugo_extended:0.91.2
   stage: pages
   artifacts:
     paths:
@@ -153,7 +153,7 @@ pages:
         echo 'baseurl = "https://www.research-data-services.org/dev"' >> config.toml
       fi
     - hugo
-    - rsync -avh public ../public/${DOC_FOLDER}
+    - rsync -avh ./public/ ../public/${DOC_FOLDER}
     - cd ..
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp ./public s3://rds-page --recursive
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts ./public/charts --recursive
