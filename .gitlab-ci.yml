@@ -147,6 +147,7 @@ pages:
   before_script:
     - apk add --update --no-cache git python3 py3-pip rsync
   script:
+    - mkdir -p ./public/dev
     - cd docs
     - | 
       if [ "$CI_COMMIT_BRANCH"  == "$CI_DEFAULT_BRANCH" ]; then
