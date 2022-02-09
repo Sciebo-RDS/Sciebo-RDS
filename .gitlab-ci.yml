@@ -146,6 +146,7 @@ pages:
         DOC_FOLDER: .
   before_script:
     - apk add --update --no-cache git python3 py3-pip rsync
+    - python3 -m pip install awscli
   script:
     - mkdir -p ./public/dev
     - cd docs
