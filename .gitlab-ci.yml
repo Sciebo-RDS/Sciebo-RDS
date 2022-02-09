@@ -130,6 +130,9 @@ hugo:test:
 pages:
   image: registry.gitlab.com/pages/hugo/hugo_extended:0.91.2
   stage: pages
+  cache:
+    paths:
+      - public
   artifacts:
     paths:
       - public
@@ -143,9 +146,7 @@ pages:
         DOC_FOLDER: .
   before_script:
     - apk add --update --no-cache git python3 py3-pip rsync
-    - python3 -m pip install awscli
   script:
-    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://rds-page ./public --recursive
     - cd docs
     - | 
       if [ "$CI_COMMIT_BRANCH"  == "$CI_DEFAULT_BRANCH" ]; then
@@ -154,6 +155,6 @@ pages:
       fi
     - hugo
     - rsync -avh ./public/ ../public/${DOC_FOLDER}
+    - mv ./public ../public/${FOLDER}
     - cd ..
-    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp ./public s3://rds-page --recursive
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts ./public/charts --recursive
