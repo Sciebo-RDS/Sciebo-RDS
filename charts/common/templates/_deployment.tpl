@@ -52,11 +52,11 @@ Return the proper image name
         {{- end -}}
     {{- end -}}
 {{- end -}}
-{{- if .global }}
-    {{- if .global.ingress }}
-        {{- if .global.ingress.tls }}
-            {{- if .global.ingress.tls.secretName }}
-                {{- $secretName = .global.ingress.tls.secretName -}}
+{{- if .Values.global }}
+    {{- if .Values.global.ingress }}
+        {{- if .Values.global.ingress.tls }}
+            {{- if .Values.global.ingress.tls.secretName }}
+                {{- $secretName = .Values.global.ingress.tls.secretName -}}
             {{- end -}}
         {{- end -}}
     {{- end -}}
