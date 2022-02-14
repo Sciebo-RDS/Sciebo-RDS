@@ -165,24 +165,22 @@ After this, you have the informations to fill out the `values.yaml` file.
 
 It is recommended to create a
 separate [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) for RDS in
-Kubernetes (e.g. named *research-data-services*).
+Kubernetes (e.g. named *research-data-services*). The helm charts can do that for you. Open up the `values.yaml` and configure the following line in root layer to your needs:
 
 If you want to create a namespace, rename the file "namespace.yaml.example" to "namespace.yaml" and apply it. You can
 use the following commands to do this.
 
-{{<tabs>}} {{<tab "bash" "Apply namespace">}}cp namespace.yaml.example namespace.yaml
-nano namespace.yaml 
-kubectl apply -f namespace.yaml
-kubectl config set-context --current --namespace=$(grep 'name:' namespace.yaml | tail -n1 | awk '{
-print $2}')
+{{<tabs>}} {{<tab "yaml" "Apply namespace">}}namespace:
+  create: true
+  name: "research-data-services"
 {{</tab>}}
 
-{{<tab "bash" "Remove namespace">}}kubectl config set-context --current --namespace=default
-kubectl delete -f namespace.yaml
+{{<tab "yaml" "Remove namespace">}}namespace:
+  create: false
+  name: "research-data-services"
 {{</tab>}} {{</tabs>}}
 
-After the last command, specifying a context for each Kubectl command (the same with helm) becomes obsolete because the
-specified namespace is used as a default.
+So if the namespace is not existing, it creates it. With this configuration, `helm` will remove the namespace when you remove sciebo RDS from your cluster, too. The `name` parameter configures the name of the namespace.
 
 ### Helm Repo
 
@@ -200,7 +198,7 @@ helm repo update
 
 If the communication between plugins and cluster shall be secured by a HTTPS connection, which is strongly recommended,
 you can create a certificate using the shell
-script [create_certs.sh](https://github.com/Sciebo-RDS/getting-started/tree/master/deploy/create_certs.sh) and store it
+script [create_certs.sh](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/develop/getting-started/create_certs.sh.example) and store it
 as a secret. The script has to be adapted regarding the domain, for which the certificate shall be issued.
 
 With the following command, you can create the needed ssl cert.
