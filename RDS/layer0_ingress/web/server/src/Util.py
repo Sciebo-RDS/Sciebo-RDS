@@ -2,6 +2,8 @@
 import copy
 import json
 
+from flask import session
+
 
 def checkForEmpty(response):
     if response.status_code == 404:
@@ -107,3 +109,52 @@ def removeDuplicates(response):
         if not listContainsService(withoutDuplicates, service):
             withoutDuplicates.append(service)
     return withoutDuplicates
+
+def applyFilters(response, helperSession=None):
+    """Applies filters for services
+
+    Args:
+        response (list): Take a look into openapi spec for services properties.
+        filters (list): List of Dicts. Expected fieldnames in dict: `name` for servicename to filter, `only` for domainnames and `except` same as `only`.
+    """
+    
+    result = response
+    
+    if helperSession is not None:
+        session = helperSession
+    
+    filters = session["oauth"]
+    
+    if "filters" in filters:
+        filters = session["oauth"]["filters"]
+        onlyFiltered = []
+        
+        if "only" in filters:
+            for service in response:
+                if service["servicename"] in filters["only"]:
+                    onlyFiltered.append(service)
+        else:
+            onlyFiltered = response
+        
+        if "except" in filters:
+            exceptFiltered = []
+            for service in onlyFiltered:
+                if service["servicename"] not in filters["except"]:
+                    exceptFiltered.append(service)
+        else:
+            exceptFiltered = onlyFiltered
+            
+        result = exceptFiltered
+    
+    session["servicelist"] = result
+    return result
+    
+def isServiceInLastServicelist(servicename, helperSession=None):
+    if isinstance(servicename, dict):
+        servicename = servicename["servicename"]
+        
+    if helperSession is not None:
+        session = helperSession
+    
+    return "serviceList" in session and any([servicename == service["servicename"] for service in session["serviceList"]])
+    

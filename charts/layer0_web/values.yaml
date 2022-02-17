@@ -26,11 +26,20 @@ service:
 
 domain: localhost
 domains:
-  - name: owncloud.local
+  - name: owncloud.local # have to be equal to the second part of cloudID in owncloud
     ADDRESS: https://owncloud.local/owncloud
     OAUTH_CLIENT_ID: ABC
     OAUTH_CLIENT_SECRET: XYZ
-    
+    # filter settings for services for this domain. This is very usable, if you want to connect a single RDS instance to multiple installations.
+    # So you can show some specific services only for some ownclouds and show other services to others. Domainname in only and except have to be the same as in domains
+    filters:
+      # example!
+      only: # only this services will be shown to users of this domain
+      - "layer1-port-zenodo"
+      except: # all other services will be shown to users of this domain
+      - "layer1-port-openscienceframework"
+      # if only and except are used at the same time, the system will filter for only first and then for except. So except should be a subset of only, otherwise it is doing nothing.
+
 ingress:
   path: /
   annotations:
