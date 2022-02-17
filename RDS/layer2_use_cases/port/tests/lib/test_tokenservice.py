@@ -519,11 +519,14 @@ class Test_TokenService(unittest.TestCase):
         data = {
             "servicename": self.service1.servicename,
             "authorize_url": self.service1.authorize_url,
-            "date": req["date"],
             "implements": ["fileStorage"],
+            "exp": req["exp"],
+            "iat": req["iat"],
         }
 
         state = jwt.encode(data, key, algorithm="HS256")
+        
+        # TODO fix test bugs
 
         new_obj = {}
         new_obj["jwt"] = state
@@ -548,8 +551,9 @@ class Test_TokenService(unittest.TestCase):
         data = {
             "servicename": self.service1.servicename,
             "authorize_url": self.service1.authorize_url,
-            "date": req["date"],
             "implements": ["fileStorage"],
+            "exp": req["exp"],
+            "iat": req["iat"],
         }
 
         state = jwt.encode(data, key, algorithm="HS256")

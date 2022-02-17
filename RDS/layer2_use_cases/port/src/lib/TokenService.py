@@ -140,8 +140,9 @@ class TokenService:
         jwt is base64 encoded, separated by dots, payload struct:
         {
             "servicename"
-            "authorize_url"
-            "date"
+            "authorize_url",
+            "iat",
+            "exp"
         }
         """
 
@@ -184,13 +185,12 @@ class TokenService:
         """
         new_obj = {}
 
-        date = str(datetime.datetime.now())
-
         data = {
             "servicename": service.servicename,
             "authorize_url": getattr(service, "authorize_url", None),
-            "date": date,
             "implements": service.implements,
+            "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=15),
+            "iat": datetime.datetime.now(tz=datetime.timezone.utc),
         }
         state = jwt.encode(data, self.secret, algorithm="HS256")
         logger.info("state: {}, data: {}".format(state, data))
