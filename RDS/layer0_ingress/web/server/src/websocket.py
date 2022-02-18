@@ -1,4 +1,3 @@
-from rsa import verify
 from flask import request, session
 from flask_socketio import emit, disconnect, Namespace
 from flask_login import current_user, logout_user
