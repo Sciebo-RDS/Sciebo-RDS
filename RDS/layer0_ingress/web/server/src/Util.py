@@ -160,5 +160,5 @@ def isServiceInLastServicelist(servicename, helperSession=None):
         
     app.logger.debug("search name: {}, servicelist: {}".format(servicename, session["servicelist"]))
     
-    return "serviceList" in session and any([servicename == service["servicename"] for service in session["servicelist"]])
+    return "servicelist" in session and any([servicename == service["servicename"] for service in session["servicelist"]])
     
