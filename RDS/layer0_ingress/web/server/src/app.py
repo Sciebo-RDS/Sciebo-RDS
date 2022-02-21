@@ -89,7 +89,8 @@ flask_config = {
     "SECRET_KEY": os.getenv("SECRET_KEY", uuid.uuid4().hex),
     "REMEMBER_COOKIE_HTTPONLY": False,
     "SESSION_PERMANENT": True,
-    'DEBUG': True
+    'DEBUG': True,
+    "SESSION_COOKIE_SAMESITE": "None"
 }
 
 if os.getenv("USE_LOCAL_DICTS", "False") == "True":
