@@ -1,6 +1,7 @@
 
 import copy
 import json
+from .app import app
 
 def checkForEmpty(response):
     if response.status_code == 404:
@@ -156,6 +157,8 @@ def isServiceInLastServicelist(servicename, helperSession=None):
         session = helperSession
     else:
         from flask import session
+        
+    app.logger.debug("search name: {}, servicelist: {}".format(servicename, session["servicelist"]))
     
-    return "serviceList" in session and any([servicename == service["servicename"] for service in session["serviceList"]])
+    return "serviceList" in session and any([servicename == service["servicename"] for service in session["servicelist"]])
     
