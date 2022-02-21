@@ -2,9 +2,6 @@
 import copy
 import json
 
-from flask import session
-
-
 def checkForEmpty(response):
     if response.status_code == 404:
         return []
@@ -122,6 +119,8 @@ def applyFilters(response, helperSession=None):
     
     if helperSession is not None:
         session = helperSession
+    else:
+        from flask import session
     
     filters = session["oauth"]
     
@@ -155,6 +154,8 @@ def isServiceInLastServicelist(servicename, helperSession=None):
         
     if helperSession is not None:
         session = helperSession
+    else:
+        from flask import session
     
     return "serviceList" in session and any([servicename == service["servicename"] for service in session["serviceList"]])
     
