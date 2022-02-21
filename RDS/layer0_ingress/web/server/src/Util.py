@@ -157,8 +157,10 @@ def isServiceInLastServicelist(servicename, helperSession=None):
         session = helperSession
     else:
         from flask import session
-        
-    app.logger.debug("search name: {}, servicelist: {}".format(servicename, session["servicelist"]))
     
-    return "servicelist" in session and any([servicename == service["servicename"] for service in session["servicelist"]])
+    found_service = [servicename == service["servicename"] for service in session["servicelist"]]
+    result = "servicelist" in session and any(found_service)
+    app.logger.debug("search name: {}, found_service: {}, results: {},\n servicelist: {}".format(servicename, found_service, result, [service["servicename"] for service in session["servicelist"]]))
+    
+    return result
     
