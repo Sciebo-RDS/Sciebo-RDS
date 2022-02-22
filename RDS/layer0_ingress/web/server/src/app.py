@@ -90,7 +90,7 @@ flask_config = {
     "REMEMBER_COOKIE_HTTPONLY": False,
     "SESSION_PERMANENT": True,
     'DEBUG': True,
-    "SESSION_COOKIE_HTTPONLY": False,
+    "SESSION_COOKIE_HTTPONLY": True,
     "SESSION_COOKIE_SAMESITE": "None",
     "SESSION_COOKIE_SECURE": True
 }
