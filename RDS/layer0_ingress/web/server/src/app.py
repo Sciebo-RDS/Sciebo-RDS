@@ -43,8 +43,8 @@ redirect_url = "{}?response_type=token&client_id={}&redirect_uri={}".format(
 
 startup_nodes = [
     {
-        "host": "{}-master".format(os.getenv("REDIS_HELPER_HOST", "localhost")),
-        "port": os.getenv("REDIS_HELPER_PORT", "6379"),
+        "host": os.getenv("REDIS_HELPER_MASTER_SERVICE_HOST", "{}-master".format(os.getenv("REDIS_HELPER_HOST", "localhost"))),
+        "port": os.getenv("REDIS_HELPER_MASTER_SERVICE_PORT", "6379"),
     }
 ]
 
@@ -93,7 +93,7 @@ flask_config = {
     "SESSION_COOKIE_HTTPONLY": True,
     "SESSION_COOKIE_SAMESITE": "None",
     "SESSION_COOKIE_SECURE": True,
-    "SESSION_COOKIE_DOMAIN": os.getenv("RDS_OAUTH_REDIRECT_URI", "https://localhost")
+    "SESSION_COOKIE_DOMAIN": os.getenv("RDS_OAUTH_REDIRECT_URI", os.getenv("SOCKETIO_HOST", "https://localhost"))
 }
 
 if os.getenv("USE_LOCAL_DICTS", "False") == "True":
@@ -101,8 +101,8 @@ if os.getenv("USE_LOCAL_DICTS", "False") == "True":
 else:
     startup_nodes_cluster = [
         {
-            "host": os.getenv("REDIS_HOST"),
-            "port": os.getenv("REDIS_PORT", "6379"),
+            "host": os.getenv("REDIS_SERVICE_HOST", "localhost"),
+            "port": os.getenv("REDIS_SERVICE_PORT", "6379"),
         }
     ]
 
