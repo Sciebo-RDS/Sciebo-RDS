@@ -93,7 +93,7 @@ flask_config = {
     "SESSION_COOKIE_HTTPONLY": True,
     "SESSION_COOKIE_SAMESITE": "None",
     "SESSION_COOKIE_SECURE": True,
-    "SESSION_COOKIE_DOMAIN": os.getenv("RDS_OAUTH_REDIRECT_URI", os.getenv("SOCKETIO_HOST", "https://localhost"))
+    "SERVER_NAME": os.getenv("RDS_OAUTH_REDIRECT_URI", os.getenv("SOCKETIO_HOST", "https://localhost"))
 }
 
 if os.getenv("USE_LOCAL_DICTS", "False") == "True":
