@@ -85,7 +85,6 @@ except:
 
 clients = {}
 flask_config = {
-    # TODO: set this to redis(-cluster) to work with multiple server setup
     'SESSION_TYPE': 'filesystem',
     "SECRET_KEY": os.getenv("SECRET_KEY", uuid.uuid4().hex),
     "REMEMBER_COOKIE_HTTPONLY": False,
@@ -102,7 +101,7 @@ if os.getenv("USE_LOCAL_DICTS", "False") == "True":
 else:
     startup_nodes_cluster = [
         {
-            "host": os.getenv("REDIS_HOST", "localhost"),
+            "host": os.getenv("REDIS_HOST"),
             "port": os.getenv("REDIS_PORT", "6379"),
         }
     ]
