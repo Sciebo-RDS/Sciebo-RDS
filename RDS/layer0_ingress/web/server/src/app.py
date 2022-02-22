@@ -90,6 +90,7 @@ flask_config = {
     "REMEMBER_COOKIE_HTTPONLY": False,
     "SESSION_PERMANENT": True,
     'DEBUG': True,
+    "SESSION_COOKIE_HTTPONLY": False,
     "SESSION_COOKIE_SAMESITE": "None",
     "SESSION_COOKIE_SECURE": True
 }
@@ -171,5 +172,6 @@ origins.update({"{}://{}".format(v.scheme, v.netloc)
 socketio = SocketIO(
     app,
     cors_allowed_origins=origins,
-    manage_session=False
+    manage_session=False,
+    logger=True, engineio_logger=True
 )
