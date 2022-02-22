@@ -17,6 +17,7 @@
       ref="rdsEditor"
       :src="iframeSource"
       style="width: 100%; height: 100%"
+      sandbox="allow-same-origin allow-scripts"
     />
   </div>
 </template>
