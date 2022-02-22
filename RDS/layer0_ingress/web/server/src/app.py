@@ -85,6 +85,7 @@ except:
 
 clients = {}
 flask_config = {
+    # TODO: set this to redis(-cluster) to work with multiple server setup
     'SESSION_TYPE': 'filesystem',
     "SECRET_KEY": os.getenv("SECRET_KEY", uuid.uuid4().hex),
     "REMEMBER_COOKIE_HTTPONLY": False,
@@ -92,7 +93,8 @@ flask_config = {
     'DEBUG': True,
     "SESSION_COOKIE_HTTPONLY": True,
     "SESSION_COOKIE_SAMESITE": "None",
-    "SESSION_COOKIE_SECURE": True
+    "SESSION_COOKIE_SECURE": True,
+    "SESSION_COOKIE_DOMAIN": os.getenv("RDS_OAUTH_REDIRECT_URI", "https://localhost")
 }
 
 if os.getenv("USE_LOCAL_DICTS", "False") == "True":

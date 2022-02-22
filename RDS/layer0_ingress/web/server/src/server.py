@@ -63,7 +63,7 @@ class User(UserMixin):
 
             for domain in domains:
                 url = domain["ADDRESS"] or os.getenv(
-                    "OWNCLOUD_URL", "https://10.14.29.60/owncloud/index.php")
+                    "OWNCLOUD_URL", "https://localhost/index.php")
 
                 req = requests.get(
                     f"{url}/apps/rds/api/1.0/informations",
