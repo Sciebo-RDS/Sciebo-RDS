@@ -79,7 +79,10 @@ def exchangeCodeData(data):
     # So if we accept here a service from a malicious state data, it will be declined by port service.
     try:
         servicename = jwt.decode(data["state"], algorithms="HS256", options={"verify_signature": False})["servicename"]
-        if not isServiceInLastServicelist(servicename):
+        result = isServiceInLastServicelist(servicename)
+        
+        app.logger.debug("Is servicename in servicelist:\n service: {}\n: result: {}".format(servicename, result))
+        if not result:
             return False
     except (jwt.ExpiredSignatureError, KeyError):
         return False
@@ -268,7 +271,7 @@ class RDSNamespace(Namespace):
         jsonData = json.loads(jsonData)
 
         req = exchangeCodeData(jsonData)
-        app.logger.debug(req.text)
+        app.logger.debug("exchange code result: {}".format(req.text))
 
         # update userserviceslist on client
         emit("UserServiceList", httpManager.makeRequest("getUserServices"))

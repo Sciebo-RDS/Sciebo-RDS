@@ -150,10 +150,12 @@ def applyFilters(response, helperSession=None):
     return result
     
 def isServiceInLastServicelist(servicename, helperSession=None):
+    app.logger.debug("looking for service in latest servicelist for this user.")
     if isinstance(servicename, dict):
         servicename = servicename["servicename"]
         
     if helperSession is not None:
+        app.logger.debug("use helperSession for testing")
         session = helperSession
     else:
         from flask import session
