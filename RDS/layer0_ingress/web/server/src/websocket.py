@@ -84,7 +84,8 @@ def exchangeCodeData(data):
         app.logger.debug("Is servicename in servicelist:\n service: {}\n: result: {}".format(servicename, result))
         if not result:
             return False
-    except (jwt.ExpiredSignatureError, KeyError):
+    except (jwt.ExpiredSignatureError, KeyError) as e:
+        app.logger.error(e, exc_info=True)
         return False
     
     body = {

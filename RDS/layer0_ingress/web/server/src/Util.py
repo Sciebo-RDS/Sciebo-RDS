@@ -152,6 +152,7 @@ def applyFilters(response, helperSession=None):
 def isServiceInLastServicelist(servicename, helperSession=None):
     app.logger.debug("looking for service in latest servicelist for this user.")
     if isinstance(servicename, dict):
+        app.logger.debug("got servicename: {}".format(servicename))
         servicename = servicename["servicename"]
         
     if helperSession is not None:
