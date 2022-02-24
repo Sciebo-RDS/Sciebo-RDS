@@ -9,7 +9,6 @@ from flask_login import (
     current_user,
 )
 from .app import app, socketio, user_store, use_predefined_user, use_embed_mode, use_proxy, redirect_url, trans_tbl, domains, origins
-from .Util import isServiceInLastServicelist
 from .websocket import exchangeCodeData, RDSNamespace
 import json
 import requests
