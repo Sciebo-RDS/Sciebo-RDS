@@ -149,7 +149,17 @@ def applyFilters(response, helperSession=None):
     session["servicelist"] = result
     return result
     
-def isServiceInLastServicelist(servicename, helperSession=None):
+def isServiceInLastServicelist(servicename, helperSession=None) -> bool:
+    """Checks if servicename was in latest servicelist response for the current session.
+
+    Args:
+        servicename (_type_): The servicename yo want to know, if it is in latest servicelist.
+        helperSession (_type_, optional): Use this session for unittests. Defaults to None.
+
+    Returns:
+        bool: True, if servicename was in latest servicelist response.
+    """
+    
     app.logger.debug("looking for service in latest servicelist for this user.")
     if isinstance(servicename, dict):
         app.logger.debug("got servicename: {}".format(servicename))
@@ -164,9 +174,12 @@ def isServiceInLastServicelist(servicename, helperSession=None):
     servicelist = session["servicelist"]
     app.logger.debug("used servicelist: {}".format(servicelist))
     
+    if "informations" in servicelist[0]:
+        servicelist = [service["informations"] for service in servicelist]
+    
     found_service = [servicename == service["servicename"] for service in servicelist]
     result = "servicelist" in session and any(found_service)
-    app.logger.debug("search name: {}, found_service: {}, results: {},\n servicelist: {}".format(servicename, found_service, result, [service["servicename"] for service in session["servicelist"]]))
+    app.logger.debug("search name: {}, found_service: {}, results: {},\n servicelist: {}".format(servicename, found_service, result, [service["servicename"] for service in servicelist]))
     
     return result
     
