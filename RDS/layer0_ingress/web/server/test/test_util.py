@@ -340,24 +340,25 @@ class Test_parser(unittest.TestCase):
         self.assertEqual(expected, applyFilters(services, domain))
         
         
-        def test_applyfilters_raise_keyerror(self):
-            domain = {
-                "oauth": {
-                    "name": "owncloud.local",
-                    "ADDRESS": "https://owncloud.local/owncloud",
-                    "OAUTH_CLIENT_ID": "ABC",
-                    "OAUTH_CLIENT_SECRET": "XYZ",
-                }
+    def test_applyfilters_raise_keyerror(self):
+        domain = {
+            "oauth": {
+                "name": "owncloud.local",
+                "ADDRESS": "https://owncloud.local/owncloud",
+                "OAUTH_CLIENT_ID": "ABC",
+                "OAUTH_CLIENT_SECRET": "XYZ",
+                "filters": {"except": ["port-openscienceframework"]},
             }
+        }
 
-            services = [
-                {"servicename": "port-datasafe"},
-                {"servicename": "port-openscienceframework"},
-                {"servicename": "port-zenodo"},
-            ]
-            
-            with self.assertRaises(KeyError):
-                applyFilters(services, domain)
+        services = [
+            {"servicename": "port-datasafe"},
+            {"servicename": "port-openscienceframework"},
+            {"servicename": "port-zenodo"},
+        ]
+        
+        with self.assertRaises(KeyError):
+            applyFilters(services, domain)
 
 
     def test_servicelist_1(self):
@@ -398,7 +399,7 @@ class Test_parser(unittest.TestCase):
         self.assertEqual(
             True,
             isServiceInLastServicelist(
-                {"servicename": "port-datasafe"}, {"servicelist": servicelist}
+                "port-datasafe", {"servicelist": servicelist}
             ),
         )
     
@@ -415,4 +416,16 @@ class Test_parser(unittest.TestCase):
                 "port-datasafe", helperSession={"servicelist": servicelist}
             ),
         )
+        
+    def test_servicelist_4(self):
+        servicelist = [
+            {"servicename": "port-datasafe"},
+            {"servicename": "port-openscienceframework"},
+            {"servicename": "port-zenodo"},
+        ]
+
+        with self.assertRaises(KeyError):
+            isServiceInLastServicelist(
+                "port-datasafe", helperSession={"servicelist": servicelist}
+            )
     

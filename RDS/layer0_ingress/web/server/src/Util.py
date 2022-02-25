@@ -178,10 +178,7 @@ def isServiceInLastServicelist(servicename: str, helperSession=None) -> bool:
         
     servicelist = session["servicelist"]
     
-    if "informations" in servicelist[0]:
-        servicelist = [service["informations"] for service in servicelist]
-    
-    found_service = [servicename == service["servicename"] for service in servicelist]
+    found_service = [servicename == service["informations"]["servicename"] for service in servicelist]
     result = "servicelist" in session and any(found_service)
     
     return result
