@@ -127,15 +127,13 @@ def applyFilters(response: dict, helperSession=None) -> dict:
         Filtered services, if domains said to do.
     """
     
-    result = response
-    
     if helperSession is not None:
         session = helperSession
     else:
         from flask import session
     
+    result = response
     filters = session["oauth"]
-    
     
     if "filters" in filters:
         filters = session["oauth"]["filters"]
@@ -168,14 +166,13 @@ def isServiceInLastServicelist(servicename: str, helperSession=None) -> bool:
         bool: True, if servicename was in latest servicelist response.
     """
     
-    if isinstance(servicename, dict):
-        servicename = servicename["servicename"]
-        
     if helperSession is not None:
         session = helperSession
     else:
         from flask import session
         
+    if isinstance(servicename, dict):
+        servicename = servicename["servicename"]
     servicelist = session["servicelist"]
     
     found_service = [servicename == service["informations"]["servicename"] for service in servicelist]
