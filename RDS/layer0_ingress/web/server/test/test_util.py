@@ -184,18 +184,18 @@ class Test_parser(unittest.TestCase):
                 "OAUTH_CLIENT_ID": "ABC",
                 "OAUTH_CLIENT_SECRET": "XYZ",
                 "filters": {
-                    "only": ["layer1-port-datasafe"],
-                    "except": ["layer1-port-openscienceframework"],
+                    "only": ["port-datasafe"],
+                    "except": ["port-openscienceframework"],
                 },
             }
         }
 
         services = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-openscienceframework"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
-        expected = [{"servicename": "layer1-port-datasafe"}]
+        expected = [{"informations": {"servicename": "port-datasafe"}}]
         self.assertEqual(expected, applyFilters(services, domain))
 
     def test_applyfilters_2(self):
@@ -207,20 +207,20 @@ class Test_parser(unittest.TestCase):
                 "OAUTH_CLIENT_SECRET": "XYZ",
                 "filters": {
                     "only": [
-                        "layer1-port-datasafe",
-                        "layer1-port-openscienceframework",
+                        "port-datasafe",
+                        "port-openscienceframework",
                     ],
-                    "except": ["layer1-port-openscienceframework"],
+                    "except": ["port-openscienceframework"],
                 },
             }
         }
 
         services = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-openscienceframework"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
-        expected = [{"servicename": "layer1-port-datasafe"}]
+        expected = [{"informations": {"servicename": "port-datasafe"}}]
         self.assertEqual(expected, applyFilters(services, domain))
 
     def test_applyfilters_3(self):
@@ -231,20 +231,20 @@ class Test_parser(unittest.TestCase):
                 "OAUTH_CLIENT_ID": "ABC",
                 "OAUTH_CLIENT_SECRET": "XYZ",
                 "filters": {
-                    "only": ["layer1-port-datasafe", "layer1-port-zenodo"],
-                    "except": ["layer1-port-openscienceframework"],
+                    "only": ["port-datasafe", "port-zenodo"],
+                    "except": ["port-openscienceframework"],
                 },
             }
         }
 
         services = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-openscienceframework"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
         expected = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
         self.assertEqual(expected, applyFilters(services, domain))
 
@@ -260,14 +260,14 @@ class Test_parser(unittest.TestCase):
         }
 
         services = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-openscienceframework"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
         expected = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-openscienceframework"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
         self.assertEqual(expected, applyFilters(services, domain))
 
@@ -279,19 +279,19 @@ class Test_parser(unittest.TestCase):
                 "OAUTH_CLIENT_ID": "ABC",
                 "OAUTH_CLIENT_SECRET": "XYZ",
                 "filters": {
-                    "only": ["layer1-port-datasafe", "layer1-port-zenodo"],
+                    "only": ["port-datasafe", "port-zenodo"],
                 },
             }
         }
 
         services = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-openscienceframework"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
         expected = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
         self.assertEqual(expected, applyFilters(services, domain))
 
@@ -302,18 +302,18 @@ class Test_parser(unittest.TestCase):
                 "ADDRESS": "https://owncloud.local/owncloud",
                 "OAUTH_CLIENT_ID": "ABC",
                 "OAUTH_CLIENT_SECRET": "XYZ",
-                "filters": {"except": ["layer1-port-openscienceframework"]},
+                "filters": {"except": ["port-openscienceframework"]},
             }
         }
 
         services = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-openscienceframework"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
         expected = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
         self.assertEqual(expected, applyFilters(services, domain))
 
@@ -328,55 +328,69 @@ class Test_parser(unittest.TestCase):
         }
 
         services = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-openscienceframework"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
         expected = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-openscienceframework"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
         self.assertEqual(expected, applyFilters(services, domain))
 
     def test_servicelist_1(self):
         servicelist = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-openscienceframework"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
 
         self.assertEqual(
             True,
             isServiceInLastServicelist(
-                "layer1-port-datasafe", {"serviceList": servicelist}
+                "port-datasafe", {"servicelist": servicelist}
             ),
         )
 
     def test_servicelist_2(self):
         servicelist = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-openscienceframework"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
 
         self.assertEqual(
             False,
             isServiceInLastServicelist(
-                "layer1-port-notfound", {"serviceList": servicelist}
+                "port-notfound", {"servicelist": servicelist}
             ),
         )
 
     def test_servicelist_3(self):
         servicelist = [
-            {"servicename": "layer1-port-datasafe"},
-            {"servicename": "layer1-port-openscienceframework"},
-            {"servicename": "layer1-port-zenodo"},
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
         ]
 
         self.assertEqual(
             True,
             isServiceInLastServicelist(
-                {"servicename": "layer1-port-datasafe"}, {"serviceList": servicelist}
+                {"servicename": "port-datasafe"}, {"servicelist": servicelist}
+            ),
+        )
+    
+    def test_servicelist_4(self):
+        servicelist = [
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
+        ]
+
+        self.assertEqual(
+            True,
+            isServiceInLastServicelist(
+                "port-datasafe", helperSession={"servicelist": servicelist}
             ),
         )

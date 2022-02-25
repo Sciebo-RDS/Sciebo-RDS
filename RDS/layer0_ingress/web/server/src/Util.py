@@ -1,7 +1,6 @@
 
 import copy
 import json
-from .app import app
 
 def checkForEmpty(response):
     if response.status_code == 404:
@@ -84,7 +83,8 @@ def parseAllResearchBack(response):
     return [parseResearchBack(research) for research in response]
 
 
-def listContainsService(arr, service):
+def listContainsService(arr: list, service: dict) -> bool:
+
     for el in arr:
         try:
             if el["servicename"] == service["servicename"]:
@@ -101,19 +101,30 @@ def listContainsService(arr, service):
     return False
 
 
-def removeDuplicates(response):
+def removeDuplicates(response: dict) -> dict:
+    """Removes duplicate entries of equal servicenames
+
+    Args:
+        response (dict): Dict of service entries
+
+    Returns:
+        Same as response, duplicates removed.
+    """
     withoutDuplicates = []
     for service in response:
         if not listContainsService(withoutDuplicates, service):
             withoutDuplicates.append(service)
     return withoutDuplicates
 
-def applyFilters(response, helperSession=None):
+def applyFilters(response: dict, helperSession=None) -> dict:
     """Applies filters for services
 
     Args:
         response (list): Take a look into openapi spec for services properties.
         filters (list): List of Dicts. Expected fieldnames in dict: `name` for servicename to filter, `only` for domainnames and `except` same as `only`.
+    
+    Returns:
+        Filtered services, if domains said to do.
     """
     
     result = response
@@ -125,22 +136,19 @@ def applyFilters(response, helperSession=None):
     
     filters = session["oauth"]
     
+    
     if "filters" in filters:
         filters = session["oauth"]["filters"]
         onlyFiltered = []
         
+        
         if "only" in filters:
-            for service in response:
-                if service["servicename"] in filters["only"]:
-                    onlyFiltered.append(service)
+            onlyFiltered = [service for service in response if service["informations"]["servicename"] in filters["only"]]
         else:
             onlyFiltered = response
         
         if "except" in filters:
-            exceptFiltered = []
-            for service in onlyFiltered:
-                if service["servicename"] not in filters["except"]:
-                    exceptFiltered.append(service)
+            exceptFiltered = [service for service in onlyFiltered if service["informations"]["servicename"] not in filters["except"]]
         else:
             exceptFiltered = onlyFiltered
             
@@ -149,7 +157,7 @@ def applyFilters(response, helperSession=None):
     session["servicelist"] = result
     return result
     
-def isServiceInLastServicelist(servicename, helperSession=None) -> bool:
+def isServiceInLastServicelist(servicename: str, helperSession=None) -> bool:
     """Checks if servicename was in latest servicelist response for the current session.
 
     Args:
@@ -160,26 +168,21 @@ def isServiceInLastServicelist(servicename, helperSession=None) -> bool:
         bool: True, if servicename was in latest servicelist response.
     """
     
-    app.logger.debug("looking for service in latest servicelist for this user.")
     if isinstance(servicename, dict):
-        app.logger.debug("got servicename: {}".format(servicename))
         servicename = servicename["servicename"]
         
     if helperSession is not None:
-        app.logger.debug("use helperSession for testing")
         session = helperSession
     else:
         from flask import session
         
     servicelist = session["servicelist"]
-    app.logger.debug("used servicelist: {}".format(servicelist))
     
     if "informations" in servicelist[0]:
         servicelist = [service["informations"] for service in servicelist]
     
     found_service = [servicename == service["servicename"] for service in servicelist]
     result = "servicelist" in session and any(found_service)
-    app.logger.debug("search name: {}, found_service: {}, results: {},\n servicelist: {}".format(servicename, found_service, result, [service["servicename"] for service in servicelist]))
     
     return result
     
