@@ -414,10 +414,10 @@ class Test_parser(unittest.TestCase):
             True,
             isServiceInLastServicelist(
                 "port-datasafe", helperSession={"servicelist": servicelist}
-            ),
+            )
         )
         
-    def test_servicelist_4(self):
+    def test_servicelist_5(self):
         servicelist = [
             {"servicename": "port-datasafe"},
             {"servicename": "port-openscienceframework"},
