@@ -129,6 +129,14 @@ values. Once these adjustments have been made, the system can be installed. Some
 
 In the `describo` folder you will find the configuration of our used tool for metadata collection. Please adjust it according to its [manual](https://github.com/Arkisto-Platform/describo-online/wiki/General-information-about-configuring-the-application).
 
+If you want to use sciebo RDS for multiple EFSS you have to configure the `global.domains` object within `values.yaml`. For more informations, please take a look at the next chapter.
+
+### Multiple EFSS with a single sciebo RDS installation
+
+{{<callout info>}} Currently this approach only applies to ownCloud EFSS installation only. Other EFSS are not supported right now. {{</callout>}}
+
+For this purpose we develop a tool to help: [Sciebo RDS Install](https://github.com/Sciebo-RDS/Sciebo-RDS-Install). Please follow the installation steps. Otherwise you need to configure the `global.domains` object on your own. An example can be found in [values.yaml.example](https://github.com/Sciebo-RDS/Sciebo-RDS/blob/develop/getting-started/values.yaml.example). You have to remove this object, if you want to only serve a single installation. Please remove the `domains` object, because it overwrites your `layer1-port-owncloud` configuration otherwise. But you can use it for a single installation, too. (Maybe you want to add later other instances) Then you do not need to fill out the informations in `layer1-port-owncloud`. Also it overwrites all other ports which will be used as filestorage within sciebo RDS e.g. `layer1-port-reva` etc., so you cannot use reva and multiple ownCloud-instances at once. Please use separate sciebo RDS instances for this use-case.
+
 ### Generate OAuth2 identifier and secrets
 
 You have to generate the oauth credentials for your used oauth2 service provider. This credentials are generated, when
