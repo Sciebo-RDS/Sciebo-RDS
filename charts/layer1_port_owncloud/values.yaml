@@ -53,6 +53,13 @@ affinity: {}
 # overwrites layer1-port-owncloud environment and bootsup multiple pods
 domains:
   - name: localhost
-    ADDRESS: https://localhost/owncloud
+    ADDRESS: https://127.0.0.1
     OAUTH_CLIENT_ID: ""
     OAUTH_CLIENT_SECRET: ""
+
+# uses namehost
+environment: 
+  ADDRESS: https://localhost
+  OAUTH_CLIENT_ID: ""
+  OAUTH_CLIENT_SECRET: ""
+

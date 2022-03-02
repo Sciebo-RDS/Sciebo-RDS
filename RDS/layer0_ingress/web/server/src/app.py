@@ -51,12 +51,7 @@ startup_nodes = [
 repl = ".:"
 trans_tbl = "".maketrans(repl, "-" * len(repl))
 
-
-domains = [{
-    "name": "localhost",
-    "ADDRESS": os.getenv("OWNCLOUD_URL", "https://10.14.29.60/owncloud/index.php")
-}]
-
+# This handles also the single installation, because it is a one entry list in this case.
 with open("domains.json") as f:
     domains = json.load(f)
 

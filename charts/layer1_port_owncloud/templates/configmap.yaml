@@ -1,9 +1,13 @@
-# TODO: Merge with single installation
 {{- $domains := .Values.domains -}}
 {{- if .Values.global }}
     {{- if .Values.global.domains }}
         {{- $domains = .Values.global.domains -}}
     {{- end -}}
+{{- end -}}
+
+{{- if not $domains -}}
+{{- $name := (dict "name" (.Values.environment.ADDRESS | replace "https://" "" | replace "http://" "")) -}}
+{{- $domains = (list (merge .Values.environment $name)) -}}
 {{- end -}}
 
 {{- range $domains }}
