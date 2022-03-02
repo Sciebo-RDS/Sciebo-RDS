@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: "1.0"
 description: A single chart for installing whole sciebo rds ecosystem.
 name: all
-version: 0.2.1
+version: 0.2.2
 home: https://www.research-data-services.org/
 type: application
 keywords:
@@ -24,7 +24,7 @@ dependencies:
     tags:
       - layer0
   - name: layer0-web
-    version: ^0.2.0
+    version: ^0.3.0
     repository: file://../layer0_web
     condition: layer0-web.enabled
     tags:
