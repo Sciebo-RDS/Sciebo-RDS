@@ -57,8 +57,6 @@ spec:
               name: globalenvvar
           - configMapRef:
               name: describoconfig
-          - configMapRef:
-              name: portowncloudconfigs
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: "ui"

@@ -1,3 +1,4 @@
+# TODO: Merge with single installation
 {{- $domains := .Values.domains -}}
 {{- if .Values.global }}
     {{- if .Values.global.domains }}
@@ -17,10 +18,3 @@ data:
   OWNCLOUD_OAUTH_CLIENT_SECRET: {{ .OAUTH_CLIENT_SECRET | quote }}
   SERVICENAME: {{ .name | replace "." "-" | replace ":" "-" }}
 {{- end }}
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: portowncloudconfigs
-data:
-  AVAILABLE_CONFIGS: {{include "layer1_port_owncloud.domainlist" $domains | quote -}}
