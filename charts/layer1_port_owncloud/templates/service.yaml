@@ -4,6 +4,12 @@
         {{- $domains = .Values.global.domains -}}
     {{- end -}}
 {{- end -}}
+
+{{- if not $domains -}}
+{{- $name := (dict "name" (.Values.environment.ADDRESS | replace "https://" "" | replace "http://" "")) -}}
+{{- $domains = (list (merge .Values.environment $name)) -}}
+{{- end -}}
+
 {{- range $domains }}
 ---
 apiVersion: v1

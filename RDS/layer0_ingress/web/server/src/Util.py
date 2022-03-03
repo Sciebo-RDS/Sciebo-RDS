@@ -2,7 +2,6 @@
 import copy
 import json
 
-
 def checkForEmpty(response):
     if response.status_code == 404:
         return []
@@ -84,7 +83,8 @@ def parseAllResearchBack(response):
     return [parseResearchBack(research) for research in response]
 
 
-def listContainsService(arr, service):
+def listContainsService(arr: list, service: dict) -> bool:
+
     for el in arr:
         try:
             if el["servicename"] == service["servicename"]:
@@ -101,9 +101,82 @@ def listContainsService(arr, service):
     return False
 
 
-def removeDuplicates(response):
+def removeDuplicates(response: dict) -> dict:
+    """Removes duplicate entries of equal servicenames
+
+    Args:
+        response (dict): Dict of service entries
+
+    Returns:
+        Same as response, duplicates removed.
+    """
     withoutDuplicates = []
     for service in response:
         if not listContainsService(withoutDuplicates, service):
             withoutDuplicates.append(service)
     return withoutDuplicates
+
+def applyFilters(response: dict, helperSession=None) -> dict:
+    """Applies filters for services
+
+    Args:
+        response (list): Take a look into openapi spec for services properties.
+        filters (list): List of Dicts. Expected fieldnames in dict: `name` for servicename to filter, `only` for domainnames and `except` same as `only`.
+    
+    Returns:
+        Filtered services, if domains said to do.
+    """
+    
+    if helperSession is not None:
+        session = helperSession
+    else:
+        from flask import session
+    
+    result = response
+    filters = session["oauth"]
+    
+    if "filters" in filters:
+        filters = session["oauth"]["filters"]
+        onlyFiltered = []
+        
+        
+        if "only" in filters:
+            onlyFiltered = [service for service in response if service["informations"]["servicename"] in filters["only"]]
+        else:
+            onlyFiltered = response
+        
+        if "except" in filters:
+            exceptFiltered = [service for service in onlyFiltered if service["informations"]["servicename"] not in filters["except"]]
+        else:
+            exceptFiltered = onlyFiltered
+            
+        result = exceptFiltered
+    
+    session["servicelist"] = result
+    return result
+    
+def isServiceInLastServicelist(servicename: str, helperSession=None) -> bool:
+    """Checks if servicename was in latest servicelist response for the current session.
+
+    Args:
+        servicename (_type_): The servicename yo want to know, if it is in latest servicelist.
+        helperSession (_type_, optional): Use this session for unittests. Defaults to None.
+
+    Returns:
+        bool: True, if servicename was in latest servicelist response.
+    """
+    
+    if helperSession is not None:
+        session = helperSession
+    else:
+        from flask import session
+        
+    if isinstance(servicename, dict):
+        servicename = servicename["servicename"]
+    servicelist = session["servicelist"]
+    
+    found_service = [servicename == service["informations"]["servicename"] for service in servicelist]
+    result = "servicelist" in session and any(found_service)
+    
+    return result
+    

@@ -29,17 +29,6 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 {{/*
-Create a list only for configmap domains for access from other services
-*/}}
-{{- define "layer1_port_owncloud.domainlist" -}}
-{{ $newList := list }}
-{{- range . }}
-    {{- $newList = (printf "portowncloudconfig-%s" .name | append $newList) -}}
-{{- end -}}
-{{- toJson $newList -}}
-{{- end -}}
-
-{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "layer1_port_owncloud.chart" -}}

@@ -1,7 +1,7 @@
 from flask import request, session
 from flask_socketio import emit, disconnect, Namespace
 from flask_login import current_user, logout_user
-from .Util import parseResearch, parseResearchBack, parsePortBack, removeDuplicates, checkForEmpty
+from .Util import parseResearch, parseResearchBack, parsePortBack, removeDuplicates, checkForEmpty, applyFilters, isServiceInLastServicelist
 from .EasierRDS import parseDict
 from .app import socketio, clients, rc, tracing, tracer_obj, app, trans_tbl
 from .Describo import getSessionId
@@ -26,7 +26,7 @@ url = os.getenv("RDS_INSTALLATION_DOMAIN")
 data = {
     os.getenv("USE_CASE_SERVICE_PORT_SERVICE", f"{url}/port-service"): [
         ("getUserServices", "{url}/user/{userId}/service"),
-        ("getServicesList", "{url}/service", "get", None, removeDuplicates),
+        ("getServicesList", "{url}/service", "get", None, lambda x: applyFilters(removeDuplicates(x))),
         ("getService", "{url}/service/{servicename}"),
         ("getServiceForUser", "{url}/user/{userId}/service/{servicename}"),
         ("removeServiceForUser",
@@ -72,7 +72,22 @@ data = {
 httpManager = parseDict(data, socketio=socketio)
 
 
-def exchangeCodeData(data):
+def exchangeCodeData(data):   
+    
+    # check if service was in latest servicelist, because otherwise we have a sideways request.
+    # this is okay, because if the state is invalid, exchange will be failed nevertheless. 
+    # So if we accept here a service from a malicious state data, it will be declined by port service.
+    try:
+        servicename = jwt.decode(data["state"], algorithms="HS256", options={"verify_signature": False})["servicename"]
+        result = isServiceInLastServicelist(servicename)
+        
+        app.logger.debug("Is servicename in servicelist:\n service: {}\n: result: {}".format(servicename, result))
+        if not result:
+            return False
+    except (jwt.ExpiredSignatureError, KeyError) as e:
+        app.logger.error(e, exc_info=True)
+        return False
+    
     body = {
         'servicename': "port-owncloud-{}".format(session["servername"]),
         'code': data["code"],
@@ -80,7 +95,6 @@ def exchangeCodeData(data):
         "userId": current_user.userId
     }
 
-    # TODO exchange it in the background for user and redirect to wizard / projects
     oauth_secret = session["oauth"].get("OAUTH_CLIENT_SECRET") or os.getenv(
         "OWNCLOUD_OAUTH_CLIENT_SECRET")
     jwtEncode = jwt.encode(body, oauth_secret, algorithm="HS256")
@@ -258,7 +272,7 @@ class RDSNamespace(Namespace):
         jsonData = json.loads(jsonData)
 
         req = exchangeCodeData(jsonData)
-        app.logger.debug(req.text)
+        app.logger.debug("exchange code result: {}".format(req.text))
 
         # update userserviceslist on client
         emit("UserServiceList", httpManager.makeRequest("getUserServices"))

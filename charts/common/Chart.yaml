@@ -2,7 +2,7 @@ apiVersion: v2
 name: common
 description: A Helm chart for Kubernetes
 type: library
-version: 0.1.1
+version: 0.1.2
 appVersion: "1.16.0"
 sources:
   - https://github.com/Sciebo-RDS/Sciebo-RDS

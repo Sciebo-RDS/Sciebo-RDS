@@ -1,10 +1,10 @@
 dependencies:
 - name: layer0-describo
   repository: file://../layer0_describo
-  version: 0.2.2
+  version: 0.2.3
 - name: layer0-web
   repository: file://../layer0_web
-  version: 0.2.1
+  version: 0.3.0
 - name: layer0-helper-describo-token-updater
   repository: file://../layer0_helper_describo_token_updater
   version: 0.2.0
@@ -16,7 +16,7 @@ dependencies:
   version: 0.2.2
 - name: layer1-port-owncloud
   repository: file://../layer1_port_owncloud
-  version: 0.3.0
+  version: 0.3.1
 - name: layer1-port-reva
   repository: file://../layer1_port_reva
   version: 0.2.0
@@ -44,5 +44,5 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 14.8.11
-digest: sha256:c05ec50e9138cef9b0d1aa0eee9d5ad5c2e648a8921ee689679a0c77924fd29f
-generated: "2022-02-03T17:24:32.3354194+01:00"
+digest: sha256:ca41acadd880d5e904844013f0a3aa6dc929011e58ca89d58957360fbdfc2915
+generated: "2022-03-02T18:01:59.602096937+01:00"

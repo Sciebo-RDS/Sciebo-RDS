@@ -91,7 +91,7 @@ class Test_TokenServiceServer(unittest.TestCase):
         self.assertEqual(resp_state["servicename"], service.servicename)
         self.assertEqual(resp_state["authorize_url"], service.authorize_url)
 
-        date = resp_state["date"]
+        date = resp_state["iat"]
 
         # following request should not be needed a new pact, because its cached and date shuld be the same.
         response = self.client.get(
@@ -112,7 +112,8 @@ class Test_TokenServiceServer(unittest.TestCase):
         data = {
             "servicename": service.servicename,
             "authorize_url": service.authorize_url,
-            "date": str(datetime.datetime.now()),
+            "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=15),
+            "iat": datetime.datetime.now(tz=datetime.timezone.utc),
         }
         import base64
         import json

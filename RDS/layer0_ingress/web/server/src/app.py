@@ -43,20 +43,15 @@ redirect_url = "{}?response_type=token&client_id={}&redirect_uri={}".format(
 
 startup_nodes = [
     {
-        "host": "{}-master".format(os.getenv("REDIS_HELPER_HOST", "localhost")),
-        "port": os.getenv("REDIS_HELPER_PORT", "6379"),
+        "host": os.getenv("REDIS_HELPER_MASTER_SERVICE_HOST", "{}-master".format(os.getenv("REDIS_HELPER_HOST", "localhost"))),
+        "port": os.getenv("REDIS_HELPER_MASTER_SERVICE_PORT", "6379"),
     }
 ]
 
 repl = ".:"
 trans_tbl = "".maketrans(repl, "-" * len(repl))
 
-
-domains = [{
-    "name": "localhost",
-    "ADDRESS": os.getenv("OWNCLOUD_URL", "https://10.14.29.60/owncloud/index.php")
-}]
-
+# This handles also the single installation, because it is a one entry list in this case.
 with open("domains.json") as f:
     domains = json.load(f)
 
@@ -89,7 +84,11 @@ flask_config = {
     "SECRET_KEY": os.getenv("SECRET_KEY", uuid.uuid4().hex),
     "REMEMBER_COOKIE_HTTPONLY": False,
     "SESSION_PERMANENT": True,
-    'DEBUG': True
+    'DEBUG': True,
+    "SESSION_COOKIE_HTTPONLY": True,
+    "SESSION_COOKIE_SAMESITE": "None",
+    "SESSION_COOKIE_SECURE": True,
+    #"SERVER_NAME": os.getenv("RDS_OAUTH_REDIRECT_URI", os.getenv("SOCKETIO_HOST", "https://localhost")).replace("https://", "" ).replace("http://", "")
 }
 
 if os.getenv("USE_LOCAL_DICTS", "False") == "True":
@@ -97,8 +96,8 @@ if os.getenv("USE_LOCAL_DICTS", "False") == "True":
 else:
     startup_nodes_cluster = [
         {
-            "host": os.getenv("REDIS_HOST", "localhost"),
-            "port": os.getenv("REDIS_PORT", "6379"),
+            "host": os.getenv("REDIS_SERVICE_HOST", "localhost"),
+            "port": os.getenv("REDIS_SERVICE_PORT", "6379"),
         }
     ]
 
@@ -169,5 +168,6 @@ origins.update({"{}://{}".format(v.scheme, v.netloc)
 socketio = SocketIO(
     app,
     cors_allowed_origins=origins,
-    manage_session=False
+    manage_session=False,
+    logger=True, engineio_logger=True
 )

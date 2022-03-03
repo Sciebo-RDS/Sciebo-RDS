@@ -1,18 +1,27 @@
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.53 as builder
-
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.58 as planner
 WORKDIR /app
-COPY Cargo.lock Cargo.toml ./
-
-RUN mkdir src && echo "fn main() {println!(\"if you see this, the build broke\")}" > src/main.rs
-RUN cargo build --release
-
+# We only pay the installation cost once, 
+# it will be cached from the second build onwards
+RUN cargo install cargo-chef 
 COPY . .
-RUN cargo build --release
-RUN cargo install --path .
+RUN cargo chef prepare --recipe-path recipe.json
 
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/debian:buster-slim
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.58 as cacher
+WORKDIR /app
+RUN cargo install cargo-chef
 
+COPY --from=planner /app/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json
+
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.58 as builder
+WORKDIR /app
+COPY . .
+# Copy over the cached dependencies
+COPY --from=cacher /app/target target
+RUN cargo build --release --bin helper
+
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/debian:buster-slim as runtime
+COPY --from=builder /app/target/release/helper /usr/local/bin
 RUN apt-get update && apt install -y openssl && apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
-COPY --from=builder /usr/local/cargo/bin/helper /usr/local/bin/helper
 
 CMD ["helper"]

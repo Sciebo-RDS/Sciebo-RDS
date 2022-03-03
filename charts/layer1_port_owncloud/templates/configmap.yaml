@@ -5,6 +5,11 @@
     {{- end -}}
 {{- end -}}
 
+{{- if not $domains -}}
+{{- $name := (dict "name" (.Values.environment.ADDRESS | replace "https://" "" | replace "http://" "")) -}}
+{{- $domains = (list (merge .Values.environment $name)) -}}
+{{- end -}}
+
 {{- range $domains }}
 ---
 apiVersion: v1
@@ -17,10 +22,3 @@ data:
   OWNCLOUD_OAUTH_CLIENT_SECRET: {{ .OAUTH_CLIENT_SECRET | quote }}
   SERVICENAME: {{ .name | replace "." "-" | replace ":" "-" }}
 {{- end }}
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: portowncloudconfigs
-data:
-  AVAILABLE_CONFIGS: {{include "layer1_port_owncloud.domainlist" $domains | quote -}}
