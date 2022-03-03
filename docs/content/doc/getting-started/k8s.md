@@ -75,10 +75,11 @@ You need the following tools installed and configured:
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [helm](https://helm.sh/docs/intro/install/)
 - vim (or any other text editor like nano)
-- unzip
 
 {{<callout "tip">}} Note: Since Helm v3 no Tillerserver is [required](https://helm.sh/blog/helm-3-released/) on the
 Kubernetes side. {{</callout>}}
+
+{{<callout "info">}} There is a tool called [Sciebo RDS CLI](https://github.com/Sciebo-RDS/Sciebo-RDS-CLI), which helps you to install sciebo RDS. But at the end it does exactly the same things you are done in this documentation. {{</callout>}}
 
 ## Configuration
 
