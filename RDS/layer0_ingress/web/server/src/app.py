@@ -96,8 +96,8 @@ if os.getenv("USE_LOCAL_DICTS", "False") == "True":
 else:
     startup_nodes_cluster = [
         {
-            "host": os.getenv("REDIS_HOST", "localhost"),
-            "port": os.getenv("REDIS_PORT", "6379"),
+            "host": os.getenv("REDIS_SERVICE_HOST", "localhost"),
+            "port": os.getenv("REDIS_SERVICE_PORT", "6379"),
         }
     ]
 
