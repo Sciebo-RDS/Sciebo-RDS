@@ -17,11 +17,11 @@ class SetUrl extends Command
     private $appName;
     private $rdsService;
 
-    public function __construct(IConfig $config, $appName, RDSService $rdsService)
+    public function __construct($AppName, IConfig $config, RDSService $rdsService)
     {
         parent::__construct();
+        $this->appName = $AppName;
         $this->config = $config;
-        $this->appName = $appName;
         $this->rdsService = $rdsService;
     }
 
@@ -48,5 +48,6 @@ class SetUrl extends Command
     {
         $url = $input->getArgument('url');
         $this->config->setAppValue($this->appName, $this->rdsService->getUrlService()->getCloudUrlKey(), $url);
+        $output->writeln("Set <$url> as cloudUrl successful.");
     }
 }

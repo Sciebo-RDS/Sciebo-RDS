@@ -10,7 +10,7 @@ use \OCP\IConfig;
 use \OCA\RDS\Service\RDSService;
 
 
-class SetOauthname extends Command
+class CreateKeys extends Command
 {
 
     private $config;
@@ -29,13 +29,8 @@ class SetOauthname extends Command
     protected function configure()
     {
         $this
-            ->setName('rds:set-oauthname')
-            ->setDescription('Sets the name of oauth client used by RDS app.')
-            ->addArgument(
-                'oauthname',
-                InputArgument::REQUIRED,
-                'The name of the oauth2 client for the RDS app.'
-            );
+            ->setName('rds:create-keys')
+            ->setDescription('Creates the private and public key to sign informations.');
     }
 
     /**
@@ -46,8 +41,12 @@ class SetOauthname extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $oauthname = $input->getArgument('oauthname');
-        $this->config->setAppValue($this->appName, $this->rdsService->getOauthAppField(), $oauthname);
-        $output->writeln("Set <$oauthname> as oauthname successful.");
+        $keys = $this->rdsService->createKeys();
+
+        if ($keys[0] != null && $keys[1] != null) {
+            $output->writeln("Creates keys successful.");
+        } else {
+            $output->writeln("Cannot create keys.");
+        }
     }
 }

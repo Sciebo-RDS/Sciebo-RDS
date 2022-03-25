@@ -1,5 +1,6 @@
 <?php
 $CONFIG = array (
+  'debug' => true,
   'apps_paths' => 
   array (
     0 => 
@@ -26,7 +27,7 @@ $CONFIG = array (
   'dbuser' => 'owncloud',
   'dbpassword' => 'owncloud',
   'dbtableprefix' => 'oc_',
-  'log_type' => 'owncloud',
+  'log_type' => 'syslog',
   'supportedDatabases' => 
   array (
     0 => 'sqlite',
@@ -35,10 +36,9 @@ $CONFIG = array (
   ),
   'upgrade.disable-web' => true,
   'default_language' => 'en',
-  'overwrite.cli.url' => 'http://localhost:8000/',
+  'overwrite.cli.url' => 'http://localhost/',
   'htaccess.RewriteBase' => '/',
   'logfile' => '/mnt/data/files/owncloud.log',
-  'loglevel' => 2,
   'memcache.local' => '\\OC\\Memcache\\APCu',
   'mysql.utf8mb4' => true,
   'filelocking.enabled' => true,
@@ -49,12 +49,13 @@ $CONFIG = array (
     'host' => 'redis',
     'port' => '6379',
   ),
-  'passwordsalt' => 'yJDnfNHYXvlSzippDha8Lyi4WVYny9',
-  'secret' => 'AFLFJDVq9fCtLvItUNaJvlk+vAQgbIShNXa4ne9NHCnj9jDf',
+  'passwordsalt' => 'Nvb/B2A1OMkEKMtyMjmVUfcaLbqSro',
+  'secret' => 'npBF4n+Tm4+r7m6bgRwXqUvIBF0GBlKp7RfayLXacRSXgijg',
   'version' => '10.7.0.4',
   'logtimezone' => 'UTC',
   'installed' => true,
-  'instanceid' => 'ocq54to2dkpc',
-  'web.baseUrl' => 'http://localhost:9100',
-  'cors.allowed-domains' => ['http://localhost:9100'],
+  'instanceid' => 'ocirjd76unba',
+  'loglevel' => 0,
+  
+  'maintenance' => false,
 );

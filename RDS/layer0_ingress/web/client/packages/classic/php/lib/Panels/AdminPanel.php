@@ -34,17 +34,16 @@ class AdminPanel implements ISettings
 
     private $rdsService;
 
+
     public function __construct(
-        $AppName,
         ClientMapper $clientMapper,
         IUserSession $userSession,
-        IURLGenerator $urlGenerator,
         RDSService $rdsService
     ) {
-        $this->appName = $AppName;
+        $this->appName = "rds";
         $this->clientMapper = $clientMapper;
         $this->userSession = $userSession;
-        $this->urlGenerator = $urlGenerator;
+        $this->urlGenerator = \OC::$server->getURLGenerator();
         $this->rdsService = $rdsService;
         $this->urlService = $rdsService->getUrlService();
     }
