@@ -22,28 +22,30 @@ from flask_session import Session
 
 from pathlib import Path
 from dotenv import load_dotenv
-env_path = Path('..') / '.env'
+
+env_path = Path("..") / ".env"
 load_dotenv(dotenv_path=env_path)
 
-use_predefined_user = (os.getenv('DEV_USE_PREDEFINED_USER', 'False') == 'True')
-use_tests_folder = (os.getenv('DEV_USE_DUMPS_FOLDER', 'False') == 'True')
+use_predefined_user = os.getenv("DEV_USE_PREDEFINED_USER", "False") == "True"
+use_tests_folder = os.getenv("DEV_USE_DUMPS_FOLDER", "False") == "True"
 
-use_embed_mode = (os.getenv('EMBED_MODE', 'False') == 'True')
-use_proxy = (os.getenv('DEV_USE_PROXY', 'False') == 'True')
+use_embed_mode = os.getenv("EMBED_MODE", "False") == "True"
+use_proxy = os.getenv("DEV_USE_PROXY", "False") == "True"
 redirect_url = os.getenv("OWNCLOUD_OAUTH_CLIENT_REDIRECT")
 authorize_url = os.getenv("OWNCLOUD_OAUTH_CLIENT_AUTHORIZE_URL")
 
 
 redirect_url = "{}?response_type=token&client_id={}&redirect_uri={}".format(
-    authorize_url,
-    os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"),
-    redirect_url
+    authorize_url, os.getenv("OWNCLOUD_OAUTH_CLIENT_ID"), redirect_url
 )
 
 
 startup_nodes = [
     {
-        "host": os.getenv("REDIS_HELPER_MASTER_SERVICE_HOST", "{}-master".format(os.getenv("REDIS_HELPER_HOST", "localhost"))),
+        "host": os.getenv(
+            "REDIS_HELPER_MASTER_SERVICE_HOST",
+            "{}-master".format(os.getenv("REDIS_HELPER_HOST", "localhost")),
+        ),
         "port": os.getenv("REDIS_HELPER_MASTER_SERVICE_PORT", "6379"),
     }
 ]
@@ -59,7 +61,7 @@ for i in range(len(domains)):
     url = domains[i]["ADDRESS"]
     req = requests.get(
         f"{url}/apps/rds/api/1.0/publickey",
-        verify=os.getenv("VERIFY_SSL", "False") == "True"
+        verify=os.getenv("VERIFY_SSL", "False") == "True",
     ).json()
 
     domains[i]["publickey"] = req.get("publickey", "").replace("\\n", "\n")
@@ -80,19 +82,20 @@ except:
 
 clients = {}
 flask_config = {
-    'SESSION_TYPE': 'filesystem',
+    "SESSION_TYPE": "filesystem",
     "SECRET_KEY": os.getenv("SECRET_KEY", uuid.uuid4().hex),
     "REMEMBER_COOKIE_HTTPONLY": False,
     "SESSION_PERMANENT": True,
-    'DEBUG': True,
+    "DEBUG": True,
     "SESSION_COOKIE_HTTPONLY": True,
     "SESSION_COOKIE_SAMESITE": "None",
     "SESSION_COOKIE_SECURE": True,
-    #"SERVER_NAME": os.getenv("RDS_OAUTH_REDIRECT_URI", os.getenv("SOCKETIO_HOST", "https://localhost")).replace("https://", "" ).replace("http://", "")
+    # "SERVER_NAME": os.getenv("RDS_OAUTH_REDIRECT_URI", os.getenv("SOCKETIO_HOST", "https://localhost")).replace("https://", "" ).replace("http://", "")
 }
 
 if os.getenv("USE_LOCAL_DICTS", "False") == "True":
     user_store = {}
+    research_progress = {}
 else:
     startup_nodes_cluster = [
         {
@@ -109,19 +112,22 @@ else:
 
     rcCluster.cluster_info()  # provoke an error message
     user_store = redis_pubsub_dict.RedisDict(rcCluster, "web_userstore")
+    research_progress = redis_pubsub_dict.RedisDict(rcCluster, "web_research_progress")
     # clients = redis_pubsub_dict.RedisDict(rcCluster, "web_clients")
 
-    flask_config['SESSION_TYPE'] = 'redis'
+    flask_config["SESSION_TYPE"] = "redis"
     flask_config["SESSION_REDIS"] = rcCluster
 
-app = Flask(__name__,
-            static_folder=os.getenv(
-                "FLASK_STATIC_FOLDER", "/usr/share/nginx/html")
-            )
+app = Flask(
+    __name__, static_folder=os.getenv("FLASK_STATIC_FOLDER", "/usr/share/nginx/html")
+)
 
 ### Tracing begin ###
 tracer_config = {
-    "sampler": {"type": "const", "param": 1, },
+    "sampler": {
+        "type": "const",
+        "param": 1,
+    },
     "local_agent": {
         "reporting_host": "jaeger-agent",
         "reporting_port": 5775,
@@ -132,9 +138,7 @@ tracer_config = {
 config = jConfig(
     config=tracer_config,
     service_name=f"RDSWebConnexionPlus",
-    metrics_factory=PrometheusMetricsFactory(
-        namespace=f"RDSWebConnexionPlus"
-    ),
+    metrics_factory=PrometheusMetricsFactory(namespace=f"RDSWebConnexionPlus"),
 )
 
 
@@ -153,21 +157,24 @@ app.config.update(flask_config)
 
 try:
     from prometheus_flask_exporter.multiprocess import GunicornPrometheusMetrics
+
     metrics = GunicornPrometheusMetrics(app)
 except Exception as e:
     print(f"error in prometheus setup: {e}")
 Session(app)
 
 origins = set(json.loads(os.getenv("FLASK_ORIGINS")))
-origins.update({"{}://{}".format(v.scheme, v.netloc)
-                for v in [urlparse(v["ADDRESS"])
-                          for v in domains.values()
-                          ]
-                })
+origins.update(
+    {
+        "{}://{}".format(v.scheme, v.netloc)
+        for v in [urlparse(v["ADDRESS"]) for v in domains.values()]
+    }
+)
 
 socketio = SocketIO(
     app,
     cors_allowed_origins=origins,
     manage_session=False,
-    logger=True, engineio_logger=True
+    logger=True,
+    engineio_logger=True,
 )
