@@ -30,7 +30,7 @@ import os
 import json
 import requests
 import jwt
-from SyncResearchProcessStatusEnum import ProcessStatus
+from .SyncResearchProcessStatusEnum import ProcessStatus
 
 
 def refreshUserServices():
