@@ -261,6 +261,9 @@ class RDSNamespace(Namespace):
 
     def __update_research_process(self, research):
         research_progress[research["researchId"]] = research
+        
+    def __get_research_process(self, research):
+        return research_progress.get(research["researchId"])
 
     def __delete_research(self, research):
         del research_progress[research["researchId"]]
@@ -270,12 +273,8 @@ class RDSNamespace(Namespace):
         try:
             app.logger.debug("trigger synch, data: {}".format(jsonData))
 
-            research = json.loads(httpManager.makeRequest("getResearch", data=jsonData))
-            research["synchronization_process_status"] = ProcessStatus.START
-
-            for index, port in enumerate(research["portOut"]):
-                research["portout"][index]["status"] = ProcessStatus.START
-
+            research = self.__load_research(jsonData)
+            research = self.__reload_research_status(research)
             self.__update_research_process(research)
 
             app.logger.debug(
@@ -301,6 +300,20 @@ class RDSNamespace(Namespace):
             app.logger.error(f"error in sync: {e}", exc_info=True)
 
         return False
+
+    def __load_research(self, jsonData):
+        research = json.loads(httpManager.makeRequest("getResearch", data=jsonData))
+        research["synchronization_process_status"] = ProcessStatus.START
+            
+        for index, port in enumerate(research["portOut"]):
+            research["portout"][index]["status"] = ProcessStatus.START
+        return research
+
+    def __reload_research_status(self, research):
+        tmp_research = self.__get_research_process(research)
+        if tmp_research is not None:
+            return tmp_research
+        return research
 
     def __trigger_finish_sync(self, jsonData, research):
         httpManager.makeRequest("finishResearch", data=jsonData)
