@@ -8,7 +8,7 @@ from flask_login import (
     logout_user,
     current_user,
 )
-from .app import app, socketio, user_store, use_predefined_user, use_embed_mode, use_proxy, redirect_url, trans_tbl, domains, origins
+from .app import app, socketio, user_store, use_predefined_user, use_embed_mode, use_proxy, redirect_url, trans_tbl, domains_dict, origins
 from .websocket import exchangeCodeData, RDSNamespace
 import json
 import requests
@@ -60,7 +60,7 @@ class User(UserMixin):
                 "Authorization": f"Bearer {token}"
             }
 
-            for domain in domains:
+            for domain in domains_dict.values():
                 url = domain["ADDRESS"] or os.getenv(
                     "OWNCLOUD_URL", "https://localhost/index.php")
 
@@ -119,7 +119,7 @@ def login():
     _, _, servername = unverified["cloudID"].rpartition("@")
     servername = servername.translate(trans_tbl)
 
-    publickey = domains[servername].get("publickey") or ""
+    publickey = domains_dict[servername].get("publickey") or ""
 
     user = None
     if publickey != "":
@@ -133,7 +133,7 @@ def login():
 
             session["informations"] = decoded
             session["servername"] = servername
-            session["oauth"] = domains[servername]
+            session["oauth"] = domains_dict[servername]
         except Exception as e:
             app.logger.error(e, exc_info=True)
 

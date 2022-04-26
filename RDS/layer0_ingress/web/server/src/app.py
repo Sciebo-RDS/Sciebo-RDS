@@ -66,7 +66,7 @@ for i in range(len(domains)):
 
     domains[i]["publickey"] = req.get("publickey", "").replace("\\n", "\n")
 
-domains = {val["name"].translate(trans_tbl): val for val in domains}
+domains_dict = {val["name"].translate(trans_tbl): val for val in domains}
 
 
 try:
@@ -167,7 +167,7 @@ origins = set(json.loads(os.getenv("FLASK_ORIGINS")))
 origins.update(
     {
         "{}://{}".format(v.scheme, v.netloc)
-        for v in [urlparse(v["ADDRESS"]) for v in domains.values()]
+        for v in [urlparse(v["ADDRESS"]) for v in domains_dict.values()]
     }
 )
 
