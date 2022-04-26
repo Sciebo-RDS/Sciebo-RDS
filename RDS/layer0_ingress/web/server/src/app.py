@@ -26,11 +26,12 @@ from dotenv import load_dotenv
 env_path = Path("..") / ".env"
 load_dotenv(dotenv_path=env_path)
 
-use_predefined_user = os.getenv("DEV_USE_PREDEFINED_USER", "False") == "True"
-use_tests_folder = os.getenv("DEV_USE_DUMPS_FOLDER", "False") == "True"
+use_predefined_user = os.getenv("DEV_USE_PREDEFINED_USER", "False").capitalize() == "True"
+use_tests_folder = os.getenv("DEV_USE_DUMPS_FOLDER", "False").capitalize() == "True"
+verify_ssl = os.getenv("VERIFY_SSL", "False").capitalize() == "True"
 
-use_embed_mode = os.getenv("EMBED_MODE", "False") == "True"
-use_proxy = os.getenv("DEV_USE_PROXY", "False") == "True"
+use_embed_mode = os.getenv("EMBED_MODE", "False").capitalize() == "True"
+use_proxy = os.getenv("DEV_USE_PROXY", "False").capitalize() == "True"
 redirect_url = os.getenv("OWNCLOUD_OAUTH_CLIENT_REDIRECT")
 authorize_url = os.getenv("OWNCLOUD_OAUTH_CLIENT_AUTHORIZE_URL")
 
@@ -61,7 +62,7 @@ for i in range(len(domains)):
     url = domains[i]["ADDRESS"]
     req = requests.get(
         f"{url}/apps/rds/api/1.0/publickey",
-        verify=os.getenv("VERIFY_SSL", "False") == "True",
+        verify=verify_ssl,
     ).json()
 
     domains[i]["publickey"] = req.get("publickey", "").replace("\\n", "\n")
@@ -93,7 +94,7 @@ flask_config = {
     # "SERVER_NAME": os.getenv("RDS_OAUTH_REDIRECT_URI", os.getenv("SOCKETIO_HOST", "https://localhost")).replace("https://", "" ).replace("http://", "")
 }
 
-if os.getenv("USE_LOCAL_DICTS", "False") == "True":
+if os.getenv("USE_LOCAL_DICTS", "False").capitalize() == "True":
     user_store = {}
     research_progress = {}
 else:

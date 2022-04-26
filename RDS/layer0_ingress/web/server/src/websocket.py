@@ -21,6 +21,7 @@ from .app import (
     app,
     trans_tbl,
     research_progress,
+    verify_ssl
 )
 from .Describo import getSessionId
 import logging
@@ -171,7 +172,7 @@ def exchangeCodeData(data):
     req = requests.post(
         f"{urlPort}/exchange",
         json={"jwt": jwtEncode},
-        verify=os.getenv("VERIFY_SSL", "False") == "True",
+        verify=verify_ssl,
     )
     app.logger.debug(req.text)
 
@@ -226,7 +227,7 @@ def saveResearch(research):
                 req = requests.post(
                     f"{researchUrl}/{portUrl}",
                     json=port,
-                    verify=os.getenv("VERIFY_SSL", "False") == "True",
+                    verify=verify_ssl,
                 )
                 app.logger.debug(
                     "sent port: {}, status code: {}".format(port, req.status_code)
@@ -400,7 +401,7 @@ class RDSNamespace(Namespace):
         req = requests.post(
             f"{urlPort}/credentials",
             json=body,
-            verify=os.getenv("VERIFY_SSL", "False") == "True",
+            verify=verify_ssl,
         )
         app.logger.debug(req.text)
 
@@ -434,7 +435,7 @@ class RDSNamespace(Namespace):
         requests.put(
             f"{urlResearch}/user/{user}/research/{researchIndex}/researchname",
             json={"researchname": jsonData["researchname"]},
-            verify=os.getenv("VERIFY_SSL", "False") == "True",
+            verify=verify_ssl,
         )
 
     @authenticated_only
@@ -496,7 +497,7 @@ class RDSNamespace(Namespace):
                     requests.post(
                         f"{urlResearch}/user/{user}/research/{researchIndex}/{portOutRight}",
                         json=port,
-                        verify=os.getenv("VERIFY_SSL", "False") == "True",
+                        verify=verify_ssl,
                     )
 
         def getIdPortListForRemoval(portList):
@@ -507,7 +508,7 @@ class RDSNamespace(Namespace):
             for portType in crossPort.values():
                 ports = requests.get(
                     f"{urlResearch}/user/{user}/research/{researchIndex}/{portType}",
-                    verify=os.getenv("VERIFY_SSL", "False") == "True",
+                    verify=verify_ssl,
                 ).json()
                 for index, port in enumerate(ports):
                     for givenPort in portList:
@@ -521,7 +522,7 @@ class RDSNamespace(Namespace):
                 app.logger.debug(f"type: {portType}, id: {portId}")
                 requests.delete(
                     f"{urlResearch}/user/{user}/research/{researchIndex}/{portType}/{portId}",
-                    verify=os.getenv("VERIFY_SSL", "False") == "True",
+                    verify=verify_ssl,
                 )
 
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))

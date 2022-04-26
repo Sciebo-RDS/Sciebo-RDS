@@ -8,7 +8,7 @@ from flask_login import (
     logout_user,
     current_user,
 )
-from .app import app, socketio, user_store, use_predefined_user, use_embed_mode, use_proxy, redirect_url, trans_tbl, domains_dict, origins
+from .app import app, socketio, user_store, use_predefined_user, use_embed_mode, use_proxy, redirect_url, trans_tbl, domains_dict, origins, verify_ssl
 from .websocket import exchangeCodeData, RDSNamespace
 import json
 import requests
@@ -67,7 +67,7 @@ class User(UserMixin):
                 req = requests.get(
                     f"{url}/apps/rds/api/1.0/informations",
                     headers=headers,
-                    verify=os.getenv("VERIFY_SSL", "False") == "True",
+                    verify=verify_ssl,
                 )
 
                 if req.status_code == 200:

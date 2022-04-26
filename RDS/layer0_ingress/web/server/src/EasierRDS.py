@@ -4,7 +4,7 @@ import os
 import json
 import re
 from flask_login import current_user
-from .app import use_predefined_user, app, use_tests_folder
+from .app import use_predefined_user, app, use_tests_folder, verify_ssl
 
 
 class AttrDict(dict):
@@ -94,7 +94,7 @@ class HTTPRequest:
         app.logger.debug(f"empty data: {sendEmptyData}")
 
         parameters = {
-            "verify": os.getenv("VERIFY_SSL", "False") == "True"
+            "verify": verify_ssl
         }
 
         if not sendEmptyData:
