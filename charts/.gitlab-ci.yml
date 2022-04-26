@@ -49,4 +49,4 @@ deploy:
     - mkdir -p ~/.kube
     - cat "$KUBE_CONFIG" | base64 -d - > ~/.kube/config
     - export KUBECONFIG=~/.kube/config
-    - helm secrets upgrade -i sciebo-rds charts/all --values $HELM_DEPLOY_VALUES --set-string global.image.tag=$CI_PIPELINE_ID
+    - helm secrets upgrade -i sciebords charts/all --values $HELM_DEPLOY_VALUES --set-string global.image.tag=$CI_PIPELINE_ID
