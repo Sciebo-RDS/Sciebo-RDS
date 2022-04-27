@@ -307,7 +307,7 @@ class RDSNamespace(Namespace):
         research["synchronization_process_status"] = ProcessStatus.START
             
         for index, port in enumerate(research["portOut"]):
-            research["portout"][index]["status"] = ProcessStatus.START
+            research["portOut"][index]["status"] = ProcessStatus.START
         return research
 
     def __reload_research_status(self, research):
@@ -351,7 +351,7 @@ class RDSNamespace(Namespace):
                 createProjectResp
             )
 
-            research["portout"][index]["status"] = ProcessStatus.PROJECT_CREATED
+            research["portOut"][index]["status"] = ProcessStatus.PROJECT_CREATED
             self.__update_research_process(research)
         except:
             app.logger.debug(
