@@ -260,7 +260,7 @@ class RDSNamespace(Namespace):
         except Exception as e:
             app.logger.error(e, exc_info=True)
 
-    def __update_research_process(self, research):
+    def __update_research_process(self, research): 
         research_progress[research["researchId"]] = research
         
     def __get_research_process(self, research):
@@ -291,7 +291,7 @@ class RDSNamespace(Namespace):
 
             if (
                 research["synchronization_process_status"]
-                == ProcessStatus.FILEDATA_SYNCHRONIZED
+                == ProcessStatus.FILEDATA_SYNCHRONIZED.value
             ):
                 self.__trigger_finish_sync(jsonData, research)
                 app.logger.debug("done synchronization, research: {}".format(research))
@@ -304,10 +304,10 @@ class RDSNamespace(Namespace):
 
     def __load_research(self, jsonData):
         research = json.loads(httpManager.makeRequest("getResearch", data=jsonData))
-        research["synchronization_process_status"] = ProcessStatus.START
+        research["synchronization_process_status"] = ProcessStatus.START.value
             
         for index, port in enumerate(research["portOut"]):
-            research["portOut"][index]["status"] = ProcessStatus.START
+            research["portOut"][index]["status"] = ProcessStatus.START.value
         return research
 
     def __reload_research_status(self, research):
@@ -319,7 +319,7 @@ class RDSNamespace(Namespace):
     def __trigger_finish_sync(self, jsonData, research):
         httpManager.makeRequest("finishResearch", data=jsonData)
 
-        research["synchronization_process_status"] = ProcessStatus.FINISHED
+        research["synchronization_process_status"] = ProcessStatus.FINISHED.value
         self.__update_research_process(research)
         self.__delete_research(research)
 
@@ -328,7 +328,7 @@ class RDSNamespace(Namespace):
 
     def __trigger_project_creation(self, research):
         for index, port in enumerate(research["portOut"]):
-            if port["status"] != ProcessStatus.START:
+            if port["status"] != ProcessStatus.START.value:
                 continue
 
             self.__trigger_project_creation_for_port(research, index, port)
@@ -351,7 +351,7 @@ class RDSNamespace(Namespace):
                 createProjectResp
             )
 
-            research["portOut"][index]["status"] = ProcessStatus.PROJECT_CREATED
+            research["portOut"][index]["status"] = ProcessStatus.PROJECT_CREATED.value
             self.__update_research_process(research)
         except:
             app.logger.debug(
@@ -360,12 +360,12 @@ class RDSNamespace(Namespace):
 
     def __trigger_metadatasync(self, jsonData, research):
         try:
-            if research["synchronization_process_status"] == ProcessStatus.START:
+            if research["synchronization_process_status"] == ProcessStatus.START.value:
                 httpManager.makeRequest("triggerMetadataSynchronization", data=jsonData)
 
                 research[
                     "synchronization_process_status"
-                ] = ProcessStatus.METADATA_SYNCHRONIZED
+                ] = ProcessStatus.METADATA_SYNCHRONIZED.value
                 self.__update_research_process(research)
         except:
             app.logger.debug(
@@ -375,12 +375,12 @@ class RDSNamespace(Namespace):
     def __trigger_filesync(self, jsonData, research):
         if (
             research["synchronization_process_status"]
-            == ProcessStatus.METADATA_SYNCHRONIZED
+            == ProcessStatus.METADATA_SYNCHRONIZED.value
         ):
             httpManager.makeRequest("triggerFileSynchronization", data=jsonData)
             research[
                 "synchronization_process_status"
-            ] = ProcessStatus.FILEDATA_SYNCHRONIZED
+            ] = ProcessStatus.FILEDATA_SYNCHRONIZED.value
             self.__update_research_process(research)
 
     @authenticated_only

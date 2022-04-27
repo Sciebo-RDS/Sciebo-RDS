@@ -1,8 +1,8 @@
 from enum import Enum
 
-class ProcessStatus(Enum):
-    START = 0
-    FINISHED = 1
-    PROJECT_CREATED = 2
-    METADATA_SYNCHRONIZED = 3
-    FILEDATA_SYNCHRONIZED = 4
+class ProcessStatus(int, Enum):
+    START: int = 0
+    FINISHED: int = 1
+    PROJECT_CREATED: int = 2
+    METADATA_SYNCHRONIZED: int = 3
+    FILEDATA_SYNCHRONIZED: int = 4
