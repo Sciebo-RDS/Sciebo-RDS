@@ -22,7 +22,7 @@ def bootstrap(name="MicroService", testing=False, *args, **kwargs):
 
     opts = {
         "use_in_memory_on_failure": (
-            os.getenv("use_inmemory_as_fallover", "False") == "True"
+            os.getenv("use_inmemory_as_fallover", "False").capitalize() == "True"
         )
     }
     if testing:

@@ -1,7 +1,12 @@
 <?php
 
-\OC::$server->getNavigationManager()->add(function () {
-    $urlGenerator = \OC::$server->getURLGenerator();
+# $app = new \OCP\AppFramework\App('RDS');
+
+
+$server = \OC::$server;
+$server->getNavigationManager()->add(function () {
+    $server = \OC::$server;
+    $urlGenerator = $server->getURLGenerator();
     return [
         // The string under which your app will be referenced in owncloud
         'id' => 'rds',
@@ -17,19 +22,26 @@
         'icon' => $urlGenerator->imagePath('rds', 'research-white.svg'),
 
         // The application's title, used in the navigation & the settings page of your app
-        'name' => \OC::$server->getL10N('rds')->t('RDS App'),
+        'name' => $server->getL10N('rds')->t('RDS App'),
     ];
 });
 
-use OCP\Util;
+use OCA\RDS\Service\RDSService;
+use \OCP\Util;
+use \OCP\AppFramework\Http\EmptyContentSecurityPolicy;
 
-$eventDispatcher = \OC::$server->getEventDispatcher();
+$eventDispatcher = $server->getEventDispatcher();
 $eventDispatcher->addListener('OCA\Files::loadAdditionalScripts', function () {
-    $policy = new \OCP\AppFramework\Http\EmptyContentSecurityPolicy();
-    $url = parse_url(\OC::$server->getConfig()->getAppValue("rds", "cloudURL"));
+    $server = \OC::$server;
+    $policy = new EmptyContentSecurityPolicy();
+
+    $val = $server->query(RDSService::class)->myServerUrl();
+
+    $url = parse_url($val);
     $policy->addAllowedConnectDomain($url["scheme"] . "://" . $url["host"] . ":" . $url["port"]);
     $policy->addAllowedConnectDomain(str_replace($url["scheme"], "http", "ws") . "://" . $url["host"] . ":" . $url["port"]);
     \OC::$server->getContentSecurityPolicyManager()->addDefaultPolicy($policy);
+
 
     Util::addScript('rds', "socket.io.min");
     Util::addScript('rds', 'fileActions');

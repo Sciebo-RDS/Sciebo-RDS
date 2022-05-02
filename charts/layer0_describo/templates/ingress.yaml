@@ -8,11 +8,11 @@ metadata:
   annotations:
 {{ include "common.ingressAnnotations" . | indent 4 }}
 spec:
-  {{- with (include "common.tlsSecretName" .) }}
+  {{- if (include "common.tlsSecretName" .) }}
   tls:
     - hosts:
         - {{ $.Values.domain }}
-      secretName: {{ . }}
+      secretName: {{ include "common.tlsSecretName" . }}
   {{- end }}
   rules:
     - host: {{ .Values.domain }}

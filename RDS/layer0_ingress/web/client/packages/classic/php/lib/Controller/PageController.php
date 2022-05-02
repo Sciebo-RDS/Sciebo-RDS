@@ -35,10 +35,6 @@ class PageController extends Controller
 
     private $rdsService;
 
-    private $public_key;
-    private $private_key;
-    private $jwsBuilder;
-
     private $config;
 
     use Errors;
@@ -70,11 +66,7 @@ class PageController extends Controller
     public function index()
     {
         $policy = new \OCP\AppFramework\Http\EmptyContentSecurityPolicy();
-        $url = parse_url(\OC::$server->getConfig()->getAppValue("rds", "cloudURL"));
-
-        if (!isset($url["port"])) {
-            $url["port"] = ($url["scheme"] == "http") ? "80" : "443";
-        }
+        $url = parse_url($this->rdsService->myServerUrl());
 
         $http = $url["scheme"] . "://" . $url["host"] . ":" . $url["port"];
         $ws  = str_replace($url["scheme"], "http", "ws") . "://" . $url["host"] . ":" . $url["port"];
@@ -96,6 +88,6 @@ class PageController extends Controller
             "oauthname" => $this->rdsService->getOauthValue(),
         ];
 
-        return new TemplateResponse('rds', "main.research", $params);
+        return new TemplateResponse($this->appName, "main.research", $params);
     }
 }

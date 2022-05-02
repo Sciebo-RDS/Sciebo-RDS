@@ -10,18 +10,18 @@ use \OCP\IConfig;
 use \OCA\RDS\Service\RDSService;
 
 
-class SetOauthname extends Command
+class Reset extends Command
 {
 
     private $config;
     private $appName;
     private $rdsService;
+    private $urlService;
 
-    public function __construct($AppName, IConfig $config, RDSService $rdsService)
+    public function __construct($AppName, RDSService $rdsService)
     {
         parent::__construct();
         $this->appName = $AppName;
-        $this->config = $config;
         $this->rdsService = $rdsService;
     }
 
@@ -29,13 +29,8 @@ class SetOauthname extends Command
     protected function configure()
     {
         $this
-            ->setName('rds:set-oauthname')
-            ->setDescription('Sets the name of oauth client used by RDS app.')
-            ->addArgument(
-                'oauthname',
-                InputArgument::REQUIRED,
-                'The name of the oauth2 client for the RDS app.'
-            );
+            ->setName('rds:reset')
+            ->setDescription('Resets values in owncloud config');
     }
 
     /**
@@ -46,8 +41,7 @@ class SetOauthname extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $oauthname = $input->getArgument('oauthname');
-        $this->config->setAppValue($this->appName, $this->rdsService->getOauthAppField(), $oauthname);
-        $output->writeln("Set <$oauthname> as oauthname successful.");
+        $this->rdsService->execute_reset();
+        $output->writeln("Reset executed.");
     }
 }

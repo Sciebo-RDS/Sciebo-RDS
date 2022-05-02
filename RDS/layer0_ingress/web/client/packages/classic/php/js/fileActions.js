@@ -36,21 +36,22 @@
     })
 
     config.finally(() => {
-      $.ajax({
-        type: "post",
-        url: `${OC.rds.config.server}/login`,
-        contentType: "application/json",
-        data: JSON.stringify(OC.rds.config),
-        crossDomain: true,
-        xhrFields: {
-          withCredentials: true
-        },
-      }).done(() => {
-        OC.rds.loggedIn = true
-        self.resolve(true)
-      }).fail(() => {
-        self.reject("user not logged in")
-      })
+        $.ajax({
+          type: "post",
+          url: `${OC.rds.config.server}/login`,
+          contentType: "application/json",
+          data: JSON.stringify(OC.rds.config),
+          crossDomain: true,
+          xhrFields: {
+            withCredentials: true
+          },
+        }).done(() => {
+          OC.rds.loggedIn = true
+          self.resolve(true)
+        }).fail(() => {
+          console.error("user not logged in")
+          self.reject(false)
+        })
     });
   })
 
@@ -197,7 +198,10 @@
     OC.Plugins.register("OCA.Files.NewFileMenu", createRdsResearch);
 
     /* Add actions, when checkLogin is done. */
-    checkLogin.then(() => {
+    checkLogin.then((response) => {
+      if (!response) {
+        console.error("there was an error")
+      }
       const socket = io(OC.rds.config.server, {
         reconnection: true,
         reconnectionDelay: 3000,
@@ -213,7 +217,13 @@
         //socket.emit("getAllResearches", addActions);
       });
 
-      socket.open()
+      if ( OC.rds.loggedIn) {
+        socket.open()
+      } else {
+        console.error("not logged in via ajax")
+      }
+    }).catch((error)=> {
+      console.error("There was an error: " + error + ". This error comes from sciebo RDS (CORS is not correctly set)! So please configure it correctly or disable the app.")
     })
   }
 

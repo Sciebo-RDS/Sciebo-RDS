@@ -2,10 +2,7 @@
 
 namespace OCA\RDS\Controller;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
 
-use Jose\Component\KeyManagement\JWKFactory;
-use Jose\Component\Core\Util\RSAKey;
 
 use \OCA\OAuth2\Db\ClientMapper;
 use OCP\IUserSession;
@@ -13,9 +10,7 @@ use OCP\IURLGenerator;
 use \OCA\RDS\Service\RDSService;
 
 use OCP\IRequest;
-use OCP\AppFramework\{
-    ApiController,
-};
+use OCP\AppFramework\ApiController;
 use OCP\IConfig;
 use OCP\L10N\IFactory;
 
@@ -42,7 +37,6 @@ class RdsApiController extends ApiController
 
     private $public_key;
     private $private_key;
-    private $jwsBuilder;
 
     private $config;
     protected $lfactory;
@@ -73,20 +67,9 @@ class RdsApiController extends ApiController
         $this->config = $config;
         $this->lfactory = $lfactory;
 
-        $this->jwk = RSAKey::createFromJWK(JWKFactory::createRSAKey(
-            4096 // Size in bits of the key. We recommend at least 2048 bits.
-        ));
-
-        $this->private_key = $this->config->getAppValue("rds", "privatekey", "");
-        $this->public_key = $this->config->getAppValue("rds", "publickey", "");
-
-        if ($this->private_key === "") {
-            $this->public_key = RSAKey::toPublic($this->jwk)->toPEM();
-            $this->private_key = $this->jwk->toPEM();
-
-            $this->config->setAppValue("rds", "privatekey", $this->private_key);
-            $this->config->setAppValue("rds", "publickey", $this->public_key);
-        }
+        $arr = $rdsService->getKeys();
+        $this->private_key = $arr[0];
+        $this->public_key = $arr[1];
     }
 
     /**
@@ -100,24 +83,6 @@ class RdsApiController extends ApiController
      */
     public function informations()
     {
-        function my_server_url()
-        {
-            $server_name = $_SERVER['SERVER_NAME'];
-
-            if (!in_array($_SERVER['SERVER_PORT'], [80, 443])) {
-                $port = ":$_SERVER[SERVER_PORT]";
-            } else {
-                $port = '';
-            }
-
-            if (!empty($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) == 'on' || $_SERVER['HTTPS'] == '1')) {
-                $scheme = 'https';
-            } else {
-                $scheme = 'http';
-            }
-            return $scheme . '://' . $server_name . $port;
-        }
-
         return $this->handleNotFound(function () {
             $user = \OC::$server->getUserSession()->getUser();
             $data = [
@@ -134,7 +99,7 @@ class RdsApiController extends ApiController
                 "searchTerms" => $user->getSearchTerms(),
                 "webdav_type" => "owncloud",
                 "serverName" => $_SERVER['SERVER_NAME'],
-                "webdav" => my_server_url() . "/remote.php/webdav",
+                "webdav" => $this->rdsService->myServerUrl() . "/remote.php/webdav",
                 "access_token" => "", # maybe for later usage
             ];
 
@@ -148,7 +113,7 @@ class RdsApiController extends ApiController
 
             return [
                 "jwt" => $token,
-                "cloudURL" => \OC::$server->getConfig()->getAppValue("rds", "cloudURL"),
+                "cloudURL" => $this->urlService->getURL(),
                 "language" => $activeLangCode,
                 "serverName" => $data["serverName"]
             ];
