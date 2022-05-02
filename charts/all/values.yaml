@@ -1,7 +1,7 @@
 global:
   domain: localhost
   image:
-    tag: v0.1.6
+    tag: v0.1.7
   ingress:
     tls:
       secretName: sciebords-tls-public
@@ -14,8 +14,8 @@ global:
     api_secret: IAMSECRET
   postgresql:
     postgresqlDatabase: "describo"
-    postgresqlUsername: "d9oNHWc41tVUIR4778Qsgi9kmi6c5FD2"
-    postgresqlPassword: "9hMh0QMKfpRTNWkktwPReyLWJkt9bDmE"
+    postgresqlUsername: "d9oNHWc41tVUIR4778Qsgi9kmi6c5FD2" # placeholder for security
+    postgresqlPassword: "9hMh0QMKfpRTNWkktwPReyLWJkt9bDmE" # same as above
 
 # Set this to DEBUG and restart your applications to get more informations in logs. Default: INFO
 loglevel: INFO
