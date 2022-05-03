@@ -377,10 +377,9 @@ class Test_parser(unittest.TestCase):
             {"servicename": "port-openscienceframework"},
             {"servicename": "port-zenodo"},
         ]
-        
+
         with self.assertRaises(KeyError):
             applyFilters(services, domain)
-
 
     def test_servicelist_1(self):
         servicelist = [
@@ -391,9 +390,7 @@ class Test_parser(unittest.TestCase):
 
         self.assertEqual(
             True,
-            isServiceInLastServicelist(
-                "port-datasafe", {"servicelist": servicelist}
-            ),
+            isServiceInLastServicelist("port-datasafe", {"servicelist": servicelist}),
         )
 
     def test_servicelist_2(self):
@@ -405,9 +402,7 @@ class Test_parser(unittest.TestCase):
 
         self.assertEqual(
             False,
-            isServiceInLastServicelist(
-                "port-notfound", {"servicelist": servicelist}
-            ),
+            isServiceInLastServicelist("port-notfound", {"servicelist": servicelist}),
         )
 
     def test_servicelist_3(self):
@@ -419,11 +414,9 @@ class Test_parser(unittest.TestCase):
 
         self.assertEqual(
             True,
-            isServiceInLastServicelist(
-                "port-datasafe", {"servicelist": servicelist}
-            ),
+            isServiceInLastServicelist("port-datasafe", {"servicelist": servicelist}),
         )
-    
+
     def test_servicelist_4(self):
         servicelist = [
             {"informations": {"servicename": "port-datasafe"}},
@@ -435,9 +428,9 @@ class Test_parser(unittest.TestCase):
             True,
             isServiceInLastServicelist(
                 "port-datasafe", helperSession={"servicelist": servicelist}
-            )
+            ),
         )
-        
+
     def test_servicelist_5(self):
         servicelist = [
             {"servicename": "port-datasafe"},
@@ -449,4 +442,3 @@ class Test_parser(unittest.TestCase):
             isServiceInLastServicelist(
                 "port-datasafe", helperSession={"servicelist": servicelist}
             )
-    
