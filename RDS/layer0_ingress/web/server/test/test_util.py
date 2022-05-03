@@ -338,8 +338,29 @@ class Test_parser(unittest.TestCase):
             {"informations": {"servicename": "port-zenodo"}},
         ]
         self.assertEqual(expected, applyFilters(services, domain))
-        
-        
+
+    def test_applyfilters_8(self):
+        domain = {
+            "oauth": {
+                "name": "owncloud.local",
+                "ADDRESS": "https://owncloud.local/owncloud",
+                "OAUTH_CLIENT_ID": "ABC",
+                "OAUTH_CLIENT_SECRET": "XYZ",
+                "filters": {"only": [], "except": ["port-openscienceframework"]},
+            }
+        }
+
+        services = [
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-openscienceframework"}},
+            {"informations": {"servicename": "port-zenodo"}},
+        ]
+        expected = [
+            {"informations": {"servicename": "port-datasafe"}},
+            {"informations": {"servicename": "port-zenodo"}},
+        ]
+        self.assertEqual(expected, applyFilters(services, domain))
+
     def test_applyfilters_raise_keyerror(self):
         domain = {
             "oauth": {

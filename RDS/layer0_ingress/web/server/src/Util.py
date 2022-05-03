@@ -140,12 +140,12 @@ def applyFilters(response: dict, helperSession=None) -> dict:
         onlyFiltered = []
         
         
-        if "only" in filters:
+        if "only" in filters and len(filters["only"]) > 0:
             onlyFiltered = [service for service in response if service["informations"]["servicename"] in filters["only"]]
         else:
             onlyFiltered = response
         
-        if "except" in filters:
+        if "except" in filters and len(filters["except"]) > 0:
             exceptFiltered = [service for service in onlyFiltered if service["informations"]["servicename"] not in filters["except"]]
         else:
             exceptFiltered = onlyFiltered
