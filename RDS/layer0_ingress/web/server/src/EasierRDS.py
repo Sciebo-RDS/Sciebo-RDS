@@ -43,7 +43,7 @@ class HTTPRequest:
             url ([type]): [description]
             method (str, optional): [description]. Defaults to "get".
             beforeFunction ([type], optional): [description]. Defaults to None.
-            afterFunction ([type], optional): [description]. Defaults to None.
+            afterFunction ([type], optional): Function gets response. But not if the name starts with "refresh". Defaults to None.
             clear (bool, optional): True, if the functions should get the response object itself, instead of already json unserialized object. Defaults to False.
         """
         self.requestList[key] = {

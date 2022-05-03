@@ -101,14 +101,14 @@ def listContainsService(arr: list, service: dict) -> bool:
     return False
 
 
-def removeDuplicates(response: dict) -> dict:
+def removeDuplicates(response: list) -> list:
     """Removes duplicate entries of equal servicenames
 
     Args:
-        response (dict): Dict of service entries
+        response (list): list of service entries
 
     Returns:
-        Same as response, duplicates removed.
+        Same as response, but duplicates removed.
     """
     withoutDuplicates = []
     for service in response:
@@ -116,7 +116,7 @@ def removeDuplicates(response: dict) -> dict:
             withoutDuplicates.append(service)
     return withoutDuplicates
 
-def applyFilters(response: dict, helperSession=None) -> dict:
+def applyFilters(response: list, helperSession=None) -> list:
     """Applies filters for services
 
     Args:
