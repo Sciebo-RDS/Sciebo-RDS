@@ -65,7 +65,7 @@ class User(UserMixin):
                     "OWNCLOUD_URL", "https://localhost/index.php")
 
                 req = requests.get(
-                    f"{url}/apps/rds/api/1.0/informations",
+                    f"{url}/index.php/apps/rds/api/1.0/informations",
                     headers=headers,
                     verify=verify_ssl,
                 )
