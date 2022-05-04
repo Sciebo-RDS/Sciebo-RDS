@@ -61,7 +61,7 @@ with open("domains.json") as f:
 for i in range(len(domains)):
     url = domains[i]["ADDRESS"]
     req = requests.get(
-        f"{url}/apps/rds/api/1.0/publickey",
+        f"{url}/index.php/apps/rds/api/1.0/publickey",
         verify=verify_ssl,
     ).json()
 
