@@ -2,9 +2,6 @@ global:
   domain: localhost
   image:
     tag: v0.1.7
-  ingress:
-    tls:
-      secretName: sciebords-tls-public
   REDIS_HOST: redis
   REDIS_PORT: 6379
   REDIS_HELPER_HOST: redis-helper
