@@ -24,11 +24,7 @@ def get_port_string(name):
 
 class TokenService:
     # static
-    secret = (
-        os.getenv("TOKENSERVICE_STATE_SECRET")
-        if os.getenv("TOKENSERVICE_STATE_SECRET") is not None
-        else secrets.token_urlsafe()
-    )
+    secret = os.getenv("TOKENSERVICE_STATE_SECRET", secrets.token_urlsafe())
     address = os.getenv("CENTRAL_SERVICE_TOKEN_STORAGE")
 
     _services = None
