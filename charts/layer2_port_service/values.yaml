@@ -26,6 +26,7 @@ service:
 
 environment:
   IGNORE_PROJECTS: "False"
+  TOKENSERVICE_STATE_SECRET: ""
 
 resources:
   {}
