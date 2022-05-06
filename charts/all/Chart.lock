@@ -25,7 +25,7 @@ dependencies:
   version: 0.2.3
 - name: layer2-port-service
   repository: file://../layer2_port_service
-  version: 0.2.4
+  version: 0.2.5
 - name: layer2-metadata-service
   repository: file://../layer2_metadata_service
   version: 0.2.3
@@ -44,5 +44,5 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 14.8.11
-digest: sha256:4abef2fbd11f7e8c34250889ea0a82c7620d9318f588b99f442a91bc627a3476
-generated: "2022-04-26T14:47:07.846242104+02:00"
+digest: sha256:93ca9f7d7babe87c14ed780cb650f7c94a41bacf0b6f806cef1506f05b76925f
+generated: "2022-05-06T13:06:05.593301845+02:00"
