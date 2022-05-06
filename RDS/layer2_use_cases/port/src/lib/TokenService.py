@@ -2,7 +2,16 @@ import requests
 import os
 import json
 from flask import jsonify
-from RDS import BaseService, LoginService, OAuth2Service, User, LoginToken, OAuth2Token, Token, Util
+from RDS import (
+    BaseService,
+    LoginService,
+    OAuth2Service,
+    User,
+    LoginToken,
+    OAuth2Token,
+    Token,
+    Util,
+)
 from lib.Exceptions.ServiceException import *
 import jwt
 import datetime
@@ -25,6 +34,7 @@ def get_port_string(name):
 class TokenService:
     # static
     secret = os.getenv("TOKENSERVICE_STATE_SECRET", secrets.token_urlsafe())
+
     address = os.getenv("CENTRAL_SERVICE_TOKEN_STORAGE")
 
     _services = None
@@ -34,7 +44,9 @@ class TokenService:
             self.address = testing
 
         self._services = []
-        self.IGNORE_PROJECTS = os.getenv("IGNORE_PROJECTS", "False").capitalize() == "True"
+        self.IGNORE_PROJECTS = (
+            os.getenv("IGNORE_PROJECTS", "False").capitalize() == "True"
+        )
 
     def getOAuthURIForService(self, service: BaseService) -> str:
         """
@@ -77,8 +89,9 @@ class TokenService:
             try:
                 raise ServiceNotFoundError(service)
             except:
-                raise ServiceNotFoundError(BaseService(
-                    servicename=servicename, implements=["metadata"]))
+                raise ServiceNotFoundError(
+                    BaseService(servicename=servicename, implements=["metadata"])
+                )
 
         svc = Util.getServiceObject(response.json())
 
@@ -96,7 +109,9 @@ class TokenService:
 
         return [getattr(svc, "authorize_url", None) for svc in self._services]
 
-    def getService(self, servicename: str, clean=False, informations=False) -> BaseService:
+    def getService(
+        self, servicename: str, clean=False, informations=False
+    ) -> BaseService:
         """
         Returns a dict like self.getAllServices, but for only a single servicename (str).
 
@@ -185,7 +200,8 @@ class TokenService:
             "servicename": service.servicename,
             "authorize_url": getattr(service, "authorize_url", None),
             "implements": service.implements,
-            "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=15),
+            "exp": datetime.datetime.now(tz=datetime.timezone.utc)
+            + datetime.timedelta(minutes=15),
             "iat": datetime.datetime.now(tz=datetime.timezone.utc),
         }
         state = jwt.encode(data, self.secret, algorithm="HS256")
@@ -219,7 +235,7 @@ class TokenService:
                         "access_token": token.access_token,
                         "projects": self.getProjectsForToken(token),
                         "implements": token._service.implements,
-                        "informations": self.getInformations(token.service)
+                        "informations": self.getInformations(token.service),
                     }
                 )
         except Exception as e:
@@ -359,9 +375,7 @@ class TokenService:
         Raise a `ServiceNotFoundError`, if service not found.
         """
 
-        headers = {
-            'content-type': 'application/json'
-        }
+        headers = {"content-type": "application/json"}
 
         response = requests.post(
             f"{self.address}/user/{user.username}/token",
@@ -530,7 +544,7 @@ class TokenService:
             user_id = response_with_access_token["user_id"]
         except:
             # zenodo specific
-            #user_id = response_with_access_token["user"]["id"]
+            # user_id = response_with_access_token["user"]["id"]
             pass
         # TODO: add here more cloud storage provider for username
 
@@ -544,8 +558,7 @@ class TokenService:
 
         access_token = response_with_access_token["access_token"]
         refresh_token = response_with_access_token["refresh_token"]
-        exp_date = datetime.datetime.now() + datetime.timedelta(
-            seconds=exp_date)
+        exp_date = datetime.datetime.now() + datetime.timedelta(seconds=exp_date)
 
         oauthtoken = OAuth2Token(
             User(user), service, access_token, refresh_token, exp_date
@@ -566,16 +579,12 @@ class TokenService:
         logger.info(f"response oauthtoken body: {response.text}")
 
         if response.status_code >= 300:
-            raise CodeNotExchangeable(
-                response.status_code, service, msg=response.text
-            )
+            raise CodeNotExchangeable(response.status_code, service, msg=response.text)
 
         return oauthtoken
 
 
-def addTokenToUser(
-    self, token: Union[str, Token]
-) -> bool:
+def addTokenToUser(self, token: Union[str, Token]) -> bool:
     """Add the given Token to user.
 
     Args:
@@ -602,4 +611,4 @@ def addTokenToUser(
     )
     logger.info(f"response oauthtoken body: {response.text}")
 
-    return (response.status_code >= 300)
+    return response.status_code >= 300
