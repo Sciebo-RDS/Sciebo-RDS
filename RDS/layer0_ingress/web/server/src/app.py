@@ -71,7 +71,7 @@ class DomainsDict(UserDict):
         except KeyError:
             status_code = 500
             req = None
-            url = self["ADDRESS"]
+            url = self[key]["ADDRESS"]
 
             while status_code > 200:
                 req = requests.get(
