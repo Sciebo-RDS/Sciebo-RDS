@@ -83,9 +83,9 @@ class DomainsDict(UserDict):
 
 # This handles also the single installation, because it is a one entry list in this case.
 with open("domains.json") as f:
-    domains = DomainsDict(json.load(f))
+    domains = json.load(f)
 
-domains_dict = {val["name"].translate(trans_tbl): val for val in domains}
+domains_dict = DomainsDict({val["name"].translate(trans_tbl): val for val in domains})
 
 
 try:
