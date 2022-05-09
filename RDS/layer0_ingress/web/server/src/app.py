@@ -60,12 +60,18 @@ from collections import UserDict
 
 
 class DomainsDict(UserDict):
-    def __getitem__(self, key):
-        value = super().__getitem__(key)
-        if "publickey" not in value:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.cache = {}
+                
+    def get_publickey(self, key):
+        try:
+            return self.cache[key]
+        except KeyError:
             status_code = 500
             req = None
-            url = value["ADDRESS"]
+            url = self["ADDRESS"]
 
             while status_code > 200:
                 req = requests.get(
@@ -76,9 +82,9 @@ class DomainsDict(UserDict):
                 status_code = req.status_code
             req = req.json()
 
-            value["publickey"] = req.get("publickey", "").replace("\\n", "\n")
-            super().__setitem__(key, value)
-        return value
+            val = req.get("publickey", "").replace("\\n", "\n")
+            self.cache[key] = val
+            return val
 
 
 # This handles also the single installation, because it is a one entry list in this case.

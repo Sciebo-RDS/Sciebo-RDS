@@ -8,7 +8,19 @@ from flask_login import (
     logout_user,
     current_user,
 )
-from .app import app, socketio, user_store, use_predefined_user, use_embed_mode, use_proxy, redirect_url, trans_tbl, domains_dict, origins, verify_ssl
+from .app import (
+    app,
+    socketio,
+    user_store,
+    use_predefined_user,
+    use_embed_mode,
+    use_proxy,
+    redirect_url,
+    trans_tbl,
+    domains_dict,
+    origins,
+    verify_ssl,
+)
 from .websocket import exchangeCodeData, RDSNamespace
 import json
 import requests
@@ -28,24 +40,29 @@ socketio.on_namespace(RDSNamespace("/"))
 
 def proxy(host, path):
     req = requests.get(f"{host}{path}", stream=True, timeout=1)
-    return Response(stream_with_context(req.iter_content(chunk_size=1024)), content_type=req.headers['content-type'])
+    return Response(
+        stream_with_context(req.iter_content(chunk_size=1024)),
+        content_type=req.headers["content-type"],
+    )
 
 
 class User(UserMixin):
-
     def to_dict(self):
         return {
             "id": self.id,
             "websocketId": self.websocketId,
             "userId": self.userId,
-            "token": self.token
+            "token": self.token,
+            "servername": self.servername
         }
 
     @classmethod
     def from_dict(cls, obj):
         return cls(**obj)
 
-    def __init__(self, id=None, userId=None, websocketId=None, token=None):
+    def __init__(
+        self, servername=None, id=None, userId=None, websocketId=None, token=None
+    ):
         super().__init__()
         if id is None:
             raise ValueError("id needs to be set-")
@@ -54,13 +71,14 @@ class User(UserMixin):
         self.websocketId = websocketId
         self.userId = userId
         self.token = token
+        self.servername = servername
 
         if userId is None and token is not None:
             headers = {
                 "Authorization": f"Bearer {token}"
             }
 
-            for domain in domains_dict.values():
+            for key, domain in domains_dict.items():
                 url = domain["ADDRESS"] or os.getenv(
                     "OWNCLOUD_URL", "https://localhost/index.php")
 
@@ -74,11 +92,12 @@ class User(UserMixin):
                     text = req.json()["jwt"]
 
                     data = jwt.decode(
-                        text, domain["publickey"], algorithms=["RS256"]
+                        text, domains_dict.get_publickey(key), algorithms=["RS256"]
                     )
                     app.logger.debug(data)
 
                     self.userId = data["cloudID"]
+                    self.servername = key
                     return
 
             raise ValueError
@@ -119,23 +138,21 @@ def login():
     _, _, servername = unverified["cloudID"].rpartition("@")
     servername = servername.translate(trans_tbl)
 
-    publickey = domains_dict[servername].get("publickey") or ""
+    publickey = domains_dict.get_publickey(servername)
 
     user = None
-    if publickey != "":
-        try:
-            decoded = jwt.decode(data, publickey, algorithms=["RS256"])
+    try:
+        decoded = jwt.decode(data, publickey, algorithms=["RS256"])
 
-            user = User(
-                id=str(uuid.uuid4()),
-                userId=decoded["cloudID"]
-            )
+        user = User(
+            id=str(uuid.uuid4()), userId=decoded["cloudID"], servername=servername
+        )
 
-            session["informations"] = decoded
-            session["servername"] = servername
-            session["oauth"] = domains_dict[servername]
-        except Exception as e:
-            app.logger.error(e, exc_info=True)
+        session["informations"] = decoded
+        session["servername"] = servername
+        session["oauth"] = domains_dict[servername]
+    except Exception as e:
+        app.logger.error(e, exc_info=True)
 
     if user is not None:
         user_store[user.get_id()] = user.to_dict()
@@ -162,19 +179,15 @@ def logout():
 @app.route("/", defaults={"path": "index.html"})
 @app.route("/<path:path>")
 def index(path):
+    # only for testing condition
     if use_embed_mode and use_predefined_user:
         app.logger.debug("skip authentication")
-        user = User(
-            id=str(uuid.uuid4()), userId=os.getenv("DEV_FLASK_USERID")
-        )
+        user = User(id=str(uuid.uuid4()), userId=os.getenv("DEV_FLASK_USERID"), servername=domains_dict.values()[0]["ADDRESS"])
         user_store[user.get_id()] = user.to_dict()
         login_user(user)
 
     if "access_token" in request.args:
-        user = User(
-            id=str(uuid.uuid4()),
-            token=request.args["access_token"]
-        )
+        user = User(id=str(uuid.uuid4()), token=request.args["access_token"])
         user_store[user.get_id()] = user.to_dict()
         login_user(user)
         return redirect("/")
@@ -192,6 +205,4 @@ def index(path):
     if use_embed_mode:
         return app.send_static_file(path)
 
-    return redirect(
-        redirect_url
-    )
+    return redirect(redirect_url)
