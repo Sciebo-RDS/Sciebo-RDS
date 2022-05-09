@@ -26,7 +26,9 @@ from dotenv import load_dotenv
 env_path = Path("..") / ".env"
 load_dotenv(dotenv_path=env_path)
 
-use_predefined_user = os.getenv("DEV_USE_PREDEFINED_USER", "False").capitalize() == "True"
+use_predefined_user = (
+    os.getenv("DEV_USE_PREDEFINED_USER", "False").capitalize() == "True"
+)
 use_tests_folder = os.getenv("DEV_USE_DUMPS_FOLDER", "False").capitalize() == "True"
 verify_ssl = os.getenv("VERIFY_SSL", "False").capitalize() == "True"
 
