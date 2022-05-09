@@ -54,18 +54,34 @@ startup_nodes = [
 repl = ".:"
 trans_tbl = "".maketrans(repl, "-" * len(repl))
 
+from collections import UserDict
+
+
+class DomainsDict(UserDict):
+    def __getitem__(self, key):
+        value = super().__getitem__(key)
+        if "publickey" not in value:
+            status_code = 500
+            req = None
+            url = value["ADDRESS"]
+
+            while status_code > 200:
+                req = requests.get(
+                    f"{url}/index.php/apps/rds/api/1.0/publickey",
+                    verify=verify_ssl,
+                )
+
+                status_code = req.status_code
+            req = req.json()
+
+            value["publickey"] = req.get("publickey", "").replace("\\n", "\n")
+            super().__setitem__(key, value)
+        return value
+
+
 # This handles also the single installation, because it is a one entry list in this case.
 with open("domains.json") as f:
-    domains = json.load(f)
-
-for i in range(len(domains)):
-    url = domains[i]["ADDRESS"]
-    req = requests.get(
-        f"{url}/index.php/apps/rds/api/1.0/publickey",
-        verify=verify_ssl,
-    ).json()
-
-    domains[i]["publickey"] = req.get("publickey", "").replace("\\n", "\n")
+    domains = DomainsDict(json.load(f))
 
 domains_dict = {val["name"].translate(trans_tbl): val for val in domains}
 
