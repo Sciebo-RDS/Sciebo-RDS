@@ -37,6 +37,8 @@ class PageController extends Controller
 
     private $config;
 
+    private $session;
+
     use Errors;
 
 
@@ -47,7 +49,8 @@ class PageController extends Controller
         ClientMapper $clientMapper,
         IUserSession $userSession,
         IURLGenerator $urlGenerator,
-        RDSService $rdsService
+        RDSService $rdsService,
+        ISession $session
     ) {
         parent::__construct($AppName, $request);
         $this->appName = $AppName;
@@ -57,6 +60,7 @@ class PageController extends Controller
         $this->urlGenerator = $urlGenerator;
         $this->rdsService = $rdsService;
         $this->urlService = $rdsService->getUrlService();
+        $this->session = $session;
     }
 
     /**
@@ -65,6 +69,10 @@ class PageController extends Controller
      */
     public function index()
     {
+        if ($this->session->get('impersonator') !== null) {
+            return new TemplateResponse($this->appName, "impersanator", []);
+        }
+
         $policy = new \OCP\AppFramework\Http\EmptyContentSecurityPolicy();
         $url = parse_url($this->rdsService->myServerUrl());
 
