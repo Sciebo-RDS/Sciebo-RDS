@@ -12,7 +12,8 @@ use OCP\AppFramework\{
     Controller,
     Http\TemplateResponse
 };
-use OCP\IConfig;
+use OCP\ISession;
+
 
 /**
 - Define a new page controller
