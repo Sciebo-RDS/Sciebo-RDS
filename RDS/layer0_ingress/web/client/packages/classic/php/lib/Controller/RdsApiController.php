@@ -92,15 +92,15 @@ class RdsApiController extends ApiController
                 "accountId" => $user->getAccountId(),
                 "UID" => $user->getUID(),
                 "cloudID" => $user->getCloudId(),
-                "lastLogin" => $user->getLastLogin(),
-                "home" => $user->getHome(),
-                "avatarImage" => $user->getAvatarImage($user),
-                "quota" => $user->getQuota(),
-                "searchTerms" => $user->getSearchTerms(),
-                "webdav_type" => "owncloud",
+                #"lastLogin" => $user->getLastLogin(),
+                #"home" => $user->getHome(),
+                #"avatarImage" => $user->getAvatarImage($user),
+                #"quota" => $user->getQuota(),
+                #"searchTerms" => $user->getSearchTerms(),
+                #"webdav_type" => "owncloud",
                 "serverName" => $_SERVER['SERVER_NAME'],
                 "webdav" => $this->rdsService->myServerUrl() . "/remote.php/webdav",
-                "access_token" => "", # maybe for later usage
+                #"access_token" => "", # maybe for later usage
             ];
 
             $token = \Firebase\JWT\JWT::encode($data, $this->private_key, 'RS256');
