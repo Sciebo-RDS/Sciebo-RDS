@@ -64,22 +64,40 @@ class DomainsDict(UserDict):
         super().__init__(*args, **kwargs)
 
         self.cache = {}
-                
+
     def get_publickey(self, key):
+        """Returns publickey. If not already cached, get it from the efss instance. 
+
+        Args:
+            key (str): The key, equals to the same as domains key, to look up.
+
+        Raises:
+            ValueError: If the instance is not accessible, it raises ValueError
+
+        Returns:
+            str: the requested publickey
+        """
+        
         try:
             return self.cache[key]
         except KeyError:
             status_code = 500
             req = None
             url = self[key]["ADDRESS"]
+            count = 5
 
-            while status_code > 200:
+            while status_code > 200 and count > 0:
                 req = requests.get(
                     f"{url}/index.php/apps/rds/api/1.0/publickey",
                     verify=verify_ssl,
                 )
 
                 status_code = req.status_code
+                count -= 1
+
+            if status_code > 200:
+                raise ValueError
+
             req = req.json()
 
             val = req.get("publickey", "").replace("\\n", "\n")
