@@ -85,7 +85,10 @@ layer1-port-openscienceframework:
     OAUTH_CLIENT_ID: ABC
     OAUTH_CLIENT_SECRET: XYZ
 layer2-exporter-service: {}
-layer2-port-service: {}
+layer2-port-service:
+  environment:
+    TOKENSERVICE_STATE_SECRET: ABC
+    IGNORE_PROJECTS: "True" # this ignores the pull algo for external projects
 layer2-metadata-service: {}
 layer3-research-manager: {}
 layer3-token-storage: {}

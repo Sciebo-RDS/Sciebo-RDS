@@ -25,7 +25,7 @@ service:
     prometheus.io/scrape: "true"
 
 environment:
-  IGNORE_PROJECTS: "False"
+  IGNORE_PROJECTS: "True"
   TOKENSERVICE_STATE_SECRET: ""
 
 resources:

@@ -45,7 +45,7 @@ class TokenService:
 
         self._services = []
         self.IGNORE_PROJECTS = (
-            os.getenv("IGNORE_PROJECTS", "False").capitalize() == "True"
+            os.getenv("IGNORE_PROJECTS", "True").capitalize() == "True"
         )
 
     def getOAuthURIForService(self, service: BaseService) -> str:
