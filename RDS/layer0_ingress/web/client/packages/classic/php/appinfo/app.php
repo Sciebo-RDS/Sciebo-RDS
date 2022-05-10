@@ -26,6 +26,7 @@ $server->getNavigationManager()->add(function () {
     ];
 });
 
+/*
 use OCA\RDS\Service\RDSService;
 use \OCP\Util;
 use \OCP\AppFramework\Http\EmptyContentSecurityPolicy;
@@ -47,3 +48,4 @@ $eventDispatcher->addListener('OCA\Files::loadAdditionalScripts', function () {
     Util::addScript('rds', 'fileActions');
     Util::addStyle("rds", "style");
 });
+*/
