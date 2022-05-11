@@ -13,7 +13,7 @@ def getSessionId(access_token=None, folder=None):
     _, _, servername = informations["cloudID"].rpartition("@")
 
     if servername is not None:
-        servername = "https://{}/remote.php/dav".format(servername)
+        servername = "https://{}/remote.php/webdav".format(servername)
 
     data = {
         # needs to be UID, because webdav checks against UID
