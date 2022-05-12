@@ -14,4 +14,4 @@ build:official_doc:
     - .official_doc
 
   before_script:
-    - cp public $FOLDER/public
+    - cp -r public $FOLDER/public
