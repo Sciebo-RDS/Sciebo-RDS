@@ -1,0 +1,16 @@
+.official_doc:
+  variables:
+    FOLDER: RDS/layer0_ingress/official_doc
+
+build:official_doc:
+  needs:
+    - pages
+  cache:
+    paths:
+      - public
+  extends:
+    - .builds
+    - .official_doc
+
+  before_script:
+    - cp public $FOLDER/public
