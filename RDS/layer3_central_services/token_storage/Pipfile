@@ -20,9 +20,8 @@ connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "==0.41"
 apscheduler = "*"
 research-data-services-common = {extras = ["flask"], version = "*"}
-redis-pubsub-dict = "*"
-redis = "*"
-redis-py-cluster = "*"
+redis-pubsub-dict = {git = "https://github.com/Sciebo-RDS/py-redis-pubsub-dict"}
+redis = ">=4.3.1"
 openapi-spec-validator = "<0.3"
 
 [requires]
