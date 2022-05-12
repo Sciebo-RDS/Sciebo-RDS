@@ -57,6 +57,8 @@ layer0-web:
     SECRET_KEY: 1234
     # describo needs a separate domain from sciebords
     VUE_APP_DESCRIBO_URL: separate-domain-for-describo.your-institution.org
+    VUE_APP_FRONTENDHOST: https://<your-rds-installation>
+    VUE_APP_SOCKETIO_HOST: https://<your-rds-installation>
     # should be changed to all known access origins to sciebo RDS backend. e.g. web proxies
     # Onwcloud-Domains will be included automatically from global.domains in bootup process.
     FLASK_ORIGINS:

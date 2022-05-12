@@ -94,7 +94,7 @@ environment:
   VUE_APP_FRONTENDHOST: https://<your-rds-installation>
   VUE_APP_SOCKETIO_HOST: https://<your-rds-installation>
   SOCKETIO_HOST: https://<your-rds-installation>
-  SOCKETIO_PATH: /socket.io
+  SOCKETIO_PATH: /socket.io/
   VUE_APP_BASE_URL: /
 
 api_secret : IAMSECRET
