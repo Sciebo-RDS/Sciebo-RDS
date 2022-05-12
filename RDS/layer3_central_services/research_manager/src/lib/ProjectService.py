@@ -56,7 +56,7 @@ class ProjectService:
                     rc.get_nodes()  # provoke an error message
 
                 except Exception as e:
-                    logger.error(e)
+                    logger.debug(e)
                     logger.debug("Cluster has an error, try standardalone redis")
                     from redis import Redis
 
@@ -70,7 +70,7 @@ class ProjectService:
             logger.debug("set redis backed dict")
             self.projects = RedisDict(rc, "researchmanager_projects")
         except Exception as e:
-            logger.error(e)
+            logger.debug(e)
             logger.info("no redis found.")
 
             if not use_in_memory_on_failure:

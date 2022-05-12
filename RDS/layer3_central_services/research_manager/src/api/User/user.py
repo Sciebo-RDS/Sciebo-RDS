@@ -19,17 +19,13 @@ def get(user_id):
 def post(user_id):
     result = None
 
-    json = request.json
-    try:
-        portIn = json.get("portIn")
-    except:
-        portIn = []
-
-    try:
-        portOut = json.get("portOut")
-    except:
-        portOut = []
-
+    json = {}
+    if request.is_json:
+        json = request.get_json()
+    
+    portIn = json.get("portIn", [])
+    portOut = json.get("portOut", [])
+    
     result = Singleton.ProjectService.addProject(
         user_id, portIn=portIn, portOut=portOut
     )
