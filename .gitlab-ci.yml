@@ -78,7 +78,7 @@ variables:
 include:
   - "/charts/.gitlab-ci.yml"
   - "/RDS/layer0_ingress/web/.gitlab-ci.yml"
-  - "/RDS/layer0_ingress/documentation/.gitlab-ci.yml"
+  - "/RDS/layer0_ingress/official_doc/.gitlab-ci.yml"
   - "/RDS/layer1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
   - "/RDS/layer1_adapters_and_ports/port_owncloud/.gitlab-ci.yml"
   - "/RDS/layer1_adapters_and_ports/port_openscienceframework/.gitlab-ci.yml"
