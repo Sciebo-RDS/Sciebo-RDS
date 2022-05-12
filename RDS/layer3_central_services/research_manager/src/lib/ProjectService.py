@@ -47,19 +47,24 @@ class ProjectService:
 
                 try:
                     logger.debug("first try cluster")
-                    from rediscluster import RedisCluster
+                    from redis.cluster import Redis
 
-                    rc = RedisCluster(
-                        startup_nodes=startup_nodes, decode_responses=True,
+                    rc = Redis(
+                        **(startup_nodes[0]),
+                        decode_responses=True,
                     )
+                    rc.get_nodes()  # provoke an error message
+
                 except Exception as e:
                     logger.error(e)
-                    logger.debug(
-                        "Cluster has an error, try standardalone redis")
+                    logger.debug("Cluster has an error, try standardalone redis")
                     from redis import Redis
 
-                    rc = Redis(**(startup_nodes[0]),
-                               db=0, decode_responses=True,)
+                    rc = Redis(
+                        **(startup_nodes[0]),
+                        db=0,
+                        decode_responses=True,
+                    )
                     rc.info()  # provoke an error message
 
             logger.debug("set redis backed dict")
@@ -89,7 +94,7 @@ class ProjectService:
         """
         If parameter `userOrProject is an project object, this method adds the given project to the storage.
 
-        If parameter `userOrProject` is a string, it first creates an project object for you. 
+        If parameter `userOrProject` is a string, it first creates an project object for you.
         As a convenient parameter, you can set portIn and portOut also, which are used as parameters in project initialization.
         """
         if portIn is None:
@@ -104,8 +109,7 @@ class ProjectService:
             )
 
         if isinstance(userOrProject, str):
-            userOrProject = Project(
-                userOrProject, portIn=portIn, portOut=portOut)
+            userOrProject = Project(userOrProject, portIn=portIn, portOut=portOut)
 
         researchId = self.highest_index
 
@@ -192,7 +196,11 @@ class ProjectService:
         raise NotFoundIDError(user, researchIndex)
 
     def setProjectStatus(
-        self, user: str = None, researchIndex: int = None, researchId: int = None, status=Status.DELETED
+        self,
+        user: str = None,
+        researchIndex: int = None,
+        researchId: int = None,
+        status=Status.DELETED,
     ):
         """Set the status of the given project.
 
@@ -287,7 +295,9 @@ class ProjectService:
 
         return False
 
-    def finishProject(self, user: str = None, researchIndex: int = None, researchId: int = None):
+    def finishProject(
+        self, user: str = None, researchIndex: int = None, researchId: int = None
+    ):
         """Finish a project
 
         Args:
@@ -298,10 +308,16 @@ class ProjectService:
         Returns:
             [bool]: Return true, when successfully set, otherwise false.
         """
-        return self.setProjectStatus(user=user, researchIndex=researchIndex,
-                                     researchId=researchId, status=Status.DONE)
-    
-    def bumpProject(self, user: str = None, researchIndex: int = None, researchId: int = None):
+        return self.setProjectStatus(
+            user=user,
+            researchIndex=researchIndex,
+            researchId=researchId,
+            status=Status.DONE,
+        )
+
+    def bumpProject(
+        self, user: str = None, researchIndex: int = None, researchId: int = None
+    ):
         """Bump the status of a project.
 
         Args:
@@ -312,21 +328,31 @@ class ProjectService:
         Returns:
             [bool]: Return true, when successfully set, otherwise false.
         """
-        status = self.getProject(user=user, researchIndex=researchIndex,researchId=researchId).status
-        return self.setProjectStatus(user=user, researchIndex=researchIndex,
-                                     researchId=researchId, status=status.succ())
+        status = self.getProject(
+            user=user, researchIndex=researchIndex, researchId=researchId
+        ).status
+        return self.setProjectStatus(
+            user=user,
+            researchIndex=researchIndex,
+            researchId=researchId,
+            status=status.succ(),
+        )
 
     def removeProject(
         self, user: str = None, researchIndex: int = None, researchId: int = None
     ):
         """
-        This method removes the projects for given user. 
+        This method removes the projects for given user.
 
         If researchIndex was given, only the corresponding researchIndex will be removed (no user required, but it is faster).
         Returns True if it is successful or raise an exception if user or researchIndex not found. Else returns false.
         """
-        return self.setProjectStatus(user=user, researchIndex=researchIndex,
-                                     researchId=researchId, status=Status.DELETED)
+        return self.setProjectStatus(
+            user=user,
+            researchIndex=researchIndex,
+            researchId=researchId,
+            status=Status.DELETED,
+        )
 
     def getJSON(self):
         import json
