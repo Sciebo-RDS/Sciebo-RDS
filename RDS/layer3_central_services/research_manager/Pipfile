@@ -18,7 +18,7 @@ python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 pyjwt = "*"
-redis-pubsub-dict = {git = "https://github.com/Sciebo-RDS/py-redis-pubsub-dict"}
+redis-pubsub-dict-wo-cluster = "*"
 redis = ">=4.3.1"
 research-data-services-common = {extras = ["flask"], version = "*"}
 pydoc-markdown = "==2.1.3"
