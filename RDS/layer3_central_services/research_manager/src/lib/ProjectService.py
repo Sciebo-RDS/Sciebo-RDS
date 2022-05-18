@@ -47,7 +47,7 @@ class ProjectService:
 
                 try:
                     logger.debug("first try cluster")
-                    from redis.cluster import Redis
+                    from redis.cluster import RedisCluster as Redis
 
                     rc = Redis(
                         **(startup_nodes[0]),
