@@ -15,7 +15,7 @@ requests = "*"
 gevent = "*"
 python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
-connexion-plus = "==0.41"
+connexion-plus = "*"
 openapi-spec-validator = "<0.3"
 pyjwt = "*"
 research-data-services-common = {extras = ["flask"], version = "==0.48"}
