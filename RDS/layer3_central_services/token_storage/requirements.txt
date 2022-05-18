@@ -13,7 +13,7 @@ certifi==2021.10.8
 charset-normalizer==2.0.12; python_version >= '3'
 click==8.1.3; python_version >= '3.7'
 clickclick==20.10.2
-connexion-plus==0.46
+connexion-plus==0.48
 connexion[swagger-ui]==2.13.1
 contextlib2==21.6.0; python_version >= '3.6'
 deprecated==1.2.13; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
@@ -35,7 +35,7 @@ jsonschema==4.5.1; python_version >= '3.7'
 markdown==3.3.7; python_version >= '3.6'
 markupsafe==2.1.1; python_version >= '3.7'
 msgpack==1.0.3
-openapi-schema-validator==0.2.3; python_version >= '3.7' and python_full_version < '4.0.0'
+openapi-schema-validator==0.2.3; python_version >= '3.7' and python_version < '4'
 openapi-spec-validator==0.2.10
 opentracing-instrumentation==3.3.1
 opentracing==2.4.0
@@ -61,7 +61,7 @@ thrift==0.16.0
 tornado==5.1.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 tzdata==2022.1; python_version >= '3.6'
 tzlocal==4.2; python_version >= '3.6'
-urllib3==1.26.9; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_full_version < '4.0.0'
+urllib3==1.26.9; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
 werkzeug==2.1.2; python_version >= '3.7'
 wrapt==1.14.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 zipp==3.8.0; python_version >= '3.7'
