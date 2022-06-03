@@ -87,6 +87,7 @@ class Storage:
 
                     rc = Redis(
                         **(startup_nodes[0]),
+                        health_check_interval=30,
                         decode_responses=True,
                     )
                     rc.get_nodes()  # provoke an error message
@@ -98,6 +99,7 @@ class Storage:
                     rc = Redis(
                         **(startup_nodes[0]),
                         db=0,
+                        health_check_interval=30,
                         decode_responses=True,
                     )
                     rc.info()  # provoke an error message
@@ -120,7 +122,8 @@ class Storage:
                         os.getenv("REDIS_HELPER_HOST", "localhost")),
                     port=os.getenv("REDIS_HELPER_PORT", "6379"),
                     db=0,
-                    decode_responses=True,
+                    health_check_interval=30,
+        decode_responses=True,
                 )
                 rc_helper.info()  # provoke an error message
                 self.__rc_helper = rc_helper

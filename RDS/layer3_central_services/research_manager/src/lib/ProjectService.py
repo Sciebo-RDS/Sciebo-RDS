@@ -51,6 +51,7 @@ class ProjectService:
 
                     rc = Redis(
                         **(startup_nodes[0]),
+                        health_check_interval=30,
                         decode_responses=True,
                     )
                     rc.get_nodes()  # provoke an error message
@@ -63,6 +64,7 @@ class ProjectService:
                     rc = Redis(
                         **(startup_nodes[0]),
                         db=0,
+                        health_check_interval=30,
                         decode_responses=True,
                     )
                     rc.info()  # provoke an error message

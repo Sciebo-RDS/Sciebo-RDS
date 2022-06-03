@@ -66,7 +66,7 @@ class DomainsDict(UserDict):
         self.cache = {}
 
     def get_publickey(self, key):
-        """Returns publickey. If not already cached, get it from the efss instance. 
+        """Returns publickey. If not already cached, get it from the efss instance.
 
         Args:
             key (str): The key, equals to the same as domains key, to look up.
@@ -77,7 +77,7 @@ class DomainsDict(UserDict):
         Returns:
             str: the requested publickey
         """
-        
+
         try:
             return self.cache[key]
         except KeyError:
@@ -118,6 +118,7 @@ try:
     rc = Redis(
         **(startup_nodes[0]),
         db=0,
+        health_check_interval=30,
         decode_responses=True,
     )
 except:
