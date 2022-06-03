@@ -92,14 +92,14 @@ dependencies:
       - monitoring
   - name: redis-cluster
     alias: redis
-    version: ^3.2.0
+    version: ^7.6.1
     repository: https://charts.bitnami.com/bitnami
     condition: feature.redis
     tags:
       - storage
   - name: redis
     alias: redis-helper
-    version: ^14.8.7
+    version: ^16.10.1
     repository: https://charts.bitnami.com/bitnami
     condition: feature.redis
     tags:
