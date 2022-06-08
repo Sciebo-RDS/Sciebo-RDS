@@ -72,6 +72,9 @@ class User(UserMixin):
         self.userId = userId
         self.token = token
         self.servername = servername
+    
+        if use_embed_mode and use_predefined_user:
+            return
 
         if userId is None and token is not None:
             headers = {
@@ -182,7 +185,9 @@ def index(path):
     # only for testing condition
     if use_embed_mode and use_predefined_user:
         app.logger.debug("skip authentication")
-        user = User(id=str(uuid.uuid4()), userId=os.getenv("DEV_FLASK_USERID"), servername=domains_dict.values()[0]["ADDRESS"])
+        servername=next(iter(domains_dict.values()))["ADDRESS"]
+        user = User(id=str(uuid.uuid4()), userId=os.getenv("DEV_FLASK_USERID"), servername=servername)
+        session["servername"] = servername
         user_store[user.get_id()] = user.to_dict()
         login_user(user)
 
