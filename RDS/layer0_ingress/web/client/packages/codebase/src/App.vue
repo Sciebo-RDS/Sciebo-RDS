@@ -1,6 +1,15 @@
 <template>
   <div>
     <v-app id="inspire">
+      <!-- pilot warning bar -->
+      <v-system-bar
+      color="warning">
+        <v-row class="font-weight-bold" justify="center">
+          <translate> RDS is still in its pilot phase. If you encounter any problems, please contact</translate>
+          <a :href="`mailto:${$config.emailContact}`" class="ml-1 black--text"> {{ $config.emailContact }}</a>.
+        </v-row>
+      </v-system-bar>
+
       <overlay :subtext="overlayText" />
       <snackbar />
       <v-app-bar v-if="$vuetify.breakpoint.mobile" app flat class="d-lg-none">
