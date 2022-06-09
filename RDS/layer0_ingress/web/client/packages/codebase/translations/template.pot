@@ -5,438 +5,435 @@ msgstr ""
 "Generated-By: easygettext\n"
 "Project-Id-Version: \n"
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:32
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:9
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:32
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:9
 msgid "(opens a new window)"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Step/Configuration.vue:8
-msgid "1. Enter your working title here"
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:8
+msgid "1. Which folder do you want to publish?"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Step/Configuration.vue:19
-msgid "2. Which folder do you want to publish?"
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:29
+msgid "2. Which Services do you want to publish to?"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Step/Configuration.vue:39
-msgid "3. Which Services do you want to publish to?"
-msgstr ""
-
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Wizard.vue:11
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:11
 msgid "Activate RDS"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:3
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:3
 msgid "Add service"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Wizard.vue:17
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:17
 msgid "Add services"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:55
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Editor.vue:47
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:55
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:47
 msgid "Are you sure?"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:24
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:37
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:51
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:24
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:37
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:51
 msgid "Back"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:73
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Editor.vue:58
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:73
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:58
 msgid "Cancel"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:30
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:30
 msgid "Cancel input"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Selector.vue:22
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Selector.vue:22
 msgid "Cancel service selection"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Wizard.vue:3
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:3
 msgid "Click here to"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Snackbar.vue:6
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Snackbar.vue:2
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Snackbar.vue:6
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Snackbar.vue:2
 msgid "Close"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Projects.vue:31
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Projects.vue:31
 msgid "Collapse all"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:4
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:4
 msgid "Configuration"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Step/Configuration.vue:3
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:3
 msgid "Configure your Project"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/RemoveRDS.vue:3
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/RemoveRDS.vue:3
 msgid "Confirm the checkbox and click the button to remove the RDS account."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Configuration.vue:40
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Configuration.vue:40
 msgid "Connect"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:6
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Wizard.vue:45
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:6
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:49
 msgid "Connect your %{name} account with RDS"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/List.vue:7
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/List.vue:7
 msgid "connected"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:27
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:41
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Wizard.vue:66
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:27
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:41
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:70
 msgid "Continue"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/List.vue:12
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/List.vue:12
 msgid "Create a new project"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/StatusChip.vue:3
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/StatusChip.vue:3
 msgid "created"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Step/Configuration.vue:28
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:18
 msgid "Current Folder: %{filePath}"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:13
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:13
 msgid "Delete %{name} from your account."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Setting.vue:14
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Setting.vue:12
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:14
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:12
 msgid "delete project"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/RemoveRDS.vue:14
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/RemoveRDS.vue:14
 msgid "Delete RDS account"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/StatusChip.vue:9
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/StatusChip.vue:9
 msgid "deleted"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Configuration.vue:33
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Configuration.vue:33
 msgid "Disconnect"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Step/MetadataEditor.vue:108
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/MetadataEditor.vue:115
 msgid "Editor loading"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/ThemeSelector.vue:34
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/ThemeSelector.vue:34
 msgid "Enable DarkMode?"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:13
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:13
 msgid "Enter your credentials for %{ parsedServicename }."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Step/MetadataEditor.vue:117
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/MetadataEditor.vue:124
 msgid "Error while loading. Please contact an administator."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Wizard.vue:23
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:23
 msgid "Finish"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Wizard.vue:5
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:5
 msgid "Getting started"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Wizard.vue:76
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:80
 msgid "Go to projects"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:26
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:3
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Wizard.vue:33
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Wizard.vue:55
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:26
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:3
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:37
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:59
 msgid "Grant access"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Configuration.vue:17
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/router/index.js:68
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Configuration.vue:17
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:68
 msgid "Help"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/router/index.js:63
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:63
 msgid "Home"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Editor.vue:9
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:13
 msgid ""
 "If you want to remove all access in once or remove the access for your\n"
 "          ownCloud account, click the \"revoke button\"."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:52
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:52
 msgid "If you want to reuse this service, you need to add it again."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:55
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:55
 msgid "In progress..."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Editor.vue:7
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:7
 msgid "In this card, you manage your access to services via RDS."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/App.vue:50
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/App.vue:50
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/RemoveRDS.vue:35
 msgid "initialization..."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/App.vue:141
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/App.vue:171
 msgid "item"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Menu/Settings.vue:114
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Menu/Settings.vue:114
 msgid "Language"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Step/Publish.vue:9
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Publish.vue:9
 msgid "Make sure your settings are correct!"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Editor.vue:3
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:3
 msgid "Manage your access to services"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:10
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:10
 msgid "Metadata"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/StatusChip.vue:5
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/StatusChip.vue:5
 msgid "modified"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Projects.vue:49
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Projects.vue:49
 msgid "New project"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/List.vue:4
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/List.vue:4
 msgid "No projects found"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/List.vue:12
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/List.vue:12
 msgid "not connected"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:73
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:73
 msgid "Password"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Wizard.vue:30
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:30
 msgid "Permit RDS to access your ownCloud files."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/List.vue:24
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/ProjectTitle.vue:8
 msgid "Project %{ researchIndex }"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/router/index.js:64
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:64
 msgid "Projects"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:15
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:56
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:15
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:56
 msgid "Publish"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Step/Publish.vue:4
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Publish.vue:4
 msgid "Publish your project"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/StatusChip.vue:7
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/StatusChip.vue:7
 msgid "published"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:66
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/App.vue:6
+msgid "RDS is still in its pilot phase. If you encounter any problems, please contact"
+msgstr ""
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:66
 msgid "Remove %{ name }"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:29
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:6
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:29
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:6
 msgid "Remove access"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Editor.vue:55
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:55
 msgid "Remove access to RDS"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Menu/Settings.vue:35
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Menu/Settings.vue:35
 msgid "Remove account"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/router/index.js:69
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:69
 msgid "Remove RDS account"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:43
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:43
 msgid "Remove service"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Setting.vue:23
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Setting.vue:37
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Setting.vue:3
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:23
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:37
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:3
 msgid "Researchindex :%{researchIndex}"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:27
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:27
 msgid "Save credentials"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Selector.vue:19
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Selector.vue:19
 msgid "Save selection and activate services"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Selector.vue:12
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Selector.vue:8
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Selector.vue:12
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Selector.vue:8
 msgid "Select All"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Step/Configuration.vue:25
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:14
 msgid "Select Folder"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/LanguageSelector.vue:28
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/LanguageSelector.vue:28
 msgid "Select language"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Selector.vue:39
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Selector.vue:39
 msgid "Select services"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Step/Configuration.vue:144
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:127
 msgid "Select your Services"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Overlay.vue:8
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Overlay.vue:8
 msgid "Service activation in progress"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/router/index.js:65
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:65
 msgid "Services"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/List.vue:7
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/List.vue:7
 msgid "Set the filter or create a new one project."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Menu/Settings.vue:53
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/router/index.js:66
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Menu/Settings.vue:53
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:66
 msgid "Settings"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/LanguageSelector.vue:2
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/LanguageSelector.vue:2
 msgid "Settings for language"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Selector.vue:2
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Selector.vue:2
 msgid "Settings for services"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/ThemeSelector.vue:2
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/ThemeSelector.vue:2
 msgid "Settings for theme"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Projects.vue:46
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Projects.vue:46
 msgid "show past projects"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:78
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:82
 msgid "The publishing process will be executed now. We will inform you, when finished or something goes wrong."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Menu/Settings.vue:86
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Menu/Settings.vue:86
 msgid "Theme"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:92
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:93
 msgid "There was an error, while we publish your project. Please check, if you have enter all fields in metadata step."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Editor.vue:46
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:46
 msgid "This cannot be undone."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Setting.vue:43
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Setting.vue:9
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:43
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:9
 msgid "this is a deleted project"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Setting.vue:29
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Setting.vue:9
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:29
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:9
 msgid "this is a published project"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:8
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:8
 msgid "This service does not require any input, as it can derive the credentials by other means."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Editor.vue:43
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:43
 msgid "This will remove all services from RDS and all projects."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Card.vue:47
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:47
 msgid "This will remove your access to %{ servicename } from RDS."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Editor.vue:34
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Editor.vue:39
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Editor.vue:2
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/RevokeButton.vue:3
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:34
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:39
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:2
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/RevokeButton.vue:3
 msgid "Uninstall sciebo RDS"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:62
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:62
 msgid "Username"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Settings/ThemeSelector.vue:28
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/ThemeSelector.vue:28
 msgid "Using DeviceMode?"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Overlay.vue:7
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Help.vue:3
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Overlay.vue:7
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Help.vue:3
 msgid "Wait"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Service/Configuration.vue:11
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Configuration.vue:11
 msgid "Website"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/router/index.js:67
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:67
 msgid "Wizard"
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Step/Configuration.vue:59
-msgid "Working title"
-msgstr ""
-
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/RemoveRDS.vue:34
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/RemoveRDS.vue:34
 msgid "Yes, i confirm that i want to delete my RDS account."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/views/Wizard.vue:72
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:76
 msgid "You configure RDS properly."
 msgstr ""
 
-#: /home/physicx/Projects/ScieboRDS/rds-web/client/packages/codebase/src/components/Project/Stepper.vue:96
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:97
 msgid "Your project was successfully published."
 msgstr ""
