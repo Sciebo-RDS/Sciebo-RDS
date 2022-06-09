@@ -1,6 +1,6 @@
 <template>
   <div v-if="!titleEditMode || !active" class="pt-1">
-    <v-div v-if="!!project.researchname" style="overflow:hidden;">
+    <div v-if="!!project.researchname" style="overflow:hidden;">
       {{ project.researchname }}
       <v-btn
         v-show="active && project.status < 4"
@@ -11,8 +11,8 @@
         @click.stop="toggleEdit()"
         ><v-icon small>mdi-pencil-outline</v-icon>
       </v-btn>
-    </v-div>
-    <v-div v-else>
+    </div>
+    <div v-else>
       <translate
         :translate-params="{
           researchIndex: project.researchIndex + 1,
@@ -29,10 +29,10 @@
         @click.stop="toggleEdit()"
         ><v-icon small>mdi-pencil-outline</v-icon>
       </v-btn>
-    </v-div>
+    </div>
   </div>
   <div v-else-if="active" style="margin:0px; padding: 0px;">
-    <v-div @click.stop="">
+    <div @click.stop="">
       <v-text-field
         @click.stop=""
         @keyup.space.prevent
@@ -41,7 +41,6 @@
           toggleEdit();
           newTitle = '';
         "
-        :ref="`field${i}`"
         :label="project.researchname"
         placeholder="Enter new title"
         v-model="newTitle"
@@ -51,7 +50,7 @@
         @click:append="changeResearchname(project)"
         class="ma-0 mt-1 pa-0"
       ></v-text-field>
-    </v-div>
+    </div>
   </div>
 </template>
 
@@ -62,6 +61,7 @@ export default {
   data() {
     return {
       titleEditMode: false,
+      newTitle: "",
     };
   },
   props: ["project", "active"],

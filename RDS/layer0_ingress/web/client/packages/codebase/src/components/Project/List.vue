@@ -30,7 +30,7 @@
                 v-bind:status="project.status"
                 v-bind:class="{
                   'mt-2': panel === i && project.status < 4,
-                  'mt-3': titleEdit && panel === i && project.status < 4,
+                  'mt-3': panel === i && project.status < 4,
                 }"
                 class="hidden-sm-and-down"
               />
@@ -39,7 +39,6 @@
                 class="hidden-md-and-up"
                 v-bind:class="{
                   'mt-2': panel === i,
-                  'hidden-md-and-down': titleEdit,
                 }"
               />
             </v-col>
