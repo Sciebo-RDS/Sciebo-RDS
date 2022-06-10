@@ -53,6 +53,9 @@ variables:
       alias: docker
   tags:
     - docker-in-docker
+  except:
+    refs:
+      - /^translations_rds-.*$/i # ignore, if it comes from transifex
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
