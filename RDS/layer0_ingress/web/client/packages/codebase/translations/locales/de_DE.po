@@ -1,0 +1,471 @@
+# 
+# Translators:
+# Juri <tuxwurf@gmail.com>, 2022
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Last-Translator: Juri <tuxwurf@gmail.com>, 2022\n"
+"Language-Team: German (Germany) (https://www.transifex.com/university-of-munster/teams/109551/de_DE/)\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: easygettext\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:32
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:9
+msgid "(opens a new window)"
+msgstr "(öffnet ein neues Fenster)"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:8
+msgid "1. Which folder do you want to publish?"
+msgstr "1. Welchen Ordner möchten Sie veröffentlichen?"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:29
+msgid "2. Which Services do you want to publish to?"
+msgstr "2. Auf welchem Dienst möchten Sie veröffentlichen?"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:11
+msgid "Activate RDS"
+msgstr "RDS aktivieren"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:3
+msgid "Add service"
+msgstr "Dienst hinzufügen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:17
+msgid "Add services"
+msgstr "Dienste hinzufügen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:55
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:47
+msgid "Are you sure?"
+msgstr "Sind Sie sich sicher?"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:24
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:37
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:51
+msgid "Back"
+msgstr "Zurück"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:73
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:58
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:30
+msgid "Cancel input"
+msgstr "Abbrechen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Selector.vue:22
+msgid "Cancel service selection"
+msgstr "Zurücksetzen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:3
+msgid "Click here to"
+msgstr "Drücke hier um"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Snackbar.vue:6
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Snackbar.vue:2
+msgid "Close"
+msgstr "Schließen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Projects.vue:31
+msgid "Collapse all"
+msgstr "Alles zusammenklappen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:4
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:3
+msgid "Configure your Project"
+msgstr "Konfigurieren Sie das Projekt"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/RemoveRDS.vue:3
+msgid "Confirm the checkbox and click the button to remove the RDS account."
+msgstr ""
+"Bestätigen Sie die Checkbox und klicken Sie auf den Knopf, um das Löschen "
+"des RDS Konto zu bestätigen."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Configuration.vue:40
+msgid "Connect"
+msgstr "Verbinden"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:6
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:49
+msgid "Connect your %{name} account with RDS"
+msgstr "Erlaube RDS den Zugang zu Ihrem %{name} Konto."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/List.vue:7
+msgid "connected"
+msgstr "verbunden"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:27
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:41
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:70
+msgid "Continue"
+msgstr "Weiter"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/List.vue:12
+msgid "Create a new project"
+msgstr "Neues Projekt erstellen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/StatusChip.vue:3
+msgid "created"
+msgstr "Erstellt"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:18
+msgid "Current Folder: %{filePath}"
+msgstr "Aktueller Ordner: %{filePath}"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:13
+msgid "Delete %{name} from your account."
+msgstr "Löscht den Zugang zu %{name} aus Ihrem Konto."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:14
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:12
+msgid "delete project"
+msgstr "Projekt löschen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/RemoveRDS.vue:14
+msgid "Delete RDS account"
+msgstr "RDS Konto löschen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/StatusChip.vue:9
+msgid "deleted"
+msgstr "Gelöscht"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Configuration.vue:33
+msgid "Disconnect"
+msgstr "Trennen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/MetadataEditor.vue:115
+msgid "Editor loading"
+msgstr "Warte auf Abschluss"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/ThemeSelector.vue:34
+msgid "Enable DarkMode?"
+msgstr "Dunkle Farbgebung nutzen?"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:13
+msgid "Enter your credentials for %{ parsedServicename }."
+msgstr "Tragen Sie Ihre Zugangsdaten für %{ parsedServicename } ein."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/MetadataEditor.vue:124
+msgid "Error while loading. Please contact an administator."
+msgstr "Ladefehler. Bitte Administrator benachrichtigen."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:23
+msgid "Finish"
+msgstr "Abschluss"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:5
+msgid "Getting started"
+msgstr "anzufangen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:80
+msgid "Go to projects"
+msgstr "Projekte"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:26
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:3
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:37
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:59
+msgid "Grant access"
+msgstr "Zugriff gewähren"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Configuration.vue:17
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:68
+msgid "Help"
+msgstr "Hilfe"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:63
+msgid "Home"
+msgstr "Startseite"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:13
+msgid ""
+"If you want to remove all access in once or remove the access for your\n"
+"          ownCloud account, click the \"revoke button\"."
+msgstr ""
+"Falls Sie alle Zugänge, inklusive Ihres ownCloud Zugangs,\n"
+"          entfernen möchten, klicken Sie auf den unteren Knopf,\n"
+" um Ihr Konto zu löschen."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:52
+msgid "If you want to reuse this service, you need to add it again."
+msgstr ""
+"Falls Sie diesen Dienst später erneut nutzen wollen, müssen Sie ihn wieder "
+"hinzufügen."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:55
+msgid "In progress..."
+msgstr "In Bearbeitung..."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:7
+msgid "In this card, you manage your access to services via RDS."
+msgstr ""
+"Hier können Zugänge zu Ihrem RDS Konto hinzugefügt oder entfernt werden."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/App.vue:50
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/RemoveRDS.vue:35
+msgid "initialization..."
+msgstr "Vorbereitung..."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/App.vue:171
+msgid "item"
+msgstr "Item"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Menu/Settings.vue:114
+msgid "Language"
+msgstr "Sprache ändern"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Publish.vue:9
+msgid "Make sure your settings are correct!"
+msgstr "Alle Projektinformationen im Überblick."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:3
+msgid "Manage your access to services"
+msgstr "Verwalten Sie Ihre Dienstzugänge"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:10
+msgid "Metadata"
+msgstr "Metadata"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/StatusChip.vue:5
+msgid "modified"
+msgstr "bearbeitet"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Projects.vue:49
+msgid "New project"
+msgstr "Neues Projekt"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/List.vue:4
+msgid "No projects found"
+msgstr "Kein Projekt verfügbar"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/List.vue:12
+msgid "not connected"
+msgstr "nicht verbunden"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:73
+msgid "Password"
+msgstr "Passwort"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:30
+msgid "Permit RDS to access your ownCloud files."
+msgstr "Gewähren Sie RDS Zugriff auf Ihre ownCloud Dateien."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/ProjectTitle.vue:8
+msgid "Project %{ researchIndex }"
+msgstr "Projekt %{ researchIndex }"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:64
+msgid "Projects"
+msgstr "Projekte"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:15
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:56
+msgid "Publish"
+msgstr "Veröffentlichen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Publish.vue:4
+msgid "Publish your project"
+msgstr "Projekt veröffentlichen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/StatusChip.vue:7
+msgid "published"
+msgstr "Veröffentlicht"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/App.vue:6
+msgid ""
+"RDS is still in its pilot phase. If you encounter any problems, please "
+"contact"
+msgstr "RDS ist in der Pilotphase. Bei Problemen kontaktieren Sie bitte"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:66
+msgid "Remove %{ name }"
+msgstr "%{ name } entfernen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:29
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:6
+msgid "Remove access"
+msgstr "Zugang entfernen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:55
+msgid "Remove access to RDS"
+msgstr "Zugang entfernen zu RDS"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Menu/Settings.vue:35
+msgid "Remove account"
+msgstr "Zugang vollständig entfernen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:69
+msgid "Remove RDS account"
+msgstr "RDS Zugang entfernen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:43
+msgid "Remove service"
+msgstr "Dienst löschen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:23
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:37
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:3
+msgid "Researchindex :%{researchIndex}"
+msgstr "Forschungsnummer %{ researchIndex }"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:27
+msgid "Save credentials"
+msgstr "Zugangsdaten speichern"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Selector.vue:19
+msgid "Save selection and activate services"
+msgstr "Dienste anpassen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Selector.vue:12
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Selector.vue:8
+msgid "Select All"
+msgstr "Alle auswählen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:14
+msgid "Select Folder"
+msgstr "Ordner wählen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/LanguageSelector.vue:28
+msgid "Select language"
+msgstr "Sprache ändern"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Selector.vue:39
+msgid "Select services"
+msgstr "Dienste auswählen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:127
+msgid "Select your Services"
+msgstr "Wählen Sie Ihre Dienste aus"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Overlay.vue:8
+msgid "Service activation in progress"
+msgstr "Dienstaktivierung im Gange"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:65
+msgid "Services"
+msgstr "Dienste"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/List.vue:7
+msgid "Set the filter or create a new one project."
+msgstr "Setzen Sie den Filter anders oder erstellen Sie ein neues Projekt."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Menu/Settings.vue:53
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:66
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/LanguageSelector.vue:2
+msgid "Settings for language"
+msgstr "Sprache ändern"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Selector.vue:2
+msgid "Settings for services"
+msgstr "Verknüpfte Dienste einstellen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/ThemeSelector.vue:2
+msgid "Settings for theme"
+msgstr "Aussehen ändern"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Projects.vue:46
+msgid "show past projects"
+msgstr "Zeige alte Projekte"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:82
+msgid ""
+"The publishing process will be executed now. We will inform you, when "
+"finished or something goes wrong."
+msgstr ""
+"Das Projekt wird nun veröffentlicht. Bei Erfolg oder Abbruch werden Sie hier"
+" entsprechend darüber benachrichtigt."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Menu/Settings.vue:86
+msgid "Theme"
+msgstr "Aussehen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:93
+msgid ""
+"There was an error, while we publish your project. Please check, if you have"
+" enter all fields in metadata step."
+msgstr ""
+"Ein Fehler ist im Veröffentlichungsprozess aufgetreten. Bitte überprüfen "
+"Sie, ob Sie alle erforderlichen Metadatenfelder ausgefüllt haben."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:46
+msgid "This cannot be undone."
+msgstr "Dies kann nicht rückgängig gemacht werden."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:43
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:9
+msgid "this is a deleted project"
+msgstr "gelöschtes Projekte"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:29
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Setting.vue:9
+msgid "this is a published project"
+msgstr "veröffentlichtes Projekt"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:8
+msgid ""
+"This service does not require any input, as it can derive the credentials by"
+" other means."
+msgstr ""
+"Dieser Dienst benötigt keine Anmeldedaten, da die Authentifizierung auf "
+"einem anderen Wege funktioniert."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:43
+msgid "This will remove all services from RDS and all projects."
+msgstr ""
+"Dies entfernt alle Zugänge aus RDS und Sie werden nicht mehr auf Ihre "
+"Projekte zugreifen können."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:47
+msgid "This will remove your access to %{ servicename } from RDS."
+msgstr "Dies entfernt Ihren Zugang zu %{ servicename }."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:34
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:39
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:2
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/RevokeButton.vue:3
+msgid "Uninstall sciebo RDS"
+msgstr "Konto löschen"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:62
+msgid "Username"
+msgstr "Benutzername"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/ThemeSelector.vue:28
+msgid "Using DeviceMode?"
+msgstr "Farbgestaltung des Betriebssystem verwenden?"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Overlay.vue:7
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Help.vue:3
+msgid "Wait"
+msgstr "Warte"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Configuration.vue:11
+msgid "Website"
+msgstr "Webseite"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/router/index.js:67
+msgid "Wizard"
+msgstr "Helfer"
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/RemoveRDS.vue:34
+msgid "Yes, i confirm that i want to delete my RDS account."
+msgstr "Ja, ich möchte den RDS Zugang löschen."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:76
+msgid "You configure RDS properly."
+msgstr "RDS korrekt konfiguriert."
+
+#: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:97
+msgid "Your project was successfully published."
+msgstr "Das Projekt wurde erfolgreich veröffentlicht"
