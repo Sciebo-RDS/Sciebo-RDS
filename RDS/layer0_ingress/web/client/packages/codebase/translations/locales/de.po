@@ -1,13 +1,17 @@
+# 
+# Translators:
+# Peter Heiss <peter.heiss@uni-muenster.de>, 2022
+# Juri <tuxwurf@gmail.com>, 2022
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: de\n"
-"MIME-Version: 1.0\n"
+"Last-Translator: Juri <tuxwurf@gmail.com>, 2022\n"
+"Language-Team: German (https://www.transifex.com/university-of-munster/teams/109551/de/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: easygettext\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:32
@@ -16,14 +20,12 @@ msgid "(opens a new window)"
 msgstr "(öffnet ein neues Fenster)"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:8
-#, fuzzy
 msgid "1. Which folder do you want to publish?"
-msgstr "2. Welcher Ordner soll veröffentlicht werden?"
+msgstr "1. Welchen Ordner möchtest du veröffentlichen?"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:29
-#, fuzzy
 msgid "2. Which Services do you want to publish to?"
-msgstr "3. Wohin willst Du die Daten veröffentlichen?"
+msgstr "2. Auf welchem Dienst möchtest du veröffentlichen?"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:11
 msgid "Activate RDS"
@@ -35,12 +37,12 @@ msgstr "Dienst hinzufügen"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Wizard.vue:17
 msgid "Add services"
-msgstr "Dienst hinzufügen"
+msgstr "Dienste hinzufügen"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:55
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:47
 msgid "Are you sure?"
-msgstr "Bist Du Dir sicher?"
+msgstr "Bist du dir sicher?"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:24
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:37
@@ -80,11 +82,13 @@ msgstr "Konfiguration"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Configuration.vue:3
 msgid "Configure your Project"
-msgstr "Veröffentliche dein Projekt"
+msgstr "Konfiguriere dein Projekt"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/RemoveRDS.vue:3
 msgid "Confirm the checkbox and click the button to remove the RDS account."
-msgstr "Bestätige die Checkbox und klicke auf den Knopf, um das Löschen des RDS Konto zu bestätigen."
+msgstr ""
+"Bestätige die Checkbox und klicke auf den Knopf, um das Löschen des RDS "
+"Konto zu bestätigen."
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Configuration.vue:40
 msgid "Connect"
@@ -107,7 +111,7 @@ msgstr "Weiter"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/List.vue:12
 msgid "Create a new project"
-msgstr "Erstelle ein Projekt"
+msgstr "Neues Projekt erstellen"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/StatusChip.vue:3
 msgid "created"
@@ -187,13 +191,15 @@ msgid ""
 "If you want to remove all access in once or remove the access for your\n"
 "          ownCloud account, click the \"revoke button\"."
 msgstr ""
-"Falls Du alle Zugänge, inklusive deinen ownCloud Zugang,\n"
+"Falls Du alle Zugänge, inklusive deines ownCloud Zugangs,\n"
 "          entfernen möchtest, klicke auf den unteren Knopf,\n"
 " um dein Konto zu löschen."
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:52
 msgid "If you want to reuse this service, you need to add it again."
-msgstr "Falls Du diesen Dienst später erneut nutzen willst, musst Du ihn wieder hinzufügen."
+msgstr ""
+"Falls du diesen Dienst später erneut nutzen willst, musst du ihn wieder "
+"hinzufügen."
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:55
 msgid "In progress..."
@@ -201,7 +207,8 @@ msgstr "In Bearbeitung..."
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:7
 msgid "In this card, you manage your access to services via RDS."
-msgstr "Hier können Zugänge zu deinem RDS Konto hinzugefügt oder entfernt werden."
+msgstr ""
+"Hier können Zugänge zu deinem RDS Konto hinzugefügt oder entfernt werden."
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/App.vue:50
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/RemoveRDS.vue:35
@@ -230,7 +237,7 @@ msgstr "Metadata"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/StatusChip.vue:5
 msgid "modified"
-msgstr "verändert"
+msgstr "bearbeitet"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/views/Projects.vue:49
 msgid "New project"
@@ -267,15 +274,17 @@ msgstr "Veröffentlichen"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Step/Publish.vue:4
 msgid "Publish your project"
-msgstr "Veröffentliche dein Projekt"
+msgstr "Projekt veröffentlichen"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/StatusChip.vue:7
 msgid "published"
 msgstr "Veröffentlicht"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/App.vue:6
-msgid "RDS is still in its pilot phase. If you encounter any problems, please contact"
-msgstr ""
+msgid ""
+"RDS is still in its pilot phase. If you encounter any problems, please "
+"contact"
+msgstr "RDS ist in der Pilotphase. Bei Problemen kontaktiere bitte"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:66
 msgid "Remove %{ name }"
@@ -371,16 +380,24 @@ msgid "show past projects"
 msgstr "Zeige alte Projekte"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:82
-msgid "The publishing process will be executed now. We will inform you, when finished or something goes wrong."
-msgstr "Das Projekt wird nun veröffentlicht. Bei Erfolg oder Abbruch wirst Du hier entsprechend darüber benachrichtigt."
+msgid ""
+"The publishing process will be executed now. We will inform you, when "
+"finished or something goes wrong."
+msgstr ""
+"Das Projekt wird nun veröffentlicht. Bei Erfolg oder Abbruch wirst Du hier "
+"entsprechend darüber benachrichtigt."
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Menu/Settings.vue:86
 msgid "Theme"
 msgstr "Aussehen"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Project/Stepper.vue:93
-msgid "There was an error, while we publish your project. Please check, if you have enter all fields in metadata step."
-msgstr "Ein Fehler ist im Veröffentlichungsprozess aufgetreten. Bitte überprüfe, ob Du alle Metadatenfelder ausgefüllt hast."
+msgid ""
+"There was an error, while we publish your project. Please check, if you have"
+" enter all fields in metadata step."
+msgstr ""
+"Ein Fehler ist im Veröffentlichungsprozess aufgetreten. Bitte überprüfe, ob "
+"Du alle erforderlichen Metadatenfelder ausgefüllt hast."
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:46
 msgid "This cannot be undone."
@@ -397,12 +414,18 @@ msgid "this is a published project"
 msgstr "veröffentlichtes Projekt"
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Settings/CredentialsInput.vue:8
-msgid "This service does not require any input, as it can derive the credentials by other means."
-msgstr "Dieser Dienst benötigt keine Eingaben, da die Authentifizierung auf einem anderen Wege funktioniert."
+msgid ""
+"This service does not require any input, as it can derive the credentials by"
+" other means."
+msgstr ""
+"Dieser Dienst benötigt keine Anmeldedaten, da die Authentifizierung auf "
+"einem anderen Wege funktioniert."
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Editor.vue:43
 msgid "This will remove all services from RDS and all projects."
-msgstr "Dies entfernt alle Zugänge und alle Projekte in RDS."
+msgstr ""
+"Dies entfernt alle Zugänge aus RDS und du wirst nicht mehr auf deine "
+"Projekte zugreifen können."
 
 #: /home/juri/Documents/Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase/src/components/Service/Card.vue:47
 msgid "This will remove your access to %{ servicename } from RDS."
