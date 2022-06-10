@@ -122,6 +122,11 @@ hugo:test:
   rules:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
     - if: '$CI_COMMIT_BRANCH == "release"'
+    - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
+      when: never
+  except:
+    refs:
+      - /^translations_rds-.*$/ # ignore, if it comes from transifex
   artifacts:
     untracked: true
     expire_in: 1 days
