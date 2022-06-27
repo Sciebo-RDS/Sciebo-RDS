@@ -122,13 +122,6 @@ class Storage:
                 rc, "tokenstorage_access_timestamps"
             )
 
-            def add_timestamp(this, key, **args):
-                # This adds a timestamp in a different dict for deprovisioning later.
-                self._timestamps[key] = time()
-
-            functools.wraps(self._storage.__getitem__)(add_timestamp)
-            functools.wraps(self._storage.__setitem__)(add_timestamp)
-
             self.__rc = rc
             self.__rc_helper = None
 
@@ -170,6 +163,14 @@ class Storage:
             logger.info("use in-memory")
             self._storage = {}
             self._services = []
+            self._timestamps = {}
+
+        def add_timestamp(this, key, **args):
+            # This adds a timestamp in a different dict for deprovisioning later.
+            self._timestamps[key] = time()
+
+        functools.wraps(self._storage.__getitem__)(add_timestamp)
+        functools.wraps(self._storage.__setitem__)(add_timestamp)
 
     @property
     def users(self):

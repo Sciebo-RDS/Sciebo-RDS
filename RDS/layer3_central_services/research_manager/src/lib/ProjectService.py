@@ -78,12 +78,6 @@ class ProjectService:
                 rc, "tokenstorage_access_timestamps"
             )
 
-            def add_timestamp(this, key, **args):
-                # This adds a timestamp in a different dict for deprovisioning later.
-                self._timestamps[key] = time()
-
-            functools.wraps(self.projects.__getitem__)(add_timestamp)
-            functools.wraps(self.projects.__setitem__)(add_timestamp)
         except Exception as e:
             logger.debug(e)
             logger.info("no redis found.")
@@ -96,6 +90,14 @@ class ProjectService:
 
             logger.info("use in-memory")
             self.projects = {}
+            self._timestamps = {}
+
+        def add_timestamp(this, key, **args):
+            # This adds a timestamp in a different dict for deprovisioning later.
+            self._timestamps[key] = time()
+
+        functools.wraps(self.projects.__getitem__)(add_timestamp)
+        functools.wraps(self.projects.__setitem__)(add_timestamp)
 
     @property
     def highest_index(self):
