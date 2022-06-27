@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-import Singleton
-from __init__ import bootstrap
+from __init__ import bootstrap, Singleton
 
 # set the WSGI application callable to allow using uWSGI:
 # uwsgi --http :8080 -w app
