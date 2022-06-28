@@ -48,10 +48,10 @@ variables:
   #    - $FOLDER/**/*
 
 .builds:
-  image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:19.03
+  image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:20.10
   stage: build
   services:
-    - name: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:19.03-dind
+    - name: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:20.10-dind
       alias: docker
   tags:
     - docker-in-docker
