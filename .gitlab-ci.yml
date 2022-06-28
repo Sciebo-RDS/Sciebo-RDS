@@ -122,7 +122,6 @@ hugo:test:
     - if: '$CI_COMMIT_BRANCH == "release"'
     - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
       when: never
-    - when: always
   artifacts:
     untracked: true
     expire_in: 1 days
