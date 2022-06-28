@@ -33,9 +33,11 @@ variables:
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp coverage s3://Testresults --recursive
   tags:
     - autoscaling
-  except:
-    refs:
-      - /^translations_rds-.*$/ # ignore, if it comes from transifex
+  rules:
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+    - if: '$CI_COMMIT_BRANCH == "release"'
+    - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
+      when: never^translations_rds-.*$/ # ignore, if it comes from transifex
   # https://gitlab.com/gitlab-org/gitlab/issues/8177
   # not supported currently
   #only:
@@ -124,9 +126,6 @@ hugo:test:
     - if: '$CI_COMMIT_BRANCH == "release"'
     - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
       when: never
-  except:
-    refs:
-      - /^translations_rds-.*$/ # ignore, if it comes from transifex
   artifacts:
     untracked: true
     expire_in: 1 days
@@ -159,7 +158,7 @@ pages:
   script:
     - mkdir -p ./public/dev
     - cd docs
-    - | 
+    - |
       if [ "$CI_COMMIT_BRANCH"  == "$CI_DEFAULT_BRANCH" ]; then
         sed -i "s/baseurl/#baseurl/" config.toml
         mv config.toml config.toml.bak
