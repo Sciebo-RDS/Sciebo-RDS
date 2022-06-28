@@ -114,10 +114,6 @@ hugo:test:
   script:
     - cd $FOLDER
     - hugo
-  only:
-    changes:
-      - docs/*
-      - docs/**/*
 
 .documentation:
   stage: documentation
