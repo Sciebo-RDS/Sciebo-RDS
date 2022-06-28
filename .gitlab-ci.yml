@@ -57,6 +57,7 @@ variables:
   rules:
     - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
       when: never
+    - when: always
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
