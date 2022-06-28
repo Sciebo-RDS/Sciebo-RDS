@@ -36,6 +36,7 @@ variables:
   rules:
     - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
       when: never # ignore, if it comes from transifex
+    - when: always
   # https://gitlab.com/gitlab-org/gitlab/issues/8177
   # not supported currently
   #only:
@@ -120,6 +121,7 @@ hugo:test:
     - if: '$CI_COMMIT_BRANCH == "release"'
     - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
       when: never
+    - when: always
   artifacts:
     untracked: true
     expire_in: 1 days
