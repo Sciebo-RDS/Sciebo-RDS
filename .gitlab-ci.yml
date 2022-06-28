@@ -34,8 +34,6 @@ variables:
   tags:
     - autoscaling
   rules:
-    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
-    - if: '$CI_COMMIT_BRANCH == "release"'
     - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
       when: never # ignore, if it comes from transifex
   # https://gitlab.com/gitlab-org/gitlab/issues/8177
