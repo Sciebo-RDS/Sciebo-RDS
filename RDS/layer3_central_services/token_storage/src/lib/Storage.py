@@ -165,13 +165,6 @@ class Storage:
             self._services = []
             self._timestamps = {}
 
-        def add_timestamp(this, key, **args):
-            # This adds a timestamp in a different dict for deprovisioning later.
-            self._timestamps[key] = time()
-
-        functools.wraps(self._storage.__getitem__)(add_timestamp)
-        functools.wraps(self._storage.__setitem__)(add_timestamp)
-
     @property
     def users(self):
         return [val["data"] for val in self.storage.values()]
@@ -477,6 +470,7 @@ class Storage:
         # check if this id is a superuser
         if not user.username in self._storage:
             self._storage[user.username] = {"data": user, "tokens": []}
+            self._timestamps[user.username] = time()
 
         else:
             from lib.Exceptions.StorageException import UserExistsAlreadyError
