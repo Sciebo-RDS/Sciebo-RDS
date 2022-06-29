@@ -97,6 +97,12 @@ enableGitInfo = true
     weight = -290
 
 [[languages.de.menu.doc]]
+    name = "Schicht 0"
+    identifier = "ingress"
+    pre = "<i class='fa fa-plug'></i>"
+    weight = -290
+
+[[languages.de.menu.doc]]
     name = "Schicht 1"
     identifier = "adapter-port"
     pre = "<i class='fa fa-map-o'></i>"
@@ -240,6 +246,12 @@ enableGitInfo = true
     name = "Infrastructure"
     identifier = "infrastructure"
     pre = "<i class='fa fa-industry'></i>"
+    weight = -290
+
+[[menu.doc]]
+    name = "Layer 0"
+    identifier = "ingress"
+    pre = "<i class='fa fa-plug'></i>"
     weight = -290
 
 [[menu.doc]]
