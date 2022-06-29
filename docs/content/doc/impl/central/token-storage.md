@@ -85,8 +85,9 @@ Because the data will be stored in a dict-like (hashmap) structure, we use the u
 Because we need to get rid of data, which will not be used anymore, we track the last access time for all users in a separate structure. The following diagram will be stored in redis, if it is deployed in a cluster environment.
 A scheduler runs every 2 hours through the Timestamps and checks, if there are usernames with a timestamp > 180 days in the past. Then it deletes the username and all related Tokens (and in research manager, it deletes all researches). To get rid of old timestamps, it waits additional 30 days before the timestamps will be deleted (so all services have enough time to run the schedulers).
 
-The timestamps will be updated everytime anything access data for a username in central services, regardless it is the user himself or another service identity.
+The timestamps will be updated everytime anything access data for a username in research central service, regardless it is the user himself or another service identity. Token Storage only updates the timestamps once while user connects the first time. After this only research changes updates the timestamp after account creation.
 
+The timestamp dict look like this (username is key, timestamp is value):
 ```mermaid
 classDiagram
 
