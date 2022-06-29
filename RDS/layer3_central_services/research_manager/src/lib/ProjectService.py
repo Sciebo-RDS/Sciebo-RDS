@@ -421,5 +421,3 @@ class ProjectService:
         for key, value in self._timestamps.values():
             if value + 180 * 24 * 60 * 60 < time():
                 self.removeUser(key)
-            if value + 210 * 24 * 60 * 60 < time():
-                del self._timestamps[key]
