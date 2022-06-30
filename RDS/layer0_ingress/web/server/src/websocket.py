@@ -1,4 +1,5 @@
 import enum
+from time import time
 from flask import request, session
 from flask_socketio import emit, disconnect, Namespace
 from flask_login import current_user, logout_user
@@ -21,7 +22,7 @@ from .app import (
     app,
     trans_tbl,
     research_progress,
-    verify_ssl
+    verify_ssl,
 )
 from .Describo import getSessionId
 import logging
@@ -31,6 +32,32 @@ import json
 import requests
 import jwt
 from .SyncResearchProcessStatusEnum import ProcessStatus
+
+# connect to timestamp redis for connection updates
+_timestamps = {}
+try:
+    app.logger.debug("first try cluster")
+
+    import redis_pubsub_dict
+    from redis.cluster import RedisCluster as Redis
+
+    startup_nodes = [
+        {
+            "host": os.getenv("REDIS_HOST", "localhost"),
+            "port": os.getenv("REDIS_PORT", "6379"),
+        }
+    ]
+
+    rc = Redis(
+        **(startup_nodes[0]),
+        health_check_interval=30,
+        decode_responses=True,
+    )
+    rc.get_nodes()  # trigger error if anything there
+
+    _timestamps = redis_pubsub_dict.RedisDict(rc, "tokenstorage_access_timestamps")
+except Exception as e:
+    app.logger.error(f"error in redis cluster: {e}")
 
 
 def refreshUserServices():
@@ -245,6 +272,8 @@ class RDSNamespace(Namespace):
         current_user.websocketId = request.sid
         clients[current_user.userId] = current_user
 
+        _timestamps[current_user.userId] = time()
+
         emit("ServerName", {"servername": session["servername"]})
         emit("ServiceList", httpManager.makeRequest("getServicesList"))
         emit("UserServiceList", httpManager.makeRequest("getUserServices"))
@@ -260,9 +289,9 @@ class RDSNamespace(Namespace):
         except Exception as e:
             app.logger.error(e, exc_info=True)
 
-    def __update_research_process(self, research): 
+    def __update_research_process(self, research):
         research_progress[research["researchId"]] = research
-        
+
     def __get_research_process(self, research):
         return research_progress.get(research["researchId"])
 
@@ -305,7 +334,7 @@ class RDSNamespace(Namespace):
     def __load_research(self, jsonData):
         research = json.loads(httpManager.makeRequest("getResearch", data=jsonData))
         research["synchronization_process_status"] = ProcessStatus.START.value
-            
+
         for index, port in enumerate(research["portOut"]):
             research["portOut"][index]["status"] = ProcessStatus.START.value
         return research
