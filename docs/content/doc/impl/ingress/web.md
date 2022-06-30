@@ -42,5 +42,21 @@ sequenceDiagram
 ## User oauth2 authentication 
 
 Mainly the same as provider login except the login stuff, because the user is already logged in with valid provider<->sciebo RDS connection.
+Because the user is logged in already, all new oauth2 codes will be stored under this login name. So you have to redirect the user always on the same endpoint for code exchange. It only differs if the user has a service already stored in the login session or not. If there is none, the next service will be used as the main integration service. All services after this are behind this service and are available as connectors. But all of this will be handled by the backend service port2 in layer2.
 
 ## Research creation and update
+
+Research creation is simple straight forward. The frontend transforms the structure of the backend into an easier and javascript friendly structure. Update is very equal to creation, except you modify the object to your needs by hand. The frontend server will transform it back to original form and backend will take care to adjust the data object to your changes.
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant F as RDS-Web
+    participant B as Backend
+    U->>F: Requests to create a new research
+    F-->>B: Forward requestparticipant U as User
+    B-->>F: Return result
+    F-->>U: Return result
+```
+
+RDS-Web only access backend services in layer 2. In most cases this is port service in layer2. The other services are only accessed for files export and metadata exchange.
