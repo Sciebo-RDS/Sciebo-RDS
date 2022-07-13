@@ -164,6 +164,7 @@ class RdsApiController extends ApiController
      * @NoAdminRequired
      * @NoCSRFRequired
      *
+     * Heavily inspired by https://github.com/owncloud/core/blob/b68119d7cdcb97064f479f4aefe31d661eaab792/apps/files_sharing/lib/Controller/Share20OcsController.php#L370
      * Returns a public link to given path.
      * In request body it needs a "path" field nothing else.
      *
@@ -179,9 +180,8 @@ class RdsApiController extends ApiController
             return new Result(null, 404, "missing path");
         }
 
-        $userFolder = $this->getCurrentUserFolder();
-
         try {
+            $userFolder = $this->getCurrentUserFolder();
             $path = $userFolder->get($path);
         } catch (\OCP\Files\NotFoundException $e) {
             return new Result(null, 404, "invalid path");
