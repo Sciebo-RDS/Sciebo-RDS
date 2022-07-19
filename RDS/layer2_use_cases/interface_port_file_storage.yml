@@ -158,12 +158,23 @@ paths:
                   sharelink:
                     type: string
                     description: 'Required, if filepath was given and passiveWithLink for this port was given.'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  sharelink:
+                    type: string
+        '400':
+          description: |-
+            Bad Request
+
+            Return this, if there is no workflow to be triggered.
+        '406':
+          description: Not Acceptable
       description: |-
         This endpoint can handle multiple purposes. Firstly, it is to trigger workflows on a specific folder. The system expects the workflow which was given while init and register in bootup. 
 
         If this port was specified as passiveWithLink, then it is expected it triggers the workflow to create a sharelink for given filepath.
-
-        If no trigger 
       requestBody:
         content:
           application/json:
@@ -172,7 +183,7 @@ paths:
               properties:
                 filepath:
                   type: string
-                userdId:
+                userId:
                   type: string
                   description: Should be looked up through port. Otherwise it will be send from the system in a consecutive request.
               required:
