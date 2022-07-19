@@ -148,7 +148,7 @@ class Service:
         if response_to.status_code >= 300:
             raise CannotCreateSharelink
 
-        cnt = response_to.json
+        cnt = response_to.json()
         return cnt["sharelink"]
 
     def getFilepath(self):
