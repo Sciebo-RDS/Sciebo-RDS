@@ -5,7 +5,7 @@ import zipfile
 from io import BytesIO
 import os
 import threading
-from RDS import FileTransferMode, LoginMode
+from RDS import FileTransferMode
 from .Util import threadsafe_iter
 
 logger = logging.getLogger()
@@ -14,8 +14,7 @@ logger = logging.getLogger()
 class Research:
     def __init__(self, userId=None, researchIndex=None, researchId=None, testing=False):
         if (userId is None or researchIndex is None) and researchId is None:
-            raise ValueError(
-                "(userId or researchIndex) and researchId are None.")
+            raise ValueError("(userId or researchIndex) and researchId are None.")
 
         self.importServices = []
         self.exportServices = []
@@ -30,9 +29,7 @@ class Research:
         self.applyChanges = False
 
         self.testing = testing
-        self.address = (
-            "http://layer3-research-manager" if testing is False else testing
-        )
+        self.address = "http://layer3-research-manager" if testing is False else testing
 
         self.reload()
 
@@ -114,11 +111,30 @@ class Research:
             logger.exception(e)
 
         try:
+            self.processPassivePortsWithShares()
+        except Exception as e:
+            logger.exception(e)
+
+        try:
             self.processActivePorts()
         except Exception as e:
             logger.exception(e)
 
         return True
+
+    def processPassivePortsWithShares(self):
+        from Service import InvalidFiletransferMode, CannotCreateSharelink
+
+        for importSvc in self.importServices:
+            result = [
+                (svc, svc.triggerPassiveMode(importSvc))
+                for svc in self.getExportServices(mode=FileTransferMode.passiveWithLink)
+            ]
+
+            if not all(map(result, lambda x: x[1])):
+                logger.warning(
+                    f"Error in exportservice with sharelink \nimportservice: {importSvc} \nresult: {result}"
+                )
 
     def processActivePorts(self):
         if len(self.getExportServices()) == 0:
@@ -134,12 +150,14 @@ class Research:
                 useZipForContent = True
 
             logger.debug(
-                "use zipfile, because the folder holds folders again? {}".format(useZipForContent))
+                "use zipfile, because the folder holds folders again? {}".format(
+                    useZipForContent
+                )
+            )
 
             if useZipForContent:
                 mem_zip = BytesIO()
-                zip = zipfile.ZipFile(
-                    mem_zip, mode="w", compression=zipfile.ZIP_STORED)
+                zip = zipfile.ZipFile(mem_zip, mode="w", compression=zipfile.ZIP_STORED)
 
             for fileTuple in svc.getFiles(getContent=True):
                 logger.debug(
@@ -175,8 +193,7 @@ class Research:
 
                 results = [
                     exportSvc.addFile(
-                        "{}_{}.zip".format(
-                            svc.servicename, urlify(svc.getFilepath())),
+                        "{}_{}.zip".format(svc.servicename, urlify(svc.getFilepath())),
                         mem_zip,
                     )
                     for exportSvc in self.getExportServices()
@@ -190,9 +207,10 @@ class Research:
             return False
 
         for importSvc in self.importServices:
-            for exportSvc in [svc for svc in self.getExportServices(mode=FileTransferMode.passive)]:
-                exportSvc.triggerPassiveMode(
-                    importSvc.getFilepath(), importSvc.servicename)
+            for exportSvc in [
+                svc for svc in self.getExportServices(mode=FileTransferMode.passive)
+            ]:
+                exportSvc.triggerPassiveMode(importSvc)
 
     def getExportServices(self, mode=FileTransferMode.active):
         return [svc for svc in self.exportServices if svc.fileTransferMode == mode]
@@ -273,8 +291,7 @@ class Research:
         return list(
             set(
                 reduce(
-                    lambda x, y: x + y, [svc.getFiles()
-                                         for svc in self.importServices]
+                    lambda x, y: x + y, [svc.getFiles() for svc in self.importServices]
                 )
             )
         )

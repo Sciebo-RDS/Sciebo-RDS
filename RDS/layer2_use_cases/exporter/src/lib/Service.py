@@ -1,7 +1,16 @@
+from pickle import NONE
+from typing_extensions import Self
 import requests
 import os
 import logging
-from RDS import Util, FileTransferMode, FileTransferArchive, LoginService, OAuth2Service
+from RDS import (
+    Util,
+    FileTransferMode,
+    FileTransferArchive,
+    LoginService,
+    OAuth2Service,
+    LoginMode,
+)
 
 logger = logging.getLogger()
 
@@ -34,6 +43,10 @@ class Service:
         self.userId = userId
         self.researchIndex = researchIndex
 
+        self.fileTransferMode = None
+        self.fileTransferArchive = None
+        self.loginMode = None
+
         self.port = servicename
         self.fileStorage = fileStorage
         self.metadata = metadata
@@ -52,15 +65,20 @@ class Service:
     def reload(self):
         if self.fileStorage:
             data = {"filepath": self.getFilepath(), "userId": self.userId}
-            req = requests.get(f"{self.portaddress}/storage/folder", json=data, verify=(
-                os.environ.get("VERIFY_SSL", "True") == "True"))
+            req = requests.get(
+                f"{self.portaddress}/storage/folder",
+                json=data,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
 
             if req.status_code >= 300:
                 # for convenience
-                data.update(Util.parseToken(
-                    Util.loadToken(self.userId, self.port)))
-                req = requests.get(f"{self.portaddress}/storage/folder", json=data, verify=(
-                    os.environ.get("VERIFY_SSL", "True") == "True"))
+                data.update(Util.parseToken(Util.loadToken(self.userId, self.port)))
+                req = requests.get(
+                    f"{self.portaddress}/storage/folder",
+                    json=data,
+                    verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+                )
 
                 if req.status_code >= 300:
                     return False
@@ -76,11 +94,17 @@ class Service:
             self.reloadInformations()
 
     def reloadInformations(self):
-        """Updates all metadata informations from port.
-        """
+        """Updates all metadata informations from port."""
 
-        json = requests.get("{}/service/{}".format(os.getenv(
-            "USE_CASE_SERVICE_PORT_SERVICE", "{}/port-service".format(self.portaddress)), self.port)).json()
+        json = requests.get(
+            "{}/service/{}".format(
+                os.getenv(
+                    "USE_CASE_SERVICE_PORT_SERVICE",
+                    "{}/port-service".format(self.portaddress),
+                ),
+                self.port,
+            )
+        ).json()
 
         logger.debug("reload metadata informations: got {}".format(json))
 
@@ -90,14 +114,42 @@ class Service:
         self.fileTransferMode = svc.fileTransferMode
         self.fileTransferArchive = svc.fileTransferArchive
 
-        if isinstance(svc, OAuth2Service):
-            self.loginMode = 0
+        if isinstance(svc, LoginService):
+            self.loginMode = LoginMode.credentials
             self.credentials = svc.to_dict().get("credentials", {})
+        elif isinstance(svc, OAuth2Service):
+            self.loginMode = LoginMode.oauth
         else:
-            self.loginMode = 1
+            self.loginMode = LoginMode.none
 
-        logger.debug("got svc: {}, loginmode: {}".format(
-            svc.to_dict(), self.loginMode))
+        logger.debug("got svc: {}, loginmode: {}".format(svc.to_dict(), self.loginMode))
+
+    def createShareLink(self):
+        if self.fileTransferMode != FileTransferMode.passiveWithLink:
+            raise InvalidFiletransferMode
+
+        data = {"filepath": self.getFilepath()}
+
+        response_to = requests.post(
+            f"{self.portaddress}/storage/folder",
+            json=data,
+            verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+        )
+
+        if response_to.status_code >= 300:
+            data.update(Util.parseToken(Util.loadToken(self.userId, self.port)))
+            logger.debug("request data {}".format(data))
+            response_to = requests.post(
+                f"{self.portaddress}/storage/folder",
+                json=data,
+                verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            )
+
+        if response_to.status_code >= 300:
+            raise CannotCreateSharelink
+
+        cnt = response_to.json
+        return cnt["sharelink"]
 
     def getFilepath(self):
         filepath = self.getProperty("filepath")
@@ -119,8 +171,7 @@ class Service:
         for index, file in enumerate(self.files):
             if getContent:
                 logger.debug(
-                    "get file {} from service {}".format(
-                        file, self.servicename)
+                    "get file {} from service {}".format(file, self.servicename)
                 )
                 content = self.getFile(index)
 
@@ -161,8 +212,7 @@ class Service:
             )
 
             if response_to.status_code >= 300:
-                data.update(Util.parseToken(
-                    Util.loadToken(self.userId, self.port)))
+                data.update(Util.parseToken(Util.loadToken(self.userId, self.port)))
 
                 logger.debug("request data {}".format(data))
 
@@ -183,27 +233,35 @@ class Service:
 
         return BytesIO(b"")
 
-    def triggerPassiveMode(self, folder, servicename):
+    def triggerPassiveMode(self, importService: Self):
         """Trigger passive upload for given folder
 
         Args:
-            folder (str): Set the folder.
-            servicename (str): Given port, where files should be taken from.
+            importService (Service): The service which will be used to pull all needed informations.
 
         Returns:
             bool: Return True, if the trigger was successfully, otherwise False.
         """
         data = {
-            "folder": folder,
-            "service": servicename,
-            "username": self.userId
+            "folder": importService.getFilepath(),
+            "service": importService.servicename,
+            "username": self.userId,
         }
+
+        if importService.fileTransferMode == FileTransferMode.passiveWithLink:
+            try:
+                sharedlink = importService.createShareLink()
+                data.update(
+                    {"sharedlink": sharedlink, "filelist": importService.getFiles()}
+                )
+            except (InvalidFiletransferMode, CannotCreateSharelink) as e:
+                logger.exception(f"Error while creating sharelink: {e}")
+                return False
 
         data.update(Util.parseToken(Util.loadToken(self.userId, self.port)))
 
         logger.debug(
-            "start passive mode with data {} in service {}".format(
-                data, self.getJSON())
+            "start passive mode with data {} in service {}".format(data, self.getJSON())
         )
 
         if self.metadata:
@@ -216,6 +274,9 @@ class Service:
             if response_to.status_code >= 300:
                 logger.error(response_to.json())
                 return False
+
+        if self.fileStorage:
+            # TODO maybe needed somedays
             pass
 
         return True
@@ -230,15 +291,12 @@ class Service:
         Returns:
             bool: Return True, if the file was uploaded successfully, otherwise False.
         """
-        data = Util.parseToken(Util.loadToken(
-            self.userId, self.port
-        ))
+        data = Util.parseToken(Util.loadToken(self.userId, self.port))
         files = {"file": (filename, fileContent.getvalue())}
         data["filename"] = filename
 
         logger.debug(
-            "add file {} with data {} in service {}".format(
-                files, data, self.getJSON())
+            "add file {} with data {} in service {}".format(files, data, self.getJSON())
         )
 
         if self.metadata:
@@ -264,9 +322,7 @@ class Service:
 
         file = self.files[file_id]
 
-        data = Util.parseToken(Util.loadToken(
-            self.userId, self.port
-        ))
+        data = Util.parseToken(Util.loadToken(self.userId, self.port))
 
         if self.fileStorage:
             data["filepath"] = "{}/{}".format(self.getFilepath(), file)
@@ -296,9 +352,7 @@ class Service:
         return False
 
     def removeAllFiles(self):
-        data = Util.parseToken(Util.loadToken(
-            self.userId, self.port
-        ))
+        data = Util.parseToken(Util.loadToken(self.userId, self.port))
 
         logger.debug("remove files in service {}".format(self.servicename))
 
@@ -330,15 +384,13 @@ class Service:
 
     def getDict(self):
 
-        obj = {"servicename": self.port,
-               "files": [x for x in self.getFiles()]}
+        obj = {"servicename": self.port, "files": [x for x in self.getFiles()]}
 
         return obj
 
     @classmethod
     def fromDict(cls, portDict, userId=None, researchIndex=None, testing=None):
-        logger.debug(
-            "initialize service from dict, got dict: {}".format(portDict))
+        logger.debug("initialize service from dict, got dict: {}".format(portDict))
 
         portName = portDict["port"]
         fileStorage = False
@@ -368,3 +420,11 @@ class Service:
             return False
 
         return self.getDict() == obj.getDict()
+
+
+class InvalidFiletransferMode(Exception):
+    pass
+
+
+class CannotCreateSharelink(Exception):
+    pass
