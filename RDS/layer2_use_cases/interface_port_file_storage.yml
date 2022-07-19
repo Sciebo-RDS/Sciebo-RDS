@@ -2,9 +2,7 @@ openapi: 3.0.0
 info:
   title: Interface for Ports used as file storage
   version: '1.0'
-  description: >-
-    This document describes the interface of the port owncloud from the
-    innermost circle of the rds architecture to the second circle.
+  description: This document describes the interface of the port owncloud from the innermost circle of the rds architecture to the second circle.
   contact:
     name: Peter Heiss
     email: peter.heiss@uni-muenster.de
@@ -140,21 +138,45 @@ paths:
                   type: string
                 userId:
                   $ref: '#/components/schemas/portusername'
-      description: >-
-        Returns all files and folders within filepath, if it is a folder.
-        Otherwise the array is empty.
+      description: |-
+        Returns all files and folders within filepath, if it is a folder. Otherwise the array is empty.
 
-
-        The paths needs to be absolute, so the user can request the returned
-        elements without any string modifcations.
-
-        Folders are marked with slash / at the end. Files does not have this
-        slash. 
-
-        The lookup for files and folders is not recursive. The user make a
-        request by himself for the recursive folder lookup for your returned
-        array. 
+        The paths needs to be absolute, so the user can request the returned elements without any string modifcations.
+        Folders are marked with slash / at the end. Files does not have this slash. 
+        The lookup for files and folders is not recursive. The user make a request by himself for the recursive folder lookup for your returned array. 
     parameters: []
+    post:
+      summary: Trigger special workflow
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sharelink:
+                    type: string
+                    description: 'Required, if filepath was given and passiveWithLink for this port was given.'
+      description: |-
+        This endpoint can handle multiple purposes. Firstly, it is to trigger workflows on a specific folder. The system expects the workflow which was given while init and register in bootup. 
+
+        If this port was specified as passiveWithLink, then it is expected it triggers the workflow to create a sharelink for given filepath.
+
+        If no trigger 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filepath:
+                  type: string
+                userdId:
+                  type: string
+                  description: Should be looked up through port. Otherwise it will be send from the system in a consecutive request.
+              required:
+                - filepath
 tags:
   - name: deposit
     description: All about depositions
@@ -167,29 +189,13 @@ components:
     portusername:
       title: username for port
       type: string
-      description: >-
-        This field is very special, because this helps very much to work with
-        ports. So it has 2 different styles: The session and the normal format.
-        The normal format will be used, when the port have to make the search by
-        themself for example against the token storage.
-
-        The session format will be used to provide the login credentials through
-        the RDS system directly to the port, without the need to lookup from
-        port. The first part <port-name> symbolize, which port should parse the
-        following credentials and is equal to the name, which set the port by
-        themself in the registration-process at startup. It can be ignored by
-        the port, but should not. The username and password are the user inputs
-        from the web ui provided by token storage.
-
-        Beware: Do not use a token (e.g. for oauth) as password, because this is
-        used in the token field.
-
+      description: |-
+        This field is very special, because this helps very much to work with ports. So it has 2 different styles: The session and the normal format. The normal format will be used, when the port have to make the search by themself for example against the token storage.
+        The session format will be used to provide the login credentials through the RDS system directly to the port, without the need to lookup from port. The first part <port-name> symbolize, which port should parse the following credentials and is equal to the name, which set the port by themself in the registration-process at startup. It can be ignored by the port, but should not. The username and password are the user inputs from the web ui provided by token storage.
+        Beware: Do not use a token (e.g. for oauth) as password, because this is used in the token field.
 
         session format:
-
         <port-name>://<username>:<password>
 
-
         normal format:
-
         <username>
