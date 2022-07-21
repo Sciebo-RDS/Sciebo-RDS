@@ -4,7 +4,7 @@
             <div class="pa-2 text-center text-h5 ma-3">
                 {{category}}
             </div>
-        <div v-for="(answer, question) in questions" :key="question" class="ma-3">
+        <div v-for="(answer, question) in questions" :key="question" class="my-3">
             <v-divider class="mb-5"/>
             <v-row>
                 <v-col cols="3" class="text-subtitle-1">
