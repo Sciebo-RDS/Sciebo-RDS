@@ -35,7 +35,7 @@ variables:
     - autoscaling
   except:
     refs:
-      - /^translations_plugins-.*$/i # ignore, if it comes from transifex
+      - /^translations_rds-.*$/ # ignore, if it comes from transifex
   # https://gitlab.com/gitlab-org/gitlab/issues/8177
   # not supported currently
   #only:
@@ -53,6 +53,9 @@ variables:
       alias: docker
   tags:
     - docker-in-docker
+  rules:
+    - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
+      when: never
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
@@ -119,6 +122,11 @@ hugo:test:
   rules:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
     - if: '$CI_COMMIT_BRANCH == "release"'
+    - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
+      when: never
+  except:
+    refs:
+      - /^translations_rds-.*$/ # ignore, if it comes from transifex
   artifacts:
     untracked: true
     expire_in: 1 days
