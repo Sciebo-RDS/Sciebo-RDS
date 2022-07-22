@@ -105,11 +105,11 @@ upload_test_coverage:
 
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:
-  image: registry.gitlab.com/pages/hugo/hugo_extended:0.100.2
+  image: registry.gitlab.com/pages/hugo/hugo_extended:0.91.2
   variables:
     FOLDER: docs/
   before_script:
-    - apk add --update --no-cache git
+    - apk add --update --no-cache --allow-untrusted git
   script:
     - cd $FOLDER
     - hugo
@@ -138,7 +138,7 @@ hugo:test:
     - make doc
 
 pages:
-  image: registry.gitlab.com/pages/hugo/hugo_extended:0.100.2
+  image: registry.gitlab.com/pages/hugo/hugo_extended:0.91.2
   stage: pages
   cache:
     paths:
@@ -155,7 +155,7 @@ pages:
       variables:
         DOC_FOLDER: .
   before_script:
-    - apk add --update --no-cache git python3 py3-pip rsync
+    - apk add --update --no-cache --allow-untrusted git python3 py3-pip rsync
     - python3 -m pip install awscli
   script:
     - mkdir -p ./public/dev
