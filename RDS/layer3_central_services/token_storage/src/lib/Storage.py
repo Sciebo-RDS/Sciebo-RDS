@@ -71,6 +71,7 @@ class Storage:
                     OAuth2Token.from_json,
                     Token.from_json,
                     load_service_with_tokens,
+                    json.loads,
                 ]
             )(x)
             redis_pubsub_dict.RedisDict.to_json = lambda x: dict(x.items())
@@ -713,12 +714,12 @@ class Storage:
         return string
         """
 
-    def deprovisionize(self):
+    def deprovizionize(self):
         """
         Deletes all user informations, if last access timestamp is 180 days in past.
         For cleanup, it waits additional 30 days before it deletes the timestamp too.
         """
-        for key, value in self._timestamps.values():
+        for key, value in self._timestamps.items():
             if value + 180 * 24 * 60 * 60 < time():
                 self.removeUser(User(key))
             if value + 210 * 24 * 60 * 60 < time():

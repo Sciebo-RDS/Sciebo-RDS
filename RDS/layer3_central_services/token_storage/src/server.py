@@ -19,7 +19,7 @@ def fn_refresh():
 def fn_deprovizionize():
     with app.tracing.tracer.start_active_span("Deprovizionize users") as scope:
         scope.span.log_kv({"event": "starts deprovizionize"})
-        ServerUtil.storage.deprovisionize()
+        ServerUtil.storage.deprovizionize()
         scope.span.log_kv({"event": "finished deprovizionize"})
 
 

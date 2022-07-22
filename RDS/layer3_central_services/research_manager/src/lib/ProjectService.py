@@ -28,7 +28,7 @@ class ProjectService:
 
             redis_pubsub_dict.dumps = lambda x: json.dumps(x)
             redis_pubsub_dict.loads = lambda x: Util.try_function_on_dict(
-                [Project.fromJSON]
+                [Project.fromJSON, json.loads]
             )(x)
             redis_pubsub_dict.RedisDict.to_json = lambda x: dict(x.items())
             redis_pubsub_dict.RedisDict.__eq__ = (
@@ -418,6 +418,6 @@ class ProjectService:
         Removes projects, if timestamp is 180 days in the past.
         For cleanup, it waits additional 30 days before it deletes the timestamp too.
         """
-        for key, value in self._timestamps.values():
+        for key, value in self._timestamps.items():
             if value + 180 * 24 * 60 * 60 < time():
                 self.removeUser(key)
