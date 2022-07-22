@@ -105,8 +105,7 @@ upload_test_coverage:
 
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:
-  extends: .tests
-  image: registry.gitlab.com/pages/hugo/hugo_extended:0.91.2
+  image: registry.gitlab.com/pages/hugo/hugo_extended:0.100.2
   variables:
     FOLDER: docs/
   before_script:
@@ -114,6 +113,13 @@ hugo:test:
   script:
     - cd $FOLDER
     - hugo
+  stage: test
+  tags:
+    - autoscaling
+  rules:
+    - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
+      when: never # ignore, if it comes from transifex
+    - when: always
 
 .documentation:
   stage: documentation
@@ -132,7 +138,7 @@ hugo:test:
     - make doc
 
 pages:
-  image: registry.gitlab.com/pages/hugo/hugo_extended:0.91.2
+  image: registry.gitlab.com/pages/hugo/hugo_extended:0.100.2
   stage: pages
   cache:
     paths:
