@@ -410,8 +410,6 @@ class StorageTestCase(make_test_case()):
 
 class StorageRedisBackedTestCase(make_test_case(use_redis=True)):
     def test_deprov_data(self):
-        opts = get_opts(True)
-
         expected = {
             self.user1.username: {"data": self.user1, "tokens": [self.oauthtoken1]}
         }
