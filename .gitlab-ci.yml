@@ -106,7 +106,7 @@ upload_test_coverage:
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:
   extends: .tests
-  image: registry.gitlab.com/pages/hugo:0.68.3
+  image: registry.gitlab.com/pages/hugo/hugo_extended:0.91.2
   variables:
     FOLDER: docs/
   before_script:
