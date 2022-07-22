@@ -7,10 +7,10 @@
         <div v-for="(answer, question) in questions" :key="question" class="my-3">
             <v-divider class="mb-5"/>
             <v-row>
-                <v-col cols="3" class="text-subtitle-1">
+                <v-col class="text-subtitle-1 col-xl-3 col-lg-4 col-md-5 col-12" style="word-break: break-word">
                     {{question}}
                 </v-col>
-                <v-col class="text-subtitle-2 grey--text text--darken-2">
+                <v-col class="text-subtitle-2 grey--text text--darken-2" style="word-break: break-word">
                     <span v-html="markdown(answer)" />
                 </v-col>
             </v-row>

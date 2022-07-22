@@ -1,6 +1,6 @@
 <template>
 
-  <div class="ma-10">
+  <div class="px-10 py-8 ma-5 grey lighten-5">
     <RenderHelp
       v-for="(questions, category) in help_categories[this.$config.language]"
       :key="category"
