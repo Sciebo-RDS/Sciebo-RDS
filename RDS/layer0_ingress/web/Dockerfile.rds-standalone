@@ -9,7 +9,7 @@ FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:18-al
 WORKDIR /app
 ENV VUE_APP_BASE_URL $VUE_APP_BASE_URL
 WORKDIR /app
-RUN apk add gettext
+RUN apk add --no-cache gettext python3 build-base make && python3 -m ensurepip && pip3 install --no-cache --upgrade pip setuptools 
 COPY --from=staging /src/pkg ./
 RUN yarn install --non-interactive
 COPY client .
