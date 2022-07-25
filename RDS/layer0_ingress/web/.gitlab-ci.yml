@@ -36,6 +36,10 @@ variables:
     - docker push $CI_IMAGE_JOBID
 
 build:rds_web:
+  cache:
+    key: $CI_JOB_NAME
+    paths:
+      - RDS/layer0_ingress/web/
   variables:
     FOLDER: RDS/layer0_ingress/web/
     DOCKERFILENAME: Dockerfile.rds-standalone
@@ -45,6 +49,8 @@ build:rds_web:
 build:port_helper_describo_token_updater:
   cache:
     key: $CI_JOB_NAME
+    paths:
+      - RDS/layer0_ingress/web/helper/
   variables:
     FOLDER: RDS/layer0_ingress/web/helper/
     DOCKERFILENAME: dockerfile
