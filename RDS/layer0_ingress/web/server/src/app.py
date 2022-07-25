@@ -11,7 +11,6 @@ from functools import wraps
 import opentracing
 from flask_opentracing import FlaskTracing
 import redis_pubsub_dict
-from redis.cluster import RedisCluster
 from flask import Flask
 import uuid
 import requests
@@ -141,15 +140,11 @@ if os.getenv("USE_LOCAL_DICTS", "False").capitalize() == "True":
     user_store = {}
     research_progress = {}
 else:
-    startup_nodes_cluster = [
-        {
-            "host": os.getenv("REDIS_SERVICE_HOST", "localhost"),
-            "port": os.getenv("REDIS_SERVICE_PORT", "6379"),
-        }
-    ]
+    from redis.cluster import RedisCluster, ClusterNode
 
+    nodes = [ClusterNode(os.getenv("REDIS_SERVICE_HOST", "localhost"), os.getenv("REDIS_SERVICE_PORT", "6379"))]
     rcCluster = RedisCluster(
-        startup_nodes=startup_nodes_cluster,
+        startup_nodes=nodes,
         skip_full_coverage_check=True,
         cluster_down_retry_attempts=1,
     )
