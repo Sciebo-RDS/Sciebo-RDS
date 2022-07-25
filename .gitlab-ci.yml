@@ -71,7 +71,7 @@ variables:
     - export CI_IMAGE_BRANCH=$CI_PROJECT_PATH:$CI_COMMIT_REF_NAME
     - export CI_IMAGE_JOBID=$CI_PROJECT_PATH:$CI_PIPELINE_ID
     - docker pull --quiet $CI_IMAGE_BRANCH || true
-    - docker build --cache-from $CI_IMAGE_BRANCH --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_BRANCH  --tag $CI_IMAGE_JOBID --file="dockerfile" .
+    - docker build --cache-from $CI_IMAGE_BRANCH --tag $CI_IMAGE_LATEST --tag $CI_IMAGE_BRANCH  --tag $CI_IMAGE_JOBID --file="dockerfile" --build-arg git_branch=$CI_COMMIT_BRANCH .
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker info
     - docker push $CI_IMAGE_BRANCH
