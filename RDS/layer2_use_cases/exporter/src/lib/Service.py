@@ -1,5 +1,3 @@
-from pickle import NONE
-from typing_extensions import Self
 import requests
 import os
 import logging
@@ -233,7 +231,7 @@ class Service:
 
         return BytesIO(b"")
 
-    def triggerPassiveMode(self, importService: Self):
+    def triggerPassiveMode(self, importService):
         """Trigger passive upload for given folder
 
         Args:
