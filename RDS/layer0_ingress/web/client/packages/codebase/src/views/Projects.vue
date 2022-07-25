@@ -8,15 +8,9 @@
         :label="$gettext('show past projects')"
       ></v-switch>
     </v-layout>
-    <v-layout column align-center wrap v-else>
-      <v-alert dense type="error" class="mb-6">
-        Please connect to at least one
-        <strong>
-          <router-link :to="{ name: 'Services' }">service</router-link>
-        </strong>
-        to use RDS
-      </v-alert>
-    </v-layout>
+
+    <connect-service-warning v-else />
+
     <ProjectList />
     <!-- put these into their own components -->
     <v-card-text
@@ -87,10 +81,12 @@
 <script>
 import { mapState } from "vuex";
 import ProjectList from "../components/Project/List.vue";
+import ConnectServiceWarning from "../components/common/ConnectServiceWarning.vue"
 
 export default {
   components: {
     ProjectList,
+    ConnectServiceWarning,
   },
   computed: {
     showAll: {
@@ -102,8 +98,8 @@ export default {
       },
     },
     userHasServicesConnected() {
-      //hardcoded filter for owncloud, change
-      if (this.userservicelist.length > 1) {
+      let m = this.userservicelist.filter(s => s['implements'].includes('metadata'))
+      if (m.length > 0) {
         return true;
       }
       return false;
