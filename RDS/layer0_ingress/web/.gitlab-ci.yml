@@ -43,6 +43,8 @@ build:rds_web:
     - .builds_web
 
 build:port_helper_describo_token_updater:
+  cache:
+    key: $CI_JOB_NAME
   variables:
     FOLDER: RDS/layer0_ingress/web/helper/
     DOCKERFILENAME: dockerfile
