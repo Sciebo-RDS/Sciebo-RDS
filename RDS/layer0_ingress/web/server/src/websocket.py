@@ -17,12 +17,11 @@ from .app import (
     socketio,
     clients,
     rc,
-    tracing,
-    tracer_obj,
     app,
     trans_tbl,
     research_progress,
     verify_ssl,
+    timestamps
 )
 from .Describo import getSessionId
 import logging
@@ -33,31 +32,6 @@ import requests
 import jwt
 from .SyncResearchProcessStatusEnum import ProcessStatus
 
-# connect to timestamp redis for connection updates
-_timestamps = {}
-try:
-    app.logger.debug("first try cluster")
-
-    import redis_pubsub_dict
-    from redis.cluster import RedisCluster as Redis
-
-    startup_nodes = [
-        {
-            "host": os.getenv("REDIS_HOST", "localhost"),
-            "port": os.getenv("REDIS_PORT", "6379"),
-        }
-    ]
-
-    rc = Redis(
-        **(startup_nodes[0]),
-        health_check_interval=30,
-        decode_responses=True,
-    )
-    rc.get_nodes()  # trigger error if anything there
-
-    _timestamps = redis_pubsub_dict.RedisDict(rc, "tokenstorage_access_timestamps")
-except Exception as e:
-    app.logger.error(f"error in redis cluster: {e}")
 
 
 def refreshUserServices():
@@ -206,17 +180,6 @@ def exchangeCodeData(data):
     return req.status_code < 400
 
 
-def trace_this(fn):
-    @functools.wraps(fn)
-    def wrapped(*args, **kwargs):
-        with tracer_obj.start_active_span(f"Websocket {fn.__name__}") as scope:
-            app.logger.debug("start tracer span")
-            res = fn(*args, **kwargs)
-            app.logger.debug("finish tracer span")
-            return res
-
-    return wrapped
-
 
 def authenticated_only(f):
     @functools.wraps(f)
@@ -235,8 +198,7 @@ def authenticated_only(f):
         if not current_user.is_authenticated:
             disconnect()
         else:
-            fn = trace_this(f)
-            return fn(*args, **kwargs)
+            return f(*args, **kwargs)
 
     return wrapped
 
@@ -272,12 +234,12 @@ class RDSNamespace(Namespace):
         current_user.websocketId = request.sid
         clients[current_user.userId] = current_user
 
-        _timestamps[current_user.userId] = time()
-
         emit("ServerName", {"servername": session["servername"]})
         emit("ServiceList", httpManager.makeRequest("getServicesList"))
         emit("UserServiceList", httpManager.makeRequest("getUserServices"))
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))
+
+        timestamps[current_user.userId] = time()
 
     def on_disconnect(self):
         app.logger.info("disconnected")

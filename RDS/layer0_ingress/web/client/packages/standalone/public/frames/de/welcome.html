@@ -31,15 +31,20 @@
                         <h1 class="h1-large">Herzlich Willkommen bei sciebo RDS!</h1><br>
 						<h4 class= "h4">Ihrer sciebo-Erweiterung zum Managen von Forschungsdaten</h4>
 						<br>
-						<br>
-                        <p class="p-large">sciebo Research Data Services (sciebo RDS) ist ein nicht-kommerzieller Dienst für Forschung, Studium und Lehre und bietet Ihnen die Möglichkeit, auf einfache Weise Ihre Forschungsdaten zu managen.</p>
-						<br>
-                        <p class="p-large">Über sciebo RDS können Sie auf Ihre in der Hochschulcloud sciebo liegenden Daten zurückgreifen, diese in Projekten bündeln, Metainformationen hinzufügen und Ihre Datensätze veröffentlichen.</p>
-							<br>
-							<p class= "p-large"><a target="_blank" href="https://www.research-data-services.org/de/">Mehr erfahren...</a></p>
-							<br><br>
-							<p class= "p">Direkt loslegen: <button type="button" class="btn btn-outline-primary click" type="button" id="newProject">Neues Projekt</button></p>
-							<p class= "p">Weitere Informationen: <button type="button" class="btn btn-outline-info click" type="button" id="getHelp">Hilfe</button></p>
+                        <p class="p-small" style="line-height: 1.3rem">sciebo Research Data Services (sciebo RDS) ist ein nicht-kommerzieller Dienst für Forschung, Studium und Lehre und bietet Ihnen die Möglichkeit, auf einfache Weise Ihre Forschungsdaten zu managen.</p>
+
+                        <p class="p-small" style="line-height: 1.3rem">Über sciebo RDS können Sie auf Ihre in der Hochschulcloud sciebo liegenden Daten zurückgreifen, diese in Projekten bündeln, Metainformationen hinzufügen und Ihre Datensätze veröffentlichen.</p>
+							<br/>
+							<p>In zwei Schritten direkt loslegen:</p>
+                                <ol style="line-height: 1.7rem">
+                                    <li>
+                                        Einen Dienst <a class="text-primary" id="newService">verbinden</a>.
+                                    </li>
+                                    <li>
+                                        Ein neues Projekt <a class="text-primary" id="newProject">anlegen</a>.
+                                    </li>
+                                </ol>
+							<p class= "p">Auf der <a class="text-info" id="getHelp">Hilfe-Seite</a> finden Sie weitere Informationen.</p>
 						
 
                     </div> <!-- end of text-container -->
@@ -108,6 +113,7 @@
                     </div>
                     <!-- end of card -->
 
+                    <div class="d-flex justify-content-center"><a target="_blank" href="https://www.research-data-services.org/de/">Mehr über Sciebo RDS erfahren</a></div>
 
     <!-- Scripts -->
     <script src="./../../js/jquery.min.js"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
@@ -118,8 +124,15 @@
 
 	
 	<script type="text/javascript">
+        var newServiceButton = document.getElementById("newService");
 		var newProjectButton = document.getElementById("newProject");
 		var getHelpButton = document.getElementById("getHelp");
+        newServiceButton.onclick = function() {
+			window.parent.postMessage({
+				'func': 'redirect',
+        		'target': 'services'
+     		}, "*");
+		};
 		newProjectButton.onclick = function() {
 			window.parent.postMessage({
 				'func': 'redirect',
