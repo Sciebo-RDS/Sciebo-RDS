@@ -183,6 +183,6 @@ socketio = SocketIO(
     app,
     cors_allowed_origins=origins,
     manage_session=False,
-    logger=True,
-    engineio_logger=True,
+    logger=app.logger,
+    engineio_logger=app.logger,
 )
