@@ -146,6 +146,7 @@ else:
     user_store = redis_pubsub_dict.RedisDict(rcCluster, "web_userstore")
     research_progress = redis_pubsub_dict.RedisDict(rcCluster, "web_research_progress")
     # clients = redis_pubsub_dict.RedisDict(rcCluster, "web_clients")
+    timestamps = redis_pubsub_dict.RedisDict(rcCluster, "tokenstorage_access_timestamps")
 
     flask_config["SESSION_TYPE"] = "redis"
     flask_config["SESSION_REDIS"] = rcCluster

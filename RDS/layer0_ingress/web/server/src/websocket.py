@@ -21,6 +21,7 @@ from .app import (
     trans_tbl,
     research_progress,
     verify_ssl,
+    timestamps
 )
 from .Describo import getSessionId
 import logging
@@ -240,6 +241,7 @@ class RDSNamespace(Namespace):
         emit("UserServiceList", httpManager.makeRequest("getUserServices"))
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))
 
+        timestamps[current_user.userId] = time()
 
     def on_disconnect(self):
         app.logger.info("disconnected")
