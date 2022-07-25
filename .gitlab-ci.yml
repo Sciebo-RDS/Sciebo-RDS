@@ -33,9 +33,10 @@ variables:
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp coverage s3://Testresults --recursive
   tags:
     - autoscaling
-  except:
-    refs:
-      - /^translations_rds-.*$/ # ignore, if it comes from transifex
+  rules:
+    - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
+      when: never # ignore, if it comes from transifex
+    - when: always
   # https://gitlab.com/gitlab-org/gitlab/issues/8177
   # not supported currently
   #only:
@@ -46,16 +47,17 @@ variables:
   #    - $FOLDER/**/*
 
 .builds:
-  image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:19.03
+  image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:20.10
   stage: build
   services:
-    - name: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:19.03-dind
+    - name: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:20.10-dind
       alias: docker
   tags:
     - docker-in-docker
   rules:
     - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
       when: never
+    - when: always
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
@@ -103,19 +105,21 @@ upload_test_coverage:
 
 # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
 hugo:test:
-  extends: .tests
-  image: registry.gitlab.com/pages/hugo:0.68.3
+  image: registry.gitlab.com/pages/hugo/hugo_extended:0.91.2
   variables:
     FOLDER: docs/
   before_script:
-    - apk add --update --no-cache git
+    - apk add --update --no-cache --allow-untrusted git
   script:
     - cd $FOLDER
     - hugo
-  only:
-    changes:
-      - docs/*
-      - docs/**/*
+  stage: test
+  tags:
+    - autoscaling
+  rules:
+    - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
+      when: never # ignore, if it comes from transifex
+    - when: always
 
 .documentation:
   stage: documentation
@@ -124,9 +128,6 @@ hugo:test:
     - if: '$CI_COMMIT_BRANCH == "release"'
     - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
       when: never
-  except:
-    refs:
-      - /^translations_rds-.*$/ # ignore, if it comes from transifex
   artifacts:
     untracked: true
     expire_in: 1 days
@@ -154,12 +155,12 @@ pages:
       variables:
         DOC_FOLDER: .
   before_script:
-    - apk add --update --no-cache git python3 py3-pip rsync
+    - apk add --update --no-cache --allow-untrusted git python3 py3-pip rsync
     - python3 -m pip install awscli
   script:
     - mkdir -p ./public/dev
     - cd docs
-    - | 
+    - |
       if [ "$CI_COMMIT_BRANCH"  == "$CI_DEFAULT_BRANCH" ]; then
         sed -i "s/baseurl/#baseurl/" config.toml
         mv config.toml config.toml.bak
