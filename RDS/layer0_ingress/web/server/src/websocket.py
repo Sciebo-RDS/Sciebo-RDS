@@ -191,7 +191,7 @@ def authenticated_only(f):
         emit(
             "LoginStatus",
             json.dumps(
-                {"status": current_user.is_authenticated, "user": current_user.userId}
+                {"status": current_user.is_authenticated, "user": current_user.userId or None}
             ),
         )
 
