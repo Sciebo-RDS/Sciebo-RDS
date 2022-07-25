@@ -10,7 +10,8 @@ RUN pip install -r requirements.txt
 
 ENV CENTRAL_SERVICE_TOKEN_STORAGE "http://layer3-token-storage"
 
-ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/layer2_use_cases/port/use-case_port.yml" ./
+ARG git_branch=release
+ADD "https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/$git_branch/RDS/layer2_use_cases/port/use-case_port.yml" ./
 
 # now add everything else, which changes often
 ADD src ./
