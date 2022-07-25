@@ -1,4 +1,4 @@
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.58 as planner
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.62.1 as planner
 WORKDIR /app
 # We only pay the installation cost once, 
 # it will be cached from the second build onwards
@@ -6,14 +6,14 @@ RUN cargo install cargo-chef
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.58 as cacher
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.62.1 as cacher
 WORKDIR /app
 RUN cargo install cargo-chef
 
 COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.58 as builder
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.62.1 as builder
 WORKDIR /app
 COPY . .
 # Copy over the cached dependencies

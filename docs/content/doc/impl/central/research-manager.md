@@ -22,6 +22,7 @@ For example, it is clear which ID is involved if the API endpoint requires a *re
 ## ER Diagram
 
 The internal information model is presented in the following as a UML diagram, but should please be understood as an ER diagram.
+If deployed in a cluster environment, data will be stored in a redis store.
 
 ```mermaid
 classDiagram
@@ -46,6 +47,8 @@ classDiagram
   ProjectService "1" -- "0..n" Project : has
   Project "1" -- "0..n" Port : has
 ```
+
+Data cleanup follows the same rules like [Token Storage](/doc/impl/central/token-storage/#automatic-clean-up-data), so please take a look there.
 
 # OpenAPI v3
 
