@@ -587,7 +587,7 @@ input[type="checkbox"] {
   padding-top: 0rem;
   padding-bottom: 0rem;
   background-color: #ffffff;
-  text-align: center;
+//  text-align: center;
 }
 
 .header .text-container {
@@ -613,8 +613,8 @@ input[type="checkbox"] {
 /************************/
 .basic-1 {
   padding-top: 1rem;
-  padding-bottom: 3.5rem;
-  text-align: center;
+//  padding-bottom: 3.5rem;
+//  text-align: center;
 }
 
 .basic-1 p {
@@ -1234,7 +1234,7 @@ a:hover.back-to-top {
 /*************************/
 /* Min-width 768px */
 @media (min-width: 768px) {
-  /* Header */
+  /* Header 
   .header {
     padding-top: 9rem;
   }
