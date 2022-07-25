@@ -13,9 +13,6 @@ flask-cors = "*"
 pyjwt = {extras = ["crypto"],version = "*"}
 flask-session = "*"
 prometheus-flask-exporter = "*"
-flask-opentracing = "*"
-opentracing-instrumentation = "*"
-jaeger-client = "*"
 redis-pubsub-dict-wo-cluster = "*"
 redis = "==4.2.2"
 
