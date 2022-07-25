@@ -21,6 +21,7 @@ from .app import (
     trans_tbl,
     research_progress,
     verify_ssl,
+    timestamps
 )
 from .Describo import getSessionId
 import logging
@@ -31,31 +32,6 @@ import requests
 import jwt
 from .SyncResearchProcessStatusEnum import ProcessStatus
 
-# connect to timestamp redis for connection updates
-_timestamps = {}
-try:
-    app.logger.debug("first try cluster")
-
-    import redis_pubsub_dict
-    from redis.cluster import RedisCluster as Redis
-
-    startup_nodes = [
-        {
-            "host": os.getenv("REDIS_HOST", "localhost"),
-            "port": os.getenv("REDIS_PORT", "6379"),
-        }
-    ]
-
-    rc = Redis(
-        **(startup_nodes[0]),
-        health_check_interval=30,
-        decode_responses=True,
-    )
-    rc.get_nodes()  # trigger error if anything there
-
-    _timestamps = redis_pubsub_dict.RedisDict(rc, "tokenstorage_access_timestamps")
-except Exception as e:
-    app.logger.error(f"error in redis cluster: {e}")
 
 
 def refreshUserServices():
@@ -263,7 +239,7 @@ class RDSNamespace(Namespace):
         emit("UserServiceList", httpManager.makeRequest("getUserServices"))
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))
 
-        _timestamps[current_user.userId] = time()
+        timestamps[current_user.userId] = time()
 
     def on_disconnect(self):
         app.logger.info("disconnected")
