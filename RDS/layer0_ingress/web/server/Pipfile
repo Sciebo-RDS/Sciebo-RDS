@@ -15,7 +15,7 @@ flask-session = "*"
 prometheus-flask-exporter = "*"
 redis-pubsub-dict-wo-cluster = "*"
 redis = "==4.2.2"
-
+werkzeug = "==2.1.2"
 
 [dev-packages]
 black = "==20.8b1"
