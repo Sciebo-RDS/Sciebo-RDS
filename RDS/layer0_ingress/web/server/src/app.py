@@ -11,7 +11,7 @@ from functools import wraps
 import opentracing
 from flask_opentracing import FlaskTracing
 import redis_pubsub_dict
-from rediscluster import RedisCluster
+from redis.cluster import RedisCluster
 from flask import Flask
 import uuid
 import requests

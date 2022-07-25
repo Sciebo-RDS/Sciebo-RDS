@@ -1,7 +1,9 @@
+import imp
 from lib.Project import Project
 import logging
 import requests
 import os
+from time import time
 from lib.EnumStatus import Status
 from RDS import Util
 
@@ -26,7 +28,7 @@ class ProjectService:
 
             redis_pubsub_dict.dumps = lambda x: json.dumps(x)
             redis_pubsub_dict.loads = lambda x: Util.try_function_on_dict(
-                [Project.fromJSON]
+                [Project.fromJSON, json.loads]
             )(x)
             redis_pubsub_dict.RedisDict.to_json = lambda x: dict(x.items())
             redis_pubsub_dict.RedisDict.__eq__ = (
@@ -71,6 +73,11 @@ class ProjectService:
 
             logger.debug("set redis backed dict")
             self.projects = RedisDict(rc, "researchmanager_projects")
+
+            self._timestamps = redis_pubsub_dict.RedisDict(
+                rc, "tokenstorage_access_timestamps"
+            )
+
         except Exception as e:
             logger.debug(e)
             logger.info("no redis found.")
@@ -83,6 +90,14 @@ class ProjectService:
 
             logger.info("use in-memory")
             self.projects = {}
+            self._timestamps = {}
+
+        def add_timestamp(this, key, **args):
+            # This adds a timestamp in a different dict for deprovisioning later.
+            self._timestamps[key] = time()
+
+        functools.wraps(self.projects.__getitem__)(add_timestamp)
+        functools.wraps(self.projects.__setitem__)(add_timestamp)
 
     @property
     def highest_index(self):
@@ -397,3 +412,12 @@ class ProjectService:
             return True
 
         return False
+
+    def deprovizionize(self):
+        """
+        Removes projects, if timestamp is 180 days in the past.
+        For cleanup, it waits additional 30 days before it deletes the timestamp too.
+        """
+        for key, value in self._timestamps.items():
+            if value + 180 * 24 * 60 * 60 < time():
+                self.removeUser(key)
