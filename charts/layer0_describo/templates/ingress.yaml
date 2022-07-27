@@ -3,6 +3,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
+  namespace: {{ .Values.namespace.name }}
   labels:
 {{ include "layer0_describo.labels" . | indent 4 }}
   annotations:

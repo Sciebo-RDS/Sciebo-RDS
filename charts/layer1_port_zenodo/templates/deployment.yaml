@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "layer1_port_zenodo.fullname" . }}
+  namespace: {{ .Values.namespace.name }}
   labels:
 {{ include "layer1_port_zenodo.labels" . | indent 4 }}
 spec:

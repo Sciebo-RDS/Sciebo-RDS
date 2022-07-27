@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: describohelperconfig
+  namespace: {{ .Values.namespace.name }}
 data:
     {{- with (mustMergeOverwrite (.Values.global | default dict) .Values.environment) }}
     REDIS_HELPER_HOST: {{ .REDIS_HELPER_HOST | default "redis" | quote }}
