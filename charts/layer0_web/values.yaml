@@ -76,13 +76,11 @@ affinity: {}
 environment:
   EMBED_MODE: true
   FLASK_ORIGINS:
-    [
-      "http://localhost:8080",
-      "http://localhost:8085",
-      "http://localhost:8000",
-      "http://localhost:9100",
-      "https://<your-rds-installation>",
-    ]
+    - "http://localhost:8080"
+    - "http://localhost:8085"
+    - "http://localhost:8000"
+    - "http://localhost:9100"
+    - {{ .Values.global.rds.domain | quote }}
   SECRET_KEY: 1234
   OWNCLOUD_URL: http://localhost:8000
   OWNCLOUD_OAUTH_CLIENT_ID: ABC
@@ -91,9 +89,9 @@ environment:
   OWNCLOUD_OAUTH_CLIENT_AUTHORIZE_URL: http://localhost:8000/apps/oauth2/authorize
   DESCRIBO_API_ENDPOINT: http://layer0-describo/api/session/application
   VUE_APP_DESCRIBO_URL: https://<your-rds-installation>/describo/application
-  VUE_APP_FRONTENDHOST: https://<your-rds-installation>
+  #VUE_APP_FRONTENDHOST: https://<your-rds-installation>
   VUE_APP_SOCKETIO_HOST: https://<your-rds-installation>
-  SOCKETIO_HOST: https://<your-rds-installation>
+  #SOCKETIO_HOST: https://<your-rds-installation>
   SOCKETIO_PATH: /socket.io/
   VUE_APP_BASE_URL: /
 
