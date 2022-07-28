@@ -18,13 +18,13 @@ data:
     EMBED_MODE: "{{ .Values.environment.EMBED_MODE }}"
     FLASK_ORIGINS: {{ .Values.environment.FLASK_ORIGINS | toJson | squote }}
     SECRET_KEY: "{{ .Values.environment.SECRET_KEY }}"
-    OWNCLOUD_URL: "{{ .Values.environment.OWNCLOUD_URL }}"
-    OWNCLOUD_OAUTH_CLIENT_ID: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_ID }}"
-    OWNCLOUD_OAUTH_CLIENT_SECRET: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_SECRET }}"
-    OWNCLOUD_OAUTH_CLIENT_REDIRECT: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_REDIRECT }}"
-    OWNCLOUD_OAUTH_CLIENT_AUTHORIZE_URL: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_AUTHORIZE_URL }}"
     DESCRIBO_API_ENDPOINT: "{{ .Values.environment.DESCRIBO_API_ENDPOINT }}"
     DESCRIBO_API_SECRET: {{ .Values.global.describo.api_secret | quote }}
+    VUE_APP_DESCRIBO_URL: {{ .Values.global.describo.domain | quote }}/application
+    VUE_APP_FRONTENDHOST: {{ .Values.global.rds.domain | quote }}
+    VUE_APP_SOCKETIO_HOST: {{ .Values.global.rds.domain | quote }}
+    VUE_APP_RDS_EMAIL: {{ .Values.environment.VUE_APP_RDS_EMAIL | quote }}
+    SOCKETIO_HOST: {{ .Values.global.rds.domain | quote }}
     SOCKETIO_PATH: "{{ .Values.environment.SOCKETIO_PATH }}"
     VUE_APP_BASE_URL: "{{ .Values.environment.VUE_APP_BASE_URL }}"
     {{- with (mustMergeOverwrite (.Values.global | default dict) .Values.environment) }}
