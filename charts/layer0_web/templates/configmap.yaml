@@ -24,11 +24,7 @@ data:
     OWNCLOUD_OAUTH_CLIENT_REDIRECT: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_REDIRECT }}"
     OWNCLOUD_OAUTH_CLIENT_AUTHORIZE_URL: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_AUTHORIZE_URL }}"
     DESCRIBO_API_ENDPOINT: "{{ .Values.environment.DESCRIBO_API_ENDPOINT }}"
-    DESCRIBO_API_SECRET: {{ include "apiSecret" . | quote }}
-    VUE_APP_DESCRIBO_URL: "{{ .Values.environment.VUE_APP_DESCRIBO_URL }}"
-    VUE_APP_FRONTENDHOST: "{{ .Values.environment.VUE_APP_FRONTENDHOST }}"
-    VUE_APP_SOCKETIO_HOST: "{{ .Values.environment.VUE_APP_SOCKETIO_HOST }}"
-    SOCKETIO_HOST: "{{ .Values.environment.SOCKETIO_HOST }}"
+    DESCRIBO_API_SECRET: {{ .Values.global.describo.api_secret | quote }}
     SOCKETIO_PATH: "{{ .Values.environment.SOCKETIO_PATH }}"
     VUE_APP_BASE_URL: "{{ .Values.environment.VUE_APP_BASE_URL }}"
     {{- with (mustMergeOverwrite (.Values.global | default dict) .Values.environment) }}

@@ -6,20 +6,6 @@ Expand the name of the chart.
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{/*
-Return the proper describo secret
-*/}}
-{{- define "apiSecret" -}}
-{{- $secret := .Values.api_secret -}}
-{{- if .Values.global }}
-    {{- if .Values.global.describo }}
-        {{- if .Values.global.describo.api_secret }}    
-            {{- $secret = .Values.global.describo.api_secret -}}
-        {{- end -}}
-    {{- end -}}
-{{- end -}}
-{{- $secret -}}
-{{- end -}}
 
 {{/*
 Create a default fully qualified app name.

@@ -49,7 +49,7 @@ data:
         "applications": [
           {
               "name": "Owncloud ScieboRDS",
-              "secret": "{{- include "apiSecret" . -}}"
+              "secret": "{{ .Values.global.describo.api_secret }}"
           }
         ]
       }
