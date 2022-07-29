@@ -22,8 +22,6 @@ service:
   port: 80
   targetPort: 80
 
-# domain for describo
-domain: localhost
 ingress:
   path: /
   annotations:
@@ -83,7 +81,3 @@ postgresql:
   postgresqlDatabase: "describo"
   postgresqlUsername: "admin"
   postgresqlPassword: "admin"
-
-global: {}
-  # should give an error, if its not set through user!!!
-  #api_secret: XYZ

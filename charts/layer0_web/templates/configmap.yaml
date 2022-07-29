@@ -16,11 +16,11 @@ metadata:
   name: webconfig
 data:
     EMBED_MODE: "{{ .Values.environment.EMBED_MODE }}"
-    FLASK_ORIGINS: {{ .Values.environment.FLASK_ORIGINS | toJson | squote }}
+    FLASK_ORIGINS: {{ append .Values.environment.FLASK_ORIGINS (.Values.global.rds.domain) | toJson | squote }}
     SECRET_KEY: "{{ .Values.environment.SECRET_KEY }}"
     DESCRIBO_API_ENDPOINT: "{{ .Values.environment.DESCRIBO_API_ENDPOINT }}"
     DESCRIBO_API_SECRET: {{ .Values.global.describo.api_secret | quote }}
-    VUE_APP_DESCRIBO_URL: {{ .Values.global.describo.domain | quote }}/application
+    VUE_APP_DESCRIBO_URL: "{{ .Values.global.describo.domain }}/application"
     VUE_APP_FRONTENDHOST: {{ .Values.global.rds.domain | quote }}
     VUE_APP_SOCKETIO_HOST: {{ .Values.global.rds.domain | quote }}
     VUE_APP_RDS_EMAIL: {{ .Values.environment.VUE_APP_RDS_EMAIL | quote }}
