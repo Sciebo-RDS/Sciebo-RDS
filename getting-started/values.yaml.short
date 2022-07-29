@@ -1,8 +1,8 @@
-# creates a namespace on its own
-namespace: 
-  create: false
-  name: "wybrand-rds"
 global:
+  # creates a namespace on its own
+  namespace:
+    create: false
+    name: "wybrand-rds"
   describo:
     api_secret: IAMSECRET
     domain: separate-domain-for-describo.your-institution.org
@@ -15,7 +15,7 @@ global:
       ADDRESS: https://owncloud.local/owncloud
       OAUTH_CLIENT_ID: ABC
       OAUTH_CLIENT_SECRET: XYZ
-      filters: # filters are helpful, if you want to use the same sciebo RDS instance for multiple cloudstorage installations. 
+      filters: # filters are helpful, if you want to use the same sciebo RDS instance for multiple cloudstorage installations.
         # After filters are applied, you have a set of service which are listed in "only" (if empty, it means all services available in sciebo RDS) without all services in "except" (if empty, it means no services)
         only:
           - "layer1-port-openscienceframework"
@@ -38,13 +38,5 @@ layer1-port-zenodo:
   environment:
     # needs to be adjusted to correct values
     ADDRESS: https://sandbox.zenodo.org
-    OAUTH_CLIENT_ID: ABC
-    OAUTH_CLIENT_SECRET: XYZ
-layer1-port-openscienceframework:
-  enabled: false
-  environment:
-    ADDRESS: https://accounts.test.osf.io
-    API_ADDRESS: https://api.test.osf.io/v2
-    # needs to be adjusted to correct values
     OAUTH_CLIENT_ID: ABC
     OAUTH_CLIENT_SECRET: XYZ
