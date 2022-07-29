@@ -9,7 +9,7 @@ global:
   REDIS_CHANNEL: TokenStorage_Refresh_Token
 
 # Set this to DEBUG and restart your applications to get more informations in logs. Default: INFO
-loglevel: INFO
+loglevel: DEBUG
 # If you set this to "False", SSL will not be verified in all https requests. Default: "True"
 verify_ssl: "True"
 # The URL, which you configured in your oauth providers
@@ -22,7 +22,7 @@ namespace:
   create: false
   name: "research-data-services"
 feature:
-  jaeger: true
+  jaeger: false
   redis: true
 layer0-web:
   enabled: true
