@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "layer0_helper_describo_token_updater.fullname" . }}
+  namespace: {{ .Values.namespace.name }}
   labels:
 {{ include "layer0_helper_describo_token_updater.labels" . | indent 4 }}
 spec:

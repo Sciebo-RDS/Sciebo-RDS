@@ -16,6 +16,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: portowncloudconfig-{{ .name | replace "." "-" | replace ":" "-" }}
+  namespace: {{ .Values.namespace.name }}
 data:
   OWNCLOUD_OAUTH_CLIENT_ID: {{ .OAUTH_CLIENT_ID | quote }}
   OWNCLOUD_INSTALLATION_URL: {{ .ADDRESS | quote }}
