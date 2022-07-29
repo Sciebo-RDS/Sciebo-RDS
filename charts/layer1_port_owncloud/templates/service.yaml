@@ -20,7 +20,7 @@ metadata:
   {{ toYaml . | indent 4 }}
   {{- end }}
   name: {{ include "layer1_port_owncloud.fullname" (mergeOverwrite $ .) }}
-  namespace: {{ .Values.namespace.name }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   labels:
 {{ include "layer1_port_owncloud.labels" (mergeOverwrite $ .) | indent 4 }}
 spec:

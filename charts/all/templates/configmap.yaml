@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mservice
-  namespace: {{ .Values.namespace.name }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
 data:
   USE_CASE_SERVICE_EXPORTER_SERVICE: "http://layer2-exporter-service/exporter"
   USE_CASE_SERVICE_METADATA_SERVICE: "http://layer2-metadata-service/metadata"
@@ -16,7 +16,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: globalenvvar
-  namespace: {{ .Values.namespace.name }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
 data:
   # Set this to DEBUG and restart your applications to get more informations in logs. Default: INFO
   LOGLEVEL: {{ .Values.loglevel | quote }}
@@ -30,7 +30,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: proxy
-  namespace: {{ .Values.namespace.name }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
 data:
   HTTP_PROXY: {{ .Values.proxy.http_proxy | quote }}
   HTTPS_PROXY: {{ .Values.proxy.https_proxy | quote }}
