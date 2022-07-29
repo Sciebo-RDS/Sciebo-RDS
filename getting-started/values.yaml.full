@@ -54,7 +54,6 @@ layer0-helper-describo-token-updater:
     # DESCRIBO_API_ENDPOINT: http://layer0-describo/api/session/application
 layer0-web:
   enabled: true
-  domain: separate.domain.for-web.your.institution.org
   environment:
     # the password, which will be used to encrypt all user data
     SECRET_KEY: 1234
@@ -94,6 +93,8 @@ layer2-port-service:
 layer2-metadata-service: {}
 layer3-research-manager: {}
 layer3-token-storage: {}
+feature:
+  jaeger: false
 # see: https://github.com/bitnami/charts/tree/master/bitnami/redis-cluster
 # Redis-helper configuration options https://artifacthub.io/packages/helm/bitnami/redis/16.10.1
 redis-helper: {}
