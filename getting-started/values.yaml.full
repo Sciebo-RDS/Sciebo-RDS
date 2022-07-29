@@ -1,12 +1,14 @@
 global:
   # will be used for ingress host
   # edit here if you changed it in create_certs.sh and wants to use another domain
-  domain: rds.local
-  ingress:
-    tls:
-      secretName: sciebords-tls-public
+  #ingress:
+  #  tls:
+  #    secretName: sciebords-tls-public
+  rds:
+    domain: your-rds.institution.org
   describo:
     api_secret: IAMSECRET
+    domain: your-describo.institution.org
   # Domains you want to use as input, currently only owncloud supported,
   # this enables to use multiple owncloud instances with a single sciebo RDS
   domains:
@@ -25,8 +27,6 @@ global:
 loglevel: INFO
 # If you set this to "False", SSL will not be verified in all https requests. Default: "True"
 verify_ssl: "True"
-# The URL, which you configured in your oauth providers
-rds_oauth_redirect_uri: https://owncloud.local/index.php/apps/rds/oauth
 proxy:
   http_proxy: "''"
   https_proxy: "''"
@@ -36,6 +36,7 @@ namespace: # creates a namespace on its own, if you wants to
   name: "research-data-services"
 layer0-describo:
   enabled: true
+  # Postgresql configuration options https://artifacthub.io/packages/helm/bitnami/postgresql/10.14.3
   postgresql:
     # starts its own postgresql database.
     postgresqlDatabase: "describo"
@@ -52,19 +53,17 @@ layer0-helper-describo-token-updater:
     # DESCRIBO_API_ENDPOINT: http://layer0-describo/api/session/application
 layer0-web:
   enabled: true
+  domain: separate.domain.for-web.your.institution.org
   environment:
     # the password, which will be used to encrypt all user data
     SECRET_KEY: 1234
-    # describo needs a separate domain from sciebords
-    VUE_APP_DESCRIBO_URL: separate-domain-for-describo.your-institution.org
-    VUE_APP_FRONTENDHOST: https://<your-rds-installation>
-    VUE_APP_SOCKETIO_HOST: https://<your-rds-installation>
+    VUE_APP_RDS_EMAIL: yourmail@institution.org
     # should be changed to all known access origins to sciebo RDS backend. e.g. web proxies
     # Onwcloud-Domains will be included automatically from global.domains in bootup process.
-    FLASK_ORIGINS:
-      [
-        "http://localhost:8080",
-      ]
+    # FLASK_ORIGINS:
+    #   [
+    #     "http://localhost:8080",
+    #   ]
     # advanced settings
     EMBED_MODE: true
     # DESCRIBO_API_ENDPOINT: http://layer0-describo/api/session/application
@@ -95,6 +94,9 @@ layer2-metadata-service: {}
 layer3-research-manager: {}
 layer3-token-storage: {}
 # see: https://github.com/bitnami/charts/tree/master/bitnami/redis-cluster
+# Redis-helper configuration options https://artifacthub.io/packages/helm/bitnami/redis/16.10.1
+redis-helper: {}
+# Redis configuration options https://artifacthub.io/packages/helm/bitnami/redis-cluster/7.6.1
 redis:
   cluster: {}
   redis:
