@@ -1,4 +1,8 @@
 global:
+  # creates a namespace on its own
+  namespace: 
+    create: false
+    name: "research-data-services"
   # will be used for ingress host
   # edit here if you changed it in create_certs.sh and wants to use another domain
   #ingress:
@@ -31,9 +35,6 @@ proxy:
   http_proxy: "''"
   https_proxy: "''"
   no_proxy: layer1-port-owncloud,layer1-port-zenodo,layer1-port-openscienceframework,layer1-port-reva,layer2-port-service,layer3-token-storage,layer3-research-manager
-namespace: # creates a namespace on its own, if you wants to
-  create: false
-  name: "research-data-services"
 layer0-describo:
   enabled: true
   # Postgresql configuration options https://artifacthub.io/packages/helm/bitnami/postgresql/10.14.3
