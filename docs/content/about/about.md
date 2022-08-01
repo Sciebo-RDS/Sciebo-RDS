@@ -1,6 +1,7 @@
 ---
 title: About RDS
 subtitle: Why you should care about RDS
+
 ---
 
 The project sciebo RDS (Research Data Services) has set itself the goal of bringing low-threshold services and tools from research data management (RDM) and scientific analysis to where the researchers are already handling their data, i.e. the university cloud "sciebo". In order to achieve this ambitious goal, sciebo RDS will pursue the following strategies:

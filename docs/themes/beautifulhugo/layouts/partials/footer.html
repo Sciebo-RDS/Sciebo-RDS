@@ -27,14 +27,12 @@
           {{ end }}
         </ul>
         <p class="credits copyright text-muted">
+
+          2020 - {{ .Site.LastChange.Format "2006" }}
+          &nbsp;&bull;&nbsp;
           {{ .Site.Author.name }}
           &nbsp;&bull;&nbsp;
-          {{ .Site.LastChange.Format "2006" }}
-
-          {{ if .Site.Title }}
-            &nbsp;&bull;&nbsp;
-            <a href="{{ "" | absLangURL }}">{{ .Site.Title }}</a>
-          {{ end }}
+          <a href="/page/impr">Imprint</a>
         </p>
         <!-- Please don't remove this, keep my open source work credited :) -->
         <p class="credits theme-by text-muted">

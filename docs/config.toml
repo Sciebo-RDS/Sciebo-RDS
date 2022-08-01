@@ -16,115 +16,7 @@ pygmentCodeFences = true
 enableGitInfo = true
 
 [languages]
-  [languages.de]
-	languageName = "Deutsch"
-	weight = 2
 
-  [languages.de.params]
-    dateFormat = "2 January 2006"
-	
-[[languages.de.menu.main]]
-    name = "Startseite"
-    url = "/de"
-    weight = 10
-    
-[[languages.de.menu.main]]
-    name = "Projekt"
-    url = "/de/page/about"
-    weight = 20
-
-[[languages.de.menu.main]]
-    name = "Mithelfen"
-    url = "/de/doc/contribute/contribute/"
-    weight = 25
-    
-[[languages.de.menu.main]]
-    name = "Dokumentation"
-    url = "/de/doc"
-    weight = 40
-
-[[languages.de.menu.main]]
-    name = "Impressum"
-    url = "/de/page/impr"
-    weight = 50
-
-[[languages.de.menu.doc]]
-    name = "Dokumentation"
-    identifier = "docs home"
-    pre = "<i class='fa fa-home'></i>"
-    url = "/de/doc/"
-    weight = -1050
-
-[[languages.de.menu.doc]]
-    name = "Nutzerhandbuch"
-    identifier = "manual"
-    pre = "<i class='fa fa-book'></i>"
-    weight = -1000
-
-[[languages.de.menu.doc]]
-    name = "Administration"
-    identifier = "installation"
-    pre = "<i class='fa fa-play'></i>"
-    weight = -900
-
-[[languages.de.menu.doc]]
-    name = "Quelltext"
-    identifier = "sourcecode"
-    pre = "<i class='fa fa-code'></i>"
-    url = "/de/doc/sourcecode/"
-    weight = 0
-
-[[languages.de.menu.doc]]
-    name = "Beitragen"
-    identifier = "contrib"
-    pre = "<i class='fa fa-code-fork'></i>"
-    url = "/de/doc/contribute/"
-    weight = -5
-    post = "border-top: 1px dotted #ccc;"
-
-[[languages.de.menu.doc]]
-    name = "Architektur"
-    identifier = "architecture"
-    pre = "<i class='fa fa-university'></i>"
-    weight = -300
-    post = "border-top: 1px dotted #ccc;"
-
-
-[[languages.de.menu.doc]]
-    name = "Infrastruktur"
-    identifier = "infrastructure"
-    pre = "<i class='fa fa-industry'></i>"
-    weight = -290
-
-[[languages.de.menu.doc]]
-    name = "Schicht 0"
-    identifier = "ingress"
-    pre = "<i class='fa fa-plug'></i>"
-    weight = -290
-
-[[languages.de.menu.doc]]
-    name = "Schicht 1"
-    identifier = "adapter-port"
-    pre = "<i class='fa fa-map-o'></i>"
-    weight = -280
-
-[[languages.de.menu.doc]]
-    name = "Schicht 2"
-    identifier = "use-case"
-    pre = "<i class='fa fa-cogs'></i>"
-    weight = -270
-
-[[languages.de.menu.doc]]
-    name = "Schicht 3"
-    identifier = "core"
-    pre = "<i class='fa fa-archive'></i>"
-    weight = -260
-
-[[languages.de.menu.doc]]
-    name = "Plugins"
-    identifier = "plugins"
-    pre = "<i class='fa fa-plug'></i>"
-    weight = -250
 
 [languages.en]
     languageName = "English"
@@ -136,9 +28,9 @@ enableGitInfo = true
   favicon = "img/favicon.ico"
   dateFormat = "January 2, 2006"
   commit = false
-  rss = true
-  comments = true
-  mainSections = ["post", "jsonld"]
+  rss = false
+  comments = false
+  mainSections = []
 
 #  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
 
@@ -153,8 +45,8 @@ enableGitInfo = true
 #  desc = "Hexagon"
 
 [Author]
-  name = "Peter Heiss"
-  email = "peter.heiss@uni-muenster.de"
+  name = "Sciebo RDS Project Team"
+  email = "sciebo-rds@uni-muenster.de"
 #  facebook = "username"
 #  googleplus = "+username" # or xxxxxxxxxxxxxxxxxxxxx
 #  gitlab = "username"
@@ -179,102 +71,190 @@ enableGitInfo = true
     weight = 10
 
 [[menu.main]]
-    name = "Project"
-    url = "page/about/"
+    name = "About"
     weight = 20
+    identifier = "about"
 
 [[menu.main]]
-    name = "Contribute"
-    url = "/doc/contribute/contribute/"
-    weight = 25
+    name = "Getting Started"
+    weight = "25"
     
 [[menu.main]]
-    name = "Doc"
-    url = "/doc/"
-    weight = 40
+    name = "Configuration"
+    weight = "30"
 
 [[menu.main]]
-    name = "Imprint"
-    url = "page/impr/"
-    weight = 50
+    name = "Development"
+    identifier = "development"
+    weight = "35"
+    url = "/doc/contribute/contribute/"
+
+[[menu.main]]
+    name = "Reference"
+    identifier = "ref"
+    weight = "40"
+
+# About
+[[menu.main]]
+    name = "Project"
+    identifier = "rds"
+    parent = "about"
+    url = "about/about"
+    weight = "5"
+
+
+[[menu.main]]
+    name = "Contributors"
+    identifier = "contributors"
+    parent = "about"
+    url = "about/contributors"
+    weight = "10"
+
+[[menu.main]]
+    name = "FAQ"
+    identifier = "faq"
+    parent = "about"
+    url = "about/faq"
+    weight = "15"
+
+# Development
+[[menu.main]]
+    name = "Monorepo"
+    identifier = "monorepo"
+    parent = "development"
+    url = ""
+    weight = "5"
+
+[[menu.main]]
+    name = "Contributing"
+    identifier = "contributing"
+    parent = "development"
+    weight = "10"
+    url = ""
+
+[[menu.main]]
+    name = "K8s Layers"
+    identifier = "layers"
+    parent = "development"
+    weight = "15"
+    url = ""
+
+# Ref
+[[menu.main]]
+    name = "Environment"
+    identifier = "env"
+    parent = "ref"
+    weight = "5"
+    url = ""
+
+[[menu.main]]
+    name = "Glossary"
+    identifier = "glossary"
+    parent = "ref"
+    weight = "10"
+    url = ""
+
+[[menu.main]]
+    name = "Arc42"
+    identifier = "arc42"
+    parent = "ref"
+    weight = "15"
+    url = ""
+
+
+
+#[[menu.main]]
+#    name = "Contribute"
+#    url = "/doc/contribute/contribute/"
+#    weight = 25
+    
+#[[menu.main]]
+#    name = "Doc"
+#    url = "/doc/"
+#    weight = 40
+
+#[[menu.main]]
+#    name = "Imprint"
+#    url = "page/impr/"
+#    weight = 50
 
 
 # Documentation
-[[menu.doc]]
-    name = "Documentation"
-    identifier = "docs home"
-    pre = "<i class='fa fa-home'></i>"
-    url = "/doc/"
-    weight = -1050
+#[[menu.doc]]
+#    name = "Documentation"
+#    identifier = "docs home"
+#    pre = "<i class='fa fa-home'></i>"
+#    url = "/doc/"
+#    weight = -1050
 
-[[menu.doc]]
-    name = "Administration"
-    identifier = "installation"
-    pre = "<i class='fa fa-play'></i>"
-    weight = -900
+#[[menu.doc]]
+#    name = "Administration"
+#    identifier = "installation"
+#    pre = "<i class='fa fa-play'></i>"
+#    weight = -900
 
-[[menu.doc]]
-    name = "User Manual"
-    identifier = "manual"
-    pre = "<i class='fa fa-book'></i>"
-    weight = -1000
+#[[menu.doc]]
+#    name = "User Manual"
+#    identifier = "manual"
+#    pre = "<i class='fa fa-book'></i>"
+#    weight = -1000
 
-[[menu.doc]]
-    name = "Source Code"
-    identifier = "sourcecode"
-    pre = "<i class='fa fa-code'></i>"
-    url = "/doc/sourcecode/"
-    weight = 0
+#[[menu.doc]]
+#    name = "Source Code"
+#    identifier = "sourcecode"
+#    pre = "<i class='fa fa-code'></i>"
+#    url = "/doc/sourcecode/"
+#    weight = 0
 
-[[menu.doc]]
-    name = "Contribute"
-    identifier = "contrib"
-    pre = "<i class='fa fa-code-fork'></i>"
-    url = "/doc/contribute/"
-    weight = -5
-    post = "border-top: 1px dotted #ccc;"
+#[[menu.doc]]
+#    name = "Contribute"
+#    identifier = "contrib"
+#    pre = "<i class='fa fa-code-fork'></i>"
+#    url = "/doc/contribute/"
+#    weight = -5
+#    post = "border-top: 1px dotted #ccc;"
 
-[[menu.doc]]
-    name = "Architecture"
-    identifier = "architecture"
-    pre = "<i class='fa fa-university'></i>"
-    weight = -300
-    post = "border-top: 1px dotted #ccc;"
+#[[menu.doc]]
+#    name = "Architecture"
+#    identifier = "architecture"
+#    pre = "<i class='fa fa-university'></i>"
+#    weight = -300
+#    post = "border-top: 1px dotted #ccc;"
 
 
-[[menu.doc]]
-    name = "Infrastructure"
-    identifier = "infrastructure"
-    pre = "<i class='fa fa-industry'></i>"
-    weight = -290
+#[[menu.doc]]
+#    name = "Infrastructure"
+#    identifier = "infrastructure"
+#    pre = "<i class='fa fa-industry'></i>"
+#    weight = -290
 
-[[menu.doc]]
-    name = "Layer 0"
-    identifier = "ingress"
-    pre = "<i class='fa fa-plug'></i>"
-    weight = -290
+#[[menu.doc]]
+#    name = "Layer 0"
+#    identifier = "ingress"
+#    pre = "<i class='fa fa-plug'></i>"
+#    weight = -290
 
-[[menu.doc]]
-    name = "Layer 1"
-    identifier = "adapter-port"
-    pre = "<i class='fa fa-map-o'></i>"
-    weight = -280
+#[[menu.doc]]
+#    name = "Layer 1"
+#    identifier = "adapter-port"
+#    pre = "<i class='fa fa-map-o'></i>"
+#    weight = -280
 
-[[menu.doc]]
-    name = "Layer 2"
-    identifier = "use-case"
-    pre = "<i class='fa fa-cogs'></i>"
-    weight = -270
+#[[menu.doc]]
+#    name = "Layer 2"
+#    identifier = "use-case"
+#    pre = "<i class='fa fa-cogs'></i>"
+#    weight = -270
 
-[[menu.doc]]
-    name = "Layer 3"
-    identifier = "core"
-    pre = "<i class='fa fa-archive'></i>"
-    weight = -260
+#[[menu.doc]]
+#    name = "Layer 3"
+#    identifier = "core"
+#    pre = "<i class='fa fa-archive'></i>"
+#    weight = -260
 
-[[menu.doc]]
-    name = "Plugins"
-    identifier = "plugins"
-    pre = "<i class='fa fa-plug'></i>"
-    weight = -250
+#[[menu.doc]]
+#    name = "Plugins"
+#    identifier = "plugins"
+#    pre = "<i class='fa fa-plug'></i>"
+#    weight = -250
 
