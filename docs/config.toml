@@ -73,6 +73,7 @@ enableGitInfo = true
 [[menu.main]]
     name = "About"
     weight = 20
+    url = "about"
     identifier = "about"
 
 [[menu.main]]
@@ -95,26 +96,24 @@ enableGitInfo = true
     weight = "40"
 
 # About
-[[menu.main]]
+
+[[menu.about]]
     name = "Project"
     identifier = "rds"
-    parent = "about"
-    url = "about/about"
+    url = "/about"
     weight = "5"
 
 
-[[menu.main]]
+[[menu.about]]
     name = "Contributors"
     identifier = "contributors"
-    parent = "about"
-    url = "about/contributors"
+    url = "/about/contributors"
     weight = "10"
 
-[[menu.main]]
+[[menu.about]]
     name = "FAQ"
     identifier = "faq"
-    parent = "about"
-    url = "about/faq"
+    url = "/about/faq"
     weight = "15"
 
 # Development

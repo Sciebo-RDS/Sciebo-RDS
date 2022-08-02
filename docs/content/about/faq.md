@@ -2,13 +2,8 @@
 title: FAQ
 subtitle: Frequently asked questions
 
-menu:
-  about:
-    parent: about
-
 tags:
-  - "todo"
-
+    - "todo"
 ---
 
 Frequently asked questions

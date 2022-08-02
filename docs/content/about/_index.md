@@ -1,9 +1,11 @@
 ---
-title: About RDS
-subtitle: Why you should care about RDS
+title: Sciebo RDS
+subtitle: About
+type: about
+tags:
+    - "todo"
 
 ---
-
 The project sciebo RDS (Research Data Services) has set itself the goal of bringing low-threshold services and tools from research data management (RDM) and scientific analysis to where the researchers are already handling their data, i.e. the university cloud "sciebo". In order to achieve this ambitious goal, sciebo RDS will pursue the following strategies:
 
 * The sciebo RDS integrate external research data services, such as for the creation and the administration of data management plans.
@@ -20,7 +22,7 @@ Funding Body: Deutsche Forschungsgemeinschaft (DFG) -- Project Number 403637381.
 
 Project Coordination: Holger Przibytzin & Dr. Marc Schutzeichel
 
-Research Associates: Peter Heiss (WWU), Lennart Hofeditz (UDE), Jens Stegmann (WWU)
+Research Associates: Juri Hößelbarth (WWU), Peter Heiss (WWU), Lennart Hofeditz (UDE)
 
 Project Partners: ULB (WWU Münster), ZIV (WWU Münster), Department of Computer Science and Applied Cognitive Science (Prof. Dr. Stieglitz, University of Duisburg-Essen)
 

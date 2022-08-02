@@ -229,6 +229,7 @@ h2:hover .anchor, h3:hover .anchor, h4:hover .anchor, h5:hover .anchor, h6:hover
   background: #f2f3f7;
   text-align: center;
   padding: 5px 20px 5px 20px;
+  margin-bottom: 20px;
 }
 
 .article-tagline > h1 {

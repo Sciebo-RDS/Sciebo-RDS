@@ -1,4 +1,4 @@
-{{ if eq .Section "doc" }}
+{{ if or (eq .Type "about") (eq .Type "doc")}}
     <!-- Bootstrap -->
     <link href="{{ .Site.BaseURL }}css/vendor/bootstrap.min.css" rel="stylesheet">
     <link href="{{ .Site.BaseURL }}css/vendor/font-awesome.min.css" rel="stylesheet">
