@@ -17,28 +17,30 @@
 
     </div>
 
-    {{ partial "menu_about.html" . }}
+
     <!-- main content -->
     <section id="main-content">
+      <div class="row">
+        <div class="col-md-2">
+          {{ partial "menu_about.html" . }}
+        </div>
+        <div class="article-body">
 
-
-      <div class="article-body">
-        <div class="row">
           {{ if not .Params.notoc }}
-          <div class="main-col col-md-10 col-sm-12" style="padding: 0px 80px 0px 20px">
+          <div class="main-col col-md-8 col-sm-12">
             {{ else }}
-            <div class="col-sm-12">
+            <div class="col-sm-12 col-md-10">
               {{ end }}
               {{ block "main" . }}{{ end }}
-              {{ partial "footer-nav.html" . }}
             </div> <!-- column -->
-            {{ if not .Params.notoc }}
-            <div class="col-md-2">
-              {{ partial "toc.html" . }}
-            </div>
-            {{ end }}
-          </div> <!-- row -->
-        </div> <!-- article tagline -->
+
+          </div> <!-- article tagline -->
+          {{ if not .Params.notoc }}
+          <div class="col-md-2" style="padding-left: 100px">
+            {{ partial "toc.html" . }}
+          </div>
+          {{ end }}
+        </div>
     </section> <!-- main content -->
   </section> <!-- container -->
   <!-- justdocs theme -->

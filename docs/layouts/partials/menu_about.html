@@ -4,40 +4,42 @@
 
     <ul class="sidebar-nav sidebar-menu">
       <li>
-          <a href="#" id="close-button">
-            <i class="fa fa-close fa-lg"></i>
-          </a>
-        </li>
+        <a href="#" id="close-button">
+          <i class="fa fa-close fa-lg"></i>
+        </a>
+      </li>
       {{ $currentNode := . }}
+      {{ $currentType := .Type }}
       {{ range .Site.Menus.about.ByWeight }}
-        {{ if .HasChildren }}
-          <li class="sub-menu{{if $currentNode.HasMenuCurrent "about" . }} active{{end}}"{{ if (not (eq .Post "")) }} {{ printf "style=%q" .Post | safeHTMLAttr }}{{ end }}>
-            <a href="javascript:;">
-              {{ .Pre }}
-              <span>{{ .Name }}</span>
-              <span class="menu-arrow fa {{if $currentNode.HasMenuCurrent "about" . }}fa-angle-down{{else}}fa-angle-right{{end}}"></span>
+      {{ if .HasChildren }}
+      <li class="sub-menu{{if $currentNode.HasMenuCurrent $currentType . }} active{{end}}" {{ if (not (eq .Post "" )) }}
+        {{ printf "style=%q" .Post | safeHTMLAttr }}{{ end }}>
+        <a href="javascript:;">
+          {{ .Pre }}
+          <span>{{ .Name }}</span>
+          <span
+            class="menu-arrow fa {{if $currentNode.HasMenuCurrent $currentType . }}fa-angle-down{{else}}fa-angle-right{{end}}"></span>
 
-            </a>
-            <ul class="sub{{if $currentNode.HasMenuCurrent "about" . }} open{{end}}">
-              {{ range .Children }}
-                <li {{if $currentNode.IsMenuCurrent "about" . }} class="active"{{end}}>
-                  <a href="{{.URL}}">{{ .Name }}</a>
-                </li>
-              {{ end }}
-            </ul>
+        </a>
+        <ul class="sub{{if $currentNode.HasMenuCurrent $currentType . }} open{{end}}">
+          {{ range .Children }}
+          <li {{if $currentNode.IsMenuCurrent $currentType . }} class="active" {{end}}>
+            <a href="{{.URL}}">{{ .Name }}</a>
           </li>
-          {{ else }}
+          {{ end }}
+        </ul>
+      </li>
+      {{ else }}
 
-            <li class="{{if (or (eq $currentNode.URL .URL) (eq $currentNode.URL (printf "%s/" .URL))) }} active{{end}}"{{ if (not (eq .Post "")) }} {{ printf "style=%q" .Post | safeHTMLAttr }}{{ end }}>
-              <a class="" href="{{.URL}}">
-                  {{ .Pre }}
-                  <span>{{ .Name }}</span>
-              </a>
-            </li>
-        {{ end }}
+      <li class="{{if (or (eq $currentNode.URL .URL) (eq $currentNode.URL (printf " %s/" .URL))) }} active{{end}}"{{ if
+        (not (eq .Post "" )) }} {{ printf "style=%q" .Post | safeHTMLAttr }}{{ end }}>
+        <a class="" href="{{.URL}}">
+          {{ .Pre }}
+          <span>{{ .Name }}</span>
+        </a>
+      </li>
+      {{ end }}
       {{ end }}
     </ul>
   </div>
 </aside>
-
-

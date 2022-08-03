@@ -1,6 +1,6 @@
 ---
-title: Sciebo RDS
-subtitle: About
+title: About
+subtitle: Sciebo RDS
 type: about
 tags:
     - "todo"
