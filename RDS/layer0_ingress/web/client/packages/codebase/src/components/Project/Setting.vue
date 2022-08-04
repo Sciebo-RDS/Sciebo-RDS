@@ -7,18 +7,6 @@
             <ProjectStepper :project="project" />
           </v-col>
         </v-row>
-
-        <v-row align-content="end" justify="space-around">
-          <v-col cols="auto" class="mr-auto" />
-          <v-col
-            v-if="project.status != '3' && project.status != '4'"
-            cols="auto"
-          >
-            <v-btn tile color="error" @click="onDelete(project.researchIndex)">
-              <translate>delete project</translate>
-            </v-btn>
-          </v-col>
-        </v-row>
       </v-container>
     </template>
     <template v-else-if="project.status == 3">

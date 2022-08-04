@@ -1,5 +1,6 @@
 <template>
-  <v-stepper v-model="e1" alt-labels>
+  <v-stepper v-model="e1" alt-labels flat>
+    
     <v-stepper-header>
       <v-stepper-step :complete="e1 > 1" step="1">
         <translate>Configuration</translate>
@@ -23,14 +24,14 @@
             :project="project"
             @changePorts="receiveChanges"
             @changeResearchname="receiveResearchname"
-          />
+            />
         </v-card>
+        <v-flex class="text-right">
 
-        <v-btn text disabled> <translate>Back</translate> </v-btn>
-
-        <v-btn :disabled="configurationLockState" color="primary" @click="[sendChanges(), (e1 = 2)]">
+        <v-btn :disabled="configurationLockState" color="primary" @click="[sendChanges(), (e1 = 2)]" class="ma-2">
           <translate>Continue</translate>
         </v-btn>
+        </v-flex>
       </v-stepper-content>
 
       <v-stepper-content step="2">
@@ -38,17 +39,21 @@
           v-if="e1 == 2"
           class="d-flex flex-column justify-center mb-12"
           min-height="500px"
+          flat
         >
           <StepMetadataEditor :project="project" />
         </v-card>
 
-        <v-btn text @click="e1 = 1">
+        <v-flex class="text-right">
+        <v-btn outlined @click="e1 = 1">
           <translate>Back</translate>
         </v-btn>
 
-        <v-btn color="primary" @click="e1 = 3">
+        <v-btn color="primary" @click="e1 = 3" class="ma-2">
           <translate>Continue</translate>
         </v-btn>
+        </v-flex>
+
       </v-stepper-content>
 
       <v-stepper-content step="3">
@@ -56,29 +61,31 @@
           <StepPublish :project="project" />
         </v-card>
 
-        <v-btn text @click="e1 = 2">
+        <v-div  class="d-flex mb-6">
+        <v-btn outlined color="error" @click="archiveProject(project.researchIndex)" class="mr-auto ma-2">
+          <translate>Delete</translate>
+        </v-btn>
+
+        <!-- <v-flex class="text-right"> -->
+        <v-btn outlined @click="e1 = 2" class="ma-2">
           <translate>Back</translate>
         </v-btn>
 
-        <v-btn :disabled="publishInProgress" color="success" @click="publishProject">
+        <v-btn :disabled="publishInProgress" color="success" @click="publishProject" class="ma-2">
           <translate v-if="publishInProgress">In progress...</translate>
           <translate v-else>Publish</translate>
         </v-btn>
+        </v-div>
+        <!-- </v-flex> -->
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
+</v-div>
 </template>
 
-<style scoped>
-/*.v-stepper__header {
-  box-shadow: none;
-} 
-.v-stepper {
-  box-shadow: none;
-}*/
-</style>
 
 <script>
+import { mapGetters } from "vuex"
 import StepConfiguration from "./Step/Configuration.vue";
 import StepPublish from "./Step/Publish.vue";
 import StepMetadataEditor from "./Step/MetadataEditor.vue";
@@ -97,6 +104,10 @@ export default {
       publishInProgress: false,
       researchName: this.project.researchname,
     };
+  },
+  computed: {
+    ...mapGetters({
+    }),
   },
   props: ["project"],
   beforeMount() {
@@ -134,9 +145,6 @@ export default {
         return true;
       }
     },
-    alert(msg) {
-      alert(msg);
-    },
     receiveChanges(pChanges) {
       this.changes = pChanges;
       this.configurationLockState = this.setConfigurationLock(pChanges);
@@ -154,6 +162,9 @@ export default {
         this.$store.dispatch("changePorts", this.changes);
         this.changes = {};
       }
+    },
+    archiveProject(rId){
+      this.$store.dispatch("removeProject", { id: rId })
     },
     publishProject() {
       this.publishInProgress = true;
