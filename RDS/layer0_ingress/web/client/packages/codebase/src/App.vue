@@ -3,12 +3,21 @@
     <v-app id="inspire">
       <!-- pilot warning bar -->
       <v-system-bar
-      color="warning">
-        <v-row class="font-weight-bold" justify="center">
+      color="warning" absolute height="25px">
+        <v-row class="font-weight-bold" justify="center" >
+          <v-icon>
+            mdi-comment-alert-outline
+          </v-icon>
           <translate>RDS is still in its pilot phase. If you encounter any problems, please contact</translate>
           <a :href="`mailto:${$config.emailContact}`" class="ml-1 black--text">{{ $config.emailContact }}</a>.
         </v-row>
       </v-system-bar>
+
+      <!-- Bar without warning / message -->
+      <!-- <v-system-bar
+        color="success"
+        absolute
+        height="25px"/> -->
 
       <overlay :subtext="overlayText" />
       <snackbar />
@@ -24,16 +33,19 @@
         v-model="drawer"
         app
         bottom
+        color="grey lighten-4"
       >
-        <v-sheet class="flex-direction row pa-4">
+        <v-sheet
+        class="flex-direction row pa-4"
+        color="grey lighten-4">
           <v-container>
-            <v-row no-gutters align="center">
+            <v-row no-gutters class="text-center">
               <v-col>
-                <v-avatar class="mb-4" color="green darken-3" size="64">
+                <v-avatar class="mb-4" size="76">
                   <v-img :src="require('./assets/sciebo.png')" />
                 </v-avatar>
               </v-col>
-              <v-col>
+              <v-col cols="12">
                 <div
                   :class="[
                     'text-h6',
@@ -46,17 +58,14 @@
           </v-container>
         </v-sheet>
 
-        <v-divider />
-
         <v-list
-          class="d-flex flex-column mb-10"
-          style="box-sizing: border-box; overflow: auto;"
-        >
-          <v-list-item-group v-model="model" mandatory color="indigo">
+          class="d-flex flex-column mb-10 mt-5">
+          <v-list-item-group v-model="model" mandatory color="cyan darken-4">
             <v-list-item
               v-for="(item, i) in views"
               :key="i"
               :to="item.path"
+              v-ripple="false"
               v-show="
                 !$store.getters.isWizardFinished != !item.hide ||
                   item.name == 'Home'
@@ -78,8 +87,12 @@
         />
       </v-navigation-drawer>
 
-      <v-main>
-        <v-container fluid> <router-view /> </v-container>
+      <v-main class="ml-0 mb-0">
+        <v-container
+            fluid
+            class="pb-0 px-0 mb-0 mr-0">
+                <router-view />
+        </v-container>
       </v-main>
     </v-app>
   </div>
