@@ -230,7 +230,7 @@ def saveResearch(research):
 
 class RDSNamespace(Namespace):
     @authenticated_only
-    def on_connect(self, data):
+    def on_connect(self):
         current_user.websocketId = request.sid
         clients[current_user.userId] = current_user
 
