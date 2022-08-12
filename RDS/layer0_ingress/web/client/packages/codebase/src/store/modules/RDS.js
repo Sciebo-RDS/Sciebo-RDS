@@ -4,7 +4,9 @@ const getDefaultState = () => {
         servicelist: [],
         projectlist: [],
         sessionID: null,
-        ownCloudServerName: ""
+        ownCloudServerName: "",
+        activeProject: null, 
+        modifiedProject: {researchIndex: null, workingTitle: null, filePath: null, import: null, export: null},
     }
 }
 
@@ -17,7 +19,13 @@ export default {
         getServiceList: (state) => state.servicelist,
         getProjectlist: (state) => state.projectlist,
         getSessionId: (state) => state.sessionID,
-        getOwnCloudServername: (state) => state.ownCloudServerName
+        getOwnCloudServername: (state) => state.ownCloudServerName,
+        getActiveProject: (state) => state.activeProject,
+        getModifiedProject: (state) => state.modifiedProject,
+        getModifiedWorkingTitle: (state) => state.modifiedProject["workingTitle"],
+        getModifiedFilePath: (state) => state.modifiedProject["filePath"],
+        getModifiedImport: (state) => state.modifiedProject["import"],
+        getModifiedExport: (state) => state.modifiedProject["export"],
     },
     mutations: {
         setUserServiceList: (state, payload) => { state.userservicelist = payload.servicelist },
@@ -27,7 +35,16 @@ export default {
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
-        setOwnCloudServername(state, payload) { state.ownCloudServerName = payload.serverName }
+        setOwnCloudServername(state, payload) { state.ownCloudServerName = payload.serverName },
+        setActiveProject(state, payload) { state.activeProject = payload },
+        setModifiedResearchIndex(state, payload) { state.modifiedProject["researchIndex"] = payload },
+        setModifiedWorkingTitle: (state, payload) => { state.modifiedProject["workingTitle"] = payload },
+        setModifiedFilePath: (state, payload) => { state.modifiedProject["filePath"] = payload },
+        setModifiedImport: (state, payload) => { state.modifiedProject["import"] = payload },
+        setModifiedExport: (state, payload) => { state.modifiedProject["export"] = payload },
+        resetModifiedProject(state) {
+            Object.assign(state.modifiedProject, getDefaultState().modifiedProject)
+        }
     },
     actions: {
         SOCKET_ServerName(context, state) {
