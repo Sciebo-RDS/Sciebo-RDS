@@ -86,21 +86,21 @@ dependencies:
       - layer3
   - name: jaeger
     version: ^0.34.0
-    repository: https://jaegertracing.github.io/helm-charts
+    repository: file://../jaeger
     condition: feature.jaeger
     tags:
       - monitoring
   - name: redis-cluster
     alias: redis
     version: ^7.6.1
-    repository: https://charts.bitnami.com/bitnami
+    repository: file://../redis-cluster
     condition: feature.redis
     tags:
       - storage
   - name: redis
     alias: redis-helper
     version: ^16.10.1
-    repository: https://charts.bitnami.com/bitnami
+    repository: file://../redis
     condition: feature.redis
     tags:
       - storage
