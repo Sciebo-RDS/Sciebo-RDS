@@ -13,7 +13,7 @@ metadata:
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
   {{- end }}
     {{- toYaml .Values.metrics.service.annotations | nindent 4 }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace }}
 spec:
   type: {{ .Values.metrics.service.type }}
   {{- if and (eq .Values.metrics.service.type "LoadBalancer") .Values.metrics.service.loadBalancerIP }}

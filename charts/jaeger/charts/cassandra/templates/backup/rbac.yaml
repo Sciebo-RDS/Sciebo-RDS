@@ -45,6 +45,6 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: {{ template "cassandra.serviceAccountName" . }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace }}
 {{- end }}
 {{- end }}

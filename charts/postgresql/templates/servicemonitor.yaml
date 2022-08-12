@@ -5,6 +5,8 @@ metadata:
   name: {{ include "common.names.fullname" . }}
   {{- if .Values.metrics.serviceMonitor.namespace }}
   namespace: {{ .Values.metrics.serviceMonitor.namespace }}
+  {{- else }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   {{- end }}
   labels:
   {{- include "common.labels.standard" . | nindent 4 }}

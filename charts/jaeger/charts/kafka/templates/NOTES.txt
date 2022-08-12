@@ -6,7 +6,7 @@ You can connect to Kafka by running a simple pod in the K8s cluster like this wi
   kind: Pod
   metadata:
     name: testclient
-    namespace: {{ .Release.Namespace }}
+    namespace: {{ .Values.global.namespace.name | default .Release.Namespace }}
   spec:
     containers:
     - name: kafka

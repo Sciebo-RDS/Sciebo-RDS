@@ -11,7 +11,7 @@ metadata:
   {{- if .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
   {{- end }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace }}
 data:
 {{- if (.Files.Glob "files/postgresql.conf") }}
 {{ (.Files.Glob "files/postgresql.conf").AsConfig | indent 2 }}

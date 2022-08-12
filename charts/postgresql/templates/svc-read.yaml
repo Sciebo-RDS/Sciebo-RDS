@@ -21,7 +21,7 @@ metadata:
   {{- if $serviceAnnotations }}
   {{- include "common.tplvalues.render" (dict "value" $serviceAnnotations "context" $) | nindent 4 }}
   {{- end }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace }}
 spec:
   type: {{ $serviceType }}
   {{- if and $serviceLoadBalancerIP (eq $serviceType "LoadBalancer") }}

@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "jaeger.collector.name" . }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   labels:
     {{- include "jaeger.labels" . | nindent 4 }}
     app.kubernetes.io/component: collector
