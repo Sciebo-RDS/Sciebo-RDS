@@ -1,5 +1,13 @@
 from flask_cors import CORS
-from flask import Response, stream_with_context, session, request, redirect, url_for
+from flask import (
+    Response,
+    stream_with_context,
+    session,
+    request,
+    redirect,
+    url_for,
+    jsonify,
+)
 from flask_login import (
     LoginManager,
     login_user,
@@ -53,7 +61,7 @@ class User(UserMixin):
             "websocketId": self.websocketId,
             "userId": self.userId,
             "token": self.token,
-            "servername": self.servername
+            "servername": self.servername,
         }
 
     @classmethod
@@ -72,18 +80,17 @@ class User(UserMixin):
         self.userId = userId
         self.token = token
         self.servername = servername
-    
+
         if use_embed_mode and use_predefined_user:
             return
 
         if userId is None and token is not None:
-            headers = {
-                "Authorization": f"Bearer {token}"
-            }
+            headers = {"Authorization": f"Bearer {token}"}
 
             for key, domain in domains_dict.items():
                 url = domain["ADDRESS"] or os.getenv(
-                    "OWNCLOUD_URL", "https://localhost/index.php")
+                    "OWNCLOUD_URL", "https://localhost/index.php"
+                )
 
                 req = requests.get(
                     f"{url}/index.php/apps/rds/api/1.0/informations",
@@ -154,6 +161,18 @@ def login():
         session["informations"] = decoded
         session["servername"] = servername
         session["oauth"] = domains_dict[servername]
+
+        # check if everything is given for later usage
+        keys = ["email", "UID", "cloudID"]
+        values_from_keys = [decoded.get(key) for key in keys]
+
+        if None in values_from_keys:
+            error = {
+                "error": "Missing key: email or UID or cloudID is missing in given informations.",
+                "errorCode": "MissingKey",
+                "key": keys[values_from_keys.index(None)],
+            }
+            return jsonify(error), 401
     except Exception as e:
         app.logger.error(e, exc_info=True)
 
@@ -164,7 +183,11 @@ def login():
 
         return "", 201
 
-    return "", 401
+    error = {
+        "error": "Given informations weren`t valid or some keys were missing.",
+        "errorCode": "UserInformationsNotValid",
+    }
+    return jsonify(error), 401
 
 
 @login_manager.user_loader
@@ -185,8 +208,12 @@ def index(path):
     # only for testing condition
     if use_embed_mode and use_predefined_user:
         app.logger.debug("skip authentication")
-        servername=next(iter(domains_dict.values()))["ADDRESS"]
-        user = User(id=str(uuid.uuid4()), userId=os.getenv("DEV_FLASK_USERID"), servername=servername)
+        servername = next(iter(domains_dict.values()))["ADDRESS"]
+        user = User(
+            id=str(uuid.uuid4()),
+            userId=os.getenv("DEV_FLASK_USERID"),
+            servername=servername,
+        )
         session["servername"] = servername
         user_store[user.get_id()] = user.to_dict()
         login_user(user)
