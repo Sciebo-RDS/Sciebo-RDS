@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask-socketio = "*"
+flask-socketio = "==5.1.1"
 flask-login = "*"
 requests = "*"
 eventlet = "==0.30.2"
@@ -15,7 +15,7 @@ flask-session = "*"
 prometheus-flask-exporter = "*"
 redis-pubsub-dict-wo-cluster = "*"
 redis = "==4.2.2"
-werkzeug = "==2.1.2"
+werkzeug = "*"
 
 [dev-packages]
 black = "==20.8b1"
