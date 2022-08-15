@@ -36,6 +36,11 @@ export default {
       Object.assign(state, getDefaultState());
     },
     setOwnCloudServername(state, payload) {
+      // this resets the state, if serverName is different as before
+      // fixes https://github.com/Sciebo-RDS/Sciebo-RDS/issues/183
+      if (state.ownCloudServerName !== payload.serverName) {
+        state.resetState();
+      }
       state.ownCloudServerName = payload.serverName;
     },
   },
