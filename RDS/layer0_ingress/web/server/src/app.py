@@ -114,7 +114,7 @@ try:
         retry_on_timeout=True,
     )
 except:
-    rc = None
+    rc = {} # this can be used for verification in dev env 
 
 clients = {}
 timestamps = {}
