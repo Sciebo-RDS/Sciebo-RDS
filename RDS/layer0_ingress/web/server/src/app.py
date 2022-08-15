@@ -111,6 +111,7 @@ try:
         db=0,
         health_check_interval=30,
         decode_responses=True,
+        retry_on_timeout=True,
     )
 except:
     rc = None
@@ -139,7 +140,7 @@ else:
     rcCluster = RedisCluster(
         startup_nodes=nodes,
         skip_full_coverage_check=True,
-        cluster_down_retry_attempts=1,
+        cluster_error_retry_attempts=30,
     )
 
     rcCluster.cluster_info()  # provoke an error message
