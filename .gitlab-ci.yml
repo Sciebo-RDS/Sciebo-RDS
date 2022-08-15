@@ -158,8 +158,8 @@ pages:
     - apk add --update --no-cache --allow-untrusted git python3 py3-pip rsync unzip
     - python3 -m pip install awscli
   script:
-    - wget -qO release.zip https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/jobs/artifacts/release/download && unzip -d ./release release.zip -qq && mv ./release/public ./public
-    - wget -qO develop.zip https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/jobs/artifacts/develop/download && unzip -d ./develop develop.zip -qq && mv ./develop/public ./public/dev
+    - wget -qO release.zip https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/jobs/artifacts/release/download?job=pages && unzip -d ./release release.zip -qq && mv ./release/public ./public
+    - wget -qO develop.zip https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/jobs/artifacts/develop/download?job=pages && unzip -d ./develop develop.zip -qq && mv ./develop/public ./public/dev
     - cd docs
     - |
       if [ "$CI_COMMIT_BRANCH"  == "$CI_DEFAULT_BRANCH" ]; then
