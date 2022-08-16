@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   registry: zivgitlab.wwu.io
   repository: sciebo-rds/sciebo-rds/rds_web
-  tag: latest
+  tag: release
   pullPolicy: Always
 
 labels:
@@ -36,7 +36,7 @@ ingress:
           proxy_set_header        Host                    $host;
           proxy_set_header        X-Real-IP               $remote_addr;
           proxy_set_header        X-Forwarded-For         $proxy_add_x_forwarded_for;
-          proxy_pass http://layer0-describo/socket.io/;
+          proxy_pass http://layer0-web/socket.io/;
       }
 resources:
   {}
