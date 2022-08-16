@@ -21,6 +21,8 @@ global:
           - "layer1-port-openscienceframework"
         except:
           - "layer1-port-datasafe"
+      SUPPORT_EMAIL: mail@side.com
+      MANUAL_URL: usermanual.side.com
 layer0-describo:
   postgresql:
     # starts its own postgresql database.
@@ -31,8 +33,6 @@ layer0-web:
   environment:
     # the password, which will be used to encrypt all user data
     SECRET_KEY: 1234
-    # describo needs a separate domain from sciebords
-    VUE_APP_RDS_EMAIL: <your-service-address@institution.org>
 layer1-port-zenodo:
   enabled: true
   environment:
