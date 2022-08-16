@@ -120,7 +120,13 @@ def informations():
 def questions():
     from .questions import questions
 
-    return json.dumps(questions)
+    return json.dumps(
+        {
+            lang: {qu: ans.format(session["oauth"])}
+            for lang, quest in questions
+            for qu, ans in quest
+        }
+    )
 
 
 @app.route("/login", methods=["GET", "POST"])
