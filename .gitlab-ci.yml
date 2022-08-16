@@ -140,14 +140,11 @@ hugo:test:
 pages:
   image: registry.gitlab.com/pages/hugo/hugo_extended:0.91.2
   stage: pages
-  cache:
-    paths:
-      - public
   artifacts:
     paths:
       - public
   variables:
-    DOC_FOLDER: dev
+    DOC_FOLDER: .
   rules:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
     - if: '$CI_COMMIT_BRANCH == "release"'
@@ -155,10 +152,10 @@ pages:
       variables:
         DOC_FOLDER: .
   before_script:
-    - apk add --update --no-cache --allow-untrusted git python3 py3-pip rsync
+    - apk add --update --no-cache --allow-untrusted git python3 py3-pip rsync unzip
     - python3 -m pip install awscli
   script:
-    - mkdir -p ./public/dev
+    - mkdir -p ./public
     - cd docs
     - |
       if [ "$CI_COMMIT_BRANCH"  == "$CI_DEFAULT_BRANCH" ]; then
