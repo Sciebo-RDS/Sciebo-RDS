@@ -118,12 +118,20 @@ def informations():
 @app.route("/faq")
 def questions():
     from .questions import questions
+    from string import Template
 
     return json.dumps(
         {
-            lang: {qu: ans.format(session["oauth"])}
-            for lang, quest in questions.items()
-            for qu, ans in quest.items()
+            lang: {
+                category: {
+                    quest: Template(answer).substitute(
+                        **(session["oauth"])
+                    )
+                }
+            }
+            for lang, categories in questions.items()
+            for category, quests in categories.items()
+            for quest, answer in quests.items()
         }
     )
 
