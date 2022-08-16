@@ -7,6 +7,8 @@ const getDefaultState = () => {
         ownCloudServerName: "",
         activeProject: null, 
         modifiedProject: {researchIndex: null, workingTitle: null, filePath: null, import: null, export: null},
+        supportEmail: null,
+        manualUrl: null,
     }
 }
 
@@ -26,6 +28,8 @@ export default {
         getModifiedFilePath: (state) => state.modifiedProject["filePath"],
         getModifiedImport: (state) => state.modifiedProject["import"],
         getModifiedExport: (state) => state.modifiedProject["export"],
+        getSupportEmail: (state) => state.supportEmail,
+        getManualUrl: (state) => state.manualUrl,
     },
     mutations: {
         setUserServiceList: (state, payload) => { state.userservicelist = payload.servicelist },
@@ -45,8 +49,20 @@ export default {
         resetModifiedProject(state) {
             Object.assign(state.modifiedProject, getDefaultState().modifiedProject)
         }
+        setSupportEmail: (state, payload) => { state.supportEmail = payload.supportEmail },
+        setManualUrl: (state, payload) => { state.manualUrl = payload.manualUrl },
     },
     actions: {
+        SOCKET_SupportEmail(context, state) {
+            context.commit("setSupportEmail", {
+                supportEmail: state.supportEmail
+            })
+        },
+        SOCKET_ManualUrl(context, state) {
+            context.commit("setManualUrl", {
+                manualUrl: state.manualUrl
+            })
+        },
         SOCKET_ServerName(context, state) {
             context.commit("setOwnCloudServername", {
                 serverName: state.servername

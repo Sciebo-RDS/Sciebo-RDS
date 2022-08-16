@@ -9,7 +9,7 @@
             mdi-comment-alert-outline
           </v-icon>
           <translate>RDS is still in its pilot phase. If you encounter any problems, please contact</translate>
-          <a :href="`mailto:${$config.emailContact}`" class="ml-1 black--text">{{ $config.emailContact }}</a>.
+          <a :href="`mailto:${$store.getters.getSupportEmail}`" class="ml-1 black--text">{{ $store.getters.getSupportEmail }}</a>.
         </v-row>
       </v-system-bar>
 

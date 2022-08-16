@@ -53,7 +53,7 @@ class User(UserMixin):
             "websocketId": self.websocketId,
             "userId": self.userId,
             "token": self.token,
-            "servername": self.servername
+            "servername": self.servername,
         }
 
     @classmethod
@@ -72,18 +72,17 @@ class User(UserMixin):
         self.userId = userId
         self.token = token
         self.servername = servername
-    
+
         if use_embed_mode and use_predefined_user:
             return
 
         if userId is None and token is not None:
-            headers = {
-                "Authorization": f"Bearer {token}"
-            }
+            headers = {"Authorization": f"Bearer {token}"}
 
             for key, domain in domains_dict.items():
                 url = domain["ADDRESS"] or os.getenv(
-                    "OWNCLOUD_URL", "https://localhost/index.php")
+                    "OWNCLOUD_URL", "https://localhost/index.php"
+                )
 
                 req = requests.get(
                     f"{url}/index.php/apps/rds/api/1.0/informations",
@@ -119,8 +118,22 @@ def informations():
 @app.route("/faq")
 def questions():
     from .questions import questions
+    from string import Template
 
-    return json.dumps(questions)
+    return json.dumps(
+        {
+            lang: {
+                category: {
+                    quest: Template(answer).substitute(
+                        **(session["oauth"])
+                    )
+                }
+            }
+            for lang, categories in questions.items()
+            for category, quests in categories.items()
+            for quest, answer in quests.items()
+        }
+    )
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -185,9 +198,17 @@ def index(path):
     # only for testing condition
     if use_embed_mode and use_predefined_user:
         app.logger.debug("skip authentication")
-        servername=next(iter(domains_dict.values()))["ADDRESS"]
-        user = User(id=str(uuid.uuid4()), userId=os.getenv("DEV_FLASK_USERID"), servername=servername)
+        servername = next(iter(domains_dict.values()))["ADDRESS"]
+        user = User(
+            id=str(uuid.uuid4()),
+            userId=os.getenv("DEV_FLASK_USERID"),
+            servername=servername,
+        )
         session["servername"] = servername
+        session["oauth"] = {
+            "SUPPORT_EMAIL": os.getenv("SUPPORT_EMAIL"),
+            "MANUAL_URL": os.getenv("MANUAL_URL"),
+        }
         user_store[user.get_id()] = user.to_dict()
         login_user(user)
 
