@@ -188,6 +188,7 @@ def index(path):
         servername=next(iter(domains_dict.values()))["ADDRESS"]
         user = User(id=str(uuid.uuid4()), userId=os.getenv("DEV_FLASK_USERID"), servername=servername)
         session["servername"] = servername
+        session["oauth"] = {"SUPPORT_EMAIL": os.getenv("SUPPORT_EMAIL"), "MANUAL_URL": os.getenv("MANUAL_URL")}
         user_store[user.get_id()] = user.to_dict()
         login_user(user)
 

@@ -235,6 +235,8 @@ class RDSNamespace(Namespace):
         clients[current_user.userId] = current_user
 
         emit("ServerName", {"servername": session["servername"]})
+        emit("SupportEmail", {"supportEmail": session["oauth"]["SUPPORT_EMAIL"]})
+        emit("ManualUrl", {"manualUrl": session["oauth"]["MANUAL_URL"]})
         emit("ServiceList", httpManager.makeRequest("getServicesList"))
         emit("UserServiceList", httpManager.makeRequest("getUserServices"))
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))
