@@ -17,14 +17,14 @@ metadata:
   namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
 data:
     EMBED_MODE: "{{ .Values.environment.EMBED_MODE }}"
-    FLASK_ORIGINS: {{ append .Values.environment.FLASK_ORIGINS (.Values.global.rds.domain) | toJson | squote }}
+    FLASK_ORIGINS: {{ (append (append .Values.environment.FLASK_ORIGINS (printf "https://%s" .Values.global.rds.domain)) (printf "http://%s" .Values.global.rds.domain)) | toJson | squote }}
     SECRET_KEY: "{{ .Values.environment.SECRET_KEY }}"
     DESCRIBO_API_ENDPOINT: "{{ .Values.environment.DESCRIBO_API_ENDPOINT }}"
     DESCRIBO_API_SECRET: {{ .Values.global.describo.api_secret | quote }}
-    VUE_APP_DESCRIBO_URL: "{{ .Values.global.describo.domain }}/application"
-    VUE_APP_FRONTENDHOST: {{ .Values.global.rds.domain | quote }}
-    VUE_APP_SOCKETIO_HOST: {{ .Values.global.rds.domain | quote }}
-    SOCKETIO_HOST: {{ .Values.global.rds.domain | quote }}
+    VUE_APP_DESCRIBO_URL: https://{{ .Values.global.describo.domain }}/application
+    VUE_APP_FRONTENDHOST: https://{{ .Values.global.rds.domain }}
+    VUE_APP_SOCKETIO_HOST: https://{{ .Values.global.rds.domain }}
+    SOCKETIO_HOST: https://{{ .Values.global.rds.domain }}
     SOCKETIO_PATH: "{{ .Values.environment.SOCKETIO_PATH }}"
     VUE_APP_BASE_URL: "{{ .Values.environment.VUE_APP_BASE_URL }}"
     {{- with (mustMergeOverwrite (.Values.global | default dict) .Values.environment) }}
