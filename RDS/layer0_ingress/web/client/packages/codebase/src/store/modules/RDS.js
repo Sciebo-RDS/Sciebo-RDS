@@ -4,7 +4,9 @@ const getDefaultState = () => {
         servicelist: [],
         projectlist: [],
         sessionID: null,
-        ownCloudServerName: ""
+        ownCloudServerName: "",
+        supportEmail: null,
+        manualUrl: null,
     }
 }
 
@@ -17,7 +19,9 @@ export default {
         getServiceList: (state) => state.servicelist,
         getProjectlist: (state) => state.projectlist,
         getSessionId: (state) => state.sessionID,
-        getOwnCloudServername: (state) => state.ownCloudServerName
+        getOwnCloudServername: (state) => state.ownCloudServerName,
+        getSupportEmail: (state) => state.supportEmail,
+        getManualUrl: (state) => state.manualUrl,
     },
     mutations: {
         setUserServiceList: (state, payload) => { state.userservicelist = payload.servicelist },
@@ -27,9 +31,21 @@ export default {
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
-        setOwnCloudServername(state, payload) { state.ownCloudServerName = payload.serverName }
+        setOwnCloudServername(state, payload) { state.ownCloudServerName = payload.serverName },
+        setSupportEmail: (state, payload) => { state.supportEmail = payload.supportEmail },
+        setManualUrl: (state, payload) => { state.manualUrl = payload.manualUrl },
     },
     actions: {
+        SOCKET_SupportEmail(context, state) {
+            context.commit("setSupportEmail", {
+                supportEmail: state.supportEmail
+            })
+        },
+        SOCKET_ManualUrl(context, state) {
+            context.commit("setManualUrl", {
+                manualUrl: state.manualUrl
+            })
+        },
         SOCKET_ServerName(context, state) {
             context.commit("setOwnCloudServername", {
                 serverName: state.servername
