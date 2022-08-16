@@ -48,7 +48,7 @@ export default {
         setModifiedExport: (state, payload) => { state.modifiedProject["export"] = payload },
         resetModifiedProject(state) {
             Object.assign(state.modifiedProject, getDefaultState().modifiedProject)
-        }
+        },
         setSupportEmail: (state, payload) => { state.supportEmail = payload.supportEmail },
         setManualUrl: (state, payload) => { state.manualUrl = payload.manualUrl },
     },
