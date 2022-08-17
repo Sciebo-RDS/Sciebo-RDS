@@ -230,12 +230,11 @@ def saveResearch(research):
 
 class RDSNamespace(Namespace):
     @authenticated_only
-    def on_connect(self):
+    def on_connect(self, data):
         current_user.websocketId = request.sid
         clients[current_user.userId] = current_user
         
-        app.logger.debug("session data: {}".format(session))
-
+        emit("Data", {"data": session["oauth"]})
         emit("ServerName", {"servername": session["servername"]})
         emit("SupportEmail", {"supportEmail": session["oauth"]["SUPPORT_EMAIL"]})
         emit("ManualUrl", {"manualUrl": session["oauth"]["MANUAL_URL"]})

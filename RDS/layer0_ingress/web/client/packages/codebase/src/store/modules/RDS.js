@@ -5,6 +5,8 @@ const getDefaultState = () => {
     projectlist: [],
     sessionID: null,
     ownCloudServerName: "",
+    supportEmail:null,
+    manualUrl: null
   };
 };
 
