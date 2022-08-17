@@ -7,7 +7,7 @@ metadata:
   labels:
 {{ include "layer0_web.labels" . | indent 4 }}
   annotations:
-{{- include "common.ingressAnnotations" . |  nindent 4 }}
+{{ include "common.ingressAnnotations" . | indent 4 }}
 spec:
   {{- if (include "common.tlsSecretName" .) }}
   tls:

@@ -126,8 +126,22 @@ def informations():
 @app.route("/faq")
 def questions():
     from .questions import questions
+    from string import Template
 
-    return json.dumps(questions)
+    return json.dumps(
+        {
+            lang: {
+                category: {
+                    quest: Template(answer).substitute(
+                        **(session["oauth"])
+                    )
+                }
+            }
+            for lang, categories in questions.items()
+            for category, quests in categories.items()
+            for quest, answer in quests.items()
+        }
+    )
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -215,6 +229,10 @@ def index(path):
             servername=servername,
         )
         session["servername"] = servername
+        session["oauth"] = {
+            "SUPPORT_EMAIL": os.getenv("SUPPORT_EMAIL"),
+            "MANUAL_URL": os.getenv("MANUAL_URL"),
+        }
         user_store[user.get_id()] = user.to_dict()
         login_user(user)
 
