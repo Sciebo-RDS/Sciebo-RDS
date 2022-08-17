@@ -70,11 +70,8 @@ class DomainsDict(UserDict):
         """
 
         try:
-            app.logger.debug("cached store: {}".format(self.cache[key]))
             return self.cache[key]
         except KeyError:
-            app.logger.debug("lookup services: {}".format(self[key]))
-
             status_code = 500
             req = None
             url = self[key]["ADDRESS"]

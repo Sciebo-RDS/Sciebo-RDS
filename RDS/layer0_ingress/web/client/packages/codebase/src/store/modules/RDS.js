@@ -43,7 +43,7 @@ export default {
           // this resets the state, if serverName is different as before
           // fixes https://github.com/Sciebo-RDS/Sciebo-RDS/issues/183
           if (state.ownCloudServerName !== payload.serverName) {
-            state.resetState();
+            this.resetState();
           }
           state.ownCloudServerName = payload.serverName },
         setActiveProject(state, payload) { state.activeProject = payload },
