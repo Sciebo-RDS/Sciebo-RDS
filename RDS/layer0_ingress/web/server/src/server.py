@@ -174,10 +174,7 @@ def login():
 
         session["informations"] = decoded
         session["servername"] = servername
-        
-        sideInformations = domains_dict[servername]
-        app.logger.debug("set side-informations {}".format(sideInformations))
-        session["oauth"] = sideInformations
+        session["oauth"] = domains_dict[servername]
 
         # check if everything is given for later usage
         keys = ["email", "UID", "cloudID"]
