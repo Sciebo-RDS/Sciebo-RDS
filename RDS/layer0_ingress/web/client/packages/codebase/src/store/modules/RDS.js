@@ -5,6 +5,8 @@ const getDefaultState = () => {
         projectlist: [],
         sessionID: null,
         ownCloudServerName: "",
+        activeProject: null, 
+        modifiedProject: {researchIndex: null, workingTitle: null, filePath: null, import: null, export: null},
         supportEmail: null,
         manualUrl: null,
     }
@@ -20,6 +22,12 @@ export default {
         getProjectlist: (state) => state.projectlist,
         getSessionId: (state) => state.sessionID,
         getOwnCloudServername: (state) => state.ownCloudServerName,
+        getActiveProject: (state) => state.activeProject,
+        getModifiedProject: (state) => state.modifiedProject,
+        getModifiedWorkingTitle: (state) => state.modifiedProject["workingTitle"],
+        getModifiedFilePath: (state) => state.modifiedProject["filePath"],
+        getModifiedImport: (state) => state.modifiedProject["import"],
+        getModifiedExport: (state) => state.modifiedProject["export"],
         getSupportEmail: (state) => state.supportEmail,
         getManualUrl: (state) => state.manualUrl,
     },
@@ -32,6 +40,15 @@ export default {
             Object.assign(state, getDefaultState())
         },
         setOwnCloudServername(state, payload) { state.ownCloudServerName = payload.serverName },
+        setActiveProject(state, payload) { state.activeProject = payload },
+        setModifiedResearchIndex(state, payload) { state.modifiedProject["researchIndex"] = payload },
+        setModifiedWorkingTitle: (state, payload) => { state.modifiedProject["workingTitle"] = payload },
+        setModifiedFilePath: (state, payload) => { state.modifiedProject["filePath"] = payload },
+        setModifiedImport: (state, payload) => { state.modifiedProject["import"] = payload },
+        setModifiedExport: (state, payload) => { state.modifiedProject["export"] = payload },
+        resetModifiedProject(state) {
+            Object.assign(state.modifiedProject, getDefaultState().modifiedProject)
+        },
         setSupportEmail: (state, payload) => { state.supportEmail = payload.supportEmail },
         setManualUrl: (state, payload) => { state.manualUrl = payload.manualUrl },
     },
