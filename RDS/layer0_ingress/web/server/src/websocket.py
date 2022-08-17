@@ -233,8 +233,7 @@ class RDSNamespace(Namespace):
     def on_connect(self, data):
         current_user.websocketId = request.sid
         clients[current_user.userId] = current_user
-        
-        emit("Data", {"data": session["oauth"]})
+
         emit("ServerName", {"servername": session["servername"]})
         emit("SupportEmail", {"supportEmail": session["oauth"]["SUPPORT_EMAIL"]})
         emit("ManualUrl", {"manualUrl": session["oauth"]["MANUAL_URL"]})
