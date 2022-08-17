@@ -43,7 +43,7 @@
                                 Project
                                 <v-list-item-title class="my-1" style="">
                                     <div class=" text-subtitle2 ">
-                                {{ !!p.researchname ? p.researchname : 'Project ' + (p.researchId+1) }}
+                                {{ !!p.researchname ? p.researchname : 'Project ' + (p.researchIndex+1) }}
                                     </div>
                             </v-list-item-title>
                             </v-col>
@@ -83,7 +83,7 @@
 
                 <!-- Active Project Stepper -->
                 <v-card v-if="this.activeProject !== null" flat height="100%" >
-                    <ProjectStepper :project="allProjects.filter((i) => i.researchId == this.activeProject)[0]" style="min-height: 100%;"/>
+                    <ProjectStepper :project="allProjects.filter((i) => i.researchIndex == this.activeProject)[0]" style="min-height: 100%;"/>
                 </v-card>
 
                 <!-- No Project selected -->
@@ -107,7 +107,7 @@
             <v-col v-else cols="9" class="ProjectDetail">
                 <v-card v-if="this.activeProject !== null" flat height="100%" >
                     <!-- TODO: Past Project Detail View -->
-                    <ArchiveProjectDetail :project="allProjects.filter((i) => i.researchId == this.activeProject)[0]" style="min-height: 100%;"/>
+                    <ArchiveProjectDetail :project="allProjects.filter((i) => i.researchIndex == this.activeProject)[0]" style="min-height: 100%;"/>
                 </v-card>
                 <v-card v-else flat height="100%">
                     <v-container fill-height >
