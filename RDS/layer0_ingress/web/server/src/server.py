@@ -132,14 +132,12 @@ def questions():
         {
             lang: {
                 category: {
-                    quest: Template(answer).substitute(
-                        **(session["oauth"])
-                    )
+                    quest: Template(answer).substitute(**(session["oauth"]))
+                    for quest, answer in quests.items()
                 }
+                for category, quests in categories.items()
             }
             for lang, categories in questions.items()
-            for category, quests in categories.items()
-            for quest, answer in quests.items()
         }
     )
 
