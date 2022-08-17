@@ -236,7 +236,6 @@ class RDSNamespace(Namespace):
         
         sideInformations = session["oauth"]
         app.logger.debug("set side-informations {}".format(sideInformations))
-        print("set side-informations {}".format(sideInformations))
 
         emit("ServerName", {"servername": session["servername"]})
         emit("SupportEmail", {"supportEmail": session["oauth"]["SUPPORT_EMAIL"]})
