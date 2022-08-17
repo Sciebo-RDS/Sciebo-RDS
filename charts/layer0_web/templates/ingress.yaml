@@ -6,16 +6,16 @@ metadata:
   labels:
 {{ include "layer0_web.labels" . | indent 4 }}
   annotations:
-{{- include "common.ingressAnnotations" . |  nindent 4 }}
+{{ include "common.ingressAnnotations" . | indent 4 }}
 spec:
   {{- if (include "common.tlsSecretName" .) }}
   tls:
     - hosts:
-        - {{ $.Values.domain }}
+        - {{ $.Values.global.describo.domain }}
       secretName: {{ include "common.tlsSecretName" . }}
   {{- end }}
   rules:
-    - host: {{ .Values.domain }}
+    - host: {{ .Values.global.describo.domain }}
       http:
         paths:
           - path: {{ .Values.ingress.path }}
