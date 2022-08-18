@@ -10,20 +10,6 @@ Expand the name of the chart.
 {{ include "common.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
 {{- end -}}
 
-{{/*
-Return the proper describo secret
-*/}}
-{{- define "apiSecret" -}}
-{{- $secret := .Values.api_secret -}}
-{{- if .Values.global }}
-    {{- if .Values.global.describo }}
-        {{- if .Values.global.describo.api_secret }}    
-            {{- $secret = .Values.global.describo.api_secret -}}
-        {{- end -}}
-    {{- end -}}
-{{- end -}}
-{{- $secret -}}
-{{- end -}}
 
 {{/*
 Create a default fully qualified app name.

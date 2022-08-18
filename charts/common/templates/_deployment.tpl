@@ -16,7 +16,7 @@ Return the proper image name
             {{- $registryName = .global.image.registry -}}
         {{- end -}}
         {{- if .global.image.tag -}}
-            {{- $tag = .global.image.tag -}}
+            {{- $tag = .global.image.tag | toString -}}
         {{- end -}}
     {{- end -}}
 {{- end -}}

@@ -1,5 +1,13 @@
 from flask_cors import CORS
-from flask import Response, stream_with_context, session, request, redirect, url_for
+from flask import (
+    Response,
+    stream_with_context,
+    session,
+    request,
+    redirect,
+    url_for,
+    jsonify,
+)
 from flask_login import (
     LoginManager,
     login_user,
@@ -124,14 +132,12 @@ def questions():
         {
             lang: {
                 category: {
-                    quest: Template(answer).substitute(
-                        **(session["oauth"])
-                    )
+                    quest: Template(answer).substitute(**(session["oauth"]))
+                    for quest, answer in quests.items()
                 }
+                for category, quests in categories.items()
             }
             for lang, categories in questions.items()
-            for category, quests in categories.items()
-            for quest, answer in quests.items()
         }
     )
 
@@ -167,6 +173,18 @@ def login():
         session["informations"] = decoded
         session["servername"] = servername
         session["oauth"] = domains_dict[servername]
+
+        # check if everything is given for later usage
+        keys = ["email", "UID", "cloudID"]
+        values_from_keys = [decoded.get(key) for key in keys]
+
+        if None in values_from_keys:
+            error = {
+                "error": "Missing key: email or UID or cloudID is missing in given informations.",
+                "errorCode": "MissingKey",
+                "key": keys[values_from_keys.index(None)],
+            }
+            return jsonify(error), 401
     except Exception as e:
         app.logger.error(e, exc_info=True)
 
@@ -177,7 +195,11 @@ def login():
 
         return "", 201
 
-    return "", 401
+    error = {
+        "error": "Given informations weren`t valid or some keys were missing.",
+        "errorCode": "UserInformationsNotValid",
+    }
+    return jsonify(error), 401
 
 
 @login_manager.user_loader

@@ -16,6 +16,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "layer1_port_owncloud.fullname"  (mergeOverwrite $ .) }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   labels:
 {{ include "layer1_port_owncloud.labels" (mergeOverwrite $ .) | indent 4 }}
 spec:

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "layer1_port_reva.fullname" . }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   labels:
 {{ include "layer1_port_reva.labels" . | indent 4 }}
 spec:

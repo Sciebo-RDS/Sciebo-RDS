@@ -15,6 +15,7 @@ This plugin represents the first integration of RDS into another ecosystem. In o
 ## Dependencies
 
 This plugin needs the [OAuth2-App](https://marketplace.owncloud.com/apps/oauth2) from ownCloud for third-party-authentication, which depends on the php-extension `php-gmp` and `php-bcmath`.
+(Install both, because the error you will encounter says, it only needs one of it, but this is an error: You need both.)
 
 Also, RDS-App uses the [jwt-framework](https://web-token.spomky-labs.com/introduction/pre-requisite) for public-private-key generation and encoding, so you need to fulfill the requirements of this framework too. Install the php-extensions for `openssl` and `php-mbstring`. You can confirm this via `php -i | grep -E "openssl|mbstring"`.
 
