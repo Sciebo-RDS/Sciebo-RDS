@@ -1,18 +1,17 @@
 {{- $fullName := include "layer0_web.fullname" . -}}
-apiVersion: networking.k8s.io/v1
+apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   labels:
 {{ include "layer0_web.labels" . | indent 4 }}
   annotations:
-{{ include "common.ingressAnnotations" . | indent 4 }}
+{{- include "common.ingressAnnotations" . |  nindent 4 }}
 spec:
   {{- if (include "common.tlsSecretName" .) }}
   tls:
     - hosts:
-        - {{ $.Values.global.rds.domain }}
+        - {{ .Values.global.rds.domain }}
       secretName: {{ include "common.tlsSecretName" . }}
   {{- end }}
   rules:
@@ -20,9 +19,6 @@ spec:
       http:
         paths:
           - path: {{ .Values.ingress.path }}
-            pathType: Prefix
             backend:
-              service:
-                name: {{ $fullName }}
-                port: 
-                  name: http
+              serviceName: {{ $fullName }}
+              servicePort: http
