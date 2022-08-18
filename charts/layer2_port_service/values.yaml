@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   registry: zivgitlab.wwu.io
   repository: sciebo-rds/sciebo-rds/use_case_port_service
-  tag: v0.1-fix-ci
+  tag: release
   pullPolicy: Always
 
 labels:

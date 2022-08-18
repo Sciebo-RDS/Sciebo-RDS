@@ -36,13 +36,13 @@ dependencies:
   repository: file://../layer3_research_manager
   version: 0.3.3
 - name: jaeger
-  repository: https://jaegertracing.github.io/helm-charts
-  version: 0.34.1
+  repository: file://../jaeger
+  version: 0.34.0
 - name: redis-cluster
-  repository: https://charts.bitnami.com/bitnami
-  version: 7.6.1
+  repository: file://../redis-cluster
+  version: 7.6.4
 - name: redis
-  repository: https://charts.bitnami.com/bitnami
-  version: 16.10.1
-digest: sha256:92f6f7590f4018f1c2c25c8639d147240c68f8000ca24c47415f841a164d6c40
-generated: "2022-06-03T10:18:57.008875636+02:00"
+  repository: file://../redis
+  version: 16.13.2
+digest: sha256:0499c7ff06aed0aefcb5bc94a688a625d8fc70b5a3b035a173821c0fbb3f44f5
+generated: "2022-08-18T15:55:36.408641939+02:00"

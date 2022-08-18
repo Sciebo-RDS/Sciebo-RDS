@@ -6,6 +6,7 @@ metadata:
   {{ toYaml . | indent 4 }}
   {{- end }}
   name: {{ include "layer3_token_storage.fullname" . }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   labels:
 {{ include "layer3_token_storage.labels" . | indent 4 }}
 spec:

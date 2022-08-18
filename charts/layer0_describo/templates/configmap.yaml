@@ -8,6 +8,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: describoconfig
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
 data:
   DB_HOST: {{ .Values.postgresql.fullnameOverride | quote }}
   DB_PORT: {{ .Values.postgresql.service.port | quote }}
@@ -21,6 +22,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: describo-configuration-file
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
 data:
   {{- $files := .Files }}
   {{- range tuple "nginx.conf" "type-definitions-lookup.json" "type-definitions.json" }}
@@ -49,7 +51,7 @@ data:
         "applications": [
           {
               "name": "Owncloud ScieboRDS",
-              "secret": "{{- include "apiSecret" . -}}"
+              "secret": "{{ .Values.global.describo.api_secret }}"
           }
         ]
       }

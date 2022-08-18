@@ -1,0 +1,14 @@
+dependencies:
+  - name: cassandra
+    version: ^0.15.0
+    repository: file://charts/cassandra
+    condition: provisionDataStore.cassandra
+  - name: elasticsearch
+    version: ^7.5.1
+    repository: file://charts/elasticsearch
+    condition: provisionDataStore.elasticsearch
+  - name: kafka
+    version: ^0.20.6
+    repository: file://charts/kafka
+    condition: provisionDataStore.kafka
+version: 0.34.0

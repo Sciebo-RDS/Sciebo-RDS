@@ -39,7 +39,13 @@ export default {
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
-        setOwnCloudServername(state, payload) { state.ownCloudServerName = payload.serverName },
+        setOwnCloudServername(state, payload) { 
+          // this resets the state, if serverName is different as before
+          // fixes https://github.com/Sciebo-RDS/Sciebo-RDS/issues/183
+          if (state.ownCloudServerName !== payload.serverName) {
+            Object.assign(state, getDefaultState())
+          }
+          state.ownCloudServerName = payload.serverName },
         setActiveProject(state, payload) { state.activeProject = payload },
         setModifiedResearchIndex(state, payload) { state.modifiedProject["researchIndex"] = payload },
         setModifiedWorkingTitle: (state, payload) => { state.modifiedProject["workingTitle"] = payload },

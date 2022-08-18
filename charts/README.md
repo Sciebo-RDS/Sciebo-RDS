@@ -38,11 +38,13 @@ The following table lists the most used configurable parameters of the Sciebo RD
 
 | Parameter                                              | Description                                                                      | Default / Example                                    |
 | ------------------------------------------------------ | -------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| `global.domain`                                        |                                                                                  | https://localhost                                    |
 | `global.REDIS_HOST`                                    | This redis host will be used to store values. Redis-Cluster instance             | redis                                                |
 | `global.REDIS_PORT`                                    | This redis port will be used to store values. Redis-Cluster instance             | 6379                                                 |
 | `global.REDIS_HELPER_HOST`                             | This redis host will be used to store values. Standalone redis (Purpose: Pubsub) | redis                                                |
 | `global.REDIS_HELPER_HOST`                             | This redis port will be used to store values. Standalone redis (Purpose: Pubsub) | 6379                                                 |
+| `global.describo.api_secret`                           | This secret needs to be sent everytime you want to communicate with describo.    | XXX                                                  |
+| `global.describo.domain`                               | The domain where describo is located at.                                         | https://describo.localhost.org                       |
+| `global.rds.domain`                                    | Tehe omain where RDS Web is located at.                                          | https://app.localhost.org                            |
 | `global.ingress.tls.secretName`                        | The name of the tls secret within k8s.                                           | "sciebords-tls-public"                               |
 | `global.ingress.annotations`                           | Annotations for ingress. Will be merged with local annotations.                  | {}                                                   |
 | `global.storageClass`                                  | Can be used to set a global storageClass. Local values will not be overwrite.    | ""                                                   |

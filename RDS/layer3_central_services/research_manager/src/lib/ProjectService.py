@@ -55,6 +55,7 @@ class ProjectService:
                         **(startup_nodes[0]),
                         health_check_interval=30,
                         decode_responses=True,
+                        retry_on_timeout=True,
                     )
                     rc.get_nodes()  # provoke an error message
 
@@ -68,6 +69,7 @@ class ProjectService:
                         db=0,
                         health_check_interval=30,
                         decode_responses=True,
+                        retry_on_timeout=True,
                     )
                     rc.info()  # provoke an error message
 

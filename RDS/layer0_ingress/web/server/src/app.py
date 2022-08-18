@@ -111,9 +111,10 @@ try:
         db=0,
         health_check_interval=30,
         decode_responses=True,
+        retry_on_timeout=True,
     )
 except:
-    rc = None
+    rc = {}  # this can be used for verification in dev env
 
 clients = {}
 timestamps = {}
@@ -135,18 +136,25 @@ if os.getenv("USE_LOCAL_DICTS", "False").capitalize() == "True":
 else:
     from redis.cluster import RedisCluster, ClusterNode
 
-    nodes = [ClusterNode(os.getenv("REDIS_SERVICE_HOST", "localhost"), os.getenv("REDIS_SERVICE_PORT", "6379"))]
+    nodes = [
+        ClusterNode(
+            os.getenv("REDIS_SERVICE_HOST", "localhost"),
+            os.getenv("REDIS_SERVICE_PORT", "6379"),
+        )
+    ]
     rcCluster = RedisCluster(
         startup_nodes=nodes,
         skip_full_coverage_check=True,
-        cluster_down_retry_attempts=1,
+        cluster_error_retry_attempts=30,
     )
 
     rcCluster.cluster_info()  # provoke an error message
     user_store = redis_pubsub_dict.RedisDict(rcCluster, "web_userstore")
     research_progress = redis_pubsub_dict.RedisDict(rcCluster, "web_research_progress")
     # clients = redis_pubsub_dict.RedisDict(rcCluster, "web_clients")
-    timestamps = redis_pubsub_dict.RedisDict(rcCluster, "tokenstorage_access_timestamps")
+    timestamps = redis_pubsub_dict.RedisDict(
+        rcCluster, "tokenstorage_access_timestamps"
+    )
 
     flask_config["SESSION_TYPE"] = "redis"
     flask_config["SESSION_REDIS"] = rcCluster
