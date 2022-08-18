@@ -85,7 +85,7 @@ export default {
     },/* 
     togglePicker() {
       this.showFilePicker(this.project.projectId, this.currentFilePath);
-    },
+    }, */
     computeChanges() {
       let strippedRemoveOut = this.computeStrippedOut(this.computeRemoveOut());
       let strippedAddOut = this.computeStrippedOut(this.computeAddOut());
@@ -149,7 +149,7 @@ export default {
       let payload = this.computeChanges();
       this.$emit("changePorts", payload);
       this.changes = {};
-    }, */
+    },
     filepath(project) {
       if (!project.portIn.length) {
         return "";
