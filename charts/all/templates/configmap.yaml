@@ -23,7 +23,7 @@ data:
   # If you set this to "False", SSL will not be verified in all https requests. Default: "True"
   VERIFY_SSL: {{ .Values.verify_ssl | quote }}
   # The URL, which you configured in your oauth providers
-  RDS_OAUTH_REDIRECT_URI: {{ .Values.global.rds.domain | quote }}
+  RDS_OAUTH_REDIRECT_URI: https://{{ .Values.global.rds.domain }}
 ---
 # Proxy Settings
 apiVersion: v1
