@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "kafka.fullname" . }}-exporter
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   labels:
   {{- include "kafka.monitor.labels" . | nindent 4 }}
 spec:

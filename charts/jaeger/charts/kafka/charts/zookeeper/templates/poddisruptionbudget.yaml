@@ -2,6 +2,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: {{ template "zookeeper.fullname" . }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   labels:
     app: {{ template "zookeeper.name" . }}
     chart: {{ template "zookeeper.chart" . }}

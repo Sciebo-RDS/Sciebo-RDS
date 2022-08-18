@@ -3,6 +3,7 @@ apiVersion: {{ template "elasticsearch.statefulset.apiVersion" . }}
 kind: StatefulSet
 metadata:
   name: {{ template "elasticsearch.uname" . }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   labels:
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}

@@ -4,7 +4,7 @@ apiVersion: v2
 appVersion: 11.14.0
 dependencies:
 - name: common
-  repository: https://charts.bitnami.com/bitnami
+  repository: file://charts/common
   version: 1.x.x
 description: Chart for PostgreSQL, an object-relational database management system
   (ORDBMS) with an emphasis on extensibility and on standards-compliance.

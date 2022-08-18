@@ -5,6 +5,8 @@ metadata:
   name: {{ include "zookeeper.fullname" . }}
   {{- if .Values.prometheus.serviceMonitor.namespace }}
   namespace: {{ .Values.prometheus.serviceMonitor.namespace }}
+  {{- else }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   {{- end }}
   labels:
 {{ toYaml .Values.prometheus.serviceMonitor.selector | indent 4 }}
@@ -34,6 +36,8 @@ metadata:
   name: {{ include "zookeeper.fullname" . }}-exporter
   {{- if .Values.prometheus.serviceMonitor.namespace }}
   namespace: {{ .Values.prometheus.serviceMonitor.namespace }}
+  {{- else }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   {{- end }}
   labels:
 {{ toYaml .Values.prometheus.serviceMonitor.selector | indent 4 }}

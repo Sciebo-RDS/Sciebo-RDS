@@ -37,12 +37,12 @@ dependencies:
   version: 0.3.3
 - name: jaeger
   repository: file://../jaeger
-  version: 0.34.1
+  version: 0.34.0
 - name: redis-cluster
   repository: file://../redis-cluster
   version: 7.6.4
 - name: redis
   repository: file://../redis
   version: 16.13.2
-digest: sha256:12f5530fb51e3fe22cb1747b3a1df712caf8075a235166e2dd13b4a89ba07a8b
-generated: "2022-08-12T18:41:33.106954752+02:00"
+digest: sha256:0499c7ff06aed0aefcb5bc94a688a625d8fc70b5a3b035a173821c0fbb3f44f5
+generated: "2022-08-18T15:55:36.408641939+02:00"

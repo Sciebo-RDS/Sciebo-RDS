@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-jmx-exporter
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   labels:
     app: {{ template "zookeeper.name" . }}
     chart: {{ template "zookeeper.chart" . }}

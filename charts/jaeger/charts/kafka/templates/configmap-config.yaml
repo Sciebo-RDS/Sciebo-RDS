@@ -6,6 +6,7 @@ metadata:
   labels:
   {{- include "kafka.config.labels" . | nindent 4 }}
   name: {{ template "kafka.fullname" . }}-config
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
 data:
   runtimeConfig.sh: |
     #!/bin/bash

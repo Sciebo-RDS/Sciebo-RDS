@@ -3,6 +3,7 @@ kind: NetworkPolicy
 apiVersion: {{ include "common.capabilities.networkPolicy.apiVersion" . }}
 metadata:
   name: {{ template "common.names.fullname" . }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   labels:
   {{- include "common.labels.standard" . | nindent 4 }}
   {{- if .Values.commonLabels }}
@@ -11,7 +12,6 @@ metadata:
   {{- if .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
   {{- end }}
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace }}
 spec:
   podSelector:
     matchLabels:

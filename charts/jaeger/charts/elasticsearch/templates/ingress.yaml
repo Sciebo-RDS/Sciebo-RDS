@@ -6,6 +6,7 @@ apiVersion: {{ template "elasticsearch.ingress.apiVersion" . }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}
+  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
   labels:
     app: {{ .Chart.Name }}
     release: {{ .Release.Name }}
