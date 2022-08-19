@@ -153,13 +153,13 @@ const sidebars = {
       },
       {
         type: 'doc',
-        id: 'gettingstarted/kubernetes',
-        label: 'Configuring Kubernetes',
+        id: 'gettingstarted/ocplugin',
+        label: 'Configuring Owncloud',
       }, 
       {
         type: 'doc',
-        id: 'gettingstarted/ocplugin',
-        label: 'Configuring Owncloud',
+        id: 'gettingstarted/kubernetes',
+        label: 'Configuring Kubernetes',
       }, 
       {
         type: 'doc',
