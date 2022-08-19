@@ -138,7 +138,7 @@ docusaurus:test:
     - when: always
 
 pages:
-  image: node:latest
+  image: node:lts-alpine
   # allow caching for faster deployment
   cache:
     paths:
