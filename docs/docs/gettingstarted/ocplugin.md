@@ -4,21 +4,50 @@ id: ocplugin
 displayed_sidebar: gettingstartedSidebar
 ---
 
-# ownCloud
+# Configuring ownCloud
 
 
-Currently ownCloud is the only storage provider, we support. We wrote a custom ownCloud plugin, which you have to install in your instance. The ownCloud marketplace is a good place to go, but if you want to be really up to date you should take a look into our [release page](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/tags). There you can find [multiple tags](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/releases/v0.1.9), which have an `oc-rds-plugin.tar.gz` file. This file should be used in your pipelines. Please remember the used tag, because you will need it later.
+To use Sciebo RDS with Owncloud, you will have to install the Sciebo RDS Owncloud plugin.
 
-Also we have a dependency for the oauth2 plugin in ownCloud. (Because of a bug, you need to install the following php-extensions: `php-gmp php-bcmath openssl`.)
+##### Dependencies
 
-# Configuration
+Our plugin depends on the oauth2 plugin for ownCloud, which you can install from the [marketplace](https://marketplace.owncloud.com/apps/oauth2). Because of a bug, you also need to install the following php-extensions:
 
-After you place tthe plugins in your ownCloud instance and enabled it, you have to create an oauth client for `sciebords` (uncheck `allow subdomains`) which uses the domain for the sciebo rds ui as the `redirection url`. The given oauthname will be used in the sciebo rds admin section, which can be found left in your admin configuration page. 
+    php-gmp
+    php-bcmath
+    openssl
+
+## Installing the Plugin
+
+You have the choice of either:
+
+- Installing it via the ownCloud marketplace
+- Installing from source, using our release page.
+
+
+
+### ownCloud Marketplace installation
+
+Install the [plugin](https://marketplace.owncloud.com/apps/rds) from the marketplace. This version will probably not be as up-to-date as the releases provided by our release page. 
+
+### Installing manually from source
+1. Download the latest [tag](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/tags) from our [release page](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/releases/).
+You will need the `oc-rds-plugin.tar.gz` file. Please remember which version you download, this will become important later on.
+
+2. Extract the tar ball into your apps folder and enable the app through the ownCloud interface.
+
+You can read more on how to manually install ownCloud plugins in their [documentation](https://doc.owncloud.com/server/next/admin_manual/installation/apps_management_installation.html#installing-apps-manually).
+
+## Configuration
+
+1. Create an oauth2 client for `sciebords` (uncheck `allow subdomains`). Use your first Sciebo RDS domain as the `redirection url`. The given oauthname will be used in the sciebo rds admin section, which can be found on the left hand side of your admin configuration page. 
 
 ![](/docs/oc-plugin-view-admin-oauth.png)
 
-When you are done, go to the sciebo RDS admin page. There enter the domain for sciebo rds ui and the oauthname again.
+---
+2. Next, go to the Sciebo RDS admin page, which can be found on the left hand . Enter the domain domain you provided for the oauth2 client, and the oauthname.
 
 ![](/docs/oc-plugin-view-admin.png)
 
-Now you will find the sciebo RDS app in the top left app menu inside of your ownCloud instance. But there will be an error, because the backend side is missing. This will be done in the next step.
+---
+3. You will now find the Sciebo RDS app in the top left app menu inside your ownCloud instance. There will be an error, as the backend is not yet set up. This will be done in the next step.

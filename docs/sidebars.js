@@ -167,7 +167,7 @@ const sidebars = {
       {
         type: 'doc',
         id: 'gettingstarted/start',
-        label: 'Welcome',
+        label: 'Introduction',
       },
       {
         type: 'doc',

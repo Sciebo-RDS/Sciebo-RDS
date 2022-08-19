@@ -4,21 +4,26 @@ id: kubernetes
 displayed_sidebar: gettingstartedSidebar
 ---
 
-# Kubernetes
+# Configuring Kubernetes
 
-# Requirements
+## Requirements
 
-It needs access to a kubernetes cluster (minikube, gcp, etc. - all are fine). We are using [helm](https://helm.sh) to handle dependencies and configuration. Also you needs informations from different services like your ownCloud instance. 
+- Access to a Kubernetes cluster (minikube, gcp, etc. - all are fine)
+- Knowdledge of different services, like your Owncloud instance
 
-# Helm
+We use [helm](https://helm.sh) to handle dependencies and configuration.
 
-Add our helm repository to your list.
+## Helm
+
+1. Add our helm repository to your list.
 
 ```bash
-helm repo add sciebords https://research-data-services.org/charts
+$ helm repo add sciebords https://research-data-services.org/charts
 ```
 
-Store the following content called `values.yaml` in a separate directory. After this, edit it to your needs. The same file can also be found here: [values.yaml](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/develop/getting-started/values.yaml) file.
+---
+2. Add the following `values.yaml` to a separate directory and edit it to your needs.
+
 
 ```yaml
 global:
@@ -58,4 +63,13 @@ layer1-port-zenodo: # zenodo`s specific options
     OAUTH_CLIENT_SECRET: XYZ # given by the OAUTH process of the used zenodo instance from above.
 ```
 
-Now you can apply this configuration to your cluster: `helm upgrade -i sciebords -f values.yaml sciebords/all`. If everything goes right, your sciebo RDS is ready to use.
+The file can also be found here: [values.yaml](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/develop/getting-started/values.yaml).
+
+---
+3. Apply the `values.yaml` configuration to your cluster:
+
+```bash
+$ helm upgrade -i sciebords -f values.yaml sciebords/all
+```
+
+Sciebo RDS is now ready to use.

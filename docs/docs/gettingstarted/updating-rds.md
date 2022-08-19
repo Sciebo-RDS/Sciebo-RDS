@@ -4,10 +4,29 @@ id: updating
 displayed_sidebar: gettingstartedSidebar
 ---
 
-# Update Kubernetes
+# Updating Sciebo RDS
 
-First, you need to update the helm repository with `helm repo up`. Then you can rerun the same command as before: `helm upgrade -i sciebords -f values.yaml sciebords/all`.
+## Updating Kubernetes
+Updating Sciebo RDS is simple.
 
-# Update ownCloud
+1. Update your helm package list:
 
-If you install the plugin through the marketplace, you already should know how to update. But if you installed it manually, you should take a look to the ownCloud setup page as before and rerun the process to update the plugin.
+```bash
+helm repo up
+```
+
+2. Rerun the helm command from the previous step:
+
+```bash
+helm upgrade -i sciebords -f values.yaml sciebords/all
+```
+
+## Updating ownCloud
+
+### Updating via Owncloud marketplace
+
+Update the plugin through the marketplace as you update any other plugin.
+
+### Updating manual installation from source
+
+Follow the same procedure you used to [install the plugin from source](./ocplugin#installing-manually-from-source).
