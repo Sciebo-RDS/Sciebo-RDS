@@ -103,24 +103,6 @@ upload_test_coverage:
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://Testresults coverage --recursive
     - ./cc-test-reporter sum-coverage --output - coverage/$CI_COMMIT_SHORT_SHA/*.json | ./cc-test-reporter upload-coverage --input -
 
-# All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
-hugo:test:
-  image: registry.gitlab.com/pages/hugo/hugo_extended:0.91.2
-  variables:
-    FOLDER: docs/
-  before_script:
-    - apk add --update --no-cache --allow-untrusted git
-  script:
-    - cd $FOLDER
-    - hugo
-  stage: test
-  tags:
-    - autoscaling
-  rules:
-    - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
-      when: never # ignore, if it comes from transifex
-    - when: always
-
 .documentation:
   stage: documentation
   rules:
@@ -137,12 +119,32 @@ hugo:test:
     - cd $FOLDER
     - make doc
 
+dousaurus:test:
+  image:  node:latest
+  variables:
+    FOLDER: docs/
+  before_script:
+    - apk add --update --no-cache --allow-untrusted git
+  script:
+    - cd $FOLDER
+    - yarn install
+    - yarn build:gitlab
+  stage: test
+  tags:
+    - autoscaling
+  rules:
+    - if: "$CI_COMMIT_BRANCH == /^translations_rds-.*$/"
+      when: never # ignore, if it comes from transifex
+    - when: always
+
 pages:
-  image: registry.gitlab.com/pages/hugo/hugo_extended:0.91.2
-  stage: pages
+  image: node:latest
+  # allow caching for faster deployment
   cache:
     paths:
-      - public
+      - node_modules/
+      - public/
+      - .cache/
   artifacts:
     paths:
       - public
@@ -167,7 +169,8 @@ pages:
         echo 'baseurl = "https://www.research-data-services.org/dev/"' > config.toml
         cat config.toml.bak >> config.toml
       fi
-    - hugo
+    - yarn install
+    - yarn build:gitlab
     - rsync -avh ./public/ ../public/${DOC_FOLDER}
     - cd ..
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts ./public/charts --recursive
