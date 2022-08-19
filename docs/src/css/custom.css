@@ -53,3 +53,59 @@
 .header-github-link {
   vertical-align: top;
 }
+
+/* #__docusaurus .menu ul .theme-doc-sidebar-item-category-level-1>div>a.menu__link, #__docusaurus div[class^=sidebarItemTitle_], .blog-list-page #__docusaurus .main-wrapper article .markdown p, .paragraph-size--default, .shift-features__desc, .shift-heading__subtitle, .shift-intro__content {
+  font-size: 1.2em!important;
+  line-height: 1.56;
+} */
+
+.menu {
+  background-color: rgb(244, 241, 229, 0.4);
+  padding: 1em!important;
+  padding-right: 0px!important;
+}
+
+.menu__list-item {
+  font-size: 15px;
+  padding: 0.1em 0;
+}
+
+.menu__link:hover {
+  background: none;
+  color: var(--ifm-link-hover-color);
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background: none;
+}
+
+.theme-doc-sidebar-item-category-level-1{
+  font-size: 16px;
+  
+  line-height: 1.56;
+  margin-left: -0.5em;
+}
+
+.theme-doc-sidebar-item-link-level-1 {
+  margin-left: -0.5em;
+}
+
+.theme-doc-sidebar-item-category-level-1:not(.menu__list-item--collapsed){
+  /* background-color: rgb(244, 241, 229, 1);
+  border-radius: 0.3em;
+  border-bottom: 1px solid rgb(200, 200, 250, 1); */
+  
+}
+
+/* .menu__list-item--collapsed {
+  background-color: inherit!important;
+} */
+
+.menu__link--sublist-caret:after {
+  background-size: 24px;
+}
+
+.menu__link--sublist-caret {
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-800);
+}

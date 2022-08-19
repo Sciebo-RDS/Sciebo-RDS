@@ -1,6 +1,5 @@
 ---
 
-id: configuration
 displayed_sidebar: configurationSidebar
 ---
 

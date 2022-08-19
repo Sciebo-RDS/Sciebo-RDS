@@ -39,9 +39,15 @@ const sidebars = {
         collapsible: false,
         items: */
         [{
+          type: 'doc',
+          id: 'documentation/configuration/index',
+          label: 'Configuration',
+        },
+          {
           type: 'category',
           label: 'Setting up services',
           collapsible: true,
+          collapsed: false,
           items: [
             {
               type: 'doc',
@@ -72,6 +78,11 @@ const sidebars = {
         [
           {
             type: 'doc',
+            id: 'documentation/development/index',
+            label: 'Development'
+          },
+          {
+            type: 'doc',
             id: 'documentation/development/monorepo',
             label: 'Monorepo Structure'
           },
@@ -79,6 +90,7 @@ const sidebars = {
           type: 'category',
           label: 'Contributing',
           collapsible: true,
+          collapsed: false,
           items: [
             {
               type: 'doc',
@@ -101,6 +113,7 @@ const sidebars = {
           type: 'category',
           label: 'Kubernetes Layers',
           collapsible: true,
+          collapsed: true,
           items: [
             {
               type: 'doc',
@@ -130,6 +143,11 @@ const sidebars = {
           [
             {
               type: 'doc',
+              id: 'documentation/reference/index',
+              label: 'Reference'
+            },
+            {
+              type: 'doc',
               id: 'documentation/reference/environment-variables',
               label: 'Environment Variables'
             },
@@ -149,7 +167,7 @@ const sidebars = {
       {
         type: 'doc',
         id: 'gettingstarted/start',
-        label: 'Intro',
+        label: 'Welcome',
       },
       {
         type: 'doc',
