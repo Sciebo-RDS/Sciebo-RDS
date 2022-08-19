@@ -15,12 +15,6 @@ global:
       ADDRESS: https://owncloud.local/owncloud
       OAUTH_CLIENT_ID: ABC
       OAUTH_CLIENT_SECRET: XYZ
-      filters: # filters are helpful, if you want to use the same sciebo RDS instance for multiple cloudstorage installations.
-        # After filters are applied, you have a set of service which are listed in "only" (if empty, it means all services available in sciebo RDS) without all services in "except" (if empty, it means no services)
-        only:
-          - "layer1-port-openscienceframework"
-        except:
-          - "layer1-port-datasafe"
       SUPPORT_EMAIL: mail@side.com
       MANUAL_URL: usermanual.side.com
 layer0-describo:
