@@ -119,12 +119,10 @@ upload_test_coverage:
     - cd $FOLDER
     - make doc
 
-docusaurus:test:
+test:docusaurus:
   image:  node:lts-alpine
   variables:
     FOLDER: docs/
-  before_script:
-    - apk add --update --no-cache --allow-untrusted git
   script:
     - cd $FOLDER
     - yarn install
@@ -157,7 +155,7 @@ pages:
       variables:
         DOC_FOLDER: .
   before_script:
-    - apk add --update --no-cache --allow-untrusted git python3 py3-pip rsync
+    - apk add --update --no-cache --allow-untrusted python3 py3-pip rsync
     - python3 -m pip install awscli
   script:
     - mkdir -p ./public/dev
