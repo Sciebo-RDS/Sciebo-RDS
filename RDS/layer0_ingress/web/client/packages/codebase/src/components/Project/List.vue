@@ -211,7 +211,6 @@ export default {
     selectProject(p){
       console.log(this.activeProject)
       this.$store.commit("setActiveProject", p.researchIndex)
-      this.$store.commit("resetModifiedProject")
     },
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });
