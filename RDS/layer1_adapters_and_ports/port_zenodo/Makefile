@@ -27,5 +27,5 @@ loc: dev
 
 doc: dev
 	pydocmd build
-	mv _build/pydocmd/port-zenodo.md ../../../docs/content/doc/impl/ports/port-invenio-docstring.md
+	mv _build/pydocmd/port-zenodo.md ../../../docs/docs/impl/port-invenio-docstring.md
 	rm -r _build
