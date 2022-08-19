@@ -119,8 +119,8 @@ upload_test_coverage:
     - cd $FOLDER
     - make doc
 
-dousaurus:test:
-  image:  node:latest
+docusaurus:test:
+  image:  node:lts-alpine
   variables:
     FOLDER: docs/
   before_script:
