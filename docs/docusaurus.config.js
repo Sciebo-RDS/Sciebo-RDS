@@ -6,9 +6,9 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
-  url: 'https://your-docusaurus-test-site.com',
+  title: 'Sciebo-RDS',
+  tagline: 'Manage your research data',
+  url: 'https://www.research-data-services.org/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -16,8 +16,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'Sciebo-RDS', // Usually your GitHub org/user name.
+  projectName: 'Sciebo-RDS', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -26,31 +26,14 @@ const config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
-  plugins: 
-    [[
-    'content-docs',
-    /** @type {import('@docusaurus/plugin-content-docs').Options} */
-    ({
-      id: 'about',
-      path: 'about',
-      routeBasePath: 'about',
-       /* editUrl: ({locale, versionDocsDirPath, docPath}) => {
-        if (locale !== 'en') {
-          return `https://crowdin.com/project/docusaurus-v2/${locale}`;
-        }
-        return `https://github.com/Sciebo-RDS/Sciebo-RDS${versionDocsDirPath}/${docPath}`;
-      },
-      editCurrentVersion: true,  */
-      sidebarPath: require.resolve('./sidebarsAbout.js'),
-    }),
-    ],
-  ], 
+  plugins: [], 
   presets: [
     [
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -82,7 +65,7 @@ const config = {
         },
         items: [
           {
-            to: 'about',
+            to: '/',
             position: 'right',
             label: 'About',
           },
@@ -93,17 +76,17 @@ const config = {
             label: 'Getting started',
           },
           {
-            to: 'docs/documentation/configuration',
+            to: 'documentation/configuration',
             position: 'right',
             label: 'Configuration',
           },
           {
-            to: 'docs/documentation/development',
+            to: 'documentation/development',
             position: 'right',
             label: 'Development',
           },
           {
-            to: 'docs/documentation/reference',
+            to: 'documentation/reference',
             position: 'right',
             label: 'Reference',
           },/* 
@@ -142,7 +125,7 @@ const config = {
             ],
           },
           {
-            title: 'Contact',
+            title: 'Legal / Contact',
             items: [
               {
                 label: 'Imprint',
