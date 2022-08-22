@@ -24,7 +24,7 @@ loc: dev
 
 doc: dev
 	pydocmd build
-	mv _build/pydocmd/metadata.md ../../../docs/docs/impl/metadata-service-docstring.md
+	mv _build/pydocmd/metadata.md ../../../docs/docs/impl/layer2-metadata-service-docstring.md
 	rm -r _build
 
 

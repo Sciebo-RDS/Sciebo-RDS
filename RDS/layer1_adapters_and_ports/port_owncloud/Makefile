@@ -25,5 +25,5 @@ loc: dev
 
 doc: dev
 	pydocmd build
-	mv _build/pydocmd/port-owncloud.md ../../../docs/docs/impl/port-owncloud-docstring.md
+	mv _build/pydocmd/port-owncloud.md ../../../docs/docs/impl/layer1-port-owncloud-docstring.md
 	rm -r _build
