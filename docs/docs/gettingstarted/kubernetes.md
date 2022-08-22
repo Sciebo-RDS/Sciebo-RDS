@@ -22,13 +22,13 @@ $ helm repo add sciebords https://research-data-services.org/charts
 ```
 
 ---
-2. Add the following `values.yaml` to a separate directory and edit it to your needs.
+2. Add the following `values.yaml` to a separate directory and edit it to your needs, especially the two domains for rds and describo.
 
 
 ```yaml
 global:
   image:
-    tag: v0.1.9 # set the same tag here as the same you used before for ownCloud
+    tag: v0.1.9 # set the same tag here as the same you used before for Owncloud
   namespace: # kubernetes separates applications in namespaces
     create: false # creates a namespace on its own
     name: "wybrand-rds" # the name of the namespace, which will be used for sciebo RDS and / or created.
@@ -72,4 +72,6 @@ The file can also be found here: [values.yaml](https://raw.githubusercontent.com
 $ helm upgrade -i sciebords -f values.yaml sciebords/all
 ```
 
-Sciebo RDS is now ready to use.
+---
+
+This is it. Sciebo RDS is now ready to use through the Owncloud plugin. 

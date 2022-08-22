@@ -4,14 +4,14 @@ id: ocplugin
 displayed_sidebar: gettingstartedSidebar
 ---
 
-# Configuring ownCloud
+# Configuring Owncloud
 
 
 To use Sciebo RDS with Owncloud, you will have to install the Sciebo RDS Owncloud plugin.
 
 ##### Dependencies
 
-Our plugin depends on the oauth2 plugin for ownCloud, which you can install from the [marketplace](https://marketplace.owncloud.com/apps/oauth2). Because of a bug, you also need to install the following php-extensions:
+Our plugin depends on the oauth2 plugin for Owncloud, which you can install from the [marketplace](https://marketplace.owncloud.com/apps/oauth2). Because of a bug, you also need to install the following php-extensions:
 
     php-gmp
     php-bcmath
@@ -21,12 +21,12 @@ Our plugin depends on the oauth2 plugin for ownCloud, which you can install from
 
 You have the choice of either:
 
-- Installing it via the ownCloud marketplace
+- Installing it via the Owncloud marketplace
 - Installing from source, using our release page.
 
 
 
-### ownCloud Marketplace installation
+### Owncloud Marketplace installation
 
 Install the [plugin](https://marketplace.owncloud.com/apps/rds) from the marketplace. This version will probably not be as up-to-date as the releases provided by our release page. 
 
@@ -34,9 +34,9 @@ Install the [plugin](https://marketplace.owncloud.com/apps/rds) from the marketp
 1. Download the latest [tag](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/tags) from our [release page](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/releases/).
 You will need the `oc-rds-plugin.tar.gz` file. Please remember which version you download, this will become important later on.
 
-2. Extract the tar ball into your apps folder and enable the app through the ownCloud interface.
+2. Extract the tar ball into your apps folder and enable the app through the Owncloud interface.
 
-You can read more on how to manually install ownCloud plugins in their [documentation](https://doc.owncloud.com/server/next/admin_manual/installation/apps_management_installation.html#installing-apps-manually).
+You can read more on how to manually install Owncloud plugins in their [documentation](https://doc.owncloud.com/server/next/admin_manual/installation/apps_management_installation.html#installing-apps-manually).
 
 ## Configuration
 
@@ -50,4 +50,4 @@ You can read more on how to manually install ownCloud plugins in their [document
 ![](/docs/oc-plugin-view-admin.png)
 
 ---
-3. You will now find the Sciebo RDS app in the top left app menu inside your ownCloud instance. There will be an error, as the backend is not yet set up. This will be done in the next step.
+3. You will now find the Sciebo RDS app in the top left app menu inside your Owncloud instance. There will be an error, as the backend is not yet set up. This will be done in the next step.

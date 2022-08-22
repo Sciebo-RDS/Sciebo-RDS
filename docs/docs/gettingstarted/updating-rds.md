@@ -21,7 +21,7 @@ helm repo up
 helm upgrade -i sciebords -f values.yaml sciebords/all
 ```
 
-## Updating ownCloud
+## Updating Owncloud
 
 ### Updating via Owncloud marketplace
 
