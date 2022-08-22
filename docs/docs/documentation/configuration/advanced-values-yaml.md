@@ -1,46 +1,48 @@
-# Advanced Values.yaml File
+# Advanced `values.yaml` File
 
-The yaml file listed below shows all options introduced by sciebo RDS. More options are available through dependencies, which are linked within the listing. 
-A lot of the options are not needed, as you saw in the getting started guide. But because it is a full listing, they will be shown here.
+The yaml file shown below is an exhaustive list of all settings introduced by sciebo RDS.
+
+Further options are available through dependencies, which are linked within the listing. 
+A lot of the settings are optional, as you see when you compare it to the minimal `values.yaml` file shown in the [getting started guide](./../../gettingstarted/kubernetes.md#helm).
 
 
 ```yaml
 global:
   image:
-    tag: v0.1.9 # set the same tag here as the same you used before for Owncloud
+    tag: v0.1.9 # has to be the same as the tag of the Owncloud plugin
   namespace: # kubernetes separates applications in namespaces
     create: false # creates a namespace on its own
-    name: "rds" # the name of the namespace, which will be used for sciebo RDS and / or created.
-  # will be used for ingress host
-  # edit here if you changed it in create_certs.sh and wants to use another domain
+    name: "rds" # the name of the namespace that will be used and / or created for sciebo RDS.
+  # This will be used for the ingress host,
+  # edit here if you changed it in create_certs.sh and want to use another domain:
   #ingress:
   #  tls:
   #    secretName: sciebords-tls-public
   rds:
     domain: your-rds.institution.org # the domain you created for the sciebo rds ui
-  describo: # all needed informations for describo
-    api_secret: IAMSECRET # the api password, which is needed for all requests against the api
+  describo: # all information necessary for describo
+    api_secret: IAMSECRET # the Describo api password, necessary for all requests against the api
     domain: your-describo.institution.org # the domain you created for describo ui
-  # Domains you want to use as input, currently only owncloud supported,
-  # this enables to use multiple owncloud instances with a single sciebo RDS
+  # Domains you want to use as input, currently only owncloud is supported,
+  # this enables you to use multiple owncloud instances with a single sciebo RDS
   domains:
-    - name: owncloud.local # name needs to be exact the same as the second part after last @ in the cloudId
-      ADDRESS: https://owncloud.local/owncloud # set this to the corresponding domain to the name value before
-      OAUTH_CLIENT_ID: ABC # client_id from oauth service provider
-      OAUTH_CLIENT_SECRET: XYZ # client_secret from oauth service provider
-      filters: # filters are helpful, if you want to use the same sciebo RDS instance for multiple cloudstorage installations. 
-        # After filters are applied, you have a set of service which are listed in "only" (if empty, it means all services available in sciebo RDS) without all services in "except" (if empty, it means no services)
-        only: # this filters all services without this names 
+    - name: owncloud.local # name needs to be exactly the same as the second part after last @ in the cloudId
+      ADDRESS: https://owncloud.local/owncloud # set this to the domain corresponding to the name value before
+      OAUTH_CLIENT_ID: ABC # client_id of oauth service provider
+      OAUTH_CLIENT_SECRET: XYZ # client_secret of oauth service provider
+      filters: # filters are helpful if you want to use the same sciebo RDS instance for multiple cloudstorage installations. 
+        # After filters are applied, you have a set of services that are listed in "only" (if this is empty, it means that all services are available in sciebo RDS) without all services in "except" (if empty, this means no services are available)
+        only: # if this list isn't empty, only the services in this list will be available
           - "layer1-port-openscienceframework"
-        except: # this filters all services with this names
+        except: # the services in this list will not be available
           - "layer1-port-datasafe"
-loglevel: INFO # Set this to DEBUG and restart your applications to get more informations in logs. Default: INFO
-verify_ssl: "True" # If you set this to "False", SSL will not be verified in all https requests. Default: "True"
-proxy: # set proxy for http requests
+loglevel: INFO # Set this to DEBUG and restart your applications to get more detailed logs. Default: INFO
+verify_ssl: "True" # If this is set to "False", SSL will not be verified in all https requests. Default: "True"
+proxy: # proxy for http requests
   http_proxy: "''"
   https_proxy: "''"
 layer0-describo:
-  enabled: true # this enables describo
+  enabled: true # enables or disable describo
   # Postgresql configuration options https://artifacthub.io/packages/helm/bitnami/postgresql/10.14.3
   postgresql: # starts its own postgresql database.
     postgresqlDatabase: "describo"
@@ -48,7 +50,7 @@ layer0-describo:
     postgresqlPassword: "admin"
   domain: separate-domain-for-describo.your-institution.org # describo needs a separate domain from sciebords. set the exact same value later in layer0-web for VUE_APP_DESCRIBO_URL
   environment:
-    LOG_LEVEL: "info" # set debugging informations level
+    LOG_LEVEL: "info" # set debugging detail level
 layer0-helper-describo-token-updater: # this is a helper component to communicate with describo
   enabled: true
   environment: {}
@@ -57,21 +59,21 @@ layer0-helper-describo-token-updater: # this is a helper component to communicat
 layer0-web:
   enabled: true
   environment:
-    SECRET_KEY: 1234 # the password, which will be used to encrypt all user data
-    # the following should be changed to all known access origins to sciebo RDS backend. e.g. web proxies
+    SECRET_KEY: 1234 # the password that will be used to encrypt all user data.
+    # The following should be changed to all known access origins to sciebo RDS backend. e.g. web proxies
     # Onwcloud-Domains will be included automatically from global.domains in bootup process.
     # FLASK_ORIGINS:
     #   [
     #     "http://localhost:8080",
     #   ]
-    EMBED_MODE: true # this set the mode, if sciebo RDS will be run in embed mode (behind a plugin) or standalone. Standalone is not tested very well.
-    # DESCRIBO_API_ENDPOINT: http://layer0-describo/api/session/application # here you can change the used describo api endpoint, if you want to host it whereelse.
-layer1-port-owncloud: # ownCloud will be configured through global.domains, because this way you need to configure it only once
+    EMBED_MODE: true # Decides if sciebo RDS will be run in embed mode (wrapped as a plugin) or standalone. Standalone is not tested very well.
+    # DESCRIBO_API_ENDPOINT: http://layer0-describo/api/session/application # here you can change the api endpoint used for describo (if you want to host it elsewhere).
+layer1-port-owncloud: # ownCloud will be configured through global.domains, this way you only need to configure it once
   enabled: true # but it can be disabled globally here
 layer1-port-zenodo: # the zenodo connector. 
   enabled: true
   environment:
-    # needs to be adjusted to correct values
+    # needs to be adjusted to correct (production) values
     ADDRESS: https://sandbox.zenodo.org
     OAUTH_CLIENT_ID: ABC # given by the zenodo oauth page
     OAUTH_CLIENT_SECRET: XYZ # given by the zenodo oauth page
