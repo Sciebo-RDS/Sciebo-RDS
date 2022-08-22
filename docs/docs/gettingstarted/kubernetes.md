@@ -31,12 +31,12 @@ global:
     tag: v0.1.9 # set the same tag here as the same you used before for Owncloud
   namespace: # kubernetes separates applications in namespaces
     create: false # creates a namespace on its own
-    name: "wybrand-rds" # the name of the namespace, which will be used for sciebo RDS and / or created.
+    name: "rds" # the name of the namespace, which will be used for sciebo RDS and / or created.
   describo: # all needed informations for describo
     api_secret: IAMSECRET # the api password, which is needed for all requests against the api
     domain: separate-domain-for-describo.your-institution.org # the domain you created for describo ui
   rds:
-    domain: rds-rd-app-acc.data.surfsara.nl # the domain you created for the sciebo rds ui
+    domain: your-rds.institution.org # the domain you created for the sciebo rds ui
   # Domains you want to use as input, currently only owncloud supported,
   # this enables to use multiple owncloud instances with a single sciebo RDS
   domains:
