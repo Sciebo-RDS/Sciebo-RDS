@@ -26,11 +26,11 @@ You have the choice of either:
 
 
 
-### Owncloud Marketplace installation
+### Installation through Marketplace
 
 Install the [plugin](https://marketplace.owncloud.com/apps/rds) from the marketplace. This version will probably not be as up-to-date as the releases provided by our release page. 
 
-### Installing manually from source
+### Installation from Source
 1. Download the latest [tag](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/tags) from our [release page](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/releases/).
 You will need the `oc-rds-plugin.tar.gz` file. Please remember which version you download, this will become important later on.
 
