@@ -16,4 +16,4 @@ You will need:
 2. An OwnCloud instance
 3. Two different domains
 
-The first domain will be used for [Describo](https://github.com/Arkisto-Platform/describo-online), the embedded metadata editor, and the main Sciebo RDS interface, while the other domain will be used to integrate your storage provider. Please link the domains to your Kubernetes cluster. It is vital that you have two domains, they are required in all configuration steps. The domains have to be root level, sub domains are not supported.
+The first domain will be used for [Describo](https://github.com/Arkisto-Platform/describo-online), the embedded metadata editor, and the main Sciebo RDS interface, while the other domain will be used to integrate your storage provider. Please link the domains to your Kubernetes cluster. It is vital that you have two domains, they are required in all configuration steps. The domains have to be root level, sub domains are supported.

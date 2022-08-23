@@ -34,7 +34,7 @@ global:
     name: "rds" # the name of the namespace, which will be used for sciebo RDS and / or created.
   describo: # all needed informations for describo
     api_secret: IAMSECRET # the api password, which is needed for all requests against the api
-    domain: separate-domain-for-describo.your-institution.org # the domain you created for describo ui
+    domain: your-describo.institution.org # the domain you created for describo ui
   rds:
     domain: your-rds.institution.org # the domain you created for the sciebo rds ui
   # Domains you want to use as input, currently only owncloud supported,
