@@ -96,20 +96,69 @@ const sidebars = {
           collapsed: true,
           items: [
             {
-              type: 'doc',
-              id: 'documentation/development/layers/layer1',
-              label: 'Layer 1'
-            },
-            {
-              type: 'doc',
-              id: 'documentation/development/layers/layer2',
-              label: 'Layer 2'
-            },
-            {
-              type: 'doc',
-              id: 'documentation/development/layers/layer3',
-              label: 'Layer 3'
-            },
+              type: 'category',
+              label: 'Layer 1',
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: 'doc',
+                  id: 'impl/layer1-port-invenio-docstring',
+                  label: 'Port Invenio'
+                },
+                {
+                  type: 'doc',
+                  id: 'impl/layer1-port-osf-docstring',
+                  label: 'Port OSF'
+                },
+                {
+                  type: 'doc',
+                  id: 'impl/layer1-port-owncloud-docstring',
+                  label: 'Port Owncloud'
+                },
+                ]
+               },
+               {
+                type: 'category',
+                label: 'Layer 2',
+                collapsible: true,
+                collapsed: true,
+                items: [
+                  {
+                    type: 'doc',
+                    id: 'impl/layer2-exporter-service-docstring',
+                    label: 'Exporter Service'
+                  },
+                  {
+                    type: 'doc',
+                    id: 'impl/layer2-metadata-service-docstring',
+                    label: 'Metadata Service'
+                  },
+                  {
+                    type: 'doc',
+                    id: 'impl/layer2-port-service-docstring',
+                    label: 'Port Service'
+                  },
+                  ]
+                 },
+                 {
+                  type: 'category',
+                  label: 'Layer 3',
+                  collapsible: true,
+                  collapsed: true,
+                  items: [
+                    {
+                      type: 'doc',
+                      id: 'impl/layer3-research-manager-docstring',
+                      label: 'Research Manager'
+                    },
+                    {
+                      type: 'doc',
+                      id: 'impl/layer3-token-storage-docstring',
+                      label: 'Token Storage'
+                    },
+                    ]
+                   },
             ]
            },
         ] ,
