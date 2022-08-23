@@ -74,4 +74,4 @@ $ helm upgrade -i sciebords -f values.yaml sciebords/all
 
 ---
 
-This is it. Sciebo RDS is now ready to use through the Owncloud plugin. 
+Sciebo RDS is now ready to use through the Owncloud plugin. 

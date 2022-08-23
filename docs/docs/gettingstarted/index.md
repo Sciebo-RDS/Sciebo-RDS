@@ -6,7 +6,9 @@ displayed_sidebar: gettingstartedSidebar
 
 # Introduction
 
-This walk-through will give you all the necessary steps to get a fully fledged Sciebo RDS instance up and running, including storage provider connection. OwnCloud is currently the only supported storage provider, support for Nextcloud is in the works. Meanwhile, it is possible to add support for other EFSS systems through your own means, as explained [here](./../documentation/development/contributing/developing-for-efss).
+This walk-through will give you all the necessary steps to get a fully fledged Sciebo RDS instance up and running, using Owncloud as storage provider and Zenodo as repository.
+
+You can find more information on how to set up other repositories (and in the future, storage providers) on our [Configuration](../documentation/configuration/) page. OwnCloud is currently the only supported storage provider, support for Nextcloud is in the works. Meanwhile, it is possible to add support for other EFSS systems through your own means, as explained [here](./../documentation/development/contributing/developing-for-efss).
 
 ### Prerequisites
 

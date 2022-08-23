@@ -1,0 +1,1 @@
+Please refer to the [Setting up Zenodo](../../../gettingstarted/zenodo.md) page of our Getting Started guide.

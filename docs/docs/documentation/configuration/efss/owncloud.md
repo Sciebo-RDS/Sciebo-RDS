@@ -1,0 +1,1 @@
+Please refer to the [Configuring Owncloud](../../../gettingstarted/ocplugin.md) page of our Getting Started guide.
