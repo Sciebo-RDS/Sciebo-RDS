@@ -1,56 +1,54 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
-const mdxMermaid = require('mdx-mermaid')
+const lightCodeTheme = require("prism-react-renderer/themes/github");
+const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const mdxMermaid = require("mdx-mermaid");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Sciebo-RDS',
-  tagline: 'Manage your research data',
-  url: 'https://www.research-data-services.org/',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  title: "Sciebo-RDS",
+  tagline: "Manage your research data",
+  url: "https://www.research-data-services.org/",
+  baseUrl: "/",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
+  favicon: "img/Sciebo_Logo.svg",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Sciebo-RDS', // Usually your GitHub org/user name.
-  projectName: 'Sciebo-RDS', // Usually your repo name.
+  organizationName: "Sciebo-RDS", // Usually your GitHub org/user name.
+  projectName: "Sciebo-RDS", // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: "en",
+    locales: ["en"],
   },
-  plugins: [], 
+  plugins: [],
   presets: [
     [
-      'classic',
+      "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
           remarkPlugins: [mdxMermaid],
-          routeBasePath: '/',
-          sidebarPath: require.resolve('./sidebars.js'),
+          routeBasePath: "/",
+          sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/Sciebo-RDS/Sciebo-RDS/docs',
+          editUrl: "https://github.com/Sciebo-RDS/Sciebo-RDS/docs",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/Sciebo-RDS/Sciebo-RDS/docs',
+          editUrl: "https://github.com/Sciebo-RDS/Sciebo-RDS/docs",
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       }),
     ],
@@ -60,82 +58,82 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Sciebo RDS',
+        title: "Sciebo RDS",
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/Sciebo_Logo.svg',
+          alt: "My Site Logo",
+          src: "img/Sciebo_Logo.svg",
         },
         items: [
           {
-            to: '/',
-            position: 'right',
-            label: 'About',
+            to: "/",
+            position: "right",
+            label: "About",
           },
           {
-            type: 'doc',
-            docId: 'gettingstarted/start',
-            position: 'right',
-            label: 'Getting started',
+            type: "doc",
+            docId: "gettingstarted/start",
+            position: "right",
+            label: "Getting started",
           },
           {
-            to: 'documentation/configuration',
-            position: 'right',
-            label: 'Configuration',
+            to: "documentation/configuration",
+            position: "right",
+            label: "Configuration",
           },
           {
-            to: 'documentation/development',
-            position: 'right',
-            label: 'Development',
+            to: "documentation/development",
+            position: "right",
+            label: "Development",
           },
           {
-            to: 'documentation/reference',
-            position: 'right',
-            label: 'Reference',
-          },/* 
-          {to: '/blog', label: 'News', position: 'right'}, */
+            to: "documentation/reference",
+            position: "right",
+            label: "Reference",
+          } /* 
+          {to: '/blog', label: 'News', position: 'right'}, */,
           {
-            href: 'https://github.com/Sciebo-RDS/Sciebo-RDS',
+            href: "https://github.com/Sciebo-RDS/Sciebo-RDS",
             className: "header-github-link",
             "aria-label": "GitHub repository",
-            position: 'right',
+            position: "right",
           },
         ],
       },
       footer: {
-        style: 'dark',
+        style: "dark",
         links: [
           {
-            title: 'Links',
+            title: "Links",
             items: [
               {
-                label: 'GitHub',
-                href: 'https://github.com/Sciebo-RDS/Sciebo-RDS',
+                label: "GitHub",
+                href: "https://github.com/Sciebo-RDS/Sciebo-RDS",
               },
               {
-                label: 'Issues',
-                href: 'https://github.com/Sciebo-RDS/Sciebo-RDS/issues',
+                label: "Issues",
+                href: "https://github.com/Sciebo-RDS/Sciebo-RDS/issues",
               },
             ],
           },
           {
-            title: 'Community',
+            title: "Community",
             items: [
               {
-                label: 'Github Discussions',
-                href: 'https://github.com/Sciebo-RDS/Sciebo-RDS/discussions',
+                label: "Github Discussions",
+                href: "https://github.com/Sciebo-RDS/Sciebo-RDS/discussions",
               },
             ],
           },
           {
-            title: 'Legal / Contact',
+            title: "Legal / Contact",
             items: [
               {
-                label: 'Imprint',
-                to: '/imprint',
+                label: "Imprint",
+                to: "/imprint",
               },
               {
-                label: 'Email',
-                href: 'mailto:sciebo-rds@uni-muenster.de',
+                label: "Email",
+                href: "mailto:sciebo-rds@uni-muenster.de",
               },
             ],
           },
