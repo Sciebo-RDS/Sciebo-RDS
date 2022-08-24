@@ -113,7 +113,7 @@ const sidebars = {
     {
       type: "doc",
       id: "documentation/development/microservices",
-      label: "Internal Microservices",
+      label: "Microservice architecture",
     },
     {
       type: "doc",

@@ -1,4 +1,6 @@
-# Internal Microservices
+# Microservice architecture
+
+In this section, you will find an overview about the architecture decisions.
 
 ## Clean Architecture {#section-solid-arch}
 
