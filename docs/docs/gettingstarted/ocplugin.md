@@ -17,20 +17,7 @@ Our plugin depends on the oauth2 plugin for Owncloud, which you can install from
     php-bcmath
     openssl
 
-## Installing the Plugin
-
-You have the choice of either:
-
-- Installing it via the Owncloud marketplace
-- Installing from source, using our release page.
-
-
-
-### Installation through Marketplace
-
-Install the [plugin](https://marketplace.owncloud.com/apps/rds) from the marketplace. This version will probably not be as up-to-date as the releases provided by our release page. 
-
-### Installation from Source
+## Installing the plugin from Source
 1. Download the latest [tag](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/tags) from our [release page](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/releases/).
 You will need the `oc-rds-plugin.tar.gz` file. Please remember which version you download, this will become important later on.
 
