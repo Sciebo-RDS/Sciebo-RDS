@@ -107,10 +107,8 @@ export default {
               "setModifiedFilePath: " + this.currentFilePath + " App.vue"
             );
             console.log("data: " + data);
-            if (data.projectId == this.project.projectId) {
-              this.currentFilePath = data.filePath;
-              this.$store.commit("setModifiedFilePath", this.currentFilePath);
-            }
+            this.currentFilePath = data.filePath;
+            this.$store.commit("setModifiedFilePath", this.currentFilePath);
             break;
         }
       }
