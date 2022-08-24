@@ -94,9 +94,12 @@ export default {
     eventloop(event) {
       if (event.data.length > 0) {
         var payload = JSON.parse(event.data);
+        console.log("event received in Folder.vue");
         switch (payload.event) {
           case "filePathSelected":
             let data = payload.data;
+            console.log("filepathselected received in Folder.vue");
+            console.log("data: " + this.data + " Folder.vue");
             if (data.projectId == this.project.projectId) {
               console.log(
                 "setModifiedFilePath: " + this.currentFilePath + " Folder.vue"
@@ -108,7 +111,7 @@ export default {
       }
     },
     togglePicker() {
-      this.showFilePicker(this.project.projectId, this.currentFilePath);
+      this.showFilePicker(this.project.projectId, "/");
     },
   },
   props: ["project"],
