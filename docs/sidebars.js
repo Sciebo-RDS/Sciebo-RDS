@@ -98,11 +98,6 @@ const sidebars = {
       id: "documentation/configuration/advanced-values-yaml",
       label: "Advanced values.yaml",
     },
-    {
-      type: "doc",
-      id: "documentation/configuration/microservices",
-      label: "Internal Microservices",
-    },
   ],
   developmentSidebar: [
     {
@@ -115,7 +110,11 @@ const sidebars = {
       id: "documentation/development/monorepo",
       label: "Monorepo Structure",
     },
-
+    {
+      type: "doc",
+      id: "documentation/development/microservices",
+      label: "Internal Microservices",
+    },
     {
       type: "doc",
       id: "documentation/development/contributing/developing-connectors",
