@@ -66,11 +66,12 @@
         style="bottom: 0%; position: absolute; right: 0%"
         width="100%"
       >
-        <!-- config nav -->Folder:
+        <!-- config nav -->
+        Folder:
         {{ project.currentFilePath }}
         {{ modifiedFilePath }}
         Name:
-        {{ project.researchname }}
+        {{ researchName }}
         {{ modifiedTitle }}
         Service:
         {{ project.portOut }}
@@ -80,12 +81,7 @@
 
         <v-flex v-if="e1 == 1" class="text-right">
           <v-btn
-            :disabled="
-              (project.currentFilePath.length !== 0 ||
-                modifiedFilePath.length !== 0) &&
-              (project.portOut.length !== 0 || modifiedExport.length !== 0) &&
-              (researchName.length !== 0 || modifiedTitle.length !== 0)
-            "
+            :disabled="isConfigComplete()"
             color="primary"
             @click="[sendChanges(), (e1 = 2)]"
             class="ma-5"
@@ -172,6 +168,8 @@ export default {
       configurationLockState: true,
       publishInProgress: false,
       researchName: this.project.researchname,
+      currentFilePath:
+        this.project.portIn[0]?.properties?.customProperties?.filepath,
     };
   },
   computed: {
@@ -194,9 +192,14 @@ export default {
   },
   methods: {
     hasFolder() {
-      return (
-        !!this.project.currentFilePath.length || !!this.modifiedFilePath.length
-      );
+      if (!!this.modifiedFilePath) {
+        return !!this.modifiedFilePath;
+      }
+      return this.currentFilePath === undefined
+        ? false
+        : this.currentFilePath.length > 0
+        ? true
+        : false;
     },
     hasService() {
       return !!this.project.portOut.length || !!this.modifiedExport.length;
@@ -205,10 +208,10 @@ export default {
       // TODO
       // check for whitespaces (.trim())
       return !!this.project.researchname.length || !!this.modifiedTitle.length;
-    } /* 
+    },
     isConfigComplete() {
       return this.hasFolder() && this.hasService() && this.hasTitle();
-    }, */,
+    },
     receiveResearchname(researchname) {
       this.researchName = researchname;
     },
