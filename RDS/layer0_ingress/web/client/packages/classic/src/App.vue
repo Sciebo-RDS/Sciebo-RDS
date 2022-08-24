@@ -103,12 +103,13 @@ export default {
             break;
           case "filePathSelected":
             let data = payload.data;
+            console.log(
+              "setModifiedFilePath: " + this.currentFilePath + " App.vue"
+            );
+            console.log("data: " + data);
             if (data.projectId == this.project.projectId) {
               this.currentFilePath = data.filePath;
               this.$store.commit("setModifiedFilePath", this.currentFilePath);
-              console.log(
-                "setModifiedFilePath: " + this.currentFilePath + " App.vue"
-              );
             }
             break;
         }
