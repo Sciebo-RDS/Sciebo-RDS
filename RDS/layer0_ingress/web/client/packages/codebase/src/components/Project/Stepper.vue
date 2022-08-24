@@ -67,14 +67,14 @@
         width="100%"
       >
         <!-- config nav -->Folder:
-        {{ project.currentFilePath.length }}
-        {{ modifiedFilePath.length }}
+        {{ project.currentFilePath }}
+        {{ modifiedFilePath }}
         Name:
-        {{ project.researchname.length }}
-        {{ modifiedTitle.length }}
+        {{ project.researchname }}
+        {{ modifiedTitle }}
         Service:
-        {{ project.portOut.length }}
-        {{ modifiedExport.length }}
+        {{ project.portOut }}
+        {{ modifiedExport }}
         isCompleted:
         {{ isConfigComplete }}
 
@@ -84,7 +84,7 @@
               (project.currentFilePath.length !== 0 ||
                 modifiedFilePath.length !== 0) &&
               (project.portOut.length !== 0 || modifiedExport.length !== 0) &&
-              (project.researchname.length !== 0 || modifiedTitle.length !== 0)
+              (researchName.length !== 0 || modifiedTitle.length !== 0)
             "
             color="primary"
             @click="[sendChanges(), (e1 = 2)]"
