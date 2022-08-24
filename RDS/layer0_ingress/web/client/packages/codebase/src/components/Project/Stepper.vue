@@ -1,127 +1,160 @@
 <template>
-<div style="height: 100%">
-    <v-stepper v-model="e1" alt-labels flat style="height:100%">
-    <!-- Stepper header -->
-        <v-stepper-header style="box-shadow:none!important;">
-            <v-stepper-step :complete="e1 > 1" step="1">
-                <translate>Configuration</translate>
-            </v-stepper-step>
+  <div style="height: 100%">
+    <v-stepper v-model="e1" alt-labels flat style="height: 100%">
+      <!-- Stepper header -->
+      <v-stepper-header style="box-shadow: none !important">
+        <v-stepper-step :complete="e1 > 1" step="1">
+          <translate>Configuration</translate>
+        </v-stepper-step>
 
-            <v-divider></v-divider>
+        <v-divider></v-divider>
 
-            <v-stepper-step :complete="e1 > 2" step="2">
-                <translate>Metadata</translate>
-            </v-stepper-step>
+        <v-stepper-step :complete="e1 > 2" step="2">
+          <translate>Metadata</translate>
+        </v-stepper-step>
 
-            <v-divider></v-divider>
+        <v-divider></v-divider>
 
-            <v-stepper-step step="3"><translate>Publish</translate> </v-stepper-step>
-        </v-stepper-header>
+        <v-stepper-step step="3"
+          ><translate>Publish</translate>
+        </v-stepper-step>
+      </v-stepper-header>
 
-    <!-- Step 1: Configuration -->
-        <v-stepper-items style="height:100%">
-            <v-stepper-content step="1" class="pa-0">
-                <v-card height="auto" flat class="overflow-y-auto" style="max-height: calc( 100vh - 12.9em )">
-                    <StepConfiguration
-                        :project="project"
-                        @changePorts="receiveChanges"
-                        @changeResearchname="receiveResearchname"
-                        />
-            
-                </v-card>
+      <!-- Step 1: Configuration -->
+      <v-stepper-items style="height: 100%">
+        <v-stepper-content step="1" class="pa-0">
+          <v-card
+            height="auto"
+            flat
+            class="overflow-y-auto"
+            style="max-height: calc(100vh - 12.9em)"
+          >
+            <StepConfiguration
+              :project="project"
+              @changePorts="receiveChanges"
+              @changeResearchname="receiveResearchname"
+            />
+          </v-card>
+        </v-stepper-content>
 
-            </v-stepper-content>
+        <!-- Step 2: Metadata -->
+        <v-stepper-content step="2">
+          <v-card
+            v-if="e1 == 2"
+            class="d-flex flex-column justify-center mb-12"
+            min-height="500px"
+            flat
+          >
+            <StepMetadataEditor :project="project" />
+          </v-card>
+        </v-stepper-content>
 
-    <!-- Step 2: Metadata -->
-            <v-stepper-content step="2">
-                <v-card
-                    v-if="e1 == 2"
-                    class="d-flex flex-column justify-center mb-12"
-                    min-height="500px"
-                    flat>
-                        <StepMetadataEditor :project="project" />
-                </v-card>
-            </v-stepper-content>
+        <!-- Step 3: Publish -->
+        <v-stepper-content step="3">
+          <v-card class="mb-12" height="auto" flat>
+            <StepPublish :project="project" />
+          </v-card>
+        </v-stepper-content>
+      </v-stepper-items>
 
-    <!-- Step 3: Publish -->
-            <v-stepper-content step="3">
-                <v-card class="mb-12" height="auto" flat>
-                    <StepPublish :project="project" />
-                </v-card>
+      <!-- Stepper navigation buttons -->
 
-            </v-stepper-content>
-        </v-stepper-items>
+      <v-sheet
+        flat
+        height="5em"
+        color="grey lighten-5"
+        style="bottom: 0%; position: absolute; right: 0%"
+        width="100%"
+      >
+        <!-- config nav -->Folder:
+        {{ project.currentFilePath.length }}
+        {{ modifiedFilePath.length }}
+        Name:
+        {{ project.researchname.length }}
+        {{ modifiedTitle.length }}
+        Service:
+        {{ project.portOut.length }}
+        {{ modifiedExport.length }}
 
-    <!-- Stepper navigation buttons -->
+        <v-flex v-if="e1 == 1" class="text-right">
+          <v-btn
+            :disabled="
+              (this.project.currentFilePath.length !== 0 ||
+                this.modifiedFilePath.length !== 0) &&
+              (this.project.portOut.length !== 0 ||
+                this.modifiedExport.length !== 0) &&
+              (this.project.researchname.length !== 0 ||
+                this.modifiedTitle.length !== 0)
+            "
+            color="primary"
+            @click="[sendChanges(), (e1 = 2)]"
+            class="ma-5"
+          >
+            <!-- <translate>Continue</translate> -->
+            Continue >
+          </v-btn>
+        </v-flex>
 
-        <v-sheet flat height="5em"  color="grey lighten-5"  style="bottom:0%; position: absolute; right: 0%;" width="100%">
+        <!-- metadata nav -->
 
-    <!-- config nav -->
+        <v-flex v-if="e1 == 2" class="text-right">
+          <v-btn outlined @click="e1 = 1">
+            <!-- <translate>Back</translate> -->
+            Back
+          </v-btn>
 
-            <v-flex v-if="e1 == 1" class="text-right">
+          <v-btn color="primary" @click="e1 = 3" class="ma-5">
+            <!-- <translate>Continue</translate> -->
+            Continue
+          </v-btn>
+        </v-flex>
 
-                <v-btn :disabled="!isConfigComplete()" color="primary" @click="[sendChanges(), (e1 = 2)]" class="ma-5">
-                    <!-- <translate>Continue</translate> -->
-                    Continue
-                </v-btn>
-            </v-flex>
+        <!-- publish nav -->
+        <v-flex v-if="e1 == 3" class="d-flex mb-6">
+          <v-btn
+            outlined
+            color="error"
+            @click="archiveProject(project.researchIndex)"
+            class="mr-auto ma-5"
+          >
+            <!-- <translate>Delete</translate> -->
+            Delete
+          </v-btn>
+          <v-flex class="text-right">
+            <v-btn outlined @click="e1 = 2" class="">
+              <!--  <translate>Back</translate> -->
+              Back
+            </v-btn>
 
+            <v-btn
+              :disabled="publishInProgress"
+              color="success"
+              @click="publishProject"
+              class="ma-5"
+            >
+              <translate v-if="publishInProgress">In progress...</translate>
+              <!-- <translate v-else>Publish</translate> -->
+              Publish
+            </v-btn>
+          </v-flex>
+        </v-flex>
+      </v-sheet>
 
-    <!-- metadata nav -->
-
-            <v-flex v-if="e1 == 2" class="text-right">
-                <v-btn outlined @click="e1 = 1">
-                <!-- <translate>Back</translate> -->
-                    Back
-                </v-btn>
-
-                <v-btn color="primary" @click="e1 = 3" class="ma-5">
-                <!-- <translate>Continue</translate> -->
-                    Continue
-                </v-btn>
-            </v-flex>
-
-
-    <!-- publish nav -->
-            <v-flex v-if="e1 == 3"  class="d-flex mb-6">
-                <v-btn outlined color="error" @click="archiveProject(project.researchIndex)" class="mr-auto ma-5">
-                <!-- <translate>Delete</translate> -->
-                    Delete
-                </v-btn>
-                <v-flex class="text-right">
-                
-                    <v-btn outlined @click="e1 = 2" class="">
-                    <!--  <translate>Back</translate> -->
-                    Back
-                    </v-btn>
-
-                    <v-btn :disabled="publishInProgress" color="success" @click="publishProject" class="ma-5">
-                        <translate v-if="publishInProgress">In progress...</translate>
-                        <!-- <translate v-else>Publish</translate> -->
-                        Publish
-                    </v-btn>
-
-                </v-flex>
-            </v-flex>
-        </v-sheet>
-
-    <!-- / Stepper buttons-->
-  </v-stepper>
-
-</div>
+      <!-- / Stepper buttons-->
+    </v-stepper>
+  </div>
 </template>
 
 <style>
 .v-stepper__header {
   padding-bottom: 1px;
   border-bottom: 1px solid #ccc;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
 }
 </style>
 
-
 <script>
-import { mapGetters } from "vuex"
+import { mapGetters } from "vuex";
 import StepConfiguration from "./Step/Configuration.vue";
 import StepPublish from "./Step/Publish.vue";
 import StepMetadataEditor from "./Step/MetadataEditor.vue";
@@ -143,9 +176,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-        modifiedExport: "getModifiedExport",
-        modifiedTitle: "getModifiedWorkingTitle",
-        modifiedFilePath: "getModifiedFilePath",
+      modifiedExport: "getModifiedExport",
+      modifiedTitle: "getModifiedWorkingTitle",
+      modifiedFilePath: "getModifiedFilePath",
     }),
   },
   props: ["project"],
@@ -158,18 +191,20 @@ export default {
   },
   methods: {
     hasFolder() {
-        return !!this.project.currentFilePath || !!this.modifiedFilePath
+      return (
+        !!this.project.currentFilePath.length || !!this.modifiedFilePath.length
+      );
     },
     hasService() {
-        return !!this.project.portOut.length || !!this.modifiedExport.length
+      return !!this.project.portOut.length || !!this.modifiedExport.length;
     },
     hasTitle() {
       // TODO
       // check for whitespaces (.trim())
-       return !!this.project.researchname || !!this.modifiedTitle;
+      return !!this.project.researchname.length || !!this.modifiedTitle.length;
     },
     isConfigComplete() {
-        return this.hasFolder() && this.hasService() && this.hasTitle();
+      return this.hasFolder() && this.hasService() && this.hasTitle();
     },
     receiveResearchname(researchname) {
       this.researchName = researchname;
@@ -202,7 +237,7 @@ export default {
       this.changes = pChanges;
       this.configurationLockState = this.setConfigurationLock(pChanges);
     },
-     sendChanges() {
+    sendChanges() {
       if (this.project.researchname !== this.researchName) {
         this.$store.dispatch("changeResearchname", {
           researchIndex: this.project["researchIndex"],
@@ -216,8 +251,8 @@ export default {
         this.changes = {};
       }
     },
-    archiveProject(rId){
-      this.$store.dispatch("removeProject", { id: rId })
+    archiveProject(rId) {
+      this.$store.dispatch("removeProject", { id: rId });
     },
     publishProject() {
       this.publishInProgress = true;
