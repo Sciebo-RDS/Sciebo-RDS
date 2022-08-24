@@ -88,8 +88,12 @@ export default {
             let data = payload.data;
             if (data.projectId == this.project.projectId) {
               this.currentFilePath = data.filePath;
-              console.log("eventloop: configuration");
-              this.emitChanges();
+              console.log(
+                "setModifiedFilePath: " +
+                  this.currentFilePath +
+                  " configuration.vue"
+              );
+              //this.$store.commit("setModifiedFilePath", this.currentFilePath);
             }
             break;
         }

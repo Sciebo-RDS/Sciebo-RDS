@@ -90,7 +90,6 @@ export default ({
             }
             return false
         }
-
         this.userPorts = this.selectedPorts = this.ports.filter((port) =>
         portHas(this.project.portOut, port.servicename)
         )

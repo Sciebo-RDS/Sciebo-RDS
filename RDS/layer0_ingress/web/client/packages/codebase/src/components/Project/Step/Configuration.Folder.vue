@@ -98,7 +98,9 @@ export default {
           case "filePathSelected":
             let data = payload.data;
             if (data.projectId == this.project.projectId) {
-              console.log("eventloop: folder")
+              console.log(
+                "setModifiedFilePath: " + this.currentFilePath + " Folder.vue"
+              );
               this.currentFilePath = data.filePath;
             }
             break;
