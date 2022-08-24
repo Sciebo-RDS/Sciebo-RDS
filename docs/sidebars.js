@@ -37,13 +37,13 @@ const sidebars = {
     },
     {
       type: "doc",
-      id: "gettingstarted/kubernetes",
-      label: "Configuring Kubernetes",
+      id: "gettingstarted/zenodo",
+      label: "Setting up Zenodo",
     },
     {
       type: "doc",
-      id: "gettingstarted/zenodo",
-      label: "Setting up Zenodo",
+      id: "gettingstarted/kubernetes",
+      label: "Configuring Kubernetes",
     },
     {
       type: "doc",
