@@ -12,4 +12,9 @@ Install the [plugin](https://marketplace.owncloud.com/apps/rds) from the marketp
 
 ## Configuration
 
-Please refer to the [Configuring Owncloud](../../../gettingstarted/ocplugin.md) page of our Getting Started guide to see, how you have to configure the plugin.
+Please refer to the [Configuring Owncloud](../../../gettingstarted/ocplugin.md) page of our Getting Started guide to see, how you have to configure the plugin via the admin UI.
+
+### Commandline
+
+In advance, you can use the `occ` command to configure the plugin without the need to go to admin UI. The command `occ rds` shows all commands related to sciebo RDS within the plugin. The help-texts should be enough to figure out, what they do.
+This commands are very handy for setup scripts.
