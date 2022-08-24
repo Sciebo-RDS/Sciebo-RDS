@@ -1,3 +1,5 @@
+# Zenodo
+
 Please refer to the [Setting up Zenodo](../../../gettingstarted/zenodo.md) page of our Getting Started guide.
 All options for your `values.yaml` can be found in the next section.
 

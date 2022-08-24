@@ -3,7 +3,6 @@ displayed_sidebar: developmentSidebar
 ---
 
 # Development
-all that developmentstuff
 
 ## Gitlab Branching Workflow
 
