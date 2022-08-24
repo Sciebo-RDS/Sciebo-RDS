@@ -37,4 +37,4 @@ You can read more on how to manually install Owncloud plugins in their [document
 ![](/docs/oc-plugin-view-admin.png)
 
 ---
-3. You will now find the Sciebo RDS app in the top left app menu inside your Owncloud instance. There will be an error, as the backend is not yet set up. This will be done in the next step.
+3. You will now find the Sciebo RDS app in the top left app menu inside your Owncloud instance. There will be an error, as the backend is not yet set up.

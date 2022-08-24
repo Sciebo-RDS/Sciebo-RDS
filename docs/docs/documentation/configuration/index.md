@@ -5,4 +5,4 @@ displayed_sidebar: configurationSidebar
 
 # Configuration 
 
-After you setup a first working sciebo RDS instance, it is time to know your options. In this chapter, you will get all informations you need to configure this instance to your needs.
+After setting up a working sciebo RDS instance, you may want to dive deeper and set up some additional repositories. Or maybe you don't use Owncloud as a storage provider and you want to set up Sciebo RDS with Nextcloud. This chapter will give you all the information you need to configure Sciebo RDS to your needs.

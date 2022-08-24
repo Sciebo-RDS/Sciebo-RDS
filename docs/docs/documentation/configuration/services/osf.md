@@ -5,11 +5,16 @@ id: osf
 
 # OSF
 
-First, you need to create a separate application in [osf](https://test.osf.io/settings/applications) for sciebo RDS. Set a name, project homepage and a description. The most important field is `Authorization callback URL`, which have to be the instance for sciebo RDS `your-rds.institution.org`. After submitting the information, you will get the `Client ID` and `Client secret`. Place it in your `values.yaml`. The required configuration in your `values.yaml` to get the OSF connector up can be found in the next section.
+1. [Create an OSF Test application](https://test.osf.io/settings/applications) to get API access for your sciebo RDS instance. 
+Set a name, project homepage and a description. The most important field is `Authorization callback URL`, which has to match the domain of your sciebo RDS instance (e.g. `your-rds.institution.org`).
+2. The first step will give you an OSF `Client ID` and `Client secret`.   
+Place it in your `values.yaml` as shown beneath.
 
-## Advanced `values.yaml`
+## `values.yaml`
 
 ```yaml
+[...]
+
 layer1-port-openscienceframework: # the osf connector
   enabled: true # enable OSF
   environment:

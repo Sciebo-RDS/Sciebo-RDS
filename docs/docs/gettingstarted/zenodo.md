@@ -1,8 +1,11 @@
-# Set up Zenodo
+# Setting up Zenodo
 
-First, you have to create an separate applications especially for sciebo RDS, so first, go to the testing instance of [sandbox.zenodo.org](https://sandbox.zenodo.org/account/settings/applications/clients/new/).
+1. [Create a Zenodo test application](](https://sandbox.zenodo.org/account/settings/applications/clients/new/)) to get API access for your sciebo RDS instance.
 
-If you have an account already there, you should open the settings page and redirect the browser to "Applications". There, you have to create a new application, set a unique name, a description, a website url to something useful.
-The most important option is the redirect url: There you have to enter the domain you want to use for sciebo RDS. It has to have the protocol: most times `https://your-rds.institution.org`. Also you have to use the `Confidential` client type.
+If you already have an account there, open the settings page and redirect the browser to "Applications". Create a new application, set a unique name, a description, a website url to something useful.
+The most important field is the `redirect url`, which has to match the domain of your sciebo RDS instance (e.g. `your-rds.institution.org`).    
+You also have to use the `Confidential` client type.
 
-Now save your application. At the top of the page, you will find the `client ID` and `client secret`. Save this informations, because this will be needed on the next step.
+2. The first step will give you a Zenodo `Client ID` and `Client secret`.   
+
+Place it in your `values.yaml` as shown in the next section, [Configuting Kubernetes](./kubernetes.md).
