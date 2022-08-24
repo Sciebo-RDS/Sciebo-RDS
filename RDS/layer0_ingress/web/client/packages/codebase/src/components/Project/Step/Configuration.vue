@@ -1,28 +1,36 @@
 <template>
   <v-container>
-      <v-row>
-        <v-col class="mx-auto" cols="11">
-          <!-- <v-col class="mx-auto" cols="12" md="10" lg="10" xl="8"> -->
+    <v-row>
+      <v-col class="mx-auto" cols="11">
+        <!-- <v-col class="mx-auto" cols="12" md="10" lg="10" xl="8"> -->
         <v-card flat>
-      <v-card-title class="justify-center" v-translate>Configure your Project</v-card-title>
-      <!--<v-card-subtitle>Please select the services you want to publish to: </v-card-subtitle>-->
+          <v-card-title class="justify-center" v-translate
+            >Configure your Project</v-card-title
+          >
+          <!--<v-card-subtitle>Please select the services you want to publish to: </v-card-subtitle>-->
 
-            <configuration-folder :project="project" :currentFilePath="currentFilePath"/>
-                <v-divider/>
-            <configuration-title  :project="project" />
-                <v-divider/>
-            <configuration-service  :project="project" :currentFilePath="currentFilePath"/>
-    </v-card>
-            </v-col>
-        </v-row>
+          <configuration-folder
+            :project="project"
+            :currentFilePath="currentFilePath"
+          />
+          <v-divider />
+          <configuration-title :project="project" />
+          <v-divider />
+          <configuration-service
+            :project="project"
+            :currentFilePath="currentFilePath"
+          />
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import ConfigurationFolder from './Configuration.Folder.vue';
-import ConfigurationTitle from './Configuration.Title.vue';
-import ConfigurationService from './Configuration.Service.vue';
+import ConfigurationFolder from "./Configuration.Folder.vue";
+import ConfigurationTitle from "./Configuration.Title.vue";
+import ConfigurationService from "./Configuration.Service.vue";
 
 export default {
   components: { ConfigurationFolder, ConfigurationTitle, ConfigurationService },
@@ -62,11 +70,14 @@ export default {
     if (!this.project.portIn.length) {
       this.emitChanges();
     }
-    this.$store.commit('setModifiedResearchIndex', this.project["researchIndex"])
+    this.$store.commit(
+      "setModifiedResearchIndex",
+      this.project["researchIndex"]
+    );
   },
   beforeDestroy() {
     window.removeEventListener("message", this.eventloop);
-    this.$store.commit('setModifiedResearchIndex', null)
+    this.$store.commit("setModifiedResearchIndex", null);
   },
   methods: {
     eventloop(event) {
@@ -77,15 +88,16 @@ export default {
             let data = payload.data;
             if (data.projectId == this.project.projectId) {
               this.currentFilePath = data.filePath;
+              console.log("eventloop: configuration");
               this.emitChanges();
             }
             break;
         }
       }
-    },/* 
+    } /* 
     togglePicker() {
       this.showFilePicker(this.project.projectId, this.currentFilePath);
-    }, */
+    }, */,
     computeChanges() {
       let strippedRemoveOut = this.computeStrippedOut(this.computeRemoveOut());
       let strippedAddOut = this.computeStrippedOut(this.computeAddOut());

@@ -98,6 +98,7 @@ export default {
           case "filePathSelected":
             let data = payload.data;
             if (data.projectId == this.project.projectId) {
+              console.log("eventloop: folder")
               this.currentFilePath = data.filePath;
             }
             break;
