@@ -75,16 +75,16 @@
         Service:
         {{ project.portOut.length }}
         {{ modifiedExport.length }}
+        isCompleted:
+        {{ isConfigComplete }}
 
         <v-flex v-if="e1 == 1" class="text-right">
           <v-btn
             :disabled="
-              (this.project.currentFilePath.length !== 0 ||
-                this.modifiedFilePath.length !== 0) &&
-              (this.project.portOut.length !== 0 ||
-                this.modifiedExport.length !== 0) &&
-              (this.project.researchname.length !== 0 ||
-                this.modifiedTitle.length !== 0)
+              (project.currentFilePath.length !== 0 ||
+                modifiedFilePath.length !== 0) &&
+              (project.portOut.length !== 0 || modifiedExport.length !== 0) &&
+              (project.researchname.length !== 0 || modifiedTitle.length !== 0)
             "
             color="primary"
             @click="[sendChanges(), (e1 = 2)]"
@@ -180,6 +180,9 @@ export default {
       modifiedTitle: "getModifiedWorkingTitle",
       modifiedFilePath: "getModifiedFilePath",
     }),
+    isConfigComplete() {
+      return this.hasFolder() && this.hasService() && this.hasTitle;
+    },
   },
   props: ["project"],
   beforeMount() {
@@ -202,10 +205,10 @@ export default {
       // TODO
       // check for whitespaces (.trim())
       return !!this.project.researchname.length || !!this.modifiedTitle.length;
-    },
+    } /* 
     isConfigComplete() {
       return this.hasFolder() && this.hasService() && this.hasTitle();
-    },
+    }, */,
     receiveResearchname(researchname) {
       this.researchName = researchname;
     },
