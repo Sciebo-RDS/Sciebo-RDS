@@ -32,7 +32,6 @@
             <StepConfiguration
               :project="project"
               @changePorts="receiveChanges"
-              @changeResearchname="receiveResearchname"
             />
           </v-card>
         </v-stepper-content>
@@ -68,7 +67,7 @@
       >
         <!-- config nav -->
         Folder:
-        {{ project.currentFilePath }}
+        {{ this.project.portIn[0]?.properties?.customProperties?.filepath }}
         {{ modifiedFilePath }}
         Name:
         {{ researchName }}
@@ -166,8 +165,6 @@ export default {
       configurationLockState: true,
       publishInProgress: false,
       researchName: this.project.researchname,
-      currentFilePath:
-        this.project.portIn[0]?.properties?.customProperties?.filepath,
     };
   },
   computed: {
@@ -190,7 +187,7 @@ export default {
   },
   methods: {
     hasFolder() {
-      if (this.modifiedFilePath.length > 0 || this.currentFilePath !== undefined) {
+      if (this.modifiedFilePath.length > 0 || this.project.portIn[0]?.properties?.customProperties?.filepath !== undefined) {
         return true;
       }
       return false
@@ -202,12 +199,6 @@ export default {
       // TODO
       // check for whitespaces (.trim())
       return !!this.project.researchname.length || !!this.modifiedTitle.length;
-    },
-    /* isConfigComplete() {
-      return this.hasFolder() && this.hasService() && this.hasTitle();
-    }, */
-    receiveResearchname(researchname) {
-      this.researchName = researchname;
     },
     getInitialConfigurationLockState() {
       if (!!this.project["portOut"] && !!this.project["portIn"]) {
