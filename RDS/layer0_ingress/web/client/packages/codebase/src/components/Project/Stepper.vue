@@ -76,12 +76,10 @@
         Service:
         {{ project.portOut }}
         {{ modifiedExport }}
-        isCompleted:
-        {{ isConfigComplete }}
 
         <v-flex v-if="e1 == 1" class="text-right">
           <v-btn
-            :disabled="isConfigComplete()"
+            :disabled="false"
             color="primary"
             @click="[sendChanges(), (e1 = 2)]"
             class="ma-5"
