@@ -79,7 +79,7 @@
 
         <v-flex v-if="e1 == 1" class="text-right">
           <v-btn
-            :disabled="false"
+            :disabled="!isConfigComplete"
             color="primary"
             @click="[sendChanges(), (e1 = 2)]"
             class="ma-5"
@@ -166,8 +166,8 @@ export default {
       configurationLockState: true,
       publishInProgress: false,
       researchName: this.project.researchname,
-      currentFilePath:
-        this.project.portIn[0]?.properties?.customProperties?.filepath,
+      /* currentFilePath:
+        this.project.portIn[0]?.properties?.customProperties?.filepath, */
     };
   },
   computed: {
@@ -207,9 +207,9 @@ export default {
       // check for whitespaces (.trim())
       return !!this.project.researchname.length || !!this.modifiedTitle.length;
     },
-    isConfigComplete() {
+    /* isConfigComplete() {
       return this.hasFolder() && this.hasService() && this.hasTitle();
-    },
+    }, */
     receiveResearchname(researchname) {
       this.researchName = researchname;
     },
