@@ -20,6 +20,11 @@ You can use the `occ` command to configure the plugin without the need to use th
 
 ````bash
 $ occ rds
+rds
+  rds:create-keys                        Creates the private and public key to sign informations.
+  rds:reset                              Resets values in owncloud config
+  rds:set-oauthname                      Sets the name of oauth client used by RDS app.
+  rds:set-url                            Sets the iframe url within RDS app.
 ````
 
 will explain all commands related to the sciebo RDS plugin.
