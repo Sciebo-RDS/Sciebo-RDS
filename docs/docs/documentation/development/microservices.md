@@ -1,6 +1,7 @@
 # Microservice architecture
 
 This section gives an overview of the RDS architecture.
+
 ## Clean Architecture
 The service system in RDS is built on the concept of [SOLID principles](https://de.wikipedia.org/wiki/Prinzipien_objektorientierten_Designs#SOLID-Prinzipien) and Robert C. Martin's [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html). 
 Especially the concept of layers and dependencies:
@@ -9,10 +10,10 @@ Especially the concept of layers and dependencies:
 
 source: [Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 
-
 ## RDS Layers
+
 Layers are indexed from the outermost to the innermost. RDS consists of the following layers: 
-- Layer 0 wraps the entire RDS application
+- Layer 0 contains services that provides the functionalities of the entire RDS backend to the integration plugins.
 - Layer 1 contains services that connect external and internal services to RDS. The containers in this layer are called **Ports**.
 - Layer 2 contains services that implement features. These containers are called **Use Cases**.
 - Layer 3 contains services that store information or are so essential for the entire system that they cannot be omitted. These containers are called **Central**.
