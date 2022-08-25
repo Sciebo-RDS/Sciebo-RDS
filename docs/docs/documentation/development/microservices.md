@@ -13,7 +13,7 @@ source: [Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-
 ## RDS Layers
 
 Layers are indexed from the outermost to the innermost. RDS consists of the following layers: 
-- Layer 0 contains services that provides the functionalities of the entire RDS backend to the integration plugins.
+- Layer 0 contains services that provide the functionality of the entire RDS backend to the integration plugins.
 - Layer 1 contains services that connect external and internal services to RDS. The containers in this layer are called **Ports**.
 - Layer 2 contains services that implement features. These containers are called **Use Cases**.
 - Layer 3 contains services that store information or are so essential for the entire system that they cannot be omitted. These containers are called **Central**.

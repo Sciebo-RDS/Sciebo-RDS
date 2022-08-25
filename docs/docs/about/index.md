@@ -23,8 +23,8 @@ Project Coordination: Holger Przibytzin & Dr. Marc Schutzeichel
 
 Research Associates: Juri Hößelbarth (WWU), Peter Heiss (WWU), Lennart Hofeditz (UDE)
 
-Project Partners: ULB (WWU Münster), ZIV (WWU Münster), Department of Computer Science and Applied Cognitive Science (Prof. Dr. Stieglitz, University of Duisburg-Essen)
+Project Partners: ULB (WWU Münster), WWU IT (WWU Münster), Department of Computer Science and Applied Cognitive Science (Prof. Dr. Stieglitz, University of Duisburg-Essen)
 
 Cooperation Partner: University of Bielefeld
 
-Duration: 2019-2021
+Duration: 2019-2022
