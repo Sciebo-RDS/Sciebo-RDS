@@ -166,8 +166,8 @@ export default {
       configurationLockState: true,
       publishInProgress: false,
       researchName: this.project.researchname,
-      /* currentFilePath:
-        this.project.portIn[0]?.properties?.customProperties?.filepath, */
+      currentFilePath:
+        this.project.portIn[0]?.properties?.customProperties?.filepath,
     };
   },
   computed: {
@@ -190,14 +190,10 @@ export default {
   },
   methods: {
     hasFolder() {
-      if (!!this.modifiedFilePath) {
-        return !!this.modifiedFilePath;
+      if (this.modifiedFilePath.length > 0 || this.currentFilePath !== undefined) {
+        return true;
       }
-      return this.currentFilePath === undefined
-        ? false
-        : this.currentFilePath.length > 0
-        ? true
-        : false;
+      return false
     },
     hasService() {
       return !!this.project.portOut.length || !!this.modifiedExport.length;
