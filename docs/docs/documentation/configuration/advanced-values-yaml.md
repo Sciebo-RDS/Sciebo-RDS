@@ -3,7 +3,7 @@
 The yaml file shown below is an exhaustive list of all settings introduced by sciebo RDS.
 
 Further options are available through dependencies, which are linked within the listing. 
-A lot of the settings are optional, as you see when you compare it to the minimal `values.yaml` file shown in the [getting started guide](./../../gettingstarted/kubernetes.md#helm).
+A lot of the settings are optional, as you can see when you compare it to the minimal `values.yaml` file shown in the [getting started guide](./../../gettingstarted/kubernetes.md#helm).
 
 
 ```yaml

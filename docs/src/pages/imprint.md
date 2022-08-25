@@ -15,8 +15,8 @@ Value added tax ID number: DE 126118759
 Editorial responsibility according to §5 TMG:  
 
 Dr. Raimund Vogl  
+WWU IT  
 Westphalian Wilhelm University  
-Centre for Information Processing  
 Röntgenstrasse 7-13  
 D-48149 Münster  
 
