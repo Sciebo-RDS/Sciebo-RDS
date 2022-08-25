@@ -67,7 +67,7 @@
       >
         <!-- config nav -->
         Folder:
-        {{ this.project.portIn[0]?.properties?.customProperties?.filepath }}
+        {{ currentFilePath }}
         {{ modifiedFilePath }}
         Name:
         {{ researchName }}
@@ -165,6 +165,8 @@ export default {
       configurationLockState: true,
       publishInProgress: false,
       researchName: this.project.researchname,
+      currentFilePath:
+        this.project.portIn.properties.customProperties.filepath,
     };
   },
   computed: {
@@ -174,7 +176,7 @@ export default {
       modifiedFilePath: "getModifiedFilePath",
     }),
     isConfigComplete() {
-      return this.hasFolder() && this.hasService() && this.hasTitle;
+      return this.hasFolder() && this.hasService() && this.hasTitle();
     },
   },
   props: ["project"],
@@ -187,7 +189,7 @@ export default {
   },
   methods: {
     hasFolder() {
-      if (this.modifiedFilePath.length > 0 || this.project.portIn[0]?.properties?.customProperties?.filepath !== undefined) {
+      if (this.modifiedFilePath.length > 0 || this.currentFilePath !== undefined) {
         return true;
       }
       return false
@@ -200,6 +202,9 @@ export default {
       // check for whitespaces (.trim())
       return !!this.project.researchname.length || !!this.modifiedTitle.length;
     },
+    /* isConfigComplete() {
+      return this.hasFolder() && this.hasService() && this.hasTitle();
+    }, */
     getInitialConfigurationLockState() {
       if (!!this.project["portOut"] && !!this.project["portIn"]) {
         return false;
