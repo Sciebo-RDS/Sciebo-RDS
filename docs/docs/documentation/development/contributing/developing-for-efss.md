@@ -31,14 +31,14 @@ To integrate sciebo RDS, continue on clientside.
 ## Clientside
 
 We assume, that your efss has an ui built with javascript and html.
-The user interface should integrate sciebo RDS with a html iFrame. So the sciebo RDS interface can communicate with the efss builtin tools with `window.postMessage` function. So you need to implement different listeners on your `window` object to react on such events:
+The user interface should integrate sciebo RDS with a html iFrame. To manage the url for the iframe, we recommend to use builtin tools for configuration management of your efss ui to get a much nicer administration experience.
+The sciebo RDS interface uses the [`window.postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) function from the standard javascript library, which is supported by all relevant browsers, to communicate with the parent `window` object. There, your efss UI and your plugin are living in. So you need to implement different [window.addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)s on the efss ui side to react on different events, emitted by the iframe:
 
 | eventname        | data | description                                                                                                                                    |
 | ---------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `init`           | `{}` | Sciebo RDS emit this event, if it is ready to get the user informations directly from the user. This are the informations from the serverside. |
 | `showFilePicker` | `{}` | Sciebo RDS emit this event, if the user wants to select a folder within your efss. This event should open the builtin filepicker.              |
 
-To manage the url for the iframe, we recommend to use builtin tools for configuration management of your efss ui to get a much nicer administration experience.
 
 Now, sciebo RDS UI can communicate with your efss ui and gets all relevant informations from your efss without the need to communicate directly to your efss. To request files from your efss, you need a connector, which will come next.
 
