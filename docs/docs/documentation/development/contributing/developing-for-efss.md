@@ -5,7 +5,7 @@ Because of the complex workflow, you need to establish three separate links betw
 
 ## Serverside plugin inside of your efss
 
-Security is a high value, so at first you need to generate a RSA-Key-Pair with HMAC-SHA256 and publish the public key under a separate endpoint. The public key is needed, because Sciebo RDS will verify all user informations which are in the JWT format, given by the user themselves, if it is valid. With this workflow, it is possible to use the user session on the clientside to communicate with sciebo RDS. This reduces the work alot.
+Security is a high value, so at first you need to generate a RSA-Key-Pair with HMAC-SHA256 and publish the public key under the endpoint `/publickey`. The public key is needed, because Sciebo RDS will verify all user informations, which are in the JWT format given by the user themselves, if it is valid. With this workflow, it is possible to use the user session on the clientside to communicate with sciebo RDS without any authentication from sciebo RDS. This reduces the work alot.
 
 The jwt needs to contain the following informations:
 
