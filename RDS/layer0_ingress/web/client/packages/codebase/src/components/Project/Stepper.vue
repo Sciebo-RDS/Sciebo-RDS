@@ -168,8 +168,15 @@ export default {
       return this.hasFolder && this.hasService && this.hasTitle;
     },
     hasFolder() {
-      if (this.modifiedFilePath.length > 0 || this.project.portIn[0]["properties"]["customProperties"]["filepath"] !== undefined) {
+      if (this.modifiedFilePath.length > 0) {
+        return true
+      }
+      try {
+      if (this.project.portIn[0]["properties"]["customProperties"]["filepath"] !== undefined) {
         return true;
+      }}
+      catch (e) {
+        return false
       }
       return false
     },
