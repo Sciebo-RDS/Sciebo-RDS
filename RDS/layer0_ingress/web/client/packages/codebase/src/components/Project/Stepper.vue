@@ -15,8 +15,8 @@
 
         <v-divider></v-divider>
 
-        <v-stepper-step step="3"
-          ><translate>Publish</translate>
+        <v-stepper-step step="3">
+          <translate>Publish</translate>
         </v-stepper-step>
       </v-stepper-header>
 
@@ -39,7 +39,6 @@
         <!-- Step 2: Metadata -->
         <v-stepper-content step="2">
           <v-card
-            v-if="e1 == 2"
             class="d-flex flex-column justify-center mb-12"
             min-height="500px"
             flat
@@ -66,15 +65,6 @@
         width="100%"
       >
         <!-- config nav -->
-        Folder:
-        {{ currentFilePath }}
-        {{ modifiedFilePath }}
-        Name:
-        {{ researchName }}
-        {{ modifiedTitle }}
-        Service:
-        {{ project.portOut }}
-        {{ modifiedExport }}
 
         <v-flex v-if="e1 == 1" class="text-right">
           <v-btn
@@ -84,34 +74,35 @@
             class="ma-5"
           >
             <!-- <translate>Continue</translate> -->
-            Continue >
-          </v-btn>
-        </v-flex>
-
-        <!-- metadata nav -->
-
-        <v-flex v-if="e1 == 2" class="text-right">
-          <v-btn outlined @click="e1 = 1">
-            <!-- <translate>Back</translate> -->
-            Back
-          </v-btn>
-
-          <v-btn color="primary" @click="e1 = 3" class="ma-5">
-            <!-- <translate>Continue</translate> -->
             Continue
           </v-btn>
         </v-flex>
+
+
+        <!-- metadata nav -->
+
+            <v-flex v-if="e1 == 2" class="text-right">
+                <v-btn outlined @click="e1 = 1">
+                <!-- <translate>Back</translate> -->
+                    Back
+                </v-btn>
+
+                <v-btn color="primary" @click="e1 = 3" class="ma-5">
+                <!-- <translate>Continue</translate> -->
+                    Continue
+                </v-btn>
+            </v-flex>
 
         <!-- publish nav -->
         <v-flex v-if="e1 == 3" class="d-flex mb-6">
           <v-btn
             outlined
-            color="error"
+            color="warning"
             @click="archiveProject(project.researchIndex)"
             class="mr-auto ma-5"
           >
             <!-- <translate>Delete</translate> -->
-            Delete
+            Archive
           </v-btn>
           <v-flex class="text-right">
             <v-btn outlined @click="e1 = 2" class="">
@@ -162,76 +153,45 @@ export default {
     return {
       e1: 1,
       changes: {},
-      configurationLockState: true,
       publishInProgress: false,
       researchName: this.project.researchname,
-      currentFilePath:
-        this.project.portIn.properties.customProperties.filepath,
     };
   },
   computed: {
     ...mapGetters({
       modifiedExport: "getModifiedExport",
+      modifiedImport: "getModifiedImport",
       modifiedTitle: "getModifiedWorkingTitle",
       modifiedFilePath: "getModifiedFilePath",
     }),
     isConfigComplete() {
-      return this.hasFolder() && this.hasService() && this.hasTitle();
+      return this.hasFolder && this.hasService && this.hasTitle;
     },
-  },
-  props: ["project"],
-  beforeMount() {
-    if (this.isConfigComplete()) {
-      this.e1 = 2;
-    }
-
-    this.configurationLockState = this.getInitialConfigurationLockState();
-  },
-  methods: {
     hasFolder() {
-      if (this.modifiedFilePath.length > 0 || this.currentFilePath !== undefined) {
+      if (this.modifiedFilePath.length > 0 || this.project.portIn[0]["properties"]["customProperties"]["filepath"] !== undefined) {
         return true;
       }
       return false
     },
     hasService() {
-      return !!this.project.portOut.length || !!this.modifiedExport.length;
+      if (this.modifiedExport.length !== 0) {
+        if (this.modifiedExport.remove.length > this.modifiedExport.add.length) {
+          return false
+        }
+      }
+      else if (this.project.portOut.length === 0) {
+        return false
+      }
+      return true
     },
     hasTitle() {
-      // TODO
-      // check for whitespaces (.trim())
-      return !!this.project.researchname.length || !!this.modifiedTitle.length;
+       return !!this.project.researchname || !!this.modifiedTitle.trim()
     },
-    /* isConfigComplete() {
-      return this.hasFolder() && this.hasService() && this.hasTitle();
-    }, */
-    getInitialConfigurationLockState() {
-      if (!!this.project["portOut"] && !!this.project["portIn"]) {
-        return false;
-      }
-      return true;
-    },
-    setConfigurationLock(pChanges) {
-      let numberOfSelectedPorts =
-        this.project.portOut.length +
-        pChanges["export"]["add"].length -
-        pChanges["export"]["remove"].length;
-      if (numberOfSelectedPorts !== 0) {
-        if (!!this.changes["import"]["add"]) {
-          for (let i of this.changes["import"]["add"]) {
-            if (!i["filepath"]) {
-              return true;
-            }
-          }
-        }
-        return false;
-      } else {
-        return true;
-      }
-    },
+  },
+  props: ["project"],
+  methods: {
     receiveChanges(pChanges) {
       this.changes = pChanges;
-      this.configurationLockState = this.setConfigurationLock(pChanges);
     },
     sendChanges() {
       if (this.project.researchname !== this.researchName) {

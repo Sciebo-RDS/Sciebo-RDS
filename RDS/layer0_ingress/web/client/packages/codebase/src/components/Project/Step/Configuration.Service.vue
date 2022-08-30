@@ -18,7 +18,7 @@
                             <v-col cols="auto" class="text-right">
                                 <v-icon
                                     color="error"
-                                    v-if="!project.portOut || project.portOut.length == 0 && !modifiedExport">
+                                    v-if="selectedPorts.length == 0">
                                         mdi-alert-circle-outline
                                 </v-icon>
                                 <v-icon

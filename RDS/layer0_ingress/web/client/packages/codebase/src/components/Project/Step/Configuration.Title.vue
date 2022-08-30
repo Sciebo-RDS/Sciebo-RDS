@@ -18,7 +18,7 @@
                             <v-col cols="auto" class="text-right">
                                 <v-icon
                                     color="error"
-                                    v-if="!(project.researchname || workingTitle)">
+                                    v-if="!(project.researchname || workingTitle.trim())">
                                         mdi-alert-circle-outline
                                 </v-icon>
                                 <v-icon
@@ -31,7 +31,7 @@
                         </v-row>
                     </v-list-item-title>
                     <v-list-item-subtitle class="py-2 pb-4 text-wrap">
-                        Give your project a name, to distinguish it from other projects.
+                        Give your project a name to distinguish it from other projects.
                     </v-list-item-subtitle>
                         <v-text-field
                             outlined

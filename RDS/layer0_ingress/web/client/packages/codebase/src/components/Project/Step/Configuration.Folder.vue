@@ -22,7 +22,7 @@
                 Select your project folder.
               </v-col>
               <v-col cols="auto" class="text-right">
-                <v-icon color="error" v-if="!currentFilePath">
+                <v-icon color="error" v-if="!hasFolder">
                   mdi-alert-circle-outline
                 </v-icon>
                 <v-icon color="success" class="outlined" v-else>
@@ -31,7 +31,7 @@
               </v-col>
             </v-row>
           </v-list-item-title>
-          <v-list-item-subtitle v-if="!currentFilePath" class="py-1 text-wrap">
+          <v-list-item-subtitle v-if="!hasFolder" class="py-1 text-wrap">
             <v-btn outlined color="warning" class="mr-1" @click="togglePicker">
               Pick
             </v-btn>
@@ -52,7 +52,7 @@
             from your sciebo account.
           </v-list-item-subtitle>
 
-          <v-row v-if="currentFilePath" align="center" class="mt-2">
+          <v-row v-if="hasFolder" align="center" class="mt-2">
             <v-col
               md="auto"
               class="grey--text text--darken-3 text-caption text-decoration-underline"
@@ -60,7 +60,7 @@
               Currently selected:
             </v-col>
             <v-col md="auto" class="grey--text text--darken-2">
-              {{ currentFilePath }}
+              {{ selectedFilePath }}
             </v-col>
           </v-row>
         </v-list-item-content>
@@ -81,13 +81,31 @@ export default {
     window.removeEventListener("message", this.eventloop);
   },
   computed: {
-    currentFilePath: {
+    ...mapGetters({
+      modifiedImport: "getModifiedImport",
+    }),
+    selectedFilePath() {
+      if (this.modifiedFilePath.length > 0) {
+        return this.modifiedFilePath
+      }
+      if (this.project.portIn[0]["properties"]["customProperties"]["filepath"] !== undefined) {
+        return this.project.portIn[0]["properties"]["customProperties"]["filepath"]
+      }
+      return undefined
+    },
+    modifiedFilePath: {
       get() {
         return this.$store.getters.getModifiedFilePath;
       },
       set(value) {
         this.$store.commit("setModifiedFilePath", value);
       },
+    },
+    hasFolder() {
+      if (this.selectedFilePath !== undefined) {
+        return true;
+      }
+      return false;
     },
   },
   methods: {
@@ -102,9 +120,9 @@ export default {
             console.log("data: " + this.data + " Folder.vue");
             if (data.projectId == this.project.projectId) {
               console.log(
-                "setModifiedFilePath: " + this.currentFilePath + " Folder.vue"
+                "setModifiedFilePath: " + this.modifiedFilePath + " Folder.vue"
               );
-              this.currentFilePath = data.filePath;
+              this.modifiedFilePath = data.filePath;
             }
             break;
         }

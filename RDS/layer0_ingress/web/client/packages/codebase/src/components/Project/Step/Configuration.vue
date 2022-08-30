@@ -71,13 +71,13 @@ export default {
       this.emitChanges();
     }
     this.$store.commit(
-      "setModifiedResearchIndex",
+      "setActiveProject",
       this.project["researchIndex"]
     );
   },
   beforeDestroy() {
     window.removeEventListener("message", this.eventloop);
-    this.$store.commit("setModifiedResearchIndex", null);
+    this.$store.commit("setActiveProject", null);
   },
   methods: {
     eventloop(event) {
