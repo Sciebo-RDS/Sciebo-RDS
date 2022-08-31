@@ -176,6 +176,7 @@ export default {
     },
     changeResearchname(context, data) {
       this._vm.$socket.client.emit("changeResearchname", JSON.stringify(data));
+      this.dispatch("requestProjectList");
     },
     triggerSynchronization(context, data, fn) {
       console.log("trigger sync data: ", data);
