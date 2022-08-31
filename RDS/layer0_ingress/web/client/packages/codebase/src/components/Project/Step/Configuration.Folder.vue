@@ -89,10 +89,8 @@ export default {
         return this.modifiedFilePath
       }
       try {
-      if (this.project.portIn[0]["properties"]["customProperties"]["filepath"] !== undefined) {
         return this.project.portIn[0]["properties"]["customProperties"]["filepath"]
-      }
-      } finally {
+      } catch {
       return undefined
       }
     },
