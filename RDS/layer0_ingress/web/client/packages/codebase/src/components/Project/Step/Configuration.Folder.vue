@@ -88,10 +88,13 @@ export default {
       if (this.modifiedFilePath.length > 0) {
         return this.modifiedFilePath
       }
+      try {
       if (this.project.portIn[0]["properties"]["customProperties"]["filepath"] !== undefined) {
         return this.project.portIn[0]["properties"]["customProperties"]["filepath"]
       }
+      } finally {
       return undefined
+      }
     },
     modifiedFilePath: {
       get() {
@@ -102,10 +105,17 @@ export default {
       },
     },
     hasFolder() {
-      if (this.selectedFilePath !== undefined) {
-        return true;
+      if (this.modifiedFilePath.length > 0) {
+        return true
       }
-      return false;
+      try {
+      if (this.project.portIn[0]["properties"]["customProperties"]["filepath"] !== undefined) {
+        return true;
+      }}
+      catch (e) {
+        return false
+      }
+      return false
     },
   },
   methods: {
