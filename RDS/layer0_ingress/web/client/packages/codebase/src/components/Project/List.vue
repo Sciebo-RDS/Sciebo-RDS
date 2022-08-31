@@ -83,7 +83,7 @@
 
                 <!-- Active Project Stepper -->
                 <v-card v-if="this.activeProject !== null" flat height="100%" >
-                    <ProjectStepper :project="allProjects.filter((i) => i.researchIndex == this.activeProject)[0]" style="min-height: 100%;"/>
+                    <ProjectStepper :e1="e1" :project="allProjects.filter((i) => i.researchIndex == this.activeProject)[0]" style="min-height: 100%;"/>
                 </v-card>
 
                 <!-- No Project selected -->
@@ -165,6 +165,7 @@ export default {
   data() {
     return {
       projects: [],
+      e1: 1,
     };
   },
   props: ["listtype",],
@@ -210,6 +211,8 @@ export default {
     },
     selectProject(p){
       console.log(this.activeProject)
+      // reset Stepper
+      this.e1 = 1
       this.$store.commit("setActiveProject", p.researchIndex)
     },
     deleteProject(researchIndex) {

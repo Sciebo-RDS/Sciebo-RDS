@@ -151,7 +151,6 @@ export default {
   },
   data() {
     return {
-      e1: 1,
       changes: {},
       publishInProgress: false,
       researchName: this.project.researchname,
@@ -195,7 +194,7 @@ export default {
        return !!this.project.researchname || !!this.modifiedTitle.trim()
     },
   },
-  props: ["project"],
+  props: ["project", "e1"],
   methods: {
     receiveChanges(pChanges) {
       this.changes = pChanges;
