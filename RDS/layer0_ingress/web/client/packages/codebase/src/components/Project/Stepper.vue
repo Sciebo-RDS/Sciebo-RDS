@@ -201,12 +201,12 @@ export default {
       this.changes = pChanges;
     },
     sendChanges() {
-      if (this.project.researchname !== this.researchName) {
+      if (this.project.researchname !== this.modifiedTitle) {
         this.$store.dispatch("changeResearchname", {
           researchIndex: this.project["researchIndex"],
-          researchname: this.researchName,
+          researchname: this.modifiedTitle,
         });
-        this.project.researchname = this.researchName;
+        //this.project.researchname = this.researchName;
       }
 
       if (Object.keys(this.changes).length > 0) {
