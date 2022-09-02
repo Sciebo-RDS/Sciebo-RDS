@@ -2,7 +2,12 @@
   <div style="height: 100%">
     <v-stepper v-model="e1" alt-labels flat style="height: 100%">
       <!-- Stepper header -->
-      <v-stepper-header style="box-shadow: none !important">
+      <v-stepper-header 
+      style="
+      box-shadow: none !important;
+      padding-bottom: 1px;
+      border-bottom: 1px solid #ccc;
+      background-color: #fafafa;">
         <v-stepper-step :complete="e1 > 1" step="1">
           <translate>Configuration</translate>
         </v-stepper-step>
@@ -129,13 +134,6 @@
   </div>
 </template>
 
-<style>
-.v-stepper__header {
-  padding-bottom: 1px;
-  border-bottom: 1px solid #ccc;
-  background-color: #fafafa;
-}
-</style>
 
 <script>
 import { mapGetters } from "vuex";

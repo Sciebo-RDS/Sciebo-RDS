@@ -79,7 +79,7 @@
             <v-col
                 v-if="listtype == 'Current'"
                 cols="9"
-                class="ProjectDetail">
+                style="border-left: 2px solid #ccc;">
 
                 <!-- Active Project Stepper -->
                 <v-card v-if="this.activeProject !== null" flat height="100%" >
@@ -92,7 +92,7 @@
                         <v-row align="center"
                             justify="center" class="overline">
                             <v-col cols="12" align="center">
-                                <v-icon class="round" size="35em">
+                                <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
                                     mdi-package-variant
                                 </v-icon>
                             </v-col>
@@ -104,7 +104,7 @@
             </v-col>
 
             <!-- Past Projects -->
-            <v-col v-else cols="9" class="ProjectDetail">
+            <v-col v-else cols="9" style="border-left: 2px solid #ccc;">
                 <v-card v-if="this.activeProject !== null" flat height="100%" >
                     <!-- TODO: Past Project Detail View -->
                     <ArchiveProjectDetail :project="allProjects.filter((i) => i.researchIndex == this.activeProject)[0]" style="min-height: 100%;"/>
@@ -114,7 +114,7 @@
                         <v-row v-if="pastProjects.length != 0" align="center"
                             justify="center" class="overline">
                             <v-col cols="12" align="center">
-                                <v-icon class="round" size="35em">
+                                <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
                                     mdi-package-variant
                                 </v-icon>
                             </v-col>
@@ -124,7 +124,7 @@
                         <v-row v-else align="center"
                             justify="center" class="overline">
                             <v-col cols="12" align="center">
-                                <v-icon class="round" size="35em">
+                                <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
                                     mdi-package-variant
                                 </v-icon>
                             </v-col>
@@ -138,16 +138,6 @@
     </v-container> 
 </template>
 
-<style lang="scss" scoped>
-.round {
-    background-color: #eee;
-    border-radius: 100%;
-    padding: 5%;
-}
-.ProjectDetail {
-    border-left: 2px solid #ccc;
-}
-</style>
 
 <script>
 import ProjectStatusChip from "./StatusChip.vue";
