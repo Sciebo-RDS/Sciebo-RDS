@@ -26,7 +26,7 @@
                 </v-sheet>
 
                 <!-- Project list content -->
-                <v-list max-height="calc( 100vh - 40px )" style="overflow-y: auto; margin: 0; padding: 0;">
+                <v-list style="overflow-y: auto; margin: 0; padding: 0; max-height: calc(100vh - 12.9em)">
                     <v-list-item-group>
                         
                         <div
