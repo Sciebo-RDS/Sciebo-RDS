@@ -212,6 +212,7 @@ export default {
       }
     },
     archiveProject(rId) {
+      this.$store.commit('setActiveProject', null)
       this.$store.dispatch("removeProject", { id: rId });
     },
     publishProject() {
