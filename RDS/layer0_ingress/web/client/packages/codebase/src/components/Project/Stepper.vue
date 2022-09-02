@@ -70,7 +70,7 @@
           <v-btn
             :disabled="!isConfigComplete"
             color="primary"
-            @click="[sendChanges(), (e1 = 2)]"
+            @click="[sendChanges(), ($emit('setStepper', 2))]"
             class="ma-5"
           >
             <!-- <translate>Continue</translate> -->
@@ -82,12 +82,12 @@
         <!-- metadata nav -->
 
             <v-flex v-if="e1 == 2" class="text-right">
-                <v-btn outlined @click="e1 = 1">
+                <v-btn outlined @click="$emit('setStepper', 1)">
                 <!-- <translate>Back</translate> -->
                     Back
                 </v-btn>
 
-                <v-btn color="primary" @click="e1 = 3" class="ma-5">
+                <v-btn color="primary" @click="$emit('setStepper', 3)" class="ma-5">
                 <!-- <translate>Continue</translate> -->
                     Continue
                 </v-btn>
@@ -105,7 +105,7 @@
             Archive
           </v-btn>
           <v-flex class="text-right">
-            <v-btn outlined @click="e1 = 2" class="">
+            <v-btn outlined @click="$emit('setStepper', 2)" class="">
               <!--  <translate>Back</translate> -->
               Back
             </v-btn>
