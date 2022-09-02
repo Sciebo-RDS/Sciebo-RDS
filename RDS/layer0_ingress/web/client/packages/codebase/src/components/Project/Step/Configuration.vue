@@ -70,14 +70,9 @@ export default {
     if (!this.project.portIn.length) {
       this.emitChanges();
     }
-    this.$store.commit(
-      "setActiveProject",
-      this.project["researchIndex"]
-    );
   },
   beforeDestroy() {
     window.removeEventListener("message", this.eventloop);
-    this.$store.commit("setActiveProject", null);
   },
   methods: {
     eventloop(event) {
@@ -98,10 +93,7 @@ export default {
             break;
         }
       }
-    } /* 
-    togglePicker() {
-      this.showFilePicker(this.project.projectId, this.currentFilePath);
-    }, */,
+    },
     computeChanges() {
       let strippedRemoveOut = this.computeStrippedOut(this.computeRemoveOut());
       let strippedAddOut = this.computeStrippedOut(this.computeAddOut());

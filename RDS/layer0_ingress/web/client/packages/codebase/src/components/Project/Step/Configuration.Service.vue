@@ -39,7 +39,7 @@
                     <v-row class="ma-1">
                         <v-col
                             v-for="p in ports.filter((i) => i['implements'].includes('metadata'))"
-                            :key="p"
+                            :key="p.projectId"
                             cols="3"
                             class="col-lg-2"
                             @click="setProfile(p)"

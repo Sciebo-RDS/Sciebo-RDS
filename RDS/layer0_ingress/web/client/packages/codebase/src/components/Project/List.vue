@@ -33,7 +33,7 @@
                             @click="selectProject(p)"
                             active-class=""
                             v-for="p in (listtype == 'Current' ? activeProjects : pastProjects)"
-                            :key="p"
+                            :key="p.projectId"
                             class="grey lighten-5">
                         <v-list-item color="grey darken-3" style="border-bottom: 1px solid #ccc" >
                         <v-list-item-content
@@ -83,7 +83,7 @@
 
                 <!-- Active Project Stepper -->
                 <v-card v-if="this.activeProject !== null" flat height="100%" >
-                    <ProjectStepper :e1="e1" @set-stepper="(n) => e1 = n" :project="allProjects.filter((i) => i.researchIndex == this.activeProject)[0]" style="min-height: 100%;"/>
+                    <ProjectStepper :e1="e1" @setStepper="(n) => e1 = n" :project="allProjects.filter((i) => i.researchIndex == this.activeProject)[0]" style="min-height: 100%;"/>
                 </v-card>
 
                 <!-- No Project selected -->
@@ -201,9 +201,8 @@ export default {
     },
     selectProject(p){
       console.log(this.activeProject)
-      // reset Stepper
       this.e1 = 1
-      this.$store.commit("setActiveProject", p.researchIndex)
+      this.activeProject = p.researchIndex;
     },
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });
@@ -246,7 +245,7 @@ export default {
   beforeDestroy() {
     this.$store.dispatch("requestProjectList");
     this.unwatch();
-    this.$store.commit("setActiveProject", null)
+    this.activeProject = null;
   },
 };
 </script>
