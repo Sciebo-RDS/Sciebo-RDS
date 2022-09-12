@@ -102,15 +102,19 @@ const config = {
         style: "dark",
         links: [
           {
-            title: "Links",
+            title: "Github",
             items: [
               {
-                label: "GitHub",
+                label: "ScieboRDS/ScieboRDS",
                 href: "https://github.com/Sciebo-RDS/Sciebo-RDS",
               },
               {
                 label: "Issues",
                 href: "https://github.com/Sciebo-RDS/Sciebo-RDS/issues",
+              },
+              {
+                label: "ScieboRDS/RDS-Connectors",
+                href: "https://github.com/Sciebo-RDS/RDS-Connectors",
               },
             ],
           },

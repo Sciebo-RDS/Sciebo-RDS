@@ -1,4 +1,4 @@
-# Microservice architecture
+# Microservice Architecture
 
 This section gives an overview of the RDS architecture.
 
@@ -60,12 +60,12 @@ graph TD;
   end
   WWWI[incoming connections]
   WWWO[outgoing connections]
-  click OP "/impl/plugins/owncloud/"
+  click OP "/documentation/configuration/efss/owncloud"
   click Describo "https://github.com/Arkisto-Platform/describo-online"
-  click Helper "https://github.com/Sciebo-RDS/RDS-Web/tree/rework/helper"
-  click Web "https://github.com/Sciebo-RDS/RDS-Web"
+  click Helper "https://github.com/Sciebo-RDS/Sciebo-RDS/tree/develop/RDS/layer0_ingress/web/helper"
+  click Web "https://github.com/Sciebo-RDS/Sciebo-RDS/tree/develop/RDS/layer0_ingress/web"
   click PInvenio "/impl/layer1-port-invenio-docstring"
-  click POwncloud "/impl/layer1-port-storage-docstring"
+  click POwncloud "/impl/layer1-port-owncloud-docstring"
   click PReva "https://github.com/Sciebo-RDS/port-reva"
   click POSF "/impl/layer1-port-osf-docstring"
   click PDatasafe "https://github.com/Sciebo-RDS/port_datasafe"
@@ -93,10 +93,7 @@ class Ports,Centralservices SkipLevel
 
 ### EFSS Integration
 
-The integration of the RDS application into an EFSS system (*integration platform*) is realized as a native plugin through the platform's own plugin system. The plugin wraps the RDS standalone application into an iFrame and is not part of the described layering structure.
-
-Due to the diverse landscape of EFSS software, RDS has to provide the highest possible integration diversity. For this the responsibility is handed over to the target platform: There must be a plugin system that allows for the integration of third-party applications. Owncloud is the first target platform. Further integrations must adhere to the Oauth2 concept. RDS only implements and makes available API endpoints.
-
-RDS uses the first token it receives for a user of an integration platform as the main token, all subsequently added tokens assigned to the same user and integration platform are interpreted as connected services and offered to the user for selection. This also results in the use of unique user names or IDs for each integration platform. Although the same user name or ID may occur several times in RDS, it must be possible to attribute it uniquely to the integration platform. 
-
+The integration of the RDS application into an EFSS system (*integration platform*) is realized as a native plugin through the platform's own plugin system. The plugin wraps the RDS standalone application into an iFrame and is not part of the described layering structure.   
+Due to the diverse landscape of EFSS software, RDS has to provide the highest possible integration diversity. For this the responsibility is handed over to the target platform: There must be a plugin system that allows for the integration of third-party applications. Owncloud is the first target platform. Further integrations must adhere to the Oauth2 concept. RDS only implements and makes available API endpoints.   
+RDS uses the first token it receives for a user of an integration platform as the main token, all subsequently added tokens assigned to the same user and integration platform are interpreted as connected services and offered to the user for selection. This also results in the use of unique user names or IDs for each integration platform. Although the same user name or ID may occur several times in RDS, it must be possible to attribute it uniquely to the integration platform.   
 It is also easy to implement new integrations with other repository services, as the new service must offer Oauth2 and the user must be able to authorise himself to RDS with this service. All services integrated with RDS can then be given to the user to choose and authorise, so that RDS can authorise itself to them on behalf of the user. RDS offers a lot of different API endpoints, so that the integration can focus on displaying and sending requests and not on implementing complex algorithms.

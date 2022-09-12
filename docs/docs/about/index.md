@@ -3,28 +3,19 @@ sidebar_position: 1
 id: about
 slug: /
 ---
+# Sciebo Research Data Services
 
-# Sciebo RDS
-The project sciebo RDS (Research Data Services) has set itself the goal of bringing low-threshold services and tools from research data management (RDM) and scientific analysis to where the researchers are already handling their data, i.e. the university cloud "sciebo". In order to achieve this ambitious goal, sciebo RDS will pursue the following strategies:
-
-* The sciebo RDS integrate external research data services, such as for the creation and the administration of data management plans.
-* They offer bridge functionalities by enabling the connection to external services via programming interfaces and connecting these to continuous, partly automatic processes and process chains.
-* They adapt and integrate external expert tools, such as editors for special file formats or data types.
-* They offer basic RDM functionalities, e.g. for capturing metadata or indexing via taxonomies.
-
-The work packages for the implementation of these strategies include the development of a suitable software architecture to match the infrastructural environment of the university cloud sciebo. This is to be conducted at the University of Münster. Another important aspect concerns issues in usability and the scientific evaluation of the user perspective. This is where the project partners at the University of Duisburg-Essen contribute their expertise.
-
-The project is designed with sustainability in mind. This will be achieved by making all results of the project, i.e. software components, documentation and scientific publications, accessible to the general public using open licences. In addition, the implementations shall be easily reusable at other locations.
+Sciebo RDS allows researchers to export research data directly from Enterprise Sync and Share (EFSS) Systems like Owncloud to Data Repositories like Zenodo and OSF. It acts as a interoperability layer, allowing them to assign a directory on a Sync and Share System to a research project, annotating the contained data to match the format required by the desired Data Repository and publishing the Research Data directly from the Cloud. No need to download all the data to a desktop computer to cumbersomely upload it to the repository interface again.
 
 
-Funding Body: Deutsche Forschungsgemeinschaft (DFG) -- Project Number 403637381.
 
-Project Coordination: Holger Przibytzin & Dr. Marc Schutzeichel
+![](../../static/img/screenshot001.png)
 
-Research Associates: Juri Hößelbarth (WWU), Peter Heiss (WWU), Lennart Hofeditz (UDE)
 
-Project Partners: ULB (WWU Münster), WWU IT (WWU Münster), Department of Computer Science and Applied Cognitive Science (Prof. Dr. Stieglitz, University of Duisburg-Essen)
 
-Cooperation Partner: University of Bielefeld
+Sciebo RDS is developed at the [University of Münster](http://uni-muenster.de), funded by the German Research Foundation and part of the CS3MESH4EOSC community, which strives to connect Research Cloud Storages in order to practice the so called [FAIR](https://www.nature.com/articles/sdata201618) principles.
 
-Duration: 2019-2022
+Development of Sciebo RDS began in late 2019.
+
+Sciebo RDS runs on a Kubernetes cluster. To learn more about the requirements and how to deploy your own Sciebo RDS instance, have a look at our [Getting Started](../gettingstarted/) page or dive into the deep end by [developing a connector](../documentation/development/contributing/developing-connectors.md) for your favorite Data Respository or processing Software.
+
