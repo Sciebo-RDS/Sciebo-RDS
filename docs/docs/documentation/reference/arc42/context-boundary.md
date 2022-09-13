@@ -21,7 +21,7 @@ The representation is a UML diagram. However, for the technical delimitation, da
 | uni-internal    | These are web services which are operated within the EMU.                                                                  |
 | uni-external    | These are web services which are operated outside the EMU (and therefore outside the jurisdiction). *data protection risk* |
 
-
+![extensive context delimitation via UMLet](../../../../static/img/kontextabgrenzung_umfeld.svg)
 
 ### Description of the external interfaces
 
