@@ -8,7 +8,7 @@
             {{ originalResearchName ? originalResearchName : 'Project ' + (loadedProject.researchId+1) }}
           </v-card-title>
 
-          <configuration-folder/>
+          <configuration-folder :project="project"/>
           <v-divider />
           <configuration-research-name />
           <v-divider />

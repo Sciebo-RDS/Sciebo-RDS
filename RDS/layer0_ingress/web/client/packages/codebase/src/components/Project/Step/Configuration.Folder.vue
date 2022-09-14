@@ -106,7 +106,7 @@ export default {
             let data = payload.data;
             console.log("filepathselected received in Folder.vue");
             console.log("data: " + this.data + " Folder.vue");
-            if (data.projectId == this.loadedResearchId) {
+            if (data.projectId == this.project.projectId) {
               this.loadedFilePath = data.filePath;
             }
             break;
@@ -114,8 +114,9 @@ export default {
       }
     },
     togglePicker() {
-      this.showFilePicker(this.loadedResearchId, (!!this.loadedFilePath ? this.loadedFilePath : "/"));
+      this.showFilePicker(this.project.projectId, (!!this.loadedFilePath ? this.loadedFilePath : "/"));
     },
   },
+  props: ["project"],
 };
 </script>
