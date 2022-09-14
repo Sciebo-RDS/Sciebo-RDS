@@ -215,10 +215,9 @@ export default {
           change: []
         }
       }
-
     },
     sendChanges() {
-      if (!!loadedResearchName && this.originalResearchName !== this.loadedResearchName) {
+      if (!!this.loadedResearchName && this.originalResearchName !== this.loadedResearchName) {
         this.$store.dispatch("changeResearchname", {
           researchIndex: this.loadedProject["researchIndex"],
           researchname: this.loadedResearchName,
