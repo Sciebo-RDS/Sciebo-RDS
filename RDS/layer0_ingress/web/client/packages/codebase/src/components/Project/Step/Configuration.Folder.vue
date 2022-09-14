@@ -103,9 +103,10 @@ export default {
         console.log("event received in Folder.vue");
         switch (payload.event) {
           case "filePathSelected":
+            console.log('payload: '+ JSON.stringify(payload))
             let data = payload.data;
             console.log("filepathselected received in Folder.vue");
-            console.log("data: " + this.data + " Folder.vue");
+            console.log("data: " + JSON.stringify(data) + " Folder.vue");
             if (data.projectId == this.project.projectId) {
               this.loadedFilePath = data.filePath;
             }

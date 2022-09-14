@@ -95,9 +95,11 @@ export default {
       }
       // extend this in case of multiple inPorts.
       if (state.loadedProject.portIn.length == 0) {
-        state.loadedProject.portIn.push({"properties": {"customproperties": {"filepath": payload}, "type" : ['fileStorage']}, "port": "port-owncloud-" + state.getOwnCloudServername})
+        console.log("state.loadedProject.portIn.length == 0")
+        state.loadedProject.portIn.push({"properties": {"customProperties": {"filepath": payload}, "type" : ['fileStorage']}, "port": "port-owncloud-" + state.getOwnCloudServername})
       } else if (state.loadedProject.portIn.length == 1) {
-        state.loadedProject.portIn[0].properties.customproperties["filepath"] = payload
+        console.log("state.loadedProject.portIn.length == 1")
+        state.loadedProject.portIn[0].properties.customProperties["filepath"] = payload
       }
 
     },
