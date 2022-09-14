@@ -47,7 +47,7 @@ The following figure shows the context delimitation with the respective protocol
 | ---- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | L-1  | Sustainable Architecture                    | A microservice approach will combine existing and new services.                                                                      |
 | L-2  | asynchronous communication between services | A messaging system can take over the guarantee of message dispatch for tasks.                                                        |
-| L-3  | little effort for new features              | [Clean Architecture](/de/doc/arc42/contextboundary/#section-solid-arch) is implemented with microservices.                           |
+| L-3  | little effort for new features              | [Clean Architecture](/documentation/reference/arc42/context-boundary#section-solid-arch) is implemented with microservices.                           |
 | L-4  | Data collection by plugins                  | The integration of RDS in different platforms is realized with the existing plugin system.                                           |
 | L-5  | Software flexibility                        | Clean Architecture allows a problem to be solved independently of other stacks using the best technology stack for the task at hand. |
 | L-6  | Maintainability, Scalability                | Deployment relies on Docker and Kubernetes and Gitlab as integration, test and deployment pipeline.                                  |
@@ -79,7 +79,7 @@ Above all, the concept of layers and dependencies should be mentioned here.
 ![Clean Architecture](https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)
 Quelle: https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg
 
-The service system in RDS has been built on the basis of these concepts and is shown as a diagram in the [Service Ecosystem](/en/doc/impl/infrastructure/ecosystem/) in this documentation.
+The service system in RDS has been built on the basis of these concepts and is shown as a diagram in the [Service Ecosystem](/documentation/development/microservices#diagram) in this documentation.
 
 Thereby...
 - in the outermost layer the services are counted, which connects external and internal services to RDS. For this reason, the containers in this layer are called *ports*.
