@@ -190,7 +190,7 @@ export default {
       let loadedPortOutNames = this.loadedProject["portOut"].map((s) => s.port)
       let originalPortOutNames = this.originalPortOutForLoadedProject.map((s) => s.port)
       return {
-        researchindex: this.loadedProject["researchIndex"],
+        researchIndex: this.loadedProject["researchIndex"],
         import: {
           add:
                 (this.loadedProject["portIn"].length == 0) ?
@@ -202,7 +202,7 @@ export default {
               ,
           remove: [],
           change: 
-                (this.loadedFilePath !== this.originalFilePath)
+                (this.loadedProject["portIn"].length > 0 && this.loadedFilePath !== this.originalFilePath)
           ?
                   [{
                     "servicename": "port-owncloud-" + this.ownCloudServername,
@@ -225,7 +225,7 @@ export default {
           researchname: this.loadedTitle,
         });
       }
-
+      console.log(JSON.stringify(this.portChanges))
         this.$store.dispatch("changePorts", this.portChanges);
         /* this.changes = {}; */
     },
