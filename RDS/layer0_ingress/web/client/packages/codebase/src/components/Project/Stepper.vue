@@ -68,7 +68,7 @@
         style="bottom: 0%; position: absolute; right: 0%; border-top: 1px solid #ccc!important"
         width="100%"
       >
-        <!-- config nav -->{{project}}
+        <!-- config nav -->
         <v-flex v-if="e1 == 1" class="d-flex mb-6">
           <v-btn
             outlined
@@ -110,7 +110,7 @@
 
         <!-- publish nav -->
 
-          <v-flex class="text-right">
+          <v-flex v-if="e1 == 3" class="text-right">
             <v-btn outlined @click="$emit('setStepper', 2)" class="">
               <!--  <translate>Back</translate> -->
               Back
@@ -211,7 +211,7 @@ export default {
                 : [],
         },
         export: {
-          add: loadedPortOutNames.filter(p => !originalPortOutNames.includes(p)).map(function (x) { return {"name": x} }),
+          add: loadedPortOutNames.filter(p => !originalPortOutNames.includes(p)).map(function (x) { return {"servicename": x} }),
           remove: originalPortOutNames.filter(p => !loadedPortOutNames.includes(p)),
           change: []
         }

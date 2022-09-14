@@ -208,6 +208,7 @@ export default {
     },
     changePorts(context, data) {
       this._vm.$socket.client.emit("changePorts", JSON.stringify(data));
+      this.dispatch("requestProjectList");
     },
     changeResearchname(context, data) {
       this._vm.$socket.client.emit("changeResearchname", JSON.stringify(data));
