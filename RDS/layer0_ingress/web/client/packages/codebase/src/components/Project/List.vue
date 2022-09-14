@@ -80,7 +80,7 @@
 
                 <!-- Active Project Stepper -->
                 <v-card v-if="!!loadedProject" flat height="100%" >
-                    <ProjectStepper :e1="e1" @setStepper="(n) => e1 = n" :project="loadedProject" style="min-height: 100%;"/>
+                    <ProjectStepper :e1="e1" @setStepper="(n) => e1 = n" @reloadProject="reloadProject" :project="loadedProject" style="min-height: 100%;"/>
                 </v-card>
 
                 <!-- No Project selected -->
@@ -160,6 +160,7 @@ export default {
     ...mapGetters({
       allProjects: "getProjectlist",
       showAllProjects: "showAllProjects",
+      loadedProject: "getLoadedProject",
     }),
     ...mapState({
       userservicelist: (state) => state.RDSStore.userservicelist,
@@ -199,6 +200,9 @@ export default {
     loadProject(p) {
       this.e1 = 1
       this.loadedProject = JSON.parse(JSON.stringify(p));
+    },
+    reloadProject(){
+      this.loadedProject = JSON.parse(JSON.stringify(this.allProjects.filter((p) => p.researchIndex === loadedProject.researchIndex)))
     },
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });

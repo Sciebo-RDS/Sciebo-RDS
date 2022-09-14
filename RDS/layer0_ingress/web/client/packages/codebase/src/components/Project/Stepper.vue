@@ -150,12 +150,11 @@ export default {
     return {
    /*    changes: {}, */
       publishInProgress: false,
-      researchName: this.project.researchname,
     };
   },
   computed: {
     ...mapGetters({
-      loadedTitle: "getLoadedResearchName",
+      loadedResearchName: "getLoadedResearchName",
       loadedProject: "getLoadedProject",
       loadedFilePath: "getLoadedFilePath",
       originalResearchName: "getOriginalResearchNameForLoadedProject",
@@ -174,7 +173,7 @@ export default {
       return this.loadedProject.portOut.length > 0;
     },
     hasResearchName() {
-       return !!this.loadedTitle || !!this.originalResearchName;
+       return !!this.loadedResearchName || !!this.originalResearchName;
     },
     portChanges() {
       let changes = this.computePortChanges()
@@ -219,15 +218,14 @@ export default {
 
     },
     sendChanges() {
-      if (this.originalResearchName !== this.loadedTitle) {
+      if (!!loadedResearchName && this.originalResearchName !== this.loadedResearchName) {
         this.$store.dispatch("changeResearchname", {
           researchIndex: this.loadedProject["researchIndex"],
-          researchname: this.loadedTitle,
+          researchname: this.loadedResearchName,
         });
       }
-      console.log(JSON.stringify(this.portChanges))
         this.$store.dispatch("changePorts", this.portChanges);
-        /* this.changes = {}; */
+        this.$emit("reloadProject");
     },
     archiveProject(rId) {
       this.$store.commit('setLoadedProject', null)
