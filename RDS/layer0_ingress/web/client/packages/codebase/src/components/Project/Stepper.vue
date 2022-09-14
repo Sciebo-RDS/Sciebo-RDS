@@ -68,12 +68,12 @@
         style="bottom: 0%; position: absolute; right: 0%; border-top: 1px solid #ccc!important"
         width="100%"
       >
-        <!-- config nav -->
+        <!-- config nav -->{{project}}
         <v-flex v-if="e1 == 1" class="d-flex mb-6">
           <v-btn
             outlined
             color="error"
-            @click="archiveProject(project.researchIndex)"
+            @click="archiveProject(loadedProject.researchIndex)"
             class="mr-auto ma-5"
           >
             <!-- <translate>Delete</translate> -->
@@ -162,7 +162,7 @@ export default {
       originalFilePath: "getOriginalFilePathForLoadedProject",
       originalPortInForLoadedProject: "getOriginalPortInForLoadedProject",
       originalPortOutForLoadedProject: "getOriginalPortOutForLoadedProject",
-      owncloudName: "getOwnCloudServername",
+      ownCloudServername: "getOwnCloudServername",
     }),
     isConfigComplete() {
       return this.hasFolder && this.hasService && this.hasResearchName;

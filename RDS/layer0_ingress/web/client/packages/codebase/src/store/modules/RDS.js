@@ -84,8 +84,12 @@ export default {
       state.ownCloudServerName = payload.serverName;
     },
     setLoadedProject(state, payload) {
-        state.loadedProject = {...payload, researchname: (payload.researchname ? payload.researchname : "")};
-      },
+      if (payload === null) {
+        state.loadedProject = null
+      } else {
+        state.loadedProject = {...payload, researchname: (!!payload.researchname ? payload.researchname : "")};
+      }
+    },
     setLoadedResearchName: (state, payload) => {
       state.loadedProject["researchname"] = payload;
     },
