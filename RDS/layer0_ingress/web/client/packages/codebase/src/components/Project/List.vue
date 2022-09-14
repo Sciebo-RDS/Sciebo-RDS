@@ -202,7 +202,7 @@ export default {
       this.loadedProject = JSON.parse(JSON.stringify(p));
     },
     reloadProject(){
-      this.loadedProject = JSON.parse(JSON.stringify(this.allProjects.filter((p) => p.researchIndex === loadedProject.researchIndex)))
+      this.loadedProject = JSON.parse(JSON.stringify(this.allProjects.filter((p) => p.researchIndex === this.loadedProject["researchIndex"])))
     },
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });
