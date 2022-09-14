@@ -221,6 +221,7 @@ export default {
         this.projects = this.getProjects();
       }
     );
+    this.loadedProject = null;
   },
   beforeMount() {
     this.projects = this.getProjects();
