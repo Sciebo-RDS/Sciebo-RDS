@@ -1,3 +1,4 @@
+
 const getDefaultState = () => {
   return {
     userservicelist: [],
@@ -5,14 +6,7 @@ const getDefaultState = () => {
     projectlist: [],
     sessionID: null,
     ownCloudServerName: "",
-    activeProject: null,
-    modifiedProject: {
-      researchIndex: null,
-      workingTitle: "",
-      filePath: "",
-      import: [],
-      export: [],
-    },
+    loadedProject: null,
     supportEmail: null,
     manualUrl: null,
   };
@@ -22,21 +16,49 @@ export default {
   getDefaultState,
   name: "RDSStore",
   state: getDefaultState(),
+  
   getters: {
     getUserServiceList: (state) => state.userservicelist,
     getServiceList: (state) => state.servicelist,
     getProjectlist: (state) => state.projectlist,
     getSessionId: (state) => state.sessionID,
     getOwnCloudServername: (state) => state.ownCloudServerName,
-    getActiveProject: (state) => state.activeProject,
-    getModifiedProject: (state) => state.modifiedProject,
-    getModifiedWorkingTitle: (state) => state.modifiedProject["workingTitle"],
-    getModifiedFilePath: (state) => state.modifiedProject["filePath"],
-    getModifiedImport: (state) => state.modifiedProject["import"],
-    getModifiedExport: (state) => state.modifiedProject["export"],
+    getLoadedProject: (state) => state.loadedProject,
+    getLoadedResearchName: (state) => state.loadedProject["researchname"],
+    getLoadedFilePath(state) {
+      try {
+      return state.loadedProject.portIn[0]["properties"]["customProperties"]["filepath"]}
+      catch {
+        return null
+      }
+    },
+    getOriginalFilePathForLoadedProject(state) {
+      let p =  state.projectlist.filter((i) => i.researchIndex == state.loadedProject.researchIndex)[0]
+      try {
+      return p.portIn[0]["properties"]["customProperties"]["filepath"]}
+      catch {
+        return null
+      }
+    },
+    getLoadedPortIn: (state) => state.loadedProject["portIn"],
+    getLoadedPortOut: (state) => state.loadedProject["portOut"],
+    getLoadedResearchId: (state) => state.loadedProject["researchId"],
+    getOriginalResearchNameForLoadedProject(state) {
+      let p =  state.projectlist.filter((i) => i.researchIndex == state.loadedProject.researchIndex)[0]
+      return p.researchname
+    },
+    getOriginalPortOutForLoadedProject(state) {
+      let p =  state.projectlist.filter((i) => i.researchIndex == state.loadedProject.researchIndex)[0]
+      return p["portOut"]
+    },
+    getOriginalPortInForLoadedProject(state) {
+      let p =  state.projectlist.filter((i) => i.researchIndex == state.loadedProject.researchIndex)[0]
+      return p.portIn
+    },
     getSupportEmail: (state) => state.supportEmail,
     getManualUrl: (state) => state.manualUrl,
   },
+
   mutations: {
     setUserServiceList: (state, payload) => {
       state.userservicelist = payload.servicelist;
@@ -61,25 +83,32 @@ export default {
       }
       state.ownCloudServerName = payload.serverName;
     },
-    setActiveProject(state, payload) {
-      state.activeProject = payload;
-      this.commit("resetModifiedProject");
-      state.modifiedProject["researchIndex"] = payload;
+    setLoadedProject(state, payload) {
+        state.loadedProject = {...payload, researchname: (payload.researchname ? payload.researchname : "")};
+      },
+    setLoadedResearchName: (state, payload) => {
+      state.loadedProject["researchname"] = payload;
     },
-    setModifiedWorkingTitle: (state, payload) => {
-      state.modifiedProject["workingTitle"] = payload;
+    setLoadedFilePath: (state, payload) => {
+      if (!state.loadedProject) {
+        return
+      }
+      // extend this in case of multiple inPorts.
+      if (state.loadedProject.portIn.length == 0) {
+        state.loadedProject.portIn.push({"properties": {"customproperties": {"filepath": payload}, "type" : ['fileStorage']}, "port": "port-owncloud-" + state.getOwnCloudServername})
+      } else if (state.loadedProject.portIn.length == 1) {
+        state.loadedProject.portIn[0].properties.customproperties["filepath"] = payload
+      }
+
     },
-    setModifiedFilePath: (state, payload) => {
-      state.modifiedProject["filePath"] = payload;
+    setLoadedPortIn: (state, payload) => {
+      state.loadedProject["portIn"] = payload;
     },
-    setModifiedImport: (state, payload) => {
-      state.modifiedProject["import"] = payload;
+    setLoadedPortOut: (state, payload) => {
+      state.loadedProject["portOut"] = payload;
     },
-    setModifiedExport: (state, payload) => {
-      state.modifiedProject["export"] = payload;
-    },
-    resetModifiedProject(state) {
-      Object.assign(state.modifiedProject, getDefaultState().modifiedProject);
+    resetLoadedProject(state) {
+      state.loadedProject = null;
     },
     setSupportEmail: (state, payload) => {
       state.supportEmail = payload.supportEmail;

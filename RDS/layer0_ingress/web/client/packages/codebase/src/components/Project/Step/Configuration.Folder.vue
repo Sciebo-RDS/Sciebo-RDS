@@ -60,7 +60,7 @@
               Currently selected:
             </v-col>
             <v-col md="auto" class="grey--text text--darken-2">
-              {{ selectedFilePath }}
+              {{ loadedFilePath }}
             </v-col>
           </v-row>
         </v-list-item-content>
@@ -82,38 +82,18 @@ export default {
   },
   computed: {
     ...mapGetters({
-      modifiedImport: "getModifiedImport",
+      loadedResearchId: "getLoadedResearchId"
     }),
-    selectedFilePath() {
-      if (this.modifiedFilePath.length > 0) {
-        return this.modifiedFilePath
-      }
-      try {
-        return this.project.portIn[0]["properties"]["customProperties"]["filepath"]
-      } catch {
-      return undefined
-      }
-    },
-    modifiedFilePath: {
+    loadedFilePath: {
       get() {
-        return this.$store.getters.getModifiedFilePath;
+        return this.$store.getters.getLoadedFilePath;
       },
       set(value) {
-        this.$store.commit("setModifiedFilePath", value);
+        this.$store.commit("setLoadedFilePath", value);
       },
     },
     hasFolder() {
-      if (this.modifiedFilePath.length > 0) {
-        return true
-      }
-      try {
-      if (this.project.portIn[0]["properties"]["customProperties"]["filepath"] !== undefined) {
-        return true;
-      }}
-      catch (e) {
-        return false
-      }
-      return false
+      return !!this.loadedFilePath
     },
   },
   methods: {
@@ -126,20 +106,16 @@ export default {
             let data = payload.data;
             console.log("filepathselected received in Folder.vue");
             console.log("data: " + this.data + " Folder.vue");
-            if (data.projectId == this.project.projectId) {
-              console.log(
-                "setModifiedFilePath: " + this.modifiedFilePath + " Folder.vue"
-              );
-              this.modifiedFilePath = data.filePath;
+            if (data.projectId == this.loadedProject.researchId) {
+              this.loadedFilePath = data.filePath;
             }
             break;
         }
       }
     },
     togglePicker() {
-      this.showFilePicker(this.project.projectId, "/");
+      this.showFilePicker(this.loadedProject.researchId, (!!this.loadedFilePath ? this.loadedFilePath : "/"));
     },
   },
-  props: ["project"],
 };
 </script>

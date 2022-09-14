@@ -36,7 +36,6 @@
           >
             <StepConfiguration
               :project="project"
-              @changePorts="receiveChanges"
             />
           </v-card>
         </v-stepper-content>
@@ -66,21 +65,32 @@
         flat
         height="5em"
         color="grey lighten-5"
-        style="bottom: 0%; position: absolute; right: 0%"
+        style="bottom: 0%; position: absolute; right: 0%; border-top: 1px solid #ccc!important"
         width="100%"
       >
         <!-- config nav -->
-
-        <v-flex v-if="e1 == 1" class="text-right">
+        <v-flex v-if="e1 == 1" class="d-flex mb-6">
           <v-btn
+            outlined
+            color="error"
+            @click="archiveProject(project.researchIndex)"
+            class="mr-auto ma-5"
+          >
+            <!-- <translate>Delete</translate> -->
+            Delete
+          </v-btn>
+          <v-flex class="text-right">
+            
+
+            <v-btn
             :disabled="!isConfigComplete"
             color="primary"
             @click="[sendChanges(), ($emit('setStepper', 2))]"
             class="ma-5"
           >
-            <!-- <translate>Continue</translate> -->
-            Continue
-          </v-btn>
+              Continue
+            </v-btn>
+          </v-flex>
         </v-flex>
 
 
@@ -99,16 +109,7 @@
             </v-flex>
 
         <!-- publish nav -->
-        <v-flex v-if="e1 == 3" class="d-flex mb-6">
-          <v-btn
-            outlined
-            color="warning"
-            @click="archiveProject(project.researchIndex)"
-            class="mr-auto ma-5"
-          >
-            <!-- <translate>Delete</translate> -->
-            Archive
-          </v-btn>
+
           <v-flex class="text-right">
             <v-btn outlined @click="$emit('setStepper', 2)" class="">
               <!--  <translate>Back</translate> -->
@@ -122,11 +123,9 @@
               class="ma-5"
             >
               <translate v-if="publishInProgress">In progress...</translate>
-              <!-- <translate v-else>Publish</translate> -->
               Publish
             </v-btn>
           </v-flex>
-        </v-flex>
       </v-sheet>
 
       <!-- / Stepper buttons-->
@@ -149,70 +148,89 @@ export default {
   },
   data() {
     return {
-      changes: {},
+   /*    changes: {}, */
       publishInProgress: false,
       researchName: this.project.researchname,
     };
   },
   computed: {
     ...mapGetters({
-      modifiedExport: "getModifiedExport",
-      modifiedImport: "getModifiedImport",
-      modifiedTitle: "getModifiedWorkingTitle",
-      modifiedFilePath: "getModifiedFilePath",
+      loadedTitle: "getLoadedResearchName",
+      loadedProject: "getLoadedProject",
+      loadedFilePath: "getLoadedFilePath",
+      originalResearchName: "getOriginalResearchNameForLoadedProject",
+      originalFilePath: "getOriginalFilePathForLoadedProject",
+      originalPortInForLoadedProject: "getOriginalPortInForLoadedProject",
+      originalPortOutForLoadedProject: "getOriginalPortOutForLoadedProject",
+      owncloudName: "getOwnCloudServername",
     }),
     isConfigComplete() {
-      return this.hasFolder && this.hasService && this.hasTitle;
+      return this.hasFolder && this.hasService && this.hasResearchName;
     },
     hasFolder() {
-      if (this.modifiedFilePath.length > 0) {
-        return true
-      }
-      try {
-      if (this.project.portIn[0]["properties"]["customProperties"]["filepath"] !== undefined) {
-        return true;
-      }}
-      catch (e) {
-        return false
-      }
-      return false
+      return !!this.loadedFilePath;
     },
     hasService() {
-      if (this.modifiedExport.length !== 0) {
-        if (this.modifiedExport.remove.length > this.modifiedExport.add.length) {
-          return false
-        }
-      }
-      else if (this.project.portOut.length === 0) {
-        return false
-      }
-      return true
+      return this.loadedProject.portOut.length > 0;
     },
-    hasTitle() {
-       return !!this.project.researchname || !!this.modifiedTitle.trim()
+    hasResearchName() {
+       return !!this.loadedTitle || !!this.originalResearchName;
     },
+    portChanges() {
+      let changes = this.computePortChanges()
+      return changes 
+    }
   },
   props: ["project", "e1"],
   methods: {
-    receiveChanges(pChanges) {
+    /* receiveChanges(pChanges) {
       this.changes = pChanges;
-    },
-    sendChanges() {
-      if (this.project.researchname !== this.modifiedTitle) {
-        this.$store.dispatch("changeResearchname", {
-          researchIndex: this.project["researchIndex"],
-          researchname: this.modifiedTitle,
-        });
-        //this.project.researchname = this.researchName;
+    }, */
+    computePortChanges() {
+      let loadedPortOutNames = this.loadedProject["portOut"].map((s) => s.port)
+      let originalPortOutNames = this.originalPortOutForLoadedProject.map((s) => s.port)
+      return {
+        researchindex: this.loadedProject["researchIndex"],
+        import: {
+          add:
+                (this.loadedProject["portIn"].length == 0) ?
+                  [{
+                    "servicename": "port-owncloud-" + this.ownCloudServername,
+                    "filepath": this.loadedFilePath,
+                  }]
+                : []
+              ,
+          remove: [],
+          change: 
+                (this.loadedFilePath !== this.originalFilePath)
+          ?
+                  [{
+                    "servicename": "port-owncloud-" + this.ownCloudServername,
+                    "filepath": this.loadedFilePath,
+                  }]
+                : [],
+        },
+        export: {
+          add: loadedPortOutNames.filter(p => !originalPortOutNames.includes(p)).map(function (x) { return {"name": x} }),
+          remove: originalPortOutNames.filter(p => !loadedPortOutNames.includes(p)),
+          change: []
+        }
       }
 
-      if (Object.keys(this.changes).length > 0) {
-        this.$store.dispatch("changePorts", this.changes);
-        this.changes = {};
+    },
+    sendChanges() {
+      if (this.originalResearchName !== this.loadedTitle) {
+        this.$store.dispatch("changeResearchname", {
+          researchIndex: this.loadedProject["researchIndex"],
+          researchname: this.loadedTitle,
+        });
       }
+
+        this.$store.dispatch("changePorts", this.portChanges);
+        /* this.changes = {}; */
     },
     archiveProject(rId) {
-      this.$store.commit('setActiveProject', null)
+      this.$store.commit('setLoadedProject', null)
       this.$store.dispatch("removeProject", { id: rId });
     },
     publishProject() {
