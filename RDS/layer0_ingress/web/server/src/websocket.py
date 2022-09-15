@@ -536,7 +536,7 @@ class RDSNamespace(Namespace):
             informations = session["informations"]
             _, _, servername = str(informations.get("cloudID")).rpartition("@")
             servername = servername.translate(trans_tbl)
-            app.logger("go to take token from tokenstore")
+            app.logger.debug("go to take token from tokenstore")
 
             token = json.loads(
                 httpManager.makeRequest(
