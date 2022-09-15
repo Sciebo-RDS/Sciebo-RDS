@@ -1,7 +1,9 @@
 <template>
     <v-main
       class="pa-0 ma-0">
-    <ProjectList style="height: calc( 100vh - 25px );" listtype="Current"/>
+    <ProjectList style="height: calc( 100vh - 25px );" listtype="Current">
+      Current
+    </ProjectList>
   </v-main>
 </template>
 
@@ -24,5 +26,8 @@ export default {
   },
   methods: {
   },
+  beforeDestroy() {
+    this.$store.commit('resetLoadedProject')
+  }  
 };
 </script>

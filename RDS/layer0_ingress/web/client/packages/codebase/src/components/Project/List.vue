@@ -3,11 +3,6 @@
     fluid
     class="pa-0 d-flex flex-column"
     style="margin-top: 13px;">
-    
-<!-- <v-sheet flat height="8em"  color="error">
-
-</v-sheet> -->
-
         <v-row no-gutters>
 
             <!-- Project list -->
@@ -20,29 +15,31 @@
                     style="border-bottom: 1px solid #ccc!important">
                     <v-container fill-height>
                         <v-row justify="center" class="overline">
-                            {{ listtype == 'Current' ? activeProjects.length : pastProjects.length }} {{listtype}} Projects
+                            {{ listtype == 'Current' ? activeProjects.length : pastProjects.length }} <slot/> Projects
                         </v-row>
                     </v-container>
                 </v-sheet>
 
                 <!-- Project list content -->
-                <v-list max-height="calc( 100vh - 40px )" style="overflow-y: auto; margin: 0; padding: 0;">
+                <v-list style="overflow-y: auto; margin: 0; padding: 0; max-height: calc(100vh - 13.1em)">
                     <v-list-item-group>
                         
                         <div
-                            @click="selectProject(p)"
+                            @click="loadProject(p)"
                             active-class=""
                             v-for="p in (listtype == 'Current' ? activeProjects : pastProjects)"
-                            :key="p"
-                            class="grey lighten-5">
+                            :key="p.researchIndex"
+                            class="grey lighten-5"
+                            :style="loadedProject && p.researchIndex === loadedProject.researchIndex ? 'background-color:#bada55!important' : ''">
                         <v-list-item color="grey darken-3" style="border-bottom: 1px solid #ccc" >
                         <v-list-item-content
                             class="ma-1">
                             <v-row align="start">
+                              <!-- TODO: fix width -->
                             <v-col class="caption">
                                 Project
-                                <v-list-item-title class="my-1" style="">
-                                    <div class=" text-subtitle2 ">
+                                <v-list-item-title class="my-1">
+                                    <div class=" text-subtitle2 text-truncate d-inline-block" style="max-width: 25em!important">
                                 {{ !!p.researchname ? p.researchname : 'Project ' + (p.researchIndex+1) }}
                                     </div>
                             </v-list-item-title>
@@ -79,11 +76,11 @@
             <v-col
                 v-if="listtype == 'Current'"
                 cols="9"
-                class="ProjectDetail">
+                style="border-left: 2px solid #ccc;">
 
                 <!-- Active Project Stepper -->
-                <v-card v-if="this.activeProject !== null" flat height="100%" >
-                    <ProjectStepper :project="allProjects.filter((i) => i.researchIndex == this.activeProject)[0]" style="min-height: 100%;"/>
+                <v-card v-if="!!loadedProject" flat height="100%" >
+                    <ProjectStepper :e1="e1" @setStepper="(n) => e1 = n" @reloadProject="reloadProject" :project="loadedProject" style="min-height: 100%;"/>
                 </v-card>
 
                 <!-- No Project selected -->
@@ -92,7 +89,7 @@
                         <v-row align="center"
                             justify="center" class="overline">
                             <v-col cols="12" align="center">
-                                <v-icon class="round" size="35em">
+                                <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
                                     mdi-package-variant
                                 </v-icon>
                             </v-col>
@@ -104,17 +101,17 @@
             </v-col>
 
             <!-- Past Projects -->
-            <v-col v-else cols="9" class="ProjectDetail">
-                <v-card v-if="this.activeProject !== null" flat height="100%" >
+            <v-col v-else cols="9" style="border-left: 2px solid #ccc;">
+                <v-card v-if="!!loadedProject" flat height="100%" >
                     <!-- TODO: Past Project Detail View -->
-                    <ArchiveProjectDetail :project="allProjects.filter((i) => i.researchIndex == this.activeProject)[0]" style="min-height: 100%;"/>
+                    <ArchiveProjectDetail :project="loadedProject" style="min-height: 100%;"/>
                 </v-card>
                 <v-card v-else flat height="100%">
                     <v-container fill-height >
                         <v-row v-if="pastProjects.length != 0" align="center"
                             justify="center" class="overline">
                             <v-col cols="12" align="center">
-                                <v-icon class="round" size="35em">
+                                <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
                                     mdi-package-variant
                                 </v-icon>
                             </v-col>
@@ -124,7 +121,7 @@
                         <v-row v-else align="center"
                             justify="center" class="overline">
                             <v-col cols="12" align="center">
-                                <v-icon class="round" size="35em">
+                                <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
                                     mdi-package-variant
                                 </v-icon>
                             </v-col>
@@ -138,16 +135,6 @@
     </v-container> 
 </template>
 
-<style lang="scss" scoped>
-.round {
-    background-color: #eee;
-    border-radius: 100%;
-    padding: 5%;
-}
-.ProjectDetail {
-    border-left: 2px solid #ccc;
-}
-</style>
 
 <script>
 import ProjectStatusChip from "./StatusChip.vue";
@@ -165,6 +152,7 @@ export default {
   data() {
     return {
       projects: [],
+      e1: 1,
     };
   },
   props: ["listtype",],
@@ -172,23 +160,24 @@ export default {
     ...mapGetters({
       allProjects: "getProjectlist",
       showAllProjects: "showAllProjects",
+      loadedProject: "getLoadedProject",
     }),
     ...mapState({
       userservicelist: (state) => state.RDSStore.userservicelist,
     }),
-    activeProject: {
+    loadedProject: {
         get() {
-            return this.$store.getters.getActiveProject
+            return this.$store.getters.getLoadedProject
         },
         set(value) {
-            this.$store.commit('setActiveProject', value)
+            this.$store.commit('setLoadedProject', value)
         }
     },
     activeProjects() {
       return this.allProjects.filter((project) => project.status < 3);
     },
     pastProjects(){
-      return this.allProjects.filter((project) => project.status >= 3);
+      return this.allProjects.filter((project) => project.status == 3);
     },
     userHasServicesConnected() {
       //hardcoded filter for owncloud, change
@@ -208,9 +197,12 @@ export default {
         return b.status - a.status;
       });
     },
-    selectProject(p){
-      console.log(this.activeProject)
-      this.$store.commit("setActiveProject", p.researchIndex)
+    loadProject(p) {
+      this.e1 = 1
+      this.loadedProject = JSON.parse(JSON.stringify(p));
+    },
+    reloadProject(){
+      this.loadedProject = JSON.parse(JSON.stringify(...this.allProjects.filter((p) => p.researchIndex === this.loadedProject["researchIndex"])))
     },
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });
@@ -233,17 +225,10 @@ export default {
         this.projects = this.getProjects();
       }
     );
+    this.loadedProject = null;
   },
   beforeMount() {
     this.projects = this.getProjects();
-    console.log(
-      "filter: ",
-      this.showAllProjects,
-      "active: ",
-      this.activeProjects,
-      "all: ",
-      this.allProjects
-    );
   },
   mounted() {
     this.$root.$on("collapseProjects", () => {
@@ -253,7 +238,6 @@ export default {
   beforeDestroy() {
     this.$store.dispatch("requestProjectList");
     this.unwatch();
-    this.$store.commit("setActiveProject", null)
   },
 };
 </script>

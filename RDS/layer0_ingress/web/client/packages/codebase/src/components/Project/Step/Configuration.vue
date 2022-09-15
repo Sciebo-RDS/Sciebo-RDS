@@ -1,47 +1,48 @@
 <template>
   <v-container>
-      <v-row>
-        <v-col class="mx-auto" cols="11">
-          <!-- <v-col class="mx-auto" cols="12" md="10" lg="10" xl="8"> -->
+    <v-row>
+      <v-col class="mx-auto" cols="11">
+        <!-- <v-col class="mx-auto" cols="12" md="10" lg="10" xl="8"> -->
         <v-card flat>
-      <v-card-title class="justify-center" v-translate>Configure your Project</v-card-title>
-      <!--<v-card-subtitle>Please select the services you want to publish to: </v-card-subtitle>-->
+          <v-card-title class="justify-center">
+            {{ originalResearchName ? originalResearchName : 'Project ' + (loadedProject.researchId+1) }}
+          </v-card-title>
 
-            <configuration-folder :project="project" :currentFilePath="currentFilePath"/>
-                <v-divider/>
-            <configuration-title  :project="project" />
-                <v-divider/>
-            <configuration-service  :project="project" :currentFilePath="currentFilePath"/>
-    </v-card>
-            </v-col>
-        </v-row>
+          <configuration-folder :project="project"/>
+          <v-divider />
+          <configuration-research-name />
+          <v-divider />
+          <configuration-service/>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import ConfigurationFolder from './Configuration.Folder.vue';
-import ConfigurationTitle from './Configuration.Title.vue';
-import ConfigurationService from './Configuration.Service.vue';
+import ConfigurationFolder from "./Configuration.Folder.vue";
+import ConfigurationResearchName from "./Configuration.ResearchName.vue";
+import ConfigurationService from "./Configuration.Service.vue";
 
 export default {
-  components: { ConfigurationFolder, ConfigurationTitle, ConfigurationService },
+  components: { ConfigurationFolder, ConfigurationResearchName, ConfigurationService },
   data: () => ({
     selectedPorts: [],
     currentFilePath: "",
     workingTitle: "",
-    configStep: 0,
   }),
   computed: {
     ...mapGetters({
       ports: "getUserServiceList",
       ownCloudServicename: "getOwnCloudServername",
-      modifiedProject: "getModifiedProject",
-      modifiedWorkingTitle: "getModifiedWorkingTitle",
+      allProjects: "getProjectlist",
+      loadedProject: "getLoadedProject",
+      originalResearchName: "getOriginalResearchNameForLoadedProject"
     }),
   },
   beforeMount() {
-    function portHas(ports, servicename) {
+/*     function portHas(ports, servicename) {
       for (const port of ports) {
         if (port.port === servicename) {
           return true;
@@ -56,20 +57,18 @@ export default {
 
     this.workingTitle = this.project.researchname;
 
-    this.currentFilePath = this.filepath(this.project);
-
-    window.addEventListener("message", this.eventloop);
-    if (!this.project.portIn.length) {
+    this.currentFilePath = this.filepath(this.project); */
+/* 
+    window.addEventListener("message", this.eventloop); */
+/*     if (!this.project.portIn.length) {
       this.emitChanges();
-    }
-    this.$store.commit('setModifiedResearchIndex', this.project["researchIndex"])
+    } */
   },
-  beforeDestroy() {
+/*   beforeDestroy() {
     window.removeEventListener("message", this.eventloop);
-    this.$store.commit('setModifiedResearchIndex', null)
-  },
+  }, */
   methods: {
-    eventloop(event) {
+    /* eventloop(event) {
       if (event.data.length > 0) {
         var payload = JSON.parse(event.data);
         switch (payload.event) {
@@ -77,15 +76,17 @@ export default {
             let data = payload.data;
             if (data.projectId == this.project.projectId) {
               this.currentFilePath = data.filePath;
-              this.emitChanges();
+              console.log(
+                "setModifiedFilePath: " +
+                  this.currentFilePath +
+                  " configuration.vue"
+              );
+              //this.$store.commit("setModifiedFilePath", this.currentFilePath);
             }
             break;
         }
       }
-    },/* 
-    togglePicker() {
-      this.showFilePicker(this.project.projectId, this.currentFilePath);
-    }, */
+    },
     computeChanges() {
       let strippedRemoveOut = this.computeStrippedOut(this.computeRemoveOut());
       let strippedAddOut = this.computeStrippedOut(this.computeAddOut());
@@ -144,13 +145,13 @@ export default {
         }
       }
       return add;
-    },
+    }, */
     emitChanges() {
       let payload = this.computeChanges();
       this.$emit("changePorts", payload);
       this.changes = {};
     },
-    filepath(project) {
+    /* filepath(project) {
       if (!project.portIn.length) {
         return "";
       }
@@ -163,7 +164,7 @@ export default {
       }
 
       return this.currentFilePath;
-    },
+    }, */
   },
   props: ["project"],
 };

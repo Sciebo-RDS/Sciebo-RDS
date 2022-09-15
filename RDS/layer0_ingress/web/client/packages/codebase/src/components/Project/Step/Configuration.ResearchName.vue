@@ -18,7 +18,7 @@
                             <v-col cols="auto" class="text-right">
                                 <v-icon
                                     color="error"
-                                    v-if="!(project.researchname || workingTitle)">
+                                    v-if="!hasResearchName">
                                         mdi-alert-circle-outline
                                 </v-icon>
                                 <v-icon
@@ -31,14 +31,13 @@
                         </v-row>
                     </v-list-item-title>
                     <v-list-item-subtitle class="py-2 pb-4 text-wrap">
-                        Give your project a name, to distinguish it from other projects.
+                        Give your project a name to distinguish it from other projects.
                     </v-list-item-subtitle>
                         <v-text-field
                             outlined
-                            class=""
-                            :label="project.researchname ? project.researchname : 'e.g. cat photos'"
-                            v-model="workingTitle"
-                            @keydown.esc="cancelTitleEdit"
+                            :label="originalResearchName ? originalResearchName : 'e.g. cat photos'"
+                            v-model="loadedResearchName"
+                            @keydown.esc="loadedResearchName = ''"
                             />
                 </v-list-item-content>
           </v-list-item>
@@ -51,24 +50,21 @@ import { mapGetters } from 'vuex'
 
 export default{
     computed: {
-        workingTitle: {
+        ...mapGetters({
+            allProjects: "getProjectlist",
+            originalResearchName: "getOriginalResearchNameForLoadedProject"
+        }),
+        loadedResearchName: {
             get() {
-                return this.$store.getters.getModifiedWorkingTitle
+                return this.$store.getters.getLoadedResearchName
             },
             set(value) {
-                this.$store.commit('setModifiedWorkingTitle', value)
+                this.$store.commit('setLoadedResearchName', value.trim())
             }
         },
+        hasResearchName() {
+            return !!this.loadedResearchName || !!this.originalResearchName
     },
-    methods: {
-        clearModifiedTitle() {
-            this.$store.commit('setModifiedWorkingTitle', null)
-        },
-        cancelTitleEdit() {
-            this.clearModifiedTitle()
-            workingTitle = null
-        },
     },
-    props: ["project"],
 }
 </script>
