@@ -3,9 +3,9 @@ image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3
 stages:
   - test
   - build
-  - deploy
   - documentation
   - pages
+  - deploy
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
