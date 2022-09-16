@@ -43,12 +43,13 @@ layer0-describo:
   enabled: true # enables or disable describo
   # Postgresql configuration options https://artifacthub.io/packages/helm/bitnami/postgresql/10.14.3
   postgresql: # starts its own postgresql database.
-    postgresqlDatabase: "describo"
-    postgresqlUsername: "admin"
-    postgresqlPassword: "admin"
+    postgresqlDatabase: describo
+    postgresqlUsername: admin
+    postgresqlPassword: admin
   domain: separate-domain-for-describo.your-institution.org # describo needs a separate domain from sciebords. set the exact same value later in layer0-web for VUE_APP_DESCRIBO_URL
   environment:
-    LOG_LEVEL: "info" # set debugging detail level
+    LOG_LEVEL: info # set debugging detail level
+    ADMIN_PASSWORD: IAMSECRET
 layer0-helper-describo-token-updater: # this is a helper component to communicate with describo
   enabled: true
   environment: {}

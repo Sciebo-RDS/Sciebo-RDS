@@ -48,9 +48,11 @@ global:
       MANUAL_URL: usermanual.side.com # an url to a manual you want to show to the users in ui
 layer0-describo: # describo`s specific options
   postgresql: # starts its own postgresql database.
-    postgresqlDatabase: "describo"
-    postgresqlUsername: "admin"
-    postgresqlPassword: "admin"
+    postgresqlDatabase: describo
+    postgresqlUsername: admin
+    postgresqlPassword: admin
+  environment:
+    ADMIN_PASSWORD: IAMSECRET
 layer0-web: # sciebo rds UI specific options
   environment: # env vars given into the container
     SECRET_KEY: 1234 # the password, which will be used to encrypt all user data
