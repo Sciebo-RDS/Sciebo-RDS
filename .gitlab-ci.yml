@@ -142,13 +142,11 @@ pages:
   cache:
     paths:
       - node_modules/
-      - public/
       - .cache/
   artifacts:
     untracked: true
     paths:
       - public
-      - docs
   variables:
     DOC_FOLDER: .
   rules:
