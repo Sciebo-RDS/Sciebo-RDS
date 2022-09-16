@@ -26,7 +26,7 @@ loc: dev
 
 doc: dev
 	pydocmd build
-	cat _build/pydocmd/exporter.md >> ../../../docs/docs/impl/layer2-exporter-service-docstring.md
+	cat _build/pydocmd/exporter.md >> ../../../docs/docs/layer2-exporter-service-docstring.md
 	rm -r _build
 
 

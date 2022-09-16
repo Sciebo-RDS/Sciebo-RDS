@@ -24,7 +24,7 @@ loc: dev
 
 doc: dev
 	pydocmd build
-	cat _build/pydocmd/project.md >> ../../../docs/docs/impllayer3-research-manager-docstring.md
+	cat _build/pydocmd/project.md >> ../../../docs/docs/layer3-research-manager-docstring.md
 	rm -r _build
 
 

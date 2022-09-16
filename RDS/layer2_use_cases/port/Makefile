@@ -26,7 +26,7 @@ loc: dev
 
 doc: dev
 	pydocmd build
-	cat _build/pydocmd/port-service.md >> ../../../docs/docs/impl/layer2-port-service-docstring.md
+	cat _build/pydocmd/port-service.md >> ../../../docs/docs/layer2-port-service-docstring.md
 	rm -r _build
 
 
