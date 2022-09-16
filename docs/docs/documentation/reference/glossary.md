@@ -6,7 +6,6 @@ displayed_sidebar: referenceSidebar
 
 |Term|Explanation|Example|
 |----|-----------|-------|
-|EFSS (system)|Enterprise Sync and Share System|Owncloud|
-|repository|||
-|connector|||
-|microservice|||
+|EFSS service|Enterprise Sync and Share service|Sciebo, Cernbox, …|
+|repository|a data publishing repository|Zenodo, OSF, …|
+|connector| a microservices that connects Sciebo RDS to a storage provider or repository| see [developing connectors](/documentation/development/contributing/developing-connectors)|

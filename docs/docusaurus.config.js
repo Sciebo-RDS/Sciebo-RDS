@@ -38,13 +38,12 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/Sciebo-RDS/Sciebo-RDS/docs",
+          editUrl: "https://github.com/Sciebo-RDS/Sciebo-RDS/tree/develop/docs",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/Sciebo-RDS/Sciebo-RDS/docs",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
