@@ -64,7 +64,8 @@ const config = {
         },
         items: [
           {
-            to: "/",
+            type: 'doc',
+            docId: 'about/about',
             position: "right",
             label: "About",
           },
@@ -75,21 +76,24 @@ const config = {
             label: "Getting started",
           },
           {
-            to: "documentation/configuration",
+            type: "doc",
+            docId: "documentation/configuration/index",
             position: "right",
             label: "Configuration",
           },
           {
-            to: "documentation/development",
+            type: "doc",
+            docId: "documentation/development/index",
             position: "right",
             label: "Development",
           },
           {
-            to: "documentation/reference",
+            type: "doc",
+            docId: "documentation/reference/index",
             position: "right",
             label: "Reference",
-          } /* 
-          {to: '/blog', label: 'News', position: 'right'}, */,
+          },
+          /* {to: '/blog', label: 'News', position: 'right'}, */
           {
             href: "https://github.com/Sciebo-RDS/Sciebo-RDS",
             className: "header-github-link",
