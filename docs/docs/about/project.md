@@ -2,7 +2,7 @@
 
 ---
 # Sciebo RDS
-The project sciebo RDS (Research Data Services) has set itself the goal of bringing low-threshold services and tools from research data management (RDM) and scientific analysis to where the researchers are already handling their data, i.e. the university cloud "sciebo". In order to achieve this ambitious goal, sciebo RDS will pursue the following strategies:
+The sciebo RDS (Research Data Services) project has set itself the goal of bringing low-threshold services and tools from research data management (RDM) and scientific analysis to where the researchers are already handling their data, i.e. the university cloud "sciebo". In order to achieve this ambitious goal, sciebo RDS will pursue the following strategies:
 
 * The sciebo RDS integrate external research data services, such as for the creation and the administration of data management plans.
 * They offer bridge functionalities by enabling the connection to external services via programming interfaces and connecting these to continuous, partly automatic processes and process chains.
@@ -24,4 +24,4 @@ Project Partners: ULB (WWU Münster), WWU IT (WWU Münster), Department of Compu
 
 Cooperation Partner: University of Bielefeld
 
-Duration: 2019-2022
+Duration: 2019-2023

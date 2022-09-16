@@ -9,7 +9,7 @@ Sciebo RDS allows researchers to export research data directly from Enterprise S
 
 
 
-![](../../static/img/screenshot001.png)
+[![](../../static/img/screenshot001.png)](../../static/img/screenshot001.png)
 
 
 
@@ -17,5 +17,5 @@ Sciebo RDS is developed at the [University of Münster](http://uni-muenster.de),
 
 Development of Sciebo RDS began in late 2019.
 
-Sciebo RDS runs on a Kubernetes cluster. To learn more about the requirements and how to deploy your own Sciebo RDS instance, have a look at our [Getting Started](../gettingstarted/) page or dive into the deep end by [developing a connector](../documentation/development/contributing/developing-connectors.md) for your favorite Data Respository or processing Software.
+Sciebo RDS runs on a Kubernetes cluster. To learn more about the requirements and how to deploy your own Sciebo RDS instance, have a look at our [Getting Started](../gettingstarted/) guide or dive into the deep end by [developing a connector](../documentation/development/contributing/developing-connectors.md) for your favorite Data Respository or processing Software.
 
