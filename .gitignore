@@ -22,6 +22,5 @@ values-osf.yaml
 *.intern
 *-ng.yaml
 *.enc.yaml
-.hugo_build.lock
 docs/public
 .DS_Store

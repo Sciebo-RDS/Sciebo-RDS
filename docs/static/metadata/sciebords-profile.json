@@ -1,0 +1,188 @@
+{
+    "metadata": {
+        "name": "Sciebo RDS Inputs",
+        "version": "0.1"
+    },
+    "items": {
+        "OSF Node": {
+            "metadata": {
+                "about": "OSF is a free, open platform to support your research and enable collaboration.",
+                "allowAdditionalProperties": false
+            },
+            "inputs": [
+                {
+                    "property": "name",
+                    "label": "Title",
+                    "@type": "Text",
+                    "required": true,
+                    "help": "The title of the node.",
+                    "multiple": false,
+                    "group": "important"
+                },
+                {
+                    "property": "https://www.research-data-services.org/jsonld/osfcategory",
+                    "label": "Category",
+                    "@type": "Select",
+                    "required": true,
+                    "group": "important",
+                    "multiple": false,
+                    "options": [
+                        "analysis",
+                        "communication",
+                        "data",
+                        "hypothesis",
+                        "instrumentation",
+                        "methods and measures",
+                        "procedure",
+                        "project",
+                        "software",
+                        "other"
+                    ],
+                    "help": "The category of the node, as selected by project contributors."
+                },
+                {
+                    "property": "description",
+                    "label": "Description",
+                    "@type": "TextArea",
+                    "group": "important",
+                    "help": "The description of the node."
+                }
+            ]
+        },
+        "Zenodo Deposition": {
+            "metadata": {
+                "about": "Zenodo is a general-purpose open-access repository developed under the European OpenAIRE program and operated by CERN. It allows researchers to deposit data sets, research software, reports, and any other research related digital artifacts. For each submission, a persistent digital object identifier (DOI) is minted, which makes the stored items easily citeable.",
+                "allowAdditionalProperties": false
+            },
+            "inputs": [
+                {
+                    "property": "name",
+                    "label": "Title",
+                    "@type": "Text",
+                    "required": true,
+                    "help": "The title of the deposit.",
+                    "multiple": false,
+                    "group": "important"
+                },
+                {
+                    "property": "creator",
+                    "label": "Creator",
+                    "@type": "Person",
+                    "required": true,
+                    "group": "important",
+                    "multiple": true,
+                    "help": "The creators/authors of the deposition."
+                },
+                {
+                    "property": "datePublished",
+                    "label": "publication date",
+                    "@type": "Date",
+                    "required": true,
+                    "help": "The date, when you publish.",
+                    "multiple": false,
+                    "group": "important"
+                },
+                {
+                    "property": "https://www.research-data-services.org/jsonld/zenodocategory",
+                    "label": "Upload type",
+                    "@type": "Select",
+                    "options": [
+                        "publication/book",
+                        "publication/section",
+                        "publication/conferencepaper",
+                        "publication/datamanagementplan",
+                        "publication/article",
+                        "publication/patent",
+                        "publication/preprint",
+                        "publication/deliverable",
+                        "publication/milestone",
+                        "publication/proposal",
+                        "publication/report",
+                        "publication/softwaredocumentation",
+                        "publication/taxonomictreatment",
+                        "publication/technicalnote",
+                        "publication/thesis",
+                        "publication/workingpaper",
+                        "publication/other",
+                        "poster",
+                        "presentation",
+                        "dataset",
+                        "image/figure",
+                        "image/plot",
+                        "image/drawing",
+                        "image/diagram",
+                        "image/photo",
+                        "image/other",
+                        "video",
+                        "software",
+                        "lesson",
+                        "other"
+                    ],
+                    "required": true,
+                    "help": "The category of the deposition, as selected by project contributors.",
+                    "multiple": false,
+                    "group": "important"
+                },
+                {
+                    "property": "description",
+                    "label": "Description",
+                    "@type": "TextArea",
+                    "required": true,
+                    "help": "The description of the deposit. Allows html.",
+                    "multiple": false,
+                    "group": "important"
+                }
+            ]
+        }
+    },
+    "typeDefinitions": {
+        "Person": {
+            "metadata": {
+                "allowAdditionalProperties": true
+            },
+            "inputs": [
+                {
+                    "property": "name",
+                    "@type": "Text",
+                    "required": true,
+                    "multiple": false,
+                    "group": "important"
+                },
+                {
+                    "property": "familyName",
+                    "@type": "Text",
+                    "multiple": false
+                },
+                {
+                    "property": "givenName",
+                    "@type": "Text",
+                    "multiple": false
+                },
+                {
+                    "property": "contactPoint",
+                    "@type": "Text",
+                    "multiple": false
+                },
+                {
+                    "property": "email",
+                    "@type": "Text",
+                    "multiple": false
+                },
+                {
+                    "property": "affiliation",
+                    "@type": "Organization",
+                    "multiple": true,
+                    "required": true,
+                    "group": "important"
+                },
+                {
+                    "property": "http://purl.org/spar/pro/withRole",
+                    "label": "Role",
+                    "@type": "Role",
+                    "multiple": true
+                }
+            ]
+        }
+    },
+    "dataPacks": []
+}
