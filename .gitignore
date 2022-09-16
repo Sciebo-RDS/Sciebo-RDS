@@ -22,4 +22,5 @@ values-osf.yaml
 *.intern
 *-ng.yaml
 *.enc.yaml
-docs/public/
+docs/public
+.DS_Store

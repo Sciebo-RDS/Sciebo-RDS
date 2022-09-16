@@ -22,8 +22,6 @@ service:
   port: 80
   targetPort: 80
 
-# domain for describo
-domain: localhost
 ingress:
   path: /
   annotations:
@@ -66,8 +64,6 @@ persistence:
 
 environment:
   LOG_LEVEL: "info"
-
-api_secret: "IAMSECRET"
 
 # domains for webdav addresses (currently owncloud only)
 domains:

@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   registry: zivgitlab.wwu.io
   repository: sciebo-rds/sciebo-rds/port_helper_describo_token_updater
-  tag: latest
+  tag: release
   pullPolicy: Always
 
 labels:
@@ -38,5 +38,4 @@ affinity: {}
 
 environment:
   DESCRIBO_API_ENDPOINT: http://layer0-describo:80/api/session/application
-  
-api_secret: XYZ
+

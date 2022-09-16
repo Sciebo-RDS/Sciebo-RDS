@@ -1,0 +1,12 @@
+dependencies:
+- name: cassandra
+  repository: file://charts/cassandra
+  version: 0.15.2
+- name: elasticsearch
+  repository: file://charts/elasticsearch
+  version: 7.8.1
+- name: kafka
+  repository: file://charts/kafka
+  version: 0.20.6
+digest: sha256:c83f2652150b6feb9e1637810bcb9ac271917958b7776792f28d3eb210eb7c2b
+generated: "2022-08-18T15:36:39.919682019+02:00"

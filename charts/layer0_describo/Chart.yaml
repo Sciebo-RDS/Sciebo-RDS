@@ -19,7 +19,7 @@ icon: https://www.research-data-services.org/img/sciebo.png
 dependencies:
   - name: postgresql
     version: 10.14.3
-    repository: https://charts.bitnami.com/bitnami
+    repository: file://../postgresql
     tags:
       - storage
   - name: common

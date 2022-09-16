@@ -1,97 +1,52 @@
 <template>
   <v-container>
-    <v-card flat>
-      <v-card-title v-translate>Configure your Project</v-card-title>
-      <!--<v-card-subtitle>Please select the services you want to publish to: </v-card-subtitle>-->
-      <v-row>
-        <v-col>
-          <v-card
-            flat
-            outlined
-            class="mb-12 text-center d-flex flex-column"
-            height="150px"
+    <v-row>
+      <v-col class="mx-auto" cols="11">
+        <!-- <v-col class="mx-auto" cols="12" md="10" lg="10" xl="8"> -->
+        <v-card flat>
+          <v-card-title class="justify-center" v-translate
+            >Configure your Project</v-card-title
           >
-            <v-card-subtitle v-translate>
-              1. Which folder do you want to publish?
-            </v-card-subtitle>
-            <v-spacer></v-spacer>
-            <v-card-actions class="mb-5 pl-5">
-              <v-btn @click="togglePicker">
-                <translate> Select Folder </translate>
-              </v-btn>
+          <!--<v-card-subtitle>Please select the services you want to publish to: </v-card-subtitle>-->
 
-              <div class="pl-4 pt-0" v-if="!!currentFilePath">
-                <translate
-                  :translate-params="{
-                    filePath: currentFilePath,
-                  }"
-                >
-                  Current Folder: %{filePath}
-                </translate>
-              </div>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card
-            flat
-            outlined
-            class="mb-12 text-center d-flex flex-column"
-            height="150px"
-          >
-            <v-card-subtitle v-translate>
-              2. Which Services do you want to publish to?
-            </v-card-subtitle>
-            <v-spacer></v-spacer>
-            <v-card-actions>
-              <v-select
-                v-model="selectedPorts"
-                @change="emitChanges"
-                :items="
-                  ports.filter(
-                    (i) => !i['servicename'].startsWith('port-owncloud')
-                  )
-                "
-                :item-text="(item) => parseServicename(item.servicename)"
-                :item-value="(item) => item"
-                :label="$gettext('Select your Services')"
-                multiple
-                chips
-              >
-              </v-select>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-card>
+          <configuration-folder
+            :project="project"
+            :currentFilePath="currentFilePath"
+          />
+          <v-divider />
+          <configuration-title :project="project" />
+          <v-divider />
+          <configuration-service
+            :project="project"
+            :currentFilePath="currentFilePath"
+          />
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import ConfigurationFolder from "./Configuration.Folder.vue";
+import ConfigurationTitle from "./Configuration.Title.vue";
+import ConfigurationService from "./Configuration.Service.vue";
 
 export default {
+  components: { ConfigurationFolder, ConfigurationTitle, ConfigurationService },
   data: () => ({
     selectedPorts: [],
     currentFilePath: "",
     workingTitle: "",
+    configStep: 0,
   }),
   computed: {
     ...mapGetters({
       ports: "getUserServiceList",
       ownCloudServicename: "getOwnCloudServername",
+      modifiedProject: "getModifiedProject",
+      modifiedWorkingTitle: "getModifiedWorkingTitle",
     }),
-    selectAllPorts() {
-      return this.selectedPorts.length === this.ports.length;
-    },
-    selectSomePorts() {
-      return this.selectedPorts.length > 0 && !this.selectAllPorts;
-    },
-    icon() {
-      if (this.selectAllPorts) return "mdi-close-box";
-      if (this.selectSomePorts) return "mdi-minus-box";
-      return "mdi-checkbox-blank-outline";
-    },
   },
   beforeMount() {
     function portHas(ports, servicename) {
@@ -110,6 +65,7 @@ export default {
     this.workingTitle = this.project.researchname;
 
     this.currentFilePath = this.filepath(this.project);
+
     window.addEventListener("message", this.eventloop);
     if (!this.project.portIn.length) {
       this.emitChanges();
@@ -127,14 +83,16 @@ export default {
             let data = payload.data;
             if (data.projectId == this.project.projectId) {
               this.currentFilePath = data.filePath;
-              this.emitChanges();
+              console.log(
+                "setModifiedFilePath: " +
+                  this.currentFilePath +
+                  " configuration.vue"
+              );
+              //this.$store.commit("setModifiedFilePath", this.currentFilePath);
             }
             break;
         }
       }
-    },
-    togglePicker() {
-      this.showFilePicker(this.project.projectId, this.currentFilePath);
     },
     computeChanges() {
       let strippedRemoveOut = this.computeStrippedOut(this.computeRemoveOut());
@@ -213,9 +171,6 @@ export default {
       }
 
       return this.currentFilePath;
-    },
-    alert(msg) {
-      alert(msg);
     },
   },
   props: ["project"],

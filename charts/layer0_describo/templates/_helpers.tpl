@@ -32,21 +32,6 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
-Return the proper describo secret
-*/}}
-{{- define "apiSecret" -}}
-{{- $secret := .Values.api_secret -}}
-{{- if .Values.global }}
-    {{- if .Values.global.describo }}
-        {{- if .Values.global.describo.api_secret }}    
-            {{- $secret = .Values.global.describo.api_secret -}}
-        {{- end -}}
-    {{- end -}}
-{{- end -}}
-{{- $secret -}}
-{{- end -}}
-
-{{/*
 Return the proper describo image name
 */}}
 {{- define "image" -}}

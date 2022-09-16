@@ -147,7 +147,7 @@ pages:
     paths:
       - public
   variables:
-    DOC_FOLDER: dev
+    DOC_FOLDER: .
   rules:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
     - if: '$CI_COMMIT_BRANCH == "release"'
@@ -158,7 +158,7 @@ pages:
     - apk add --update --no-cache --allow-untrusted python3 py3-pip rsync
     - python3 -m pip install awscli
   script:
-    - mkdir -p ./public/dev
+    - mkdir -p ./public
     - cd docs
     - |
       if [ "$CI_COMMIT_BRANCH"  == "$CI_DEFAULT_BRANCH" ]; then
