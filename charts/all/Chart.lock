@@ -1,7 +1,7 @@
 dependencies:
 - name: layer0-describo
   repository: file://../layer0_describo
-  version: 0.2.6
+  version: 0.2.7
 - name: layer0-web
   repository: file://../layer0_web
   version: 0.3.2
@@ -44,5 +44,5 @@ dependencies:
 - name: redis
   repository: file://../redis
   version: 16.13.2
-digest: sha256:c2b9d360775597ca1f232428b57627d583419038d5ae349ed8f2c1739f1e1bb3
-generated: "2022-09-16T13:47:53.800348385+02:00"
+digest: sha256:03253dd88fe22878c11744a52915f9c3637d059cbd0692b6abc2a0c73ed68102
+generated: "2022-09-16T15:12:29.758628239+02:00"

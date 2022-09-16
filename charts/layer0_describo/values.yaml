@@ -63,7 +63,8 @@ persistence:
   annotations: {}
 
 environment:
-  LOG_LEVEL: "info"
+  LOG_LEVEL: info
+  ADMIN_PASSWORD: adminpass
 
 # domains for webdav addresses (currently owncloud only)
 domains:

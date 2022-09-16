@@ -2,7 +2,7 @@ global:
   # creates a namespace on its own
   namespace: 
     create: false
-    name: "research-data-services"
+    name: research-data-services
   # will be used for ingress host
   # edit here if you changed it in create_certs.sh and wants to use another domain
   #ingress:
@@ -40,12 +40,13 @@ layer0-describo:
   # Postgresql configuration options https://artifacthub.io/packages/helm/bitnami/postgresql/10.14.3
   postgresql:
     # starts its own postgresql database.
-    postgresqlDatabase: "describo"
-    postgresqlUsername: "admin"
-    postgresqlPassword: "admin"
+    postgresqlDatabase: describo
+    postgresqlUsername: admin
+    postgresqlPassword: admin
   # describo needs a separate domain from sciebords. set the exact same value later in layer0-web for VUE_APP_DESCRIBO_URL
   domain: separate-domain-for-describo.your-institution.org
   environment:
+    ADMIN_PASSWORD: your-admin-password
     LOG_LEVEL: "info"
 layer0-helper-describo-token-updater:
   enabled: true
@@ -88,7 +89,7 @@ layer2-exporter-service: {}
 layer2-port-service:
   environment:
     TOKENSERVICE_STATE_SECRET: ABC
-    IGNORE_PROJECTS: "True" # this ignores the pull algo for external projects
+    IGNORE_PROJECTS: True # this ignores the pull algo for external projects
 layer2-metadata-service: {}
 layer3-research-manager: {}
 layer3-token-storage: {}
