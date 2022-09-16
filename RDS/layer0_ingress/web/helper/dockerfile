@@ -1,4 +1,4 @@
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.62.1 as planner
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/rust:1.62.1 as builder
 WORKDIR /app
 COPY . .
 RUN cargo build --release --bin helper
