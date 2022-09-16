@@ -32,7 +32,10 @@ def getSessionId(access_token=None, folder=None):
         "name": informations["cloudID"],
         "session": {
             "owncloud": data
-        }
+        },
+        "profile": {
+            "file": "type-definitions.json",
+        },
     }
 
     headers = {
