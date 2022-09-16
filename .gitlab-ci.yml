@@ -137,6 +137,7 @@ test:docusaurus:
 
 pages:
   image: node:lts-alpine
+  stage: pages
   # allow caching for faster deployment
   cache:
     paths:
@@ -144,8 +145,10 @@ pages:
       - public/
       - .cache/
   artifacts:
+    untracked: true
     paths:
       - public
+      - docs
   variables:
     DOC_FOLDER: .
   rules:
