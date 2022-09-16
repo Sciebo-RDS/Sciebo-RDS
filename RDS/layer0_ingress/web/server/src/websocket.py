@@ -524,6 +524,8 @@ class RDSNamespace(Namespace):
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))
 
     def on_requestSessionId(self, jsonData=None):
+        app.logger.debug("got request for describo sessionId, data: {}", jsonData)
+        
         global rc
         if jsonData is None:
             jsonData = {}
@@ -534,12 +536,15 @@ class RDSNamespace(Namespace):
             informations = session["informations"]
             _, _, servername = str(informations.get("cloudID")).rpartition("@")
             servername = servername.translate(trans_tbl)
+            app.logger.debug("go to take token from tokenstore")
 
             token = json.loads(
                 httpManager.makeRequest(
                     "getServiceForUser", {"servicename": f"port-owncloud-{servername}"}
                 )
             )["data"]["access_token"]
+            
+            app.logger.debug("got token")
             describoObj = getSessionId(token, jsonData.get("folder"))
             sessionId = describoObj["sessionId"]
 
