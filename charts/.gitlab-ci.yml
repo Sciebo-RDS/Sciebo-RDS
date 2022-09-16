@@ -60,4 +60,4 @@ deploy_doc:
     - mkdir -p ~/.kube
     - cat "$KUBE_CONFIG_DOC" | base64 -d - > ~/.kube/config
     - export KUBECONFIG=~/.kube/config
-    - kubectl -n sciebords delete pod -l=app.kubernetes.io/instance=doc
+    - kubectl delete pod -l=app.kubernetes.io/instance=doc
