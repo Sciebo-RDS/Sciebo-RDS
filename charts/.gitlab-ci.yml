@@ -50,3 +50,14 @@ deploy:
     - cat "$KUBE_CONFIG" | base64 -d - > ~/.kube/config
     - export KUBECONFIG=~/.kube/config
     - helm secrets upgrade -i sciebords charts/all --values $HELM_DEPLOY_VALUES --set-string global.image.tag=$CI_PIPELINE_ID
+
+deploy_doc:
+  extends: .deploy
+  image: zivgitlab.wwu.io/ulb/devops/skaffold:main
+  rules:
+  - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - mkdir -p ~/.kube
+    - cat "$KUBE_CONFIG_DOC" | base64 -d - > ~/.kube/config
+    - export KUBECONFIG=~/.kube/config
+    - kubectl -n sciebords delete pod -l=app.kubernetes.io/instance=doc
