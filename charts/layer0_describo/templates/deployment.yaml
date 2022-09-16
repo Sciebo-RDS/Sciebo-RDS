@@ -42,11 +42,11 @@ spec:
               subPath: configuration.json
               readOnly: true
             - name: describo-configuration
-              mountPath: /srv/type-definitions-lookup.json
+              mountPath: /srv/profiles/type-definitions-lookup.json
               subPath: type-definitions-lookup.json
               readOnly: true
             - name: describo-configuration
-              mountPath: /srv/type-definitions.json
+              mountPath: /srv/profiles/type-definitions.json
               subPath: type-definitions.json
               readOnly: true
           envFrom:
