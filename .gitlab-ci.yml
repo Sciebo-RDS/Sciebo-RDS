@@ -162,7 +162,7 @@ pages:
     - mkdir -p ./public
     - cd docs
     - mv ./docs/layer*.md ./docs/impl/
-    - find ./docs -name "layer*.md" -exec mv '{}' ./docs/impl/ \;
+    - find ./docs -maxdepth 1 -name "layer*.md" -exec mv '{}' ./docs/impl/ \;
     - yarn install
     - yarn build:gitlab
     - rsync -avh ./public/ ../public/${DOC_FOLDER}
