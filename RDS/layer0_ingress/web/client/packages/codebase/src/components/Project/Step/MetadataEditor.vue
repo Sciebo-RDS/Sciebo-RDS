@@ -40,6 +40,7 @@ export default {
   computed: {
     ...mapGetters({
       ownCloudServicename: "getOwnCloudServername",
+      loadedFilePath: "getLoadedFilePath",
     }),
     editor() {
       return this.$refs.describoWindow.contentWindow;
@@ -53,23 +54,6 @@ export default {
         sid: this.sessionId,
       });
       return `${this.$config.describo}?${query}`;
-    },
-    filePath() {
-      if (this.project.portIn.length == 0) {
-        // TODO add port-owncloud default to project!
-        // FIXME add port-owncloud, when creating a new project. Not here!
-        return "";
-      }
-
-      const service = this.getService(
-        this.project.portIn,
-        "port-owncloud-" + this.ownCloudServicename
-      );
-      if (service !== undefined) {
-        return service.properties.customProperties.filepath;
-      }
-
-      return "";
     },
   },
   methods: {
@@ -89,7 +73,7 @@ export default {
                 event: "load",
                 data: {
                   projectId: this.project.projectId,
-                  filePath: this.filePath,
+                  filePath: this.loadedFilePath,
                 },
               }),
               "*"
@@ -102,7 +86,7 @@ export default {
                 event: "save",
                 data: {
                   projectId: this.project.projectId,
-                  filePath: this.filePath,
+                  filePath: this.loadedFilePath,
                   fileData: this.fileData,
                 },
               }),
@@ -132,7 +116,7 @@ export default {
     console.log("request describo sessionId");
     this.$socket.client.emit(
       "requestSessionId",
-      { folder: this.filePath },
+      { folder: this.loadedFilePath },
       (sessionId) => {
         this.loadingStep = 1;
         this.sessionId = sessionId;
