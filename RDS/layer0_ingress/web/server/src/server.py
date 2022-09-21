@@ -231,6 +231,12 @@ def index(path):
             "SUPPORT_EMAIL": os.getenv("SUPPORT_EMAIL"),
             "MANUAL_URL": os.getenv("MANUAL_URL"),
         }
+        session["informations"] = {
+            "UID" : "1234",
+            "email" : "user@user.com",
+            "name" : "someUser" ,
+            "cloudID" : "cloud@cloud@localhost:8000"
+        }
         user_store[user.get_id()] = user.to_dict()
         login_user(user)
 
