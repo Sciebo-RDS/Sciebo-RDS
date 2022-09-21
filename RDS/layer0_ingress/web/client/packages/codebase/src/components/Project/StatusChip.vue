@@ -1,6 +1,14 @@
 <template>
   <v-card flat color="transparent">
-    <v-chip v-if="this.status <= 2"
+    <v-chip v-if="this.status == 1"
+      color="warning"
+      class="caption"
+      outlined
+      label
+      small>
+      <translate>new</translate>
+    </v-chip>
+    <v-chip v-if="this.status == 2"
       color="info"
       class="caption"
       outlined

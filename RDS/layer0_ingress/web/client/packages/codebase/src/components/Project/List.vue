@@ -34,17 +34,18 @@
                         <v-list-item color="grey darken-3" style="border-bottom: 1px solid #ccc" >
                         <v-list-item-content
                             class="ma-1">
-                            <v-row align="start">
+                            <v-row align="start" style="flex-wrap: nowrap; max-width: 100%;">
                               <!-- TODO: fix width -->
-                            <v-col class="caption">
-                                Project
+                            <v-col class="caption flex-grow-1 flex-shrink-1" cols="auto"  style="overflow: hidden;">
+                              
+                                Project {{p.researchIndex}}
                                 <v-list-item-title class="my-1">
-                                    <div class=" text-subtitle2 text-truncate d-inline-block" style="max-width: 25em!important">
-                                {{ !!p.researchname ? p.researchname : 'Project ' + (p.researchIndex+1) }}
+                                    <div :class="!!p.researchname ? '' : 'font-italic' " style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                {{ !!p.researchname ? p.researchname : 'New Project' }}
                                     </div>
                             </v-list-item-title>
                             </v-col>
-                            <v-col class="d-flex flex-row-reverse">
+                            <v-col cols="auto" class="flex-grow-0 flex-shrink-0" style="padding-right: 0">
                                 <ProjectStatusChip
                                         v-bind:status="p.status"
                                     />
