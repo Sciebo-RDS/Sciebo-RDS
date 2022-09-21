@@ -208,8 +208,9 @@ export default {
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });
     },
-    addProject() {
-      this.$store.dispatch("createProject");
+    async addProject() {
+      await this.$store.dispatch("createProject");
+      loadProject(activeProjects.at(-1));
     },
   },
   created() {

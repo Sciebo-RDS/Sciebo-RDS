@@ -197,6 +197,7 @@ export default {
     },
     createProject() {
       this._vm.$socket.client.emit("createResearch");
+      this.dispatch("requestProjectList");
     },
     saveProject(context, data) {
       data.researchIndex = data.id;
