@@ -47,7 +47,7 @@
                             </v-col>
                             <v-col cols="auto" class="flex-grow-0 flex-shrink-0" style="padding-right: 0">
                                 <ProjectStatusChip
-                                        v-bind:status="p.status"
+                                        v-bind:status="!!p.researchname ? p.status : 0"
                                     />
                             </v-col>
                             </v-row>
@@ -210,7 +210,7 @@ export default {
     },
     async addProject() {
       await this.$store.dispatch("createProject");
-      loadProject(activeProjects.at(-1));
+      this.loadProject(activeProjects.at(-1));
     },
   },
   created() {
