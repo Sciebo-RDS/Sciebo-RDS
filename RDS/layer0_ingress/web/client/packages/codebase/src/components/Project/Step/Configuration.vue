@@ -4,8 +4,8 @@
       <v-col class="mx-auto" cols="11">
         <!-- <v-col class="mx-auto" cols="12" md="10" lg="10" xl="8"> -->
         <v-card flat>
-          <v-card-title class="justify-center">
-            {{ originalResearchName ? originalResearchName : 'Project ' + (loadedProject.researchId+1) }}
+          <v-card-title class="justify-center" :class="[originalResearchName ? '' : 'font-italic']">
+            {{ originalResearchName ? originalResearchName : 'New Project ' }}
           </v-card-title>
 
           <configuration-folder :project="project"/>

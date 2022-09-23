@@ -57,6 +57,14 @@ export default {
       return `${this.$config.describo}?${query}`;
     },
   },
+  watch: {
+    loadedFilePath(newLoadedFilePath, oldLoadedFilePath){
+      if (!!newLoadedFilePath){
+        console.log("loadedFilePath changed, getting Describo Session");
+        this.getDescriboSession();
+      }
+    },
+  },
   methods: {
     loaded() {
       console.log("iframe loaded");
@@ -112,41 +120,44 @@ export default {
         }
       }
     },
+    getDescriboSession() {
+      console.log("request describo sessionId");
+      this.$socket.client.emit(
+        "requestSessionId",
+        { folder: this.loadedFilePath },
+        (sessionId) => {
+          this.loadingStep = 1;
+          this.sessionId = sessionId;
+          console.log("got sessionId", sessionId);
+        }
+      );
+
+      this.standardLoadingText = this.$gettext("Editor loading");
+      this.loadingText = this.standardLoadingText;
+      let counter = 0;
+      let loader = setInterval(() => {
+        if (!this.loading) {
+          clearInterval(loader);
+        }
+
+        if (counter > 30) {
+          this.loadingText = this.$gettext(
+            "Error while loading. Please contact an administator."
+          );
+          clearInterval(loader);
+        } else {
+          if (counter % 4 > 0) {
+            this.loadingText += ".";
+          } else {
+            this.loadingText = this.standardLoadingText;
+          }
+          counter += 1;
+        }
+      }, 1000);
+    }
   },
   mounted() {
-    console.log("request describo sessionId");
-    this.$socket.client.emit(
-      "requestSessionId",
-      { folder: this.loadedFilePath },
-      (sessionId) => {
-        this.loadingStep = 1;
-        this.sessionId = sessionId;
-        console.log("got sessionId", sessionId);
-      }
-    );
-
-    this.standardLoadingText = this.$gettext("Editor loading");
-    this.loadingText = this.standardLoadingText;
-    let counter = 0;
-    let loader = setInterval(() => {
-      if (!this.loading) {
-        clearInterval(loader);
-      }
-
-      if (counter > 30) {
-        this.loadingText = this.$gettext(
-          "Error while loading. Please contact an administator."
-        );
-        clearInterval(loader);
-      } else {
-        if (counter % 4 > 0) {
-          this.loadingText += ".";
-        } else {
-          this.loadingText = this.standardLoadingText;
-        }
-        counter += 1;
-      }
-    }, 1000);
+    this.getDescriboSession();
   },
   created() {
     window.addEventListener("message", this.eventloop);

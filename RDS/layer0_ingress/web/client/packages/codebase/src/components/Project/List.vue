@@ -194,7 +194,7 @@ export default {
   },
   watch: {
     originalProject(newOriginalProject, oldOriginalProject){
-      if (!!newOriginalProject && newOriginalProject["researchId"] === oldOriginalProject["researchId"] &&
+      if (!!newOriginalProject && !!oldOriginalProject && newOriginalProject["researchId"] === oldOriginalProject["researchId"] &&
       JSON.stringify(newOriginalProject) !== JSON.stringify(oldOriginalProject)){
         console.log("reloading Project")
         this.reloadProject();
