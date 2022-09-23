@@ -201,11 +201,12 @@ export default {
       }
       console.log("not reloading Project")
     },
-/*     activeProjects(newActiveProjects, oldActiveProjects){
+     activeProjects(newActiveProjects, oldActiveProjects){
       if (newActiveProjects.length > oldActiveProjects.length) {
         this.loadProject(this.activeProjects.at(-1));
+        console.log("load newly created Project")
       }
-    } */
+    }
   },
   methods: {
     getProjects() {
@@ -243,7 +244,6 @@ export default {
       (state, getters) => getters.getProjectlist,
       () => {
         this.projects = this.getProjects();
-        this.loadProject(this.activeProjects.at(-1));
       }
     );
     this.loadedProject = null;
