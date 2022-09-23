@@ -210,7 +210,7 @@ export default {
     },
     async addProject() {
       await this.$store.dispatch("createProject");
-      this.loadProject(activeProjects.at(-1));
+      this.loadProject(this.activeProjects.at(-1));
     },
   },
   created() {

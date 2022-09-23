@@ -216,14 +216,14 @@ export default {
         }
       }
     },
-    sendChanges() {
+    async sendChanges() {
       if (!!this.loadedResearchName && this.originalResearchName !== this.loadedResearchName) {
         this.$store.dispatch("changeResearchname", {
           researchIndex: this.loadedProject["researchIndex"],
           researchname: this.loadedResearchName,
         });
       }
-        this.$store.dispatch("changePorts", this.portChanges);
+        await this.$store.dispatch("changePorts", this.portChanges);
         this.$emit("reloadProject");
     },
     archiveProject(rId) {
