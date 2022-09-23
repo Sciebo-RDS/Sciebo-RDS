@@ -162,6 +162,7 @@ export default {
       allProjects: "getProjectlist",
       showAllProjects: "showAllProjects",
       loadedProject: "getLoadedProject",
+      loadedResearchId: "getLoadedResearchId",
     }),
     ...mapState({
       userservicelist: (state) => state.RDSStore.userservicelist,
@@ -173,6 +174,9 @@ export default {
         set(value) {
             this.$store.commit('setLoadedProject', value)
         }
+    },
+    originalProject() {
+      return !!this.loadedProject ? this.allProjects.filter((p) => p.researchId === this.loadedResearchId)[0] : null
     },
     activeProjects() {
       return this.allProjects.filter((project) => project.status < 3);
@@ -187,6 +191,21 @@ export default {
       }
       return false;
     },
+  },
+  watch: {
+    originalProject(newOriginalProject, oldOriginalProject){
+      if (!!newOriginalProject && newOriginalProject["researchId"] === oldOriginalProject["researchId"] &&
+      JSON.stringify(newOriginalProject) !== JSON.stringify(oldOriginalProject)){
+        console.log("reloading Project")
+        this.reloadProject();
+      }
+      console.log("not reloading Project")
+    },
+/*     activeProjects(newActiveProjects, oldActiveProjects){
+      if (newActiveProjects.length > oldActiveProjects.length) {
+        this.loadProject(this.activeProjects.at(-1));
+      }
+    } */
   },
   methods: {
     getProjects() {
@@ -208,9 +227,8 @@ export default {
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });
     },
-    async addProject() {
-      await this.$store.dispatch("createProject");
-      this.loadProject(this.activeProjects.at(-1));
+    addProject() {
+      this.$store.dispatch("createProject");
     },
   },
   created() {
@@ -225,6 +243,7 @@ export default {
       (state, getters) => getters.getProjectlist,
       () => {
         this.projects = this.getProjects();
+        this.loadProject(this.activeProjects.at(-1));
       }
     );
     this.loadedProject = null;

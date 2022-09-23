@@ -195,9 +195,9 @@ export default {
       const projectId = data.projectId;
       this._vm.$socket.client.emit("setLocation", data);
     },
-    async createProject() {
-      await this._vm.$socket.client.emit("createResearch");
-      await this.dispatch("requestProjectList");
+    createProject() {
+      this._vm.$socket.client.emit("createResearch");
+      this.dispatch("requestProjectList");
     },
     saveProject(context, data) {
       data.researchIndex = data.id;
@@ -207,13 +207,13 @@ export default {
       data.researchIndex = data.id;
       this._vm.$socket.client.emit("removeResearch", data);
     },
-    async changePorts(context, data) {
-      await this._vm.$socket.client.emit("changePorts", JSON.stringify(data));
-      await this.dispatch("requestProjectList");
+    changePorts(context, data) {
+      this._vm.$socket.client.emit("changePorts", JSON.stringify(data));
+      this.dispatch("requestProjectList");
     },
     async changeResearchname(context, data) {
-      await this._vm.$socket.client.emit("changeResearchname", JSON.stringify(data));
-      await this.dispatch("requestProjectList");
+      this._vm.$socket.client.emit("changeResearchname", JSON.stringify(data));
+      this.dispatch("requestProjectList");
     },
     triggerSynchronization(context, data, fn) {
       console.log("trigger sync data: ", data);
