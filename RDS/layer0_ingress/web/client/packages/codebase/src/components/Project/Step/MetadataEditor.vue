@@ -12,16 +12,17 @@
         </v-col>
       </v-row>
     </v-container>
+    <div style="height: calc(100vh - 16em)">
     <iframe
       v-if="loadingStep >= 1"
       v-show="loadingStep >= 2"
       ref="describoWindow"
       :src="iframeSource"
-      height="500px"
       width="100%"
-      style="border: 0px; left: 0px;"
+      style="border: 0px; left: 0px; height: 100%"
       @load="loaded()"
     ></iframe>
+    </div>
   </div>
 </template>
 

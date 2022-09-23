@@ -6,7 +6,7 @@
       outlined
       label
       small>
-      <translate>unnamed</translate>
+      unnamed
     </v-chip>
     <v-chip v-if="this.status >= 1 && this.status <= 2"
       color="info"
@@ -14,7 +14,7 @@
       outlined
       label
       small>
-      <translate>draft</translate>
+      draft
     </v-chip>
     <v-chip
       v-else-if="this.status == 3"
@@ -23,7 +23,7 @@
       outlined
       label
       small
-      ><translate>published</translate>
+      >published
       <v-icon
         class="ml-1">
         mdi-lock
@@ -36,7 +36,7 @@
       small
       label
       class="caption"
-      ><translate>archived</translate>
+      >archived
       <v-icon
         class="ml-1">
         mdi-lock
