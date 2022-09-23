@@ -21,6 +21,7 @@
       width="100%"
       style="border: 0px; left: 0px; height: 100%"
       @load="loaded()"
+      :key="iframeUpdate"
     ></iframe>
     </div>
   </div>
@@ -37,6 +38,7 @@ export default {
     loadingText: "",
     loadingStep: 0,
     sessionId: undefined,
+    iframeUpdate: 0,
   }),
   computed: {
     ...mapGetters({
@@ -131,6 +133,9 @@ export default {
           console.log("got sessionId", sessionId);
         }
       );
+
+      // Hack to update iFrame when new Project is loaded, TODO: find a better way
+      this.iframeUpdate = this.iframeUpdate +1;
 
       this.standardLoadingText = this.$gettext("Editor loading");
       this.loadingText = this.standardLoadingText;
