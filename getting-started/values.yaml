@@ -31,6 +31,8 @@ layer0-describo:
     postgresqlDatabase: describo
     postgresqlUsername: admin
     postgresqlPassword: admin
+layer0-owncloud:
+  enabled: true
 layer0-web:
   environment:
     # the password, which will be used to encrypt all user data

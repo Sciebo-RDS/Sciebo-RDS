@@ -56,6 +56,8 @@ layer0-describo: # describo`s specific options
 layer0-web: # sciebo rds UI specific options
   environment: # env vars given into the container
     SECRET_KEY: 1234 # the password, which will be used to encrypt all user data
+layer1-port-owncloud:
+  enabled: true
 layer1-port-zenodo: # zenodo`s specific options
   enabled: true # here you could disable it, but who would like to do it?
   environment: # needs to be adjusted to correct values
