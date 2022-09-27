@@ -8,4 +8,4 @@ You also have to use the `Confidential` client type.
 
 2. The first step will give you a Zenodo `Client ID` and `Client secret`.   
 
-Place it in your `values.yaml` as shown in the next section, [Configuting Kubernetes](./kubernetes.md).
+Place it in your `values.yaml` as shown in the next section, [Configuring Kubernetes](./kubernetes.md).

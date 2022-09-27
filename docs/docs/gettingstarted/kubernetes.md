@@ -9,7 +9,7 @@ displayed_sidebar: gettingstartedSidebar
 ## Requirements
 
 - Access to a Kubernetes cluster (minikube, gcp, etc. - all are fine)
-- Knowdledge of different services, like your Owncloud instance
+- Knowledge of different services, like your Owncloud instance
 
 We use [helm](https://helm.sh) to handle dependencies and configuration.
 
