@@ -187,6 +187,13 @@ paths:
                   type: object
                 filename:
                   type: string
+                  description: Only in active mode
+                folder:
+                  type: string
+                  description: |-
+                    Only in passive mode
+
+                    This is the folder, the user has provided himself.
     delete:
       summary: ''
       responses:
