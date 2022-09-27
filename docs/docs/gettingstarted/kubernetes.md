@@ -18,7 +18,7 @@ We use [helm](https://helm.sh) to handle dependencies and configuration.
 1. Add our helm repository to your list.
 
 ```bash
-$ helm repo add sciebords https://research-data-services.org/charts
+$ helm repo add sciebords https://www.research-data-services.org/charts/stable/
 ```
 
 ---
