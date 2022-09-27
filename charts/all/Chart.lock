@@ -16,7 +16,7 @@ dependencies:
   version: 0.2.2
 - name: layer1-port-owncloud
   repository: file://../layer1_port_owncloud
-  version: 0.3.1
+  version: 0.3.2
 - name: layer1-port-reva
   repository: file://../layer1_port_reva
   version: 0.2.0
@@ -44,5 +44,5 @@ dependencies:
 - name: redis
   repository: file://../redis
   version: 16.13.2
-digest: sha256:03253dd88fe22878c11744a52915f9c3637d059cbd0692b6abc2a0c73ed68102
-generated: "2022-09-16T15:12:29.758628239+02:00"
+digest: sha256:03d95f0d2f7cad93980cc0a628ca2dc48070022d38caf50f84339b9a225799ef
+generated: "2022-09-27T15:10:11.029034409+02:00"
