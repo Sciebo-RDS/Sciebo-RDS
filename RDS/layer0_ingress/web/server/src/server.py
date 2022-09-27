@@ -199,6 +199,7 @@ def login():
         "error": "Given informations weren`t valid or some keys were missing.",
         "errorCode": "UserInformationsNotValid",
     }
+    app.logger.error("error occured: {}".format(error))
     return jsonify(error), 401
 
 
