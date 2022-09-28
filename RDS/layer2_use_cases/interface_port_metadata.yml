@@ -129,7 +129,7 @@ paths:
             examples:
               example-1:
                 value:
-                  userId: <port-name>://<username>:<password>
+                  userId: '<port-name>://<username>:<password>'
                   metadata: {}
         description: The ro crate file itself will be send in metadata field.
     put:
@@ -298,7 +298,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Project'
-              examples: []
       parameters: []
       requestBody:
         content:
@@ -308,6 +307,10 @@ paths:
               properties:
                 userId:
                   $ref: '#/components/schemas/portusername'
+            examples:
+              example-1:
+                value:
+                  userId: string
     parameters: []
     post:
       summary: Add a new project to the service
