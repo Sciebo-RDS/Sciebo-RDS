@@ -68,3 +68,8 @@ Note that the data dict has an `implements`-key, which contains a list that hold
 ## Connexion-Plus
 
 We strongly recommend using [Connexion-Plus](https://pypi.org/project/connexion-plus/) to make working with Flask and Python easier.
+
+
+## Containerisation
+
+Place your connector inseide of a docker container, so it can be used in a kubernetes environment. All your configuration should be able through environment variables or a single file, which is placed in a single, very specific file location.
