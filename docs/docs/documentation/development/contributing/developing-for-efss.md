@@ -12,17 +12,17 @@ Sciebo RDS requires three separate communication links to your target EFSS, star
 The JWT Tokens needs to contain the following:
 
 | fieldname | type     | description                                                                                 |
-| --------- | -------- | ------------------------------------------------------------------------------------------- |
+|-----------|----------|---------------------------------------------------------------------------------------------|
 | "email"   | `String` | The user email address.                                                                     |
 | "UID"     | `String` | The unique userId.                                                                          |
 | "cloudID" | `String` | The user cloudId. This is the unique userId in the OCM. Also referred to as "federated ID". |
 
-These values have be encoded as JWT `RS256` or `HMAC-SHA256` and signed with the generated private key from the first step.
+These values have to be encoded as JWT `RS256` or `HMAC-SHA256` and signed with the generated private key from the first step.
 
 The following HTTP-endpoints are required by the Sciebo RDS backend and have to be implemented by your Plugin.
 
 | endpoint      | request params | response params                                                                                                                           | description                                                                                    |
-| ------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+|---------------|----------------|-------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
 | /publickey    | `{}`           | `{"publickey": "<jwt-public-key-for-verification>"}`                                                                                      | This endpoint only publishes the public key for verification.                                  |
 | /informations | `{}`           | `{"jwt":"<jwt-signed-with-private-key>", "cloudURL": "<url to your efss with protocol>", "serverName": "<your domain without protocol>"}` | This endpoint will be requested by the users themselves and redirect the output to sciebo RDS. |
 
@@ -37,7 +37,7 @@ The user interface of your Plugin needs to embedd sciebo RDS as an html iFrame. 
 The sciebo RDS interface uses the [`window.postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) function of the JavaScript standard library to communicate with the parent `window` object. This is where your EFSS UI and your Plugin live. You need to implement different [window.addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)s on the Plugin side to react to different events emitted by the iframe:
 
 | eventname        | data | description                                                                                                             |
-| ---------------- | ---- | ----------------------------------------------------------------------------------------------------------------------- |
+|------------------|------|-------------------------------------------------------------------------------------------------------------------------|
 | `init`           | `{}` | Emitted when Sciebo RDS is ready to get (serverside) user information directly from the user.                           |
 | `showFilePicker` | `{}` | Emitted when the user wants to select a folder within your EFSS. This event should trigger the builtin EFSS filepicker. |
 

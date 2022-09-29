@@ -1,6 +1,6 @@
 # Developing a Connector
 
-A Connector is a Microservice that integrates a Data Service (like Owncloud or Zenodo) into RDS and is located in [layer 1](#). It has to register to the Token Storage for it to be able to provide a authentication process within RDS. The Data Service needs to be able to perform authentication via oauth2 and you must be register an application with the storage provider to get API access. The Token Storage requires all Oauth2 workflow information (Client ID, Client Secret, authorize url, etc.) of the data storage. Registration is done via the *service* endpoint of the [Token Storage](#).
+A Connector is a Microservice that integrates a Data Service (like Owncloud or Zenodo) into RDS and is located in [layer 1](#). It has to register to the Token Storage for it to be able to provide a authentication process within RDS. The Data Service needs to be able to perform authentication via oauth2 and you must register an application with the storage provider to get API access. The Token Storage requires all Oauth2 workflow information (Client ID, Client Secret, authorize url, etc.) of the data storage. Registration is done via the "service" endpoint of the [Token Storage](#).
 
 <!-- Since your microservice integrates a service into the RDS system, it must register in the Token Storage so that it can offer your microservice in the plugins in the registration process. The Token Storage requires all Oauth2 workflow information (Client ID, Client Secret, authorize url, etc.). For this you use the *service* endpoint of the [Token Storage](/doc/impl/central/token-storage). -->
 
@@ -18,7 +18,7 @@ Your connector corresponds to one or both of two different types of service conn
 The different connector types are <u>file storage</u> and <u>metadata storage</u>:
 
 | Interface        | Implements                                                                                                                         | Example Connector | Description                                                                            |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------------- |
+|------------------|------------------------------------------------------------------------------------------------------------------------------------|-------------------|----------------------------------------------------------------------------------------|
 | File Storage     | [fileStorage](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/layer2_use_cases/interface_port_file_storage.yml) | Owncloud          | Used to communicate with EFSS backend. Mostly to get files.                            |
 | Metadata Storage | [metadata](https://raw.githubusercontent.com/Sciebo-RDS/Sciebo-RDS/master/RDS/layer2_use_cases/interface_port_metadata.yml)        | Zenodo            | Used to communicate with repositories and archiving services. Mostly to push files to. |
 
