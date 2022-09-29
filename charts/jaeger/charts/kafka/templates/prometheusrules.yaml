@@ -3,7 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: {{ include "kafka.fullname" . }}
-  namespace: {{ include "serviceMonitor.namespace" . | default .Values.global.namespace.name | default .Release.Namespace  }}
+  namespace: {{ include "serviceMonitor.namespace" . | default .Release.Namespace  }}
   labels:
   {{- include "kafka.monitor.labels" . | nindent 4 }}
   {{- toYaml .Values.prometheus.operator.prometheusRule.selector | nindent 4 }}

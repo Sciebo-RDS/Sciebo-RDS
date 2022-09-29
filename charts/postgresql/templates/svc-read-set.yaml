@@ -12,7 +12,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ $fullName }}-read-{{ $i }}
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
+  namespace: {{ .Release.Namespace  }}
   labels:
     pod: {{ $targetPod }}
   {{- include "common.labels.standard" $root | nindent 4 }}

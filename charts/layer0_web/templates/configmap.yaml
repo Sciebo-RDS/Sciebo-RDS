@@ -14,7 +14,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: webconfig
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
+  namespace: {{ .Release.Namespace  }}
 data:
     EMBED_MODE: "{{ .Values.environment.EMBED_MODE }}"
     FLASK_ORIGINS: {{ (append (append .Values.environment.FLASK_ORIGINS (printf "https://%s" .Values.global.rds.domain)) (printf "http://%s" .Values.global.rds.domain)) | toJson | squote }}
@@ -39,7 +39,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: domainsconfig
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
+  namespace: {{ .Release.Namespace  }}
 data:
   domains.json: |-
 {{- $domains | toJson | nindent 4 }}
