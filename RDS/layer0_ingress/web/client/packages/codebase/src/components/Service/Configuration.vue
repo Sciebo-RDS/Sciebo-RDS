@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col md="2" sm="12" xs="12">
-        <img contain :src="service.icon" alt="img" class="image-fit" />
+        <img contain :src="service.icon" alt="img" style="width: 100%; object-fit: cover;" />
       </v-col>
       <v-col md="6" sm="12" xs="12">
         <v-card flat>
@@ -30,7 +30,7 @@
               </translate>
             </a>
           </v-card-subtitle>
-          <v-card-text class="respect-linebreak">
+          <v-card-text style="white-space: pre-line;">
             {{ service.description[this.$config.language] }}
           </v-card-text>
         </v-card>
@@ -136,13 +136,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.respect-linebreak {
-  white-space: pre-line;
-}
-.image-fit {
-  width: 100%;
-  object-fit: cover;
-}
-</style>
