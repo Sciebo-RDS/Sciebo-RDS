@@ -4,7 +4,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: "{{ template "kafka.fullname" . }}-config-{{ $scriptHash }}"
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
+  namespace: {{ .Release.Namespace  }}
   labels:
   {{- include "kafka.config.labels" . | nindent 4 }}
 spec:

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "layer0_describo.fullname" . }}
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
+  namespace: {{ .Release.Namespace  }}
   labels:
 {{ include "layer0_describo.labels" . | indent 4 }}
 spec:

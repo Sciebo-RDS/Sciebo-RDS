@@ -6,7 +6,7 @@ metadata:
   {{- if .Values.collector.serviceMonitor.namespace }}
   namespace: {{ .Values.collector.serviceMonitor.namespace }}
   {{- else }}
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
+  namespace: {{ .Release.Namespace  }}
   {{- end }}
   labels:
     {{- include "jaeger.labels" . | nindent 4 }}

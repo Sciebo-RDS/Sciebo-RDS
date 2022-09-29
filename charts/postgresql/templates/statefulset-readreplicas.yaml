@@ -19,7 +19,7 @@ metadata:
   {{- with .Values.readReplicas.annotations }}
   {{- toYaml . | nindent 4 }}
   {{- end }}
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
 spec:
   serviceName: {{ template "common.names.fullname" . }}-headless
   replicas: {{ .Values.replication.readReplicas }}

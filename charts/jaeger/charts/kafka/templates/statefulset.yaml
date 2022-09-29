@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "kafka.fullname" . }}
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
+  namespace: {{ .Release.Namespace  }}
   labels:
   {{- include "kafka.broker.labels" . | nindent 4 }}
 spec:

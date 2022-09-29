@@ -35,7 +35,7 @@ metadata:
 {{ toYaml $root.Values.external.annotations | indent 4 }}
     {{- end }}
   name: {{ $root.Release.Name }}-{{ $i }}-external
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
+  namespace: {{ .Release.Namespace  }}
   labels:
   {{- include "kafka.broker.labels" $root | nindent 4 }}
     pod: {{ $responsiblePod | quote }}

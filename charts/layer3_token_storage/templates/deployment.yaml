@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "layer3_token_storage.fullname" . }}
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
+  namespace: {{ .Release.Namespace  }}
   labels:
 {{ include "layer3_token_storage.labels" . | indent 4 }}
 spec:

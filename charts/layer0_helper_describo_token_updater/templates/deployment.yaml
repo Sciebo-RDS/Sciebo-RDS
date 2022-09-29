@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "layer0_helper_describo_token_updater.fullname" . }}
-  namespace: {{ .Values.global.namespace.name | default .Release.Namespace  }}
+  namespace: {{ .Release.Namespace  }}
   labels:
 {{ include "layer0_helper_describo_token_updater.labels" . | indent 4 }}
 spec:
