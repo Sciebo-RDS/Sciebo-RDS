@@ -8,6 +8,14 @@ global:
   REDIS_HELPER_PORT: 6379
   REDIS_CHANNEL: TokenStorage_Refresh_Token
 
+  # the external URL of the RDS service and describo
+  # vue.js does not like running outside / of a webserver as it seems
+  # so we have to run each service on its own single domain (so far)
+  rds:
+    domain: https://rds.example.com
+  describo:
+    domain: https://describo.example.com
+    api_secret: secretstuff
 # Set this to DEBUG and restart your applications to get more informations in logs. Default: INFO
 loglevel: DEBUG
 # If you set this to "False", SSL will not be verified in all https requests. Default: "True"
