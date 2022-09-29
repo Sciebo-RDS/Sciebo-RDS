@@ -70,11 +70,12 @@ environment:
   SOCKETIO_PATH: /socket.io/
   VUE_APP_BASE_URL: /
 
-# global:
-#   rds:
-#     domain: hey
-#   describo:
-#     api_secret: asd
+global:
+  rds:
+    domain: hey
+  describo:
+    domain: hej
+    api_secret: asd
 
 #   domains:
 #   - name: owncloud.local # have to be equal to the second part of cloudID in owncloud
