@@ -426,6 +426,10 @@ components:
           description: A small description of the given service.
         icon:
           type: string
+          description: |-
+            Have to be the following format:
+
+            data:{mimetype};base64,{base64-encoded image}
           nullable: true
         infoUrl:
           type: string
@@ -492,6 +496,10 @@ components:
           description: A small description of the given service.
         icon:
           type: string
+          description: |-
+            Have to be the following format:
+
+            data:{mimetype};base64,{base64-encoded image}
           nullable: true
         displayName:
           type: string
