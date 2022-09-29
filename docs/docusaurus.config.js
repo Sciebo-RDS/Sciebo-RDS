@@ -125,6 +125,10 @@ const config = {
             title: "Community",
             items: [
               {
+                label: "Gitter Chat",
+                href: "https://gitter.im/Sciebo-RDS/community",
+              },
+              {
                 label: "Github Discussions",
                 href: "https://github.com/Sciebo-RDS/Sciebo-RDS/discussions",
               },
