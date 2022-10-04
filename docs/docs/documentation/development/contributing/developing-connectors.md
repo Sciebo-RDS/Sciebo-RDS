@@ -7,6 +7,49 @@ A Connector is a Microservice that integrates a Data Service (like Owncloud or Z
 ```mermaid
 sequenceDiagram
   participant User as User
+  participant Conn as Layer 1 Connector Service
+  participant Port as Layer 2 Port Service
+  participant Metadata as Layer 2 Metadata Service
+  participant Exporter as Layer 2 Exporter Service
+  participant Token as Layer 3 Token Storage
+  participant Research as Layer 3 Research Manager
+
+  Note right of User: Start connector with bootsup procedure
+  Conn->>+Token: Send service object to register the connector
+  Token-->>-Conn: Response with success / failure
+  
+  Note right of User:  Synchronization workflow
+  User->>+Web: Triggers synchronization workflow
+  
+  Web->>+Port: Triggers the project creation / start file workflow
+  Port->>+Conn: Requests to create a new project
+  Conn-->>-Port: Response with success / failure
+  Port-->>-Web: Response with success / failure
+  
+  Web->>+Metadata: Triggers metadata workflow
+  Metadata->>+Research: Requests the "research" object
+  Research-->>-Metadata: Response with the "research" object
+  Metadata->>+EFSS: Requests for the ro-crate file
+  EFSS-->>-Metadata: On success: response the ro-crate file
+  Metadata->>+Conn: Send ro-crate file
+  Conn-->>-Metadata: Response with success / failure
+  Metadata-->>-Web: Response with success / failure
+  
+  Web->>+Exporter: Trigger file synchronization workflow
+  Exporter->>EFSS: Pull list of files
+  Loop Loop over files
+    Exporter->>EFSS: Pull file
+    Exporter->>Conn: Push file
+  end
+  Exporter-->>-Web: Response with success / failure
+  
+  Web-->>-User: Response with success / error description on failure
+```
+[Fullscreen](/img/workflowSync.svg)
+
+```mermaid
+sequenceDiagram
+  participant User as User
   participant Web as Layer 0 RDS-Web Service
   participant EFSS as Layer 1 EFSS Service
   participant Conn as Layer 1 Connector Service
