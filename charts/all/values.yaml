@@ -23,9 +23,9 @@ verify_ssl: "True"
 # The URL, which you configured in your oauth providers
 rds_oauth_redirect_uri: https://owncloud.local/index.php/apps/rds/oauth
 proxy:
-  http_proxy: "''" # empty field
-  https_proxy: "''" # empty field
-  no_proxy: layer1-port-owncloud,layer1-port-zenodo,layer1-port-openscienceframework,layer1-port-reva,layer2-port-service,layer3-token-storage,layer3-research-manager
+  http_proxy: "" # empty field
+  https_proxy: "" # empty field
+  no_proxy: "*"
 namespace:
   create: false
   name: "research-data-services"
