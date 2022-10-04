@@ -17,14 +17,16 @@ sequenceDiagram
   Token-->>-Conn: Response with success / failure
   
   Note left of Conn: Synchronization workflow
-  Port->>+Conn: Requests to create a new project
+  Port->>+Conn: Requests to create a new project, POST /project
   Conn-->>-Port: Response with success / failure
   
-  Metadata->>+Conn: Send ro-crate file
+  Metadata->>+Conn: Send ro-crate file, PATCH /project/{id}
   Conn-->>-Metadata: Response with success / failure
   
   Loop Loop over files
-    Exporter->>Conn: Push file
+    Exporter->>+Conn: Push file, POST /project/{id}/files
+    Conn->>-Exporter: Response with success / failure
+    Note left of Conn: Resumes, regardless if there was an error or not
   end
 ```
 [Fullscreen](/img/workflowSync.svg)
