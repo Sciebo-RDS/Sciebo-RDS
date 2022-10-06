@@ -1,6 +1,6 @@
 # Developing an EFSS Plugin
 
-This part will show you how to integrate sciebo RDS into your own EFSS, if there is no plugin for your EFSS software.
+This part will show you how to integrate Sciebo RDS into your own EFSS, if there is no plugin for your EFSS software.
 Sciebo RDS requires three separate communication links to your target EFSS, starting with the serverside of your EFSS. This will be the first link Sciebo RDS will utilize.
 
 ## Serverside EFSS Plugin
@@ -32,9 +32,9 @@ The next section will adress how to integrate Sciebo RDS.
 
 ## Clientside
 
-We assume that your EFSS uses an UI composed of javascript and html.
+We assume that your EFSS uses an UI composed of JavaScript and HTML.
 The user interface of your Plugin needs to embedd sciebo RDS as an html iFrame. We recommend using the builtin configuration management tools of your EFSS UI to manage the URL for the iFrame. This will make adminstration less of a hassle.
-The sciebo RDS interface uses the [`window.postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) function of the JavaScript standard library to communicate with the parent `window` object. This is where your EFSS UI and your Plugin live. You need to implement different [window.addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)s on the Plugin side to react to different events emitted by the iframe:
+The sciebo RDS interface uses the [`window.postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) function of the JavaScript standard library to communicate with the parent `window` object. This is where your EFSS UI and your Plugin live. You need to implement different [window.addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)s on the Plugin side to react to different events emitted by the Sciebo RDS iFrame:
 
 | eventname        | data | description                                                                                                             |
 |------------------|------|-------------------------------------------------------------------------------------------------------------------------|
@@ -42,7 +42,7 @@ The sciebo RDS interface uses the [`window.postMessage`](https://developer.mozil
 | `showFilePicker` | `{}` | Emitted when the user wants to select a folder within your EFSS. This event should trigger the builtin EFSS filepicker. |
 
 
-The Sciebo RDS UI can now talk to the EFSS UI and will get all relevant information from your EFSS without the need to communicate directly to your EFSS. You now need a connector to request files from your EFSS, which will be the next step.
+The Sciebo RDS UI can now talk to the EFSS UI and will get all relevant information from your EFSS without the need to communicate directly to your EFSS. You now need a connector to request files from your EFSS.
 
 ## Connector
 

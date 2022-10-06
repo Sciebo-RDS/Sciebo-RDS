@@ -1,6 +1,6 @@
 # Developing a Connector
 
-A Connector is a Microservice that integrates a Data Service (like Owncloud or Zenodo) into RDS and is located in [layer 1](#). It has to register to the Token Storage for it to be able to provide a authentication process within RDS. The Data Service needs to be able to perform authentication via oauth2 and you must register an application with the storage provider to get API access. The Token Storage requires all Oauth2 workflow information (Client ID, Client Secret, authorize url, etc.) of the data storage. Registration is done via the "service" endpoint of the [Token Storage](#).
+A Connector is a Microservice that integrates a Data Service (like Owncloud or Zenodo) into RDS and is located in Layer 1. It has to register to the Token Storage for it to be able to provide a authentication process within RDS. The Data Service needs to be able to perform authentication via oauth2 and you must register an application with the storage provider to get API access. The Token Storage requires all Oauth2 workflow information (Client ID, Client Secret, authorize url, etc.) of the data storage. Registration is done via the `service` endpoint of the [Token Storage](/impl/layer3-token-storage-docstring/).
 
 <!-- Since your microservice integrates a service into the RDS system, it must register in the Token Storage so that it can offer your microservice in the plugins in the registration process. The Token Storage requires all Oauth2 workflow information (Client ID, Client Secret, authorize url, etc.). For this you use the *service* endpoint of the [Token Storage](/doc/impl/central/token-storage). -->
 
@@ -91,4 +91,4 @@ We strongly recommend using [Connexion-Plus](https://pypi.org/project/connexion-
 
 ## Containerisation
 
-Place your connector inseide of a docker container, so it can be used in a kubernetes environment. All your configuration should be able through environment variables or a single file, which is placed in a single, very specific file location.
+Place your connector inside of a docker container, so it can be used in a kubernetes environment. All your configuration should be available through environment variables or a single configuration file, placed in a single, very specific file location.
