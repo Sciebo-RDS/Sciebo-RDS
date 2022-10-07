@@ -40,7 +40,7 @@
                               
                                 Project {{p.researchIndex}}
                                 <v-list-item-title class="my-1">
-                                    <div :class="!!p.researchname ? '' : 'font-italic' " style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <div :class="!!p.researchname ? '' : 'font-italic' " :title="!!p.researchname ? p.researchname : ''" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                 {{ !!p.researchname ? p.researchname : 'New Project' }}
                                     </div>
                             </v-list-item-title>
