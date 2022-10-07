@@ -24,4 +24,4 @@ values-osf.yaml
 *.enc.yaml
 docs/public
 .DS_Store
-charts/*/charts/*.tgz
+charts/**/charts/*.tgz
