@@ -6,8 +6,8 @@
       style="
       box-shadow: none !important;
       padding-bottom: 1px;
-      border-bottom: 1px solid #ccc;
-      background-color: #fafafa;">
+      border-bottom: 1px solid #ccc;"
+      :style="$vuetify.theme.dark === true ? 'background-color: #1e1e1e': 'background-color: #f5f5f5'">
         <v-stepper-step :complete="e1 > 1" step="1">
           <translate>Configuration</translate>
         </v-stepper-step>
@@ -64,7 +64,7 @@
       <v-sheet
         flat
         height="5em"
-        color="grey lighten-5"
+        color="sidebar"
         style="bottom: 0%; position: absolute; right: 0%; border-top: 1px solid #ccc!important"
         width="100%"
       >

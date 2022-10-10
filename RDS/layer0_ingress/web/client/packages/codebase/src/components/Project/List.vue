@@ -11,7 +11,7 @@
                 <v-sheet
                     flat
                     height="6.3em"
-                    color="grey lighten-5"
+                    color="sidebar"
                     style="border-bottom: 1px solid #ccc!important">
                     <v-container fill-height>
                         <v-row justify="center" class="overline">
@@ -29,11 +29,13 @@
                             active-class=""
                             v-for="p in (listtype == 'Current' ? activeProjects : pastProjects)"
                             :key="p.researchIndex"
-                            class="grey lighten-5"
-                            :style="loadedProject && p.researchIndex === loadedProject.researchIndex ? 'background-color:#bada55!important' : ''">
-                        <v-list-item color="grey darken-3" style="border-bottom: 1px solid #ccc" >
+                            class="sidebar lighten-5"
+                            
+                            >
+                        <v-list-item style="border-bottom: 1px solid #ccc"
+                        :style="loadedProject && p.researchIndex === loadedProject.researchIndex ? 'border-left: 5px solid #bada55' : ''">
                         <v-list-item-content
-                            class="ma-1">
+                            class="ma-1" >
                             <v-row align="start" style="flex-wrap: nowrap; max-width: 100%;">
                               <!-- TODO: fix width -->
                             <v-col class="caption flex-grow-1 flex-shrink-1" cols="auto"  style="overflow: hidden;">
@@ -90,7 +92,7 @@
                         <v-row align="center"
                             justify="center" class="overline">
                             <v-col cols="12" align="center">
-                                <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
+                                <v-icon style="border-radius: 100%; padding: 5%;" size="35em">
                                     mdi-package-variant
                                 </v-icon>
                             </v-col>
@@ -127,7 +129,7 @@
                                 </v-icon>
                             </v-col>
                             <br/>
-                                You don't have any published or archived projects.
+                                You haven't published any projects yet.
                         </v-row>
                     </v-container>
                 </v-card>

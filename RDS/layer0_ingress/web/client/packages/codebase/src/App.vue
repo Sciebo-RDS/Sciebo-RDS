@@ -33,15 +33,12 @@
         v-model="drawer"
         app
         bottom
-        color="grey lighten-4"
+        color="sidebar"
       >
-        <v-sheet
-        class="flex-direction row pa-4"
-        color="grey lighten-4">
-          <v-container>
-            <v-row no-gutters class="text-center">
+
+            <v-row no-gutters class="text-center pt-6 pb-5">
               <v-col>
-                <v-avatar class="mb-4" size="76">
+                <v-avatar class="mb-5" size="5em">
                   <v-img :src="require('./assets/sciebo.png')" />
                 </v-avatar>
               </v-col>
@@ -55,12 +52,11 @@
                 />
               </v-col>
             </v-row>
-          </v-container>
-        </v-sheet>
+
 
         <v-list
           class="d-flex flex-column mb-10 mt-5">
-          <v-list-item-group v-model="model" mandatory color="cyan darken-4">
+          <v-list-item-group v-model="model" mandatory color="sidebar-selected">
             <v-list-item
               v-for="(item, i) in views"
               :key="i"

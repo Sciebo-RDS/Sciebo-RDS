@@ -13,7 +13,7 @@ export default {
         },
         theme: {
             themes: {
-                light: {},
+                light: {sidebar : '#f5f5f5', 'sidebar-selected': '#006064'},
                 dark: {}
             },
         }

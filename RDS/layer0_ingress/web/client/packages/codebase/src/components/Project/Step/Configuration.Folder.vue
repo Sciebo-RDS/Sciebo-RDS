@@ -55,11 +55,11 @@
           <v-row v-if="hasFolder" align="center" class="mt-2">
             <v-col
               md="auto"
-              class="grey--text text--darken-3 text-caption text-decoration-underline"
+              class=" text--darken-3 text-caption text-decoration-underline"
             >
               Currently selected:
             </v-col>
-            <v-col md="auto" class="grey--text text--darken-2">
+            <v-col md="auto" class="text--darken-2">
               {{ loadedFilePath }}
             </v-col>
           </v-row>

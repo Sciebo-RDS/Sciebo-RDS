@@ -10,7 +10,7 @@
                 <v-col class="text-subtitle-1 col-xl-3 col-lg-4 col-md-5 col-12" style="word-break: break-word">
                     {{question}}
                 </v-col>
-                <v-col class="text-subtitle-2 grey--text text--darken-2" style="word-break: break-word">
+                <v-col class="text-subtitle-2" style="word-break: break-word">
                     <span v-html="markdown(answer)" />
                 </v-col>
             </v-row>
