@@ -21,12 +21,12 @@ let routes = [
     component: Projects,
     icon: "mdi-lightbulb-on",
   },
-  {
+ /*  {
     path: "/archive",
     name: "Archive",
     component: Archive,
-    icon: "mdi-archive",
-  },
+    icon: "mdi-earth",
+  }, */
   {
     path: "/services",
     name: "Services",
@@ -69,7 +69,7 @@ export default {
     const titles = {
       Home: Vue.prototype.$gettext("Home"),
       Projects: Vue.prototype.$gettext("Projects"),
-      Archive: Vue.prototype.$gettext("Archive"),
+      /* Archive: Vue.prototype.$gettext("Publications"), */
       Services: Vue.prototype.$gettext("Services"),
       Settings: Vue.prototype.$gettext("Settings"),
       Wizard: Vue.prototype.$gettext("Wizard"),
