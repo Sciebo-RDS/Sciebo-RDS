@@ -8,7 +8,7 @@
           <v-icon>
             mdi-comment-alert-outline
           </v-icon>
-          <translate>RDS is still in its pilot phase. If you encounter any problems, please contact</translate>
+          RDS is still in its pilot phase. If you encounter any problems, please contact
           <a :href="`mailto:${$store.getters.getSupportEmail}`" class="ml-1 black--text">{{ $store.getters.getSupportEmail }}</a>.
         </v-row>
       </v-system-bar>
