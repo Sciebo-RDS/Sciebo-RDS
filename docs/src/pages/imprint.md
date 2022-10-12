@@ -6,7 +6,7 @@ WWU IT
 Westphalian Wilhelm University of Münster   
 Röntgenstrasse 7-13   
 D-48149 Münster   
-sciebo-rds@uni-muenster.de
+sciebo.rds@uni-muenster.de
  
 The Westfälische Wilhelms-Universität (WWU) Münster is a public corporation and at the same time an institution of the State of North Rhine-Westphalia. It is represented by Rector Prof. Dr. Johannes Wessels. The responsible supervisory authority is the Ministry of Culture and Science of the State of North Rhine-Westphalia.
 

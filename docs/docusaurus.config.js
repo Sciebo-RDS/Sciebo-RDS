@@ -143,7 +143,7 @@ const config = {
               },
               {
                 label: "Email",
-                href: "mailto:sciebo-rds@uni-muenster.de",
+                href: "mailto:sciebo.rds@uni-muenster.de",
               },
             ],
           },
