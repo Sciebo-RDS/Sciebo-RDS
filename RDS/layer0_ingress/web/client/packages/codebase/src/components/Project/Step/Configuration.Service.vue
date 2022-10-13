@@ -42,7 +42,7 @@
                             cols="3"
                             class="col-lg-2"
                             @click="selectPort(p)"
-                            :style="isSelected(p) ? 'border: 1px solid black; max-width: 100%' : 'border: 1px solid transparent'"
+                            :style="isSelected(p) ? selectedStyle() : 'border: 1px solid transparent'"
                             align="center"
                             style="display: grid; align-content: end; align: center">
                             <v-img
@@ -125,65 +125,13 @@ export default ({
             }
             return this.loadedPortOut = [...this.loadedPortOut, ({"port": port.servicename, type: ["metadata"]})]
          },
+        selectedStyle() {
+            if (this.$vuetify.theme.dark === true) {
+                return 'border: 1px solid #bada55; max-width: 100%'
+            }
+            return 'border: 1px solid black; max-width: 100%'
+        }
 
-
-/*         computeRemoveOut() {
-            return this.userPorts.filter((i) => !this.selectedPorts.includes(i));
-        },
-        computeAddOut() {
-            return this.selectedPorts.filter((i) => !this.userPorts.includes(i));
-        },
-        computeStrippedOut(pOut) {
-            let strippedOut = [];
-            for (let i of pOut) {
-                strippedOut.push({ servicename: i.servicename });
-            }
-            return strippedOut;
-        },
-        setImportAdd() {
-            let add = [];
-            if (this.loadedPortIn.length == 0) {
-                return [
-                {
-                    servicename: "port-owncloud-" + this.ownCloudServicename,
-                    filepath: this.loadedFilePath,
-                },
-                ];
-            }
-            for (let i of this.loadedPortIn) {
-                if (!!this.loadedFilePath) {
-                add = [
-                    {
-                    servicename: i["port"],
-                    filepath: this.loadedFilePath,
-                    },
-                ];
-                }
-            }
-            return add;
-        }, */
-        /* selectPort(port) {
-            if (this.selectedPorts.includes(port)){
-                this.selectedPorts = []
-            }
-            else {
-                this.selectedPorts = [port];
-            }
-            let strippedRemoveOut = this.computeStrippedOut(this.computeRemoveOut());
-            let strippedAddOut = this.computeStrippedOut(this.computeAddOut());
-            let importAdd = this.setImportAdd();
-            console.log(JSON.stringify(strippedAddOut), JSON.stringify(strippedRemoveOut))
-            this.$store.commit("setModifiedImport", {
-                add: importAdd,
-                remove: [],
-                change: [],
-                })
-            this.$store.commit("setModifiedExport", {
-                add: strippedAddOut,
-                remove: strippedRemoveOut,
-                change: [],
-            })
-        }, */
     },
 })
 </script>

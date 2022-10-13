@@ -182,9 +182,6 @@ export default {
   },
   props: ["project", "e1"],
   methods: {
-    /* receiveChanges(pChanges) {
-      this.changes = pChanges;
-    }, */
     computePortChanges() {
       let loadedPortOutNames = this.loadedProject["portOut"].map((s) => s.port)
       let originalPortOutNames = this.originalPortOutForLoadedProject.map((s) => s.port)
