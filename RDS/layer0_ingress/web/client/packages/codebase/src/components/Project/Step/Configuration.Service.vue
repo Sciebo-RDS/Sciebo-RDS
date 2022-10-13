@@ -74,10 +74,10 @@ export default ({
     },
     computed:{
         ...mapGetters({
-        ports: "getUserServiceList",
-        loadedFilePath: "getLoadedFilePath",
-        originalPortOut: "getOriginalPortOutForLoadedProject",
-        changedPorts: "getChangedPorts"
+            ports: "getUserServiceList",
+            loadedFilePath: "getLoadedFilePath",
+            originalPortOut: "getOriginalPortOutForLoadedProject",
+            changedPorts: "getChangedPorts"
         }),
         loadedPortIn: {
             get() {

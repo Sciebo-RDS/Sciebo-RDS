@@ -33,7 +33,8 @@
                             
                             >
                         <v-list-item style="border-bottom: 1px solid #ccc"
-                        :style="loadedProject && p.researchIndex === loadedProject.researchIndex ? 'border-left: 5px solid #bada55' : ''">
+                        :style="loadedProject && p.researchIndex === loadedProject.researchIndex ? 'border-left: 5px solid #bada55' : ''"
+                        :title="!!p.researchname ? p.researchname : ''">
                         <v-list-item-content
                             class="ma-1" >
                             <v-row align="start" style="flex-wrap: nowrap; max-width: 100%;">
@@ -42,7 +43,7 @@
                               
                                 Project {{p.researchIndex}}
                                 <v-list-item-title class="my-1">
-                                    <div :class="!!p.researchname ? '' : 'font-italic' " :title="!!p.researchname ? p.researchname : ''" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <div :class="!!p.researchname ? '' : 'font-italic' " style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                 {{ !!p.researchname ? p.researchname : 'New Project' }}
                                     </div>
                             </v-list-item-title>

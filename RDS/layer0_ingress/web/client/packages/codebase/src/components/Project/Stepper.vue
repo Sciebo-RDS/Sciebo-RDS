@@ -29,7 +29,6 @@
       <v-stepper-items style="height: 100%">
         <v-stepper-content step="1" class="pa-0">
           <v-card
-            height="auto"
             flat
             class="overflow-y-auto"
             style="max-height: calc(100vh - 12.9em)"
@@ -52,9 +51,12 @@
         </v-stepper-content>
 
         <!-- Step 3: Publish -->
-        <v-stepper-content step="3">
-          <v-card class="mb-12" height="auto" flat>
-            <StepPublish :project="project" />
+        <v-stepper-content step="3" class="pa-0" height="100%" style="margin: 0">
+          <v-card
+            flat
+            class="pa-3 overflow-y-auto"
+            style="height: calc(100vh - 12.9em);">
+            <StepPublish :project="project"/>
           </v-card>
         </v-stepper-content>
       </v-stepper-items>
