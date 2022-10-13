@@ -18,7 +18,7 @@
                             <v-col cols="auto" class="text-right">
                                 <v-icon
                                     color="error"
-                                    v-if="loadedPortOut.length == 0">
+                                    v-if="loadedPortOut.length == 0 || userServiceList.length < 2">
                                         mdi-alert-circle-outline
                                 </v-icon>
                                 <v-icon
@@ -31,13 +31,16 @@
                         </v-row>
                 </v-list-item-title>
 
-                <v-list-item-subtitle class="py-1 text-wrap">
+                <v-list-item-subtitle v-if="userServiceList.length > 1" class="py-1 text-wrap">
                     Choose the repository you want to publish your data to.
                 </v-list-item-subtitle>
+                <v-list-item-subtitle v-else class="py-1 text-wrap">
+                    You have to <router-link to="services">connect a repository service</router-link> to continue.
+                </v-list-item-subtitle>
                 <v-list-item-content>
-                    <v-row class="ma-1">
+                    <v-row v-if="userServiceList.length > 1" class="ma-1">
                         <v-col
-                            v-for="p in ports.filter((i) => i['implements'].includes('metadata'))"
+                            v-for="p in userServiceList.filter((i) => i['implements'].includes('metadata'))"
                             :key="p.client_id"
                             cols="3"
                             class="col-lg-2"
@@ -52,6 +55,9 @@
                                 {{ p['displayName'] }}
                             </small>
                         </v-col>
+                    </v-row>
+                    <v-row v-else class="ma-1">
+                        No repository connected!
                     </v-row>
                 </v-list-item-content>
             </v-list-item-content>
@@ -74,7 +80,7 @@ export default ({
     },
     computed:{
         ...mapGetters({
-            ports: "getUserServiceList",
+            userServiceList: "getUserServiceList",
             loadedFilePath: "getLoadedFilePath",
             originalPortOut: "getOriginalPortOutForLoadedProject",
             changedPorts: "getChangedPorts"
@@ -97,7 +103,7 @@ export default ({
         },
     },
     beforeMount() {
-        this.userPorts = this.selectedPorts = this.ports.filter((port) => {
+        this.userPorts = this.selectedPorts = this.userServiceList.filter((port) => {
                 for (const p of this.loadedPortOut) {
                     if (p.port === port.servicename)
                     return true
