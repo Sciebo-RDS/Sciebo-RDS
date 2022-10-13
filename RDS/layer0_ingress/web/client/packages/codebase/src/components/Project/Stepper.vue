@@ -40,18 +40,19 @@
         </v-stepper-content>
 
         <!-- Step 2: Metadata -->
-        <v-stepper-content step="2">
+        <v-stepper-content step="2" class="pa-0">
           <v-card
-            class="d-flex flex-column justify-center mb-12"
+            class="d-flex flex-column justify-center"
             min-height="500px"
             flat
+            style="height: calc(100vh - 12.9em);"
           >
             <StepMetadataEditor :project="project" />
           </v-card>
         </v-stepper-content>
 
         <!-- Step 3: Publish -->
-        <v-stepper-content step="3" class="pa-0" height="100%" style="margin: 0">
+        <v-stepper-content step="3" class="pa-0">
           <v-card
             flat
             class="pa-3 overflow-y-auto"

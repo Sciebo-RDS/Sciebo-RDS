@@ -12,7 +12,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <div style="height: calc(100vh - 16em)">
+    <div style="height: calc(100vh - 13em);">
     <iframe
       v-if="loadingStep >= 1"
       v-show="loadingStep >= 2"
