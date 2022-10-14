@@ -1,9 +1,5 @@
 <template>
-  <v-main style="padding: 0px; margin-top: 1.5em;">
-    <v-layout column align-center wrap>
-      <!-- hardcoded filter for owncloud, change -->
-      <connect-service-warning v-if="!userHasServicesConnected" />
-    </v-layout>
+  <v-main style="padding: 0px;">
     <ServiceList />
   </v-main>
 </template>

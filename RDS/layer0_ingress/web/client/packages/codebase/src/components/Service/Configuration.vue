@@ -1,12 +1,13 @@
 <template>
   <v-container>
     <v-row>
-      <v-col md="2" sm="12" xs="12">
-        <img contain :src="service.icon" alt="img" style="width: 100%; object-fit: cover;" />
+      <v-col xl="2" lg="3" md="3" sm="3" xs="12">
+        <img contain :src="service.icon" alt="img" style="width: 100%; object-fit: cover; background-color: #ccc;" class="pa-5 rounded-xl" />
+        
       </v-col>
-      <v-col md="6" sm="12" xs="12">
+      <v-col>
         <v-card flat>
-          <v-card-title>{{ service.displayName }}</v-card-title>
+          <v-card-title class="pt-0 pb-5 text-h5">{{ service.displayName }}</v-card-title>
           <v-card-subtitle v-show="!!service.infoUrl || !!service.helpUrl">
             <a
               :href="decodeURIComponent(service.infoUrl)"
@@ -35,9 +36,8 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col md="4">
-        <v-card flat>
-          <v-card-actions>
+    </v-row>
+     <v-card-actions>
             <v-col class="text-right">
               <v-btn
                 @click="removeAccess(service)"
@@ -65,9 +65,6 @@
               </v-btn>
             </v-col>
           </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
     <v-dialog
       v-model="overlay"
       persistent

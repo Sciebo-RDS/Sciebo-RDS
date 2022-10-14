@@ -1,34 +1,39 @@
 <template>
-  <v-row justify="center">
-    <v-expansion-panels inset focusable multiple>
-      <v-expansion-panel v-for="(service, i) in filteredServiceList" :key="i">
-        <v-expansion-panel-header>
-          <v-row>
-            <v-col cols="auto"> {{ service.displayName }}</v-col>
-            <v-chip
-              v-if="userUses(service)"
-              color="light-green lighten-1"
-              class="ma-2"
-              small
-              ><translate key="7d7908fe-afa8-4bf2-8435-cd8069672d1a">
-                connected</translate
-              >
-              <v-icon class="ml-2">mdi-link</v-icon>
-            </v-chip>
-            <v-chip v-else color="grey" class="ma-2" small>
-              <translate key="c4cd931f-852a-4d57-925a-31964bb6e862"
-                >not connected</translate
-              >
-              <v-icon class="ml-2">mdi-link-off</v-icon>
-            </v-chip>
-          </v-row>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <ServiceConfiguration :service="service" />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+  <v-container
+    fluid
+    class="pa-0 d-flex flex-column"
+    style="margin-top: 13px;">
+      <v-sheet
+        flat
+        height="6.3em"
+        color="sidebar"
+        style="border-bottom: 1px solid #ccc!important;"
+        class="mb-4"
+        max-width="100%" width="100%">
+
+          <v-container fill-height>
+              <v-row justify="space-around" class="overline">
+                <v-col cols="auto">
+                  Manage your repositories
+                </v-col>
+                <v-col cols="auto">
+                  <!-- FIXME: this only works if owncloud / the PortIn is first in the userServiceList. Maybe use intersection of filteresServiceList and userServiceList -->
+                  Currently Connected:  <span style="text-transform: none; font-size: 0.8rem"> {{userServiceList.slice(1).length > 0 ? userServiceList.slice(1).map((x) => x.displayName).join(", ") : 'None'}} </span>
+                </v-col>
+              </v-row>
+          </v-container>
+
+      </v-sheet>
+  <v-row>
+      <v-card flat v-for="(service, i) in filteredServiceList" :key="i" class="rounded-0 px-10" max-width="100%" width="100%" style="border-bottom: 1px solid #ccc;">
+        <v-card-title>
+        </v-card-title>
+        <v-card-text>
+          <ServiceConfiguration :service="service"  style="min-width: 100%"/>
+        </v-card-text>
+    </v-card>
   </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -41,12 +46,12 @@ export default {
   },
   computed: {
     ...mapState({
-      userservicelist: (state) => state.RDSStore.userservicelist,
-      servicelist: (state) => state.RDSStore.servicelist,
+      userServiceList: (state) => state.RDSStore.userservicelist,
+      serviceList: (state) => state.RDSStore.servicelist,
     }),
     filteredServiceList() {
       var filtered = [];
-      for (var i of this.servicelist) {
+      for (var i of this.serviceList) {
         if (!i.servicename.startsWith("port-owncloud")) {
           filtered.push(i);
         }
@@ -56,7 +61,7 @@ export default {
   },
   methods: {
     userUses(service) {
-      for (var i of this.userservicelist) {
+      for (var i of this.userServiceList) {
         if (i.servicename === service.servicename) {
           return true;
         }
