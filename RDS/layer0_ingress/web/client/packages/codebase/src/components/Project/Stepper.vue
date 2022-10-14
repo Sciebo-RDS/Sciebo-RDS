@@ -57,7 +57,7 @@
             flat
             class="pa-3 overflow-y-auto"
             style="height: calc(100vh - 12.9em);">
-            <StepPublish :project="project"/>
+            <StepPublish :published="published" :project="project"/>
           </v-card>
         </v-stepper-content>
       </v-stepper-items>
@@ -120,7 +120,7 @@
             </v-btn>
 
             <v-btn
-              :disabled="publishInProgress"
+              :disabled="publishInProgress || published"
               color="success"
               @click="publishProject"
               class="ma-5"
@@ -151,8 +151,8 @@ export default {
   },
   data() {
     return {
-   /*    changes: {}, */
       publishInProgress: false,
+      published: false,
     };
   },
   computed: {
@@ -250,12 +250,12 @@ export default {
             "There was an error publishing your project. Please check if you filled all fields in the metadata step."
           );
           if (result) {
-            text = this.$gettext("Your project was successfully published.");
-          } else {
-            this.publishInProgress = false;
+            text = this.$gettext("Your project '" + this.project["researchname"] + "' was successfully published.");
+            this.published = true;
           }
-
+          
           this.$root.$emit("showsnackbar", text);
+          this.publishInProgress = false;
         }
       );
     },

@@ -6,16 +6,24 @@
                     <v-card-title v-translate class="justify-center">
                         Publish your project
                     </v-card-title>
-                    <v-card-subtitle class="mt-2">
-                        <translate>
+                    <v-card-subtitle v-if="!published" class="mt-2">
                         Make sure these settings are correct!
-                        </translate>
                     </v-card-subtitle>
                     <v-card-text>
-                        <p class="my-10"> Your <span class="text-decoration-underline">{{displayNamePortIn}}</span> project folder <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span> will be published to <span class="text-decoration-underline">{{displayNamePortOut}}</span>. </p>
-                        <!-- replace with logic
-                        PortIn: {{ port(project.portIn) }}&#10230;
-                        PortOut: {{ port(project.portOut) }}<br /> -->
+                        <p v-if="!published" class="my-10"> Your <span class="text-decoration-underline">{{displayNamePortIn}}</span> project folder <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span> will be published to <span class="text-decoration-underline">{{displayNamePortOut}}</span>. </p>
+                        <p v-else class="my-10 text-left">
+                            <v-row>
+                            <v-col cols="1">
+                                <v-icon color="success">
+                                    mdi-check-circle
+                                </v-icon>
+                            </v-col>
+                            <v-col cols="11">
+                                Project <span class="font-weight-bold">{{loadedResearchName}}</span> was successfully published to {{displayNamePortOut}}. <br/>
+                                Folder: <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span> 
+                            </v-col>
+                            </v-row>
+                        </p>
 
                         <v-row class="my-2" justify="center" align="center">
                             <v-col
@@ -43,13 +51,14 @@
 import { mapGetters } from "vuex";
 
 export default {
-    props: ["project"],
+    props: ["project", "published"],
     computed: {
         ...mapGetters({
             loadedPortIn: "getLoadedPortIn",
             loadedPortOut: "getLoadedPortOut",
             userServiceList: "getUserServiceList",
             loadedFilePath: "getLoadedFilePath",
+            loadedResearchName: "getLoadedResearchName",
         }),
         
         serviceIn() {
