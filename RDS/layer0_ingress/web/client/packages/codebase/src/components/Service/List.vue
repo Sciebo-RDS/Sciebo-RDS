@@ -8,24 +8,36 @@
         height="6.3em"
         color="sidebar"
         style="border-bottom: 1px solid #ccc!important;"
-        class="mb-4"
+        class="mb-4 px-10"
         max-width="100%" width="100%">
 
           <v-container fill-height>
-              <v-row justify="space-around" class="overline">
-                <v-col cols="auto">
-                  Manage your repositories
+            <!-- FIXME: make this row and columns behave like the columns below--> 
+              <v-row  class="overline" align="center">
+                <v-col xl="2" lg="3" md="3" sm="3" xs="12" class="text-center">
+                  <span class="font-weight-bold">Manage your repositories</span>
                 </v-col>
-                <v-col cols="auto">
-                  <!-- FIXME: this only works if owncloud / the PortIn is first in the userServiceList. Maybe use intersection of filteresServiceList and userServiceList -->
-                  Currently Connected:  <span style="text-transform: none; font-size: 0.8rem"> {{userServiceList.slice(1).length > 0 ? userServiceList.slice(1).map((x) => x.displayName).join(", ") : 'None'}} </span>
+                  <v-col>
+                    <v-card flat class="transparent mx-4">
+                  Currently Connected:  <span style="text-transform: none; font-size: 0.8rem"> 
+                    {{
+                    filteredUserServiceList.length > 0
+                    ?
+                        ( filteredUserServiceList.length > 1
+                      ?
+                        [filteredUserServiceList.map((x) => x.displayName).slice(0, -1).join(', '),filteredUserServiceList.map((x) => x.displayName).slice(-1)].join(' and ')
+                      :
+                        filteredUserServiceList.map((x) => x.displayName).join(", "))
+                    :
+                      'None'}} </span>
+                      </v-card>
                 </v-col>
               </v-row>
           </v-container>
 
       </v-sheet>
   <v-row>
-      <v-card flat v-for="(service, i) in filteredServiceList" :key="i" class="rounded-0 px-10" max-width="100%" width="100%" style="border-bottom: 1px solid #ccc;">
+      <v-card flat v-for="(service, i) in filteredServiceList" :key="i" class="px-10" max-width="100%" width="100%" style="border-bottom: 1px solid #ccc;">
         <v-card-title>
         </v-card-title>
         <v-card-text>
@@ -49,15 +61,14 @@ export default {
       userServiceList: (state) => state.RDSStore.userservicelist,
       serviceList: (state) => state.RDSStore.servicelist,
     }),
+    //FIXME: make this independent from owncloud
     filteredServiceList() {
-      var filtered = [];
-      for (var i of this.serviceList) {
-        if (!i.servicename.startsWith("port-owncloud")) {
-          filtered.push(i);
-        }
-      }
-      return filtered;
+      return this.serviceList.filter(x => !x.servicename.startsWith("port-owncloud"));
     },
+    //FIXME: make this independent from owncloud
+    filteredUserServiceList() {
+      return this.userServiceList.filter(x => !x.servicename.startsWith("port-owncloud"));
+    }
   },
   methods: {
     userUses(service) {
