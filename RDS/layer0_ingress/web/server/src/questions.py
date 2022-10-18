@@ -31,34 +31,45 @@ Möchten Sie Sciebo RDS im Gesamten deaktivieren bzw. Ihr Sciebo-RDS-Nutzerkonto
         },
     },
     "en": {
-        "Basic information": {
+        "General Information": {
             "What is Sciebo RDS?":
-                """Sciebo RDS is a research data service that integrates into researchers' workflows by adding new functionality within the Sciebo university cloud. Research data management and scientific analyses based on research data thus become even easier and smoother.
-For Sciebo RDS you do not need a new user account, you can use your existing Sciebo account for this purpose. For the services to be linked, you can also use your existing accounts, if available.
-Currently, Sciebo RDS links various services to publish or archive your data from the university cloud. For more information, please visit the [official website](https://www.research-data-services.org/)."""
-        },
-        "Publish data": {
-            "How can I publish data?": """You can publish data to Zenodo via Sciebo RDS. In principle, all kinds of (research) data and data formats can be published through Sciebo RDS. However, in order to ensure good reusability of the data by third parties, it is recommended not to choose binary or proprietary formats when submitting data to a service, but to choose formats that are freely available. Also, make sure that a certain size of data is not exceeded. Zenodo, for example, has an upper limit of 50 GB per data set.
-To publish data, you need to create a project. Before publishing, you can modify all data (research data/ metadata, etc.) of the project. Once your data is published, the project is no longer editable in Sciebo RDS. If you want to correct metadata afterwards, you must do so within the selected service. If data is to be published again, a new project must be created for this purpose. This procedure ensures that data can always be assigned a unique identification number (DOI for short).""",
-            "How can I create projects?": """To create a project, click on the "Projects" tab in the menu on the left. In the following window you can create a new project by clicking on the green plus symbol below right. In the next step you should configure the project. To do this, click on the desired project and specify all the necessary information: 
-                
-1. folder that contains the data to be transferred, 
-2. services that should receive the data. (If no services can be selected here, you must first activate them under the *Services* tab). As soon as all information has been deposited, you can confirm with *Next* and enter the metadata of the project.
-3. Finally, you can view and check your information again. 
+                """Sciebo RDS is a research data service that integrates into researchers' workflows by adding new functionality within a research cloud. Research data management and scientific analyses based on research data thus become even easier and smoother.
+Currently, Sciebo RDS allows you to link various repositories to publish or archive your research data. You don't need a new user account to use Sciebo RDS, you can use your existing Sciebo account. If you have one, you can link your existing repository account to Sciebo RDS.
 
-If you are satisfied with your information, you can now submit the data. """,
-            "How can I enable/disable services?": """To add a service, please go to the "Services" tab in the left menu. You will then get an overview of all available services, from which you can select the one you want. Click on the service to open a configuration window. Click on "connect". In a new browser tab, you will then be prompted to log in to the corresponding service or to register if you do not yet have any access data for it. Usually the newly opened tab will close by itself and redirect you back to Sciebo RDS. If this is not the case, please close the tab manually, go back to Sciebo RDS and check if the activation of the service has capped successfully. If you still encounter problems with a second activation attempt, please contact $SUPPORT_EMAIL}.
-To disable a service in Sciebo RDS, click "disconnect" on the corresponding service. Sciebo RDS will then disable access. All data transmitted to the service by the access right will be unaffected.""",
+Visit the *Repositories* tab to see what repositories available.
+If you are having trouble using Sciebo RDS or have further questions, please contact $SUPPORT_EMAIL.
+
+Sciebo RDS is developed by the [University of Münster](https://www.uni-muenster.de/), Germany. Further information on the project is available on the [official website](https://www.research-data-services.org/)."""
         },
-        "Manage metadata": {
+        "Publishing Data": {
+            "How can I connect/disconnect repositories?": """To add a repository, go to the *Repositories* tab. You will see an overview of all available repositories. Click *Connect* to connect to a repository. A new browser tab will open and you will be prompted to log in to the corresponding repository or to register if you do not yet have an account. Usually the newly opened tab will close by itself and redirect you back to Sciebo RDS. If this is not the case, please close the tab manually, go back to Sciebo RDS and check if the repository connected successfully. If you encounter problems, please contact $SUPPORT_EMAIL.
+
+To disconnect a repository from Sciebo RDS, click "disconnect" on the corresponding repository. All data previously published to the repository will stay unaffected.""",
+            "How can I publish data? How does the Project Workflow work?": """You can publish data using the **Project Workflow**.
+
+Click the *Projects* tab in the menu on the left. You can now create a new project by clicking the `New Project` button. A new project will be created, which you now have to configure to your needs - you will be asked to:
+                
+1. select a folder on your Sciebo account, that contains the data to be published/archived,
+2. name your project (this name will only be used to help you identify the project within RDS),
+3. select the repository that will receive the data (you need at least one repository connected in *Repositories* tab for this).      
+
+<br/>
+
+Click *Continue* and use the embedded metadata editor to enrich your project with metadata. Next, click *Continue* again. Confirm that you have set the correct project folder and repository and click *Publish* to submit you data.
+
+The *Configuration*, *Metadata* and *Publish* step of the workflow may be done at different times. The configuration will be saved as soon as you click *Continue*, the metadata will be saved as soon as it is submitted to the interface.  
+ Each project can only be published to *one* repository. But you can have multiple projects with the same folder and different repositories selected. Once your data is published, the project is no longer editable in Sciebo RDS. If you want to correct metadata afterwards, you must do so within the selected repository. If data is to be published again, a new project must be created for this purpose. This procedure ensures that data can always be assigned a unique identification number (DOI for short).""",
+            "What kind of data can be published through Sciebo RDS?" : """In principle, all kinds of (research) data and data formats can be published. However, in order to ensure good reusability of the data by third parties, it is recommended not to choose binary or proprietary formats when submitting data to a repository, but to choose formats that are freely available. Also, make sure that a certain size of data is not exceeded. Zenodo, for example, has an upper limit of 50 GB per data set.""",
+        },
+        "Managing Metadata": {
             "How can I manage metadata?":
-                """Metadata can be managed and edited within a project in Sciebo RDS. Before completing a project and submitting the data to a service, you can modify all of the project's data (research data/ metadata, etc.). Once your data has been submitted, the project and therefore the (meta)data is no longer editable in Sciebo RDS. This procedure ensures that data can always be assigned a unique identification number (DOI for short). Some services (like Zenodo) allow a subsequent update of (meta)data by assigning a related DOI. However, Sciebo RDS does not support this at this time. Therefore, if you want to subsequently correct (meta)data, you must do so within the selected service, if possible. Alternatively, you can create a new project in Sciebo RDS with the correct data and submit it again. """
+                """The second step of the **Project Workflow** will provide you with an metadata editor to add and modify metadata. Once your data has been submitted, the project and therefore the (meta)data is no longer editable in Sciebo RDS. This procedure ensures that data can always be assigned a unique identification number (DOI for short).    
+                    Some repositories (like Zenodo) allow a subsequent update of (meta)data by assigning a related DOI. However, this has to be done within the Zenodo interface, it is not possible within Sciebo RDS. Alternatively, you can create a new project in Sciebo RDS with the correct data and resubmit. """
         },
-        "Account management": {
-            "How does the account management work?": """Sciebo RDS uses the Oauth2 technology. Here, information is exchanged with services on behalf of the user without transmitting passwords or other critical data. If the service provided by Sciebo RDS is no longer desired, access rights can be easily revoked by the user.
-To work with Sciebo RDS it is not necessary to activate all offered services. You can always add more services later or remove services that are no longer used.""",
-                "How is the account created and how can I delete it?": """To add a service, please go to the "Services" tab in the left menu. You will then get an overview of all available services, from which you can select the one you want. Click on the service to open a configuration window. Click on "connect". In a new browser tab, you will then be prompted to log in to the corresponding service or to register if you do not yet have any access data for it. Usually the newly opened tab will close by itself and redirect you back to Sciebo RDS. If this is not the case, please close the tab manually, go back to Sciebo RDS and check if the activation of the service has capped successfully. If you still encounter problems with a second activation attempt, please contact $SUPPORT_EMAIL.
-To disable a service in Sciebo RDS, click "disconnect" on the corresponding service. Sciebo RDS will then disable access. All data transmitted to the service by the access right will be unaffected.""",
+        "Account Management": {
+            "How does the account management work?": """Sciebo RDS uses the Oauth2 technology. This means that information is exchanged with repositories without actually transmitting passwords or other critical data to Sciebo RDS. If the service provided by Sciebo RDS is no longer desired, access rights can easily be revoked by the user.
+
+You can always add more or remove repositories in the Sciebo RDS *Repositories* tab.""",
         },
     }
 }
