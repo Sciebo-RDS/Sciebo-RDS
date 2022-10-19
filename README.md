@@ -14,8 +14,12 @@ No need to download all the data to a desktop computer to cumbersomely upload it
 Find more information on the official website at [www.rearch-data-service.org](https://www.research-data-services.org/).
 
 ## Screenshots
-|<img src="https://www.research-data-services.org/assets/images/screenshot001-ff6485e71ee91da905c3eea3d0e8e088.png" width="475">||
+|||
 |-|-|
+|<img  width="475" alt="An_RDS1" src="https://user-images.githubusercontent.com/31971585/196733077-d008bbc9-9c2a-4e59-81fc-718c46af481e.png"> Configuring a project|<img  width="475" alt="An_RDS2" src="https://user-images.githubusercontent.com/31971585/196733085-c5ab157e-27b1-42ea-87f2-512b4db29fcf.png"> Adding metadata|
+|<img width="475" alt="An_RDS2" src="https://user-images.githubusercontent.com/31971585/196733090-4eba7303-37f8-48e7-8d11-cbb1a8ff4cfb.png"> Adding metadata|<img width="475" alt="An_RDS4" src="https://user-images.githubusercontent.com/31971585/196733098-df0696bf-4fbc-4a12-b133-23769103cbe5.png"> Adding metadata|
+|<img width="475" alt="An_RDS5" src="https://user-images.githubusercontent.com/31971585/196733100-f26e9b9b-ee5c-4c23-9716-22f7bc2574a4.png"> Publishing|<img width="475" alt="An_RDS6" src="https://user-images.githubusercontent.com/31971585/196733102-7b95063f-0a56-427f-bce8-993ac1fbae82.png"> <center>Connecting repositories</center>|
+
 
 ## Deployment
 
