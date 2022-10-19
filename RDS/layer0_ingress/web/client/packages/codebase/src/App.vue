@@ -39,7 +39,7 @@
             <v-row no-gutters class="text-center pt-6 pb-5">
               <v-col>
                 <v-avatar class="mb-5" size="5em">
-                  <v-img :src="require('./assets/sciebo.png')" />
+                  <v-img :src="$vuetify.theme.dark ? require('./assets/RDS_Logo_Weiss.svg') : require('./assets/RDS_Logo_Schwarz.svg')" />
                 </v-avatar>
               </v-col>
               <v-col cols="12">
