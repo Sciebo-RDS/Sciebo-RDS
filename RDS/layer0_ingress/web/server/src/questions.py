@@ -44,8 +44,8 @@ Sciebo RDS is developed by the [University of Münster](https://www.uni-muenster
         "Publishing Data": {
             "How can I connect/disconnect repositories?": """To add a repository, go to the *Repositories* tab. You will see an overview of all available repositories. Click *Connect* to connect to a repository. A new browser tab will open and you will be prompted to log in to the corresponding repository or to register if you do not yet have an account. Usually the newly opened tab will close by itself and redirect you back to Sciebo RDS. If this is not the case, please close the tab manually, go back to Sciebo RDS and check if the repository connected successfully. If you encounter problems, please contact $SUPPORT_EMAIL.
 
-To disconnect a repository from Sciebo RDS, click "disconnect" on the corresponding repository. All data previously published to the repository will stay unaffected.""",
-            "How can I publish data? How does the Project Workflow work?": """You can publish data using the **Project Workflow**.
+To disconnect a repository from Sciebo RDS, click "disconnect". All data previously published to the repository will stay unaffected.""",
+            "How can I publish data? How does the Project Workflow work?": """You can publish data using the **Project Workflow**, which consists of three steps: Configuration, Metadata and Publishing.
 
 Click the *Projects* tab in the menu on the left. You can now create a new project by clicking the `New Project` button. A new project will be created, which you now have to configure to your needs - you will be asked to:
                 
