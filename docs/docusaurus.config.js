@@ -13,7 +13,7 @@ const config = {
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: "img/Sciebo_Logo.svg",
+  favicon: "img/RDS_Logo_Schwarz.svg",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -59,7 +59,7 @@ const config = {
         title: "Sciebo RDS",
         logo: {
           alt: "My Site Logo",
-          src: "img/Sciebo_Logo.svg",
+          src: "img/RDS_Logo_Schwarz.svg",
         },
         items: [
           {

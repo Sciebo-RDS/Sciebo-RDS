@@ -11,7 +11,7 @@ It acts as a interoperability layer, allowing them to assign a directory on a Sy
 No need to download all the data to a desktop computer to cumbersomely upload it to the repository interface again.
 
 
-Find more information on the official website at [www.rearch-data-service.org](https://www.research-data-services.org/).
+Find more information on the official website at [www.research-data-services.org](https://www.research-data-services.org/).
 
 ## Screenshots
 |||

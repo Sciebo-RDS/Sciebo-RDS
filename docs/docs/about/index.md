@@ -9,7 +9,7 @@ Sciebo RDS allows researchers to export research data directly from Enterprise S
 
 
 
-[![](../../static/img/screenshot001.png)](../../static/img/screenshot001.png)
+[![](../../static/img/An_RDS1.png)](../../static/img/An_RDS1.png)
 
 
 
