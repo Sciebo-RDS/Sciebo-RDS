@@ -42,7 +42,7 @@ paths:
                       resourceType: ''
                       resourceTypeGeneral: Poster
       description: |-
-        Take a look at the datacite specification (https://raw.githubusercontent.com/datacite/schema/master/source/json/kernel-4.3/datacite_4.3_schema.json) for all useable keywords. 
+        Take a look at the ro-crate example: https://www.researchobject.org/ro-crate/examples.html
 
         See the examples to see, how to use it.
       requestBody:
@@ -58,7 +58,7 @@ paths:
             examples:
               example-1:
                 value:
-                  userId: admin
+                  userId: '<port-name>://<username>:<password>'
                   metadata:
                     titles: ''
                     publisher: ''
@@ -66,7 +66,7 @@ paths:
               example-2:
                 value:
                   metadata: {}
-                  userId: admin
+                  userId: '<port-name>://<username>:<password>'
         description: The metadata request object
     delete:
       summary: Remove a project from this service
@@ -93,13 +93,27 @@ paths:
               examples:
                 example-1:
                   value:
-                    titles:
-                      - title: long title
-                        lang: en
-                    publisher: research publisher gmbh
-                    type:
-                      resourceType: ''
-                      resourceTypeGeneral: Poster
+                    '@context': 'https://w3id.org/ro/crate/1.1/context'
+                    '@graph':
+                      - '@type': CreativeWork
+                        '@id': ro-crate-metadata.json
+                        conformsTo:
+                          '@id': 'https://w3id.org/ro/crate/1.1'
+                        about:
+                          '@id': ./
+                      - '@id': ./
+                        identifier: 'https://doi.org/10.4225/59/59672c09f4a4b'
+                        '@type': Dataset
+                        datePublished: '2017'
+                        name: 'Data files associated with the manuscript:Effects of facilitated family case conferencing for ...'
+                        description: Palliative care planning for nursing home residents with advanced dementia ...
+                        license:
+                          '@id': 'https://creativecommons.org/licenses/by-nc-sa/3.0/au/'
+                      - '@id': 'https://creativecommons.org/licenses/by-nc-sa/3.0/au/'
+                        '@type': CreativeWork
+                        description: 'This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Australia License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/au/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.'
+                        identifier: 'https://creativecommons.org/licenses/by-nc-sa/3.0/au/'
+                        name: Attribution-NonCommercial-ShareAlike 3.0 Australia (CC BY-NC-SA 3.0 AU)
       requestBody:
         content:
           application/json:
@@ -115,17 +129,9 @@ paths:
             examples:
               example-1:
                 value:
-                  apiKey: 123
-                  userId: 1
-                  metadata:
-                    titles:
-                      - title: long title
-                        lang: en
-                    publisher: research publisher gmbh
-                    type:
-                      resourceType: ''
-                      resourceTypeGeneral: Poster
-        description: The given body has to be valid against the datacite jsonschema (without required fields).
+                  userId: '<port-name>://<username>:<password>'
+                  metadata: {}
+        description: The ro crate file itself will be send in metadata field.
     put:
       summary: Publishes in service for projectId
       responses:
@@ -136,6 +142,15 @@ paths:
       description: |-
         Publishes the project, if possible.
         This will disable any future changes to the given projectId.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  $ref: '#/components/schemas/portusername'
+        description: ''
   '/project/{project-id}/files':
     parameters:
       - schema:
@@ -175,6 +190,10 @@ paths:
                 properties:
                   success:
                     type: boolean
+              examples:
+                example-1:
+                  value:
+                    success: true
       requestBody:
         content:
           multipart/form-data:
@@ -187,6 +206,21 @@ paths:
                   type: object
                 filename:
                   type: string
+                  description: Only in active mode
+                folder:
+                  type: string
+                  description: |-
+                    Only in passive mode
+
+                    This is the folder, the user has provided himself.
+            examples:
+              example-1:
+                value:
+                  userId: string
+                  files: {}
+                  filename: string
+                  folder: string
+        description: ''
     delete:
       summary: ''
       responses:
@@ -264,7 +298,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Project'
-              examples: {}
       parameters: []
       requestBody:
         content:
@@ -274,6 +307,10 @@ paths:
               properties:
                 userId:
                   $ref: '#/components/schemas/portusername'
+            examples:
+              example-1:
+                value:
+                  userId: string
     parameters: []
     post:
       summary: Add a new project to the service
@@ -305,10 +342,10 @@ components:
         Beware: Do not use a token (e.g. for oauth) as password, because this is used in the token field.
 
         session format:
-        <port-name>://<username>:<password>
+        `<port-name>://<username>:<password>`
 
         normal format:
-        <username>
+        `<username>`
     File:
       title: File
       type: object

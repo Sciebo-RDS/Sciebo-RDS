@@ -12,16 +12,17 @@
         </v-col>
       </v-row>
     </v-container>
+    <div style="height: calc(100vh - 13em);">
     <iframe
       v-if="loadingStep >= 1"
       v-show="loadingStep >= 2"
       ref="describoWindow"
       :src="iframeSource"
-      height="500px"
       width="100%"
-      style="border: 0px; left: 0px;"
+      style="border: 0px; left: 0px; height: 100%"
       @load="loaded()"
     ></iframe>
+    </div>
   </div>
 </template>
 
@@ -40,6 +41,7 @@ export default {
   computed: {
     ...mapGetters({
       ownCloudServicename: "getOwnCloudServername",
+      loadedFilePath: "getLoadedFilePath",
     }),
     editor() {
       return this.$refs.describoWindow.contentWindow;
@@ -54,22 +56,13 @@ export default {
       });
       return `${this.$config.describo}?${query}`;
     },
-    filePath() {
-      if (this.project.portIn.length == 0) {
-        // TODO add port-owncloud default to project!
-        // FIXME add port-owncloud, when creating a new project. Not here!
-        return "";
+  },
+  watch: {
+    loadedFilePath(newLoadedFilePath, oldLoadedFilePath){
+      if (!!newLoadedFilePath){
+        console.log("loadedFilePath changed, getting Describo Session");
+        this.getDescriboSession();
       }
-
-      const service = this.getService(
-        this.project.portIn,
-        "port-owncloud-" + this.ownCloudServicename
-      );
-      if (service !== undefined) {
-        return service.properties.customProperties.filepath;
-      }
-
-      return "";
     },
   },
   methods: {
@@ -89,7 +82,7 @@ export default {
                 event: "load",
                 data: {
                   projectId: this.project.projectId,
-                  filePath: this.filePath,
+                  filePath: this.loadedFilePath,
                 },
               }),
               "*"
@@ -102,7 +95,7 @@ export default {
                 event: "save",
                 data: {
                   projectId: this.project.projectId,
-                  filePath: this.filePath,
+                  filePath: this.loadedFilePath,
                   fileData: this.fileData,
                 },
               }),
@@ -127,41 +120,45 @@ export default {
         }
       }
     },
+    getDescriboSession() {
+      this.loadingStep = 0
+      console.log("request describo sessionId");
+      this.$socket.client.emit(
+        "requestSessionId",
+        { folder: this.loadedFilePath },
+        (sessionId) => {
+          this.loadingStep = 1;
+          this.sessionId = sessionId;
+          console.log("got sessionId", sessionId);
+        }
+      );
+
+      this.standardLoadingText = this.$gettext("Editor loading");
+      this.loadingText = this.standardLoadingText;
+      let counter = 0;
+      let loader = setInterval(() => {
+        if (!this.loading) {
+          clearInterval(loader);
+        }
+
+        if (counter > 30) {
+          this.loadingText = this.$gettext(
+            "Error while loading. Please contact an administator."
+          );
+          clearInterval(loader);
+        } else {
+          if (counter % 4 > 0) {
+            this.loadingText += ".";
+          } else {
+            this.loadingText = this.standardLoadingText;
+          }
+          counter += 1;
+        }
+      }, 1000);
+    }
   },
   mounted() {
-    console.log("request describo sessionId");
-    this.$socket.client.emit(
-      "requestSessionId",
-      { folder: this.filePath },
-      (sessionId) => {
-        this.loadingStep = 1;
-        this.sessionId = sessionId;
-        console.log("got sessionId", sessionId);
-      }
-    );
-
-    this.standardLoadingText = this.$gettext("Editor loading");
-    this.loadingText = this.standardLoadingText;
-    let counter = 0;
-    let loader = setInterval(() => {
-      if (!this.loading) {
-        clearInterval(loader);
-      }
-
-      if (counter > 30) {
-        this.loadingText = this.$gettext(
-          "Error while loading. Please contact an administator."
-        );
-        clearInterval(loader);
-      } else {
-        if (counter % 4 > 0) {
-          this.loadingText += ".";
-        } else {
-          this.loadingText = this.standardLoadingText;
-        }
-        counter += 1;
-      }
-    }, 1000);
+    this.getDescriboSession();
   },
   created() {
     window.addEventListener("message", this.eventloop);

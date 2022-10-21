@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "layer0_describo.fullname" . }}
+  namespace: {{ .Release.Namespace  }}
   labels:
 {{ include "layer0_describo.labels" . | indent 4 }}
 spec:
@@ -37,15 +38,15 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: describo-configuration
-              mountPath: /srv/configuration.json
+              mountPath: /srv/api/configuration.json
               subPath: configuration.json
               readOnly: true
             - name: describo-configuration
-              mountPath: /srv/type-definitions-lookup.json
+              mountPath: /srv/profiles/type-definitions-lookup.json
               subPath: type-definitions-lookup.json
               readOnly: true
             - name: describo-configuration
-              mountPath: /srv/type-definitions.json
+              mountPath: /srv/profiles/type-definitions.json
               subPath: type-definitions.json
               readOnly: true
           envFrom:

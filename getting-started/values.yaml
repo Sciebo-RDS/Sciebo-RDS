@@ -1,0 +1,46 @@
+global:
+  # creates a namespace on its own
+  namespace:
+    create: false
+    name: rds
+  describo:
+    api_secret: IAMSECRET
+    domain: separate-domain-for-describo.your-institution.org
+  rds:
+    domain: separate-domain-for-rds.your-institution.org
+  # Domains you want to use as input, currently only owncloud supported,
+  # this enables to use multiple owncloud instances with a single sciebo RDS
+  domains:
+    - name: owncloud.local # name needs to be exact the same as the second part after last @ in the cloudId
+      ADDRESS: https://owncloud.local/owncloud
+      OAUTH_CLIENT_ID: ABC
+      OAUTH_CLIENT_SECRET: XYZ
+      filters: # filters are helpful, if you want to use the same sciebo RDS instance for multiple cloudstorage installations.
+        # After filters are applied, you have a set of service which are listed in "only" (if empty, it means all services available in sciebo RDS) without all services in "except" (if empty, it means no services)
+        only:
+          - layer1-port-openscienceframework
+        except:
+          - layer1-port-datasafe
+      SUPPORT_EMAIL: mail@side.com
+      MANUAL_URL: usermanual.side.com
+layer0-describo:
+  environment:
+    ADMIN_PASSWORD: your-admin-password
+  postgresql:
+    # starts its own postgresql database.
+    postgresqlDatabase: describo
+    postgresqlUsername: admin
+    postgresqlPassword: admin
+layer0-owncloud:
+  enabled: true
+layer0-web:
+  environment:
+    # the password, which will be used to encrypt all user data
+    SECRET_KEY: 1234
+layer1-port-zenodo:
+  enabled: true
+  environment:
+    # needs to be adjusted to correct values
+    ADDRESS: https://sandbox.zenodo.org
+    OAUTH_CLIENT_ID: ABC
+    OAUTH_CLIENT_SECRET: XYZ

@@ -14,21 +14,17 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: webconfig
+  namespace: {{ .Release.Namespace  }}
 data:
     EMBED_MODE: "{{ .Values.environment.EMBED_MODE }}"
-    FLASK_ORIGINS: {{ .Values.environment.FLASK_ORIGINS | toJson | squote }}
+    FLASK_ORIGINS: {{ (append (append .Values.environment.FLASK_ORIGINS (printf "https://%s" .Values.global.rds.domain)) (printf "http://%s" .Values.global.rds.domain)) | toJson | squote }}
     SECRET_KEY: "{{ .Values.environment.SECRET_KEY }}"
-    OWNCLOUD_URL: "{{ .Values.environment.OWNCLOUD_URL }}"
-    OWNCLOUD_OAUTH_CLIENT_ID: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_ID }}"
-    OWNCLOUD_OAUTH_CLIENT_SECRET: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_SECRET }}"
-    OWNCLOUD_OAUTH_CLIENT_REDIRECT: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_REDIRECT }}"
-    OWNCLOUD_OAUTH_CLIENT_AUTHORIZE_URL: "{{ .Values.environment.OWNCLOUD_OAUTH_CLIENT_AUTHORIZE_URL }}"
     DESCRIBO_API_ENDPOINT: "{{ .Values.environment.DESCRIBO_API_ENDPOINT }}"
-    DESCRIBO_API_SECRET: {{ include "apiSecret" . | quote }}
-    VUE_APP_DESCRIBO_URL: "{{ .Values.environment.VUE_APP_DESCRIBO_URL }}"
-    VUE_APP_FRONTENDHOST: "{{ .Values.environment.VUE_APP_FRONTENDHOST }}"
-    VUE_APP_SOCKETIO_HOST: "{{ .Values.environment.VUE_APP_SOCKETIO_HOST }}"
-    SOCKETIO_HOST: "{{ .Values.environment.SOCKETIO_HOST }}"
+    DESCRIBO_API_SECRET: {{ .Values.global.describo.api_secret | quote }}
+    VUE_APP_DESCRIBO_URL: https://{{ .Values.global.describo.domain }}/application
+    VUE_APP_FRONTENDHOST: https://{{ .Values.global.rds.domain }}
+    VUE_APP_SOCKETIO_HOST: https://{{ .Values.global.rds.domain }}
+    SOCKETIO_HOST: https://{{ .Values.global.rds.domain }}
     SOCKETIO_PATH: "{{ .Values.environment.SOCKETIO_PATH }}"
     VUE_APP_BASE_URL: "{{ .Values.environment.VUE_APP_BASE_URL }}"
     {{- with (mustMergeOverwrite (.Values.global | default dict) .Values.environment) }}
@@ -43,6 +39,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: domainsconfig
+  namespace: {{ .Release.Namespace  }}
 data:
   domains.json: |-
 {{- $domains | toJson | nindent 4 }}

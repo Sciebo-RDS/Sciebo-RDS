@@ -1,3 +1,4 @@
+from socket import timeout
 import requests
 import os
 import json
@@ -45,7 +46,7 @@ class TokenService:
 
         self._services = []
         self.IGNORE_PROJECTS = (
-            os.getenv("IGNORE_PROJECTS", "False").capitalize() == "True"
+            os.getenv("IGNORE_PROJECTS", "True").capitalize() == "True"
         )
 
     def getOAuthURIForService(self, service: BaseService) -> str:
@@ -529,6 +530,7 @@ class TokenService:
             data=body,
             auth=(service.client_id, service.client_secret),
             verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
+            timeout=15
         )
 
         logger.info(f"response body: {response.text}")

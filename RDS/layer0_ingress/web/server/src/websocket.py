@@ -1,4 +1,5 @@
 import enum
+from time import time
 from flask import request, session
 from flask_socketio import emit, disconnect, Namespace
 from flask_login import current_user, logout_user
@@ -16,12 +17,11 @@ from .app import (
     socketio,
     clients,
     rc,
-    tracing,
-    tracer_obj,
     app,
     trans_tbl,
     research_progress,
-    verify_ssl
+    verify_ssl,
+    timestamps
 )
 from .Describo import getSessionId
 import logging
@@ -31,6 +31,7 @@ import json
 import requests
 import jwt
 from .SyncResearchProcessStatusEnum import ProcessStatus
+
 
 
 def refreshUserServices():
@@ -179,17 +180,6 @@ def exchangeCodeData(data):
     return req.status_code < 400
 
 
-def trace_this(fn):
-    @functools.wraps(fn)
-    def wrapped(*args, **kwargs):
-        with tracer_obj.start_active_span(f"Websocket {fn.__name__}") as scope:
-            app.logger.debug("start tracer span")
-            res = fn(*args, **kwargs)
-            app.logger.debug("finish tracer span")
-            return res
-
-    return wrapped
-
 
 def authenticated_only(f):
     @functools.wraps(f)
@@ -208,8 +198,7 @@ def authenticated_only(f):
         if not current_user.is_authenticated:
             disconnect()
         else:
-            fn = trace_this(f)
-            return fn(*args, **kwargs)
+            return f(*args, **kwargs)
 
     return wrapped
 
@@ -244,11 +233,18 @@ class RDSNamespace(Namespace):
     def on_connect(self, data):
         current_user.websocketId = request.sid
         clients[current_user.userId] = current_user
+        
+        sideInformations = session["oauth"]
+        app.logger.debug("set side-informations {}".format(sideInformations))
 
         emit("ServerName", {"servername": session["servername"]})
+        emit("SupportEmail", {"supportEmail": session["oauth"]["SUPPORT_EMAIL"]})
+        emit("ManualUrl", {"manualUrl": session["oauth"]["MANUAL_URL"]})
         emit("ServiceList", httpManager.makeRequest("getServicesList"))
         emit("UserServiceList", httpManager.makeRequest("getUserServices"))
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))
+
+        timestamps[current_user.userId] = time()
 
     def on_disconnect(self):
         app.logger.info("disconnected")
@@ -260,9 +256,9 @@ class RDSNamespace(Namespace):
         except Exception as e:
             app.logger.error(e, exc_info=True)
 
-    def __update_research_process(self, research): 
+    def __update_research_process(self, research):
         research_progress[research["researchId"]] = research
-        
+
     def __get_research_process(self, research):
         return research_progress.get(research["researchId"])
 
@@ -305,7 +301,7 @@ class RDSNamespace(Namespace):
     def __load_research(self, jsonData):
         research = json.loads(httpManager.makeRequest("getResearch", data=jsonData))
         research["synchronization_process_status"] = ProcessStatus.START.value
-            
+
         for index, port in enumerate(research["portOut"]):
             research["portOut"][index]["status"] = ProcessStatus.START.value
         return research
@@ -528,6 +524,8 @@ class RDSNamespace(Namespace):
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))
 
     def on_requestSessionId(self, jsonData=None):
+        app.logger.debug("got request for describo sessionId, data: {}", jsonData)
+        
         global rc
         if jsonData is None:
             jsonData = {}
@@ -538,12 +536,15 @@ class RDSNamespace(Namespace):
             informations = session["informations"]
             _, _, servername = str(informations.get("cloudID")).rpartition("@")
             servername = servername.translate(trans_tbl)
+            app.logger.debug("go to take token from tokenstore")
 
             token = json.loads(
                 httpManager.makeRequest(
                     "getServiceForUser", {"servicename": f"port-owncloud-{servername}"}
                 )
             )["data"]["access_token"]
+            
+            app.logger.debug("got token")
             describoObj = getSessionId(token, jsonData.get("folder"))
             sessionId = describoObj["sessionId"]
 

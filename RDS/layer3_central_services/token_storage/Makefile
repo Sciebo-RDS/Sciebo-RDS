@@ -26,7 +26,7 @@ loc: dev
 
 doc: dev
 	pydocmd build
-	mv _build/pydocmd/token-storage.md ../../../docs/content/doc/impl/central/token-storage-docstring.md
+	cat _build/pydocmd/token-storage.md >> ../../../docs/docs/layer3-token-storage-docstring.md
 	rm -r _build
 
 

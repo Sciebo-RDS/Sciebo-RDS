@@ -410,6 +410,8 @@ components:
             - 0: none
             - 1: zip
           type: integer
+        loginMode:
+          type: integer
         credentials:
           type: object
           description: 'It defines, if the user can enter userId and / or password, if this is needed. Most times, you will need userId and password.'
@@ -426,6 +428,10 @@ components:
           description: A small description of the given service.
         icon:
           type: string
+          description: |-
+            Have to be the following format:
+
+            data:{mimetype};base64,{base64-encoded image}
           nullable: true
         infoUrl:
           type: string
@@ -487,11 +493,17 @@ components:
             - 0: none
             - 1: zip
           type: integer
+        loginMode:
+          type: integer
         description:
           type: object
           description: A small description of the given service.
         icon:
           type: string
+          description: |-
+            Have to be the following format:
+
+            data:{mimetype};base64,{base64-encoded image}
           nullable: true
         displayName:
           type: string

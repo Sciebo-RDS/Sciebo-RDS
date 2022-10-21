@@ -6,7 +6,7 @@ const config = {
     },
     server: process.env.VUE_APP_FRONTENDHOST || "$VUE_APP_FRONTENDHOST",
     describo: process.env.VUE_APP_DESCRIBO_URL || "$VUE_APP_DESCRIBO_URL",
-    predefined_user: (process.env.DEV_USE_PREDEFINED_USER === "True")
+    predefined_user: (process.env.DEV_USE_PREDEFINED_USER === "True"),
 }
 
 export default {

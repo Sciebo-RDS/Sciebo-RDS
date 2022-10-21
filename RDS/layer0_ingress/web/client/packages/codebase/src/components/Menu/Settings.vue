@@ -39,7 +39,10 @@
         >
           {{ item.text }} <v-icon right>{{ item.icon }}</v-icon>
         </v-btn>
-        <div v-if="!languagePredefined">
+
+        <!-- FIXME: Hardcoded language -->
+        
+        <!-- <div v-if="!languagePredefined">
           <v-subheader>{{ $gettext("Language") }}</v-subheader>
           <v-btn
             v-for="item in availableLanguages"
@@ -51,7 +54,8 @@
           >
             {{ item.long }}
           </v-btn>
-        </div>
+        </div> -->
+
         <div style="width: 100%; text-align:center;">
           <v-btn
             x-small
@@ -123,6 +127,12 @@ export default {
         },
       ],
     };
+  },
+  // FIXME: Hardcoded language
+  mounted() {
+        let value = 'en';
+        this.$config.language = value;
+        this.$store.dispatch("setLanguage", { language: value });
   },
   computed: {
     availableLanguages: function() {

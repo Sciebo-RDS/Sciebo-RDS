@@ -1,17 +1,8 @@
 from urllib.parse import urlparse
 import logging
-from .TracingHandler import TracingHandler
-from opentracing_instrumentation.client_hooks import install_all_patches
-from jaeger_client import Config as jConfig
-from jaeger_client.metrics.prometheus import (
-    PrometheusMetricsFactory,
-)
 from flask import request
 from functools import wraps
-import opentracing
-from flask_opentracing import FlaskTracing
 import redis_pubsub_dict
-from rediscluster import RedisCluster
 from flask import Flask
 import uuid
 import requests
@@ -66,7 +57,7 @@ class DomainsDict(UserDict):
         self.cache = {}
 
     def get_publickey(self, key):
-        """Returns publickey. If not already cached, get it from the efss instance. 
+        """Returns publickey. If not already cached, get it from the efss instance.
 
         Args:
             key (str): The key, equals to the same as domains key, to look up.
@@ -77,7 +68,7 @@ class DomainsDict(UserDict):
         Returns:
             str: the requested publickey
         """
-        
+
         try:
             return self.cache[key]
         except KeyError:
@@ -118,12 +109,15 @@ try:
     rc = Redis(
         **(startup_nodes[0]),
         db=0,
+        health_check_interval=30,
         decode_responses=True,
+        retry_on_timeout=True,
     )
 except:
-    rc = None
+    rc = {}  # this can be used for verification in dev env
 
 clients = {}
+timestamps = {}
 flask_config = {
     "SESSION_TYPE": "filesystem",
     "SECRET_KEY": os.getenv("SECRET_KEY", uuid.uuid4().hex),
@@ -140,23 +134,27 @@ if os.getenv("USE_LOCAL_DICTS", "False").capitalize() == "True":
     user_store = {}
     research_progress = {}
 else:
-    startup_nodes_cluster = [
-        {
-            "host": os.getenv("REDIS_SERVICE_HOST", "localhost"),
-            "port": os.getenv("REDIS_SERVICE_PORT", "6379"),
-        }
-    ]
+    from redis.cluster import RedisCluster, ClusterNode
 
+    nodes = [
+        ClusterNode(
+            os.getenv("REDIS_SERVICE_HOST", "localhost"),
+            os.getenv("REDIS_SERVICE_PORT", "6379"),
+        )
+    ]
     rcCluster = RedisCluster(
-        startup_nodes=startup_nodes_cluster,
+        startup_nodes=nodes,
         skip_full_coverage_check=True,
-        cluster_down_retry_attempts=1,
+        cluster_error_retry_attempts=30,
     )
 
     rcCluster.cluster_info()  # provoke an error message
     user_store = redis_pubsub_dict.RedisDict(rcCluster, "web_userstore")
     research_progress = redis_pubsub_dict.RedisDict(rcCluster, "web_research_progress")
     # clients = redis_pubsub_dict.RedisDict(rcCluster, "web_clients")
+    timestamps = redis_pubsub_dict.RedisDict(
+        rcCluster, "tokenstorage_access_timestamps"
+    )
 
     flask_config["SESSION_TYPE"] = "redis"
     flask_config["SESSION_REDIS"] = rcCluster
@@ -165,34 +163,9 @@ app = Flask(
     __name__, static_folder=os.getenv("FLASK_STATIC_FOLDER", "/usr/share/nginx/html")
 )
 
-### Tracing begin ###
-tracer_config = {
-    "sampler": {
-        "type": "const",
-        "param": 1,
-    },
-    "local_agent": {
-        "reporting_host": "jaeger-agent",
-        "reporting_port": 5775,
-    },
-    "logging": True,
-}
-
-config = jConfig(
-    config=tracer_config,
-    service_name=f"RDSWebConnexionPlus",
-    metrics_factory=PrometheusMetricsFactory(namespace=f"RDSWebConnexionPlus"),
-)
-
-
-tracer_obj = config.initialize_tracer()
-tracing = FlaskTracing(tracer_obj, True, app)
-install_all_patches()
-
 # add a TracingHandler for Logging
 gunicorn_logger = logging.getLogger("gunicorn.error")
 app.logger.handlers.extend(gunicorn_logger.handlers)
-app.logger.addHandler(TracingHandler(tracer_obj))
 app.logger.setLevel(gunicorn_logger.level)
 ### Tracing end ###
 

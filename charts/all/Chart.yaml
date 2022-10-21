@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: "1.0"
 description: A single chart for installing whole sciebo rds ecosystem.
 name: all
-version: 0.2.4
+version: 0.2.9
 home: https://www.research-data-services.org/
 type: application
 keywords:
@@ -86,21 +86,21 @@ dependencies:
       - layer3
   - name: jaeger
     version: ^0.34.0
-    repository: https://jaegertracing.github.io/helm-charts
+    repository: file://../jaeger
     condition: feature.jaeger
     tags:
       - monitoring
   - name: redis-cluster
     alias: redis
-    version: ^3.2.0
-    repository: https://charts.bitnami.com/bitnami
+    version: ^7.6.1
+    repository: file://../redis-cluster
     condition: feature.redis
     tags:
       - storage
   - name: redis
     alias: redis-helper
-    version: ^14.8.7
-    repository: https://charts.bitnami.com/bitnami
+    version: ^16.10.1
+    repository: file://../redis
     condition: feature.redis
     tags:
       - storage

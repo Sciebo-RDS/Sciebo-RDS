@@ -1,28 +1,46 @@
 <template>
   <v-card flat color="transparent">
-    <v-chip v-if="this.status == '1'" color="lighten-3" class="ma-2" small>
-      <translate>created</translate>
+    <v-chip v-if="this.status == 0"
+      color="warning"
+      class="caption"
+      outlined
+      label
+      small>
+      unnamed
+    </v-chip>
+    <v-chip v-if="this.status >= 1 && this.status <= 2"
+      color="info"
+      class="caption"
+      outlined
+      label
+      small>
+      draft
     </v-chip>
     <v-chip
-      v-else-if="this.status == '2'"
-      color="blue lighten-3"
-      class="ma-2"
+      v-else-if="this.status == 3"
+      color="success"
+      class="caption"
+      outlined
+      label
       small
-      ><translate>modified</translate>
+      >published
+      <v-icon
+        class="ml-1">
+        mdi-lock
+      </v-icon>
     </v-chip>
     <v-chip
-      v-else-if="this.status == '3'"
-      color="light-green lighten-1"
-      class="ma-2"
+      v-else-if="this.status == 4"
+      color="error"
+      outlined
       small
-      ><translate>published</translate>
-    </v-chip>
-    <v-chip
-      v-else-if="this.status == '4'"
-      color="red lighten-3"
-      class="ma-2"
-      small
-      ><translate>deleted</translate>
+      label
+      class="caption"
+      >archived
+      <v-icon
+        class="ml-1">
+        mdi-lock
+      </v-icon>
     </v-chip>
   </v-card>
 </template>

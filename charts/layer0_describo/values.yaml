@@ -4,7 +4,7 @@
 replicaCount: 1
 
 image:
-  tag: 0.4.7
+  tag: 0.26.1
   pullPolicy: Always
   registry: docker.io
   uiRepository: arkisto/describo-online-ui
@@ -22,8 +22,6 @@ service:
   port: 80
   targetPort: 80
 
-# domain for describo
-domain: localhost
 ingress:
   path: /
   annotations:
@@ -65,9 +63,8 @@ persistence:
   annotations: {}
 
 environment:
-  LOG_LEVEL: "info"
-
-api_secret: "IAMSECRET"
+  LOG_LEVEL: info
+  ADMIN_PASSWORD: adminpass
 
 # domains for webdav addresses (currently owncloud only)
 domains:

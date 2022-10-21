@@ -6,6 +6,7 @@ metadata:
   {{ toYaml . | indent 4 }}
   {{- end }}
   name: {{ include "layer1_port_openscienceframework.fullname" . }}
+  namespace: {{ .Release.Namespace  }}
   labels:
 {{ include "layer1_port_openscienceframework.labels" . | indent 4 }}
 spec:

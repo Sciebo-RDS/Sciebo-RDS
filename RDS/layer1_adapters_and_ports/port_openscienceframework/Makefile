@@ -27,5 +27,5 @@ loc: dev
 
 doc: dev
 	pydocmd build
-	mv _build/pydocmd/port-osf.md ../../../docs/content/doc/impl/ports/port-osf-docstring.md
+	cat _build/pydocmd/port-osf.md >> ../../../docs/docs/layer1-port-osf-docstring.md
 	rm -r _build

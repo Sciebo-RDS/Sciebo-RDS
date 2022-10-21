@@ -71,7 +71,7 @@ class PageController extends Controller
     public function index()
     {
         if ($this->session->get('impersonator') !== null) {
-            return new TemplateResponse($this->appName, "impersanator", []);
+            return new TemplateResponse($this->appName, "impersonator", []);
         }
 
         $policy = new \OCP\AppFramework\Http\EmptyContentSecurityPolicy();

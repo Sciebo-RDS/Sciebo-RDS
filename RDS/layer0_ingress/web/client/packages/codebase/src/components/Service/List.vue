@@ -1,34 +1,51 @@
 <template>
-  <v-row justify="center">
-    <v-expansion-panels inset focusable multiple>
-      <v-expansion-panel v-for="(service, i) in filteredServiceList" :key="i">
-        <v-expansion-panel-header>
-          <v-row>
-            <v-col cols="auto"> {{ service.displayName }}</v-col>
-            <v-chip
-              v-if="userUses(service)"
-              color="light-green lighten-1"
-              class="ma-2"
-              small
-              ><translate key="7d7908fe-afa8-4bf2-8435-cd8069672d1a">
-                connected</translate
-              >
-              <v-icon class="ml-2">mdi-link</v-icon>
-            </v-chip>
-            <v-chip v-else color="grey" class="ma-2" small>
-              <translate key="c4cd931f-852a-4d57-925a-31964bb6e862"
-                >not connected</translate
-              >
-              <v-icon class="ml-2">mdi-link-off</v-icon>
-            </v-chip>
-          </v-row>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <ServiceConfiguration :service="service" />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+  <v-container
+    fluid
+    class="pa-0 d-flex flex-column"
+    style="margin-top: 13px;">
+      <v-sheet
+        flat
+        height="6.3em"
+        color="sidebar"
+        style="border-bottom: 1px solid #ccc!important;"
+        class="mb-4 px-10"
+        max-width="100%" width="100%">
+
+          <v-container fill-height>
+            <!-- FIXME: make this row and columns behave like the columns below--> 
+              <v-row  class="overline" align="center">
+                <v-col xl="2" lg="3" md="3" sm="3" xs="12" class="text-center">
+                  <span class="font-weight-bold">Manage your repositories</span>
+                </v-col>
+                  <v-col>
+                    <v-card flat class="transparent mx-4">
+                  Currently Connected:  <span style="text-transform: none; font-size: 0.8rem"> 
+                    {{
+                    filteredUserServiceList.length > 0
+                    ?
+                        ( filteredUserServiceList.length > 1
+                      ?
+                        [filteredUserServiceList.map((x) => x.displayName).slice(0, -1).join(', '),filteredUserServiceList.map((x) => x.displayName).slice(-1)].join(' and ')
+                      :
+                        filteredUserServiceList.map((x) => x.displayName).join(", "))
+                    :
+                      'None'}} </span>
+                      </v-card>
+                </v-col>
+              </v-row>
+          </v-container>
+
+      </v-sheet>
+  <v-row>
+      <v-card flat v-for="(service, i) in filteredServiceList" :key="i" class="px-10" max-width="100%" width="100%" style="border-bottom: 1px solid #ccc;">
+        <v-card-title>
+        </v-card-title>
+        <v-card-text>
+          <ServiceConfiguration :service="service"  style="min-width: 100%"/>
+        </v-card-text>
+    </v-card>
   </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -41,22 +58,21 @@ export default {
   },
   computed: {
     ...mapState({
-      userservicelist: (state) => state.RDSStore.userservicelist,
-      servicelist: (state) => state.RDSStore.servicelist,
+      userServiceList: (state) => state.RDSStore.userservicelist,
+      serviceList: (state) => state.RDSStore.servicelist,
     }),
+    //FIXME: make this independent from owncloud
     filteredServiceList() {
-      var filtered = [];
-      for (var i of this.servicelist) {
-        if (!i.servicename.startsWith("port-owncloud")) {
-          filtered.push(i);
-        }
-      }
-      return filtered;
+      return this.serviceList.filter(x => !x.servicename.startsWith("port-owncloud"));
     },
+    //FIXME: make this independent from owncloud
+    filteredUserServiceList() {
+      return this.userServiceList.filter(x => !x.servicename.startsWith("port-owncloud"));
+    }
   },
   methods: {
     userUses(service) {
-      for (var i of this.userservicelist) {
+      for (var i of this.userServiceList) {
         if (i.servicename === service.servicename) {
           return true;
         }

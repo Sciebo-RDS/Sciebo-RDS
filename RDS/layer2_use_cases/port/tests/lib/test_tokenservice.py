@@ -167,6 +167,7 @@ class Test_TokenService(unittest.TestCase):
         svc = self.tokenService.getOAuthURIForService(self.service1)
         self.assertEqual(svc, self.url1)
 
+    @mock.patch.dict(os.environ, {"IGNORE_PROJECTS": "False"})
     def test_get_services_for_user(self):
         # test to get all services from one user, with no service
         pact.given("no service was registered.").upon_receiving(
@@ -174,10 +175,12 @@ class Test_TokenService(unittest.TestCase):
         ).with_request("GET", f"/user/{self.user1.username}/token").will_respond_with(
             200, body={"length": 0, "list": []}
         )
+        
+        tokenService = TokenService(testing="http://localhost:3000")
 
         with pact:
             self.assertEqual(
-                self.tokenService.getAllServicesForUser(self.user1), [])
+                tokenService.getAllServicesForUser(self.user1), [])
 
         # test to get all services from one user, with one service
         pact.given("one service was registered.").upon_receiving(
@@ -199,7 +202,7 @@ class Test_TokenService(unittest.TestCase):
         del info["client_secret"]
 
         with pact:
-            data = self.tokenService.getAllServicesForUser(self.user1)
+            data = tokenService.getAllServicesForUser(self.user1)
         self.assertEqual(
             data,
             [
@@ -252,7 +255,7 @@ class Test_TokenService(unittest.TestCase):
 
         with pact:
             self.assertEqual(
-                self.tokenService.getAllServicesForUser(self.user1),
+                tokenService.getAllServicesForUser(self.user1),
                 [
                     {
                         "id": 0,
@@ -280,7 +283,7 @@ class Test_TokenService(unittest.TestCase):
         )
 
         with self.assertRaises(UserNotFoundError):
-            self.tokenService.getAllServicesForUser(self.user2)
+            tokenService.getAllServicesForUser(self.user2)
 
     # FIXME: addService not through this use case? directly to central service?
     """
@@ -804,9 +807,12 @@ class Test_TokenService(unittest.TestCase):
         projects = tokenService.getProjectsForToken(self.token1)
         self.assertEqual(projects, [])
 
+    @mock.patch.dict(os.environ, {"IGNORE_PROJECTS": "False"})
     def test_serviceprojects(self):
         proj1 = {"projectId": 0, "projectName": "Project1"}
         proj2 = {"projectId": 1, "projectName": "Project2"}
+        
+        tokenService = TokenService(testing="http://localhost:3000")
 
         expected_projects = []
         pact.given("Given token to access port").upon_receiving(
@@ -817,7 +823,7 @@ class Test_TokenService(unittest.TestCase):
             200, body=expected_projects
         )
         with pact:
-            projects = self.tokenService.getProjectsForToken(self.token1)
+            projects = tokenService.getProjectsForToken(self.token1)
             self.assertEqual(projects, expected_projects)
 
         expected_projects = [proj1]
@@ -829,7 +835,7 @@ class Test_TokenService(unittest.TestCase):
             200, body=expected_projects
         )
         with pact:
-            projects = self.tokenService.getProjectsForToken(self.token1)
+            projects = tokenService.getProjectsForToken(self.token1)
             self.assertEqual(projects, expected_projects)
 
         expected_projects = [proj1, proj2]
@@ -841,7 +847,7 @@ class Test_TokenService(unittest.TestCase):
             200, body=expected_projects
         )
         with pact:
-            projects = self.tokenService.getProjectsForToken(self.token1)
+            projects = tokenService.getProjectsForToken(self.token1)
             self.assertEqual(projects, expected_projects)
 
     def test_serviceprojects_projects_not_supported(self):

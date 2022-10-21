@@ -1,7 +1,9 @@
+import imp
 from lib.Project import Project
 import logging
 import requests
 import os
+from time import time
 from lib.EnumStatus import Status
 from RDS import Util
 
@@ -26,7 +28,7 @@ class ProjectService:
 
             redis_pubsub_dict.dumps = lambda x: json.dumps(x)
             redis_pubsub_dict.loads = lambda x: Util.try_function_on_dict(
-                [Project.fromJSON]
+                [Project.fromJSON, json.loads]
             )(x)
             redis_pubsub_dict.RedisDict.to_json = lambda x: dict(x.items())
             redis_pubsub_dict.RedisDict.__eq__ = (
@@ -47,25 +49,39 @@ class ProjectService:
 
                 try:
                     logger.debug("first try cluster")
-                    from rediscluster import RedisCluster
+                    from redis.cluster import RedisCluster as Redis
 
-                    rc = RedisCluster(
-                        startup_nodes=startup_nodes, decode_responses=True,
+                    rc = Redis(
+                        **(startup_nodes[0]),
+                        health_check_interval=30,
+                        decode_responses=True,
+                        retry_on_timeout=True,
                     )
+                    rc.get_nodes()  # provoke an error message
+
                 except Exception as e:
-                    logger.error(e)
-                    logger.debug(
-                        "Cluster has an error, try standardalone redis")
+                    logger.debug(e)
+                    logger.debug("Cluster has an error, try standardalone redis")
                     from redis import Redis
 
-                    rc = Redis(**(startup_nodes[0]),
-                               db=0, decode_responses=True,)
+                    rc = Redis(
+                        **(startup_nodes[0]),
+                        db=0,
+                        health_check_interval=30,
+                        decode_responses=True,
+                        retry_on_timeout=True,
+                    )
                     rc.info()  # provoke an error message
 
             logger.debug("set redis backed dict")
             self.projects = RedisDict(rc, "researchmanager_projects")
+
+            self._timestamps = redis_pubsub_dict.RedisDict(
+                rc, "tokenstorage_access_timestamps"
+            )
+
         except Exception as e:
-            logger.error(e)
+            logger.debug(e)
             logger.info("no redis found.")
 
             if not use_in_memory_on_failure:
@@ -76,6 +92,14 @@ class ProjectService:
 
             logger.info("use in-memory")
             self.projects = {}
+            self._timestamps = {}
+
+        def add_timestamp(this, key, **args):
+            # This adds a timestamp in a different dict for deprovisioning later.
+            self._timestamps[key] = time()
+
+        functools.wraps(self.projects.__getitem__)(add_timestamp)
+        functools.wraps(self.projects.__setitem__)(add_timestamp)
 
     @property
     def highest_index(self):
@@ -89,7 +113,7 @@ class ProjectService:
         """
         If parameter `userOrProject is an project object, this method adds the given project to the storage.
 
-        If parameter `userOrProject` is a string, it first creates an project object for you. 
+        If parameter `userOrProject` is a string, it first creates an project object for you.
         As a convenient parameter, you can set portIn and portOut also, which are used as parameters in project initialization.
         """
         if portIn is None:
@@ -104,8 +128,7 @@ class ProjectService:
             )
 
         if isinstance(userOrProject, str):
-            userOrProject = Project(
-                userOrProject, portIn=portIn, portOut=portOut)
+            userOrProject = Project(userOrProject, portIn=portIn, portOut=portOut)
 
         researchId = self.highest_index
 
@@ -192,7 +215,11 @@ class ProjectService:
         raise NotFoundIDError(user, researchIndex)
 
     def setProjectStatus(
-        self, user: str = None, researchIndex: int = None, researchId: int = None, status=Status.DELETED
+        self,
+        user: str = None,
+        researchIndex: int = None,
+        researchId: int = None,
+        status=Status.DELETED,
     ):
         """Set the status of the given project.
 
@@ -287,7 +314,9 @@ class ProjectService:
 
         return False
 
-    def finishProject(self, user: str = None, researchIndex: int = None, researchId: int = None):
+    def finishProject(
+        self, user: str = None, researchIndex: int = None, researchId: int = None
+    ):
         """Finish a project
 
         Args:
@@ -298,10 +327,16 @@ class ProjectService:
         Returns:
             [bool]: Return true, when successfully set, otherwise false.
         """
-        return self.setProjectStatus(user=user, researchIndex=researchIndex,
-                                     researchId=researchId, status=Status.DONE)
-    
-    def bumpProject(self, user: str = None, researchIndex: int = None, researchId: int = None):
+        return self.setProjectStatus(
+            user=user,
+            researchIndex=researchIndex,
+            researchId=researchId,
+            status=Status.DONE,
+        )
+
+    def bumpProject(
+        self, user: str = None, researchIndex: int = None, researchId: int = None
+    ):
         """Bump the status of a project.
 
         Args:
@@ -312,21 +347,31 @@ class ProjectService:
         Returns:
             [bool]: Return true, when successfully set, otherwise false.
         """
-        status = self.getProject(user=user, researchIndex=researchIndex,researchId=researchId).status
-        return self.setProjectStatus(user=user, researchIndex=researchIndex,
-                                     researchId=researchId, status=status.succ())
+        status = self.getProject(
+            user=user, researchIndex=researchIndex, researchId=researchId
+        ).status
+        return self.setProjectStatus(
+            user=user,
+            researchIndex=researchIndex,
+            researchId=researchId,
+            status=status.succ(),
+        )
 
     def removeProject(
         self, user: str = None, researchIndex: int = None, researchId: int = None
     ):
         """
-        This method removes the projects for given user. 
+        This method removes the projects for given user.
 
         If researchIndex was given, only the corresponding researchIndex will be removed (no user required, but it is faster).
         Returns True if it is successful or raise an exception if user or researchIndex not found. Else returns false.
         """
-        return self.setProjectStatus(user=user, researchIndex=researchIndex,
-                                     researchId=researchId, status=Status.DELETED)
+        return self.setProjectStatus(
+            user=user,
+            researchIndex=researchIndex,
+            researchId=researchId,
+            status=Status.DELETED,
+        )
 
     def getJSON(self):
         import json
@@ -369,3 +414,12 @@ class ProjectService:
             return True
 
         return False
+
+    def deprovizionize(self):
+        """
+        Removes projects, if timestamp is 180 days in the past.
+        For cleanup, it waits additional 30 days before it deletes the timestamp too.
+        """
+        for key, value in self._timestamps.items():
+            if value + 180 * 24 * 60 * 60 < time():
+                self.removeUser(key)

@@ -30,9 +30,16 @@ def getSessionId(access_token=None, folder=None):
     payload = {
         "email": informations["email"],
         "name": informations["cloudID"],
-        "session": {
+        "service": {
             "owncloud": data
-        }
+        },
+        "profile": {
+            "file": "type-definitions.json",
+        },
+        "configuration": {
+                            "allowProfileChange": False,
+                            "allowServiceChange": False,
+                        },
     }
 
     headers = {

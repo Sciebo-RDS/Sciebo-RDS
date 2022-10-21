@@ -1,6 +1,7 @@
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Projects from "../views/Projects.vue";
+import Archive from "../views/Archive.vue"
 import Settings from "../views/Settings.vue";
 import Wizard from "../views/Wizard.vue";
 import Services from "../views/Services.vue";
@@ -20,6 +21,12 @@ let routes = [
     component: Projects,
     icon: "mdi-lightbulb-on",
   },
+ /*  {
+    path: "/archive",
+    name: "Archive",
+    component: Archive,
+    icon: "mdi-earth",
+  }, */
   {
     path: "/services",
     name: "Services",
@@ -62,7 +69,8 @@ export default {
     const titles = {
       Home: Vue.prototype.$gettext("Home"),
       Projects: Vue.prototype.$gettext("Projects"),
-      Services: Vue.prototype.$gettext("Services"),
+      /* Archive: Vue.prototype.$gettext("Publications"), */
+      Services: Vue.prototype.$gettext("Repositories"),
       Settings: Vue.prototype.$gettext("Settings"),
       Wizard: Vue.prototype.$gettext("Wizard"),
       Help: Vue.prototype.$gettext("Help"),

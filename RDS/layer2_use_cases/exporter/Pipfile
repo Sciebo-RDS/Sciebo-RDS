@@ -18,8 +18,8 @@ connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 openapi-spec-validator = "<0.3"
 pyjwt = "*"
-pathos = "*"
 research-data-services-common = {extras = ["flask"], version = "*"}
+Markdown = "==3.3.7"
 
 [requires]
 python_version = "3.8"

@@ -1,0 +1,2 @@
+FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/nginx:1.21
+COPY public/ /usr/share/nginx/html

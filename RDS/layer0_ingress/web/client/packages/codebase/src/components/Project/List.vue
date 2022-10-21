@@ -1,101 +1,191 @@
 <template>
-  <v-row justify="center">
-    <v-card
-      v-if="projects.length == 0 && userHasServicesConnected"
-      outlined
-      tile
-    >
-      <v-card-title>
-        <translate>No projects found</translate>
-      </v-card-title>
-      <v-card-text>
-        <translate> Set the filter or create a new one project. </translate>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" @click="addProject">
-          <translate>Create a new project</translate>
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-    <v-expansion-panels inset focusable v-model="panel" v-else>
-      <v-expansion-panel v-for="(project, i) in projects" :key="i">
-        <v-expansion-panel-header>
-          <v-row>
-            <v-col class="d-inline-flex" style="max-width: fit-content !important;">
-            <ProjectTitle v-bind:project="project" v-bind:active="panel === i" />
-              </v-col>
-            <v-col>
-              <ProjectStatusChip
-                v-bind:status="project.status"
-                v-bind:class="{
-                  'mt-2': panel === i && project.status < 4,
-                  'mt-3': titleEdit && panel === i && project.status < 4,
-                }"
-                class="hidden-sm-and-down"
-              />
-              <ProjectStatusChip
-                v-bind:status="project.status"
-                class="hidden-md-and-up"
-                v-bind:class="{
-                  'mt-2': panel === i,
-                  'hidden-md-and-down': titleEdit,
-                }"
-              />
+    <v-container
+    fluid
+    class="pa-0 d-flex flex-column"
+    style="margin-top: 13px;">
+        <v-row no-gutters>
+
+            <!-- Project list -->
+            <v-col cols="3" class="col-xs-12">
+                <!-- Project list header -->
+                <v-sheet
+                    flat
+                    height="6.3em"
+                    color="sidebar"
+                    style="border-bottom: 1px solid #ccc!important">
+                    <v-container fill-height>
+                        <v-row justify="center" class="overline">
+                            {{ listtype == 'Current' ? activeProjects.length : pastProjects.length }} <slot/> Projects
+                        </v-row>
+                    </v-container>
+                </v-sheet>
+
+                <!-- Project list content -->
+                <v-list style="overflow-y: auto; margin: 0; padding: 0; max-height: calc(100vh - 13.1em)">
+                    <v-list-item-group>
+                        
+                        <div
+                            @click="loadProject(p)"
+                            active-class=""
+                            v-for="p in (listtype == 'Current' ? activeProjects : pastProjects)"
+                            :key="p.researchIndex"
+                            class="sidebar lighten-5"
+                            
+                            >
+                        <v-list-item style="border-bottom: 1px solid #ccc"
+                        :style="loadedProject && p.researchIndex === loadedProject.researchIndex ? 'border-left: 5px solid #bada55' : ''"
+                        :title="!!p.researchname ? p.researchname : ''">
+                        <v-list-item-content
+                            class="ma-1" >
+                            <v-row align="start" style="flex-wrap: nowrap; max-width: 100%;">
+                              <!-- TODO: fix width -->
+                            <v-col class="caption flex-grow-1 flex-shrink-1" cols="auto"  style="overflow: hidden;">
+                              
+                                Project {{p.researchIndex}}
+                                <v-list-item-title class="my-1">
+                                    <div :class="!!p.researchname ? '' : 'font-italic' " style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                {{ !!p.researchname ? p.researchname : 'New Project' }}
+                                    </div>
+                            </v-list-item-title>
+                            </v-col>
+                            <v-col cols="auto" class="flex-grow-0 flex-shrink-0" style="padding-right: 0">
+                                <ProjectStatusChip
+                                        v-bind:status="!!p.researchname ? p.status : 0"
+                                    />
+                            </v-col>
+                            </v-row>
+                            
+
+                        </v-list-item-content>
+                        
+                        </v-list-item>
+                        </div>
+                    </v-list-item-group>
+                </v-list>
+                <!-- New Project button -->
+                    <div v-if="listtype == 'Current'" class="text-center ma-6">
+                    <v-btn
+                        text
+                        color="primary"
+                        @click="addProject">
+                            <v-icon class="ma-1">
+                                mdi-plus
+                            </v-icon>
+                        new project
+                    </v-btn>
+                    </div>
             </v-col>
-          </v-row>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <ProjectSetting
-            @delete-project="deleteProject(project.researchIndex)"
-            :project="project"
-            v-if="panel === i"
-          />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
-  </v-row>
+
+            <!-- Project Detail-->
+            <v-col
+                v-if="listtype == 'Current'"
+                cols="9"
+                style="border-left: 2px solid #ccc;">
+
+                <!-- Active Project Stepper -->
+                <v-card v-if="!!loadedProject" flat height="100%" >
+                    <ProjectStepper :e1="e1" @setStepper="(n) => e1 = n" @reloadProject="reloadProject" :project="loadedProject" style="min-height: 100%;"/>
+                </v-card>
+
+                <!-- No Project selected -->
+                <v-card v-else flat height="100%">
+                    <v-container fill-height >
+                        <v-row align="center"
+                            justify="center" class="overline">
+                            <v-col cols="12" align="center">
+                                <v-icon style="border-radius: 100%; padding: 5%;" size="35em">
+                                    mdi-package-variant
+                                </v-icon>
+                            </v-col>
+                            <br/>
+                            Select a project or add a new one.
+                        </v-row>
+                    </v-container>
+                </v-card>
+            </v-col>
+
+            <!-- Past Projects -->
+            <v-col v-else cols="9" style="border-left: 2px solid #ccc;">
+                <v-card v-if="!!loadedProject" flat height="100%" >
+                    <!-- TODO: Past Project Detail View -->
+                    <ArchiveProjectDetail :project="loadedProject" style="min-height: 100%;"/>
+                </v-card>
+                <v-card v-else flat height="100%">
+                    <v-container fill-height >
+                        <v-row v-if="pastProjects.length != 0" align="center"
+                            justify="center" class="overline">
+                            <v-col cols="12" align="center">
+                                <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
+                                    mdi-package-variant
+                                </v-icon>
+                            </v-col>
+                            <br/>
+                                No project selected.
+                        </v-row>
+                        <v-row v-else align="center"
+                            justify="center" class="overline">
+                            <v-col cols="12" align="center">
+                                <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
+                                    mdi-package-variant
+                                </v-icon>
+                            </v-col>
+                            <br/>
+                                You haven't published any projects yet.
+                        </v-row>
+                    </v-container>
+                </v-card>
+            </v-col>
+        </v-row>
+    </v-container> 
 </template>
 
-<style lang="scss">
-.v-expansion-panel-content__wrap {
-  padding: 16px 24px 16px !important;
-}
-
-.v-expansion-panel-header--active {
-  color: #3f50b5;
-}
-</style>
 
 <script>
-import ProjectSetting from "./Setting.vue";
 import ProjectStatusChip from "./StatusChip.vue";
-import ProjectTitle from "./ProjectTitle.vue";
+import ProjectStepper from "./Stepper.vue";
+import ArchiveProjectDetail from "../Archive/ProjectDetail.vue";
 import { mapGetters } from "vuex";
 import { mapState } from "vuex";
 
 export default {
   components: {
-    ProjectSetting,
     ProjectStatusChip,
-    ProjectTitle,
+    ProjectStepper,
+    ArchiveProjectDetail,
   },
   data() {
     return {
-      panel: [],
       projects: [],
+      e1: 1,
     };
   },
+  props: ["listtype",],
   computed: {
     ...mapGetters({
       allProjects: "getProjectlist",
       showAllProjects: "showAllProjects",
+      loadedProject: "getLoadedProject",
+      loadedResearchId: "getLoadedResearchId",
     }),
     ...mapState({
       userservicelist: (state) => state.RDSStore.userservicelist,
     }),
+    loadedProject: {
+        get() {
+            return this.$store.getters.getLoadedProject
+        },
+        set(value) {
+            this.$store.commit('setLoadedProject', value)
+        }
+    },
+    originalProject() {
+      return !!this.loadedProject ? this.allProjects.filter((p) => p.researchId === this.loadedResearchId)[0] : null
+    },
     activeProjects() {
       return this.allProjects.filter((project) => project.status < 3);
+    },
+    pastProjects(){
+      return this.allProjects.filter((project) => project.status == 3);
     },
     userHasServicesConnected() {
       //hardcoded filter for owncloud, change
@@ -105,10 +195,23 @@ export default {
       return false;
     },
   },
-  methods: {
-    collapseProjects() {
-      this.panel = [];
+  watch: {
+    originalProject(newOriginalProject, oldOriginalProject){
+      if (!!newOriginalProject && !!oldOriginalProject && newOriginalProject["researchId"] === oldOriginalProject["researchId"] &&
+      JSON.stringify(newOriginalProject) !== JSON.stringify(oldOriginalProject)){
+        console.log("reloading Project")
+        this.reloadProject();
+      }
+      console.log("not reloading Project")
     },
+     activeProjects(newActiveProjects, oldActiveProjects){
+      if (newActiveProjects.length > oldActiveProjects.length) {
+        this.loadProject(this.activeProjects.at(-1));
+        console.log("load newly created Project")
+      }
+    }
+  },
+  methods: {
     getProjects() {
       let projects = this.showAllProjects
         ? this.allProjects
@@ -118,9 +221,15 @@ export default {
         return b.status - a.status;
       });
     },
+    loadProject(p) {
+      this.e1 = 1
+      this.loadedProject = JSON.parse(JSON.stringify(p));
+    },
+    reloadProject(){
+      this.loadedProject = JSON.parse(JSON.stringify(...this.allProjects.filter((p) => p.researchIndex === this.loadedProject["researchIndex"])))
+    },
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });
-      this.panel = [];
     },
     addProject() {
       this.$store.dispatch("createProject");
@@ -131,8 +240,6 @@ export default {
       (state, getters) => getters.showAllProjects,
       (newValue) => {
         this.projects = this.getProjects();
-
-        this.panel = undefined;
       }
     );
 
@@ -142,17 +249,10 @@ export default {
         this.projects = this.getProjects();
       }
     );
+    this.loadedProject = null;
   },
   beforeMount() {
     this.projects = this.getProjects();
-    console.log(
-      "filter: ",
-      this.showAllProjects,
-      "active: ",
-      this.activeProjects,
-      "all: ",
-      this.allProjects
-    );
   },
   mounted() {
     this.$root.$on("collapseProjects", () => {

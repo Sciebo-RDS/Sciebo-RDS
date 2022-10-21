@@ -1,0 +1,14 @@
+{{- if .Values.collector.samplingConfig }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "jaeger.fullname" . }}-sampling-strategies
+  namespace: {{ .Release.Namespace  }}
+  labels:
+    {{- include "jaeger.labels" . | nindent 4 }}
+    app.kubernetes.io/component: collector
+data:
+  strategies.json: |-
+{{ tpl .Values.collector.samplingConfig . | indent 4 }}
+{{- end }}
+

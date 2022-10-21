@@ -1,0 +1,10 @@
+{{- if and .Values.query.enabled .Values.query.serviceAccount.create -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ template "jaeger.query.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace  }}
+  labels:
+    {{- include "jaeger.labels" . | nindent 4 }}
+    app.kubernetes.io/component: query
+{{- end -}}

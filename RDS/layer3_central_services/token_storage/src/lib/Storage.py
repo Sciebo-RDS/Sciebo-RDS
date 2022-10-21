@@ -1,4 +1,14 @@
-from RDS import User, Token, LoginToken, OAuth2Token, BaseService, LoginService, OAuth2Service, Util
+from time import time
+from RDS import (
+    User,
+    Token,
+    LoginToken,
+    OAuth2Token,
+    BaseService,
+    LoginService,
+    OAuth2Service,
+    Util,
+)
 from typing import Union
 from RDS.ServiceException import (
     ServiceExistsAlreadyError,
@@ -61,12 +71,14 @@ class Storage:
                     OAuth2Token.from_json,
                     Token.from_json,
                     load_service_with_tokens,
+                    json.loads,
                 ]
             )(x)
             redis_pubsub_dict.RedisDict.to_json = lambda x: dict(x.items())
             redis_pubsub_dict.RedisDict.__eq__ = (
                 lambda x, other: dict(x.items()) == other
             )
+
             redis_pubsub_dict.RedisDict.keys = keys
             redis_pubsub_dict.RedisDict.__len__ = lambda self: self.size()
 
@@ -83,15 +95,15 @@ class Storage:
 
                 try:
                     logger.debug("first try cluster")
-                    from rediscluster import RedisCluster
+                    from redis.cluster import RedisCluster as Redis
 
-                    rc = RedisCluster(
-                        startup_nodes=startup_nodes,
+                    rc = Redis(
+                        **(startup_nodes[0]),
+                        health_check_interval=30,
                         decode_responses=True,
-                        skip_full_coverage_check=True,
-                        cluster_down_retry_attempts=1,
+                        retry_on_timeout=True,
                     )
-                    rc.cluster_info()  # provoke an error message
+                    rc.get_nodes()  # provoke an error message
                 except Exception as e:
                     logger.error(e)
                     logger.debug("Cluster has an error, try standalone redis")
@@ -100,15 +112,18 @@ class Storage:
                     rc = Redis(
                         **(startup_nodes[0]),
                         db=0,
+                        health_check_interval=30,
                         decode_responses=True,
+                        retry_on_timeout=True,
                     )
                     rc.info()  # provoke an error message
 
             logger.debug("set redis backed dict")
-            self._storage = redis_pubsub_dict.RedisDict(
-                rc, "tokenstorage_storage")
-            self._services = redis_pubsub_dict.RedisDict(
-                rc, "tokenstorage_services")
+            self._storage = redis_pubsub_dict.RedisDict(rc, "tokenstorage_storage")
+            self._services = redis_pubsub_dict.RedisDict(rc, "tokenstorage_services")
+            self._timestamps = redis_pubsub_dict.RedisDict(
+                rc, "tokenstorage_access_timestamps"
+            )
 
             self.__rc = rc
             self.__rc_helper = None
@@ -119,15 +134,18 @@ class Storage:
                 logger.debug("try to initialize the helper redis conn.")
                 rc_helper = Redis(
                     host="{}-master".format(
-                        os.getenv("REDIS_HELPER_HOST", "localhost")),
+                        os.getenv("REDIS_HELPER_HOST", "localhost")
+                    ),
                     port=os.getenv("REDIS_HELPER_PORT", "6379"),
                     db=0,
+                    health_check_interval=30,
                     decode_responses=True,
                 )
                 rc_helper.info()  # provoke an error message
                 self.__rc_helper = rc_helper
                 self.__redis_helper_channel = os.getenv(
-                    "REDIS_CHANNEL", "TokenStorage_Refresh_Token")
+                    "REDIS_CHANNEL", "TokenStorage_Refresh_Token"
+                )
                 logger.debug("initialized helper redis conn.")
             except Exception as e:
                 logger.error("cannot initialize helper redis conn.")
@@ -148,6 +166,7 @@ class Storage:
             logger.info("use in-memory")
             self._storage = {}
             self._services = []
+            self._timestamps = {}
 
     @property
     def users(self):
@@ -192,7 +211,7 @@ class Storage:
 
     def getTokens(self, user: Union[str, User] = None):
         """
-        Returns a list of all managed tokens. 
+        Returns a list of all managed tokens.
 
         If user_id (String or User) was given, then the tokens are filtered to this user.
 
@@ -208,8 +227,11 @@ class Storage:
         if not isinstance(user, User):
             user = self.getUser(user)
         else:
-            if not user in self.users:  # is only needed, if we get a User object as user
+            if (
+                not user in self.users
+            ):  # is only needed, if we get a User object as user
                 from .Exceptions.StorageException import UserNotExistsError
+
                 raise UserNotExistsError(self, user)
 
         tokens = self._storage[user.username]["tokens"]
@@ -412,8 +434,8 @@ class Storage:
 
         This is an internal function. Please look at the external one.
 
-        If the first token will be deleted, it is the master token / login token, 
-        which was used to enable and RDS use this token for frontend actions. 
+        If the first token will be deleted, it is the master token / login token,
+        which was used to enable and RDS use this token for frontend actions.
         So we can assume, that the user wants to revoke all access through RDS.
         To accomplish this, we remove all data for this user in token storage.
         """
@@ -451,6 +473,7 @@ class Storage:
         # check if this id is a superuser
         if not user.username in self._storage:
             self._storage[user.username] = {"data": user, "tokens": []}
+            self._timestamps[user.username] = time()
 
         else:
             from lib.Exceptions.StorageException import UserExistsAlreadyError
@@ -503,7 +526,10 @@ class Storage:
                 data["tokens"][index] = token
                 self._storage[user.username] = data
                 logger.debug(
-                    "overwrite token for user {} with data {}".format(user, json.dumps(data)))
+                    "overwrite token for user {} with data {}".format(
+                        user, json.dumps(data)
+                    )
+                )
 
             else:
                 from .Exceptions.StorageException import UserHasTokenAlreadyError
@@ -551,8 +577,7 @@ class Storage:
     def __publishTokenInRedis(self, token: Token):
         try:
             logger.debug("publish token in redis:")
-            self.__rc_helper.publish(
-                self.__redis_helper_channel, json.dumps(token))
+            self.__rc_helper.publish(self.__redis_helper_channel, json.dumps(token))
             logger.debug("done")
         except Exception as e:
             logger.error(f"redis helper error: {e}", exc_info=True)
@@ -562,7 +587,9 @@ class Storage:
         if not isinstance(token, OAuth2Token) or not isinstance(
             token.service, OAuth2Service
         ):
-            logger.debug("refresh failed, because it was not an valid oauth2token or oauth2service")
+            logger.debug(
+                "refresh failed, because it was not an valid oauth2token or oauth2service"
+            )
             return False
 
         # refresh token
@@ -577,9 +604,7 @@ class Storage:
             logger.debug("finished refresh: {}".format(new_token))
 
             logger.debug(
-                "add new token {} to user {}".format(
-                    new_token, user or new_token.user
-                )
+                "add new token {} to user {}".format(new_token, user or new_token.user)
             )
 
             logger.debug("publish in redis")
@@ -592,9 +617,12 @@ class Storage:
             return True
         except (TokenNotValidError, OAuth2UnsuccessfulResponseError) as e:
             logging.getLogger().error(e)
-            
-            logger.info("Token was not refreshed. Remove it from user {}.".format(
-                user or new_token.user))
+
+            logger.info(
+                "Token was not refreshed. Remove it from user {}.".format(
+                    user or new_token.user
+                )
+            )
             self.removeToken(user or new_token.user, token)
             logger.info("Removed token: {}".format(token))
         except requests.exceptions.RequestException as e:
@@ -687,3 +715,14 @@ class Storage:
 
         return string
         """
+
+    def deprovizionize(self):
+        """
+        Deletes all user informations, if last access timestamp is 180 days in past.
+        For cleanup, it waits additional 30 days before it deletes the timestamp too.
+        """
+        for key, value in self._timestamps.items():
+            if value + 180 * 24 * 60 * 60 < time():
+                self.removeUser(User(key))
+            if value + 210 * 24 * 60 * 60 < time():
+                del self._timestamps[key]

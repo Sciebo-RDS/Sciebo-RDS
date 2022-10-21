@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   registry: zivgitlab.wwu.io
   repository: sciebo-rds/sciebo-rds/port_owncloud
-  tag: v0.1-fix-ci
+  tag: release
   pullPolicy: Always
 
 labels:
@@ -48,18 +48,4 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-# Domains you want to use as input, currently only owncloud supported,
-# overwrites layer1-port-owncloud environment and bootsup multiple pods
-domains:
-  - name: localhost
-    ADDRESS: https://127.0.0.1
-    OAUTH_CLIENT_ID: ""
-    OAUTH_CLIENT_SECRET: ""
-
-# uses namehost
-environment: 
-  ADDRESS: https://localhost
-  OAUTH_CLIENT_ID: ""
-  OAUTH_CLIENT_SECRET: ""
 

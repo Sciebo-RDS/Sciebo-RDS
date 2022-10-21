@@ -24,7 +24,7 @@ loc: dev
 
 doc: dev
 	pydocmd build
-	mv _build/pydocmd/project.md ../../../docs/content/doc/impl/central/research-manager-docstring.md
+	cat _build/pydocmd/project.md >> ../../../docs/docs/layer3-research-manager-docstring.md
 	rm -r _build
 
 
