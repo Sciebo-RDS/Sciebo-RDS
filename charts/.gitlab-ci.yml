@@ -16,7 +16,7 @@ charts:
     - for i in charts/*/;do helm cm-push --force "$i" ${CI_PROJECT_NAME} ;done
 
 charts_pages:
-  stage: deploy
+  stage: build
   image: zivgitlab.wwu.io/ulb/devops/skaffold:main
   variables:
     HELM_BRANCH: develop
