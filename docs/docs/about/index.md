@@ -13,7 +13,7 @@ Sciebo RDS allows researchers to export research data directly from Enterprise S
 
 
 
-Sciebo RDS is developed at the [University of Münster](http://uni-muenster.de), funded by the German Research Foundation and part of the [ScienceMesh Application Catalogue](https://sciencemesh.io/catalogue.html), which strives to connect Research Cloud Storages in order to practice the so called [FAIR](https://www.nature.com/articles/sdata201618) principles.
+Sciebo RDS is developed at the [University of Münster](http://uni-muenster.de), funded by the German Research Foundation and associated with the [ScienceMesh Application Catalogue](https://sciencemesh.io/catalogue.html), which strives to connect Research Cloud Storages in order to practice the so called [FAIR](https://www.nature.com/articles/sdata201618) principles.
 
 Development of Sciebo RDS began in late 2019.
 
