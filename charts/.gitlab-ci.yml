@@ -54,5 +54,7 @@ deploy:
     # reduce noise in ci
     - chmod go-r ~/.kube/config
     # pull helm deps: https://github.com/helm/helm/issues/2247#issuecomment-998636912
+    # workaround issue #206
+    - helm delete sciebords
     - find ./charts -name Chart.yaml -print | sed s/Chart.yaml//g | awk -F"/" '{print NF $0}' | sort -nr | sed 's/^.//' | xargs -n1 helm dep build
     - helm secrets upgrade -i sciebords charts/all --values $HELM_DEPLOY_VALUES --set-string global.image.tag=$CI_PIPELINE_ID
