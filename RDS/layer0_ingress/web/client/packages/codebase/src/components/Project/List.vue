@@ -41,7 +41,7 @@
                               <!-- TODO: fix width -->
                             <v-col class="caption flex-grow-1 flex-shrink-1" cols="auto"  style="overflow: hidden;">
                               
-                                Project {{p.researchIndex}}
+                                Project {{p.researchIndex + 1}}
                                 <v-list-item-title class="my-1">
                                     <div :class="!!p.researchname ? '' : 'font-italic' " style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                 {{ !!p.researchname ? p.researchname : 'New Project' }}

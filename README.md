@@ -67,7 +67,7 @@ Please adhere to our `code of conduct`.
 
 Please use the Github Issues and Github Discussions for feedback and technical questions. We also have a [Gitter chat](https://gitter.im/Sciebo-RDS/community). :)
 
-If you are use Sciebo RDS as a researcher and need user level support, please refer to the administrators of your Sciebo RDS instance. You can find their email adresse in the `Help` tab of your Sciebo RDS instance.
+If you are using Sciebo RDS as a researcher and need user level support, please refer to the administrators of your Sciebo RDS instance. You can find their email adresse in the `Help` tab of your Sciebo RDS instance.
 ## Acknowledgements
 
 Sciebo RDS relies on [describo-online](https://github.com/Arkisto-Platform/describo-online) for metadata management.
