@@ -60,6 +60,7 @@ const config = {
         logo: {
           alt: "My Site Logo",
           src: "img/RDS_Logo_Schwarz.svg",
+          srcDark: "img/RDS_Logo_Weiss.svg",
         },
         items: [
           {
