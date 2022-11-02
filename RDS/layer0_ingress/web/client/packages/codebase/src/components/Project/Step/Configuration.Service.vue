@@ -115,17 +115,18 @@ export default ({
     },
     methods: {
         isSelected(p) {
-
-            return this.loadedPortOut.filter(e => e.servicename === p.servicename).length > 0
+            return this.loadedPortOut.filter(e => e.port === p.servicename).length > 0
         },
          selectPort(port) {
             if (this.isSelected(port)) {
                 return this.loadedPortOut = []
             }
-                if (this.originalPortOut.port === port.servicename){
-                    return this.loadedPortOut = [this.originalPortOut]
-                }
-            return this.loadedPortOut = [port]
+            return this.loadedPortOut = [
+                {
+                    "port": port.servicename,
+                    properties: {"type": ["metadata"]}
+                    }
+                ]
          },
         selectedStyle() {
             if (this.$vuetify.theme.dark === true) {

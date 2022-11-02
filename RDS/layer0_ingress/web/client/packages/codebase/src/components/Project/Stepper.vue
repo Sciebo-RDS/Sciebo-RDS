@@ -31,7 +31,7 @@
           <v-card
             flat
             class="overflow-y-auto"
-            style="max-height: calc(100vh - 12.9em)"
+            style="height: calc(100vh - 12.9em)"
           >
             <StepConfiguration
               :project="project"
