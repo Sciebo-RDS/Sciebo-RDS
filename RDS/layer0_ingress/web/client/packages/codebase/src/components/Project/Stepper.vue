@@ -211,7 +211,7 @@ export default {
         },
         export: {
           add: loadedPortOutNames.filter(p => !originalPortOutNames.includes(p)).map(function (x) { return {"servicename": x} }),
-          remove: originalPortOutNames.filter(p => !loadedPortOutNames.includes(p)),
+          remove: originalPortOutNames.filter(p => !loadedPortOutNames.includes(p)).map(function (x) { return {"servicename": x} }),
           change: []
         }
       }
