@@ -59,7 +59,6 @@ variables:
       when: never
     - when: always
   variables:
-    DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
     CI_PROJECT_PATH: $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
   script: # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#using-docker-caching
