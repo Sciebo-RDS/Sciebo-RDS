@@ -1,3 +1,122 @@
+include:
+  - project: 'WWU-IT/ci-templates'
+    file: '.gitlab-ci-helm.yml'
+    ref: 'v12'
+
+chart-test-all:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/all
+
+chart-test-all:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/all
+
+chart-test-common:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/common
+
+chart-test-jaeger:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/jaeger
+
+chart-test-layer0_describo:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/layer0_describo
+
+chart-test-layer0_helper_describo_token_updater:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/layer0_helper_describo_token_updater
+
+chart-test-layer0_web:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/layer0_web
+
+chart-test-layer1_port_openscienceframework:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/layer1_port_openscienceframework
+
+chart-test-layer1_port_owncloud:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/layer1_port_owncloud
+
+chart-test-layer1_port_reva:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/layer1_port_reva
+
+chart-test-layer1_port_zenodo:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/layer1_port_zenodo
+
+chart-test-layer2_exporter_service:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/layer2_exporter_service
+
+chart-test-layer2_metadata_service:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/layer2_metadata_service
+
+chart-test-layer2_port_service:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/layer2_port_service
+
+chart-test-layer3_research_manager:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/layer3_research_manager
+
+chart-test-layer3_token_storage:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/layer3_token_storage
+
+chart-test-postgresql:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/postgresql
+
+chart-test-redis:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/redis
+
+chart-test-redis-cluster:
+  extends: .helm-test
+  allow_failure: true
+  variables:
+    directory: charts/redis-cluster
+
 charts:
   stage: deploy
   image: zivgitlab.wwu.io/ulb/devops/skaffold:main
