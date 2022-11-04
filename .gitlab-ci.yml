@@ -7,6 +7,11 @@ stages:
   - pages
   - deploy
 
+include:
+  - project: 'WWU-IT/ci-templates'
+    file: '.gitlab-ci-helm.yml'
+    ref: 'v11'
+
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   FOLDER: ./
@@ -45,6 +50,15 @@ variables:
   #  changes:
   #    - $FOLDER/*
   #    - $FOLDER/**/*
+
+
+chart-test-all:
+  extends: .helm-test
+  stage: test
+  tags: []
+	allow_failure: true
+  variables:
+    CHART: charts/all
 
 .builds:
   image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:20.10
