@@ -14,14 +14,14 @@ spec:
         - {{ .Values.global.rds.domain }}
       secretName: {{ include "common.tlsSecretName" . }}
   {{- end }}
-rules:
-  - host: {{ .Values.global.rds.domain }}
-    http:
-      paths:
-        - path: {{ .Values.ingress.path }}
-          pathType: Prefix
-          backend:
-            service:
-              name: {{ $fullName }}
-              port:
-                number: 80
+  rules:
+    - host: {{ .Values.global.rds.domain }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: 80
