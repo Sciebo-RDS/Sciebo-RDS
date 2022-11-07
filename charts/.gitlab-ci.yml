@@ -9,12 +9,6 @@ chart-test-all:
   variables:
     directory: charts/all
 
-chart-test-all:
-  extends: .helm-test
-  allow_failure: true
-  variables:
-    directory: charts/all
-
 chart-test-common:
   extends: .helm-test
   allow_failure: true
