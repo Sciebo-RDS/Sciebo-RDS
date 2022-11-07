@@ -170,10 +170,12 @@ deploy:
     # workaround issue #206
     - helm delete sciebords || true
     # workaround due to old deploy cluster
-    - sed -i -e 's#networking.k8s.io/v1#extensions/v1beta1#g' ./charts/*/templates/ingress.yaml
-    - sed -i -e '24,28d' ./charts/*/templates/ingress.yaml
-    - sed -i -e '23 a              serviceName: \{\{ $fullName \}\}' ./charts/*/templates/ingress.yaml
-    - sed -i -e '24 a              servicePort: http' ./charts/*/templates/ingress.yaml
+    - > 
+      sed -i -e 's#networking.k8s.io/v1#extensions/v1beta1#g' ./charts/*/templates/ingress.yaml
+      sed -i -e '24,28d' ./charts/*/templates/ingress.yaml
+      sed -i -e '23 a              serviceName: {{ $fullName }}' ./charts/*/templates/ingress.yaml
+      sed -i -e '24 a              servicePort: http' ./charts/*/templates/ingress.yaml
     # lol that was fun
+    # turns out colons in commands are interpreted by gitlab ci 
     - find ./charts -name Chart.yaml -print | sed s/Chart.yaml//g | awk -F"/" '{print NF $0}' | sort -nr | sed 's/^.//' | xargs -n1 helm dep build
     - helm secrets upgrade -i sciebords charts/all --values $HELM_DEPLOY_VALUES --set-string global.image.tag=$CI_PIPELINE_ID
