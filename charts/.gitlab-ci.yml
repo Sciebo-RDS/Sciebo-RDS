@@ -177,6 +177,6 @@ deploy:
     - >
       sed -i -e '24 a              servicePort: http' ./charts/*/templates/ingress.yaml
     # lol that was fun
-    # turns out colons in commands are interpreted by gitlab ci 
+    # turns out colons in commands are interpreted by gitlab ci
     - find ./charts -name Chart.yaml -print | sed s/Chart.yaml//g | awk -F"/" '{print NF $0}' | sort -nr | sed 's/^.//' | xargs -n1 helm dep build
     - helm secrets upgrade -i sciebords charts/all --values $HELM_DEPLOY_VALUES --set-string global.image.tag=$CI_PIPELINE_ID
