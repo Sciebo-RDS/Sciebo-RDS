@@ -174,9 +174,9 @@ deploy:
     - sed -i -e '22d' ./charts/*/templates/ingress.yaml
     - sed -i -e '24,28d' ./charts/*/templates/ingress.yaml
     - > 
-      sed -i -e '$ a              serviceName: {{ $fullName }}' ./charts/*/templates/ingress.yaml
+      sed -i -e '$ a\              serviceName: {{ $fullName }}' ./charts/*/templates/ingress.yaml
     - >
-      sed -i -e '$ a              servicePort: http' ./charts/*/templates/ingress.yaml
+      sed -i -e '$ a\              servicePort: http' ./charts/*/templates/ingress.yaml
     # shotgun debugging ftw
     - cat ./charts/*/templates/ingress.yaml
     # lol that was fun
