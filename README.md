@@ -2,8 +2,9 @@
 # Sciebo RDS
 [![pipeline status](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/badges/develop/pipeline.svg)](https://zivgitlab.uni-muenster.de/sciebo-rds/sciebo-rds/-/pipelines)
 ![MIT License](https://img.shields.io/github/license/Sciebo-RDS/Sciebo-RDS)
-![Version](https://img.shields.io/github/v/release/Sciebo-RDS/Sciebo-RDS)
-[![gitter](https://img.shields.io/gitter/room/Sciebo-RDS/community)](https://gitter.im/Sciebo-RDS/community)
+[![Version](https://img.shields.io/github/v/release/Sciebo-RDS/Sciebo-RDS)](https://github.com/Sciebo-RDS/Sciebo-RDS/releases/latest)
+![Release](https://img.shields.io/github/release-date/Sciebo-RDS/Sciebo-RDS)
+[![gitter](https://img.shields.io/gitter/room/Sciebo-RDS/community?color=orange)](https://gitter.im/Sciebo-RDS/community)
 
 Sciebo RDS (**Sciebo** **R**esearch **D**ata **S**ervices) allows researchers to enrich their research data with metadata and to export it directly from Enterprise Sync and Share (EFSS) Systems like Owncloud to Data Repositories like Zenodo and OSF.
 It acts as a interoperability layer, allowing them to assign a directory on a Sync and Share System to a research project, annotating the contained data to match the format required by the desired Data Repository and publishing the Research Data directly from the Cloud.
@@ -40,13 +41,16 @@ We use a monorepo to make it easier to track related changes. This means that yo
 
 The following table will give an impression of the individual parts.  
 
-| Folder           | Description                          |
-| ---------------- | ------------------------------------ |
-| /charts          | Helm charts                          |
-| /docs            | Website with documentation           |
-| /getting-started | Files for easy deployment            |
-| /RDS             | The code for the connector services. |
-| /                | Metafiles and configuration          |
+| Folder                                                       | Description                                     |
+| ------------------------------------------------ | ----------------------------------------------- |
+| /charts                                          | Helm charts                                     |
+| /docs                                            | Website with documentation                      |
+| /getting-started                                 | Files for easy deployment                       |
+| /RDS                                             | The RDS code                                    |
+| /RDS/layer0_ingress/web/server                   | The Python Backend                              |
+| /RDS/layer0_ingress/web/client/packages/codebase | The Vue.js Frontend                             |
+| /RDS/layer3_central_services                     | Microservices `ResearchManager`, `TokenStorage` |
+| /                                                | Metafiles and configuration                     |
 
 The monorepo only includes those parts of Sciebo RDS that are officially maintained by the University of Münster.
 
