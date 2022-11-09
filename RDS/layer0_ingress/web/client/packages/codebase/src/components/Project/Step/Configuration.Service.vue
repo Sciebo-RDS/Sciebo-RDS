@@ -43,7 +43,7 @@
                             v-for="p in userServiceList.filter((i) => i['implements'].includes('metadata'))"
                             :key="p.client_id"
                             cols="3"
-                            class="col-lg-2 mr-5 rounded"
+                            class="col-lg-2 mr-5 mb-5 rounded"
                             @click="selectPort(p)"
                             :style="isSelected(p) ? selectedStyle() : 'border: 1px solid transparent'"
                             align="center"

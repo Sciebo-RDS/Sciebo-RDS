@@ -160,6 +160,7 @@ export default {
       loadedResearchName: "getLoadedResearchName",
       loadedProject: "getLoadedProject",
       loadedFilePath: "getLoadedFilePath",
+      loadedResearchIndex: "getLoadedResearchIndex",
       originalResearchName: "getOriginalResearchNameForLoadedProject",
       originalFilePath: "getOriginalFilePathForLoadedProject",
       originalPortInForLoadedProject: "getOriginalPortInForLoadedProject",
@@ -181,6 +182,11 @@ export default {
     portChanges() {
       let changes = this.computePortChanges()
       return changes 
+    }
+  },
+  watch: {
+    loadedResearchIndex(newLoadedResearchIndex, oldLoadedResearchIndex) {
+        this.published = (loadedProject.status == '3' ? true : false)
     }
   },
   props: ["project", "e1"],

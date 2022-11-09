@@ -25,6 +25,7 @@ export default {
     getOwnCloudServername: (state) => state.ownCloudServerName,
     getLoadedProject: (state) => state.loadedProject,
     getLoadedResearchName: (state) => state.loadedProject["researchname"],
+    getLoadedResearchIndex: (state) => state.loadedProject["researchIndex"],
     getLoadedFilePath(state) {
       try {
       return state.loadedProject.portIn[0]["properties"]["customProperties"]["filepath"]}
