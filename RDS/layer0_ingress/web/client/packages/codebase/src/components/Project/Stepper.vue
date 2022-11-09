@@ -186,7 +186,7 @@ export default {
   },
   watch: {
     loadedResearchIndex(newLoadedResearchIndex, oldLoadedResearchIndex) {
-        this.published = (loadedProject.status == '3' ? true : false)
+        this.published = (this.loadedProject.status == '3' ? true : false)
     }
   },
   props: ["project", "e1"],
