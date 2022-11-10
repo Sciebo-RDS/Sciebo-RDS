@@ -35,7 +35,7 @@
                     Choose the repository you want to publish your data to.
                 </v-list-item-subtitle>
                 <v-list-item-subtitle v-else class="py-1 text-wrap">
-                    You have to <router-link to="services">connect a repository service</router-link> to continue.
+                    You need to <router-link to="services">connect a <strong>Data Repository</strong></router-link> to continue.
                 </v-list-item-subtitle>
                 <v-list-item-content>
                     <v-row v-if="userServiceList.filter((i) => i['implements'].includes('metadata')).length > 0" class="ma-1">
@@ -75,7 +75,6 @@ import { mapGetters } from "vuex";
 export default ({
     data() {
         return {
-            selectedPorts: [],
         }
 
     },
@@ -102,16 +101,6 @@ export default ({
                 this.$store.commit('setLoadedPortOut', value)
             }
         },
-    },
-    beforeMount() {
-        this.userPorts = this.selectedPorts = this.userServiceList.filter((port) => {
-                for (const p of this.loadedPortOut) {
-                    if (p.port === port.servicename)
-                    return true
-                }
-                return false
-            }
-        )
     },
     methods: {
         isSelected(p) {
