@@ -8,7 +8,7 @@
             <v-divider class="mb-5"/>
             <v-row>
                 <v-col class="text-subtitle-1 col-xl-3 col-lg-4 col-md-5 col-12" style="word-break: break-word">
-                    {{question}}
+                    <span v-html="markdown(question)" />
                 </v-col>
                 <v-col class="text-subtitle-2" style="word-break: break-word">
                     <span v-html="markdown(answer)" />
