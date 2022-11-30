@@ -147,6 +147,7 @@ charts_pages:
     - pip3 install awscli
     - mkdir -p ./docs/static/charts
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts/${HELM_BRANCH} ./docs/static/charts --recursive
+    - find charts -name Chart.yaml -print | sed s/Chart.yaml//g | awk -F"/" '{print NF $0}' | sort -nr | sed 's/^.//' | xargs -n1 helm dep build
     - for i in charts/*/;do helm package --dependency-update --destination ./docs/static/charts "$i" ;done
     - helm repo index --url https://www.research-data-services.org/charts/${HELM_BRANCH} --merge ./docs/static/charts/index.yaml ./docs/static/charts/
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp ./docs/static/charts s3://sciebords-charts/${HELM_BRANCH} --recursive
