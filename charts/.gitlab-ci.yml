@@ -152,6 +152,7 @@ charts_pages:
     - helm repo index --url https://www.research-data-services.org/charts/${HELM_BRANCH} --merge ./docs/static/charts/index.yaml ./docs/static/charts/
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp ./docs/static/charts s3://sciebords-charts/${HELM_BRANCH} --recursive
 
+# TODO: We should get rid of skaffold
 deploy:
   extends: .deploy
   image: zivgitlab.wwu.io/ulb/devops/skaffold:main
