@@ -184,3 +184,13 @@ deploy:
     # turns out colons in commands are interpreted by gitlab ci
     - find ./charts -name Chart.yaml -print | sed s/Chart.yaml//g | awk -F"/" '{print NF $0}' | sort -nr | sed 's/^.//' | xargs -n1 helm dep build
     - helm secrets upgrade -i sciebords charts/all --values $HELM_DEPLOY_VALUES --set-string global.image.tag=$CI_PIPELINE_ID
+    # now try to write everything out in our super secret repo
+    - git config --global user.name "CI Update User"
+    - git config --global user.email "sciebo.rds@wwu.de"
+    - git clone "https://${SCIEBO_RDS_TEST_DEPLOY_NAME}:${SCIEBO_RDS_TEST_DEPLOY_TOKEN}@https://zivgitlab.uni-muenster.de/wwuit-sys/sciebo/applications/rds-test.git" --branch "develop"
+    - cd rds-test
+    - mkdir -p deploy
+    - helm template sciebords charts/all --values $HELM_DEPLOY_VALUES --set-string global.image.tag=$CI_PIPELINE_ID > deploy/rds-test.yml
+    - git commit -a -m "Automatic update"
+    - git push "https://${SCIEBO_RDS_TEST_DEPLOY_NAME}:${SCIEBO_RDS_TEST_DEPLOY_TOKEN}@https://zivgitlab.uni-muenster.de/wwuit-sys/sciebo/applications/rds-test.git" "develop:develop"
+
