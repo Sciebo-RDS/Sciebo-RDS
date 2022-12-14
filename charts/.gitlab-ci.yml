@@ -192,6 +192,7 @@ deploy:
     - cd rds-test
     - mkdir -p deploy
     - helm secrets template sciebords ../charts/all --values $HELM_DEPLOY_VALUES --set-string global.image.tag=$CI_PIPELINE_ID > deploy/rds-test.yml
-    - git commit -a -m "Automatic update"
+    - git add deploy
+    - git commit -m "Automatic update"
     - git push "https://${SCIEBO_RDS_TEST_DEPLOY_NAME}:${SCIEBO_RDS_TEST_DEPLOY_TOKEN}@zivgitlab.uni-muenster.de/wwuit-sys/sciebo/applications/rds-test.git" "develop:develop"
 
