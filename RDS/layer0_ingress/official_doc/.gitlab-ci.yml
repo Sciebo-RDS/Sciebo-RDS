@@ -26,7 +26,7 @@ build:official_doc:
 
 deploy_doc:
   extends: .deploy
-  image: zivgitlab.wwu.io/ulb/devops/skaffold:main
+  image: harbor.uni-muenster.de/rds/skaffold:main
   needs: 
   - build:official_doc
   rules:
