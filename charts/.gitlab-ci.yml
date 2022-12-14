@@ -113,7 +113,7 @@ chart-test-redis-cluster:
 
 charts:
   stage: deploy
-  image: harbor.uni-muenster.de/rds/testing
+  image: harbor.uni-muenster.de/rds/skaffold:testing
   variables:
     HELM_BRANCH: develop
   rules:
@@ -130,7 +130,7 @@ charts:
 
 charts_pages:
   stage: build
-  image: harbor.uni-muenster.de/rds/testing
+  image: harbor.uni-muenster.de/rds/skaffold:testing
   variables:
     HELM_BRANCH: develop
   rules:
@@ -155,7 +155,7 @@ charts_pages:
 # TODO: We should get rid of skaffold
 deploy:
   extends: .deploy
-  image: harbor.uni-muenster.de/rds/testing
+  image: harbor.uni-muenster.de/rds/skaffold:testing
   rules:
   - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   - if: '$CI_COMMIT_BRANCH == "release"'
