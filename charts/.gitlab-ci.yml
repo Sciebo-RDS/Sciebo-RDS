@@ -113,7 +113,7 @@ chart-test-redis-cluster:
 
 charts:
   stage: deploy
-  image: zivgitlab.wwu.io/ulb/devops/skaffold:main
+  image: harbor.uni-muenster.de/rds/skaffold:testing
   variables:
     HELM_BRANCH: develop
   rules:
@@ -130,7 +130,7 @@ charts:
 
 charts_pages:
   stage: build
-  image: zivgitlab.wwu.io/ulb/devops/skaffold:main
+  image: harbor.uni-muenster.de/rds/skaffold:testing
   variables:
     HELM_BRANCH: develop
   rules:
@@ -152,9 +152,10 @@ charts_pages:
     - helm repo index --url https://www.research-data-services.org/charts/${HELM_BRANCH} --merge ./docs/static/charts/index.yaml ./docs/static/charts/
     - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp ./docs/static/charts s3://sciebords-charts/${HELM_BRANCH} --recursive
 
+# TODO: We should get rid of skaffold
 deploy:
   extends: .deploy
-  image: zivgitlab.wwu.io/ulb/devops/skaffold:main
+  image: harbor.uni-muenster.de/rds/skaffold:testing
   rules:
   - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   - if: '$CI_COMMIT_BRANCH == "release"'
@@ -184,3 +185,14 @@ deploy:
     # turns out colons in commands are interpreted by gitlab ci
     - find ./charts -name Chart.yaml -print | sed s/Chart.yaml//g | awk -F"/" '{print NF $0}' | sort -nr | sed 's/^.//' | xargs -n1 helm dep build
     - helm secrets upgrade -i sciebords charts/all --values $HELM_DEPLOY_VALUES --set-string global.image.tag=$CI_PIPELINE_ID
+    # now try to write everything out in our super secret repo
+    - git config --global user.name "CI Update User"
+    - git config --global user.email "sciebo.rds@wwu.de"
+    - git clone "https://${SCIEBO_RDS_TEST_DEPLOY_NAME}:${SCIEBO_RDS_TEST_DEPLOY_TOKEN}@zivgitlab.uni-muenster.de/wwuit-sys/sciebo/applications/rds-test.git" --branch "develop"
+    - cd rds-test
+    - mkdir -p deploy
+    - helm secrets template sciebords ../charts/all --values $HELM_DEPLOY_VALUES --set-string global.image.tag=$CI_PIPELINE_ID | sed -e 's/sciebo-rds-dev/rds-test/g' > deploy/rds-test.yml
+    - git add deploy
+    - git commit -m "Automatic update"
+    - git push "https://${SCIEBO_RDS_TEST_DEPLOY_NAME}:${SCIEBO_RDS_TEST_DEPLOY_TOKEN}@zivgitlab.uni-muenster.de/wwuit-sys/sciebo/applications/rds-test.git" "develop:develop"
+
