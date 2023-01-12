@@ -16,6 +16,7 @@
       id="rds-editor"
       ref="rdsEditor"
       :src="iframeSource"
+      crossorigin="use-credentials"
       style="width: 100%; height: 100%"
     />
   </div>
