@@ -1,5 +1,0 @@
-Enhancement: Set state store
-
-We've added the same storage that we're using in the user store to the state store.
-
-https://github.com/owncloud/file-picker/pull/78

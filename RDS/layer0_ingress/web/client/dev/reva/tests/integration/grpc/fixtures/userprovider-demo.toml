@@ -1,5 +1,0 @@
-[grpc]
-address = "{{grpc_address}}"
-
-[grpc.services.userprovider]
-driver = "demo"
