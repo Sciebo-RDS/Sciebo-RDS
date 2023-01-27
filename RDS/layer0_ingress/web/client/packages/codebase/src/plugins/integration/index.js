@@ -34,17 +34,21 @@ export default {
             // First check, if we have already a session
             console.log("gogo login")
             Vue.prototype.$http.get(`${Vue.config.server}/login`).then(() => {
-                console.log("success login")
-                loggedIn()
+                console.log("success login");
+                loggedIn();
+                console.log("success login - logged in");
             }).catch((resp) => {
                 console.log("error login: ", resp)
                 //if not, execute all loginMethods
-                Vue.prototype.auth.loggedIn = false
+                Vue.prototype.auth.loggedIn = false;
+                console.log("promising logins with: " + String(Vue.prototype.auth.loginMethods));
                 Promise.all(Vue.prototype.auth.loginMethods.map((fn) => fn())).then((results) => {
                     if (results.includes(true)) {
-                        loggedIn()
+                        console.log("success login after promise");
+                        loggedIn();
                     }
                 })
+                console.log("promise sent");
             })
         }
     }
