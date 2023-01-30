@@ -26,7 +26,7 @@ export default {
                             let parsed = JSON.parse(payload.data)
                             let info = parsed.jwt
 
-                            console.log("Trying to log in: " + String(info));
+                            console.log("Trying to log in: " + Vue.config.server + " -> " + String(info));
 
                             Vue.prototype.$http.post(`${Vue.config.server}/login`, { informations: info }).then(
                                 (resp) => {
