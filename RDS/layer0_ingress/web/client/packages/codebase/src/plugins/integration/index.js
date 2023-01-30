@@ -46,6 +46,8 @@ export default {
                     if (results.includes(true)) {
                         console.log("success login after promise");
                         loggedIn();
+                    } else {
+                        console.log("FAILED login after promise");
                     }
                 })
                 console.log("promise sent");
