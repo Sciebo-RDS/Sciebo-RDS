@@ -120,7 +120,7 @@ def informations():
     if redirect_url is not None:
         data["redirectUrl"] = redirect_url
 
-    data["test"] = 42
+    data["test"] = 4200
     app.logger.info("TEST")
 
     return json.dumps(data)
