@@ -146,6 +146,9 @@ def questions():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     app.logger.info("LOGIN")
+    with open("/tmp/bla.txt", "w") as f:
+        f.write("LOGIN\n")
+        f.flush()
 
     if request.method == "GET":
         return ("", 200) if (current_user.is_authenticated) else ("", 401)
