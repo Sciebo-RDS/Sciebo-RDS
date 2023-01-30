@@ -9,6 +9,6 @@ load_dotenv(dotenv_path=env_path)
 if __name__ == "__main__":
     try:
         socketio.run(app, debug=os.getenv(
-            "DEV_FLASK_DEBUG", "False") == "True", port=8080)
+            "DEV_FLASK_DEBUG", "False") == "True", port=8080, use_reloader=True, log_output=True, allow_unsafe_werkzeug=True)
     finally:
         pass
