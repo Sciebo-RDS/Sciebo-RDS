@@ -144,8 +144,6 @@ def questions():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    app.logger.info("Login called")
-
     if request.method == "GET":
         return ("", 200) if (current_user.is_authenticated) else ("", 401)
 
