@@ -120,6 +120,7 @@ def informations():
     if redirect_url is not None:
         data["redirectUrl"] = redirect_url
 
+    data["test"] = 1234
     return json.dumps(data)
 
 
@@ -144,6 +145,8 @@ def questions():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    app.logger.info("LOGIN")
+
     if request.method == "GET":
         return ("", 200) if (current_user.is_authenticated) else ("", 401)
 
