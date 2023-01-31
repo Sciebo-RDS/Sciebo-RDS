@@ -34,8 +34,8 @@ import json
 import requests
 import uuid
 import os
-import os
 import jwt
+import sys
 
 CORS(app, origins=origins, supports_credentials=True)
 
@@ -120,8 +120,10 @@ def informations():
     if redirect_url is not None:
         data["redirectUrl"] = redirect_url
 
-    data["test"] = 4200
+    data["test"] = 666
     app.logger.info("TEST")
+    print("TEST", flush=True, file=sys.stderr)
+    os.system("touch /tmp/test.bla.txt")
 
     return json.dumps(data)
 
