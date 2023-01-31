@@ -119,7 +119,7 @@ def informations():
     if redirect_url is not None:
         data["redirectUrl"] = redirect_url
 
-    data["test"] = 464
+    data["test"] = 464654
     data["hostname"] = os.popen('cat /proc/sys/kernel/hostname').read()
 
     return json.dumps(data)
