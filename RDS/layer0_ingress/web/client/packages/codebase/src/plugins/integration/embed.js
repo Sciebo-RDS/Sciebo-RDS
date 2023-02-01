@@ -19,6 +19,8 @@ export default {
             }, 10000)
 
             window.addEventListener("message", (event) => {
+                console.log("Got message event: " + String(event));
+
                 if (event.data.length > 0) {
                     var payload = JSON.parse(event.data);
                     switch (payload.event) {
