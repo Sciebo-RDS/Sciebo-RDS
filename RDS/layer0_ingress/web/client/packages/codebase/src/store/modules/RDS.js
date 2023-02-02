@@ -16,7 +16,7 @@ export default {
   getDefaultState,
   name: "RDSStore",
   state: getDefaultState(),
-  
+
   getters: {
     getUserServiceList: (state) => state.userservicelist,
     getServiceList: (state) => state.servicelist,
@@ -100,10 +100,8 @@ export default {
       }
       // extend this in case of multiple inPorts.
       if (state.loadedProject.portIn.length == 0) {
-        console.log("state.loadedProject.portIn.length == 0")
         state.loadedProject.portIn.push({"properties": {"customProperties": {"filepath": payload}, "type" : ['fileStorage']}, "port": "port-owncloud-" + state.getOwnCloudServername})
       } else if (state.loadedProject.portIn.length == 1) {
-        console.log("state.loadedProject.portIn.length == 1")
         state.loadedProject.portIn[0].properties.customProperties["filepath"] = payload
       }
 
@@ -177,14 +175,12 @@ export default {
       });
     },
     SOCKET_SessionId(context, state) {
-      console.log("got describo sessionId: ", state);
       context.commit("setSessionId", {
         sessionID: state,
       });
     },
     requestSessionId(context) {
       this._vm.$socket.client.emit("requestSessionId", (sessionId) => {
-        console.log("got describo sessionId: ", sessionId);
         context.commit("setSessionId", {
           sessionID: sessionId,
         });
@@ -217,12 +213,10 @@ export default {
       this.dispatch("requestProjectList");
     },
     triggerSynchronization(context, data, fn) {
-      console.log("trigger sync data: ", data);
       this._vm.$socket.client.emit(
         "triggerSynchronization",
         JSON.stringify(data),
         (response) => {
-          console.log("got response: ", response);
           fn(response);
         }
       );
@@ -248,7 +242,6 @@ export default {
           "exchangeCode",
           JSON.stringify(data),
           (response) => {
-            console.log("exchangeCode response", response);
           }
         );
       }
@@ -258,7 +251,6 @@ export default {
         "addCredentials",
         JSON.stringify(service),
         (response) => {
-          console.log("credentials response", response);
         }
       );
     },

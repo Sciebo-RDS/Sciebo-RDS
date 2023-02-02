@@ -151,7 +151,6 @@ export default {
           this.userservicelist
         ) !== undefined
       ) {
-        console.log("found ownCloud in storage");
         clearInterval(timer);
         this.finishWizard();
       }
@@ -184,7 +183,6 @@ export default {
   },
   methods: {
     clickGettingStarted() {
-      console.log(process.env);
       if (process.env.NODE_ENV === "development" && this.currentStep > 1) {
         this.clickedStarted = true;
       } else {

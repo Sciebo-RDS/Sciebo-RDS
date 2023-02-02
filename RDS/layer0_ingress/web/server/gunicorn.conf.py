@@ -2,11 +2,11 @@ from prometheus_flask_exporter.multiprocess import GunicornPrometheusMetrics
 import multiprocessing
 
 bind = "127.0.0.1:5000"
-workers = 1 #multiprocessing.cpu_count() * 2 + 1 # TODO: Debugging
+workers = multiprocessing.cpu_count() * 2 + 1
 loglevel = "debug"
 capture_output = True
 worker_class = "eventlet"
-reload = True # TODO: Debugging
+reload = True
 
 def when_ready(server):
     GunicornPrometheusMetrics.start_http_server_when_ready(9999)

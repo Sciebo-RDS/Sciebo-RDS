@@ -134,11 +134,10 @@ export default {
   },
   sockets: {
     connect: function() {
-      console.log("socket connected");
+      this.isConnected = true;
     },
     disconnect() {
       this.isConnected = false;
-      console.log("server disconnected");
     },
   },
   data() {
@@ -160,9 +159,7 @@ export default {
     },
   },
   beforeCreate() {
-    console.log("beforeCreate:login start");
     this.auth.login();
-    console.log("beforeCreate:login done");
     const routeName = "Wizard";
 
     if (
@@ -173,7 +170,6 @@ export default {
     }
   },
   beforeMount() {
-    console.log("beforeMount: start");
     this.overlayText = this.$gettext("initialization...");
 
     this.$root.$emit("showoverlay");
@@ -183,9 +179,6 @@ export default {
         clearInterval(checkLoginStatus);
         this.overlayText = undefined;
         this.$root.$emit("hideoverlay");
-        console.log("beforeMount: auth done loading");
-      } else {
-        console.log("beforeMount: auth still loading");
       }
     }, 500);
     this.$config.language = this.getLanguage;

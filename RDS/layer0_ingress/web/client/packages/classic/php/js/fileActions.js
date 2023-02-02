@@ -26,7 +26,6 @@
         OC.rds.config = { url: data.cloudURL, server: data.cloudURL, informations: data.jwt }
         resolve(OC.rds.config)
       }).catch((error) => {
-        console.log("error in informations:", error)
         OC.rds.config = {
           url: "http://localhost:8080",
           server: "http://localhost:8080"
@@ -130,7 +129,6 @@
         iconClass: "icon-rds-research-small",
         fileType: "file",
         actionHandler: function () {
-          console.log("go to rds and create a research project");
           // TODO add socket / redirect func for creating a new rds project and redirect the user
           //socket.emit("getAllFiles");
         },
@@ -212,7 +210,6 @@
       });
 
       socket.on("connect", () => {
-        console.log("connected ws")
         // TODO get all directories from socket with struct {"123":"/asd", "1222":"/mampf"}
         //socket.emit("getAllResearches", addActions);
       });

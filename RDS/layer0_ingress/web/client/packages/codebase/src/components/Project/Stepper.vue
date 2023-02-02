@@ -2,7 +2,7 @@
   <div style="height: 100%">
     <v-stepper v-model="e1" alt-labels flat style="height: 100%">
       <!-- Stepper header -->
-      <v-stepper-header 
+      <v-stepper-header
       style="
       box-shadow: none !important;
       padding-bottom: 1px;
@@ -83,7 +83,7 @@
             Delete
           </v-btn>
           <v-flex class="text-right">
-            
+
 
             <v-btn
             :disabled="!isConfigComplete"
@@ -181,13 +181,12 @@ export default {
     },
     portChanges() {
       let changes = this.computePortChanges()
-      return changes 
+      return changes
     }
   },
   watch: {
     loadedResearchIndex(newLoadedResearchIndex, oldLoadedResearchIndex) {
         if (newLoadedResearchIndex !== oldLoadedResearchIndex) {
-            console.log("loadedResearchIndex changed, setting this.published to ", this.loadedProject.status == '3')
             this.published = (this.loadedProject.status == '3');
         }
     }
@@ -209,7 +208,7 @@ export default {
                 : []
               ,
           remove: [],
-          change: 
+          change:
                 (this.loadedProject["portIn"].length > 0 && this.loadedFilePath !== this.originalFilePath)
           ?
                   [{
@@ -262,7 +261,7 @@ export default {
             text = this.$gettext("Your project '" + this.project["researchname"] + "' was successfully published.");
             this.published = true;
           }
-          
+
           this.$root.$emit("showsnackbar", text);
           this.publishInProgress = false;
         }

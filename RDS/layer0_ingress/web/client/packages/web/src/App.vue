@@ -87,7 +87,6 @@ export default {
   methods: {
     ...mapActions(["showMessage"]),
     error(error) {
-      console.log(response);
       this.showMessage({
         title: this.$gettext("The rds could not be loaded…"),
         desc: error,

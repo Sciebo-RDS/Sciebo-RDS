@@ -60,14 +60,12 @@ export default {
   watch: {
     loadedFilePath(newLoadedFilePath, oldLoadedFilePath){
       if (!!newLoadedFilePath){
-        console.log("loadedFilePath changed, getting Describo Session");
         this.getDescriboSession();
       }
     },
   },
   methods: {
     loaded() {
-      console.log("iframe loaded");
       this.loading = false;
       this.loadingStep = 2;
     },
@@ -122,14 +120,12 @@ export default {
     },
     getDescriboSession() {
       this.loadingStep = 0
-      console.log("request describo sessionId");
       this.$socket.client.emit(
         "requestSessionId",
         { folder: this.loadedFilePath },
         (sessionId) => {
           this.loadingStep = 1;
           this.sessionId = sessionId;
-          console.log("got sessionId", sessionId);
         }
       );
 

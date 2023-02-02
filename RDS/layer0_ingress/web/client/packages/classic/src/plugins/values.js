@@ -19,7 +19,6 @@ function promise() {
             }
             throw new Error(`${response.status} ${response.statusText}`);
         }).then((response) => {
-            console.log("got response: ", response)
             const data = JSON.parse(response)
             resolve({
                 url: data.cloudURL,
