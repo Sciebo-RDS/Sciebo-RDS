@@ -9,7 +9,7 @@ FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:16-al
 WORKDIR /app
 ENV VUE_APP_BASE_URL $VUE_APP_BASE_URL
 WORKDIR /app
-RUN apk add --no-cache gettext python3 build-base make && python3 -m ensurepip && pip3 install --no-cache --upgrade pip setuptools 
+RUN apk add --no-cache gettext python3 build-base make && python3 -m ensurepip && pip3 install --no-cache --upgrade pip setuptools
 COPY --from=staging /src/pkg ./
 RUN yarn install --non-interactive
 COPY client .
@@ -27,7 +27,7 @@ ENV REDIS_HELPER_HOST=http://owncloud_redis
 ENV REDIS_HELPER_PORT=6379
 ENV PROMETHEUS_MULTIPROC_DIR=/tmp
 
-RUN apk add --no-cache nginx gcc musl-dev python3-dev libffi-dev openssl-dev cargo g++ gettext bash supervisor
+RUN apk add --no-cache nginx gcc musl-dev python3-dev libffi-dev openssl-dev cargo g++ gettext bash supervisor nano
 RUN mkdir -p /run/nginx
 RUN mkdir -p /var/lib/nginx/tmp
 RUN pip install setuptools wheel setuptools-rust gunicorn[eventlet] pipenv
