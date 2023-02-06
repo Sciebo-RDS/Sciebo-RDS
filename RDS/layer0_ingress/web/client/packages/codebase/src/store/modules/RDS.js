@@ -68,7 +68,13 @@ export default {
       state.servicelist = payload.servicelist;
     },
     setProjectList: (state, payload) => {
+      // TODO:
+      console.log("5 -");
       state.projectlist = payload.projectlist;
+      console.log("Payload:");
+      console.log("state.projectlist");
+      // TODO:
+      console.log("- 5");
     },
     setSessionId: (state, payload) => {
       state.sessionID = payload.sessionID;
@@ -164,15 +170,24 @@ export default {
       });
     },
     SOCKET_ProjectList(context, state) {
+      // TODO:
+      console.log("4 -");
       let projectlist = [];
       try {
+        // TODO:
+        console.log("Project list:");
         projectlist = JSON.parse(state);
+        console.log(projectlist);
       } catch (error) {
         console.log("ProjectList is invalid: ", error, "state: ", state);
       }
+      // TODO:
+      console.log("- 4 -");
       context.commit("setProjectList", {
         projectlist,
       });
+      // TODO:
+      console.log("- 4");
     },
     SOCKET_SessionId(context, state) {
       context.commit("setSessionId", {
@@ -193,8 +208,14 @@ export default {
       this._vm.$socket.client.emit("setLocation", data);
     },
     createProject() {
+      // TODO:
+      console.log("2 -");
       this._vm.$socket.client.emit("createResearch");
+      // TODO:
+      console.log("- 2 -");
       this.dispatch("requestProjectList");
+      // TODO:
+      console.log("- 2");
     },
     saveProject(context, data) {
       data.researchIndex = data.id;
@@ -232,9 +253,13 @@ export default {
       });
     },
     requestProjectList(context) {
+      // TODO:
+      console.log("3 -");
       this._vm.$socket.client.emit("getAllResearch", (response) => {
         context.dispatch("SOCKET_ProjectList", response);
       });
+      // TODO:
+      console.log("- 3");
     },
     exchangeCode(context, data) {
       if (!!data.code && !!data.state) {

@@ -62,15 +62,6 @@ export default {
     }),
 
     serviceIn() {
-      console.log("1 -");
-      console.log("Service list:");
-      console.log(this.userServiceList); // OK! -> OSF + ownCloud drin
-      console.log("Loaded port in:");
-      console.log(this.loadedPortIn); // EMPTY! -> port-owncloud-sciebords-uni-muenster-de sollte sein
-      console.log("Loaded port out:");
-      console.log(this.loadedPortOut);
-      console.log("- 1");
-
       return this.userServiceList.filter(s => s.servicename === this.loadedPortIn[0].port)[0];
     },
     displayNamePortIn() {
