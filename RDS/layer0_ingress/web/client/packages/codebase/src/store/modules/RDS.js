@@ -107,13 +107,9 @@ export default {
 
     },
     setLoadedPortIn: (state, payload) => {
-      console.log("IN: ");
-      console.log(payload);
       state.loadedProject["portIn"] = payload;
     },
     setLoadedPortOut: (state, payload) => {
-      console.log("OUT: ");
-      console.log(payload);
       state.loadedProject["portOut"] = payload;
     },
     resetLoadedProject(state) {
@@ -209,6 +205,8 @@ export default {
       this._vm.$socket.client.emit("removeResearch", data);
     },
     changePorts(context, data) {
+      console.log("CHANGE PORTS");
+      console.log(data);
       this._vm.$socket.client.emit("changePorts", JSON.stringify(data));
       this.dispatch("requestProjectList");
     },
