@@ -62,7 +62,14 @@ export default {
     }),
 
     serviceIn() {
-      return this.userServiceList.filter(s => s.servicename === this.loadedPortIn[0].port)[0];
+      try {
+        return this.userServiceList.filter(s => s.servicename === this.loadedPortIn[0].port)[0];
+      } catch (e) {
+        return {
+          "displayName": "(no value)",
+          "icon": "(no value)",
+        };
+      }
     },
     displayNamePortIn() {
       return this.serviceIn["displayName"];
@@ -71,7 +78,14 @@ export default {
       return this.serviceIn["icon"];
     },
     serviceOut() {
-      return this.userServiceList.filter(s => s.servicename === this.loadedPortOut[0].port)[0];
+      try {
+        return this.userServiceList.filter(s => s.servicename === this.loadedPortOut[0].port)[0];
+      } catch (e) {
+        return {
+          "displayName": "(no value)",
+          "icon": "(no value)",
+        };
+      }
     },
     displayNamePortOut() {
       return this.serviceOut["displayName"];
