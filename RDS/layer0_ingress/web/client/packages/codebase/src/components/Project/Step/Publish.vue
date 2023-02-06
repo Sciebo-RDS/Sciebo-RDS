@@ -20,7 +20,7 @@
                             </v-col>
                             <v-col cols="11">
                                 Project <span class="font-weight-bold">{{loadedResearchName}}</span> was successfully published to {{displayNamePortOut}}. <br/>
-                                Folder: <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span> 
+                                Folder: <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span>
                             </v-col>
                             </v-row>
                         </p>
@@ -60,8 +60,11 @@ export default {
             loadedFilePath: "getLoadedFilePath",
             loadedResearchName: "getLoadedResearchName",
         }),
-        
+
         serviceIn() {
+            console.log("1");
+            console.log(this.userServiceList);
+            console.log(this.loadedPortIn);
             return this.userServiceList.filter(s => s.servicename === this.loadedPortIn[0].port)[0]
         },
         displayNamePortIn() {
@@ -79,7 +82,7 @@ export default {
         iconPortOut() {
             return this.serviceOut["icon"];
         }
-       
+
     },
 };
 </script>
