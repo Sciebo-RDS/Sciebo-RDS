@@ -194,6 +194,7 @@ export default {
   props: ["project", "e1"],
   methods: {
     computePortChanges() {
+      // TODO: Include port in
       let loadedPortOutNames = this.loadedProject["portOut"].map((s) => s.port)
       let originalPortOutNames = this.originalPortOutForLoadedProject.map((s) => s.port)
       return {
@@ -205,10 +206,13 @@ export default {
                     "servicename": "port-owncloud-" + this.ownCloudServername,
                     "filepath": this.loadedFilePath,
                   }]
-                : []
+                : [{
+                      "servicename": "port-owncloud-" + this.ownCloudServername,
+                      "filepath": this.loadedFilePath,
+                    }]
               ,
           remove: [],
-          change:
+          change: // TODO: Check this
                 (this.loadedProject["portIn"].length > 0 && this.loadedFilePath !== this.originalFilePath)
           ?
                   [{

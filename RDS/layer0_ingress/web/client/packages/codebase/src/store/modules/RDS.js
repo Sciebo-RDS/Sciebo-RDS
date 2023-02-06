@@ -205,8 +205,6 @@ export default {
       this._vm.$socket.client.emit("removeResearch", data);
     },
     changePorts(context, data) {
-      console.log("CHANGE PORTS");
-      console.log(data);
       this._vm.$socket.client.emit("changePorts", JSON.stringify(data));
       this.dispatch("requestProjectList");
     },
