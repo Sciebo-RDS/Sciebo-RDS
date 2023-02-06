@@ -65,33 +65,43 @@ export default {
       try {
         return this.userServiceList.filter(s => s.servicename === this.loadedPortIn[0].port)[0];
       } catch (e) {
-        return {
-          "displayName": "(no value)",
-          "icon": "(no value)",
-        };
+        return null;
       }
     },
     displayNamePortIn() {
-      return this.serviceIn["displayName"];
+      try {
+        return this.serviceIn["displayName"];
+      } catch (e) {
+        return "";
+      }
     },
     iconPortIn() {
-      return this.serviceIn["icon"];
+      try {
+        return this.serviceIn["icon"];
+      } catch (e) {
+        return "";
+      }
     },
     serviceOut() {
       try {
         return this.userServiceList.filter(s => s.servicename === this.loadedPortOut[0].port)[0];
       } catch (e) {
-        return {
-          "displayName": "(no value)",
-          "icon": "(no value)",
-        };
+        return null;
       }
     },
     displayNamePortOut() {
-      return this.serviceOut["displayName"];
+      try {
+        return this.serviceOut["displayName"];
+      } catch (e) {
+        return "";
+      }
     },
     iconPortOut() {
-      return this.serviceOut["icon"];
+      try {
+        return this.serviceOut["icon"];
+      } catch (e) {
+        return "";
+      }
     }
 
   },
