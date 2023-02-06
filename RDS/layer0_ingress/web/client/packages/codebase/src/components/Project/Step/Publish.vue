@@ -62,11 +62,20 @@ export default {
     }),
 
     serviceIn() {
-      console.log("1");
+      console.log("1 -");
+      console.log("Service list:");
       console.log(this.userServiceList); // OK! -> OSF + ownCloud drin
+      console.log("Loaded port in:");
       console.log(this.loadedPortIn); // EMPTY! -> port-owncloud-sciebords-uni-muenster-de sollte sein
+      console.log("Loaded port out:");
+      console.log(this.loadedPortOut);
+      console.log("Service in:");
+      console.log(this.serviceIn);
+      console.log("Service out:");
+      console.log(this.serviceOut);
+      console.log("- 1");
 
-      if (this.loadedPortIn.length !== 0) {
+      if (this.loadedPortIn.length >= 0) {
         return this.userServiceList.filter(s => s.servicename === this.loadedPortIn[0].port)[0];
       }
       return null;
@@ -78,11 +87,7 @@ export default {
       return this.serviceIn["icon"];
     },
     serviceOut() {
-      console.log("2");
-      console.log(this.userServiceList);
-      console.log(this.loadedPortOut);
-
-      if (this.loadedPortOut.length !== 0) {
+      if (this.loadedPortOut.length >= 0) {
         return this.userServiceList.filter(s => s.servicename === this.loadedPortOut[0].port)[0];
       }
       return null;
