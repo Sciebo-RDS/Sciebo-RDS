@@ -229,11 +229,7 @@ export default {
       this.$store.dispatch("removeProject", { id: researchIndex });
     },
     addProject() {
-      // TODO:
-      console.log("1 -");
       this.$store.dispatch("createProject");
-      // TODO:
-      console.log("- 1");
     },
   },
   created() {
