@@ -69,16 +69,9 @@ export default {
       console.log(this.loadedPortIn); // EMPTY! -> port-owncloud-sciebords-uni-muenster-de sollte sein
       console.log("Loaded port out:");
       console.log(this.loadedPortOut);
-      console.log("Service in:");
-      console.log(this.serviceIn);
-      console.log("Service out:");
-      console.log(this.serviceOut);
       console.log("- 1");
 
-      if (this.loadedPortIn.length >= 0) {
-        return this.userServiceList.filter(s => s.servicename === this.loadedPortIn[0].port)[0];
-      }
-      return null;
+      return this.userServiceList.filter(s => s.servicename === this.loadedPortIn[0].port)[0];
     },
     displayNamePortIn() {
       return this.serviceIn["displayName"];
@@ -87,10 +80,7 @@ export default {
       return this.serviceIn["icon"];
     },
     serviceOut() {
-      if (this.loadedPortOut.length >= 0) {
-        return this.userServiceList.filter(s => s.servicename === this.loadedPortOut[0].port)[0];
-      }
-      return null;
+      return this.userServiceList.filter(s => s.servicename === this.loadedPortOut[0].port)[0];
     },
     displayNamePortOut() {
       return this.serviceOut["displayName"];
