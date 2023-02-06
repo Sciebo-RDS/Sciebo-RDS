@@ -69,8 +69,6 @@ export default {
     },
     setProjectList: (state, payload) => {
       state.projectlist = payload.projectlist;
-      // TODO:
-      console.log("1 -");
     },
     setSessionId: (state, payload) => {
       state.sessionID = payload.sessionID;
@@ -87,9 +85,6 @@ export default {
       state.ownCloudServerName = payload.serverName;
     },
     setLoadedProject(state, payload) {
-      // TODO:
-      console.log("2 -");
-      console.log(payload);
       if (payload === null) {
         state.loadedProject = null
       } else {
@@ -112,9 +107,13 @@ export default {
 
     },
     setLoadedPortIn: (state, payload) => {
+      console.log("IN: ");
+      console.log(payload);
       state.loadedProject["portIn"] = payload;
     },
     setLoadedPortOut: (state, payload) => {
+      console.log("OUT: ");
+      console.log(payload);
       state.loadedProject["portOut"] = payload;
     },
     resetLoadedProject(state) {
