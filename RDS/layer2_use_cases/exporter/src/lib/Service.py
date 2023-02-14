@@ -235,6 +235,7 @@ class Service:
         ))
         files = {"file": (filename, fileContent.getvalue())}
         data["filename"] = filename
+        data["username"] = self.userId
 
         logger.debug(
             "add file {} with data {} in service {}".format(
