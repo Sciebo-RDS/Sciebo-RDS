@@ -18,8 +18,7 @@ class OwncloudUser:
     def __init__(self, userId, apiKey=None):
         self._user_id = userId
         self._access_token = (
-            apiKey if apiKey is not None else Util.loadToken(
-                userId, "port-owncloud")
+            apiKey if apiKey is not None else Util.loadToken(userId, "port-owncloud")
         )
 
         options = {
@@ -30,6 +29,7 @@ class OwncloudUser:
         }
         self.client = Client(options)
         self.client.verify = os.environ.get("VERIFY_SSL", "True") == "True"
+        self.options = options
 
     def getFolder(self, foldername):
         """Returns the files within the foldername. If a folder is in there, it returns all files within recursive.
@@ -60,8 +60,7 @@ class OwncloudUser:
                 # save index for later removal, because we do not want the folderpaths
                 indexList.append(index)
                 fullname = file
-                logger.debug(
-                    f"recursive getFolder for inner folders: {fullname}")
+                logger.debug(f"recursive getFolder for inner folders: {fullname}")
                 tmpFiles = self.getFolder(foldername + "/" + fullname)
 
                 for appendFile in tmpFiles:
@@ -98,3 +97,18 @@ class OwncloudUser:
         logger.debug("file content: {}".format(buffer.getvalue()))
 
         return buffer
+
+    def createSharelink(self, filepath):
+        data = {"filepath": filepath}
+        header = {
+            "Authorization": "Bearer {}".format(self.options["webdav_token"]),
+            "Content-Type": "application/json",
+        }
+        url = "{}/apps/rds/api/1.0/share".format(self.options["webdav_hostname"])
+        response = requests.post(url, data, header=header)
+
+        if response.status_code >= 300:
+            return None, 406
+
+        sharelink = response.json()
+        return {"sharelink": sharelink}
