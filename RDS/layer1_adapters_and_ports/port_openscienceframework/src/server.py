@@ -31,7 +31,7 @@ service = OAuth2Service(
     infoUrl="https://osf.io/",
     helpUrl="https://help.osf.io/hc/en-us",
     icon="./osf.png",
-    metadataProfile="metadata_profile.json"
+    metadataProfile="./metadata_profile.json"
 )
 
 Util.register_service(service)
