@@ -33,10 +33,19 @@ export default {
         return null
       }
     },
+    getLoadedMetadataProfile(state) {
+      let loadedService = state.userservicelist.filter((i) => i.servicename == state.loadedProject.portOut[0].port)[0]
+      try{
+        return loadedService["metadataProfile"]
+      }
+      catch {
+        return null
+      }
+    },
     getOriginalFilePathForLoadedProject(state) {
       let p =  state.projectlist.filter((i) => i.researchIndex == state.loadedProject.researchIndex)[0]
       try {
-      return p.portIn[0]["properties"]["customProperties"]["filepath"]}
+        return p.portIn[0]["properties"]["customProperties"]["filepath"]}
       catch {
         return null
       }

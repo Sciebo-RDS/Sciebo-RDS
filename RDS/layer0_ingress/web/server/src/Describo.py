@@ -4,7 +4,7 @@ from flask import session
 from .app import app
 
 
-def getSessionId(access_token=None, folder=None):
+def getSessionId(access_token=None, folder=None, metadataProfile=None):
     informations = session["informations"]
     default = "{}/remote.php/dav".format(os.getenv(
         "OWNCLOUD_URL", "http://localhost:8000")
@@ -27,15 +27,22 @@ def getSessionId(access_token=None, folder=None):
     if folder is not None and isinstance(folder, str):
         data["folder"] = folder
 
+    if metadataProfile is not None:
+        metadataProfile = {
+            "inline": metadataProfile
+        }
+    else:
+        metadataProfile = {
+            "file": "type-definitions.json",
+        }
+
     payload = {
         "email": informations["email"],
         "name": informations["cloudID"],
         "service": {
             "owncloud": data
         },
-        "profile": {
-            "file": "type-definitions.json",
-        },
+        "profile": metadataProfile,
         "configuration": {
                             "allowProfileChange": False,
                             "allowServiceChange": False,

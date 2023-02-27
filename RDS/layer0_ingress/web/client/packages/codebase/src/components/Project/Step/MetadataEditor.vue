@@ -42,6 +42,7 @@ export default {
     ...mapGetters({
       ownCloudServicename: "getOwnCloudServername",
       loadedFilePath: "getLoadedFilePath",
+      metadataProfile: "getLoadedMetadataProfile"
     }),
     editor() {
       return this.$refs.describoWindow.contentWindow;
@@ -122,7 +123,7 @@ export default {
       this.loadingStep = 0
       this.$socket.client.emit(
         "requestSessionId",
-        { folder: this.loadedFilePath },
+        { folder: this.loadedFilePath, metadataProfile: this.metadataProfile },
         (sessionId) => {
           this.loadingStep = 1;
           this.sessionId = sessionId;
