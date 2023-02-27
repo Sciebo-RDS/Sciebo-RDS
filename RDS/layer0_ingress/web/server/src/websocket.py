@@ -545,7 +545,7 @@ class RDSNamespace(Namespace):
             )["data"]["access_token"]
             
             app.logger.debug("got token")
-            describoObj = getSessionId(token, jsonData.get("folder"))
+            describoObj = getSessionId(token, jsonData.get("folder"), jsonData.get("metadataProfile"))
             sessionId = describoObj["sessionId"]
 
             app.logger.debug(f"send sessionId: {sessionId}")
