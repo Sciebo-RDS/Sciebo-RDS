@@ -453,7 +453,7 @@
                 "sha256:fd1d0e9bae2bac7947b7f8336f29813b30d7dc1aa46fd3b99e4c25efcc955c60"
             ],
             "index": "pypi",
-            "version": "==0.44"
+            "version": "==0.52"
         },
         "six": {
             "hashes": [

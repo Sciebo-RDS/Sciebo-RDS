@@ -647,7 +647,7 @@
                 "sha256:df67d9d1d9da7912074c3bf9d3989176c93277e7f7d07e4f3858a7a0db9be837"
             ],
             "index": "pypi",
-            "version": "==0.49"
+            "version": "==0.52"
         },
         "six": {
             "hashes": [
