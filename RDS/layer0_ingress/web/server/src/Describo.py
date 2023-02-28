@@ -29,7 +29,7 @@ def getSessionId(access_token=None, folder=None, metadataProfile=None):
 
     if metadataProfile is not None:
         metadataProfile = {
-            "inline": metadataProfile
+            "inline": metadataProfile.decode('utf-8')
         }
     else:
         metadataProfile = {
