@@ -82,7 +82,7 @@ pyyaml==6.0; python_version >= '3.6'
 redis-pubsub-dict-wo-cluster==0.0.3
 redis==4.2.2
 requests==2.27.1
-research-data-services-common[flask]==0.50
+3ch-data-services-common[flask]==0.50
 restnavigator==1.0.1
 rich==12.4.1; python_full_version >= '3.6.3' and python_full_version < '4.0.0'
 selenium==4.1.5
