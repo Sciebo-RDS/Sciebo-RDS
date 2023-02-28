@@ -2,6 +2,7 @@ import os
 import requests
 from flask import session
 from .app import app
+import base64
 
 
 def getSessionId(access_token=None, folder=None, metadataProfile=None):
@@ -29,7 +30,7 @@ def getSessionId(access_token=None, folder=None, metadataProfile=None):
 
     if metadataProfile is not None:
         metadataProfile = {
-            "inline": metadataProfile.decode('utf-8')
+            "inline": base64.b64decode(metadataProfile).decode('utf-8')
         }
     else:
         metadataProfile = {
