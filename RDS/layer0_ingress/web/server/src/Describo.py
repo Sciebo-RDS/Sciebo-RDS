@@ -3,6 +3,7 @@ import requests
 from flask import session
 from .app import app
 import base64
+import json
 
 
 def getSessionId(access_token=None, folder=None, metadataProfile=None):
@@ -28,9 +29,9 @@ def getSessionId(access_token=None, folder=None, metadataProfile=None):
     if folder is not None and isinstance(folder, str):
         data["folder"] = folder
 
-    if metadataProfile is not None:
+    if metadataProfile is not None and metadataProfile is not "":
         metadataProfile = {
-            "inline": base64.b64decode(metadataProfile).decode('utf-8')
+            "inline": json.loads(base64.b64decode(metadataProfile).decode('utf-8'))
         }
     else:
         metadataProfile = {
