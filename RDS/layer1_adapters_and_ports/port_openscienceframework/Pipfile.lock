@@ -737,7 +737,7 @@
                 "sha256:e4c2aaa3b760b2489bfc07971e7ebd9bcca68f735308280533d395f1615eec92"
             ],
             "index": "pypi",
-            "version": "==0.52"
+            "version": "==0.53"
         },
         "rfc3339-validator": {
             "hashes": [

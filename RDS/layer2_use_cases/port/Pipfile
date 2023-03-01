@@ -18,7 +18,7 @@ connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "==0.41"
 openapi-spec-validator = "<0.3"
 pyjwt = "*"
-research-data-services-common = {extras = ["flask"], version = "==0.52"}
+research-data-services-common = {extras = ["flask"], version = "==0.53"}
 
 
 [requires]
