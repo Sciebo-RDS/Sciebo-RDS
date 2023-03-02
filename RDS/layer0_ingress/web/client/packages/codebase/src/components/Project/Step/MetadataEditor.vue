@@ -42,6 +42,7 @@ export default {
     ...mapGetters({
       ownCloudServicename: "getOwnCloudServername",
       loadedFilePath: "getLoadedFilePath",
+      loadedPortOut: "getLoadedPortOut",
       metadataProfile: "getLoadedMetadataProfile"
     }),
     editor() {
