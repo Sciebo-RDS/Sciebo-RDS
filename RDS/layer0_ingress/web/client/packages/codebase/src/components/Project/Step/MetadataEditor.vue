@@ -21,6 +21,7 @@
       width="100%"
       style="border: 0px; left: 0px; height: 100%"
       @load="loaded()"
+      @reloadProject="getDescriboSession()"
     ></iframe>
     </div>
   </div>

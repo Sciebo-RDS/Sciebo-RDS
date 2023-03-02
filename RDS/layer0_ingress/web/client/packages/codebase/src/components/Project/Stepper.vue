@@ -231,8 +231,8 @@ export default {
           researchname: this.loadedResearchName,
         });
       }
-        await this.$store.dispatch("changePorts", this.portChanges);
-        this.$emit("reloadProject");
+      await this.$store.dispatch("changePorts", this.portChanges);
+      this.$emit("reloadProject");
     },
     archiveProject(rId) {
       this.$store.commit('setLoadedProject', null)
