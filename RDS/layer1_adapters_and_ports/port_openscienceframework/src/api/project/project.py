@@ -35,7 +35,7 @@ def get(project_id):
 def osf(res):
     result = {}
 
-    result["title"] = res["name"]
+    result["title"] = res["title"]
     result["category"] = res["osfcategory"]
     result["description"] = res["description"].replace("\n", " ")
 
