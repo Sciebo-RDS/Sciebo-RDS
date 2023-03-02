@@ -64,6 +64,9 @@ export default {
         this.getDescriboSession();
       }
     },
+    loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
+      this.getDescriboSession();
+    }
   },
   methods: {
     loaded() {
@@ -120,7 +123,6 @@ export default {
       }
     },
     getDescriboSession() {
-      console.log("DESCRIBO SESSION REQUEST: " + this.loadedFilePath + " -- " + this.metadataProfile);
       this.loadingStep = 0
       this.$socket.client.emit(
         "requestSessionId",

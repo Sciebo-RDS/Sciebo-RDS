@@ -114,7 +114,7 @@ export default ({
                 {
                     "port": port.servicename,
                     properties: {"type": ["metadata"]}
-                    }
+                }
                 ]
          },
         selectedStyle() {
