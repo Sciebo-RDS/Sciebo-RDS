@@ -21,7 +21,7 @@
       width="100%"
       style="border: 0px; left: 0px; height: 100%"
       @load="loaded()"
-      @reloadProject="getDescriboSession()"
+      @reloadProject="reloadProject()"
     ></iframe>
     </div>
   </div>
@@ -67,13 +67,17 @@ export default {
       }
     },
     loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
-      // this.getDescriboSession();
+      this.getDescriboSession();
     }
   },
   methods: {
     loaded() {
       this.loading = false;
       this.loadingStep = 2;
+    },
+    reloadProject() {
+      console.log("RELOAD PROJECT");
+      this.getDescriboSession();
     },
     eventloop(event) {
       if (event.data.length > 0) {
