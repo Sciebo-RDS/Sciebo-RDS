@@ -144,7 +144,9 @@ def questions():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
-        return ("", 200) if (current_user.is_authenticated) else ("", 401)
+        # This causes serious security issues:
+        # return ("", 200) if (current_user.is_authenticated) else ("", 401)
+        return ("", 401)
 
     try:
         reqData = request.get_json()

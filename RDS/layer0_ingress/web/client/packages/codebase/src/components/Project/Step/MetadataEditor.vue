@@ -67,7 +67,7 @@ export default {
       }
     },
     loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
-      this.getDescriboSession();
+      // this.getDescriboSession();
     }
   },
   methods: {

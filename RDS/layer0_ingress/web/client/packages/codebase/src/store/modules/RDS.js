@@ -217,7 +217,7 @@ export default {
       this._vm.$socket.client.emit("changePorts", JSON.stringify(data));
       this.dispatch("requestProjectList");
     },
-    async changeResearchname(context, data) {
+    changeResearchname(context, data) {
       this._vm.$socket.client.emit("changeResearchname", JSON.stringify(data));
       this.dispatch("requestProjectList");
     },
