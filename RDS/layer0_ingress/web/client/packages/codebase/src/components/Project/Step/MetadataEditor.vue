@@ -63,14 +63,14 @@ export default {
   watch: {
     loadedFilePath(newLoadedFilePath, oldLoadedFilePath){
       if (!!newLoadedFilePath){
-        this.getDescriboSession();
+        this.getDescriboSession(true);
       }
     },
     loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
-      this.getDescriboSession();
+      this.getDescriboSession(true);
     },
     metadataProfile(newMetadataProfile, oldMetadataProfile) {
-      this.getDescriboSession();
+      this.getDescriboSession(true);
     },
   },
   methods: {
@@ -127,14 +127,17 @@ export default {
         }
       }
     },
-    getDescriboSession() {
-      this.loadingStep = 0;
-      console.log("EMITTING: " + String(this.metadataProfile));
+    getDescriboSession(reload=false) {
+      if (!reload) {
+        this.loadingStep = 0;
+      }
       this.$socket.client.emit(
         "requestSessionId",
         { folder: this.loadedFilePath, metadataProfile: this.metadataProfile },
         (sessionId) => {
-          this.loadingStep = 1;
+          if (!reload) {
+            this.loadingStep = 1;
+          }
           this.sessionId = sessionId;
         }
       );
@@ -166,7 +169,7 @@ export default {
   },
   beforeMount() {
     this.$root.$on("sendChanges", () => {
-      this.getDescriboSession();
+      this.getDescriboSession(true);
     });
   },
   mounted() {
