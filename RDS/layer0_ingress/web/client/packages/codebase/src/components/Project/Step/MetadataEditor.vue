@@ -127,47 +127,41 @@ export default {
         }
       }
     },
-    getDescriboSession(reload=false) {
-      if (!reload) {
-        this.loadingStep = 0;
-      }
+    getDescriboSession() {
+      this.loadingStep = 0;
       console.log("REQUEST SESSION ID: " + String(this.metadataProfile));
       this.$socket.client.emit(
         "requestSessionId",
         { folder: this.loadedFilePath, metadataProfile: this.metadataProfile },
         (sessionId) => {
-          if (!reload) {
-            this.loadingStep = 1;
-          }
+          this.loadingStep = 1;
           this.sessionId = sessionId;
         }
       );
 
-      if (!reload) {
-        this.standardLoadingText = this.$gettext("Editor loading");
-        this.loadingText = this.standardLoadingText;
-        let counter = 0;
-        let loader = setInterval(() => {
-          if (!this.loading) {
-            this.loadingText = "Done loading";
-            clearInterval(loader);
-          }
+      this.standardLoadingText = this.$gettext("Editor loading");
+      this.loadingText = this.standardLoadingText;
+      let counter = 0;
+      let loader = setInterval(() => {
+        if (!this.loading) {
+          this.loadingText = "Done loading";
+          clearInterval(loader);
+        }
 
-          if (counter > 30) {
-            this.loadingText = this.$gettext(
-                "Error while loading. Please contact an administator."
-            );
-            clearInterval(loader);
+        if (counter > 30) {
+          this.loadingText = this.$gettext(
+              "Error while loading. Please contact an administator."
+          );
+          clearInterval(loader);
+        } else {
+          if (counter % 4 > 0) {
+            this.loadingText += ".";
           } else {
-            if (counter % 4 > 0) {
-              this.loadingText += ".";
-            } else {
-              this.loadingText = this.standardLoadingText;
-            }
-            counter += 1;
+            this.loadingText = this.standardLoadingText;
           }
-        }, 1000);
-      }
+          counter += 1;
+        }
+      }, 1000);
     }
   },
   beforeMount() {
