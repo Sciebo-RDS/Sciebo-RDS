@@ -166,6 +166,11 @@ export default {
       }, 1000);
     }
   },
+  beforeMount() {
+    this.$root.$on("sendChanges", () => {
+      console.log("I GOT CHANGES!");
+    });
+  },
   mounted() {
     this.getDescriboSession();
   },

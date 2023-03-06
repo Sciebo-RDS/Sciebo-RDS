@@ -235,7 +235,7 @@ export default {
       this.$emit("reloadProject");
 
       console.log("SENDING CHANGES");
-      this.$refs.stepMetadataEditor.goneToNextStep();
+      this.$root.$emit("sendChanges");
     },
     archiveProject(rId) {
       this.$store.commit('setLoadedProject', null)
