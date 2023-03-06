@@ -143,6 +143,7 @@ export default {
       let counter = 0;
       let loader = setInterval(() => {
         if (!this.loading) {
+          console.log("LOADED!");
           clearInterval(loader);
         }
 
