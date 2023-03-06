@@ -14,7 +14,7 @@
     </v-container>
     <div style="height: calc(100vh - 13em);">
     <iframe
-      v-if="loadingStep >= 1"
+      v-if="loadingStep >= 2"
       v-show="loadingStep >= 2"
       ref="describoWindow"
       :src="iframeSource"
@@ -69,7 +69,6 @@ export default {
       this.getDescriboSession();
     },
     metadataProfile(newMetadataProfile, oldMetadataProfile) {
-      console.log("METADATA: " + String(newMetadataProfile) + " -- " + String(oldMetadataProfile));
       this.getDescriboSession();
     },
   },
