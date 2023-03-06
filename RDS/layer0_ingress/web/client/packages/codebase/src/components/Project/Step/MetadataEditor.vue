@@ -127,6 +127,7 @@ export default {
       }
     },
     getDescriboSession() {
+      console.log("GET SESSION: " + String(this.metadataProfile));
       this.loadingStep = 0
       this.$socket.client.emit(
         "requestSessionId",
@@ -163,9 +164,7 @@ export default {
   },
   beforeMount() {
     this.$root.$on("sendChanges", () => {
-      setTimeout(() => {
-          this.getDescriboSession();
-        }, 500);
+      this.getDescriboSession();
     });
   },
   mounted() {
