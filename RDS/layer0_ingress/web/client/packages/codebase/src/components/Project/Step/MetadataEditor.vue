@@ -69,6 +69,7 @@ export default {
       this.getDescriboSession();
     },
     metadataProfile(newMetadataProfile, oldMetadataProfile) {
+      console.log("METADATA: " + String(newMetadataProfile) + " -- " + String(oldMetadataProfile));
       this.getDescriboSession();
     },
   },
@@ -127,7 +128,6 @@ export default {
       }
     },
     getDescriboSession() {
-      console.log("GET SESSION: " + String(this.metadataProfile));
       this.loadingStep = 0
       this.$socket.client.emit(
         "requestSessionId",
@@ -143,7 +143,7 @@ export default {
       let counter = 0;
       let loader = setInterval(() => {
         if (!this.loading) {
-          console.log("LOADED!");
+          this.loadingText = "Done loading";
           clearInterval(loader);
         }
 
