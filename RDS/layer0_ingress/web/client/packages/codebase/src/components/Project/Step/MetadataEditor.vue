@@ -131,6 +131,7 @@ export default {
       if (!reload) {
         this.loadingStep = 0;
       }
+      console.log("REQUEST SESSION ID: " + String(this.metadataProfile));
       this.$socket.client.emit(
         "requestSessionId",
         { folder: this.loadedFilePath, metadataProfile: this.metadataProfile },
@@ -142,29 +143,31 @@ export default {
         }
       );
 
-      this.standardLoadingText = this.$gettext("Editor loading");
-      this.loadingText = this.standardLoadingText;
-      let counter = 0;
-      let loader = setInterval(() => {
-        if (!this.loading) {
-          this.loadingText = "Done loading";
-          clearInterval(loader);
-        }
-
-        if (counter > 30) {
-          this.loadingText = this.$gettext(
-            "Error while loading. Please contact an administator."
-          );
-          clearInterval(loader);
-        } else {
-          if (counter % 4 > 0) {
-            this.loadingText += ".";
-          } else {
-            this.loadingText = this.standardLoadingText;
+      if (!reload) {
+        this.standardLoadingText = this.$gettext("Editor loading");
+        this.loadingText = this.standardLoadingText;
+        let counter = 0;
+        let loader = setInterval(() => {
+          if (!this.loading) {
+            this.loadingText = "Done loading";
+            clearInterval(loader);
           }
-          counter += 1;
-        }
-      }, 1000);
+
+          if (counter > 30) {
+            this.loadingText = this.$gettext(
+                "Error while loading. Please contact an administator."
+            );
+            clearInterval(loader);
+          } else {
+            if (counter % 4 > 0) {
+              this.loadingText += ".";
+            } else {
+              this.loadingText = this.standardLoadingText;
+            }
+            counter += 1;
+          }
+        }, 1000);
+      }
     }
   },
   beforeMount() {
