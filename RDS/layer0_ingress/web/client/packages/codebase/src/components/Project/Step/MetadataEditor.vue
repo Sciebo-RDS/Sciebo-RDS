@@ -53,6 +53,7 @@ export default {
       return window.parent;
     },
     iframeSource() {
+      console.log("METADATA: " + String(this.metadataProfile));
       const query = queryString.stringify({
         embed: 1,
         sid: this.sessionId,
