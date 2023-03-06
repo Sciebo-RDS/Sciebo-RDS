@@ -21,7 +21,6 @@
       width="100%"
       style="border: 0px; left: 0px; height: 100%"
       @load="loaded()"
-      @reload-project="reloadProject()"
     ></iframe>
     </div>
   </div>
@@ -74,13 +73,6 @@ export default {
     loaded() {
       this.loading = false;
       this.loadingStep = 2;
-    },
-    reloadProject() {
-      console.log("RELOAD PROJECT");
-      this.getDescriboSession();
-    },
-    goneToNextStep() {
-      console.log("I AM GONE!");
     },
     eventloop(event) {
       if (event.data.length > 0) {
@@ -168,7 +160,7 @@ export default {
   },
   beforeMount() {
     this.$root.$on("sendChanges", () => {
-      console.log("I GOT CHANGES!");
+      this.getDescriboSession();
     });
   },
   mounted() {
