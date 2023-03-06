@@ -16,6 +16,7 @@
     <iframe
       v-if="loadingStep >= 1"
       v-show="loadingStep >= 2"
+      id="describoWindow"
       ref="describoWindow"
       :src="iframeSource"
       width="100%"
@@ -66,18 +67,16 @@ export default {
       }
     },
     loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
-      this.getDescriboSession();
+      this.reloadDescribo();
     },
     metadataProfile(newMetadataProfile, oldMetadataProfile) {
-      console.log("METADATA: " + String(newMetadataProfile) + " -- " + String(oldMetadataProfile));
-      this.getDescriboSession();
+      this.reloadDescribo();
     },
   },
   methods: {
     loaded() {
       this.loading = false;
       this.loadingStep = 2;
-      this.getDescriboSession();
     },
     eventloop(event) {
       if (event.data.length > 0) {
@@ -128,6 +127,11 @@ export default {
         }
       }
     },
+    reloadDescribo() {
+      this.loading = true;
+      document.getElementById("describoWindow").contentWindow.location.reload();
+      this.getDescriboSession();
+    },
     getDescriboSession() {
       this.loadingStep = 0
       this.$socket.client.emit(
@@ -166,7 +170,7 @@ export default {
   },
   beforeMount() {
     this.$root.$on("sendChanges", () => {
-      this.getDescriboSession();
+      this.reloadDescribo();
     });
   },
   mounted() {
