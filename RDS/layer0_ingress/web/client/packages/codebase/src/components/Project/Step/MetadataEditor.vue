@@ -67,10 +67,10 @@ export default {
       }
     },
     loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
-      this.reloadDescribo();
+      this.getDescriboSession();
     },
     metadataProfile(newMetadataProfile, oldMetadataProfile) {
-      this.reloadDescribo();
+      this.getDescriboSession();
     },
   },
   methods: {
@@ -127,13 +127,9 @@ export default {
         }
       }
     },
-    reloadDescribo() {
-      this.loading = true;
-      document.getElementById("describoWindow").contentWindow.location.reload();
-      this.getDescriboSession();
-    },
     getDescriboSession() {
-      this.loadingStep = 0
+      this.loadingStep = 0;
+      console.log("EMITTING: " + String(this.metadataProfile));
       this.$socket.client.emit(
         "requestSessionId",
         { folder: this.loadedFilePath, metadataProfile: this.metadataProfile },
@@ -170,7 +166,7 @@ export default {
   },
   beforeMount() {
     this.$root.$on("sendChanges", () => {
-      this.reloadDescribo();
+      this.getDescriboSession();
     });
   },
   mounted() {
