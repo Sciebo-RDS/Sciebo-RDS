@@ -233,6 +233,9 @@ export default {
       }
       await this.$store.dispatch("changePorts", this.portChanges);
       this.$emit("reloadProject");
+
+      console.log("SENDING CHANGES");
+      this.$refs.stepMetadataEditor.goneToNextStep();
     },
     archiveProject(rId) {
       this.$store.commit('setLoadedProject', null)

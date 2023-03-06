@@ -21,7 +21,7 @@
       width="100%"
       style="border: 0px; left: 0px; height: 100%"
       @load="loaded()"
-      @reloadProject="reloadProject()"
+      @reload-project="reloadProject()"
     ></iframe>
     </div>
   </div>
@@ -78,6 +78,9 @@ export default {
     reloadProject() {
       console.log("RELOAD PROJECT");
       this.getDescriboSession();
+    },
+    goneToNextStep() {
+      console.log("I AM GONE!");
     },
     eventloop(event) {
       if (event.data.length > 0) {
