@@ -77,6 +77,7 @@ export default {
     loaded() {
       this.loading = false;
       this.loadingStep = 2;
+      this.getDescriboSession();
     },
     eventloop(event) {
       if (event.data.length > 0) {
