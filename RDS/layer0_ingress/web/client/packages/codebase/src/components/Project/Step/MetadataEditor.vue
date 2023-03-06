@@ -67,7 +67,10 @@ export default {
     },
     loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
       this.getDescriboSession();
-    }
+    },
+    metadataProfile(newMetadataProfile, oldMetadataProfile) {
+      this.getDescriboSession();
+    },
   },
   methods: {
     loaded() {
@@ -162,8 +165,7 @@ export default {
     this.$root.$on("sendChanges", () => {
       setTimeout(() => {
           this.getDescriboSession();
-        },
-          500);
+        }, 500);
     });
   },
   mounted() {
