@@ -160,7 +160,10 @@ export default {
   },
   beforeMount() {
     this.$root.$on("sendChanges", () => {
-      this.getDescriboSession();
+      setTimeout(() => {
+          this.getDescriboSession();
+        },
+          500);
     });
   },
   mounted() {
