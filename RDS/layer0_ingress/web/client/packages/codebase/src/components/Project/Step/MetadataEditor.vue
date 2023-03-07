@@ -127,10 +127,12 @@ export default {
       }
     },
     getDescriboSession() {
+      console.log("INIT DESCRIBO: path=" + this.loadedFilePath + "; metadata=" + this.metadataProfile);
       this.$socket.client.emit(
         "requestSessionId",
         { folder: this.loadedFilePath, metadataProfile: this.metadataProfile },
         (sessionId) => {
+          this.dataAvailable = true;
           this.sessionId = sessionId;
         }
       );
@@ -164,7 +166,6 @@ export default {
     this.dataAvailable = false;
 
     this.$root.$on("sendChanges", () => {
-      this.dataAvailable = true;
       this.getDescriboSession();
     });
   },
