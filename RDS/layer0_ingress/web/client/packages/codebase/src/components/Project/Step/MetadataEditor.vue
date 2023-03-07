@@ -153,7 +153,9 @@ export default {
     this.dataAvailable = false;
 
     this.$root.$on("sendChanges", () => {
+      console.log("INIT DESCRIBO");
       this.initDescribo();
+      console.log("INIT DESCRIBO DONE");
     });
   },
   created() {

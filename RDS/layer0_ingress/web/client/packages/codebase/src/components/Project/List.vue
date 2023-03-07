@@ -223,7 +223,9 @@ export default {
       this.loadedProject = JSON.parse(JSON.stringify(p));
     },
     reloadProject(){
+      console.log("RELOAD PROJECT");
       this.loadedProject = JSON.parse(JSON.stringify(...this.allProjects.filter((p) => p.researchIndex === this.loadedProject["researchIndex"])))
+      console.log("RELOAD PROJECT DONE");
     },
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });
