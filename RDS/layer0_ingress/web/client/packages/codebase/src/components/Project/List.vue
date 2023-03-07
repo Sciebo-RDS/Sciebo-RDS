@@ -223,6 +223,7 @@ export default {
     loadProject(p) {
       this.e1 = 1
       this.loadedProject = JSON.parse(JSON.stringify(p));
+      this.$root.$emit("projectReloaded", {filePath: this.loadedFilePath, metadataProfile: this.metadataProfile});
     },
     reloadProject(){
       this.loadedProject = JSON.parse(JSON.stringify(...this.allProjects.filter((p) => p.researchIndex === this.loadedProject["researchIndex"])))
