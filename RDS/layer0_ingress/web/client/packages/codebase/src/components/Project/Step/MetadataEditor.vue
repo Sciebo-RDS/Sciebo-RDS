@@ -67,7 +67,9 @@ export default {
       }
     },
     loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
-      this.initDescribo(this.loadedFilePath, this.metadataProfile);
+      if (!!newLoadedPortOut) {
+        this.initDescribo(this.loadedFilePath, this.metadataProfile);
+      }
     },
   },
   methods: {
