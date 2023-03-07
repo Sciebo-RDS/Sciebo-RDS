@@ -60,6 +60,19 @@ export default {
       return `${this.$config.describo}?${query}`;
     },
   },
+  watch: {
+    loadedFilePath(newLoadedFilePath, oldLoadedFilePath){
+      if (!!newLoadedFilePath){
+        this.initDescribo(this.loadedFilePath, this.metadataProfile);
+      }
+    },
+    loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
+      this.initDescribo(this.loadedFilePath, this.metadataProfile);
+    },
+    metadataProfile(newMetadataProfile, oldMetadataProfile) {
+      this.initDescribo(this.loadedFilePath, this.metadataProfile);
+    },
+  },
   methods: {
     loaded() {
       this.loading = false;
@@ -114,6 +127,10 @@ export default {
       }
     },
     initDescribo(filePath, metadataProfile) {
+      if (filePath == null || filePath === "") {
+        return;
+      }
+
       this.$socket.client.emit(
         "requestSessionId",
         { folder: filePath, metadataProfile },
@@ -152,9 +169,7 @@ export default {
     this.dataAvailable = false;
 
     this.$root.$on("projectReloaded", (args) => {
-      if (args.filePath !== "") {
-        this.initDescribo(args.filePath, args.metadataProfile);
-      }
+      this.initDescribo(args.filePath, args.metadataProfile);
     });
   },
   created() {
