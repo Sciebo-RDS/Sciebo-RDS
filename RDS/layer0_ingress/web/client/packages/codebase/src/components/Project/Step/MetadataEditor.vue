@@ -152,6 +152,7 @@ export default {
     this.dataAvailable = false;
 
     this.$root.$on("projectReloaded", (args) => {
+      console.log("RELOAD PROJECT: path=" + args.filePath + " -- metadata=" + args.metadataProfile);
       if (args.filePath !== "") {
         this.initDescribo(args.filePath, args.metadataProfile);
       }
