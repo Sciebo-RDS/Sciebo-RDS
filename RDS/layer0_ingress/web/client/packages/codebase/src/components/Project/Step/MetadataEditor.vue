@@ -133,7 +133,7 @@ export default {
 
       this.$socket.client.emit(
         "requestSessionId",
-        { folder: filePath, metadataProfile },
+        { folder: filePath, metadataProfile: metadataProfile },
         (sessionId) => {
           this.dataAvailable = true;
           this.sessionId = sessionId;
