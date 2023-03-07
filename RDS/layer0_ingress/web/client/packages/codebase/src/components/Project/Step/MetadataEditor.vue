@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-container flex v-if="loadingStep < 2">
+    <v-container flex v-if="loading">
       <v-row>
         <v-col>
           <v-progress-circular indeterminate color="primary" />
@@ -14,8 +14,8 @@
     </v-container>
     <div style="height: calc(100vh - 13em);">
     <iframe
-      v-if="loadingStep >= 1"
-      v-show="loadingStep >= 2"
+      v-if="dataAvailable"
+      v-show="!loading"
       id="describoWindow"
       ref="describoWindow"
       :src="iframeSource"
@@ -34,9 +34,9 @@ import { mapGetters } from "vuex";
 export default {
   props: ["project"],
   data: () => ({
+    dataAvailable: false,
     loading: true,
     loadingText: "",
-    loadingStep: 0,
     sessionId: undefined,
   }),
   computed: {
@@ -53,7 +53,6 @@ export default {
       return window.parent;
     },
     iframeSource() {
-      console.log("METADATA: " + String(this.metadataProfile));
       const query = queryString.stringify({
         embed: 1,
         sid: this.sessionId,
@@ -77,7 +76,6 @@ export default {
   methods: {
     loaded() {
       this.loading = false;
-      this.loadingStep = 2;
     },
     eventloop(event) {
       if (event.data.length > 0) {
@@ -129,12 +127,10 @@ export default {
       }
     },
     getDescriboSession() {
-      this.loadingStep = 0;
       this.$socket.client.emit(
         "requestSessionId",
         { folder: this.loadedFilePath, metadataProfile: this.metadataProfile },
         (sessionId) => {
-          this.loadingStep = 1;
           this.sessionId = sessionId;
         }
       );
@@ -165,9 +161,11 @@ export default {
     }
   },
   beforeMount() {
+    this.dataAvailable = false;
+
     this.$root.$on("sendChanges", () => {
-      console.log("I GOT CHANGES!");
-      //this.getDescriboSession();
+      this.dataAvailable = true;
+      this.getDescriboSession();
     });
   },
   mounted() {
