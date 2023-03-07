@@ -166,7 +166,8 @@ export default {
   },
   beforeMount() {
     this.$root.$on("sendChanges", () => {
-      this.getDescriboSession();
+      console.log("I GOT CHANGES!");
+      //this.getDescriboSession();
     });
   },
   mounted() {
