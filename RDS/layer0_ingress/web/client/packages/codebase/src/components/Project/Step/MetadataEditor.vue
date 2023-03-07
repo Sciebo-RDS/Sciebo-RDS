@@ -128,6 +128,11 @@ export default {
     initDescribo(filePath, metadataProfile) {
       this.dataAvailable = false;
 
+      if (filePath == null || filePath === "") {
+        // That's no valid stuff...
+        return;
+      }
+
       this.$socket.client.emit(
         "requestSessionId",
         { folder: filePath, metadataProfile: metadataProfile },
