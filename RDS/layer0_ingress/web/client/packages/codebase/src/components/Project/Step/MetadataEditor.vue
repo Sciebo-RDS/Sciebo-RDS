@@ -152,9 +152,9 @@ export default {
     this.dataAvailable = false;
 
     this.$root.$on("projectReloaded", (args) => {
-      console.log("INIT DESCRIBO: path=" + args.filePath + " -- metadata=" + args.metadataProfile);
-      this.initDescribo(args.filePath, args.metadataProfile);
-      console.log("INIT DESCRIBO DONE");
+      if (args.filePath !== "") {
+        this.initDescribo(args.filePath, args.metadataProfile);
+      }
     });
   },
   created() {
