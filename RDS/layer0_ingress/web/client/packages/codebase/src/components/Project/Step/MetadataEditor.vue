@@ -114,7 +114,7 @@ export default {
       }
     },
     initDescribo() {
-      console.log("INIT DESCRIBO: path=" + this.loadedFilePath + "; metadata=" + this.metadataProfile);
+      //console.log("INIT DESCRIBO: path=" + this.loadedFilePath + "; metadata=" + this.metadataProfile);
       this.$socket.client.emit(
         "requestSessionId",
         { folder: this.loadedFilePath, metadataProfile: this.metadataProfile },

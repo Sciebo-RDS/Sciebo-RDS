@@ -166,6 +166,8 @@ export default {
       showAllProjects: "showAllProjects",
       loadedProject: "getLoadedProject",
       loadedResearchId: "getLoadedResearchId",
+      loadedFilePath: "getLoadedFilePath",
+      metadataProfile: "getLoadedMetadataProfile",
     }),
     ...mapState({
       userservicelist: (state) => state.RDSStore.userservicelist,
@@ -225,7 +227,7 @@ export default {
     reloadProject(){
       console.log("RELOAD PROJECT");
       this.loadedProject = JSON.parse(JSON.stringify(...this.allProjects.filter((p) => p.researchIndex === this.loadedProject["researchIndex"])))
-      console.log("RELOAD PROJECT DONE");
+      console.log("RELOAD PROJECT DONE: path=" + this.loadedFilePath + " -- metadata=" + this.metadataProfile);
     },
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });
