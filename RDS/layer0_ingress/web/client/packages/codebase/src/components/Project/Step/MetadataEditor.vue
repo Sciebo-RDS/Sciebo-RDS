@@ -69,9 +69,6 @@ export default {
     loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
       this.initDescribo(this.loadedFilePath, this.metadataProfile);
     },
-    metadataProfile(newMetadataProfile, oldMetadataProfile) {
-      this.initDescribo(this.loadedFilePath, this.metadataProfile);
-    },
   },
   methods: {
     loaded() {
@@ -127,9 +124,7 @@ export default {
       }
     },
     initDescribo(filePath, metadataProfile) {
-      if (filePath == null || filePath === "") {
-        return;
-      }
+      this.dataAvailable = false;
 
       this.$socket.client.emit(
         "requestSessionId",
@@ -166,8 +161,6 @@ export default {
     }
   },
   beforeMount() {
-    this.dataAvailable = false;
-
     this.$root.$on("projectReloaded", (args) => {
       this.initDescribo(args.filePath, args.metadataProfile);
     });
