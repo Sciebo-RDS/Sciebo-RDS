@@ -60,19 +60,6 @@ export default {
       return `${this.$config.describo}?${query}`;
     },
   },
-  watch: {
-    loadedFilePath(newLoadedFilePath, oldLoadedFilePath){
-      if (!!newLoadedFilePath){
-        //this.getDescriboSession();
-      }
-    },
-    loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
-      //this.getDescriboSession();
-    },
-    metadataProfile(newMetadataProfile, oldMetadataProfile) {
-      //this.getDescriboSession();
-    },
-  },
   methods: {
     loaded() {
       this.loading = false;
@@ -126,7 +113,7 @@ export default {
         }
       }
     },
-    getDescriboSession() {
+    initDescribo() {
       console.log("INIT DESCRIBO: path=" + this.loadedFilePath + "; metadata=" + this.metadataProfile);
       this.$socket.client.emit(
         "requestSessionId",
@@ -166,11 +153,8 @@ export default {
     this.dataAvailable = false;
 
     this.$root.$on("sendChanges", () => {
-      this.getDescriboSession();
+      this.initDescribo();
     });
-  },
-  mounted() {
-    // this.getDescriboSession();
   },
   created() {
     window.addEventListener("message", this.eventloop);
