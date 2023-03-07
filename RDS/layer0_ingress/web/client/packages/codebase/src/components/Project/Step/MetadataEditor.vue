@@ -113,11 +113,10 @@ export default {
         }
       }
     },
-    initDescribo() {
-      //console.log("INIT DESCRIBO: path=" + this.loadedFilePath + "; metadata=" + this.metadataProfile);
+    initDescribo(filePath, metadataProfile) {
       this.$socket.client.emit(
         "requestSessionId",
-        { folder: this.loadedFilePath, metadataProfile: this.metadataProfile },
+        { folder: filePath, metadataProfile },
         (sessionId) => {
           this.dataAvailable = true;
           this.sessionId = sessionId;
@@ -152,9 +151,9 @@ export default {
   beforeMount() {
     this.dataAvailable = false;
 
-    this.$root.$on("sendChanges", () => {
-      console.log("INIT DESCRIBO");
-      this.initDescribo();
+    this.$root.$on("projectReloaded", (args) => {
+      console.log("INIT DESCRIBO: path=" + args.filePath + " -- metadata=" + args.metadataProfile);
+      this.initDescribo(args.filePath, args.metadataProfile);
       console.log("INIT DESCRIBO DONE");
     });
   },

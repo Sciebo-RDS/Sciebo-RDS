@@ -225,9 +225,8 @@ export default {
       this.loadedProject = JSON.parse(JSON.stringify(p));
     },
     reloadProject(){
-      console.log("RELOAD PROJECT");
       this.loadedProject = JSON.parse(JSON.stringify(...this.allProjects.filter((p) => p.researchIndex === this.loadedProject["researchIndex"])))
-      console.log("RELOAD PROJECT DONE: path=" + this.loadedFilePath + " -- metadata=" + this.metadataProfile);
+      this.$root.$emit("projectReloaded", {filePath: this.loadedFilePath, metadataProfile: this.metadataProfile});
     },
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });

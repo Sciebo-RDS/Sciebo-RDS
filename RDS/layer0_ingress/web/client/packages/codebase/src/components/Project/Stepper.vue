@@ -232,8 +232,6 @@ export default {
         });
       }
       await this.$store.dispatch("changePorts", this.portChanges);
-      await this.$emit("reloadProject");
-      await this.$root.$emit("sendChanges");
     },
     archiveProject(rId) {
       this.$store.commit('setLoadedProject', null)
