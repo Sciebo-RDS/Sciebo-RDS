@@ -1,0 +1,96 @@
+global:
+  image:
+    tag: v0.2.2
+  namespace:
+    name: rds
+  describo:
+    domain: test-describo.localdomain.test
+  rds:
+    domain: test-rds.localdomain.test
+  # Domains you want to use as input,
+  # this enables to use multiple owncloud instances with a single sciebo RDS
+  domains:
+    # - name: test-nextcloud.localdomain.test # name needs to be exact the same as the second part after last @ in the cloudId
+    #   # When deploying The EFSS locally in the k8s environment, we need to acces it both from within
+    #   # the environment, from other pods, and from the outside, thus Address and INTERNAL_ADDRESS
+    #   INTERNAL_ADDRESS: http://nextcloud:8080
+    #   ADDRESS: https://test-nextcloud.localdomain.test
+    #   OAUTH_CLIENT_ID: hpTt4sfyyVvFxJD5tW0080f9w8kNuebx0iAHIl4qCqbOtDB6XjZrFe3dwsjk56Dn
+    #   OAUTH_CLIENT_SECRET: swx8nRRTSGUN3B9cB56HNF1hNU8hH82uXvd8ysOU55GM0x42mi0z82Y5V48D2kGl
+    #   SUPPORT_EMAIL: mail@localdomain.test
+    #   MANUAL_URL: usermanual.localdomain.test
+    # - name: test-edusign.localdomain.test # name needs to be exact the same as the second part after last @ in the cloudId
+    #   INTERNAL_ADDRESS: http://owncloud:8080
+    #   ADDRESS: https://test-owncloud.localdomain.test
+    #   OAUTH_CLIENT_ID: 4CTYwHDH5asJs7BskTSUT2mDbMt2lcR0GqLHnjSEY7i6GHhbk1aYDViQ8lAOHeQM
+    #   OAUTH_CLIENT_SECRET: OCPmgNGUILcpxr4qkqbpNz585QeVgF4QxaD1uLvWGgNvW4xnLEDtHEcv0i7DdCn1
+    #   SUPPORT_EMAIL: mail@localdomain.test
+    #   MANUAL_URL: usermanual.localdomain.test
+loglevel: DEBUG
+# If you set this to "False", SSL will not be verified in all https requests. Default: "True"
+verify_ssl: False
+layer0-describo:
+  enabled: true
+  environment:
+    ADMIN_PASSWORD: your-admin-password
+    LOG_LEVEL: "debug"
+  postgresql:
+    # starts its own postgresql database.
+    postgresqlDatabase: describo
+    postgresqlUsername: admin
+    postgresqlPassword: admin
+  domain: test-describo.localdomain.test
+layer0-helper-describo-token-updater:
+  enabled: true
+  environment:
+    DESCRIBO_API_ENDPOINT: http://layer0-describo/api/session/application
+layer0-web:
+  enabled: true
+  environment:
+    # the password, which will be used to encrypt all user data
+    SECRET_KEY: 1234
+    EMBED_MODE: true
+layer1-port-owncloud:
+  # ownCloud will be configured through global.domains, because this way you need to configure it only once
+  enabled: true
+layer1-port-zenodo:
+  enabled: true
+  environment:
+    # needs to be adjusted to correct values
+    ADDRESS: https://sandbox.zenodo.org
+    OAUTH_CLIENT_ID: Bl6JYLJ08C8TF7ISObcf6122XztSuutmqLz5dYIw
+    OAUTH_CLIENT_SECRET: JKTjeoWbdMbYfiNS8yBJEG5422otVvLTY8P22UHOGb74MWreQgQBlokqf1Wq
+layer1-port-openscienceframework:
+  enabled: true
+  environment:
+    ADDRESS: https://accounts.test.osf.io
+    API_ADDRESS: https://api.test.osf.io/v2
+    # needs to be adjusted to correct values
+    OAUTH_CLIENT_ID: e4e77fab2a4f4acd941795370c6c5553
+    OAUTH_CLIENT_SECRET: UNiavv9Uub3uvM69LLZda1C6miBYyn5NGK6OGGYO
+layer2-port-service:
+  # fullnameOverride: layer2-port-service-test-rds-ed-integrations-com
+  environment:
+    TOKENSERVICE_STATE_SECRET: ABC
+    IGNORE_PROJECTS: True # this ignores the pull algo for external projects
+layer3-research-manager: {}
+layer3-token-storage: {}
+feature:
+  jaeger: false
+  nextcloud: true
+
+nextcloud:
+  fullnameOverride: nextcloud
+  ingress:
+    enabled: true
+  nextcloud:
+    host: test-nextcloud.localdomain.test
+    username: admin
+    password: password
+    extraEnv:
+      - name: OVERWRITEHOST
+        value: test-nextcloud.localdomain.test
+      - name: OVERWRITEPROTOCOL
+        value: https
+      - name: NEXTCLOUD_TRUSTED_DOMAINS
+        value: "test-nextcloud.localdomain.test nextcloud"
