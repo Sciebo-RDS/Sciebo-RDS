@@ -87,7 +87,7 @@ class User(UserMixin):
             headers = {"Authorization": f"Bearer {token}"}
 
             for key, domain in domains_dict.items():
-                url = domain["ADDRESS"] or os.getenv(
+                url = domain.get("INTERNAL_ADDRESS", domain["ADDRESS"]) or os.getenv(
                     "OWNCLOUD_URL", "https://localhost/index.php"
                 )
 
