@@ -6,9 +6,10 @@ from RDS import Util
 import os
 
 owncloud_installation_url = os.getenv("OWNCLOUD_INSTALLATION_URL", "")
+owncloud_internal_installation_url = os.getenv("OWNCLOUD_INTERNAL_INSTALLATION_URL", "")
 owncloud_redirect_uri = os.getenv("RDS_OAUTH_REDIRECT_URI", "")
 owncloud_oauth_token_url = "{}/index.php/apps/oauth2/api/v1/token".format(
-    owncloud_installation_url
+    owncloud_internal_installation_url
 )
 owncloud_oauth_id = os.getenv("OWNCLOUD_OAUTH_CLIENT_ID", "XY")
 owncloud_oauth_secret = os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET", "ABC")
