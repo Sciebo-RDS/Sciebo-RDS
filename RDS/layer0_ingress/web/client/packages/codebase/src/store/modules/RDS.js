@@ -148,40 +148,37 @@ export default {
       });
     },
     SOCKET_UserServiceList(context, state) {
-      let servicelist = [];
       try {
-        servicelist = JSON.parse(state).list.map((el) => el.informations);
+        let servicelist = JSON.parse(state).list.map((el) => el.informations);
+        context.commit("setUserServiceList", {
+          servicelist,
+        });
       } catch (error) {
         console.log("UserServiceList is invalid: ", error, "state: ", state);
       }
-      context.commit("setUserServiceList", {
-        servicelist,
-      });
     },
     SOCKET_ServiceList(context, state) {
-      let servicelist = [];
       try {
-        servicelist = JSON.parse(state).map((el) => {
+        let servicelist = JSON.parse(state).map((el) => {
           el.informations.state = el.jwt;
           return el.informations;
+        });
+        context.commit("setServiceList", {
+          servicelist,
         });
       } catch (error) {
         console.log("ServiceList is invalid: ", error, "state: ", state);
       }
-      context.commit("setServiceList", {
-        servicelist,
-      });
     },
     SOCKET_ProjectList(context, state) {
-      let projectlist = [];
       try {
-        projectlist = JSON.parse(state);
+        let projectlist = JSON.parse(state);
+        context.commit("setProjectList", {
+          projectlist,
+        });
       } catch (error) {
         console.log("ProjectList is invalid: ", error, "state: ", state);
       }
-      context.commit("setProjectList", {
-        projectlist,
-      });
     },
     SOCKET_SessionId(context, state) {
       context.commit("setSessionId", {
