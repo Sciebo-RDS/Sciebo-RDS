@@ -451,12 +451,9 @@ class Storage:
             for index, crnt in enumerate(self._storage[user.username]["tokens"]):
                 if token.servicename == crnt.servicename:
                     logger.debug("found")
-                    if index == 0:
-                        del self._storage[user.username]
-                    else:
-                        data = self._storage[user.username]
-                        del data["tokens"][index]
-                        self._storage[user.username] = data
+                    data = self._storage[user.username]
+                    del data["tokens"][index]
+                    self._storage[user.username] = data
                     break
         except ValueError:
             from .Exceptions.StorageException import TokenNotExistsError
