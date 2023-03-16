@@ -38,6 +38,10 @@ export default {
     loading: true,
     loadingText: "",
     sessionId: undefined,
+    describoInitData: {
+      filePath: "",
+      metadataProfile: "",
+    },
   }),
   computed: {
     ...mapGetters({
@@ -126,15 +130,19 @@ export default {
       }
     },
     initDescribo(filePath, metadataProfile) {
-      // TODO:
-      console.log("INIT DESCRIBO: path=" + filePath + " metadataLength=" + (metadataProfile ? metadataProfile.length : "NULL"));
-
       this.dataAvailable = false;
 
       if (filePath == null || filePath === "") {
-        // That's no valid stuff...
+        // No valid file path -> No valid initialization
         return;
       }
+      if (filePath === this.describoInitData.filePath && metadataProfile === this.describoInitData.metadataProfile) {
+        // Don't initialize Describo with the same data twice
+        return;
+      }
+
+      this.describoInitData.filePath = filePath;
+      this.describoInitData.metadataProfile = metadataProfile;
 
       this.$socket.client.emit(
           "requestSessionId",

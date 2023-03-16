@@ -233,8 +233,9 @@ export default {
         });
       }
       await this.$store.dispatch("changePorts", this.portChanges);
-      // TODO:
-      console.log("GOING TO METADATA");
+      this.emitProjectReloaded();
+    },
+    emitProjectReloaded() {
       this.$root.$emit("projectReloaded", {filePath: this.loadedFilePath, metadataProfile: this.loadedMetadataProfile});
     },
     archiveProject(rId) {

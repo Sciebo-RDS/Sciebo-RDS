@@ -223,11 +223,11 @@ export default {
     loadProject(p) {
       this.e1 = 1
       this.loadedProject = JSON.parse(JSON.stringify(p));
-      this.$root.$emit("projectReloaded", {filePath: this.loadedFilePath, metadataProfile: this.metadataProfile});
+      this.emitProjectReloaded();
     },
     reloadProject(){
       this.loadedProject = JSON.parse(JSON.stringify(...this.allProjects.filter((p) => p.researchIndex === this.loadedProject["researchIndex"])))
-      this.$root.$emit("projectReloaded", {filePath: this.loadedFilePath, metadataProfile: this.metadataProfile});
+      this.emitProjectReloaded();
     },
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });
@@ -235,6 +235,9 @@ export default {
     addProject() {
       this.$store.dispatch("createProject");
     },
+    emitProjectReloaded() {
+      this.$root.$emit("projectReloaded", {filePath: this.loadedFilePath, metadataProfile: this.metadataProfile});
+    }
   },
   created() {
     this.unwatch = this.$store.watch(
