@@ -3,7 +3,7 @@
     <v-container flex v-if="loading">
       <v-row>
         <v-col>
-          <v-progress-circular indeterminate color="primary" />
+          <v-progress-circular indeterminate color="primary"/>
         </v-col>
       </v-row>
       <v-row>
@@ -13,23 +13,23 @@
       </v-row>
     </v-container>
     <div style="height: calc(100vh - 13em);">
-    <iframe
-      v-if="dataAvailable"
-      v-show="!loading"
-      id="describoWindow"
-      ref="describoWindow"
-      :src="iframeSource"
-      width="100%"
-      style="border: 0px; left: 0px; height: 100%"
-      @load="loaded()"
-    ></iframe>
+      <iframe
+          v-if="dataAvailable"
+          v-show="!loading"
+          id="describoWindow"
+          ref="describoWindow"
+          :src="iframeSource"
+          width="100%"
+          style="border: 0px; left: 0px; height: 100%"
+          @load="loaded()"
+      ></iframe>
     </div>
   </div>
 </template>
 
 <script>
 import queryString from "querystring";
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   props: ["project"],
@@ -61,8 +61,8 @@ export default {
     },
   },
   watch: {
-    loadedFilePath(newLoadedFilePath, oldLoadedFilePath){
-      if (!!newLoadedFilePath){
+    loadedFilePath(newLoadedFilePath, oldLoadedFilePath) {
+      if (!!newLoadedFilePath) {
         this.initDescribo(this.loadedFilePath, this.metadataProfile);
       }
     },
@@ -83,44 +83,44 @@ export default {
           case "init":
           case "load":
             this.parent.postMessage(
-              JSON.stringify({
-                event: "load",
-                data: {
-                  projectId: this.project.projectId,
-                  filePath: this.loadedFilePath,
-                },
-              }),
-              "*"
+                JSON.stringify({
+                  event: "load",
+                  data: {
+                    projectId: this.project.projectId,
+                    filePath: this.loadedFilePath,
+                  },
+                }),
+                "*"
             );
             break;
           case "save":
           case "autosave":
             this.parent.postMessage(
-              JSON.stringify({
-                event: "save",
-                data: {
-                  projectId: this.project.projectId,
-                  filePath: this.loadedFilePath,
-                  fileData: this.fileData,
-                },
-              }),
-              "*"
+                JSON.stringify({
+                  event: "save",
+                  data: {
+                    projectId: this.project.projectId,
+                    filePath: this.loadedFilePath,
+                    fileData: this.fileData,
+                  },
+                }),
+                "*"
             );
             break;
           case "loaded":
             this.editor.postMessage(
-              JSON.stringify({
-                event: "loaded",
-                data: payload.data,
-              })
+                JSON.stringify({
+                  event: "loaded",
+                  data: payload.data,
+                })
             );
             break;
           case "filesList":
             this.editor.postMessage(
-              JSON.stringify({
-                event: "filesList",
-                data: payload.data,
-              })
+                JSON.stringify({
+                  event: "filesList",
+                  data: payload.data,
+                })
             );
         }
       }
@@ -136,13 +136,12 @@ export default {
       }
 
       this.$socket.client.emit(
-        "requestSessionId",
-        { folder: filePath, metadataProfile: metadataProfile },
-        (sessionId) => {
-          console.log("GOT SESSION ID");
-          this.dataAvailable = true;
-          this.sessionId = sessionId;
-        }
+          "requestSessionId",
+          {folder: filePath, metadataProfile: metadataProfile},
+          (sessionId) => {
+            this.dataAvailable = true;
+            this.sessionId = sessionId;
+          }
       );
 
       this.standardLoadingText = this.$gettext("Editor loading");
@@ -150,13 +149,11 @@ export default {
       let counter = 0;
       let loader = setInterval(() => {
         if (!this.loading) {
-          console.log("DONE LOADING");
           this.loadingText = "Done loading";
           clearInterval(loader);
         }
 
         if (counter > 30) {
-          console.log("ERROR LOADING");
           this.loadingText = this.$gettext(
               "Error while loading. Please contact an administator."
           );
@@ -173,14 +170,15 @@ export default {
     }
   },
   beforeMount() {
-    console.log("BEFORE MOUNT");
+    /*this.$root.$on("projectReloaded", (args) => {
+      this.initDescribo(args.filePath, args.metadataProfile);
+    });*/
+  },
+  created() {
+    window.addEventListener("message", this.eventloop);
     this.$root.$on("projectReloaded", (args) => {
       this.initDescribo(args.filePath, args.metadataProfile);
     });
-  },
-  created() {
-    console.log("CREATED");
-    window.addEventListener("message", this.eventloop);
   },
   beforeDestroy() {
     window.removeEventListener("message", this.eventloop);
