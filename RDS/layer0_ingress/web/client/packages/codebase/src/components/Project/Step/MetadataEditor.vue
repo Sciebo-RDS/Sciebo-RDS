@@ -38,10 +38,6 @@ export default {
     loading: true,
     loadingText: "",
     sessionId: undefined,
-    describoInitData: {
-      filePath: "",
-      metadataProfile: "",
-    },
   }),
   computed: {
     ...mapGetters({
@@ -136,9 +132,6 @@ export default {
         // No valid file path -> No valid initialization
         return;
       }
-
-      this.describoInitData.filePath = filePath;
-      this.describoInitData.metadataProfile = metadataProfile;
 
       this.$socket.client.emit(
           "requestSessionId",
