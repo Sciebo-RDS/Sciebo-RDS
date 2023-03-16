@@ -63,11 +63,13 @@ export default {
   watch: {
     loadedFilePath(newLoadedFilePath, oldLoadedFilePath){
       if (!!newLoadedFilePath){
+        console.log("NEW FILE PATH");
         this.initDescribo(this.loadedFilePath, this.metadataProfile);
       }
     },
     loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
       if (!!newLoadedPortOut) {
+        console.log("NEW OUT PORT");
         this.initDescribo(this.loadedFilePath, this.metadataProfile);
       }
     },
@@ -126,6 +128,8 @@ export default {
       }
     },
     initDescribo(filePath, metadataProfile) {
+      console.log("INIT DESCRIBO: path=" + filePath + " metadataLength=" + (metadataProfile ? metadataProfile.length : "NULL"));
+
       this.dataAvailable = false;
 
       if (filePath == null || filePath === "") {
@@ -137,6 +141,7 @@ export default {
         "requestSessionId",
         { folder: filePath, metadataProfile: metadataProfile },
         (sessionId) => {
+          console.log("GOT SESSION ID");
           this.dataAvailable = true;
           this.sessionId = sessionId;
         }
@@ -147,11 +152,13 @@ export default {
       let counter = 0;
       let loader = setInterval(() => {
         if (!this.loading) {
+          console.log("DONE LOADING");
           this.loadingText = "Done loading";
           clearInterval(loader);
         }
 
         if (counter > 30) {
+          console.log("ERROR LOADING");
           this.loadingText = this.$gettext(
               "Error while loading. Please contact an administator."
           );
