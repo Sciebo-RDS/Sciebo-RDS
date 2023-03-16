@@ -63,13 +63,11 @@ export default {
   watch: {
     loadedFilePath(newLoadedFilePath, oldLoadedFilePath){
       if (!!newLoadedFilePath){
-        console.log("NEW FILE PATH");
         this.initDescribo(this.loadedFilePath, this.metadataProfile);
       }
     },
     loadedPortOut(newLoadedPortOut, oldLoadedPortOut) {
       if (!!newLoadedPortOut) {
-        console.log("NEW OUT PORT");
         this.initDescribo(this.loadedFilePath, this.metadataProfile);
       }
     },
@@ -175,11 +173,13 @@ export default {
     }
   },
   beforeMount() {
+    console.log("BEFORE MOUNT");
     this.$root.$on("projectReloaded", (args) => {
       this.initDescribo(args.filePath, args.metadataProfile);
     });
   },
   created() {
+    console.log("CREATED");
     window.addEventListener("message", this.eventloop);
   },
   beforeDestroy() {
