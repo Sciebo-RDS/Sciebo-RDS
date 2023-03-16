@@ -225,17 +225,17 @@ export default {
         }
       }
     },
-    sendChanges() {
+    async sendChanges() {
       if (!!this.loadedResearchName && this.originalResearchName !== this.loadedResearchName) {
         this.$store.dispatch("changeResearchname", {
           researchIndex: this.loadedProject["researchIndex"],
           researchname: this.loadedResearchName,
         });
       }
-      this.$store.dispatch("changePorts", this.portChanges);
+      await this.$store.dispatch("changePorts", this.portChanges);
       // TODO:
       console.log("GOING TO METADATA");
-      this.$root.$emit("projectReloaded", this.loadedFilePath, this.loadedMetadataProfile);
+      this.$root.$emit("projectReloaded", {filePath: this.loadedFilePath, metadataProfile: this.loadedMetadataProfile});
     },
     archiveProject(rId) {
       this.$store.commit('setLoadedProject', null)

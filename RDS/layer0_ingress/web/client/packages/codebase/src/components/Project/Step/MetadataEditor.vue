@@ -171,22 +171,12 @@ export default {
     }
   },
   beforeMount() {
-    console.log("BEFORE MOUNT");
-  },
-  mounted() {
-    console.log("MOUNTED");
-    // TODO:
-    /*this.$root.$on("projectReloaded", (args) => {
-      this.initDescribo(args.filePath, args.metadataProfile);
-    });*/
-  },
-  created() {
-    window.addEventListener("message", this.eventloop);
-    // TODO:
-    console.log("CREATED");
     this.$root.$on("projectReloaded", (args) => {
       this.initDescribo(args.filePath, args.metadataProfile);
     });
+  },
+  created() {
+    window.addEventListener("message", this.eventloop);
   },
   beforeDestroy() {
     window.removeEventListener("message", this.eventloop);
