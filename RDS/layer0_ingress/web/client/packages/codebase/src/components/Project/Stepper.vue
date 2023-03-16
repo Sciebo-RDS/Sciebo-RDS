@@ -161,6 +161,7 @@ export default {
       loadedProject: "getLoadedProject",
       loadedFilePath: "getLoadedFilePath",
       loadedResearchIndex: "getLoadedResearchIndex",
+      loadedMetadataProfile: "getLoadedMetadataProfile",
       originalResearchName: "getOriginalResearchNameForLoadedProject",
       originalFilePath: "getOriginalFilePathForLoadedProject",
       originalPortInForLoadedProject: "getOriginalPortInForLoadedProject",
@@ -224,14 +225,17 @@ export default {
         }
       }
     },
-    async sendChanges() {
+    sendChanges() {
       if (!!this.loadedResearchName && this.originalResearchName !== this.loadedResearchName) {
         this.$store.dispatch("changeResearchname", {
           researchIndex: this.loadedProject["researchIndex"],
           researchname: this.loadedResearchName,
         });
       }
-      await this.$store.dispatch("changePorts", this.portChanges);
+      this.$store.dispatch("changePorts", this.portChanges);
+      // TODO:
+      console.log("GOING TO METADATA");
+      this.$root.$emit("projectReloaded", this.loadedFilePath, this.loadedMetadataProfile);
     },
     archiveProject(rId) {
       this.$store.commit('setLoadedProject', null)

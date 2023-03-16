@@ -126,6 +126,7 @@ export default {
       }
     },
     initDescribo(filePath, metadataProfile) {
+      // TODO:
       console.log("INIT DESCRIBO: path=" + filePath + " metadataLength=" + (metadataProfile ? metadataProfile.length : "NULL"));
 
       this.dataAvailable = false;
@@ -170,12 +171,19 @@ export default {
     }
   },
   beforeMount() {
+    console.log("BEFORE MOUNT");
+  },
+  mounted() {
+    console.log("MOUNTED");
+    // TODO:
     /*this.$root.$on("projectReloaded", (args) => {
       this.initDescribo(args.filePath, args.metadataProfile);
     });*/
   },
   created() {
     window.addEventListener("message", this.eventloop);
+    // TODO:
+    console.log("CREATED");
     this.$root.$on("projectReloaded", (args) => {
       this.initDescribo(args.filePath, args.metadataProfile);
     });
