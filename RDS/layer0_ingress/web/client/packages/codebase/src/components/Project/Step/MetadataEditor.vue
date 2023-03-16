@@ -136,10 +136,6 @@ export default {
         // No valid file path -> No valid initialization
         return;
       }
-      if (filePath === this.describoInitData.filePath && metadataProfile === this.describoInitData.metadataProfile) {
-        // Don't initialize Describo with the same data twice
-        return;
-      }
 
       this.describoInitData.filePath = filePath;
       this.describoInitData.metadataProfile = metadataProfile;
