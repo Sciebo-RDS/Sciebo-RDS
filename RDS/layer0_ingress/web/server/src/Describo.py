@@ -1,7 +1,7 @@
 import os
 import requests
 from flask import session
-from .app import app
+from .app import app, domains_dict
 import base64
 import json
 
@@ -14,13 +14,19 @@ def getSessionId(access_token=None, folder=None, metadataProfile=None):
 
     _, _, servername = informations["cloudID"].rpartition("@")
 
+    webdav_url = None
     if servername is not None:
-        servername = "https://{}/remote.php/dav".format(servername)
+        server_info = domains_dict.get(servername.replace('.', '-'))
+        if server_info is not None and 'INTERNAL_ADDRESS' in server_info:
+            webdav_url = server_info['INTERNAL_ADDRESS'] + '/remote.php/dav'
+
+        if webdav_url is None:
+            webdav_url = "https://{}/remote.php/dav".format(servername)
 
     data = {
         # needs to be UID, because webdav checks against UID
         "user_id": informations["UID"],
-        "url": servername or default,
+        "url": webdav_url or default,
     }
 
     if access_token is not None:
