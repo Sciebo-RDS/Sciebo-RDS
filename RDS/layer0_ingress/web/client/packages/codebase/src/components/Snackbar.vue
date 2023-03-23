@@ -1,9 +1,9 @@
 <template>
-  <v-snackbar v-model="snackbar" :multi-line="multiLine" :timeout="timeout">
+  <v-snackbar v-model="snackbar" variant="tonal" color="primary" :multi-line="multiLine" :timeout="timeout">
     {{ message }}
 
     <template v-slot:action="{ attrs }">
-      <v-btn color="red" text v-bind="attrs" @click="hide()">
+      <v-btn color="primary" text v-bind="attrs" @click="hide()">
         <translate>Close</translate>
       </v-btn>
     </template>
