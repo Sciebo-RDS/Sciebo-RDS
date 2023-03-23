@@ -13,14 +13,17 @@ import vuetify from './plugins/vuetify.js';
 const vuet = vuetify.vuetify
 
 function install(Vue) {
-    Vue.use(config)
-    Vue.use(Vuex)
-    Vue.use(store)
+    Vue.use(config);
+    Vue.use(Vuex);
+    Vue.use(store);
     axios.defaults.withCredentials = true;
-    Vue.use(VueAxios, axios)
-    Vue.use(vuetify)
-    Vue.use(customMethods)
-    Vue.use(integrations)
+    Vue.use(VueAxios, axios);
+    Vue.use(vuetify);
+    Vue.use(customMethods);
+    Vue.use(integrations);
+
+    // TODO: Debugging only
+    Vue.config.devtools = true;
 }
 
 export default {

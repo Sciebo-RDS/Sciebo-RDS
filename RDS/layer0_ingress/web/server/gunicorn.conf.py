@@ -6,7 +6,7 @@ workers = multiprocessing.cpu_count() * 2 + 1
 loglevel = "debug"
 capture_output = True
 worker_class = "eventlet"
-
+reload = True
 
 def when_ready(server):
     GunicornPrometheusMetrics.start_http_server_when_ready(9999)

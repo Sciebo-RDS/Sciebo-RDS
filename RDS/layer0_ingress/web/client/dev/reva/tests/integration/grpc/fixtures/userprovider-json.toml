@@ -1,8 +1,0 @@
-[grpc]
-address = "{{grpc_address}}"
-
-[grpc.services.userprovider]
-driver = "json"
-
-[grpc.services.userprovider.drivers.json]
-users = "fixtures/users.demo.json"

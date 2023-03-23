@@ -31,7 +31,7 @@
                         </v-row>
                     </v-list-item-title>
                     <v-list-item-subtitle class="py-2 pb-4 text-wrap">
-                        Give your project a name to distinguish it from other projects.
+                        Give your project a name to help yourself to distinguish it from other projects. This name is only used internally and will not be published.
                     </v-list-item-subtitle>
                         <v-text-field
                             outlined

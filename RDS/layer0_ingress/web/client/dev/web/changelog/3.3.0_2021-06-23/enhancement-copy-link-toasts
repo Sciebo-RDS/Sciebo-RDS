@@ -1,5 +1,0 @@
-Enhancement: Confirmation message when copying links
-
-We've added confirmation messages (toasts) when a private or public link is copied to the clipboard.
-
-https://github.com/owncloud/web/pull/5147

@@ -440,11 +440,11 @@ class RDSNamespace(Namespace):
         return {
             researchIndex: researchIndex,
             import: {
-                add: [{name: "port-owncloud", filepath:"/photosForschung/"}],
+                add: [{servicename: "port-owncloud", filepath:"/photosForschung/"}],
             },
             export: {
-                add: [{name: "port-zenodo"} ],
-                remove: ["port-reva", "port-osf"],
+                add: [{servicename: "port-zenodo"} ],
+                remove: [{servicename: "port-reva"}, {servicename: "port-osf"}],
                 change: [{name: "port-owncloud", filepath:"/photosForschung/"},
                     {name: "port-zenodo", projectId:"12345"}]
             }
@@ -545,7 +545,7 @@ class RDSNamespace(Namespace):
             )["data"]["access_token"]
             
             app.logger.debug("got token")
-            describoObj = getSessionId(token, jsonData.get("folder"))
+            describoObj = getSessionId(token, folder=jsonData.get("folder"), metadataProfile=jsonData.get("metadataProfile"))
             sessionId = describoObj["sessionId"]
 
             app.logger.debug(f"send sessionId: {sessionId}")

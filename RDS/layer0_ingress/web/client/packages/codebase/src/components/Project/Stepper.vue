@@ -2,7 +2,7 @@
   <div style="height: 100%">
     <v-stepper v-model="e1" alt-labels flat style="height: 100%">
       <!-- Stepper header -->
-      <v-stepper-header 
+      <v-stepper-header
       style="
       box-shadow: none !important;
       padding-bottom: 1px;
@@ -31,7 +31,7 @@
           <v-card
             flat
             class="overflow-y-auto"
-            style="max-height: calc(100vh - 12.9em)"
+            style="height: calc(100vh - 12.9em)"
           >
             <StepConfiguration
               :project="project"
@@ -83,7 +83,7 @@
             Delete
           </v-btn>
           <v-flex class="text-right">
-            
+
 
             <v-btn
             :disabled="!isConfigComplete"
@@ -160,6 +160,8 @@ export default {
       loadedResearchName: "getLoadedResearchName",
       loadedProject: "getLoadedProject",
       loadedFilePath: "getLoadedFilePath",
+      loadedResearchIndex: "getLoadedResearchIndex",
+      loadedMetadataProfile: "getLoadedMetadataProfile",
       originalResearchName: "getOriginalResearchNameForLoadedProject",
       originalFilePath: "getOriginalFilePathForLoadedProject",
       originalPortInForLoadedProject: "getOriginalPortInForLoadedProject",
@@ -180,7 +182,14 @@ export default {
     },
     portChanges() {
       let changes = this.computePortChanges()
-      return changes 
+      return changes
+    }
+  },
+  watch: {
+    loadedResearchIndex(newLoadedResearchIndex, oldLoadedResearchIndex) {
+        if (newLoadedResearchIndex !== oldLoadedResearchIndex) {
+            this.published = (this.loadedProject.status == '3');
+        }
     }
   },
   props: ["project", "e1"],
@@ -200,7 +209,7 @@ export default {
                 : []
               ,
           remove: [],
-          change: 
+          change:
                 (this.loadedProject["portIn"].length > 0 && this.loadedFilePath !== this.originalFilePath)
           ?
                   [{
@@ -211,7 +220,7 @@ export default {
         },
         export: {
           add: loadedPortOutNames.filter(p => !originalPortOutNames.includes(p)).map(function (x) { return {"servicename": x} }),
-          remove: originalPortOutNames.filter(p => !loadedPortOutNames.includes(p)),
+          remove: originalPortOutNames.filter(p => !loadedPortOutNames.includes(p)).map(function (x) { return {"servicename": x} }),
           change: []
         }
       }
@@ -223,8 +232,11 @@ export default {
           researchname: this.loadedResearchName,
         });
       }
-        await this.$store.dispatch("changePorts", this.portChanges);
-        //this.$emit("reloadProject");
+      await this.$store.dispatch("changePorts", this.portChanges);
+      this.emitProjectReloaded();
+    },
+    emitProjectReloaded() {
+      this.$root.$emit("projectReloaded", {filePath: this.loadedFilePath, metadataProfile: this.loadedMetadataProfile});
     },
     archiveProject(rId) {
       this.$store.commit('setLoadedProject', null)
@@ -253,7 +265,7 @@ export default {
             text = this.$gettext("Your project '" + this.project["researchname"] + "' was successfully published.");
             this.published = true;
           }
-          
+
           this.$root.$emit("showsnackbar", text);
           this.publishInProgress = false;
         }

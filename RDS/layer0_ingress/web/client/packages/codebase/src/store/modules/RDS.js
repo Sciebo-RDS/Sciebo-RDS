@@ -16,7 +16,7 @@ export default {
   getDefaultState,
   name: "RDSStore",
   state: getDefaultState(),
-  
+
   getters: {
     getUserServiceList: (state) => state.userservicelist,
     getServiceList: (state) => state.servicelist,
@@ -25,6 +25,7 @@ export default {
     getOwnCloudServername: (state) => state.ownCloudServerName,
     getLoadedProject: (state) => state.loadedProject,
     getLoadedResearchName: (state) => state.loadedProject["researchname"],
+    getLoadedResearchIndex: (state) => state.loadedProject["researchIndex"],
     getLoadedFilePath(state) {
       try {
       return state.loadedProject.portIn[0]["properties"]["customProperties"]["filepath"]}
@@ -32,10 +33,19 @@ export default {
         return null
       }
     },
+    getLoadedMetadataProfile(state) {
+      try{
+        let loadedService = state.userservicelist.filter((i) => i.servicename == state.loadedProject.portOut[0].port)[0]
+        return loadedService["metadataProfile"]
+      }
+      catch {
+        return null
+      }
+    },
     getOriginalFilePathForLoadedProject(state) {
-      let p =  state.projectlist.filter((i) => i.researchIndex == state.loadedProject.researchIndex)[0]
       try {
-      return p.portIn[0]["properties"]["customProperties"]["filepath"]}
+        let p =  state.projectlist.filter((i) => i.researchIndex == state.loadedProject.researchIndex)[0]
+        return p.portIn[0]["properties"]["customProperties"]["filepath"]}
       catch {
         return null
       }
@@ -99,10 +109,8 @@ export default {
       }
       // extend this in case of multiple inPorts.
       if (state.loadedProject.portIn.length == 0) {
-        console.log("state.loadedProject.portIn.length == 0")
         state.loadedProject.portIn.push({"properties": {"customProperties": {"filepath": payload}, "type" : ['fileStorage']}, "port": "port-owncloud-" + state.getOwnCloudServername})
       } else if (state.loadedProject.portIn.length == 1) {
-        console.log("state.loadedProject.portIn.length == 1")
         state.loadedProject.portIn[0].properties.customProperties["filepath"] = payload
       }
 
@@ -140,50 +148,45 @@ export default {
       });
     },
     SOCKET_UserServiceList(context, state) {
-      let servicelist = [];
       try {
-        servicelist = JSON.parse(state).list.map((el) => el.informations);
+        let servicelist = JSON.parse(state).list.map((el) => el.informations);
+        context.commit("setUserServiceList", {
+          servicelist,
+        });
       } catch (error) {
         console.log("UserServiceList is invalid: ", error, "state: ", state);
       }
-      context.commit("setUserServiceList", {
-        servicelist,
-      });
     },
     SOCKET_ServiceList(context, state) {
-      let servicelist = [];
       try {
-        servicelist = JSON.parse(state).map((el) => {
+        let servicelist = JSON.parse(state).map((el) => {
           el.informations.state = el.jwt;
           return el.informations;
+        });
+        context.commit("setServiceList", {
+          servicelist,
         });
       } catch (error) {
         console.log("ServiceList is invalid: ", error, "state: ", state);
       }
-      context.commit("setServiceList", {
-        servicelist,
-      });
     },
     SOCKET_ProjectList(context, state) {
-      let projectlist = [];
       try {
-        projectlist = JSON.parse(state);
+        let projectlist = JSON.parse(state);
+        context.commit("setProjectList", {
+          projectlist,
+        });
       } catch (error) {
         console.log("ProjectList is invalid: ", error, "state: ", state);
       }
-      context.commit("setProjectList", {
-        projectlist,
-      });
     },
     SOCKET_SessionId(context, state) {
-      console.log("got describo sessionId: ", state);
       context.commit("setSessionId", {
         sessionID: state,
       });
     },
     requestSessionId(context) {
       this._vm.$socket.client.emit("requestSessionId", (sessionId) => {
-        console.log("got describo sessionId: ", sessionId);
         context.commit("setSessionId", {
           sessionID: sessionId,
         });
@@ -211,17 +214,15 @@ export default {
       this._vm.$socket.client.emit("changePorts", JSON.stringify(data));
       this.dispatch("requestProjectList");
     },
-    async changeResearchname(context, data) {
+    changeResearchname(context, data) {
       this._vm.$socket.client.emit("changeResearchname", JSON.stringify(data));
       this.dispatch("requestProjectList");
     },
     triggerSynchronization(context, data, fn) {
-      console.log("trigger sync data: ", data);
       this._vm.$socket.client.emit(
         "triggerSynchronization",
         JSON.stringify(data),
         (response) => {
-          console.log("got response: ", response);
           fn(response);
         }
       );
@@ -247,7 +248,6 @@ export default {
           "exchangeCode",
           JSON.stringify(data),
           (response) => {
-            console.log("exchangeCode response", response);
           }
         );
       }
@@ -257,7 +257,6 @@ export default {
         "addCredentials",
         JSON.stringify(service),
         (response) => {
-          console.log("credentials response", response);
         }
       );
     },

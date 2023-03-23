@@ -35,21 +35,22 @@
                     Choose the repository you want to publish your data to.
                 </v-list-item-subtitle>
                 <v-list-item-subtitle v-else class="py-1 text-wrap">
-                    You have to <router-link to="services">connect a repository service</router-link> to continue.
+                    You need to <router-link to="services">connect a <strong>Data Repository</strong></router-link> to continue.
                 </v-list-item-subtitle>
                 <v-list-item-content>
-                    <v-row v-if="userServiceList.length > 1" class="ma-1">
+                    <v-row v-if="userServiceList.filter((i) => i['implements'].includes('metadata')).length > 0" class="ma-1">
                         <v-col
                             v-for="p in userServiceList.filter((i) => i['implements'].includes('metadata'))"
                             :key="p.client_id"
                             cols="3"
-                            class="col-lg-2"
+                            class="col-lg-2 mr-5 mb-5 rounded"
                             @click="selectPort(p)"
                             :style="isSelected(p) ? selectedStyle() : 'border: 1px solid transparent'"
                             align="center"
-                            style="display: grid; align-content: end; align: center">
+                            style="display: grid; align-content: end; align: center; max-width: 100%">
                             <v-img
                                 :src="p.icon"
+                                class="mb-2"
                                 :style="isSelected(p) ? '' : 'opacity: 0.3'"/>
                             <small style="vertical-align: bottom">
                                 {{ p['displayName'] }}
@@ -74,7 +75,6 @@ import { mapGetters } from "vuex";
 export default ({
     data() {
         return {
-            selectedPorts: [],
         }
 
     },
@@ -102,40 +102,26 @@ export default ({
             }
         },
     },
-    beforeMount() {
-        this.userPorts = this.selectedPorts = this.userServiceList.filter((port) => {
-                for (const p of this.loadedPortOut) {
-                    if (p.port === port.servicename)
-                    return true
-                }
-                return false
-            }
-        )
-    },
     methods: {
         isSelected(p) {
-            for (const s of this.loadedPortOut){
-                if (s.port === p.servicename)
-                    return true
-            }
-            return false
+            return this.loadedPortOut.filter(e => e.port === p.servicename).length > 0
         },
          selectPort(port) {
             if (this.isSelected(port)) {
-                return this.loadedPortOut = this.loadedPortOut.filter((p) => p.port !== port.servicename)
+                return this.loadedPortOut = []
             }
-            for (const oP of this.originalPortOut){
-                if (oP.port == port.servicename) {
-                    return this.loadedPortOut = this.originalPortOut.filter((p) => p.port === port.servicename)
+            return this.loadedPortOut = [
+                {
+                    "port": port.servicename,
+                    properties: {"type": ["metadata"]}
                 }
-            }
-            return this.loadedPortOut = [...this.loadedPortOut, ({"port": port.servicename, type: ["metadata"]})]
+                ]
          },
         selectedStyle() {
             if (this.$vuetify.theme.dark === true) {
-                return 'border: 1px solid #bada55; max-width: 100%'
+                return 'border: 1px solid #bada55;'
             }
-            return 'border: 1px solid black; max-width: 100%'
+            return 'border: 1px solid black;'
         }
 
     },

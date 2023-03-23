@@ -134,11 +134,10 @@ export default {
   },
   sockets: {
     connect: function() {
-      console.log("socket connected");
+      this.isConnected = true;
     },
     disconnect() {
       this.isConnected = false;
-      console.log("server disconnected");
     },
   },
   data() {

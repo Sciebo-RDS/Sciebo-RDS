@@ -19,7 +19,7 @@ python-jsonschema-objects = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
 connexion-plus = "*"
 apscheduler = "*"
-research-data-services-common = {extras = ["flask"], version = "==0.50"}
+research-data-services-common = {extras = ["flask"], version = "==0.53"}
 redis-pubsub-dict-wo-cluster = "*"
 redis = "==4.2.2"
 openapi-spec-validator = "<0.3"

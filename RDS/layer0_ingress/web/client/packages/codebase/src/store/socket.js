@@ -5,7 +5,6 @@ import config from "../config.js"
 
 export default {
     install: function (Vue) {
-        console.log(`connect socket to ${config.config.socket.server} ${config.config.socket.path}`)
         const ioInstance = io(config.config.socket.server, {
             path: config.config.socket.path,
             reconnection: true,

@@ -41,7 +41,7 @@
         </v-btn>
 
         <!-- FIXME: Hardcoded language -->
-        
+
         <!-- <div v-if="!languagePredefined">
           <v-subheader>{{ $gettext("Language") }}</v-subheader>
           <v-btn
@@ -136,7 +136,6 @@ export default {
   },
   computed: {
     availableLanguages: function() {
-      console.log(this.$vuetify.theme.themes);
       let res = [];
       for (const [key, value] of Object.entries(this.$language.available)) {
         res.push({ short: key, long: value });

@@ -3,24 +3,20 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Webpage Title -->
     <title>Welcome to sciebo RDS</title>
 
     <!-- Styles -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
     <link href="./../../css/bootstrap.css" rel="stylesheet">
-    <link href="./../../css/fontawesome-all.css" rel="stylesheet">
-    <link href="./../../css/swiper.css" rel="stylesheet">
-	<link href="./../../css/magnific-popup.css" rel="stylesheet">
+    <link href="./../../fontawesome-free-6.2.0-web/css/all.min.css" rel="stylesheet">
+    <!-- get rid of this? -->
 	<link href="./../../css/styles.css" rel="stylesheet">
 
-	<!-- Favicon  -->
-    <link rel="icon" href="./../../img/favicon.png">
 </head>
-<body data-spy="scroll" data-target=".fixed-top">
+
+<body data-spy="scroll" data-target=".fixed-top" style="margin-top: 1em;">
 
     <!-- Header -->
     <header id="header" class="header">
@@ -31,9 +27,9 @@
                         <h1 class="h1-large">Welcome to sciebo RDS!</h1><br>
 						<h4 class= "h4">Your sciebo extension for managing research data</h4>
 						<br>
-                        <p class="p-small" style="line-height: 1.3rem">sciebo Research Data Services (sciebo RDS) is a non-commercial service for research, studies and teaching and offers you the possibility to easily manage your research data.
+                        <p style="line-height: 1.5rem">sciebo Research Data Services (sciebo RDS) is a non-commercial service for research, studies and teaching and offers you the possibility to easily manage your research data.
 						</p>
-                        <p class="p-small" style="line-height: 1.3rem">Via sciebo RDS you can access your data located in the university cloud sciebo, bundle them in projects, add meta information and publish your data sets.
+                        <p style="line-height: 1.5rem">Via sciebo RDS you can access your data located in the university cloud sciebo, bundle them in projects, add meta information and publish your data sets.
 						</p>
 							<br><p>Get started in two easy steps:</p>
                             <ol style="line-height: 1.7rem">
@@ -46,81 +42,71 @@
                             </ol>
                         <p class= "p">Find further information on our <a class="text-info" id="getHelp">help page</a>.</p>
 
-                    </div> <!-- end of text-container -->
-                </div> <!-- end of col -->
+                    </div>
+                </div>
                 <div class="col-lg-6">
                     <div class="image-container">
                         <img class="img-fluid" src="./../../img/model_en.png" alt="alternative">
-                    </div> <!-- end of image-container -->
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </header> <!-- end of header -->
-    <!-- end of header -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <!-- Features -->
     <div id="features" class="cards-1">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
+        <div class="container d-flex justify-content-center">
 
-                    <!-- Card -->
-                    <div class="card">
-                        <div class="card-image">
-                            <img class="img-fluid" src="./../../img/maus2.png" alt="alternative">
-                        </div><br>
-                        <div class="card-body">
-                            <h5 class="card-title">1. Step</h5><br>
-                            <p>Create and configure your project</p>
-                        </div>
+            <!-- Cards -->
+            <div class="card mx-1">
+                <div class="card-image d-flex justify-content-center" style="color: #252c38">
+                    <i class="fa-solid fa-arrow-pointer fa-5x py-2"></i>
+                </div><br>
+                <div class="card-body">
+                    <h5 class="card-title d-flex justify-content-center">1. Step</h5><br>
+                    <p class="px-3">Create and configure your project</p>
+                </div>
+            </div>
+
+            
+            <div class="card mx-1">
+                <div class="card-image d-flex justify-content-center"  style="color: #252c38">
+                    <i class="fa-solid fa-file-circle-plus fa-5x py-2"></i>
+                </div><br>
+                <div class="card-body">
+                    <h5 class="card-title d-flex justify-content-center">2. Step</h5><br>
+                    <p class="px-3">Collect data and add it to the project</p>
+                </div>
+            </div>
+
+            
+            <div class="card mx-1">
+                <div class="card-image d-flex justify-content-center"  style="color: #252c38">
+                    <i class="fa-solid fa-pen-to-square fa-5x py-2"></i>
+                </div><br>
+                <div class="card-body">
+                    <h5 class="card-title d-flex justify-content-center">3. Step</h5><br>
+                    <p class="px-3">Enrich your data with metadata</p>
+                </div>
+            </div>
+
+            
+            <div class="card mx-1">
+                <div class="card-image d-flex justify-content-center"  style="color: #252c38">
+                    <i class="fa-solid fa-share fa-5x py-2"></i>
+                </div><br>
+                <div class="card-body">
+                    <h5 class="card-title d-flex justify-content-center">4. Step</h5><br>
+                    <p class="px-3">Publish your data to data repositories</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <a target="_blank" href="https://www.research-data-services.org/">Learn more about sciebo RDS.</a>
                     </div>
-                    <!-- end of card -->
 
-                    <!-- Card -->
-                    <div class="card">
-                        <div class="card-image">
-                            <img class="img-fluid" src="./../../img/dokument2.png" alt="alternative">
-                        </div><br>
-                        <div class="card-body">
-                            <h5 class="card-title">2. Step</h5><br>
-                            <p>Collect and manage data</p>
-                        </div>
-                    </div>
-                    <!-- end of card -->
-
-                    <!-- Card -->
-                    <div class="card">
-                        <div class="card-image">
-                            <img class="img-fluid" src="./../../img/edit2.png" alt="alternative">
-                        </div><br>
-                        <div class="card-body">
-                            <h5 class="card-title">3. Step</h5><br>
-                            <p>Edit metadata</p>
-                        </div>
-                    </div>
-                    <!-- end of card -->
-
-                    <!-- Card -->
-                    <div class="card">
-                        <div class="card-image">
-                            <img class="img-fluid" src="./../../img/arrow2.png" alt="alternative">
-                        </div><br>
-                        <div class="card-body">
-                            <h5 class="card-title">4. Step</h5><br>
-                            <p>End project and transfer data to other services</p>
-                        </div>
-                    </div>
-                    <!-- end of card -->
-
-                    <div class="d-flex justify-content-center"><a target="_blank" href="https://www.research-data-services.org/">Learn more about sciebo RDS.</a></div>
-
-
-    <!-- Scripts -->
-    <script src="./../../js/jquery.min.js"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
-    <script src="./../../js/bootstrap.min.js"></script> <!-- Bootstrap framework -->
-    <script src="./../../js/jquery.easing.min.js"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
-    <script src="./../../js/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
-    <script src="./../../js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
 
 	
 	<script type="text/javascript">

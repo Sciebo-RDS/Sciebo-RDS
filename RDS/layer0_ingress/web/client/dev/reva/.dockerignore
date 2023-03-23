@@ -1,9 +1,0 @@
-.github
-changelog
-docs
-examples
-grpc-tests
-tests
-tools
-vendor-bin
-*.md

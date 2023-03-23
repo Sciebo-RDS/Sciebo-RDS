@@ -7,6 +7,19 @@ stages:
   - pages
   - deploy
 
+include:
+  - "/charts/.gitlab-ci.yml"
+  - "/RDS/layer0_ingress/web/.gitlab-ci.yml"
+  - "/RDS/layer0_ingress/official_doc/.gitlab-ci.yml"
+  - "/RDS/layer1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
+  - "/RDS/layer1_adapters_and_ports/port_owncloud/.gitlab-ci.yml"
+  - "/RDS/layer1_adapters_and_ports/port_openscienceframework/.gitlab-ci.yml"
+  - "/RDS/layer2_use_cases/exporter/.gitlab-ci.yml"
+  - "/RDS/layer2_use_cases/port/.gitlab-ci.yml"
+  - "/RDS/layer2_use_cases/metadata/.gitlab-ci.yml"
+  - "/RDS/layer3_central_services/token_storage/.gitlab-ci.yml"
+  - "/RDS/layer3_central_services/research_manager/.gitlab-ci.yml"
+
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   FOLDER: ./
@@ -46,6 +59,7 @@ variables:
   #    - $FOLDER/*
   #    - $FOLDER/**/*
 
+
 .builds:
   image: zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/docker:20.10
   stage: build
@@ -59,7 +73,6 @@ variables:
       when: never
     - when: always
   variables:
-    DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
     CI_PROJECT_PATH: $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
   script: # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#using-docker-caching
@@ -80,18 +93,6 @@ variables:
     - docker push $CI_IMAGE_LATEST
     - docker push $CI_IMAGE_JOBID
 
-include:
-  - "/charts/.gitlab-ci.yml"
-  - "/RDS/layer0_ingress/web/.gitlab-ci.yml"
-  - "/RDS/layer0_ingress/official_doc/.gitlab-ci.yml"
-  - "/RDS/layer1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
-  - "/RDS/layer1_adapters_and_ports/port_owncloud/.gitlab-ci.yml"
-  - "/RDS/layer1_adapters_and_ports/port_openscienceframework/.gitlab-ci.yml"
-  - "/RDS/layer2_use_cases/exporter/.gitlab-ci.yml"
-  - "/RDS/layer2_use_cases/port/.gitlab-ci.yml"
-  - "/RDS/layer2_use_cases/metadata/.gitlab-ci.yml"
-  - "/RDS/layer3_central_services/token_storage/.gitlab-ci.yml"
-  - "/RDS/layer3_central_services/research_manager/.gitlab-ci.yml"
 
 upload_test_coverage:
   stage: documentation

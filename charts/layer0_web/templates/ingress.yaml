@@ -1,5 +1,5 @@
 {{- $fullName := include "layer0_web.fullname" . -}}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
@@ -19,6 +19,10 @@ spec:
       http:
         paths:
           - path: {{ .Values.ingress.path }}
+            pathType: Prefix
             backend:
-              serviceName: {{ $fullName }}
-              servicePort: http
+              service:
+                name: {{ $fullName }}
+                port:
+                  # number: 80
+                  name: http

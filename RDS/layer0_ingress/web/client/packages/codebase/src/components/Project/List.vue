@@ -23,14 +23,14 @@
                 <!-- Project list content -->
                 <v-list style="overflow-y: auto; margin: 0; padding: 0; max-height: calc(100vh - 13.1em)">
                     <v-list-item-group>
-                        
+
                         <div
                             @click="loadProject(p)"
                             active-class=""
                             v-for="p in (listtype == 'Current' ? activeProjects : pastProjects)"
                             :key="p.researchIndex"
                             class="sidebar lighten-5"
-                            
+
                             >
                         <v-list-item style="border-bottom: 1px solid #ccc"
                         :style="loadedProject && p.researchIndex === loadedProject.researchIndex ? 'border-left: 5px solid #bada55' : ''"
@@ -40,8 +40,8 @@
                             <v-row align="start" style="flex-wrap: nowrap; max-width: 100%;">
                               <!-- TODO: fix width -->
                             <v-col class="caption flex-grow-1 flex-shrink-1" cols="auto"  style="overflow: hidden;">
-                              
-                                Project {{p.researchIndex}}
+
+                                Project {{p.researchIndex + 1}}
                                 <v-list-item-title class="my-1">
                                     <div :class="!!p.researchname ? '' : 'font-italic' " style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                 {{ !!p.researchname ? p.researchname : 'New Project' }}
@@ -54,10 +54,10 @@
                                     />
                             </v-col>
                             </v-row>
-                            
+
 
                         </v-list-item-content>
-                        
+
                         </v-list-item>
                         </div>
                     </v-list-item-group>
@@ -136,7 +136,7 @@
                 </v-card>
             </v-col>
         </v-row>
-    </v-container> 
+    </v-container>
 </template>
 
 
@@ -166,6 +166,8 @@ export default {
       showAllProjects: "showAllProjects",
       loadedProject: "getLoadedProject",
       loadedResearchId: "getLoadedResearchId",
+      loadedFilePath: "getLoadedFilePath",
+      metadataProfile: "getLoadedMetadataProfile",
     }),
     ...mapState({
       userservicelist: (state) => state.RDSStore.userservicelist,
@@ -199,15 +201,12 @@ export default {
     originalProject(newOriginalProject, oldOriginalProject){
       if (!!newOriginalProject && !!oldOriginalProject && newOriginalProject["researchId"] === oldOriginalProject["researchId"] &&
       JSON.stringify(newOriginalProject) !== JSON.stringify(oldOriginalProject)){
-        console.log("reloading Project")
         this.reloadProject();
       }
-      console.log("not reloading Project")
     },
      activeProjects(newActiveProjects, oldActiveProjects){
       if (newActiveProjects.length > oldActiveProjects.length) {
         this.loadProject(this.activeProjects.at(-1));
-        console.log("load newly created Project")
       }
     }
   },
@@ -224,9 +223,11 @@ export default {
     loadProject(p) {
       this.e1 = 1
       this.loadedProject = JSON.parse(JSON.stringify(p));
+      this.emitProjectReloaded();
     },
     reloadProject(){
       this.loadedProject = JSON.parse(JSON.stringify(...this.allProjects.filter((p) => p.researchIndex === this.loadedProject["researchIndex"])))
+      this.emitProjectReloaded();
     },
     deleteProject(researchIndex) {
       this.$store.dispatch("removeProject", { id: researchIndex });
@@ -234,6 +235,9 @@ export default {
     addProject() {
       this.$store.dispatch("createProject");
     },
+    emitProjectReloaded() {
+      this.$root.$emit("projectReloaded", {filePath: this.loadedFilePath, metadataProfile: this.metadataProfile});
+    }
   },
   created() {
     this.unwatch = this.$store.watch(

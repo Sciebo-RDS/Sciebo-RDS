@@ -1,5 +1,0 @@
-Enhancement: Add translations
-
-We've added vue-gettext library to add support for translations.
-
-https://github.com/owncloud/file-picker/pull/49

@@ -5,7 +5,7 @@ EXPOSE 8080
 RUN pip install --upgrade pip setuptools wheel
 
 WORKDIR /app
-ADD ./requirements.txt ./osf.png ./
+ADD ./requirements.txt ./osf.png ./metadata_profile.json ./
 RUN pip install -r requirements.txt
 
 ENV OPENAPI_MULTIPLE_FILES      "interface_port_metadata.yml"

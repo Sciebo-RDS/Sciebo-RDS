@@ -16,6 +16,7 @@
       id="rds-editor"
       ref="rdsEditor"
       :src="iframeSource"
+      crossorigin="use-credentials"
       style="width: 100%; height: 100%"
     />
   </div>
@@ -76,13 +77,11 @@ export default {
   },
   created() {
     getConfig(this).then(() => {
-      console.log("loading frame: ", this.config.url);
       this.loading = false;
     });
 
     window.addEventListener("message", (event) => {
       if (event.data.length > 0) {
-        console.log("got new event:", event.data);
         var payload = JSON.parse(event.data);
         switch (payload.event) {
           case "init":
@@ -103,10 +102,6 @@ export default {
             break;
           case "filePathSelected":
             let data = payload.data;
-            console.log(
-              "setModifiedFilePath: " + this.currentFilePath + " App.vue"
-            );
-            console.log("data: " + data);
             this.currentFilePath = data.filePath;
             this.$store.commit("setModifiedFilePath", this.currentFilePath);
             break;
