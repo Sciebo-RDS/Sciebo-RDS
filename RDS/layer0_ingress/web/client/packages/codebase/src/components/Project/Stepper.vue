@@ -161,6 +161,7 @@ export default {
       loadedProject: "getLoadedProject",
       loadedFilePath: "getLoadedFilePath",
       loadedResearchIndex: "getLoadedResearchIndex",
+      loadedMetadataProfile: "getLoadedMetadataProfile",
       originalResearchName: "getOriginalResearchNameForLoadedProject",
       originalFilePath: "getOriginalFilePathForLoadedProject",
       originalPortInForLoadedProject: "getOriginalPortInForLoadedProject",
@@ -232,6 +233,10 @@ export default {
         });
       }
       await this.$store.dispatch("changePorts", this.portChanges);
+      this.emitProjectReloaded();
+    },
+    emitProjectReloaded() {
+      this.$root.$emit("projectReloaded", {filePath: this.loadedFilePath, metadataProfile: this.loadedMetadataProfile});
     },
     archiveProject(rId) {
       this.$store.commit('setLoadedProject', null)
