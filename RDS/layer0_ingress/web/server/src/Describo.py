@@ -14,6 +14,9 @@ def getSessionId(access_token=None, folder=None, metadataProfile=None):
 
     _, _, servername = informations["cloudID"].rpartition("@")
 
+    # If the EFSS (OwnCloud / NextCloud) is running locally within the k8s environment,
+    # (probably under minikube and without a public IP)
+    # we need to access its webdav endpoint through an internal URL.
     webdav_url = None
     if servername is not None:
         server_info = domains_dict.get(servername.replace('.', '-'))

@@ -87,6 +87,9 @@ class User(UserMixin):
             headers = {"Authorization": f"Bearer {token}"}
 
             for key, domain in domains_dict.items():
+                # If the EFSS (OwnCloud / NextCloud) is running locally within the k8s environment,
+                # (probably under minikube and without a public IP)
+                # we need to access the informations endpoint of the integration app through an internal URL.
                 url = domain.get("INTERNAL_ADDRESS", domain["ADDRESS"]) or os.getenv(
                     "OWNCLOUD_URL", "https://localhost/index.php"
                 )
