@@ -58,7 +58,7 @@ Now we deploy the k8s environment with minikube. First we start from a clean sla
 Then we set docker as the minikube driver, and start the minikube env:
 
     $ minikube config set driver docker
-    $ minikube start --kubernetes-version=v1.25.3 --memory=5g
+    $ minikube start --kubernetes-version=v1.26.0 --memory=5g
 
 Then we enable ingress and create the namespace we have set in `values.yaml`, in `global.namespace.name`:
 
@@ -171,6 +171,57 @@ Then, create the keys for the RDS app:
     $ docker exec -u www-data <container id> bash -c "/var/www/html/occ rds:create-keys"
 
 
+Setting up OwnCloud
+--------------------
+
+We will host the OwnCloud instance under `test-owncloud.localdomain.test`,
+so first, in `/etc/hosts`, we point that name to minikube's IP.
+
+In OwnCloud, OAuth2 is provided by an app,
+so first thing is to enable the OAuth2 app,
+via admin settings -> apps,
+since the app comes preloaded with OwnCloud.
+
+Now we will install the RDS app into owncloud.
+It is in the owncloud market, so to install it,
+we use the market app (accessible in the top left meny in OwnCloud).
+Click on the "integrations" category and look for "Research Data Services",
+click on it, and install it.
+
+Now we want to add RDS as an OAuth2 client in OwnCloud.
+Go to "administration settings -> user authentication" and add a client,
+named `rds` and with redirection URI `https://test-rds.localdomain.test`
+(unless you chaged this value in `values.yaml`).
+
+Add the created OAuth2 client ID and secret to values.yaml, at `global.domains`,
+adding an entry like this:
+
+    domains:
+      - name: test-owncloud.localdomain.test # name needs to be exact the same as the second part after last @ in the cloudId
+        INTERNAL_ADDRESS: http://owncloud:8080
+        ADDRESS: https://test-owncloud.localdomain.test
+        OAUTH_CLIENT_ID: QoS7peuwYEF7NKMY5xhc4NLOOVLQIZwgKltav4dBdfuOHplQvmKuuCZUs2RJoEdy
+        OAUTH_CLIENT_SECRET: 79OcQEz3M7I5bJU8jCDvxu9CtNk2O7qY12rlByAmqGiXdYy04OMAnJ1AFOGTcNCq
+        SUPPORT_EMAIL: mail@localdomain.test
+        MANUAL_URL: usermanual.localdomain.test
+
+And update the helm release:
+
+    $ helm upgrade -n rds sciebords ./charts/charts/all/ -i --values values.yaml
+
+Then, configure the RDS app, in administration settings -> research data services.
+Set `https://test-rds.localdomain.test` as the URL, and `rds` as the name.
+The name `rds` can be any other name, as long as it's the same as the one provided
+for the OAuth2 client.
+
+Then, create the keys for the RDS app:
+
+    $ minikube ssh
+    $ docker ps |grep k8s_owncloud |awk '{print $1}'
+    <container id>
+    $ docker exec -u www-data <container id> bash -c "/var/www/owncloud/occ rds:create-keys"
+
+
 Patching sources
 ----------------
 
@@ -280,15 +331,18 @@ In essence, we access the pods using docker, from the minikube container.
     $ docker cp Describo.py <container id>:/srv/src/Describo.py
     $ docker restart <container id>
 
-Repeat same process for the layer1-port-owncloud-test-nextcloud-localdomain-test service.
+Repeat same process for the layer1-port-owncloud-XXX services.
+Here we show the case where we are running both nextcloud & owncloud.
 
     $ minikube ssh
     $ docker ps |grep k8s_layer1-port-owncloud |awk '{print $1}'
-    <container id>
-    $ docker cp <container id>:/app/server.py .
+    <container id 1>
+    <container id 2>
+    $ docker cp <container id 1>:/app/server.py .
     $ vi server.py
-    $ docker cp server.py <container id>:/app/server.py
-    $ docker restart <container id>
+    $ docker cp server.py <container id 1>:/app/server.py
+    $ docker cp server.py <container id 2>:/app/server.py
+    $ docker restart <container id 1> <container id 2>
 
 NOTE XXX: This last patch will not work: the service entry in the db
 was created when the k8s service was created,
@@ -301,13 +355,15 @@ This would be the patch:
     index 6489e23..f17cb4a 100644
     --- a/RDS/layer2_use_cases/port/src/lib/TokenService.py
     +++ b/RDS/layer2_use_cases/port/src/lib/TokenService.py
-    @@ -525,8 +525,13 @@ class TokenService:
+    @@ -525,8 +525,15 @@ class TokenService:
 
              logger.info(f"request body: {body}")
 
     +        refresh_url_new = f"{service.refresh_url}"
-    +        if 'nextcloud' in refresh_url_new:
+    +        if 'test-nextcloud' in refresh_url_new:
     +            refresh_url_new = "http://nextcloud:8080/index.php/apps/oauth2/api/v1/token"
+    +        elif 'test-owncloud' in refresh_url_new:
+    +            refresh_url_new = "http://owncloud:8080/index.php/apps/oauth2/api/v1/token"
     +
              response = requests.post(
     -            f"{service.refresh_url}",
@@ -317,8 +373,8 @@ This would be the patch:
                  auth=(service.client_id, service.client_secret),
                  verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
 
-And finally, you should be able to use RDS from within the NextCloud instance.
-Remember to add an email address to your NextCloud account,
+And finally, you should be able to use RDS from within the NextCloud / OwnCloud instance.
+Remember to add an email address to your NextCloud / OwnCloud account,
 or you won't be authorized to access RDS.
 
 The above patching method will be effective to patch Python sources.
