@@ -10,22 +10,24 @@ global:
   # Domains you want to use as input,
   # this enables to use multiple owncloud instances with a single sciebo RDS
   domains:
-    # - name: test-nextcloud.localdomain.test # name needs to be exact the same as the second part after last @ in the cloudId
-    #   # When deploying The EFSS locally in the k8s environment, we need to acces it both from within
-    #   # the environment, from other pods, and from the outside, thus Address and INTERNAL_ADDRESS
-    #   INTERNAL_ADDRESS: http://nextcloud:8080
-    #   ADDRESS: https://test-nextcloud.localdomain.test
-    #   OAUTH_CLIENT_ID: hpTt4sfyyVvFxJD5tW0080f9w8kNuebx0iAHIl4qCqbOtDB6XjZrFe3dwsjk56Dn
-    #   OAUTH_CLIENT_SECRET: swx8nRRTSGUN3B9cB56HNF1hNU8hH82uXvd8ysOU55GM0x42mi0z82Y5V48D2kGl
-    #   SUPPORT_EMAIL: mail@localdomain.test
-    #   MANUAL_URL: usermanual.localdomain.test
-    # - name: test-edusign.localdomain.test # name needs to be exact the same as the second part after last @ in the cloudId
-    #   INTERNAL_ADDRESS: http://owncloud:8080
-    #   ADDRESS: https://test-owncloud.localdomain.test
-    #   OAUTH_CLIENT_ID: 4CTYwHDH5asJs7BskTSUT2mDbMt2lcR0GqLHnjSEY7i6GHhbk1aYDViQ8lAOHeQM
-    #   OAUTH_CLIENT_SECRET: OCPmgNGUILcpxr4qkqbpNz585QeVgF4QxaD1uLvWGgNvW4xnLEDtHEcv0i7DdCn1
-    #   SUPPORT_EMAIL: mail@localdomain.test
-    #   MANUAL_URL: usermanual.localdomain.test
+    #- name: test-nextcloud.localdomain.test # name needs to be exact the same as the second part after last @ in the cloudId
+      # When deploying The EFSS locally in the k8s environment, we need to acces it both from within
+      # the environment, from other pods, and from the outside, thus Address and INTERNAL_ADDRESS
+      #INTERNAL_ADDRESS: http://nextcloud:8080
+      #ADDRESS: https://test-nextcloud.localdomain.test
+      #OAUTH_CLIENT_ID: tx5n6WHhXmHnP2GPKiNEHEmq3c9cM3pPHNyowISEAstDvtMkAOSuL5JfZ6hAXQ8G
+      #OAUTH_CLIENT_SECRET: CnYhJyYj0OEq3CWgCYu9kpsnasB3gy6O4FQ0tE4n3qtUNF0fi4nxqxUmWJW9qpty
+      #SUPPORT_EMAIL: mail@localdomain.test
+      #MANUAL_URL: usermanual.localdomain.test
+    #- name: test-owncloud.localdomain.test # name needs to be exact the same as the second part after last @ in the cloudId
+      # When deploying The EFSS locally in the k8s environment, we need to acces it both from within
+      # the environment, from other pods, and from the outside, thus Address and INTERNAL_ADDRESS
+      #INTERNAL_ADDRESS: http://owncloud:8080
+      #ADDRESS: https://test-owncloud.localdomain.test
+      #OAUTH_CLIENT_ID: cDNKn1PGQ7nwLaJ2QxVvHIt30Z9EteErMayjGWpfywpnK027BmJIWu4RsQwXu21I
+      #OAUTH_CLIENT_SECRET: 3tChKfr4rOEIPmtFbJs3gOhR07VdxJM997WVmZoc41EsWNjlzsPICQ67hnUFu1bR
+      #SUPPORT_EMAIL: mail@localdomain.test
+      #MANUAL_URL: usermanual.localdomain.test
 loglevel: DEBUG
 # If you set this to "False", SSL will not be verified in all https requests. Default: "True"
 verify_ssl: False
@@ -78,6 +80,7 @@ layer3-token-storage: {}
 feature:
   jaeger: false
   nextcloud: true
+  owncloud: true
 
 nextcloud:
   fullnameOverride: nextcloud
@@ -94,3 +97,25 @@ nextcloud:
         value: https
       - name: NEXTCLOUD_TRUSTED_DOMAINS
         value: "test-nextcloud.localdomain.test nextcloud"
+
+owncloud:
+  fullnameOverride: owncloud
+  externalDomain: test-owncloud.localdomain.test
+  ingress:
+    enabled: true
+  insecure:
+    # disables ssl certificate checking for connections to the openID connect identity provider.
+    # Not recommended for production setups, but we don't have valid certificates in minikube
+    oidcIdpInsecure: true
+    # disables ssl certificate checking for connections to the oCIS http apis.
+    # Not recommended for production setups, but we don't have valid certificates in minikube
+    ocisHttpApiInsecure: true
+  owncloud:
+    domain: test-owncloud.localdomain.test
+    adminUsername: admin
+    adminPassword: password
+    overwriteHost: test-owncloud.localdomain.test
+    overwriteProtocol: https
+    trustedDomains:
+      - test-owncloud.localdomain.test
+      - owncloud
