@@ -225,13 +225,17 @@ Then, create the keys for the RDS app:
 Patching sources
 ----------------
 
-For RDS version 0.2.2, we need to add a couple of patches to the sources,
+For RDS versions 0.2.3 and below, we need to add a couple of patches to the sources,
 at 2 different pods. In essence, without the EFSS (nextcloud in this case)
 being available at a public IP, we need 2 addresses to access it,
 one from the other pods and one from the browser. Hopefully this will be
 fixed in future versions, but I'll provide instructions here nevertheless,
 to demonstate how to patch the system for development and debugging.
 There may be a better method, but this works for me.
+
+Note that this method is fairly brittle; as soon as k8s restarts some pod's container,
+the patches will be lost. To make the changes more permanent,
+they should be added to the images that k8s has available to run its containers.
 
 So at this point, we want to patch the layer0-web service with this code:
 
@@ -377,7 +381,101 @@ And finally, you should be able to use RDS from within the NextCloud / OwnCloud 
 Remember to add an email address to your NextCloud / OwnCloud account,
 or you won't be authorized to access RDS.
 
+
+Debugging
+---------
+
 The above patching method will be effective to patch Python sources.
 If instead, we want to patch js, or go, or rust code, we will have to do a bit more work:
 we will have to use the patched code to build docker images and use those new images
 in the k8s environment. [Dave's instructions](../setup-local-dev-env.md) provide some directions to do so.
+
+What follows is an example of editing the js RDS code,
+transpiling it via building the docker image that would hold the bundle,
+extracting the transpiled js bundle from the image,
+and injecting it into the corresponding container in the minikube environment.
+
+So, we start by editing the js code at `Sciebo-RDS/RDS/layer0_ingress/web/client/packages/codebase`.
+
+Then we build the docker image.
+The appropriate dockerfile is `Sciebo-RDS/RDS/layer0_ingress/web/Dockerfile.rds-standalone`.
+Unless you are within the Münster University network,
+you'll need to edit the dockerfile and remove references to it.
+I also found that I needed to add some `ARG` and `ENV` directives to the dockerfile
+to get a functional js bundle.
+These are the changes that worked for me to produce a working js bundle:
+
+    $ git diff Dockerfile.rds-standalone
+    diff --git a/RDS/layer0_ingress/web/Dockerfile.rds-standalone b/RDS/layer0_ingress/web/Dockerfile.rds-standalone
+    index 85add8d0..6294e89d 100644
+    --- a/RDS/layer0_ingress/web/Dockerfile.rds-standalone
+    +++ b/RDS/layer0_ingress/web/Dockerfile.rds-standalone
+    @@ -1,13 +1,20 @@
+    -FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:16-alpine3.16 AS staging
+    +FROM node:16-alpine3.16 AS staging
+     WORKDIR /src
+     RUN apk add findutils
+     COPY client .
+     RUN mkdir -p ./pkg/ \
+         && find . -type d -name node_modules -prune -false -o \( -name "package.json" -o -name "yarn.lock" -o -name "package-lock.json" \)  -exec install -D '{}' './pkg/{}' \;
+
+    -FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:16-alpine3.16 AS web
+    +FROM node:16-alpine3.16 AS web
+     WORKDIR /app
+    +ARG VUE_APP_BASE_URL
+    +ARG VUE_APP_FRONTENDHOST
+    +ARG SOCKETIO_HOST
+    +ARG SOCKETIO_PATH
+     ENV VUE_APP_BASE_URL $VUE_APP_BASE_URL
+    +ENV VUE_APP_FRONTENDHOST $VUE_APP_FRONTENDHOST
+    +ENV SOCKETIO_HOST $SOCKETIO_HOST
+    +ENV SOCKETIO_PATH $SOCKETIO_PATH
+     WORKDIR /app
+     RUN apk add --no-cache gettext python3 build-base make && python3 -m ensurepip && pip3 install --no-cache --upgrade pip setuptools
+     COPY --from=staging /src/pkg ./
+    @@ -15,14 +22,22 @@ RUN yarn install --non-interactive
+     COPY client .
+     RUN yarn standalone
+
+    -FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8-alpine
+    +FROM python:3.8-alpine
+     WORKDIR /srv
+
+     EXPOSE 80
+
+    +ARG VUE_APP_BASE_URL
+    +ARG VUE_APP_FRONTENDHOST
+    +ARG SOCKETIO_HOST
+    +ARG SOCKETIO_PATH
+    +ENV VUE_APP_BASE_URL $VUE_APP_BASE_URL
+    +ENV VUE_APP_FRONTENDHOST $VUE_APP_FRONTENDHOST
+    +ENV SOCKETIO_HOST $SOCKETIO_HOST
+    +ENV SOCKETIO_PATH $SOCKETIO_PATH
+    +
+     ENV JSFOLDER=/usr/share/nginx/html/js/*.js
+
+    -ENV SOCKETIO_HOST=http://localhost:80
+     ENV REDIS_HELPER_HOST=http://owncloud_redis
+     ENV REDIS_HELPER_PORT=6379
+     ENV PROMETHEUS_MULTIPROC_DIR=/tmp
+
+
+Then build the image, start a container from it, get the built js bundle, and get rid of image and container:
+
+    $ docker build -f Dockerfile.rds-standalone -t rds-app:0.10 --build-arg VUE_APP_BASE_URL="/" --build-arg VUE_APP_FRONTENDHOST="https://test-rds.localdomain.test" --build-arg SOCKETIO_HOST="https://test-rds.localdomain.test" --build-arg SOCKETIO_PATH="/socket.io/" .
+    $ docker run -d --rm --entrypoint="sleep" rds-app:0.10 infinity
+    <container id 1>
+    $ docker cp <container id 1>:/usr/share/nginx/html/js/app.js app-rds.js
+    $ docker stop <container id 1>
+    $ docker rmi rds-app:0.10
+    $ docker ps |grep minikube | awk '{print $1}'
+    <container id 2>
+    $ docker cp app-rds.js <container id 2>:/home/docker
+    $ minikube ssh
+    $ docker ps |grep k8s_layer0-web | awk '{print $1}'
+    <container id 3>
+    $ docker cp app-rds.js <container id 3>:/usr/share/nginx/html/js/app.js
+    $ rm /app-rds.js
+    $ exit
+    $ rm app-rds.js
+
