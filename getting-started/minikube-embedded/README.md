@@ -3,6 +3,9 @@ Setting up the RDS instance
 ---------------------------
 
 Here we will deploy a local instance of RDS on a minikube environment.
+Many of the instructions here are copied from the instructions at `../setup-local-dev-env.md`,
+adapted to an embedded deployment rather than a standalone one,
+so it will be worth to check that document as well.
 
 I have tested all this both in Debian 10.13 and in ubuntu 22.04 and in archlinux 2023-03-01 VMs .
 
@@ -69,6 +72,25 @@ At this point we can check the minikube IP and add the `global.describo.domain` 
 
     $ minikube ip
     192.168.49.2
+
+If we want to deploy some local changes, via providing a local docker image for some k8s service,
+now is the time to build the image.
+If, for example, we are editing the RDS javascript code, we will want to provide locally the image for the layer0-web pods.
+To build the image we need to edit the dockerfile and remove the `zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/`
+prefixes from the FROM directives - so, for example, we would have `FROM node:16-alpine3.16 AS staging`.
+
+    $ cd RDS/layer0_ingress/web/
+    $ vim Dockerfile.rds-standlalone
+    $ eval $(minikube -p minikube docker-env)  # this points the current terminal to the minikube docker environment
+    $ docker build -f Dockerfile.rds-standalone -t rds-app:0.10 .
+    $ docker tag rds-app:0.10 zivgitlab.wwu.io/rds-app:v0.2.2
+
+And now we can configure our values.yaml file to use the built image:
+
+    layer0-web:
+      image:
+        repository: rds-app
+        pullPolicy: Never
 
 Now we use the [provided script](build-all-dependencies-with-helm.sh) to build and update the helm charts:
 
@@ -231,95 +253,18 @@ being available at a public IP, we need 2 addresses to access it,
 one from the other pods and one from the browser. Hopefully this will be
 fixed in future versions, but I'll provide instructions here nevertheless,
 to demonstate how to patch the system for development and debugging.
-There may be a better method, but this works for me.
 
 Note that this method is fairly brittle; as soon as k8s restarts some pod's container,
 the patches will be lost. To make the changes more permanent,
 they should be added to the images that k8s has available to run its containers.
+This method is suited for Python patches, that do not need compilation or transpilation,
+and is more agile than putting the changes in a new docker image.
 
-So at this point, we want to patch the layer0-web service with this code:
-
-    diff --git a/RDS/layer0_ingress/web/server/src/Describo.py b/RDS/layer0_ingress/web/server/src/Describo.py
-    index 3fcddd2..01242fe 100644
-    --- a/RDS/layer0_ingress/web/server/src/Describo.py
-    +++ b/RDS/layer0_ingress/web/server/src/Describo.py
-    @@ -1,7 +1,7 @@
-     import os
-     import requests
-     from flask import session
-    -from .app import app
-    +from .app import app, domains_dict
-
-
-     def getSessionId(access_token=None, folder=None):
-    @@ -12,13 +12,19 @@ def getSessionId(access_token=None, folder=None):
-
-         _, _, servername = informations["cloudID"].rpartition("@")
-
-    +    webdav_url = None
-         if servername is not None:
-    -        servername = "https://{}/remote.php/dav".format(servername)
-    +        server_info = domains_dict.get(servername.replace('.', '-'))
-    +        if server_info is not None and 'INTERNAL_ADDRESS' in server_info:
-    +            webdav_url = server_info['INTERNAL_ADDRESS'] + '/remote.php/dav'
-    +
-    +        if webdav_url is None:
-    +            webdav_url = "https://{}/remote.php/dav".format(servername)
-
-         data = {
-             # needs to be UID, because webdav checks against UID
-             "user_id": informations["UID"],
-    -        "url": servername or default,
-    +        "url": webdav_url or default,
-         }
-
-         if access_token is not None:
-    diff --git a/RDS/layer0_ingress/web/server/src/app.py b/RDS/layer0_ingress/web/server/src/app.py
-    index e1960b1..847ae3a 100644
-    --- a/RDS/layer0_ingress/web/server/src/app.py
-    +++ b/RDS/layer0_ingress/web/server/src/app.py
-    @@ -74,7 +74,7 @@ class DomainsDict(UserDict):
-             except KeyError:
-                 status_code = 500
-                 req = None
-    -            url = self[key]["ADDRESS"]
-    +            url = self[key].get("INTERNAL_ADDRESS", self[key]["ADDRESS"])
-                 count = 5
-
-                 while status_code > 200 and count > 0:
-    diff --git a/RDS/layer0_ingress/web/server/src/server.py b/RDS/layer0_ingress/web/server/src/server.py
-    index 52eb5ee..caa1c9d 100644
-    --- a/RDS/layer0_ingress/web/server/src/server.py
-    +++ b/RDS/layer0_ingress/web/server/src/server.py
-    @@ -88,7 +88,7 @@ class User(UserMixin):
-                 headers = {"Authorization": f"Bearer {token}"}
-
-                 for key, domain in domains_dict.items():
-    -                url = domain["ADDRESS"] or os.getenv(
-    +                url = domain.get("INTERNAL_ADDRESS", domain["ADDRESS"]) or os.getenv(
-                         "OWNCLOUD_URL", "https://localhost/index.php"
-                     )
-
-Also we wnat to patch the layer1-port-owncloud service with this:
-
-    diff --git a/RDS/layer1_adapters_and_ports/port_owncloud/src/server.py b/RDS/layer1_adapters_and_ports/port_owncloud/src/server.py
-    index ad60210..e8b4802 100644
-    --- a/RDS/layer1_adapters_and_ports/port_owncloud/src/server.py
-    +++ b/RDS/layer1_adapters_and_ports/port_owncloud/src/server.py
-    @@ -6,9 +6,10 @@ from RDS import Util
-     import os
-
-     owncloud_installation_url = os.getenv("OWNCLOUD_INSTALLATION_URL", "")
-    +owncloud_internal_installation_url = os.getenv("OWNCLOUD_INTERNAL_INSTALLATION_URL", "")
-     owncloud_redirect_uri = os.getenv("RDS_OAUTH_REDIRECT_URI", "")
-     owncloud_oauth_token_url = "{}/index.php/apps/oauth2/api/v1/token".format(
-    -    owncloud_installation_url
-    +    owncloud_internal_installation_url
-     )
-     owncloud_oauth_id = os.getenv("OWNCLOUD_OAUTH_CLIENT_ID", "XY")
-     owncloud_oauth_secret = os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET", "ABC")
+So at this point, we want to patch the layer0-web service with the Python changes
+[in this PR](https://github.com/Sciebo-RDS/Sciebo-RDS/pull/241/files).
 
 In essence, we access the pods using docker, from the minikube container.
+For example:
 
     $ minikube ssh
     $ docker ps |grep k8s_layer0-web |awk '{print $1}'
@@ -327,28 +272,10 @@ In essence, we access the pods using docker, from the minikube container.
     $ docker cp <container id>:/srv/src/app.py .
     $ vi app.py
     $ docker cp app.py <container id>:/srv/src/app.py
-    $ docker cp <container id>:/srv/src/server.py .
-    $ vi server.py
-    $ docker cp server.py <container id>:/srv/src/server.py
-    $ docker cp <container id>:/srv/src/Describo.py .
-    $ vi Describo.py
-    $ docker cp Describo.py <container id>:/srv/src/Describo.py
     $ docker restart <container id>
 
-Repeat same process for the layer1-port-owncloud-XXX services.
-Here we show the case where we are running both nextcloud & owncloud.
-
-    $ minikube ssh
-    $ docker ps |grep k8s_layer1-port-owncloud |awk '{print $1}'
-    <container id 1>
-    <container id 2>
-    $ docker cp <container id 1>:/app/server.py .
-    $ vi server.py
-    $ docker cp server.py <container id 1>:/app/server.py
-    $ docker cp server.py <container id 2>:/app/server.py
-    $ docker restart <container id 1> <container id 2>
-
-NOTE XXX: This last patch will not work: the service entry in the db
+NOTE XXX: The patch for the layer1-port-owncloud services
+provided in the linked PR will not work: the service entry in the db
 was created when the k8s service was created,
 and so, it will contain a wrong refresh_url.
 So we now patch /app/lib/TokenService.py in layer2-port-service
