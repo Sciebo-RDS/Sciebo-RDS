@@ -13,7 +13,7 @@ owncloud_installation_url = os.getenv("OWNCLOUD_INSTALLATION_URL", "")
 # and thus no internal URL is configured in the helm charts configuration for the EFSS,
 # OWNCLOUD_INTERNAL_INSTALLATION_URL will default to the value of OWNCLOUD_INSTALLATION_URL.
 # i.e. to the public URL.
-owncloud_internal_installation_url = os.getenv("OWNCLOUD_INTERNAL_INSTALLATION_URL", "")
+owncloud_internal_installation_url = os.getenv("OWNCLOUD_INTERNAL_INSTALLATION_URL", owncloud_installation_url)
 owncloud_redirect_uri = os.getenv("RDS_OAUTH_REDIRECT_URI", "")
 owncloud_oauth_token_url = "{}/index.php/apps/oauth2/api/v1/token".format(
     owncloud_internal_installation_url
