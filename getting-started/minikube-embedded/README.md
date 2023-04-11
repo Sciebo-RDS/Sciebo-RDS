@@ -26,11 +26,9 @@ First we check out the code for the charts.
 
     $ git clone git@github.com:Sciebo-RDS/charts
 
-NOTE: as of now (08-03-2023) we need to check out a patched version of the charts,
-https://github.com/enriquepablo/charts/tree/minikube-nextcloud
-
 Then we prepare our [values.yaml](values.yaml) configuration file for the k8s environment.
-The provided file should only need edition to add the OAuth2 client IDs and secrets,
+The provided file should only need edition to add the `global.domains` for OwnCLoud and NextCloud,
+and the OAuth2 client IDs and secrets for zenodo and/or OFS,
 as we will see below.
 
 Some values in that file that we may want to adapt:
@@ -50,7 +48,7 @@ Some values in that file that we may want to adapt:
 `layer1-port-openscienceframework.environment`
 :To publish to OFS, we need to register our RDS instance as an OAuth2 client for OFS, and set here the client ID and secret.
 
-If you decide to not configure either zenodo of OFS, remember to set its `enabled` flag to false.
+If you decide to not configure either zenodo of OFS, remember to set its `enabled` flag to false, and to comment out the corresponding section.
 
 We can leave the rest of the values as provided.
 
@@ -134,7 +132,7 @@ After a while, the following pods should be up and running:
     rds             redis-5                                                 1/1     Running            1 (6m7s ago)    14m
     rds             redis-helper-master-0                                   1/1     Running            0               14m
 
-The problems with layer0-web and layer1-port-owncloud-test-address-de will get fixed once we set RDS as nextcloud OAuth2 client next.
+The problems with layer0-web and layer1-port-owncloud-test-address-de will get fixed once we set RDS as nextcloud & owncloud OAuth2 client next.
 Note that the last part of the pod names will vary from deployment to deployment.
 
 
@@ -145,7 +143,7 @@ We will host the NextCloud instance under `test-nextcloud.localdomain.test`,
 so first, in `/etc/hosts`, we point that name to minikube's IP.
 
 Now we will install the RDS app into nextcloud.
-First we get the softare, and build it:
+First we get the software, and build it:
 
     $ git clone https://github.com/Sciebo-RDS/plugin-nextcloud
     $ cp -R plugin-nextcloud/nextcloud-rds rds
@@ -171,8 +169,8 @@ adding an entry like this:
       - name: test-nextcloud.localdomain.test # name needs to be exact the same as the second part after last @ in the cloudId
         INTERNAL_ADDRESS: http://nextcloud:8080
         ADDRESS: https://test-nextcloud.localdomain.test
-        OAUTH_CLIENT_ID: QoS7peuwYEF7NKMY5xhc4NLOOVLQIZwgKltav4dBdfuOHplQvmKuuCZUs2RJoEdy
-        OAUTH_CLIENT_SECRET: 79OcQEz3M7I5bJU8jCDvxu9CtNk2O7qY12rlByAmqGiXdYy04OMAnJ1AFOGTcNCq
+        OAUTH_CLIENT_ID: QoS7...oEdy
+        OAUTH_CLIENT_SECRET: 79O...NCq
         SUPPORT_EMAIL: mail@localdomain.test
         MANUAL_URL: usermanual.localdomain.test
 
@@ -222,8 +220,8 @@ adding an entry like this:
       - name: test-owncloud.localdomain.test # name needs to be exact the same as the second part after last @ in the cloudId
         INTERNAL_ADDRESS: http://owncloud:8080
         ADDRESS: https://test-owncloud.localdomain.test
-        OAUTH_CLIENT_ID: QoS7peuwYEF7NKMY5xhc4NLOOVLQIZwgKltav4dBdfuOHplQvmKuuCZUs2RJoEdy
-        OAUTH_CLIENT_SECRET: 79OcQEz3M7I5bJU8jCDvxu9CtNk2O7qY12rlByAmqGiXdYy04OMAnJ1AFOGTcNCq
+        OAUTH_CLIENT_ID: QoS7...oEdy
+        OAUTH_CLIENT_SECRET: 79Oc...NCq
         SUPPORT_EMAIL: mail@localdomain.test
         MANUAL_URL: usermanual.localdomain.test
 
@@ -274,7 +272,7 @@ For example:
     $ docker cp app.py <container id>:/srv/src/app.py
     $ docker restart <container id>
 
-NOTE XXX: The patch for the layer1-port-owncloud services
+NOTE: The patch for the layer1-port-owncloud services
 provided in the linked PR will not work: the service entry in the db
 was created when the k8s service was created,
 and so, it will contain a wrong refresh_url.

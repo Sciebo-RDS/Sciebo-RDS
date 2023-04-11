@@ -15,8 +15,8 @@ global:
       # the environment, from other pods, and from the outside, thus Address and INTERNAL_ADDRESS
       #INTERNAL_ADDRESS: http://nextcloud:8080
       #ADDRESS: https://test-nextcloud.localdomain.test
-      #OAUTH_CLIENT_ID: tx5n6WHhXmHnP2GPKiNEHEmq3c9cM3pPHNyowISEAstDvtMkAOSuL5JfZ6hAXQ8G
-      #OAUTH_CLIENT_SECRET: CnYhJyYj0OEq3CWgCYu9kpsnasB3gy6O4FQ0tE4n3qtUNF0fi4nxqxUmWJW9qpty
+      #OAUTH_CLIENT_ID: tx5...XQ8G
+      #OAUTH_CLIENT_SECRET: CnYh...qpty
       #SUPPORT_EMAIL: mail@localdomain.test
       #MANUAL_URL: usermanual.localdomain.test
     #- name: test-owncloud.localdomain.test # name needs to be exact the same as the second part after last @ in the cloudId
@@ -24,8 +24,8 @@ global:
       # the environment, from other pods, and from the outside, thus Address and INTERNAL_ADDRESS
       #INTERNAL_ADDRESS: http://owncloud:8080
       #ADDRESS: https://test-owncloud.localdomain.test
-      #OAUTH_CLIENT_ID: cDNKn1PGQ7nwLaJ2QxVvHIt30Z9EteErMayjGWpfywpnK027BmJIWu4RsQwXu21I
-      #OAUTH_CLIENT_SECRET: 3tChKfr4rOEIPmtFbJs3gOhR07VdxJM997WVmZoc41EsWNjlzsPICQ67hnUFu1bR
+      #OAUTH_CLIENT_ID: cDNK...QwXu21I
+      #OAUTH_CLIENT_SECRET: 3tCh...Fu1bR
       #SUPPORT_EMAIL: mail@localdomain.test
       #MANUAL_URL: usermanual.localdomain.test
 loglevel: DEBUG
@@ -58,18 +58,18 @@ layer1-port-owncloud:
 layer1-port-zenodo:
   enabled: true
   environment:
-    # needs to be adjusted to correct values
     ADDRESS: https://sandbox.zenodo.org
-    OAUTH_CLIENT_ID: Bl6JYLJ08C8TF7ISObcf6122XztSuutmqLz5dYIw
-    OAUTH_CLIENT_SECRET: JKTjeoWbdMbYfiNS8yBJEG5422otVvLTY8P22UHOGb74MWreQgQBlokqf1Wq
+    # needs to be adjusted to rrect values
+    OAUTH_CLIENT_ID: Bl6...dYIw
+    OAUTH_CLIENT_SECRET: JKTje...f1Wq
 layer1-port-openscienceframework:
   enabled: true
   environment:
     ADDRESS: https://accounts.test.osf.io
     API_ADDRESS: https://api.test.osf.io/v2
     # needs to be adjusted to correct values
-    OAUTH_CLIENT_ID: e4e77fab2a4f4acd941795370c6c5553
-    OAUTH_CLIENT_SECRET: UNiavv9Uub3uvM69LLZda1C6miBYyn5NGK6OGGYO
+    OAUTH_CLIENT_ID: e4e...53
+    OAUTH_CLIENT_SECRET: UNia...GYO
 layer2-port-service:
   # fullnameOverride: layer2-port-service-test-rds-ed-integrations-com
   environment:
@@ -87,19 +87,23 @@ nextcloud:
   ingress:
     enabled: true
   nextcloud:
+    # Needs to be adjusted to the values at global.domains
     host: test-nextcloud.localdomain.test
     username: admin
     password: password
     extraEnv:
       - name: OVERWRITEHOST
+        # Needs to be adjusted to the values at global.domains
         value: test-nextcloud.localdomain.test
       - name: OVERWRITEPROTOCOL
         value: https
       - name: NEXTCLOUD_TRUSTED_DOMAINS
+        # Needs to be adjusted to the values at global.domains
         value: "test-nextcloud.localdomain.test nextcloud"
 
 owncloud:
   fullnameOverride: owncloud
+  # Needs to be adjusted to the values at global.domains
   externalDomain: test-owncloud.localdomain.test
   ingress:
     enabled: true
@@ -111,11 +115,14 @@ owncloud:
     # Not recommended for production setups, but we don't have valid certificates in minikube
     ocisHttpApiInsecure: true
   owncloud:
+    # Needs to be adjusted to the values at global.domains
     domain: test-owncloud.localdomain.test
     adminUsername: admin
     adminPassword: password
+    # Needs to be adjusted to the values at global.domains
     overwriteHost: test-owncloud.localdomain.test
     overwriteProtocol: https
+    # Needs to be adjusted to the values at global.domains
     trustedDomains:
       - test-owncloud.localdomain.test
       - owncloud
