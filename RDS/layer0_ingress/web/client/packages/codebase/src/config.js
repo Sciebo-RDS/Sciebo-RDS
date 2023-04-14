@@ -1,6 +1,6 @@
 const config = {
     version: process.env.RDS_VERSION || "0.2.3",
-    version_commit: process.env.RDS_COMMIT_ID || "unknown",
+    version_commit: process.env.RDS_COMMIT_ID || "$RDS_COMMIT_ID",
 
     productionTip: false,
     socket: {
