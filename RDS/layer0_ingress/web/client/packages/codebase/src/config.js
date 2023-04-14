@@ -1,4 +1,6 @@
 const config = {
+    version: process.env.RDS_VERSION || "0.2.3",
+
     productionTip: false,
     socket: {
         server: process.env.SOCKETIO_HOST || "$SOCKETIO_HOST",
