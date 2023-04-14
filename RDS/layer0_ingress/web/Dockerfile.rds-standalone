@@ -20,6 +20,9 @@ WORKDIR /srv
 
 EXPOSE 80
 
+ARG RDS_COMMIT_ID
+ENV RDS_COMMIT_ID=$RDS_COMMIT_ID
+
 ENV JSFOLDER=/usr/share/nginx/html/js/*.js
 
 ENV SOCKETIO_HOST=http://localhost:80

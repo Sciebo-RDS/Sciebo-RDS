@@ -159,7 +159,7 @@ export default {
     },
   },
   beforeCreate() {
-    console.log("sciebo RDS -- v" + this.$config.version);
+    console.log("sciebo RDS -- v" + this.$config.version + " [" + this.$config.version_commit + "]");
 
     this.auth.login();
     const routeName = "Wizard";
