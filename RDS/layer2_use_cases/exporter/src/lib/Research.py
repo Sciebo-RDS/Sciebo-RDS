@@ -158,7 +158,7 @@ class Research:
                     logger.debug("done writing to zipfile")
 
                 # useZipForContent skips services, which needs zip, if folder in folder found.
-                results = self.addFile(folderInFolder=useZipForContent, *fileTuple)
+                results.append(self.addFile(folderInFolder=useZipForContent, *fileTuple))
                 
                     
 
