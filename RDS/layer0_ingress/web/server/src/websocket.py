@@ -283,7 +283,8 @@ class RDSNamespace(Namespace):
             saveResearch(parseResearchBack(research))
 
             self.__trigger_metadatasync(jsonData, research)
-            emit("FileUploadStatus", self.__trigger_filesync(jsonData, research))
+            fileUploadStatus = self.__trigger_filesync(jsonData, research)
+            emit("FileUploadStatus", fileUploadStatus)
 
             if (
                 research["synchronization_process_status"]
@@ -292,7 +293,7 @@ class RDSNamespace(Namespace):
                 self.__trigger_finish_sync(jsonData, research)
                 app.logger.debug("done synchronization, research: {}".format(research))
 
-                return True
+                return fileUploadStatus["success"]
         except Exception as e:
             app.logger.error(f"error in sync: {e}", exc_info=True)
 

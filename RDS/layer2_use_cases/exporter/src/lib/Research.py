@@ -126,6 +126,7 @@ class Research:
             return False, []
 
         results = []
+        messages = []
 
         for svc in self.importServices:
             logger.debug("import service: {}".format(svc.getJSON()))
@@ -187,9 +188,9 @@ class Research:
                     if (exportSvc.zipForFolder)
                 ]
                 
-        success = all([y[0] for y in results])
+        success = all([y[1]["success"] for y in results])
         if not success:
-            messages = [y[1]["message"] for y in results if not y[0]]
+            messages = [y[1]["message"] for y in results if not y[1]["success"]]
 
         return success, messages
 
@@ -238,7 +239,7 @@ class Research:
             svc.addFile(*args, **kwargs)
             for svc in self.getExportServices()
             if not (folderInFolder and svc.zipForFolder)
-        ]
+        ][0]
 
     def removeAllFiles(self):
         """
