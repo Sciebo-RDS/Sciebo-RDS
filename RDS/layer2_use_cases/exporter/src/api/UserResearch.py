@@ -10,8 +10,10 @@ def get(user_id, research_id):
 
 
 def post(user_id, research_id):
+    success, messages = Research(userId=user_id, researchIndex=research_id, testing=current_app.config.get("TESTING")).synchronization()
     return jsonify({
-        "succ": Research(userId=user_id, researchIndex=research_id, testing=current_app.config.get("TESTING")).synchronization()
+        "success" : success,
+        "messages": str(messages)
     })
 
 
