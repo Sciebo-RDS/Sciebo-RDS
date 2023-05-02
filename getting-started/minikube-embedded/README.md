@@ -14,7 +14,7 @@ Prerequisites:
  * kubectl (tested with version 1.26.1 (server) and 1.25.3 (client))
  * Minikube (tested with version 1.29.0)
  * Docker (tested with versions 23.0.0 and 23.0.1)
- * helm (tested with version 3.11.0)
+ * helm (tested with version 3.11.0 and 3.11.2)
 
 We also want to register an app with Zenodo's sandbox and/or OFS test site.
 To configure the app at those repositories,
@@ -43,7 +43,7 @@ Some values in that file that we may want to adapt:
 :Domain names where OwnCloud or NextCloud instances will be served. We start with no entries here; later, when we add the RDS instance as OAuth2 client for nextcloud, we will add one entry; we might have more than one entries here. Each entry will need a `name` that coincides with the domain name in the cloudIds provided by that EFSS, an address where it can be found, and OAuth2 client ID and secret for the RDS instance, we will create these later when we deploy and configure the EFSS.
 
 `layer1-port-zenodo.environment`
-:To publish to Zenodo, we need to register our RDS instance as an OAuth2 client for zenodo, and set here the clinet ID and secret.
+:To publish to Zenodo, we need to register our RDS instance as an OAuth2 client for zenodo, and set here the client ID and secret.
 
 `layer1-port-openscienceframework.environment`
 :To publish to OFS, we need to register our RDS instance as an OAuth2 client for OFS, and set here the client ID and secret.
@@ -59,7 +59,7 @@ Now we deploy the k8s environment with minikube. First we start from a clean sla
 Then we set docker as the minikube driver, and start the minikube env:
 
     $ minikube config set driver docker
-    $ minikube start --kubernetes-version=v1.26.0 --memory=5g
+    $ minikube start --kubernetes-version=v1.26.1 --memory=5g
 
 Then we enable ingress and create the namespace we have set in `values.yaml`, in `global.namespace.name`:
 
@@ -75,19 +75,42 @@ If we want to deploy some local changes, via providing a local docker image for 
 now is the time to build the image.
 If, for example, we are editing the RDS javascript code, we will want to provide locally the image for the layer0-web pods.
 To build the image we need to edit the dockerfile and remove the `zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/`
-prefixes from the FROM directives - so, for example, we would have `FROM node:16-alpine3.16 AS staging`.
+prefixes from the FROM directives - so, for example, we would have `FROM node:16-alpine3.16 AS staging` instead of
+`FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:16-alpine3.16 AS staging`.
 
     $ cd RDS/layer0_ingress/web/
-    $ vim Dockerfile.rds-standlalone
+    $ vim Dockerfile.rds-standalone
     $ eval $(minikube -p minikube docker-env)  # this points the current terminal to the minikube docker environment
     $ docker build -f Dockerfile.rds-standalone -t rds-app:0.10 .
-    $ docker tag rds-app:0.10 zivgitlab.wwu.io/rds-app:v0.2.2
+    $ docker tag rds-app:0.10 zivgitlab.wwu.io/rds-app:v0.2.3
 
 And now we can configure our values.yaml file to use the built image:
 
     layer0-web:
       image:
         repository: rds-app
+        pullPolicy: Never
+
+Note that as of 2023-05-02, and until these
+[two](https://github.com/Sciebo-RDS/charts/pull/6)
+[patches](https://github.com/Sciebo-RDS/Sciebo-RDS/pull/241)
+are merged, to work on minikube we need to build the images locally for both layer0-web
+(as shown above) and layer1-port-owncloud (as shown below). We have to build these images using
+[the Sciebo-RDS code available here](https://github.com/enriquepablo/Sciebo-RDS/tree/develop).
+
+To build the layer1-port-owncloud docker image:
+
+    $ cd RDS/layer1_adapters_and_ports/port_owncloud
+    $ vim dockerfile  # Remove the `zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/` prefix from the FROM directive
+    $ eval $(minikube -p minikube docker-env)  # this points the current terminal to the minikube docker environment
+    $ docker build -f dockerfile -t rds-port-owncloud:0.10 .
+    $ docker tag rds-port-owncloud:0.10 zivgitlab.wwu.io/rds-port-owncloud:v0.2.3
+
+And add to values.yaml:
+
+    layer1-port-owncloud:
+      image:
+        repository: rds-port-owncloud
         pullPolicy: Never
 
 Now we use the [provided script](build-all-dependencies-with-helm.sh) to build and update the helm charts:

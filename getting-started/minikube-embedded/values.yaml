@@ -1,6 +1,6 @@
 global:
   image:
-    tag: v0.2.2
+    tag: v0.2.3
   namespace:
     name: rds
   describo:
@@ -47,12 +47,20 @@ layer0-helper-describo-token-updater:
   environment:
     DESCRIBO_API_ENDPOINT: http://layer0-describo/api/session/application
 layer0-web:
+  ## Uncomment the lines below in case you are using a local image named `rds-app`
+  #image:
+    #repository: rds-app
+    #pullPolicy: Never
   enabled: true
   environment:
     # the password, which will be used to encrypt all user data
     SECRET_KEY: 1234
     EMBED_MODE: true
 layer1-port-owncloud:
+  ## Uncomment the lines below in case you are using a local image named `rds-port-owncloud`
+  #image:
+    #repository: rds-port-owncloud
+    #pullPolicy: Never
   # ownCloud will be configured through global.domains, because this way you need to configure it only once
   enabled: true
 layer1-port-zenodo:
