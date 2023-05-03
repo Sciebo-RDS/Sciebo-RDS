@@ -26,6 +26,11 @@ First we check out the code for the charts.
 
     $ git clone git@github.com:Sciebo-RDS/charts
 
+If we are going to patch sources and rebuild docker images to test the changes,
+we also need the RDS code:
+
+    $ git clone git@github.com:Sciebo-RDS/Sciebo-RDS
+
 Then we prepare our [values.yaml](values.yaml) configuration file for the k8s environment.
 The provided file should only need edition to add the `global.domains` for OwnCLoud and NextCloud,
 and the OAuth2 client IDs and secrets for zenodo and/or OFS,
@@ -72,7 +77,8 @@ At this point we can check the minikube IP and add the `global.describo.domain` 
     192.168.49.2
 
 If we want to deploy some local changes, via providing a local docker image for some k8s service,
-now is the time to build the image.
+now is the time to build the image. We will do this in the Sciebo-RDS cloned repository.
+
 If, for example, we are editing the RDS javascript code, we will want to provide locally the image for the layer0-web pods.
 To build the image we need to edit the dockerfile and remove the `zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/`
 prefixes from the FROM directives - so, for example, we would have `FROM node:16-alpine3.16 AS staging` instead of
@@ -91,12 +97,9 @@ And now we can configure our values.yaml file to use the built image:
         repository: rds-app
         pullPolicy: Never
 
-Note that as of 2023-05-02, and until these
-[two](https://github.com/Sciebo-RDS/charts/pull/6)
-[patches](https://github.com/Sciebo-RDS/Sciebo-RDS/pull/241)
-are merged, to work on minikube we need to build the images locally for both layer0-web
-(as shown above) and layer1-port-owncloud (as shown below). We have to build these images using
-[the Sciebo-RDS code available here](https://github.com/enriquepablo/Sciebo-RDS/tree/develop).
+Note that as of version 0.2.3, and until these
+to work on minikube we need to build the images locally for both layer0-web
+(as shown above) and layer1-port-owncloud (as shown below).
 
 To build the layer1-port-owncloud docker image:
 
@@ -213,6 +216,10 @@ Then, create the keys for the RDS app:
     <container id>
     $ docker exec -u www-data <container id> bash -c "/var/www/html/occ rds:create-keys"
 
+And finally, you should be able to use RDS from within the NextCloud instance.
+Remember to add an email address to your NextCloud account,
+or you won't be authorized to access RDS.
+
 
 Setting up OwnCloud
 --------------------
@@ -264,25 +271,25 @@ Then, create the keys for the RDS app:
     <container id>
     $ docker exec -u www-data <container id> bash -c "/var/www/owncloud/occ rds:create-keys"
 
+And finally, you should be able to use RDS from within the OwnCloud instance.
+Remember to add an email address to your OwnCloud account,
+or you won't be authorized to access RDS.
+
 
 Patching sources
 ----------------
 
-For RDS versions 0.2.3 and below, we need to add a couple of patches to the sources,
-at 2 different pods. In essence, without the EFSS (nextcloud in this case)
-being available at a public IP, we need 2 addresses to access it,
-one from the other pods and one from the browser. Hopefully this will be
-fixed in future versions, but I'll provide instructions here nevertheless,
-to demonstate how to patch the system for development and debugging.
+Here I provide a method to rapidly test changes to python code,
+simply using `docker cp` to push Python modules into containers.
 
 Note that this method is fairly brittle; as soon as k8s restarts some pod's container,
 the patches will be lost. To make the changes more permanent,
 they should be added to the images that k8s has available to run its containers.
-This method is suited for Python patches, that do not need compilation or transpilation,
-and is more agile than putting the changes in a new docker image.
+This method is only suited for Python patches, that do not need compilation or transpilation;
+for js or rust of go patches, we'd need to rebuild the docker images.
 
-So at this point, we want to patch the layer0-web service with the Python changes
-[in this PR](https://github.com/Sciebo-RDS/Sciebo-RDS/pull/241/files).
+So at this point, we want for example to patch the layer0-web service
+with changes to the `app.py` module. 
 
 In essence, we access the pods using docker, from the minikube container.
 For example:
@@ -295,36 +302,4 @@ For example:
     $ docker cp app.py <container id>:/srv/src/app.py
     $ docker restart <container id>
 
-NOTE: The patch for the layer1-port-owncloud services
-provided in the linked PR will not work: the service entry in the db
-was created when the k8s service was created,
-and so, it will contain a wrong refresh_url.
-So we now patch /app/lib/TokenService.py in layer2-port-service
-and hardcode the refresh_url there, to `http://nextcloud:8080`.
-This would be the patch:
-
-    diff --git a/RDS/layer2_use_cases/port/src/lib/TokenService.py b/RDS/layer2_use_cases/port/src/lib/TokenService.py
-    index 6489e23..f17cb4a 100644
-    --- a/RDS/layer2_use_cases/port/src/lib/TokenService.py
-    +++ b/RDS/layer2_use_cases/port/src/lib/TokenService.py
-    @@ -525,8 +525,15 @@ class TokenService:
-
-             logger.info(f"request body: {body}")
-
-    +        refresh_url_new = f"{service.refresh_url}"
-    +        if 'test-nextcloud' in refresh_url_new:
-    +            refresh_url_new = "http://nextcloud:8080/index.php/apps/oauth2/api/v1/token"
-    +        elif 'test-owncloud' in refresh_url_new:
-    +            refresh_url_new = "http://owncloud:8080/index.php/apps/oauth2/api/v1/token"
-    +
-             response = requests.post(
-    -            f"{service.refresh_url}",
-    +            # XXX only needed until the INTERNAL_ADDRESS patch is accepted
-    +            refresh_url_new,
-                 data=body,
-                 auth=(service.client_id, service.client_secret),
-                 verify=(os.environ.get("VERIFY_SSL", "True") == "True"),
-
-And finally, you should be able to use RDS from within the NextCloud / OwnCloud instance.
-Remember to add an email address to your NextCloud / OwnCloud account,
-or you won't be authorized to access RDS.
+After this, the layer0-web service should run with the modified code.
