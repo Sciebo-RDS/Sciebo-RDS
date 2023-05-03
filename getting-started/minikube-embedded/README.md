@@ -42,7 +42,7 @@ Some values in that file that we may want to adapt:
 :This has to correspond with the RDS version we want to deploy
 
 `global.describo.domain`, `global.rds.domain`
-:Domain names where describo and rds will be served. The default `test-rds.localdomain.test` and `` should be fine for most cases. We will later point them to the minikube IP in `/etc/hosts`.
+:Domain names where describo and rds will be served. The default `test-describo.localdomain.test` and `test-rds.localdomain.test` should be fine for most cases. We will later point them to the minikube IP in `/etc/hosts`.
 
 `global.domains`
 :Domain names where OwnCloud or NextCloud instances will be served. We start with no entries here; later, when we add the RDS instance as OAuth2 client for nextcloud, we will add one entry; we might have more than one entries here. Each entry will need a `name` that coincides with the domain name in the cloudIds provided by that EFSS, an address where it can be found, and OAuth2 client ID and secret for the RDS instance, we will create these later when we deploy and configure the EFSS.
