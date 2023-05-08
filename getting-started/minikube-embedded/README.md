@@ -1,26 +1,40 @@
+Developing for RDS with minikube
+================================
 
-Setting up the RDS instance
----------------------------
+The aim of this documentation is to show how to deploy an RDS instance in a
+minikube environment, and how to use it for development.
 
-Here we will deploy a local instance of RDS on a minikube environment.
-Many of the instructions here are copied from the instructions at `../setup-local-dev-env.md`,
-adapted to an embedded deployment rather than a standalone one,
-so it will be worth to check that document as well.
+Setting up the minikube environment
+-----------------------------------
 
-I have tested all this both in Debian 10.13 and in ubuntu 22.04 and in archlinux 2023-03-01 VMs .
+I have tested all this both in Debian 10.13 and in ubuntu 22.04 and in
+archlinux 2023-03-01 VMs.
 
-Prerequisites:
+Prerequisites of software:
 
  * kubectl (tested with version 1.26.1 (server) and 1.25.3 (client))
  * Minikube (tested with version 1.29.0)
  * Docker (tested with versions 23.0.0 and 23.0.1)
  * helm (tested with version 3.11.0 and 3.11.2)
 
-We also want to register an app with Zenodo's sandbox and/or OFS test site.
-To configure the app at those repositories,
-we use `https://test-rds.localdomain.test`
-as both Website URL and Redirect URI
-(unless we change these values in the provided `values.yaml` file).
+First we start from a clean slate:
+
+    $ minukube stop && minikube delete
+
+Then we set docker as the minikube driver, and start the minikube env:
+
+    $ minikube config set driver docker
+    $ minikube start --kubernetes-version=v1.26.1 --memory=5g
+
+Then we enable ingress and create a namespace named `rds`. If you want to
+change the name, you have to reflect the changes in the `values.yaml` for helm,
+described below.
+
+    $ minikube addons enable ingress
+    $ kubectl create ns rds
+
+Setting up the RDS instance
+---------------------------
 
 First we check out the code for the charts.
 
@@ -31,7 +45,7 @@ we also need the RDS code:
 
     $ git clone git@github.com:Sciebo-RDS/Sciebo-RDS
 
-Then we prepare our [values.yaml](values.yaml) configuration file for the k8s environment.
+Then we prepare our [values.yaml](values.yaml) configuration file to build the k8s environment with helm.
 The provided file should only need edition to add the `global.domains` for OwnCLoud and NextCloud,
 and the OAuth2 client IDs and secrets for zenodo and/or OFS,
 as we will see below.
@@ -45,82 +59,35 @@ Some values in that file that we may want to adapt:
 :Domain names where describo and rds will be served. The default `test-describo.localdomain.test` and `test-rds.localdomain.test` should be fine for most cases. We will later point them to the minikube IP in `/etc/hosts`.
 
 `global.domains`
-:Domain names where OwnCloud or NextCloud instances will be served. We start with no entries here; later, when we add the RDS instance as OAuth2 client for nextcloud, we will add one entry; we might have more than one entries here. Each entry will need a `name` that coincides with the domain name in the cloudIds provided by that EFSS, an address where it can be found, and OAuth2 client ID and secret for the RDS instance, we will create these later when we deploy and configure the EFSS.
+:Domains where OwnCloud or NextCloud instances will be served. We start with no entries here; later, when we set the RDS instance as OAuth2 client for nextcloud, we will add one entry. Later we might want to add another entry form OwnCloud. Each entry will need a `name` that coincides with the domain name in the cloudIds provided by that EFSS, an address and internal address where it can be found, and an OAuth2 client ID and secret for the RDS instance. We will create these later when we deploy and configure the EFSS; essentially, if we uncomment a `global.domains` entry in the provided `values.yaml` file, the only thing we should need to edit are the OAuth2 client ID an secret. More details below.
 
 `layer1-port-zenodo.environment`
-:To publish to Zenodo, we need to register our RDS instance as an OAuth2 client for zenodo, and set here the client ID and secret.
+:To publish to Zenodo, we need to register our RDS instance as an OAuth2 client for zenodo, and set here the client ID and secret. For development, it is convenient to use [Zenodo's sandbox](https://sandbox.zenodo.org/). To configure it, use `https://test-rds.localdomain.test` as both Website URL and Redirect URI (unless you change the `global.rds.domain` value in the `values.yaml` file).
 
 `layer1-port-openscienceframework.environment`
-:To publish to OFS, we need to register our RDS instance as an OAuth2 client for OFS, and set here the client ID and secret.
+:To publish to OFS, we need to register our RDS instance as an OAuth2 client for OFS, and set here the client ID and secret. For development, it is convenient to use [OSF's test site](https://test.osf.io/dashboard). To configure it, use `https://test-rds.localdomain.test` as both Website URL and Redirect URI (unless you change the `global.rds.domain` value in the `values.yaml` file).
 
-If you decide to not configure either zenodo of OFS, remember to set its `enabled` flag to false, and to comment out the corresponding section.
+If you decide to not configure either zenodo of OFS, remember to set its `enabled` flag to false in `values.yaml`, and to comment out the corresponding section.
 
 We can leave the rest of the values as provided.
 
-Now we deploy the k8s environment with minikube. First we start from a clean slate:
-
-    $ minukube stop && minikube delete
-
-Then we set docker as the minikube driver, and start the minikube env:
-
-    $ minikube config set driver docker
-    $ minikube start --kubernetes-version=v1.26.1 --memory=5g
-
-Then we enable ingress and create the namespace we have set in `values.yaml`, in `global.namespace.name`:
-
-    $ minikube addons enable ingress
-    $ kubectl create ns rds
-
-At this point we can check the minikube IP and add the `global.describo.domain` and `global.rds.domain` to `/etc/hosts`, pointing at that IP:
+At this point we can check the minikube IP and add the values of `global.describo.domain` and `global.rds.domain` to `/etc/hosts`, pointing at that IP:
 
     $ minikube ip
     192.168.49.2
 
-If we want to deploy some local changes, via providing a local docker image for some k8s service,
-now is the time to build the image. We will do this in the Sciebo-RDS cloned repository.
+Once we are happy with the `values.yaml` file, and the minikub environment is up,
+we are ready to deploy RDS to minikube.
 
-If, for example, we are editing the RDS javascript code, we will want to provide locally the image for the layer0-web pods.
-To build the image we need to edit the dockerfile and remove the `zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/`
-prefixes from the FROM directives - so, for example, we would have `FROM node:16-alpine3.16 AS staging` instead of
-`FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:16-alpine3.16 AS staging`.
+We use the [provided script](build-all-dependencies-with-helm.sh) to build and update the helm charts.
+This script is supposed to be run in the same directory where the charts repo is cloned.
 
-    $ cd RDS/layer0_ingress/web/
-    $ vim Dockerfile.rds-standalone
-    $ eval $(minikube -p minikube docker-env)  # this points the current terminal to the minikube docker environment
-    $ docker build -f Dockerfile.rds-standalone -t rds-app:0.10 .
-    $ docker tag rds-app:0.10 zivgitlab.wwu.io/rds-app:v0.2.3
-
-And now we can configure our values.yaml file to use the built image:
-
-    layer0-web:
-      image:
-        repository: rds-app
-        pullPolicy: Never
-
-Note that as of version 0.2.3, and until these
-to work on minikube we need to build the images locally for both layer0-web
-(as shown above) and layer1-port-owncloud (as shown below).
-
-To build the layer1-port-owncloud docker image:
-
-    $ cd RDS/layer1_adapters_and_ports/port_owncloud
-    $ vim dockerfile  # Remove the `zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/` prefix from the FROM directive
-    $ eval $(minikube -p minikube docker-env)  # this points the current terminal to the minikube docker environment
-    $ docker build -f dockerfile -t rds-port-owncloud:0.10 .
-    $ docker tag rds-port-owncloud:0.10 zivgitlab.wwu.io/rds-port-owncloud:v0.2.3
-
-And add to values.yaml:
-
-    layer1-port-owncloud:
-      image:
-        repository: rds-port-owncloud
-        pullPolicy: Never
-
-Now we use the [provided script](build-all-dependencies-with-helm.sh) to build and update the helm charts:
-
+    $ ls
+    build-all-dependencies-with-heml.sh charts
     $ bash build-all-dependencies-with-helm.sh
 
-And finally we  deploy the RDS stuff to the newly created environment:
+And finally we  deploy the RDS stuff to the newly created environment. This again supposes that we execute
+the helm command in the same directory where the charts repo and the `values.yaml` file are located.
 
     $ helm upgrade -n rds sciebords ./charts/charts/all/ -i --values values.yaml
 
@@ -276,6 +243,37 @@ Remember to add an email address to your OwnCloud account,
 or you won't be authorized to access RDS.
 
 
+Development of RDS
+------------------
+
+If we edit RDS code and want to test it in the minikube environment,
+we have to put that code within a docker image,
+and update the helm configuration to pick that image.
+We edit the code in the Sciebo-RDS cloned repository.
+
+If, for example, we are editing the RDS javascript code, we will want to provide locally the image for the layer0-web pods.
+So, from the root of the Sciebo-RDS repo:
+
+    $ cd RDS/layer0_ingress/web/
+    $ eval $(minikube -p minikube docker-env)  # this points the current terminal to the minikube docker environment
+    $ docker build -f Dockerfile.rds-standalone -t rds-app:0.10 .
+    $ docker tag rds-app:0.10 zivgitlab.wwu.io/rds-app:v0.2.3
+
+For the final tag, we may want to rplace 0.2.3 with whatever RDS version we are working on.
+
+And now we can configure our values.yaml file to use the built image:
+
+    layer0-web:
+      image:
+        repository: rds-app
+        pullPolicy: Never
+
+Note that when you stop the minikube environment with `minikube stop`,
+the docker images repo it uses to run the k8s containers is wipped uot,
+so if you restert the environment, you must rebuild the images that are
+local.
+
+
 Patching sources
 ----------------
 
@@ -284,7 +282,8 @@ simply using `docker cp` to push Python modules into containers.
 
 Note that this method is fairly brittle; as soon as k8s restarts some pod's container,
 the patches will be lost. To make the changes more permanent,
-they should be added to the images that k8s has available to run its containers.
+they should be added to the images that k8s has available to run its containers,
+as described above.
 This method is only suited for Python patches, that do not need compilation or transpilation;
 for js or rust of go patches, we'd need to rebuild the docker images.
 
