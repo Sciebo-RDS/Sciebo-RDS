@@ -257,9 +257,9 @@ So, from the root of the Sciebo-RDS repo:
     $ cd RDS/layer0_ingress/web/
     $ eval $(minikube -p minikube docker-env)  # this points the current terminal to the minikube docker environment
     $ docker build --build-arg IMAGE_PREFIX="" -f Dockerfile.rds-standalone -t rds-app:0.10 .
-    $ docker tag rds-app:0.10 zivgitlab.wwu.io/rds-app:v0.2.3
+    $ docker tag rds-app:0.10 zivgitlab.wwu.io/rds-app:v0.2.4
 
-For the final tag, we may want to replace 0.2.3 with whatever RDS version we are working on.
+For the final tag, we may want to replace 0.2.4 with whatever RDS version we are working on.
 
 And now we can configure our values.yaml file to use the built image:
 
