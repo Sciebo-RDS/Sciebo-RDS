@@ -283,7 +283,8 @@ class RDSNamespace(Namespace):
             saveResearch(parseResearchBack(research))
 
             self.__trigger_metadatasync(jsonData, research)
-            self.__trigger_filesync(jsonData, research)
+            fileUploadStatus = self.__trigger_filesync(jsonData, research)
+            emit("FileUploadStatus", fileUploadStatus)
 
             if (
                 research["synchronization_process_status"]
@@ -292,7 +293,7 @@ class RDSNamespace(Namespace):
                 self.__trigger_finish_sync(jsonData, research)
                 app.logger.debug("done synchronization, research: {}".format(research))
 
-                return True
+                return fileUploadStatus["success"]
         except Exception as e:
             app.logger.error(f"error in sync: {e}", exc_info=True)
 
@@ -373,11 +374,15 @@ class RDSNamespace(Namespace):
             research["synchronization_process_status"]
             == ProcessStatus.METADATA_SYNCHRONIZED.value
         ):
-            httpManager.makeRequest("triggerFileSynchronization", data=jsonData)
-            research[
-                "synchronization_process_status"
-            ] = ProcessStatus.FILEDATA_SYNCHRONIZED.value
-            self.__update_research_process(research)
+            result = httpManager.makeRequest("triggerFileSynchronization", data=jsonData)
+            if result[0]:
+                research[
+                    "synchronization_process_status"
+                ] = ProcessStatus.FILEDATA_SYNCHRONIZED.value
+                self.__update_research_process(research)
+            return result
+        
+        return False, ["Something unexpected happened"]
 
     @authenticated_only
     def on_addCredentials(self, jsonData):

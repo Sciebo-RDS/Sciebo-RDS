@@ -6,9 +6,17 @@ from RDS import Util
 import os
 
 owncloud_installation_url = os.getenv("OWNCLOUD_INSTALLATION_URL", "")
+# If the EFSS (OwnCloud / NextCloud) is running locally within the k8s environment,
+# (probably under minikube and without a public IP)
+# we need to access here the OAuth2 refresh token endpoint through an internal URL.
+# Note that when that is not the case, and the EFSS is accessible through a public IP,
+# and thus no internal URL is configured in the helm charts configuration for the EFSS,
+# OWNCLOUD_INTERNAL_INSTALLATION_URL will default to the value of OWNCLOUD_INSTALLATION_URL.
+# i.e. to the public URL.
+owncloud_internal_installation_url = os.getenv("OWNCLOUD_INTERNAL_INSTALLATION_URL", owncloud_installation_url)
 owncloud_redirect_uri = os.getenv("RDS_OAUTH_REDIRECT_URI", "")
 owncloud_oauth_token_url = "{}/index.php/apps/oauth2/api/v1/token".format(
-    owncloud_installation_url
+    owncloud_internal_installation_url
 )
 owncloud_oauth_id = os.getenv("OWNCLOUD_OAUTH_CLIENT_ID", "XY")
 owncloud_oauth_secret = os.getenv("OWNCLOUD_OAUTH_CLIENT_SECRET", "ABC")

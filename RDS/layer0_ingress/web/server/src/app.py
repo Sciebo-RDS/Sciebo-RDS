@@ -74,7 +74,10 @@ class DomainsDict(UserDict):
         except KeyError:
             status_code = 500
             req = None
-            url = self[key]["ADDRESS"]
+            # If the EFSS (OwnCloud / NextCloud) is running locally within the k8s environment,
+            # (probably under minikube and without a public IP)
+            # we need to access the publickey endpoint of the integration app through an internal URL.
+            url = self[key].get("INTERNAL_ADDRESS", self[key]["ADDRESS"])
             count = 5
 
             while status_code > 200 and count > 0:
