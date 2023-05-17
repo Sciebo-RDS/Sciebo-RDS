@@ -6,6 +6,7 @@ from lib.upload_zenodo import Zenodo
 from flask import jsonify, request, g, current_app
 from werkzeug.exceptions import abort
 from lib.Util import require_api_key, to_jsonld, from_jsonld
+import time
 
 logger = logging.getLogger()
 
@@ -57,33 +58,60 @@ def get(project_id):
 
 
 def zenodo(res):
-    result = {}
+    logger.debug(f"zenodo_res: {res}")
 
-    result["title"] = res["name"]
-    result["description"] = res["description"]
-    creator = res["creator"]
-    result["publication_date"] = res["datePublished"]
+    req = request.get_json(force=True)
+    userId = req.get("userId")
+    username = userId.split(":")[1].split("@")[0][2:]
 
-    creator = []
+    # this is the minimum of metadata that zenodo requires
+    result = {
+        'title': 'Untitled',
+        'upload_type': 'other',
+        'description': 'Uploaded from ScieboRDS',
+        'creators': [{'name': f'{username}',
+                      'affiliation': ''}]
+    }
 
-    if not isinstance(res["creator"], list):
-        res["creator"] = [res["creator"]]
+    # setting title
+    try:
+        result['title'] = res['name']
+    except:
+        result["title"] = f"Upload from ScieboRDS - {time.strftime('%Y-%m-%d')}"
+    
+    # setting description
+    try:
+        result["description"] = "".join(res["description"])
+    except:
+        result["description"] = f"Uploaded from ScieboRDS - {time.strftime('%Y-%m-%d')}"
+    
+    # setting publication_date
+    try:
+        result["publication_date"] = res["datePublished"][0]
+    except:
+        result["publication_date"] = time.strftime('%Y-%m-%d')
+    
+    # setting creators
+    try:
+        if not isinstance(res["creator"], list):
+            res["creator"] = [res["creator"]]
+        creators = []
+        creator = {}
+        for item in res["creator"]:
+            if isinstance(item, str):
+                creator['name'] = item
+            else:
+                if item['@type'] == 'Person':
+                    creator['name'] = item['name']
+                if item['@type'] == 'Organization':
+                    creator['affiliation'] = item['name']
+        creators.append(creator)
+        result["creators"] = creators
+    except:
+        pass
 
-    for c in res["creator"]:
-        if isinstance(c, str):
-            creator.append({
-                "name": c
-            })
-        else:
-            creator.append(c)
-
-    result["creators"] = creator
-
-    if res["zenodocategory"].find("/") > 0:
-        typ, subtyp = tuple(res["zenodocategory"].split("/", 1))
-        result["upload_type"] = typ
-        result["{}_type".format(typ)] = subtyp
-
+    logger.debug(f"zenodo_result: {result}")
+    
     return result
 
 
@@ -101,6 +129,7 @@ def post():
                 metadata = zenodo(doc.getElement(
                     doc.rootIdentifier, expand=True, clean=True))
             except Exception as e:
+                logger.debug("Error ROParser")
                 logger.error(e, exc_info=True)
 
         logger.debug("send metadata: {}".format(metadata))
@@ -138,15 +167,21 @@ def patch(project_id):
     logger.debug("request data: {}".format(req))
 
     metadata = req.get("metadata")
+    logger.debug("original data: {}".format(metadata))
     if metadata is not None:
         try:
-            doc = ROParser(metadata)
-            metadata = zenodo(doc.getElement(
-                doc.rootIdentifier, expand=True, clean=True))
+            try:
+                doc = ROParser(metadata)
+                docexpanded = doc.getElement(doc.rootIdentifier, expand=True, clean=False)
+                logger.debug(f"doc: {docexpanded}")
+                metadata = zenodo(doc.getElement(
+                    doc.rootIdentifier, expand=True, clean=False))
+            except:
+                metadata = zenodo(metadata)
         except Exception as e:
+            logger.debug("Error ROParser")
             logger.error(e, exc_info=True)
 
-    userId = req.get("userId")
     logger.debug("transformed data: {}".format(metadata))
 
     depoResponse = g.zenodo.change_metadata_in_deposition_internal(
