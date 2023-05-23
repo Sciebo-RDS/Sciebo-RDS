@@ -114,16 +114,19 @@ class Research:
             logger.exception(e)
 
         try:
-            self.processActivePorts()
+            return self.processActivePorts()
         except Exception as e:
             logger.exception(e)
 
-        return True
+        return False, []
 
     def processActivePorts(self):
         if len(self.getExportServices()) == 0:
             logger.debug("No active exportservice available")
-            return False
+            return False, []
+
+        results = []
+        messages = []
 
         for svc in self.importServices:
             logger.debug("import service: {}".format(svc.getJSON()))
@@ -156,7 +159,9 @@ class Research:
                     logger.debug("done writing to zipfile")
 
                 # useZipForContent skips services, which needs zip, if folder in folder found.
-                self.addFile(folderInFolder=useZipForContent, *fileTuple)
+                results.append(self.addFile(folderInFolder=useZipForContent, *fileTuple))
+                
+                    
 
             if useZipForContent:
                 import re
@@ -182,7 +187,12 @@ class Research:
                     for exportSvc in self.getExportServices()
                     if (exportSvc.zipForFolder)
                 ]
-        return True
+                
+        success = all([y[1]["success"] for y in results])
+        if not success:
+            messages = [y[1]["message"] for y in results if not y[1]["success"]]
+
+        return success, messages
 
     def triggerPassivePorts(self):
         if len(self.getExportServices(mode=FileTransferMode.passive)) == 0:
@@ -229,7 +239,7 @@ class Research:
             svc.addFile(*args, **kwargs)
             for svc in self.getExportServices()
             if not (folderInFolder and svc.zipForFolder)
-        ]
+        ][0]
 
     def removeAllFiles(self):
         """

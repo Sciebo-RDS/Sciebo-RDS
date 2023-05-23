@@ -1,3 +1,9 @@
+# v0.2.4
+
+### Changed
+- Improvements to the lokal Minikube setup
+- preparations for user-publishing feedback and metadata mapping for Zenodo
+
 # v0.2.3
 
 ### Added

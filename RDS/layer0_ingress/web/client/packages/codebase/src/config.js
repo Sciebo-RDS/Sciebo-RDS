@@ -1,4 +1,7 @@
 const config = {
+    version: require('../../../package.json').version || "0.0.0",
+    version_commit: "$RDS_COMMIT_ID" || "unknown",
+
     productionTip: false,
     socket: {
         server: process.env.SOCKETIO_HOST || "$SOCKETIO_HOST",

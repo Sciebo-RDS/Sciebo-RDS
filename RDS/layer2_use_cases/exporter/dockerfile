@@ -1,4 +1,6 @@
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/python:3.8
+ARG IMAGE_PREFIX="zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/"
+
+FROM ${IMAGE_PREFIX}python:3.8
 EXPOSE 8080
 
 # set the base installation, requirements are not changed often

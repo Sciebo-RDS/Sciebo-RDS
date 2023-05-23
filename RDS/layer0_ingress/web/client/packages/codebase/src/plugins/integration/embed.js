@@ -23,6 +23,14 @@ export default {
                 if (event.data.length > 0) {
                     var payload = JSON.parse(event.data);
                     switch (payload.event) {
+                        case "from-nextcloud":
+                            // NextCloud and OwnCloud provide different layouts,
+                            // and the style for the RDS app is based on the OwnCloud layout.
+                            // In NextCloud, this style results in having the "getting started" button hidden;
+                            // the code below changes the style to show the button.
+                            const buttonElem = document.getElementById("getting-started-button");
+                            buttonElem.style.bottom = "2.5rem";
+                            break;
                         case "informations":
                             let parsed = JSON.parse(payload.data)
                             let info = parsed.jwt

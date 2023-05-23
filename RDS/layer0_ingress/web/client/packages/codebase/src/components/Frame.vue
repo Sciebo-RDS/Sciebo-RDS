@@ -18,6 +18,7 @@
 
     <v-card
       class="text-center pa-2"
+      id="getting-started-button"
       style="width: 100%; position: absolute; bottom: 0px"
       tile
       flat

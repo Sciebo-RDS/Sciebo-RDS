@@ -242,6 +242,9 @@ class Service:
                 files, data, self.getJSON())
         )
 
+        message = ""
+        result = True
+
         if self.metadata:
             response_to = requests.post(
                 f"{self.portaddress}/metadata/project/{self.getProjectId()}/files",
@@ -252,13 +255,15 @@ class Service:
 
             if response_to.status_code >= 300:
                 logger.error(response_to.json())
-                return False
+                message = response_to.json()
+                result = False
 
         if self.fileStorage:
             # TODO: fileStorage can also add files
-            return False
+            message = "Filestorage not implemented".json()
+            result = False
 
-        return True
+        return result, message
 
     def removeFile(self, file_id):
         found = False
