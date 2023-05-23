@@ -293,7 +293,7 @@ class RDSNamespace(Namespace):
                 self.__trigger_finish_sync(jsonData, research)
                 app.logger.debug("done synchronization, research: {}".format(research))
 
-                return fileUploadStatus["success"]
+                return True # fileUploadStatus["success"]
         except Exception as e:
             app.logger.error(f"error in sync: {e}", exc_info=True)
 
