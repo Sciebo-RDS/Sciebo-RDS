@@ -1,11 +1,13 @@
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:16-alpine3.16 AS staging
+ARG IMAGE_PREFIX="zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/"
+
+FROM ${IMAGE_PREFIX}node:16-alpine3.16 AS staging
 WORKDIR /src
 RUN apk add findutils
 ADD client .
 RUN mkdir -p ./pkg/ \
     && find . -type d -name node_modules -prune -false -o \( -name "package.json" -o -name "yarn.lock" -o -name "package-lock.json" \)  -exec install -D '{}' './pkg/{}' \;
     
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:16-alpine3.16 AS web
+FROM ${IMAGE_PREFIX}node:16-alpine3.16 AS web
 WORKDIR /app
 COPY --from=staging /src/pkg ./
 RUN yarn install --non-interactive
@@ -16,7 +18,7 @@ RUN echo '$(function () {' > packages/classic/php/js/app.js
 RUN cat packages/classic/dist/js/app.js >> packages/classic/php/js/app.js
 RUN echo "});" >> packages/classic/php/js/app.js
 
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/owncloud/server:10.8
+FROM ${IMAGE_PREFIX}owncloud/server:10.8
 COPY --from=web /app/packages/classic/php /var/www/owncloud/apps/rds
 RUN cd /var/www/owncloud/apps/rds && \
     composer install --prefer-dist --no-dev && \
