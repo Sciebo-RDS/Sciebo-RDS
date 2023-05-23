@@ -1,16 +1,18 @@
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:16-alpine3.16 AS staging
+ARG IMAGE_PREFIX="zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/"
+
+FROM ${IMAGE_PREFIX}node:16-alpine3.16 AS staging
 WORKDIR /src
 RUN apk add findutils
 COPY client .
 RUN mkdir -p ./pkg/ \
     && find . -type d -name node_modules -prune -false -o \( -name "package.json" -o -name "yarn.lock" -o -name "package-lock.json" \)  -exec install -D '{}' './pkg/{}' \;
 
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/node:16-alpine3.16 AS web
+FROM ${IMAGE_PREFIX}node:16-alpine3.16 AS web
 WORKDIR /app
 COPY --from=staging /src/pkg ./
 RUN yarn install --non-interactive
 COPY client .
 RUN yarn web
 
-FROM zivgitlab.uni-muenster.de/sciebo-rds/dependency_proxy/containers/nginx:latest
+FROM ${IMAGE_PREFIX}nginx:latest
 COPY --from=web /app/packages/web/dist /usr/share/nginx/html
