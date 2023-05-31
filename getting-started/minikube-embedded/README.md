@@ -1,18 +1,15 @@
-Developing for RDS with minikube
-================================
+# Developing for RDS with minikube
 
 The aim of this documentation is to show how to deploy an RDS instance in a
 minikube environment, and how to use it for development.
 
-Basic setup
------------
+## Basic setup
 
 We will be working on a dedicated directory, e.g. `~/RDS/`. All the commands
 will be assumed to be executed there (unless stated otherwise) and all needed
 files will be assumed to be placed there.
 
-Setting up the bare minikube environment
-----------------------------------------
+## Setting up the bare minikube environment
 
 This has been tested in Debian 10.13, ubuntu 22.04, and archlinux 2023-03-01
 VMs.
@@ -42,8 +39,7 @@ described below.
     $ minikube addons enable ingress
     $ kubectl create ns rds
 
-Setting up the RDS instance
----------------------------
+## Setting up the RDS instance
 
 First we check out the code for the Helm charts.
 
@@ -66,19 +62,19 @@ as we will see below.
 Some values in that file that we may want to adapt:
 
 `global.image.tag`
-:This has to correspond with the RDS version we want to deploy. Should be 0.2.4 or above.
+: This has to correspond with the RDS version we want to deploy. Should be 0.2.4 or above.
 
 `global.describo.domain`, `global.rds.domain`
-:Domain names where describo and rds will be served. The default `test-describo.localdomain.test` and `test-rds.localdomain.test` should be fine for most cases. We will later point them to the minikube IP in `/etc/hosts`.
+: Domain names where describo and rds will be served. The default `test-describo.localdomain.test` and `test-rds.localdomain.test` should be fine for most cases. We will later point them to the minikube IP in `/etc/hosts`.
 
 `global.domains`
-:Domains where OwnCloud or NextCloud instances will be served. We start with no entries here; later, when we set the RDS instance as OAuth2 client for nextcloud, we will add one entry. Later we might want to add another entry form OwnCloud. Each entry will need a `name` that coincides with the domain name in the cloudIds provided by that EFSS, an address and internal address where it can be found, and an OAuth2 client ID and secret for the RDS instance. We will create these later when we deploy and configure the EFSS; essentially, if we uncomment a `global.domains` entry in the provided `values.yaml` file, the only thing we should need to edit are the OAuth2 client ID an secret. More details below.
+: Domains where OwnCloud or NextCloud instances will be served. We start with no entries here; later, when we set the RDS instance as OAuth2 client for nextcloud, we will add one entry. Later we might want to add another entry form OwnCloud. Each entry will need a `name` that coincides with the domain name in the cloudIds provided by that EFSS, an address and internal address where it can be found, and an OAuth2 client ID and secret for the RDS instance. We will create these later when we deploy and configure the EFSS; essentially, if we uncomment a `global.domains` entry in the provided `values.yaml` file, the only thing we should need to edit are the OAuth2 client ID an secret. More details below.
 
 `layer1-port-zenodo.environment`
-:To publish to Zenodo, we need to register our RDS instance as an OAuth2 client for zenodo, and set here the client ID and secret. For development, it is convenient to use [Zenodo's sandbox](https://sandbox.zenodo.org/). To configure it, use `https://test-rds.localdomain.test` as both Website URL and Redirect URI in the OAuth2 form at the Zenodo site (unless you change the `global.rds.domain` value in the `values.yaml` file).
+: To publish to Zenodo, we need to register our RDS instance as an OAuth2 client for zenodo, and set here the client ID and secret. For development, it is convenient to use [Zenodo's sandbox](https://sandbox.zenodo.org/). To configure it, use `https://test-rds.localdomain.test` as both Website URL and Redirect URI in the OAuth2 form at the Zenodo site (unless you change the `global.rds.domain` value in the `values.yaml` file).
 
 `layer1-port-openscienceframework.environment`
-:To publish to OSF, we need to register our RDS instance as an OAuth2 client for OSF, and set here the client ID and secret. For development, it is convenient to use [OSF's test site](https://test.osf.io/dashboard). To configure it, use `https://test-rds.localdomain.test` as both Website URL and Redirect URI (unless you change the `global.rds.domain` value in the `values.yaml` file).
+: To publish to OSF, we need to register our RDS instance as an OAuth2 client for OSF, and set here the client ID and secret. For development, it is convenient to use [OSF's test site](https://test.osf.io/dashboard). To configure it, use `https://test-rds.localdomain.test` as both Website URL and Redirect URI (unless you change the `global.rds.domain` value in the `values.yaml` file).
 
 If you decide to not configure either Zenodo of OSF, remember to set its `enabled` flag to false in `values.yaml`, and to comment out the corresponding section.
 
@@ -146,8 +142,7 @@ The problems with layer0-web and layer1-port-owncloud-test-address-de will get f
 Note that the last part of the pod names will vary from deployment to deployment.
 
 
-Setting up NextCloud
---------------------
+## Setting up NextCloud
 
 We will host the NextCloud instance under `test-nextcloud.localdomain.test`,
 so first, in `/etc/hosts`, we point that name to minikube's IP.
@@ -212,8 +207,7 @@ or you won't be authorized to access RDS.
 And now you should be able to use RDS from within the NextCloud instance.
 
 
-Setting up OwnCloud
---------------------
+## Setting up OwnCloud
 
 We will host the OwnCloud instance under `test-owncloud.localdomain.test`,
 so first, in `/etc/hosts`, we point that name to minikube's IP.
@@ -273,8 +267,7 @@ or you won't be authorized to access RDS.
 And now you should be able to use RDS from within the OwnCloud instance.
 
 
-Development of RDS
-------------------
+## Development of RDS
 
 If we edit RDS code and want to test it in the minikube environment,
 we have to put that code within a docker image,
@@ -308,8 +301,7 @@ so if you restert the environment, you must rebuild the images that are
 local.
 
 
-Patching sources
-----------------
+## Patching sources
 
 Here I provide a method to rapidly test changes to python code,
 simply using `docker cp` to push Python modules into containers.
