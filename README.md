@@ -35,6 +35,12 @@ To deploy Sciebo RDS you will need:
 #### Getting Started
 
 Please refer to our [Getting Started](https://www.research-data-services.org/gettingstarted/) Guide to learn how to deploy Sciebo RDS.
+
+#### Development environment
+
+To deploy a local environment on top of [Minikube](https://minikube.sigs.k8s.io/docs/), including RDS and NextCloud and / or OwnCloud,
+please refer to [this guide](/getting-started/minikube-embedded/README.md).
+
 ## Monorepo Structure
 
 We use a monorepo to make it easier to track related changes. This means that you will find all relevant files in this Github repository.
