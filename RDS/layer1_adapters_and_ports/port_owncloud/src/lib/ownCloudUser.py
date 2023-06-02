@@ -26,9 +26,8 @@ class OwncloudUser:
         # (probably under minikube and without a public IP)
         # we need to access here the webdav endpoint through an internal URL.
         # Note that when that is not the case, and the EFSS is accessible through a public IP,
-        # and thus no internal URL is configured in the helm charts configuration for the EFSS,
-        # OWNCLOUD_INTERNAL_INSTALLATION_URL will default to the value of OWNCLOUD_INSTALLATION_URL.
-        # i.e. to the public URL.
+        # and thus no internal URL is configured, owncloud_installation_url will default to
+        # the value of OWNCLOUD_INSTALLATION_URL, i.e. to the public URL.
         owncloud_installation_url = os.getenv("OWNCLOUD_INTERNAL_INSTALLATION_URL",
                                               os.getenv("OWNCLOUD_INSTALLATION_URL",
                                                         "http://localhost:3000"))
