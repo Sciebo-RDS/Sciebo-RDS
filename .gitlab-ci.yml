@@ -8,7 +8,6 @@ stages:
   - deploy
 
 include:
-  - "/charts/.gitlab-ci.yml"
   - "/RDS/layer0_ingress/web/.gitlab-ci.yml"
   - "/RDS/layer0_ingress/official_doc/.gitlab-ci.yml"
   - "/RDS/layer1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
@@ -167,4 +166,3 @@ pages:
     - yarn build:gitlab
     - rsync -avh ./public/ ../public/${DOC_FOLDER}
     - cd ..
-    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts ./public/charts --recursive
