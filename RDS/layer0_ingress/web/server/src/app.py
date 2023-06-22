@@ -102,6 +102,19 @@ class DomainsDict(UserDict):
 # This handles also the single installation, because it is a one entry list in this case.
 with open("domains.json") as f:
     domains = json.load(f)
+    for domain in domains:
+        # If the oauth client id or secret is set in the environment for the correspondning domain, we will take it from there rather than from the file
+        upper_name = domain['name'].upper().replace('.', '_').replace('-', '_')
+        client_id_name = f"{upper_name}_OAUTH_CLIENT_ID"
+        client_secret_name = f"{upper_name}_OAUTH_CLIENT_SECRET"
+        client_id = os.getenv(client_id_name)
+        client_secret = os.getenv(client_secret_name)
+        if client_id:
+            domain['OAUTH_CLIENT_ID'] = client_id
+        if client_secret:
+            domain['OAUTH_CLIENT_SECRET'] = client_secret
+
+
 
 domains_dict = DomainsDict({val["name"].translate(trans_tbl): val for val in domains})
 
