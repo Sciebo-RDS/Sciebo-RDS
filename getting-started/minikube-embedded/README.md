@@ -182,7 +182,7 @@ adding an entry like this:
         SUPPORT_EMAIL: mail@localdomain.test
         MANUAL_URL: usermanual.localdomain.test
 
-And update the helm release:
+And update the helm release (notice: . refers to the charts git repo)
 
     $ helm upgrade -n rds sciebords ./charts/charts/all/ -i --values values.yaml
 
@@ -291,7 +291,7 @@ And now we can configure our values.yaml file to use the built image:
         repository: rds-app
         pullPolicy: Never
 
-And update the helm release:
+And update the helm release (recall: charts is a separate git repo)
 
     $ helm upgrade -n rds sciebords ./charts/charts/all/ -i --values values.yaml
 

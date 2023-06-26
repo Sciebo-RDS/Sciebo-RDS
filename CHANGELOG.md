@@ -1,3 +1,9 @@
+# intermediate repo restructuring
+
+### Changed
+- helm charts in monorepo deprecated
+- use https://github.com/Sciebo-RDS/charts for helm chart development
+
 # v0.2.4
 
 ### Changed

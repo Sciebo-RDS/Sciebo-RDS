@@ -89,7 +89,7 @@ Ad 1.
 Line 2 needs to be: 'apiVersion: networking.k8s.io/v1'
 
 Ad 2.
-From the minikube.sh script:
+From the minikube.sh script, after cloning https://github.com/Sciebo-RDS/charts.git
 
 ```sh
 echo "build all dependencies with helm"
