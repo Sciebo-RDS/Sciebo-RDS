@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: serviceportconfig
-  namespace: {{ .Release.Namespace  }}
-data:
-  IGNORE_PROJECTS: {{ .Values.environment.IGNORE_PROJECTS | quote }}
