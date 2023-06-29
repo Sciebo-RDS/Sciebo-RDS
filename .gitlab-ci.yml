@@ -121,7 +121,7 @@ upload_test_coverage:
     - make doc
 
 test:docusaurus:
-  image:  node:lts-alpine
+  image:  harbor.uni-muenster.de/proxy-docker/library/node:lts-alpine
   variables:
     FOLDER: docs/
   script:
@@ -137,7 +137,7 @@ test:docusaurus:
     - when: always
 
 pages:
-  image: node:lts-alpine
+  image: harbor.uni-muenster.de/proxy-docker/library/node:lts-alpine
   stage: pages
   # allow caching for faster deployment
   cache:
