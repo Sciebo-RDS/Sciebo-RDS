@@ -5,7 +5,6 @@
 build:official_doc:
   needs:
     - pages
-    - charts_pages
   stage: pages
   cache:
     paths:

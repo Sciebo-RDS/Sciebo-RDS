@@ -80,7 +80,8 @@ rm -Rf cert
 echo "########## Deploy workaround ##########"
 echo "#######################################"
 echo "build all dependencies with helm"
-cd ./charts
+echo "for the next step to work you need to clone https://github.com/Sciebo-RDS/charts.git"
+cd ./charts || exit 1
 for d in */ ; do
     echo "Going into dir: $d"
     cd "$d"

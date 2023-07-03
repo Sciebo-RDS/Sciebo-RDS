@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# if charts is not present you probably forgot to clone Sciebo-RDS/charts
 cd ./charts/charts || exit
 for d in */ ; do
     (

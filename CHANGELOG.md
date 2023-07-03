@@ -1,3 +1,10 @@
+# v0.2.5
+
+### Changed
+- removes helm charts in monorepo (deprecated)
+- use https://github.com/Sciebo-RDS/charts for helm chart development
+- adds ability to read secrets from env
+- improves local minikube setup and docs
 # v0.2.4
 
 ### Changed

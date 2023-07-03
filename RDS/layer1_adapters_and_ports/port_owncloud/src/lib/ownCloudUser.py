@@ -22,9 +22,19 @@ class OwncloudUser:
                 userId, "port-owncloud")
         )
 
+        # If the EFSS (OwnCloud / NextCloud) is running locally within the k8s environment,
+        # (probably under minikube and without a public IP)
+        # we need to access here the webdav endpoint through an internal URL.
+        # Note that when that is not the case, and the EFSS is accessible through a public IP,
+        # and thus no internal URL is configured, owncloud_installation_url will default to
+        # the value of OWNCLOUD_INSTALLATION_URL, i.e. to the public URL.
+        owncloud_installation_url = os.getenv("OWNCLOUD_INTERNAL_INSTALLATION_URL",
+                                              os.getenv("OWNCLOUD_INSTALLATION_URL",
+                                                        "http://localhost:3000"))
+
         options = {
             "webdav_hostname": "{}/remote.php/webdav".format(
-                os.getenv("OWNCLOUD_INSTALLATION_URL", "http://localhost:3000")
+                owncloud_installation_url
             ),
             "webdav_token": self._access_token,
         }

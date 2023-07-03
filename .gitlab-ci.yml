@@ -8,7 +8,6 @@ stages:
   - deploy
 
 include:
-  - "/charts/.gitlab-ci.yml"
   - "/RDS/layer0_ingress/web/.gitlab-ci.yml"
   - "/RDS/layer0_ingress/official_doc/.gitlab-ci.yml"
   - "/RDS/layer1_adapters_and_ports/port_zenodo/.gitlab-ci.yml"
@@ -122,7 +121,7 @@ upload_test_coverage:
     - make doc
 
 test:docusaurus:
-  image:  node:lts-alpine
+  image:  harbor.uni-muenster.de/proxy-docker/library/node:lts-alpine
   variables:
     FOLDER: docs/
   script:
@@ -138,7 +137,7 @@ test:docusaurus:
     - when: always
 
 pages:
-  image: node:lts-alpine
+  image: harbor.uni-muenster.de/proxy-docker/library/node:lts-alpine
   stage: pages
   # allow caching for faster deployment
   cache:
@@ -167,4 +166,3 @@ pages:
     - yarn build:gitlab
     - rsync -avh ./public/ ../public/${DOC_FOLDER}
     - cd ..
-    - aws --endpoint-url https://radosgw.public.os.wwu.de s3 cp s3://sciebords-charts ./public/charts --recursive

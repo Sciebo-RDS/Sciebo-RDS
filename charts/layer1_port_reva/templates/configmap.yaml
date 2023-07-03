@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: portrevaconfig
-  namespace: {{ .Release.Namespace  }}
-data:
-  RDS_REVA_HOST: {{ .Values.environment.RDS_REVA_HOST | quote }}
-  RDS_REVA_USER: {{ .Values.environment.RDS_REVA_USER | quote }}
-  RDS_REVA_PASSWORD: {{ .Values.environment.RDS_REVA_PASSWORD | quote }}
