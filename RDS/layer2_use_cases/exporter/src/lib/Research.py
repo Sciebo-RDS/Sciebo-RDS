@@ -192,7 +192,7 @@ class Research:
         if not success:
             messages = [y[1]["message"] for y in results if not y[1]["success"]]
 
-        return success, messages
+        return success, messages, results
 
     def triggerPassivePorts(self):
         if len(self.getExportServices(mode=FileTransferMode.passive)) == 0:

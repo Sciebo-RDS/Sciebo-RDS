@@ -255,8 +255,9 @@ class Service:
 
             if response_to.status_code >= 300:
                 logger.error(response_to.json())
-                message = response_to.json()
                 result = False
+
+            message = response_to.json()
 
         if self.fileStorage:
             # TODO: fileStorage can also add files
