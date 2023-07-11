@@ -277,13 +277,25 @@ class RDSNamespace(Namespace):
             app.logger.debug(
                 "start synchronization\nresearch before: {}".format(research)
             )
-            self.__trigger_project_creation(research)
+            projectId = self.__trigger_project_creation(research)
+            emit("projectCreatedInService", {
+                "researchIndex": jsonData["researchIndex"],
+                "projectId": projectId
+            })
+
             app.logger.debug("research after: {}".format(parseResearchBack(research)))
 
             saveResearch(parseResearchBack(research))
 
-            self.__trigger_metadatasync(jsonData, research)
+            metadataSynced = self.__trigger_metadatasync(jsonData, research)
+            emit("metadataSynced", {
+                "researchIndex": jsonData["researchIndex"],
+                "metadataSynced": metadataSynced
+            })
+
             fileUploadStatus = self.__trigger_filesync(jsonData, research)
+            if type(fileUploadStatus) is dict:
+                fileUploadStatus["researchIndex"] = jsonData["researchIndex"]
             emit("FileUploadStatus", fileUploadStatus)
 
             if (
@@ -328,7 +340,9 @@ class RDSNamespace(Namespace):
             if port["status"] != ProcessStatus.START.value:
                 continue
 
-            self.__trigger_project_creation_for_port(research, index, port)
+            projectId = self.__trigger_project_creation_for_port(research, index, port)
+
+            return projectId
 
     def __trigger_project_creation_for_port(self, research, index, port):
         parsedBackPort = parsePortBack(port)
@@ -350,6 +364,10 @@ class RDSNamespace(Namespace):
 
             research["portOut"][index]["status"] = ProcessStatus.PROJECT_CREATED.value
             self.__update_research_process(research)
+
+            if "projectId" in createProjectResp:
+                return createProjectResp["projectId"]
+        
         except:
             app.logger.debug(
                 "no project were created for {}".format(parsedBackPort["servicename"])
@@ -364,10 +382,14 @@ class RDSNamespace(Namespace):
                     "synchronization_process_status"
                 ] = ProcessStatus.METADATA_SYNCHRONIZED.value
                 self.__update_research_process(research)
+                return True
+            
+            return False
         except:
             app.logger.debug(
                 "project does not support metadata sync for data {}".format(jsonData)
             )
+            return False
 
     def __trigger_filesync(self, jsonData, research):
         if (

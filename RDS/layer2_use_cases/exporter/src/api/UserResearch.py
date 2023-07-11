@@ -14,7 +14,7 @@ def post(user_id, research_id):
     return jsonify({
         "success" : success,
         "messages": str(messages),
-        "results": str(results)
+        "fileSuccess": str(results)
     })
 
 
