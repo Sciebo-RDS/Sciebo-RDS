@@ -26,7 +26,7 @@ export default {
                         case "from-nextcloud":
                             // NextCloud and OwnCloud provide different layouts,
                             // and the style for the RDS app is based on the OwnCloud layout.
-                            // In NextCloud, this style results in having the "getting started" button hidden;
+                            // In NextCloud, this style results in having the "get started" button hidden;
                             // the code below changes the style to show the button.
                             const buttonElem = document.getElementById("getting-started-button");
                             buttonElem.style.bottom = "2.5rem";

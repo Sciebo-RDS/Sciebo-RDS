@@ -7,7 +7,7 @@
     >
       <translate>Click here to</translate>&nbsp;
       <v-btn color="primary" @click="clickGettingStarted">
-        <translate>Getting started</translate>
+        <translate>Get started</translate>
       </v-btn>
     </Frame>
     <v-stepper v-model="currentStep" v-else>
