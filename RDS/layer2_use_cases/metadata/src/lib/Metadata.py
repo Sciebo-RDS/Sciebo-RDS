@@ -253,6 +253,6 @@ class Metadata:
             )
             logger.debug("work on port {}".format(port))
 
-            publishInPort(portname, projectId, token)
+            success, identifier = publishInPort(portname, projectId, token)
 
-        return True
+        return success, identifier

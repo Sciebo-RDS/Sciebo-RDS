@@ -101,7 +101,7 @@ def patch(user_id, research_index):
 def put(user_id, research_index):
     mdService = Metadata(testing=current_app.config.get("TESTING"))
     research_id = mdService.getResearchId(user_id, int(research_index))
-    success, resp = mdService.publish(research_id)
+    success, identifier = mdService.publish(research_id)
 
     url = "{}".format(
         os.getenv("CENTRAL_SERVICE_RESEARCH_MANAGER",
@@ -114,6 +114,6 @@ def put(user_id, research_index):
     )
 
     if success:
-        return jsonify(resp)
+        return jsonify(identifier), 200
 
     return None, 400

@@ -302,7 +302,12 @@ class RDSNamespace(Namespace):
                 research["synchronization_process_status"]
                 == ProcessStatus.FILEDATA_SYNCHRONIZED.value
             ):
-                self.__trigger_finish_sync(jsonData, research)
+                identifier = self.__trigger_finish_sync(jsonData, research)
+                emit("identifierAssigned", {
+                "researchIndex": jsonData["researchIndex"],
+                "DOI": identifier
+            })
+
                 app.logger.debug("done synchronization, research: {}".format(research))
 
                 return True # fileUploadStatus["success"]
@@ -346,6 +351,8 @@ class RDSNamespace(Namespace):
 
         # refresh projectlist for user
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))
+
+        return identifier["DOI"]
 
     def __trigger_project_creation(self, research):
         for index, port in enumerate(research["portOut"]):
