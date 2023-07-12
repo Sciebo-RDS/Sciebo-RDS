@@ -38,11 +38,11 @@ def post(project_id):
     except Exception as e:
         logger.error(f"Could not upload file {filename}")
 
-        return jsonify({"filename": filename, "message": f"Could not upload file {filename}, exception: {e}"}), 503
+        return jsonify({"success": False,"filename": filename, "message": f"Could not upload file {filename}, exception: {e}"}), 503
 
     logger.debug(f"Finished uploading file {filename}")
 
-    return jsonify({"filename": filename, "message": f"Successfully uploaded file {filename}"}), 200
+    return jsonify({"success": True,"filename": filename, "message": f"Successfully uploaded file {filename}"}), 200
 
 @require_api_key
 def patch(project_id, file_id):
