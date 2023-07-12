@@ -39,6 +39,7 @@
                 <v-img :src="iconPortOut" style="outline-offset: 5px;outline: 1px solid #000;outline-radius: 0%;" />
               </v-col>
             </v-row>
+            {{ publishingSteps }}
           </v-card-text>
         </v-card>
       </v-col>
@@ -49,9 +50,34 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { socket } from "@/socket";
 
 export default {
   props: ["project", "published"],
+  data() {
+    return {
+      publishingSteps: []
+    };
+  },
+  mounted: function () {
+    socket.on("projectCreatedInService", (data) => {
+      if (data.researchindex == this.project.researchindex) {
+        this.publishingSteps.push({"icon": "checkmark", "message": "Project created with ID " + data.projectId})
+      } 
+    });
+    socket.on("metadataSynced", (data) => {
+      if (data.researchindex == this.project.researchindex) {
+        this.publishingSteps.push({"icon": "checkmark", "message": "Added metadata to project..."})
+      } 
+    });
+    socket.on("FileUploadStatus", (data) => {
+      if (data.researchindex == this.project.researchindex) {
+
+        publishedFilesCount = data.fileSuccess.filter(h => h.success).length
+        this.publishingSteps.push({"icon": "checkmark", "message": `${publishedFilesCount}/${data.fileSuccess.length} files published`})
+      } 
+    });
+  },
   computed: {
     ...mapGetters({
       loadedPortIn: "getLoadedPortIn",
