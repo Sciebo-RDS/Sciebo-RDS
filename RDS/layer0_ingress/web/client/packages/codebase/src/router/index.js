@@ -21,12 +21,12 @@ let routes = [
     component: Projects,
     icon: "mdi-lightbulb-on",
   },
- /*  {
+   {
     path: "/archive",
     name: "Archive",
     component: Archive,
     icon: "mdi-earth",
-  }, */
+  },
   {
     path: "/services",
     name: "Services",
