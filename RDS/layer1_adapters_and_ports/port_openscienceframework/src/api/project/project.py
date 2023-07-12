@@ -112,7 +112,7 @@ def put(project_id):
     project.public = True
 
     if project.update():
-        project.create_doi()
-        return True, 200
+        identifier = project.create_doi()
+        return jsonify(identifier), 200
 
     abort(400)

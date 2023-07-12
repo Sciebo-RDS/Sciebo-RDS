@@ -325,8 +325,20 @@ class RDSNamespace(Namespace):
             return tmp_research
         return research
 
-    def __trigger_finish_sync(self, jsonData, research):
-        httpManager.makeRequest("finishResearch", data=jsonData)
+    def __trigger_finish_sync(self, jsonData, research, index=0):
+        identifier = json.loads(
+            httpManager.makeRequest("finishResearch", data=jsonData)
+        )
+
+        if "customProperties" not in research["portOut"][index]:
+            research["portOut"][index]["properties"]["customProperties"] = {}
+
+        if identifier is not None:
+            research["portOut"][index]["properties"]["customProperties"].update(
+                {
+                    "DOI": identifier
+                }
+            )
 
         research["synchronization_process_status"] = ProcessStatus.FINISHED.value
         self.__update_research_process(research)

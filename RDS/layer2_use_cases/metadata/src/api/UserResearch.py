@@ -101,7 +101,7 @@ def patch(user_id, research_index):
 def put(user_id, research_index):
     mdService = Metadata(testing=current_app.config.get("TESTING"))
     research_id = mdService.getResearchId(user_id, int(research_index))
-    resp = mdService.publish(research_id)
+    success, resp = mdService.publish(research_id)
 
     url = "{}".format(
         os.getenv("CENTRAL_SERVICE_RESEARCH_MANAGER",
@@ -113,7 +113,7 @@ def put(user_id, research_index):
         verify=(os.environ.get("VERIFY_SSL", "True") == "True"), json={"finish": True}
     )
 
-    if resp:
-        return None, 204
+    if success:
+        return resp, 204
 
     return None, 400

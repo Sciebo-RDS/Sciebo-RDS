@@ -12,7 +12,15 @@
                     </v-container>
                 </v-sheet>
         <v-card flat class="overflow-y-auto pa-5" style="max-height: calc( 100vh - 7.9em )">
-        {{project}}<p/>
+        <p>Projektname: {{project.researchname}}</p>
+        <v-divider></v-divider>
+        <p v-if="project.portOut[0].port == 'port-openscienceframework'">
+            Publication ID:
+                <a :href="'https://osf.io' + project.portOut[0].properties.customProperties.projectId" target="_blank">
+                    {{ project.portOut[0].properties.customProperties.projectId }}
+                </a> <br>
+            Identifier (DOI): {{ !!project.portOut[0].properties.customProperties.DOI ? project.portOut[0].properties.customProperties.DOI : "N/A"  }}
+        </p>
     </v-card>
     </div>
 </template>
