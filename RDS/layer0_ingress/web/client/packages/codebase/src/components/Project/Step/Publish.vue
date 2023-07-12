@@ -50,7 +50,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { socket } from "@/socket";
 
 export default {
   props: ["project", "published"],
@@ -60,17 +59,17 @@ export default {
     };
   },
   mounted: function () {
-    socket.on("projectCreatedInService", (data) => {
+    this.$socket.client.on("projectCreatedInService", (data) => {
       if (data.researchindex == this.project.researchindex) {
         this.publishingSteps.push({"icon": "checkmark", "message": "Project created with ID " + data.projectId})
       } 
     });
-    socket.on("metadataSynced", (data) => {
+    this.$socket.client.on("metadataSynced", (data) => {
       if (data.researchindex == this.project.researchindex) {
         this.publishingSteps.push({"icon": "checkmark", "message": "Added metadata to project..."})
       } 
     });
-    socket.on("FileUploadStatus", (data) => {
+    this.$socket.client.on("FileUploadStatus", (data) => {
       if (data.researchindex == this.project.researchindex) {
 
         publishedFilesCount = data.fileSuccess.filter(h => h.success).length
