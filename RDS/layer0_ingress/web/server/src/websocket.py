@@ -326,7 +326,9 @@ class RDSNamespace(Namespace):
         return research
 
     def __trigger_finish_sync(self, jsonData, research, index=0):
-        identifier = httpManager.makeRequest("finishResearch", data=jsonData)
+        identifier = json.loads(
+            httpManager.makeRequest("finishResearch", data=jsonData)
+        )
 
         app.logger.debug("got response from __trigger_finish_sync: Type: {}, payload: {}".format(type(identifier), identifier))
 

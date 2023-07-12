@@ -232,7 +232,7 @@ class Metadata:
                     Exception(f'Publishing fails')
                 )
 
-            return req.status_code == 200, req.json
+            return req.status_code == 200, req.json()
 
         research = Research(testing=self.testing, researchId=researchId)
         ports = research.getPortsWithProjectId()

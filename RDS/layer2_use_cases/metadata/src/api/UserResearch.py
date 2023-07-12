@@ -114,6 +114,6 @@ def put(user_id, research_index):
     )
 
     if success:
-        return resp, 204
+        return jsonify(resp), 200
 
     return None, 400
