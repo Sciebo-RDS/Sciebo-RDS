@@ -337,9 +337,7 @@ class RDSNamespace(Namespace):
 
         if identifier is not None:
             research["portOut"][index]["properties"]["customProperties"].update(
-                {
-                    "DOI": identifier
-                }
+                identifier
             )
 
         research["synchronization_process_status"] = ProcessStatus.FINISHED.value
