@@ -71,7 +71,7 @@ export default {
     });
     this.$socket.client.on("FileUploadStatus", (data) => {
       if (data.researchindex == this.project.researchindex) {
-
+        data = JSON.parse(data)
         publishedFilesCount = data.fileSuccess.filter(h => h.success).length
         this.publishingSteps.push({"icon": "checkmark", "message": `${publishedFilesCount}/${data.fileSuccess.length} files published`})
       } 

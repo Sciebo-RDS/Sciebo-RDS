@@ -13,8 +13,8 @@ def post(user_id, research_id):
     success, messages, results = Research(userId=user_id, researchIndex=research_id, testing=current_app.config.get("TESTING")).synchronization()
     return jsonify({
         "success" : success,
-        "messages": str(messages),
-        "fileSuccess": str(results)
+        "messages": messages,
+        "fileSuccess": results
     })
 
 
