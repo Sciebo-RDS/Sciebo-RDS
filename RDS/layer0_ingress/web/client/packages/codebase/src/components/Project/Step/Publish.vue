@@ -22,14 +22,16 @@
                   Project <span class="font-weight-bold">{{loadedResearchName}}</span> was successfully published to {{displayNamePortOut}}. <br/>
                   Folder: <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span>
                 </v-col>
-                <p v-for="value in publishingSteps" :key="value.key">
-                  <v-col>
-                    <v-icon>mdi-{{ value.icon }}</v-icon>
+                <p v-if="publishingSteps.length > 0">
+                  <p v-for="value in publishingSteps" :key="value.key">
+                    <v-col>
+                      <v-icon>mdi-{{ value.icon }}</v-icon>
 
-                  </v-col>
-                  <v-col>
-                    {{ value.message }}
-                  </v-col>
+                    </v-col>
+                    <v-col>
+                      {{ value.message }}
+                    </v-col>
+                  </p>
                 </p>
               </v-row>
             </p>
