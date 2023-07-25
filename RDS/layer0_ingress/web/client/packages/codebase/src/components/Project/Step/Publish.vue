@@ -22,6 +22,15 @@
                   Project <span class="font-weight-bold">{{loadedResearchName}}</span> was successfully published to {{displayNamePortOut}}. <br/>
                   Folder: <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span>
                 </v-col>
+                <p v-for="value in publishingSteps" :key="value.key">
+                  <v-col>
+                    <v-icon>mdi-{{ value.icon }}</v-icon>
+
+                  </v-col>
+                  <v-col>
+                    {{ value.message }}
+                  </v-col>
+                </p>
               </v-row>
             </p>
 
@@ -39,7 +48,6 @@
                 <v-img :src="iconPortOut" style="outline-offset: 5px;outline: 1px solid #000;outline-radius: 0%;" />
               </v-col>
             </v-row>
-            {{ publishingSteps }}
           </v-card-text>
         </v-card>
       </v-col>
@@ -61,12 +69,12 @@ export default {
   mounted: function () {
     this.$socket.client.on("projectCreatedInService", (data) => {
       if (data.researchindex == this.project.researchindex) {
-        this.publishingSteps.push({"icon": "checkmark", "message": "Project created with ID " + data.projectId})
+        this.publishingSteps.push({"id": 1, "icon": "checkbox-marked", "message": "Project created with ID " + data.projectId})
       } 
     });
     this.$socket.client.on("metadataSynced", (data) => {
       if (data.researchindex == this.project.researchindex) {
-        this.publishingSteps.push({"icon": "checkmark", "message": "Added metadata to project..."})
+        this.publishingSteps.push({"id": 2, "icon": "checkbox-marked", "message": "Added metadata to project..."})
       } 
     });
     this.$socket.client.on("FileUploadStatus", (data) => {
@@ -74,12 +82,12 @@ export default {
       if (data.researchindex == this.project.researchindex) {
         
         let publishedFilesCount = data.fileSuccess.filter(h => h[0]).length
-        this.publishingSteps.push({"icon": "checkmark", "message": `${publishedFilesCount}/${data.fileSuccess.length} files published`})
+        this.publishingSteps.push({"id": 3, "icon": "checkbox-marked", "message": `${publishedFilesCount}/${data.fileSuccess.length} files published`})
       } 
     });
     this.$socket.client.on("identifierAssigned", (data) => {
       if (data.researchindex == this.project.researchindex) {
-        this.publishingSteps.push({"icon": "checkmark", "message": `Assigned Identifier ${data.DOI}`})
+        this.publishingSteps.push({"id": 4, "icon": "checkbox-marked", "message": `Assigned Identifier ${data.DOI}`})
       } 
     });
   },
