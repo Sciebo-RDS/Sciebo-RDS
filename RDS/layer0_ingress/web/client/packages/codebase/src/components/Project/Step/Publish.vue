@@ -70,10 +70,16 @@ export default {
       } 
     });
     this.$socket.client.on("FileUploadStatus", (data) => {
+      //data = JSON.parse(data)
       if (data.researchindex == this.project.researchindex) {
-        data = JSON.parse(data)
-        publishedFilesCount = data.fileSuccess.filter(h => h.success).length
+        
+        let publishedFilesCount = data.fileSuccess.filter(h => h[0]).length
         this.publishingSteps.push({"icon": "checkmark", "message": `${publishedFilesCount}/${data.fileSuccess.length} files published`})
+      } 
+    });
+    this.$socket.client.on("identifierAssigned", (data) => {
+      if (data.researchindex == this.project.researchindex) {
+        this.publishingSteps.push({"icon": "checkmark", "message": `Assigned Identifier ${data.DOI}`})
       } 
     });
   },
