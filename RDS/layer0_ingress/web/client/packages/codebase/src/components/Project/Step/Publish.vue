@@ -22,8 +22,10 @@
                   Project <span class="font-weight-bold">{{loadedResearchName}}</span> was successfully published to {{displayNamePortOut}}. <br/>
                   Folder: <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span>
                 </v-col>
-                <p v-if="publishingSteps.length > 0">
-                  <p v-for="value in publishingSteps" :key="value.key">
+              </v-row>
+            </p>
+            <p v-if="publishingSteps.length > 0">
+                  <v-row v-for="value in publishingSteps" :key="value.key">
                     <v-col>
                       <v-icon>mdi-{{ value.icon }}</v-icon>
 
@@ -31,10 +33,8 @@
                     <v-col>
                       {{ value.message }}
                     </v-col>
-                  </p>
+                </v-row>
                 </p>
-              </v-row>
-            </p>
 
             <v-row class="my-2" justify="center" align="center">
               <v-col
@@ -80,11 +80,15 @@ export default {
       } 
     });
     this.$socket.client.on("FileUploadStatus", (data) => {
-      //data = JSON.parse(data)
-      if (data.researchindex == this.project.researchindex) {
+      console.log(data)
+      console.log(typeof data)
+      uploadStatus = JSON.parse(data)
+      console.log(uploadStatus)
+      console.log(typeof uploadStatus)
+      if (uploadStatus.researchindex == this.project.researchindex) {
         
-        let publishedFilesCount = data.fileSuccess.filter(h => h[0]).length
-        this.publishingSteps.push({"id": 3, "icon": "checkbox-marked", "message": `${publishedFilesCount}/${data.fileSuccess.length} files published`})
+        let publishedFilesCount = uploadStatus.fileSuccess.filter(h => h[0]).length
+        this.publishingSteps.push({"id": 3, "icon": "checkbox-marked", "message": `${publishedFilesCount}/${uploadStatus.fileSuccess.length} files published`})
       } 
     });
     this.$socket.client.on("identifierAssigned", (data) => {
