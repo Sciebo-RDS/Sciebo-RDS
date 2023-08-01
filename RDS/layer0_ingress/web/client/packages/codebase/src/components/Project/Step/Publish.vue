@@ -10,16 +10,16 @@
             Make sure these settings are correct!
           </v-card-subtitle>
           <v-card-text>
-            <p v-if="!published && !publishInProgress" class="my-10">
+            <p v-if="!published && !publishInProgress" class="my-5">
               Your <span class="text-decoration-underline">{{displayNamePortIn}}</span> project folder <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span> will be published to <span class="text-decoration-underline">{{displayNamePortOut}}</span>.
             
-              <v-row class="my-2" align="center" style="align-items:center">
+              <v-row class="my-5 justify-center" style="align-items:center">
               <v-col
                   cols="3">
                 <v-img :src="iconPortIn" style="outline-offset: 5px;outline: 1px solid #000;outline-radius: 0%;" />
               </v-col>
               <v-col cols="2">
-                <p style="font-size: 2em;">
+                <p style="font-size: 2em; text-align: center;">
                   &#10230;
                 </p>
               </v-col>
@@ -89,7 +89,7 @@ export default {
   mounted: function () {
     this.$socket.client.on("projectCreatedInService", (data) => {
       if (data.researchindex == this.project.researchindex) {
-        this.publishingSteps.push({"id": 1, "icon": "checkbox-marked", "message": `Project created with ${{displayNamePortOut}}-ID ${data.projectId}...`})
+        this.publishingSteps.push({"id": 1, "icon": "checkbox-marked", "message": `Project created with ${displayNamePortOut}-ID ${data.projectId}...`})
       } 
     });
     this.$socket.client.on("metadataSynced", (data) => {
@@ -113,6 +113,13 @@ export default {
         this.publishingSteps.push({"id": 4, "icon": "checkbox-marked", "message": `Assigned Identifier ${data.DOI}...`})
       } 
     });
+  },
+  watch: {
+    project(newlylLoadedProject, oldProject){
+      if (newlylLoadedProject["researchId"] !== oldProject["researchId"]){
+        this.publishingSteps = [];
+      }
+    },
   },
   computed: {
     ...mapGetters({
