@@ -10,33 +10,10 @@
             Make sure these settings are correct!
           </v-card-subtitle>
           <v-card-text>
-            <p v-if="!published" class="my-10"> Your <span class="text-decoration-underline">{{displayNamePortIn}}</span> project folder <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span> will be published to <span class="text-decoration-underline">{{displayNamePortOut}}</span>. </p>
-            <p v-else class="my-10 text-left">
-              <v-row>
-                <v-col cols="1">
-                  <v-icon color="success">
-                    mdi-check-circle
-                  </v-icon>
-                </v-col>
-                <v-col cols="11">
-                  Project <span class="font-weight-bold">{{loadedResearchName}}</span> was successfully published to {{displayNamePortOut}}. <br/>
-                  Folder: <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span>
-                </v-col>
-              </v-row>
-            </p>
-            <p v-if="publishingSteps.length > 0">
-                  <v-row v-for="value in publishingSteps" :key="value.key">
-                    <v-col>
-                      <v-icon>mdi-{{ value.icon }}</v-icon>
-
-                    </v-col>
-                    <v-col>
-                      {{ value.message }}
-                    </v-col>
-                </v-row>
-                </p>
-
-            <v-row class="my-2" justify="center" align="center">
+            <p v-if="!published && !publishInProgress" class="my-10">
+              Your <span class="text-decoration-underline">{{displayNamePortIn}}</span> project folder <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span> will be published to <span class="text-decoration-underline">{{displayNamePortOut}}</span>.
+            
+              <v-row class="my-2" justify="center" align="center">
               <v-col
                   cols="3">
                 <v-img :src="iconPortIn" style="outline-offset: 5px;outline: 1px solid #000;outline-radius: 0%;" />
@@ -50,6 +27,36 @@
                 <v-img :src="iconPortOut" style="outline-offset: 5px;outline: 1px solid #000;outline-radius: 0%;" />
               </v-col>
             </v-row>
+            </p>
+            <p v-else class="my-10 text-left">
+
+              // publishing Steps
+              <p v-if="publishingSteps.length > 0">
+                  <v-row v-for="value in publishingSteps" :key="value.key">
+                    <v-col cols="1">
+                      <v-icon>mdi-{{ value.icon }}</v-icon>
+
+                    </v-col>
+                    <v-col cols="11">
+                      {{ value.message }}
+                    </v-col>
+                </v-row>
+              </p>
+
+              // publishing Success
+              <v-row v-if="published">
+                <v-col cols="1">
+                  <v-icon color="success">
+                    mdi-check-circle
+                  </v-icon>
+                </v-col>
+                <v-col cols="11">
+                  Project <span class="font-weight-bold">{{loadedResearchName}}</span> was successfully published to {{displayNamePortOut}}. <br/>
+                  Folder: <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span>
+                </v-col>
+              </v-row>
+            </p>
+
           </v-card-text>
         </v-card>
       </v-col>
@@ -62,7 +69,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  props: ["project", "published"],
+  props: ["project", "published", "publishInProgress"],
   data() {
     return {
       publishingSteps: []
@@ -79,7 +86,7 @@ export default {
         this.publishingSteps.push({"id": 2, "icon": "checkbox-marked", "message": "Added metadata to project..."})
       } 
     });
-    this.$socket.client.on("FileUploadStatus", (data) => {
+    this.$socket.client.on("fileUploadStatus", (data) => {
       console.log(data)
       console.log(typeof data)
       let uploadStatus = JSON.parse(data)

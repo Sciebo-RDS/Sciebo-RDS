@@ -296,7 +296,7 @@ class RDSNamespace(Namespace):
             fileUploadStatus = self.__trigger_filesync(jsonData, research)
             if type(fileUploadStatus) is dict:
                 fileUploadStatus["researchIndex"] = jsonData["researchIndex"]
-            emit("FileUploadStatus", fileUploadStatus)
+            emit("fileUploadStatus", fileUploadStatus)
 
             if (
                 research["synchronization_process_status"]

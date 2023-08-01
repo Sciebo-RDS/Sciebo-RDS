@@ -57,7 +57,7 @@
             flat
             class="pa-3 overflow-y-auto"
             style="height: calc(100vh - 12.9em);">
-            <StepPublish :published="published" :project="project"/>
+            <StepPublish :published="published" :publishInProgress="publishInProgress" :project="project"/>
           </v-card>
         </v-stepper-content>
       </v-stepper-items>
