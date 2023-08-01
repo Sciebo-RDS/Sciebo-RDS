@@ -3,7 +3,7 @@
     {{ message }}
 
     <template v-slot:action="{ attrs }">
-      <v-btn color="primary" text v-bind="attrs" @click="hide()">
+      <v-btn color="grey-darken-3" text v-bind="attrs" @click="hide()">
         <translate>Close</translate>
       </v-btn>
     </template>
@@ -17,7 +17,6 @@ export default {
       message: "Hey there, i am the snackbar.",
       snackbar: false,
       multiLine: true,
-      timeout: -1,
     };
   },
   methods: {
