@@ -82,14 +82,13 @@ export default {
     this.$socket.client.on("FileUploadStatus", (data) => {
       console.log(data)
       console.log(typeof data)
-      uploadStatus = JSON.parse(data)
+      let uploadStatus = JSON.parse(data)
       console.log(uploadStatus)
       console.log(typeof uploadStatus)
-      if (uploadStatus.researchindex == this.project.researchindex) {
         
         let publishedFilesCount = uploadStatus.fileSuccess.filter(h => h[0]).length
         this.publishingSteps.push({"id": 3, "icon": "checkbox-marked", "message": `${publishedFilesCount}/${uploadStatus.fileSuccess.length} files published`})
-      } 
+      
     });
     this.$socket.client.on("identifierAssigned", (data) => {
       if (data.researchindex == this.project.researchindex) {
