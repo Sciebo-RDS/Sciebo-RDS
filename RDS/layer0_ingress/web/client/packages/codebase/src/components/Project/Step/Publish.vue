@@ -89,7 +89,7 @@ export default {
   mounted: function () {
     this.$socket.client.on("projectCreatedInService", (data) => {
       if (data.researchindex == this.project.researchindex) {
-        this.publishingSteps.push({"id": 1, "icon": "checkbox-marked", "message": `Project created with ${displayNamePortOut}-ID ${data.projectId}...`})
+        this.publishingSteps.push({"id": 1, "icon": "checkbox-marked", "message": `Project created with ${this.displayNamePortOut}-ID ${data.projectId}...`})
       } 
     });
     this.$socket.client.on("metadataSynced", (data) => {
@@ -105,7 +105,12 @@ export default {
       console.log(typeof uploadStatus)
         
         let publishedFilesCount = uploadStatus.fileSuccess.filter(h => h[0]).length
-        this.publishingSteps.push({"id": 3, "icon": "checkbox-marked", "message": `${publishedFilesCount}/${uploadStatus.fileSuccess.length} files transfered...`})
+        if (publishedFilesCount.length == uploadStatus.fileSuccess.length) {
+          this.publishingSteps.push({"id": 3, "icon": "checkbox-marked", "message": `${publishedFilesCount}/${uploadStatus.fileSuccess.length} files transfered...`})
+        }
+        else {
+          this.publishingSteps.push({"id": 3, "icon": "help-circle", "message": `At least ${publishedFilesCount}/${uploadStatus.fileSuccess.length} files transfered, please check if anything is missing...`})
+        }
       
     });
     this.$socket.client.on("identifierAssigned", (data) => {
