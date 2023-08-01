@@ -1,19 +1,19 @@
 <template>
   <v-container>
     <v-row>
-      <v-col class="mx-auto" cols="12" md="10" lg="10" justify="center" align="center">
+      <v-col class="mx-auto" cols="12" md="10" lg="10" justify="center">
         <v-card flat >
-          <v-card-title v-translate class="justify-center">
+          <v-card-title v-translate class="justify-center" align="center">
             Publish your project
           </v-card-title>
-          <v-card-subtitle v-if="!published" class="mt-2">
+          <v-card-subtitle v-if="!published && !publishInProgress" class="mt-2">
             Make sure these settings are correct!
           </v-card-subtitle>
           <v-card-text>
             <p v-if="!published && !publishInProgress" class="my-10">
               Your <span class="text-decoration-underline">{{displayNamePortIn}}</span> project folder <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span> will be published to <span class="text-decoration-underline">{{displayNamePortOut}}</span>.
             
-              <v-row class="my-2" justify="center" align="center">
+              <v-row class="my-2" justify="center">
               <v-col
                   cols="3">
                 <v-img :src="iconPortIn" style="outline-offset: 5px;outline: 1px solid #000;outline-radius: 0%;" />
@@ -30,7 +30,7 @@
             </p>
             <p v-else class="my-10 text-left">
 
-              // publishing Steps
+              <!-- publishing Steps -->
               <p v-if="publishingSteps.length > 0">
                   <v-row v-for="value in publishingSteps" :key="value.key">
                     <v-col cols="1">
@@ -42,8 +42,20 @@
                     </v-col>
                 </v-row>
               </p>
+              <v-row v-if="publishInProgress">
+                    <v-col cols="1">
+                      <v-progress-circular
+                        indeterminate
+                        color="primary"
+                      ></v-progress-circular>
 
-              // publishing Success
+                    </v-col>
+                    <v-col cols="11">
+                      Publishing to {{ displayNamePortOut  }}...
+                    </v-col>
+                </v-row>
+
+              <!-- publishing Success -->
               <v-row v-if="published">
                 <v-col cols="1">
                   <v-icon color="success">
@@ -51,8 +63,7 @@
                   </v-icon>
                 </v-col>
                 <v-col cols="11">
-                  Project <span class="font-weight-bold">{{loadedResearchName}}</span> was successfully published to {{displayNamePortOut}}. <br/>
-                  Folder: <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span>
+                  Project <span class="font-weight-bold">{{loadedResearchName}}</span> was successfully published to {{displayNamePortOut}}.
                 </v-col>
               </v-row>
             </p>
@@ -78,12 +89,12 @@ export default {
   mounted: function () {
     this.$socket.client.on("projectCreatedInService", (data) => {
       if (data.researchindex == this.project.researchindex) {
-        this.publishingSteps.push({"id": 1, "icon": "checkbox-marked", "message": "Project created with ID " + data.projectId})
+        this.publishingSteps.push({"id": 1, "icon": "checkbox-marked", "message": `Project created with ID ${data.projectId}...`})
       } 
     });
     this.$socket.client.on("metadataSynced", (data) => {
       if (data.researchindex == this.project.researchindex) {
-        this.publishingSteps.push({"id": 2, "icon": "checkbox-marked", "message": "Added metadata to project..."})
+        this.publishingSteps.push({"id": 2, "icon": "checkbox-marked", "message": `Metadata added to project...`})
       } 
     });
     this.$socket.client.on("fileUploadStatus", (data) => {
