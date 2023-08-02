@@ -105,7 +105,7 @@ export default {
       console.log(typeof uploadStatus)
         
         let publishedFilesCount = uploadStatus.fileSuccess.filter(h => h[0]).length
-        if (publishedFilesCount.length == uploadStatus.fileSuccess.length) {
+        if (publishedFilesCount === uploadStatus.fileSuccess.length) {
           this.publishingSteps.push({"id": 3, "icon": "checkbox-marked", "message": `${publishedFilesCount}/${uploadStatus.fileSuccess.length} files transfered...`})
         }
         else {
