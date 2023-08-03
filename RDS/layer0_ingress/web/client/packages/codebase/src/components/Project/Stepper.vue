@@ -99,7 +99,7 @@
                 <v-card-title class="text-h5">
                   Please confirm
                 </v-card-title>
-                <v-card-text class="pb-5 pt-3">Are you sure you want to delete {{ loadedResearchName !== '' ? '<span class="font-weight-bold">' + loadedResearchName + '</span>' : "this project" }}?</v-card-text>
+                <v-card-text class="pb-5 pt-3">Are you sure you want to delete {{ loadedResearchName !== '' ? loadedResearchName : "this project" }}?</v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn
