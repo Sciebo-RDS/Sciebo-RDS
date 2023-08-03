@@ -93,7 +93,7 @@
                         <v-row align="center"
                             justify="center" class="overline">
                             <v-col cols="12" align="center">
-                                <v-icon style="border-radius: 100%; padding: 5%;" size="35em">
+                                <v-icon style="border-radius: 100%; padding: 5%; color: #d6e2e2;" size="35em">
                                     mdi-package-variant
                                 </v-icon>
                             </v-col>
