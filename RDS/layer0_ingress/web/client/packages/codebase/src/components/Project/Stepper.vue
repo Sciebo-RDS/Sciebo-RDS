@@ -75,7 +75,7 @@
         <v-flex v-if="e1 == 1" class="d-flex mb-6">
 
 
-          <!-- Delete Dialog -->
+          <!-- Delete Project Dialog & Button -->
 
             <v-dialog
               v-if="!publishInProgress && !published"
@@ -100,9 +100,9 @@
                 <v-card-title class="text-h5">
                   Confirm Delete
                 </v-card-title>
-                <v-card-text class=" pb-5 pt-3">Are you sure you want to delete <span class="font-weight-medium">{{ loadedResearchName }}</span>?</v-card-text>
+                <v-card-text class="pb-5 pt-3">Are you sure you want to delete <span class="font-weight-bold">{{ loadedResearchName !== "" ? loadedResearchName : "this project" }}</span>?</v-card-text>
                 <v-card-actions>
-                  <v-spacer></v-spacer>
+                  <v-spacer></v-spacer>?
                   <v-btn
                     color="error"
                     depressed
@@ -114,7 +114,7 @@
                   <v-btn
                     color="primary"
                     text
-                    @click="dialog = false"
+                    @click="deleteDialog = false"
                     class="pa-4"
                   >
                     Cancel
