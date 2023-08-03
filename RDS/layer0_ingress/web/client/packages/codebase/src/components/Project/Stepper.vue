@@ -98,9 +98,9 @@
              </template>
               <v-card class="pa-5">
                 <v-card-title class="text-h5">
-                  Confirm Delete
+                  Please confirm
                 </v-card-title>
-                <v-card-text class="pb-5 pt-3">Are you sure you want to delete <span class="font-weight-bold">{{ loadedResearchName !== "" ? loadedResearchName : "this project" }}</span>?</v-card-text>
+                <v-card-text class="pb-5 pt-3">Are you sure you want to delete {{ loadedResearchName !== "" ? `<span class="font-weight-bold">${loadedResearchName}</span>` : "this project" }}?</v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>?
                   <v-btn
