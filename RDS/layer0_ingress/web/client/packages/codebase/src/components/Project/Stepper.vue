@@ -73,17 +73,58 @@
       >
         <!-- config nav -->
         <v-flex v-if="e1 == 1" class="d-flex mb-6">
-          <v-btn
-            outlined
-            color="error"
-            @click="archiveProject(loadedProject.researchIndex)"
-            class="mr-auto ma-5"
-          >
-            <!-- <translate>Delete</translate> -->
-            Delete
-          </v-btn>
+
+
+          <!-- Delete Dialog -->
+
+            <v-dialog
+              v-if="!publishInProgress && !published"
+              v-model="deleteDialog"
+              persistent
+              width="auto"
+              max-width="60%"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  outlined
+                  class="mr-auto ma-5"
+                  color="error"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  Delete
+                </v-btn>
+             </template>
+              <v-card class="pa-5">
+                <v-card-title class="text-h5">
+                  Confirm Delete
+                </v-card-title>
+                <v-card-text class=" pb-5 pt-3">Are you sure you want to delete <span class="font-weight-medium">{{ loadedResearchName }}</span>?</v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="error"
+                    depressed
+                    @click="archiveProject(loadedProject.researchIndex)"
+                    class="pa-4"
+                  >
+                    Delete
+                  </v-btn>
+                  <v-btn
+                    color="primary"
+                    text
+                    @click="dialog = false"
+                    class="pa-4"
+                  >
+                    Cancel
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           <v-flex class="text-right">
 
+          <!-- Delete Dialog End-->
 
             <v-btn
             :disabled="!isConfigComplete"
@@ -153,6 +194,7 @@ export default {
     return {
       publishInProgress: false,
       published: false,
+      deleteDialog: false,
     };
   },
   computed: {
