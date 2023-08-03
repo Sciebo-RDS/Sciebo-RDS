@@ -81,8 +81,7 @@
               v-if="!publishInProgress && !published"
               v-model="deleteDialog"
               persistent
-              width="auto"
-              max-width="60%"
+              class="xs9 sm9 md6 lg4 flex"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
