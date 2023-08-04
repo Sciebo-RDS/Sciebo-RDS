@@ -81,7 +81,6 @@
               v-if="!publishInProgress && !published"
               v-model="deleteDialog"
               persistent
-              class="xs9 sm9 md6 lg4 flex"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -95,7 +94,7 @@
                   Delete
                 </v-btn>
              </template>
-              <v-card class="pa-5">
+              <v-card class="pa-5 sm9 md6 lg4 flex">
                 <v-card-title class="text-h5">
                   Please confirm
                 </v-card-title>
@@ -176,6 +175,16 @@
   </div>
 </template>
 
+<style scoped>
+    .v-dialog--active {
+      box-shadow: none;
+      
+    }
+  .v-card{
+    margin: 0 auto;
+  }
+  
+ </style>
 
 <script>
 import { mapGetters } from "vuex";
