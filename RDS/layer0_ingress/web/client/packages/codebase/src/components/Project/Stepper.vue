@@ -81,7 +81,7 @@
               v-if="!publishInProgress && !published"
               v-model="deleteDialog"
               persistent
-              class="no-shadow-full-height"
+              max-width="40%"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -95,7 +95,7 @@
                   Delete
                 </v-btn>
              </template>
-              <v-card class="pa-5 sm9 md6 lg4 flex for-dialog-with-shadow">
+              <v-card>
                 <v-card-title class="text-h5">
                   Please confirm
                 </v-card-title>
@@ -175,22 +175,6 @@
     </v-stepper>
   </div>
 </template>
-
-<style scoped>
-  .v-dialog--active {
-    .no-shadow-full-height {
-      box-shadow: none;
-      height: 100%;
-    }
-  }
-  .v-card{
-      .for-dialog-with-shadow {
-        margin: 5% auto;
-        box-shadow: 0 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12)!important;
-      }
-  }
-  
- </style>
 
 <script>
 import { mapGetters } from "vuex";
