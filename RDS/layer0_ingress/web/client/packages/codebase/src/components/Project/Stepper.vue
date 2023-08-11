@@ -95,7 +95,7 @@
                   Delete
                 </v-btn>
              </template>
-              <v-card>
+              <v-card class="pa-5">
                 <v-card-title class="text-h5">
                   Please confirm
                 </v-card-title>
