@@ -310,6 +310,10 @@ class RDSNamespace(Namespace):
 
                 app.logger.debug("done synchronization, research: {}".format(research))
 
+                saveResearch(parseResearchBack(research))
+
+                self.__delete_research(research)
+
                 return True # fileUploadStatus["success"]
         except Exception as e:
             app.logger.error(f"error in sync: {e}", exc_info=True)
@@ -337,7 +341,7 @@ class RDSNamespace(Namespace):
 
         app.logger.debug("got response from __trigger_finish_sync: Type: {}, payload: {}".format(type(identifier), identifier))
 
-        if "customProperties" not in research["portOut"][index]:
+        if "customProperties" not in research["portOut"][index]["properties"]:
             research["portOut"][index]["properties"]["customProperties"] = {}
 
         if identifier is not None:
@@ -347,7 +351,6 @@ class RDSNamespace(Namespace):
 
         research["synchronization_process_status"] = ProcessStatus.FINISHED.value
         self.__update_research_process(research)
-        self.__delete_research(research)
 
         # refresh projectlist for user
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))
@@ -374,7 +377,7 @@ class RDSNamespace(Namespace):
 
             app.logger.debug("got response: {}".format(createProjectResp))
 
-            if "customProperties" not in research["portOut"][index]:
+            if "customProperties" not in research["portOut"][index]["properties"]:
                 research["portOut"][index]["properties"]["customProperties"] = {}
 
             research["portOut"][index]["properties"]["customProperties"].update(
