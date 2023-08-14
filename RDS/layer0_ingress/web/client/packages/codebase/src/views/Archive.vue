@@ -1,25 +1,45 @@
 <template>
     <v-main
-      class="pa-0 ma-0">
-    <ProjectList style="height: calc( 100vh - 25px );" listtype="Past">
-      Published
-    </ProjectList>
+      class="pa-0">
+      
+      <v-sheet
+        flat
+        height="6.3em"
+        color="grey lighten-5"
+        style="border-bottom: 1px solid #ccc!important">
+        <v-container fill-height>
+            <v-row justify="center" class="overline ma-0 text-h5 mx-2">
+                Published Projects
+            </v-row>
+        </v-container>
+      </v-sheet>
+
+      <v-container class="ma-3">
+        <div v-for="project in publishedProjects" :key="project.researchIndex">
+          <ProjectCard :project="project" />
+        </div>
+      </v-container>
+    
   </v-main>
 </template>
 
 <script>
-import ProjectList from "../components/Project/List.vue";
+import ProjectCard from "../components/Archive/ProjectCard.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
-    ProjectList,
+    ProjectCard,
   },
   computed: {
+    ...mapGetters({
+      projects: "getProjectlist",
+    }),
+    publishedProjects(){
+      return this.projects.filter((project) => project.status == 3);
+    },
   },
   methods: {
   },
-  beforeDestroy() {
-    this.$store.commit('resetLoadedProject')
-  }
 };
 </script>
