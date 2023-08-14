@@ -15,7 +15,7 @@
               </v-col>
 
               <v-col class="ml-5 flex-grow-1 flex-shrink-0 py-0" flat tile>
-                {{ !!project.portOut[0].properties.customProperties.projectId ? project.portOut[0].customProperties.projectId : "N/A"}}
+                {{ !!project.portOut[0].properties.customProperties.projectId ? project.portOut[0].properties.customProperties.projectId : "N/A"}}
               </v-col>
 
             </v-row>
