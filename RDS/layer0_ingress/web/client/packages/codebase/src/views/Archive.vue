@@ -1,14 +1,14 @@
 <template>
     <v-main
-      class="pa-0 ma-0" style="margin-top: 6px">
+      class="pa-0 ma-0" >
       
       <v-sheet
         flat
         height="6.3em"
         color="grey lighten-5"
-        style="border-bottom: 1px solid #ccc!important">
+        style="border-bottom: 1px solid #ccc!important; margin-top: 13px;">
         <v-container fill-height>
-            <v-row class="overline text-center" align="center">
+            <v-row class="overline text-center" justify="center" align="center">
               Published Projects
             </v-row>
         </v-container>

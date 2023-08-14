@@ -1,37 +1,38 @@
 <template>
     <v-container>
-      <v-row justify="space-around">
+      <v-row>
         <v-card width="400" outlined>
           
           <v-card-text>
             <div></div>
             <p class="text-h6 text--primary pb-3">
                 {{ project.researchname}}
+                <v-divider class="my-2"></v-divider>
             </p>
             <v-div class="">
             <v-row class="d-flex" flat  tile>
-              <v-col class="flex-grow-0 flex-shrink-1 py-0" flat tile>
+              <v-col class="py-1 font-weight-medium" justify="left" flat tile>
                 Repository-ID:
               </v-col>
 
-              <v-col class="ml-5 flex-grow-1 flex-shrink-0 py-0" flat tile>
+              <v-col class="py-1" justify="right" flat tile>
                 {{ !!project.portOut[0].properties.customProperties.projectId ? project.portOut[0].properties.customProperties.projectId : "N/A"}}
               </v-col>
 
             </v-row>
             <v-row class="d-flex" flat  tile>
-              <v-col class="flex-grow-0 flex-shrink-1 py-0" flat tile>
+              <v-col class="py-1 font-weight-medium" justify="left" flat tile>
                 Identifier (DOI):
               </v-col>
 
-              <v-col class="ml-5 flex-grow-1 flex-shrink-0 py-0" flat tile>
+              <v-col class="py-1" justify="right" flat tile>
                 {{ !!project.portOut[0].properties.customProperties.DOI ? project.portOut[0].properties.customProperties.DOI : "N/A"  }}
               </v-col>
 
             </v-row>
             </v-div>
           </v-card-text>
-
+        <v-divider class="my-5"></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
     <!-- TODO: Add link mask for repositories to make linking possible -->
