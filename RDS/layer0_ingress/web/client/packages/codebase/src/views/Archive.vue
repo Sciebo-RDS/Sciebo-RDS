@@ -1,6 +1,6 @@
 <template>
     <v-main
-      class="pa-0">
+      class="pa-0 ma-0">
       
       <v-sheet
         flat
@@ -8,8 +8,8 @@
         color="grey lighten-5"
         style="border-bottom: 1px solid #ccc!important">
         <v-container fill-height>
-            <v-row justify="center" class="overline ma-0 text-h5 mx-2">
-                Published Projects
+            <v-row class="overline" align="center">
+              <span class="font-weight-bold">Published Projects</span>
             </v-row>
         </v-container>
       </v-sheet>
