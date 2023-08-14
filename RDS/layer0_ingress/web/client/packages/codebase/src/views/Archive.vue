@@ -14,7 +14,7 @@
         </v-container>
       </v-sheet>
 
-      <v-container class="ma-3">
+      <v-container class="ma-1">
         <div v-for="project in publishedProjects" :key="project.researchIndex">
           <ProjectCard :project="project" />
         </div>
