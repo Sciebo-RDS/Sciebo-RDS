@@ -74,7 +74,7 @@
       <v-main class="ml-0 mb-0">
         <v-container
             fluid
-            class="p-0 mb-0 mr-0">
+            class="pa-0 mb-0 mr-0">
                 <router-view />
         </v-container>
       </v-main>

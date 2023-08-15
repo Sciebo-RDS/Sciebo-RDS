@@ -14,8 +14,31 @@
         </v-container>
       </v-sheet>
 
-      <v-container class="d-flex ma-1">
+      <v-container v-if="publishedProjects.length > 0" class="d-flex ma-1">
           <ProjectCard v-for="project in publishedProjects" :key="project.researchIndex" :project="project" />
+      </v-container>
+
+      <v-container v-else fill-height >
+        <v-row v-if="pastProjects.length != 0" align="center"
+          justify="center" class="overline">
+          <v-col cols="12" align="center">
+            <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
+              mdi-package-variant
+            </v-icon>
+          </v-col>
+              <br/>
+                  No project selected.
+        </v-row>
+        <v-row v-else align="center"
+          justify="center" class="overline">
+          <v-col cols="12" align="center">
+            <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
+                  mdi-package-variant
+            </v-icon>
+          </v-col>
+              <br/>
+                  You haven't published any projects yet.
+        </v-row>
       </v-container>
     
   </v-main>
