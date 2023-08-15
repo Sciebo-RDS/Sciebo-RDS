@@ -14,10 +14,8 @@
         </v-container>
       </v-sheet>
 
-      <v-container class="ma-1">
-        <div v-for="project in publishedProjects" :key="project.researchIndex">
-          <ProjectCard :project="project" />
-        </div>
+      <v-container class="d-flex ma-1">
+          <ProjectCard v-for="project in publishedProjects" :key="project.researchIndex" :project="project" />
       </v-container>
     
   </v-main>
