@@ -5,7 +5,7 @@
       <v-sheet
         flat
         height="6.3em"
-        color="grey lighten-5"
+        color="sidebar"
         style="border-bottom: 1px solid #ccc!important;">
         <v-container fill-height>
             <v-row class="overline text-center" justify="center" align="center">
@@ -19,20 +19,10 @@
       </v-container>
 
       <v-container v-else fill-height >
-        <v-row v-if="pastProjects.length != 0" align="center"
+        <v-row align="center"
           justify="center" class="overline">
           <v-col cols="12" align="center">
-            <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
-              mdi-package-variant
-            </v-icon>
-          </v-col>
-              <br/>
-                  No project selected.
-        </v-row>
-        <v-row v-else align="center"
-          justify="center" class="overline">
-          <v-col cols="12" align="center">
-            <v-icon style="background-color: #eee; border-radius: 100%; padding: 5%;" size="35em">
+            <v-icon style="background-color: #d6e2e2; border-radius: 100%; padding: 5%;" size="35em">
                   mdi-package-variant
             </v-icon>
           </v-col>

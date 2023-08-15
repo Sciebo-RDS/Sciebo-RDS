@@ -61,8 +61,10 @@
           </v-list-item-group>
         </v-list>
 
+        <!-- pilot phase note -->
+
         <div style="border: 2px solid orange; border-radius: 10px;" class="text-caption pa-3 ma-3">
-          Sciebo RDS is still in it's pilot phase. Please report problems to <a :href="`mailto:${$store.getters.getSupportEmail}`" class="ml-1 black--text">{{ $store.getters.getSupportEmail }}</a>
+          Sciebo RDS is still in it's pilot phase. Please report problems to:<a :href="`mailto:${$store.getters.getSupportEmail}`" class="ml-1 black--text">{{ $store.getters.getSupportEmail }}</a>
         </div>
 
         <settingsmenu

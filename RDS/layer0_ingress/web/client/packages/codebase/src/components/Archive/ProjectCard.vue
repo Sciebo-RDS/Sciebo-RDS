@@ -73,7 +73,7 @@ export default({
     }),
     displayNamePortOut() {
       try {
-        let fullPort = this.userServiceList.filter(s => s.servicename === this.project.portOut[0].port)[0];
+        let fullPort = this.userservicelist.filter(s => s.servicename === this.project.portOut[0].port)[0];
         return fullPort.displayName;
       } catch (e) {
         return "";
