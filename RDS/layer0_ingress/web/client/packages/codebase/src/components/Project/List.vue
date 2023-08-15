@@ -62,8 +62,8 @@
                     </v-list-item-group>
                 </v-list>
                 <!-- New Project button -->
-                <v-sheet class="ma-5" style="height:5em; border-top: 1px solid #ccc!important;">
-                    <div v-if="listtype == 'Current'" class="text-center">
+                <v-sheet class="d-flex" style="height:5em; border-top: 1px solid #ccc!important;">
+                    <div v-if="listtype == 'Current'" class="text-center ma-auto">
                     <v-btn
                         text
                         color="primary"
