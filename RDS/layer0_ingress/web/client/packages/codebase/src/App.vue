@@ -1,23 +1,6 @@
 <template>
   <div>
     <v-app id="inspire">
-      <!-- pilot warning bar -->
-      <v-system-bar
-      color="warning" absolute height="25px">
-        <v-row class="font-weight-bold" justify="center" >
-          <v-icon>
-            mdi-comment-alert-outline
-          </v-icon>
-          RDS is still in its pilot phase. If you encounter any problems, please contact
-          <a :href="`mailto:${$store.getters.getSupportEmail}`" class="ml-1 black--text">{{ $store.getters.getSupportEmail }}</a>.
-        </v-row>
-      </v-system-bar>
-
-      <!-- Bar without warning / message -->
-      <!-- <v-system-bar
-        color="success"
-        absolute
-        height="25px"/> -->
 
       <overlay :subtext="overlayText" />
       <snackbar />
@@ -77,6 +60,11 @@
             </v-list-item>
           </v-list-item-group>
         </v-list>
+
+        <div style="border: 2px solid orange; border-radius: 10px;" class="text-caption pa-3 ma-3">
+          Sciebo RDS is still in it's pilot phase. Please report problems to <a :href="`mailto:${$store.getters.getSupportEmail}`" class="ml-1 black--text">{{ $store.getters.getSupportEmail }}</a>
+        </div>
+
         <settingsmenu
           v-if="!$vuetify.breakpoint.mobile"
           class="d-none d-lg-flex"
@@ -86,7 +74,7 @@
       <v-main class="ml-0 mb-0">
         <v-container
             fluid
-            class="pb-0 px-0 mb-0 mr-0">
+            class="p-0 mb-0 mr-0">
                 <router-view />
         </v-container>
       </v-main>

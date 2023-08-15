@@ -6,7 +6,7 @@
         flat
         height="6.3em"
         color="grey lighten-5"
-        style="border-bottom: 1px solid #ccc!important; margin-top: 13px;">
+        style="border-bottom: 1px solid #ccc!important;">
         <v-container fill-height>
             <v-row class="overline text-center" justify="center" align="center">
               Published Projects

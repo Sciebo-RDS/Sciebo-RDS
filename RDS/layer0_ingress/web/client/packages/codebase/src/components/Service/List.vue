@@ -1,8 +1,7 @@
 <template>
   <v-container
     fluid
-    class="pa-0 d-flex flex-column"
-    style="margin-top: 13px;">
+    class="pa-0 d-flex flex-column">
       <v-sheet
         flat
         height="6.3em"
