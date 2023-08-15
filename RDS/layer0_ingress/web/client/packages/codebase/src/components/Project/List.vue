@@ -14,7 +14,7 @@
                     style="border-bottom: 1px solid #ccc!important">
                     <v-container fill-height>
                         <v-row justify="center" class="overline">
-                            {{ listtype == 'Current' ? activeProjects.length : pastProjects.length }} <slot/> {{ projects.length === 1 ? "Project" : "Projects" }}
+                            {{ activeProjects.length > 0 ? activeProjects.length : 'No' }} Active {{ projects.length === 1 ? "Project" : "Projects" }}
                         </v-row>
                     </v-container>
                 </v-sheet>
@@ -63,7 +63,7 @@
                     </v-list-item-group>
                 </v-list>
                 <!-- New Project button -->
-                <v-sheet class="d-flex" style="height:5em; border-top: 1px solid #ccc!important;">
+                <v-sheet class="d-flex" style="height:5em;" :style="activeProjects.length > 0 ?'border-top: 1px solid #ccc!important;' : ''">
                     <div v-if="listtype == 'Current'" class="text-center ma-auto">
                     <v-btn
                         text

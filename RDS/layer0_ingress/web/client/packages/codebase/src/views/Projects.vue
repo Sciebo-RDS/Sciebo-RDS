@@ -1,9 +1,7 @@
 <template>
     <v-main
       class="pa-0 ma-0">
-    <ProjectList style="height: 100vh;" listtype="Current">
-      Current
-    </ProjectList>
+    <ProjectList style="height: 100vh;" listtype="Current" />
   </v-main>
 </template>
 
