@@ -39,8 +39,9 @@
                             <v-row align="start" style="flex-wrap: nowrap; max-width: 100%;">
                               <!-- TODO: fix width -->
                             <v-col class="caption flex-grow-1 flex-shrink-1" cols="auto"  style="overflow: hidden;">
-
-                                Project {{p.researchIndex + 1}}
+                                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                  {{ p.portOut.length > 0 ? p.portIn[0].properties.customProperties.filepath : `Project ${p.researchIndex + 1}` }}
+                                </span>
                                 <v-list-item-title class="my-1">
                                     <div :class="!!p.researchname ? '' : 'font-italic' " style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                 {{ !!p.researchname ? p.researchname : 'New Project' }}

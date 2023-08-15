@@ -9,7 +9,7 @@
   >
     <template v-slot:activator="{ on, attrs }">
       <v-list class="d-none d-lg-flex">
-        <v-list-item-group style="position: fixed; bottom:0px; width:100%;" color="sidebar">
+        <v-list-item-group style="position: fixed; bottom:0px; width:100%;" class="sidebar">
           <v-list-item v-bind="attrs" v-on="on">
             <v-list-item-icon>
               <v-icon>mdi-cog</v-icon>
