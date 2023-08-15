@@ -72,7 +72,7 @@
         width="100%"
       >
         <!-- config nav -->
-        <v-flex v-if="e1 == 1" class="d-flex mb-6">
+        <v-flex v-if="e1 == 1" class="d-flex">
 
 
           <!-- Delete Project Dialog & Button -->

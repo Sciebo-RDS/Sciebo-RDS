@@ -20,7 +20,7 @@
                 </v-sheet>
 
                 <!-- Project list content -->
-                <v-list style="overflow-y: auto; margin: 0; padding: 0; max-height: calc(100vh - 13.1em)">
+                <v-list style="overflow-y: auto; margin: 0; padding: 0; max-height: calc(100vh - 11.3em);">
                     <v-list-item-group>
 
                         <div
@@ -62,7 +62,8 @@
                     </v-list-item-group>
                 </v-list>
                 <!-- New Project button -->
-                    <div v-if="listtype == 'Current'" class="text-center ma-6">
+                <v-sheet class="ma-5" style="height:5em; border-top: 1px solid #ccc!important;">
+                    <div v-if="listtype == 'Current'" class="text-center">
                     <v-btn
                         text
                         color="primary"
@@ -73,6 +74,7 @@
                         new project
                     </v-btn>
                     </div>
+                  </v-sheet>
             </v-col>
 
             <!-- Project Detail-->
