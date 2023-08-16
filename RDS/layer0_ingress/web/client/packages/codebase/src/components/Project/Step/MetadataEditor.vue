@@ -12,7 +12,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <div style="height: calc(100vh - 13em);">
+    <div style="height: calc(100vh + 11em);">
       <iframe
           v-if="dataAvailable"
           v-show="!loading"

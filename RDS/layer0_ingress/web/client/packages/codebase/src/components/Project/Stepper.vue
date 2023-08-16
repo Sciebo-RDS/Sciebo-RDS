@@ -31,7 +31,7 @@
           <v-card
             flat
             class="overflow-y-auto"
-            style="height: calc(100vh - 12.9em)"
+            style="height: calc(100vh - 12.9em);"
           >
             <StepConfiguration
               :project="project"
@@ -45,7 +45,7 @@
             class="d-flex flex-column justify-center"
             min-height="500px"
             flat
-            style="height: calc(100vh - 12.9em);"
+            :style="step === 2 ? 'height: calc(100vh - 10em);' : 'height: calc(100vh - 12.9em);'"
           >
             <StepMetadataEditor :project="project" />
           </v-card>

@@ -9,7 +9,7 @@
         style="border-bottom: 1px solid #ccc!important;">
         <v-container fill-height>
             <v-row class="overline text-center" justify="center" align="center">
-              Published Projects
+              {{ publishedProjects.length > 0 ? publishedProjects.length : 'No' }} Published {{ publishedProjects.length === 1 ? "Project" : "Projects" }}
             </v-row>
         </v-container>
       </v-sheet>
