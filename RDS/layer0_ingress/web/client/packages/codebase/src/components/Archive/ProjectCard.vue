@@ -49,11 +49,12 @@
   
     <v-card-actions>
       <v-spacer></v-spacer>
-    <!-- TODO: Add link mask for repositories to make linking possible -->
-      <a href="#">
+    <!-- TODO: Implement this for all Repositories -->
+      <a :href="project.portOut[0].port == 'port-openscienceframework' && !!project.portOut[0].properties.customProperties.projectId ? `https://osf.io/${project.portOut[0].properties.customProperties.projectId}` : '#''">
       <v-btn
         text
-        color="teal accent-4"
+        :color="project.portOut[0].port == 'port-openscienceframework' ? 'teal accent-4' : 'grey lighten-2'"
+        :disabled="!project.portOut[0].port == 'port-openscienceframework'"
       >
         Go to Publication
       </v-btn>

@@ -45,7 +45,7 @@
             class="d-flex flex-column justify-center"
             min-height="500px"
             flat
-            :style="step === 2 ? 'height: calc(100vh - 10em);' : 'height: calc(100vh - 12.9em);'"
+            :style="e1 == 2 ? 'height: calc(100vh - 10em);' : 'height: calc(100vh - 12.9em);'"
           >
             <StepMetadataEditor :project="project" />
           </v-card>

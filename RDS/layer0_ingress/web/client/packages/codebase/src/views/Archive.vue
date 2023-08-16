@@ -47,7 +47,7 @@ export default {
       projects: "getProjectlist",
     }),
     publishedProjects(){
-      return this.projects.filter((project) => project.status == 3);
+      return this.projects.filter((project) => project.status == 3).reverse();
     },
   },
   methods: {
