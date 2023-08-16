@@ -50,7 +50,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
     <!-- TODO: Implement this for all Repositories -->
-      <a :href="project.portOut[0].port == 'port-openscienceframework' && !!project.portOut[0].properties.customProperties.projectId ? `https://osf.io/${project.portOut[0].properties.customProperties.projectId}` : '#'">
+      <a target="_blank" :href="project.portOut[0].port == 'port-openscienceframework' && !!project.portOut[0].properties.customProperties.projectId ? `https://osf.io/${project.portOut[0].properties.customProperties.projectId}` : '#'">
       <v-btn
         text
         :color="project.portOut[0].port == 'port-openscienceframework' ? 'teal accent-4' : 'grey lighten-2'"
