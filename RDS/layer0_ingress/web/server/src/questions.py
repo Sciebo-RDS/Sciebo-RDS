@@ -47,7 +47,7 @@ Sciebo RDS is developed by the [University of Münster](https://www.uni-muenster
 To disconnect a repository from Sciebo RDS, click "disconnect". All data previously published to the repository will stay unaffected.""",
             "How can I publish data? How does the Project Workflow work?": """You can publish data using the **Project Workflow**, which consists of three steps: Configuration, Metadata and Publishing.
 
-Click the *Projects* tab in the menu on the left. You can now create a new project by clicking the `New Project` button. A new project will be created, which you now have to configure to your needs - you will be asked to:
+Click the *Active Projects* tab in the menu on the left. You can now create a new project by clicking the `New Project` button. A new project will be created, which you now have to configure to your needs - you will be asked to:
                 
 1. select a folder on your Sciebo account, that contains the data to be published/archived,
 2. name your project (this name will only be used to help you identify the project within RDS),
@@ -58,7 +58,7 @@ Click the *Projects* tab in the menu on the left. You can now create a new proje
 Click *Continue* and use the embedded metadata editor to enrich your project with metadata. Next, click *Continue* again. Confirm that you have set the correct project folder and repository and click *Publish* to submit you data.
 
 The *Configuration*, *Metadata* and *Publish* step of the workflow may be done at different times. The configuration will be saved as soon as you click *Continue*, the metadata will be saved as soon as it is submitted to the interface.  
- Each project can only be published to *one* repository. But you can have multiple projects with the same folder and different repositories selected. Once your data is published, the project is no longer editable in Sciebo RDS. If you want to correct metadata afterwards, you must do so within the selected repository. If data is to be published again, a new project must be created for this purpose. This procedure ensures that data can always be assigned a unique identification number (DOI for short).""",
+ Each project can only be published to *one* repository. But you can have multiple projects with the same folder and different repositories selected. Once your data is published, the project is no longer editable in Sciebo RDS. You can find your project in the *Published Projects* after publishing. If you want to adjust metadata afterwards, you must do so within the selected repository. If data is to be published again, a new project must be created for this purpose. This procedure ensures that data can always be assigned a unique identification number (DOI for short).""",
              """What is `ro-crate-metadata.json` and why does it appear in my cloud storage? Can I delete it?""" : """`ro-crate-metadata.json` holds a so-called [Research Object Crate](https://www.researchobject.org/ro-crate/). In simple terms: It holds all metadata you added to a given project and you can mostly ignore it.   
 
 Sciebo RDS will create an RO-Crate in each folder that you pick to be a project folder. You *can* delete it, but you will lose all metadata for that specific project and Sciebo RDS will create a new RO-Crate next time you open the corresponding project in Sciebo RDS' `Projects` view.""",

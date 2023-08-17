@@ -68,8 +68,8 @@ export default {
 
     const titles = {
       Home: Vue.prototype.$gettext("Home"),
-      Projects: Vue.prototype.$gettext("Projects"),
-      Archive: Vue.prototype.$gettext("Publications"),
+      Projects: Vue.prototype.$gettext("Active Projects"),
+      Archive: Vue.prototype.$gettext("Published Projects"),
       Services: Vue.prototype.$gettext("Repositories"),
       Settings: Vue.prototype.$gettext("Settings"),
       Wizard: Vue.prototype.$gettext("Wizard"),
