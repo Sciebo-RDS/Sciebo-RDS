@@ -2,6 +2,7 @@ from lib.EnumStatus import Status
 from lib.Port import Port
 import json
 import logging
+from time import time
 
 logger = logging.getLogger()
 
@@ -16,6 +17,7 @@ class Project:
 
         self.user = user
         self.status = status
+        self.timeCreatedS = time()
 
         self.portIn = []
         self.portOut = []

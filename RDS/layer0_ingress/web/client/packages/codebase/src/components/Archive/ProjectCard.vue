@@ -111,7 +111,7 @@ export default({
   },
   methods: {
     formatTime(ts) {
-      return new Date(ts * 1000).toLocaleString('de-DE', {hourCycle: "h24", dateStyle: "medium", timeStyle: "short"})
+      return new Date(ts * 1000).toLocaleString(navigator.language, {hourCycle: "h24", dateStyle: "medium", timeStyle: "short"})
     }
   }
 })
