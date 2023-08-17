@@ -106,10 +106,10 @@ export default {
         
         let publishedFilesCount = uploadStatus.fileSuccess.filter(h => h[0]).length
         if (publishedFilesCount === uploadStatus.fileSuccess.length) {
-          this.publishingSteps.push({"id": 3, "icon": "checkbox-marked", "message": `${publishedFilesCount}/${uploadStatus.fileSuccess.length} files transfered...`})
+          this.publishingSteps.push({"id": 3, "icon": "checkbox-marked", "message": `${publishedFilesCount}/${uploadStatus.fileSuccess.length} files transferred...`})
         }
         else {
-          this.publishingSteps.push({"id": 3, "icon": "help-circle", "message": `At least ${publishedFilesCount}/${uploadStatus.fileSuccess.length} files transfered, please check if anything is missing...`})
+          this.publishingSteps.push({"id": 3, "icon": "help-circle", "message": `At least ${publishedFilesCount}/${uploadStatus.fileSuccess.length} files transferred, please check if anything is missing...`})
         }
       
     });

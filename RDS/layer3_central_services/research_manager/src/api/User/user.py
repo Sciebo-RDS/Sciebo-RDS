@@ -1,6 +1,7 @@
 import Singleton
 from flask import jsonify, request, abort
 import logging
+from time import time
 
 logger = logging.getLogger()
 
@@ -27,7 +28,7 @@ def post(user_id):
     portOut = json.get("portOut", [])
     
     result = Singleton.ProjectService.addProject(
-        user_id, portIn=portIn, portOut=portOut
+        user_id, portIn=portIn, portOut=portOut, timeCreatedS=time()
     )
     return jsonify(result)
 

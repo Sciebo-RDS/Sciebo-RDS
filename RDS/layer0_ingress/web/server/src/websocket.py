@@ -307,6 +307,12 @@ class RDSNamespace(Namespace):
                 "researchIndex": jsonData["researchIndex"],
                 "DOI": identifier
             })
+                
+                research.update(
+                    {
+                        "timePublishedS" : time() 
+                    }
+                )
 
                 app.logger.debug("done synchronization, research: {}".format(research))
 

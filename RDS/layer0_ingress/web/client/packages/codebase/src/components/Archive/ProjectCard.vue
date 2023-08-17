@@ -8,6 +8,28 @@
       </p>
       <v-div class="">
 
+        <!-- Project Creation Time-->
+        <v-row class="d-flex" flat  tile>
+          <v-col class="py-1" justify="left" flat tile>
+            Created:
+          </v-col>
+
+          <v-col class="py-1" justify="right" flat tile>
+            {{ !!timeCreatedMS ? timeCreatedMS : "N/A"}}
+          </v-col>
+        </v-row>
+
+        <!-- Project Publishing Time-->
+        <v-row class="d-flex" flat  tile>
+          <v-col class="py-1" justify="left" flat tile>
+            Published:
+          </v-col>
+
+          <v-col class="py-1" justify="right" flat tile>
+            {{ !!timePublishedMS ? timePublishedMS : "N/A"}}
+          </v-col>
+        </v-row>
+
         <!-- Repository name-->
         <v-row class="d-flex" flat  tile>
           <v-col class="py-1" justify="left" flat tile>
@@ -80,6 +102,17 @@ export default({
         return "";
       }
     },
+    timeCreatedMS() {
+      return !!this.project.timeCreatedS ?  formatTime(this.project.timeCreatedS) : "";
+    },
+    timePublishedMS() {
+      return !!this.project.timePublishedS ?  formatTime(this.project.timePublishedS) : "";
+    }
+  },
+  methods: {
+    formatTime(ts) {
+      return new Date(ts * 1000).toLocaleString('de-DE', {hourCycle: "h24", dateStyle: "medium", timeStyle: "short"})
+    }
   }
 })
 </script>
