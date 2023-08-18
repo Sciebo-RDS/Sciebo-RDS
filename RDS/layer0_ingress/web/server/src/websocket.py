@@ -308,11 +308,11 @@ class RDSNamespace(Namespace):
                 "DOI": identifier
             })
                 
-                research.update(
-                    {
-                        "timePublishedS" : time() 
-                    }
-                )
+                research["portOut"][0]["properties"]["customProperties"].update(      
+                {                                                                              
+                    "timePublishedS" : time()                                        
+                }                                                                                     
+            )
 
                 app.logger.debug("done synchronization, research: {}".format(research))
 

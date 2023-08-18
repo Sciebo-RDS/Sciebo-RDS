@@ -106,7 +106,7 @@ export default({
       return !!this.project.timeCreatedS ?  formatTime(this.project.timeCreatedS) : "";
     },
     timePublishedMS() {
-      return !!this.project.timePublishedS ?  formatTime(this.project.timePublishedS) : "";
+      return !!this.project.portOut[0].properties.customProperties.timePublishedS ?  formatTime(this.project.portOut[0].properties.customProperties.timePublishedS) : "";
     }
   },
   methods: {

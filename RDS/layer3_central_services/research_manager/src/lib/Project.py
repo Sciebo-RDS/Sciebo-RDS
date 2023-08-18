@@ -180,6 +180,7 @@ class Project:
             "portIn": [port.getDict() for port in self.portIn],
             "portOut": [port.getDict() for port in self.portOut],
             "researchname": self.researchname,
+            "timeCreatedS": self.timeCreatedS
         }
 
         try:
