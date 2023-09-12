@@ -1,18 +1,18 @@
-from urllib.parse import urlparse
-import logging
-from flask import request
-from functools import wraps
-import redis_pubsub_dict
-from flask import Flask
-import uuid
-import requests
-import os
 import json
-from flask_socketio import SocketIO
-from flask_session import Session
-
+import logging
+import os
+import re
+import uuid
+from functools import wraps
 from pathlib import Path
+from urllib.parse import urlparse
+
+import redis_pubsub_dict
+import requests
 from dotenv import load_dotenv
+from flask import Flask, request
+from flask_session import Session
+from flask_socketio import SocketIO
 
 env_path = Path("..") / ".env"
 load_dotenv(dotenv_path=env_path)
@@ -103,8 +103,9 @@ class DomainsDict(UserDict):
 with open("domains.json") as f:
     domains = json.load(f)
     for domain in domains:
-        # If the oauth client id or secret is set in the environment for the correspondning domain, we will take it from there rather than from the file
-        upper_name = domain['name'].upper().replace('.', '_').replace('-', '_')
+        # If the oauth client id or secret is set in the environment for the correspondning domain,
+        # we will take it from there rather than from the file
+        upper_name = re.sub(r"\W", "_", domain['name'].upper())
         client_id_name = f"{upper_name}_OAUTH_CLIENT_ID"
         client_secret_name = f"{upper_name}_OAUTH_CLIENT_SECRET"
         client_id = os.getenv(client_id_name)
@@ -150,7 +151,7 @@ if os.getenv("USE_LOCAL_DICTS", "False").capitalize() == "True":
     user_store = {}
     research_progress = {}
 else:
-    from redis.cluster import RedisCluster, ClusterNode
+    from redis.cluster import ClusterNode, RedisCluster
 
     nodes = [
         ClusterNode(
@@ -188,7 +189,8 @@ app.logger.setLevel(gunicorn_logger.level)
 app.config.update(flask_config)
 
 try:
-    from prometheus_flask_exporter.multiprocess import GunicornPrometheusMetrics
+    from prometheus_flask_exporter.multiprocess import \
+        GunicornPrometheusMetrics
 
     metrics = GunicornPrometheusMetrics(app)
 except Exception as e:
