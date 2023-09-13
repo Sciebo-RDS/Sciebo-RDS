@@ -17,7 +17,6 @@ class Project:
 
         self.user = user
         self.status = status
-        self.timeCreatedS = str(time())
 
         self.portIn = []
         self.portOut = []
@@ -179,8 +178,7 @@ class Project:
             "status": self.status.value,
             "portIn": [port.getDict() for port in self.portIn],
             "portOut": [port.getDict() for port in self.portOut],
-            "researchname": self.researchname,
-            "timeCreatedS": self.timeCreatedS
+            "researchname": self.researchname
         }
 
         try:

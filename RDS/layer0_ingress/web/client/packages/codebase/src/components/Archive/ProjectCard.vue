@@ -8,16 +8,6 @@
       </p>
       <v-div class="">
 
-        <!-- Project Creation Time-->
-        <v-row class="d-flex" flat  tile>
-          <v-col class="py-1" justify="left" flat tile>
-            Created:
-          </v-col>
-
-          <v-col class="py-1" justify="right" flat tile>
-            {{ !!timeCreatedMS ? timeCreatedMS : "N/A"}}
-          </v-col>
-        </v-row>
 
         <!-- Project Publishing Time-->
         <v-row class="d-flex" flat  tile>
@@ -102,9 +92,7 @@ export default({
         return "";
       }
     },
-    timeCreatedMS() {
-      return !!this.project.timeCreatedS ?  this.formatTime(this.project.timeCreatedS) : "";
-    },
+
     timePublishedMS() {
       return !!this.project.portOut[0].properties.customProperties.timePublishedS ?  this.formatTime(this.project.portOut[0].properties.customProperties.timePublishedS) : "";
     }
