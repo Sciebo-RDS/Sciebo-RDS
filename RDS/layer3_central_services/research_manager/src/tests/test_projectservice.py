@@ -6,6 +6,7 @@ from lib.EnumStatus import Status
 from RDS import Util
 
 from fakeredis import FakeStrictRedis
+from freezegun import freeze_time
 
 
 def get_opts(use_redis=False):
