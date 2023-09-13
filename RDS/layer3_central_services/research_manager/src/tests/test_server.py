@@ -1,5 +1,4 @@
 import unittest
-from freezegun import freeze_time
 from lib.EnumStatus import Status
 
 
@@ -13,7 +12,6 @@ def create_app():
     return app
 
 
-@freeze_time("2023-09-13")
 class TestProjectService(unittest.TestCase):
 
     def setUp(self):
