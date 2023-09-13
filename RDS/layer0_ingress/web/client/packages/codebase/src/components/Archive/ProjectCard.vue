@@ -103,10 +103,10 @@ export default({
       }
     },
     timeCreatedMS() {
-      return !!this.project.timeCreatedS ?  formatTime(this.project.timeCreatedS) : "";
+      return !!this.project.timeCreatedS ?  this.formatTime(this.project.timeCreatedS) : "";
     },
     timePublishedMS() {
-      return !!this.project.portOut[0].properties.customProperties.timePublishedS ?  formatTime(this.project.portOut[0].properties.customProperties.timePublishedS) : "";
+      return !!this.project.portOut[0].properties.customProperties.timePublishedS ?  this.formatTime(this.project.portOut[0].properties.customProperties.timePublishedS) : "";
     }
   },
   methods: {

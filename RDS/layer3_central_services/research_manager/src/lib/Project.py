@@ -17,7 +17,7 @@ class Project:
 
         self.user = user
         self.status = status
-        self.timeCreatedS = time()
+        self.timeCreatedS = str(time())
 
         self.portIn = []
         self.portOut = []
