@@ -1,9 +1,11 @@
 import unittest
+from freezegun import freeze_time
 from lib.Project import Project
 from lib.EnumStatus import Status
 from lib.Port import Port
 
 
+@freeze_time("2023-09-13")
 class Test_Project(unittest.TestCase):
 
     def test_project_init(self):

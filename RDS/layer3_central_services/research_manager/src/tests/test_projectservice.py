@@ -16,7 +16,7 @@ def get_opts(use_redis=False):
         }
     return {"use_in_memory_on_failure": True}
 
-
+@freeze_time("2023-09-13")
 def make_test_case(use_redis=False):
     class Test_projectserviceService(unittest.TestCase):
         def setUp(self):
@@ -365,10 +365,12 @@ def make_test_case(use_redis=False):
     return Test_projectserviceService
 
 
+
 class ProjectServiceTestCase(make_test_case()):
     pass
 
 
+@freeze_time("2023-09-13")
 class ProjectServiceRedisBackedTestCase(make_test_case(use_redis=True)):
     def test_deprov_data(self):
         opts = get_opts(True)
