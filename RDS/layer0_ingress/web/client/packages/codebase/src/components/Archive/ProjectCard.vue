@@ -1,5 +1,5 @@
 <template>
-  <v-card width="400" class="ma-3" outlined>
+  <v-card width="400" class="ma-2" outlined>
     <v-card-text>
       <div class="caption">{{ project.portIn[0].properties.customProperties.filepath }}</div>
       <p class="text-h6 text--primary pb-3" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" :title="project.researchname">
@@ -11,7 +11,7 @@
 
         <!-- Project Publishing Time-->
         <v-row class="d-flex" flat  tile>
-          <v-col class="py-1" justify="left" flat tile>
+          <v-col class="py-1 text--primary" justify="left" flat tile>
             Published:
           </v-col>
 
@@ -22,7 +22,7 @@
 
         <!-- Repository name-->
         <v-row class="d-flex" flat  tile>
-          <v-col class="py-1" justify="left" flat tile>
+          <v-col class="py-1 text--primary" justify="left" flat tile>
             Repository:
           </v-col>
 
@@ -33,7 +33,7 @@
 
         <!-- Repository Project-ID-->
         <v-row class="d-flex" flat  tile>
-          <v-col class="py-1" justify="left" flat tile>
+          <v-col class="py-1 text--primary" justify="left" flat tile>
             Repository-ID:
           </v-col>
 
@@ -44,7 +44,7 @@
 
         <!-- DOI-->
         <v-row class="d-flex" flat  tile>
-          <v-col class="py-1" justify="left" flat tile>
+          <v-col class="py-1 text--primary" justify="left" flat tile>
             Identifier (DOI):
           </v-col>
 

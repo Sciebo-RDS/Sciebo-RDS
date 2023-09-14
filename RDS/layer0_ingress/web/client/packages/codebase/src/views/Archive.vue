@@ -14,7 +14,7 @@
         </v-container>
       </v-sheet>
 
-      <v-container v-if="publishedProjects.length > 0" class="d-flex ma-1">
+      <v-container v-if="publishedProjects.length > 0" class="d-flex flex-wrap justify-start">
           <ProjectCard v-for="project in publishedProjects" :key="project.researchIndex" :project="project" />
       </v-container>
 
