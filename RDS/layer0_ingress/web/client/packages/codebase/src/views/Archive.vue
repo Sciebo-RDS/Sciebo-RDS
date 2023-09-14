@@ -14,8 +14,8 @@
         </v-container>
       </v-sheet>
 
-      <v-container v-if="publishedProjects.length > 0" class="d-flex flex-wrap justify-start ma-0">
-          <ProjectCard v-for="project in publishedProjects" :key="project.researchIndex" :project="project" />
+      <v-container fluid v-if="publishedProjects.length > 0" class="d-flex flex-wrap justify-start ma-0">
+          <ProjectCard v-for="project in publishedProjectsByDate.reverse()" :key="project.researchIndex" :project="project" />
       </v-container>
 
       <v-container v-else fill-height >
@@ -47,8 +47,11 @@ export default {
       projects: "getProjectlist",
     }),
     publishedProjects(){
-      return this.projects.filter((project) => project.status == 3).reverse();
+      return this.projects.filter((project) => project.status == 3);
     },
+    publishedProjectsByDate() {
+      return this.publishedProjects.sort((first, second) => new Date(first.portOut[0].properties.customProperties.timePublishedS * 1000) - new Date(second.portOut[0].properties.customProperties.timePublishedS * 1000));
+    }
   },
   methods: {
   },
