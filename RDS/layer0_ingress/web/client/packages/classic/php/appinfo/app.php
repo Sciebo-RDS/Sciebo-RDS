@@ -19,7 +19,7 @@ $server->getNavigationManager()->add(function () {
         'href' => $urlGenerator->linkToRoute('rds.page.index'),
 
         // The icon that will be shown in the navigation, located in img/
-        'icon' => $urlGenerator->imagePath('rds', 'research-white.svg'),
+        'icon' => $urlGenerator->imagePath('rds', 'rds-logo-white.svg'),
 
         // The application's title, used in the navigation & the settings page of your app
         'name' => $server->getL10N('rds')->t('RDS App'),
