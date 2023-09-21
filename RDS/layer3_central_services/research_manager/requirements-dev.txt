@@ -75,7 +75,7 @@ pyyaml==6.0; python_version >= '3.6'
 redis-pubsub-dict-wo-cluster==0.0.3
 redis==4.2.2
 requests==2.27.1
-research-data-services-common[flask]==0.52
+research-data-services-common[flask]==0.54
 restnavigator==1.0.1
 rich==12.4.1; python_full_version >= '3.6.3' and python_full_version < '4.0.0'
 semver==2.13.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
