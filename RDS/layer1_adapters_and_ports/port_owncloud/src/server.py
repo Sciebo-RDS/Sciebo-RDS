@@ -26,11 +26,6 @@ owncloud_oauth_authorize = "{}/index.php/apps/oauth2/authorize%3Fredirect_uri={}
 )
 servicename = os.getenv("SERVICENAME")
 
-owncloud_display_name = os.getenv("OWNCLOUD_DISPLAYNAME", "ownCloud")
-owncloud_info_url = os.getenv("OWNCLOUD_INFO_URL","https://owncloud.com/")
-owncloud_help_url = os.getenv("OWNCLOUD_HELP_URL","https://owncloud.com/docs-guides/")
-owncloud_icon = os.getenv("OWNCLOUD_ICON","./owncloud.svg")
-
 service = OAuth2Service(
     servicename=f"port-owncloud-{servicename}",
     implements=["fileStorage"],
@@ -42,10 +37,10 @@ service = OAuth2Service(
     client_secret=owncloud_oauth_secret,
     description={"en": "ownCloud is a suite of client–server software for creating and using file hosting services.",
                  "de": "ownCloud ist eine Suite von Client-Server-Software zur Erstellung und Nutzung von File-Hosting-Diensten."},
-    displayName=owncloud_display_name,
-    infoUrl=owncloud_info_url,
-    helpUrl=owncloud_help_url,
-    icon=owncloud_icon
+    displayName="ownCloud",
+    infoUrl="https://owncloud.com/",
+    helpUrl="https://owncloud.com/docs-guides/",
+    icon="./owncloud.svg"
 )
 Util.register_service(service)
 
