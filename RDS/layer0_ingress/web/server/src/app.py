@@ -105,7 +105,7 @@ with open("domains.json") as f:
     for domain in domains:
         # If the oauth client id or secret is set in the environment for the correspondning domain,
         # we will take it from there rather than from the file
-        upper_name = domain['name'].upper().replace('.', '_').replace('-', '_')
+        upper_name = re.sub(r"\W", "_", domain['name'].upper())
         client_id_name = f"{upper_name}_OAUTH_CLIENT_ID"
         client_secret_name = f"{upper_name}_OAUTH_CLIENT_SECRET"
         client_id = os.getenv(client_id_name)
