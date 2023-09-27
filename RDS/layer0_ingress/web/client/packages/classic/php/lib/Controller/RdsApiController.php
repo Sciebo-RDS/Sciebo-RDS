@@ -123,6 +123,7 @@ class RdsApiController extends ApiController
     /**
      * @PublicPage
      * @CORS
+     * @NoCSRFRequired
      *
      * Returns the public key for mailadress
      *
