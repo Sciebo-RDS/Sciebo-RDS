@@ -20,7 +20,7 @@ zenodo_info_url = os.getenv("ZENODO_INFO_URL","https://about.zenodo.org/")
 zenodo_help_url = os.getenv("ZENODO_HELP_URL","https://help.zenodo.org/")
 zenodo_icon = os.getenv("ZENODO_ICON","./zenodo.svg")
 zenodo_metadata_profile = os.getenv("ZENODO_METADATA_PROFILE","./metadata_profile.json")
-zenodo_project_link_template = os.getenv("ZENODO_PROJECT_LINK_TEMPLATE","https://zenodo.org/record/${projectID}")
+zenodo_project_link_template = os.getenv("ZENODO_PROJECT_LINK_TEMPLATE","https://zenodo.org/record/${projectId}")
 
 
 #TODO add metadata profile for zenodo

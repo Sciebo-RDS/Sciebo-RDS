@@ -93,7 +93,7 @@ export default({
       }
     },
     projectId() {
-      return project.portOut[0].properties.customProperties.projectId;
+      return this.project.portOut[0].properties.customProperties.projectId;
     },
     projectLinkTemplate() {
       try {
@@ -105,7 +105,7 @@ export default({
     },
     projectLink() {
       try {
-        projectLink = new Function("return `" + projectLinkTemplate + "`").call(projectLinkTemplate);
+        let projectLink = new Function("return `" + this.projectLinkTemplate + "`").call(this.projectLinkTemplate);
         return projectLink;
       } catch (e) {
         return "";
