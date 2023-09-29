@@ -63,12 +63,12 @@
       <v-spacer></v-spacer>
     <!-- TODO: Implement this for all Repositories -->
       <a target="_blank" :href="!!projectLink && !!projectId ? projectLink : '#'">
-      <v-btn
-        text
-        :color="!!projectLink ? 'teal accent-4' : 'grey lighten-2'"
-        :disabled="!projectLink"
-      >
-        Go to Publication
+        <v-btn
+          text
+          :color="!!projectLink ? 'teal accent-4' : 'grey lighten-2'"
+          :disabled="!projectLink"
+        >
+          Go to Publication
       </v-btn>
       </a>
     </v-card-actions>
@@ -100,14 +100,17 @@ export default({
         let fullPort = this.userservicelist.filter(s => s.servicename === this.project.portOut[0].port)[0];
         return fullPort.projectLinkTemplate;
       } catch (e) {
+        console.log(e)
         return "";
       }
     },
     projectLink() {
       try {
+        projectId = this.projectId;
         let projectLink = new Function("return `" + this.projectLinkTemplate + "`").call(this.projectLinkTemplate);
         return projectLink;
       } catch (e) {
+        console.log(e)
         return "";
       }
     },
