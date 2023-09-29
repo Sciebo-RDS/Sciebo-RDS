@@ -166,6 +166,6 @@ class HTTPManager:
             try:
                 return service.makeRequest(*args, **kwargs)
             except Exception as e:
-                app.logger.error(e, exc_info=True)
+                pass
 
         raise ValueError("no service implements the given url.")

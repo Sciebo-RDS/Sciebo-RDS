@@ -349,21 +349,32 @@ class RDSNamespace(Namespace):
 
         app.logger.debug("got response from __trigger_finish_sync: Type: {}, payload: {}".format(type(identifier), identifier))
 
+        research["synchronization_process_status"] = ProcessStatus.FINISHED.value
+        
+
         if "customProperties" not in research["portOut"][index]["properties"]:
             research["portOut"][index]["properties"]["customProperties"] = {}
 
-        if identifier is not None:
-            research["portOut"][index]["properties"]["customProperties"].update(
-                identifier
-            )
+        try:
 
-        research["synchronization_process_status"] = ProcessStatus.FINISHED.value
+            if identifier is not None:
+                research["portOut"][index]["properties"]["customProperties"].update(
+                    identifier
+                )
+
+            self.__update_research_process(research)
+            emit("ProjectList", httpManager.makeRequest("getAllResearch"))
+
+            return identifier["DOI"]
+        except:
+            pass
+
         self.__update_research_process(research)
-
+        
         # refresh projectlist for user
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))
 
-        return identifier["DOI"]
+        return True
 
     def __trigger_project_creation(self, research):
         for index, port in enumerate(research["portOut"]):
