@@ -21,7 +21,7 @@ osf_info_url = os.getenv("OPENSCIENCEFRAMEWORK_INFO_URL","https://osf.io/")
 osf_help_url = os.getenv("OPENSCIENCEFRAMEWORK_HELP_URL","https://help.osf.io/hc/en-us")
 osf_icon = os.getenv("OPENSCIENCEFRAMEWORK_ICON","./osf.png")
 osf_metadata_profile = os.getenv("OPENSCIENCEFRAMEWORK_METADATA_PROFILE","./metadata_profile.json")
-osf_project_link_template = os.getenv("OPENSCIENCEFRAMEWORK_PROJECT_LINK_TEMPLATE","https://osf.io/${projectID}")
+osf_project_link_template = os.getenv("OPENSCIENCEFRAMEWORK_PROJECT_LINK_TEMPLATE","https://osf.io/${projectId}")
 
 
 service = OAuth2Service(
