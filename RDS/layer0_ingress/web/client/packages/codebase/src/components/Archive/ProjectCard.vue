@@ -106,6 +106,7 @@ export default({
     },
     projectLink() {
       try {
+        let projectId;
         projectId = this.projectId;
         let projectLink = new Function("return `" + this.projectLinkTemplate + "`").call(this.projectLinkTemplate);
         return projectLink;
