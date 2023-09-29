@@ -62,11 +62,11 @@
     <v-card-actions>
       <v-spacer></v-spacer>
     <!-- TODO: Implement this for all Repositories -->
-      <a target="_blank" :href="project.portOut[0].port == 'port-openscienceframework' && !!project.portOut[0].properties.customProperties.projectId ? `https://osf.io/${project.portOut[0].properties.customProperties.projectId}` : '#'">
+      <a target="_blank" :href="!!projectLink && !!projectId ? projectLink : '#'">
       <v-btn
         text
-        :color="project.portOut[0].port == 'port-openscienceframework' ? 'teal accent-4' : 'grey lighten-2'"
-        :disabled="!project.portOut[0].port == 'port-openscienceframework'"
+        :color="!!projectLink ? 'teal accent-4' : 'grey lighten-2'"
+        :disabled="!projectLink"
       >
         Go to Publication
       </v-btn>
@@ -92,7 +92,25 @@ export default({
         return "";
       }
     },
-
+    projectId() {
+      return project.portOut[0].properties.customProperties.projectId;
+    },
+    projectLinkTemplate() {
+      try {
+        let fullPort = this.userservicelist.filter(s => s.servicename === this.project.portOut[0].port)[0];
+        return fullPort.projectLinkTemplate;
+      } catch (e) {
+        return "";
+      }
+    },
+    projectLink() {
+      try {
+        projectLink = new Function("return `" + projectLinkTemplate + "`").call(projectLinkTemplate);
+        return projectLink;
+      } catch (e) {
+        return "";
+      }
+    },
     timePublishedMS() {
       return !!this.project.portOut[0].properties.customProperties.timePublishedS ?  this.formatTime(this.project.portOut[0].properties.customProperties.timePublishedS) : "";
     }
