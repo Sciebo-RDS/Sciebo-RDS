@@ -78,7 +78,7 @@ class OwncloudUser:
                     # add full filepath in context of folder
                     files.append(fullname + appendFile)
 
-        for index in indexList:
+        for index in sorted(indexList, reverse=True):
             del files[index]
 
         return files
