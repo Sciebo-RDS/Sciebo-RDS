@@ -61,16 +61,22 @@
   
     <v-card-actions>
       <v-spacer></v-spacer>
-    <!-- TODO: Implement this for all Repositories -->
-      <a target="_blank" :href="!!projectLink && !!projectId ? projectLink : '#'">
+      <a v-if="!!projectLink && !!projectId" target="_blank" :href="!!projectLink && !!projectId ? projectLink : '#'">
         <v-btn
           text
           :color="!!projectLink ? 'teal accent-4' : 'grey lighten-2'"
-          :disabled="!projectLink"
         >
           Go to Publication
       </v-btn>
       </a>
+      <v-btn
+        v-else
+          text
+          color="grey lighten-2"
+          disabled
+        >
+          Go to Publication
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -106,10 +112,8 @@ export default({
     },
     projectLink() {
       try {
-        var projectId;
-        projectId = this.projectId;
-        let projectLink = new Function("return `" + this.projectLinkTemplate + "`").call(this.projectLinkTemplate);
-        return projectLink;
+        let inject = (template, id) => template.replace(/\${(.*?)}/g, (x,g)=> id);
+        return inject(this.projectLinkTemplate, this.projectId);
       } catch (e) {
         console.log(e)
         return "";
