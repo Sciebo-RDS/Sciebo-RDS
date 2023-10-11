@@ -97,13 +97,7 @@ export default {
         this.publishingSteps.push({"id": 2, "icon": "checkbox-marked", "message": `Metadata added to project...`})
       } 
     });
-    this.$socket.client.on("fileUploadStatus", (data) => {
-      console.log(data)
-      console.log(typeof data)
-      let uploadStatus = JSON.parse(data)
-      console.log(uploadStatus)
-      console.log(typeof uploadStatus)
-        
+    this.$socket.client.on("fileUploadStatus", (uploadStatus) => {
         let publishedFilesCount = uploadStatus.fileSuccess.filter(h => h[0]).length
         if (publishedFilesCount === uploadStatus.fileSuccess.length) {
           this.publishingSteps.push({"id": 3, "icon": "checkbox-marked", "message": `${publishedFilesCount}/${uploadStatus.fileSuccess.length} files transferred...`})

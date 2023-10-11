@@ -294,9 +294,13 @@ class RDSNamespace(Namespace):
             })
 
             fileUploadStatus = self.__trigger_filesync(jsonData, research)
-            if type(fileUploadStatus) is dict:
+
+            try:
+                fileUploadStatus = json.loads(fileUploadStatus)
                 fileUploadStatus["researchIndex"] = jsonData["researchIndex"]
-            emit("fileUploadStatus", fileUploadStatus)
+                emit("fileUploadStatus", fileUploadStatus)
+            except Exception as e:
+                app.logger.debug(f"Exception while parsing fileUploadStatus: {e}")            
 
             if (
                 research["synchronization_process_status"]
