@@ -10,7 +10,7 @@
             Make sure these settings are correct!
           </v-card-subtitle>
           <v-card-text>
-            <p v-if="!published && !publishInProgress" class="my-5">
+            <p v-if="!published && !publishInProgress && fileUploadMessages.length == 0" class="my-5">
               Your <span class="text-decoration-underline">{{displayNamePortIn}}</span> project folder <span class="font-weight-bold" style="font-family: monospace;">{{loadedFilePath}}</span> will be published to <span class="text-decoration-underline">{{displayNamePortOut}}</span>.
             
               <v-row class="my-5 justify-center" style="align-items:center">
@@ -31,10 +31,10 @@
             <p v-else class="my-10 text-left">
 
               <!-- publishing Steps -->
-              <p v-if="publishingSteps.length > 0">
-                  <v-row v-for="value in publishingSteps" :key="value.key">
+              <p v-if="fileUploadMessages.length > 0">
+                  <v-row v-for="value in fileUploadMessages" :key="value.researchIndex">
                     <v-col cols="1">
-                      <v-icon>mdi-{{ value.icon }}</v-icon>
+                      <v-icon>{{ getIconByType(value.icon) }}</v-icon>
 
                     </v-col>
                     <v-col cols="11">
@@ -127,6 +127,8 @@ export default {
       userServiceList: "getUserServiceList",
       loadedFilePath: "getLoadedFilePath",
       loadedResearchName: "getLoadedResearchName",
+      getMessagesByResearchIndex: "getMessagesByResearchIndex",
+      getIconByType: "getIconByType",
     }),
 
     serviceIn() {
@@ -170,8 +172,10 @@ export default {
       } catch (e) {
         return "";
       }
+    },
+    fileUploadMessages() {
+      return getMessagesByResearchIndex(this.project.researchIndex)
     }
-
   },
 };
 </script>
