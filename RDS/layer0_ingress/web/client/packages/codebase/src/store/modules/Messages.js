@@ -19,11 +19,15 @@ export default {
     getIconByType: (state) => (type) => state.icons[type] || [],
   },
   mutations: {
-    addMessage: (state, payload) =>
-      (state.messages[payload.researchIndex] = [
-        ...(state.messages[payload.researchIndex] || []),
-        payload,
-      ]),
+    addMessage: (state, payload) => {
+      state.messages = {
+        ...state.messages,
+        [payload[researchIndex]]: [
+          ...(state.messages[payload.researchIndex] || []),
+          payload,
+        ],
+      };
+    },
   },
   actions: {
     SOCKET_fileUploadStatus(context, payload) {
