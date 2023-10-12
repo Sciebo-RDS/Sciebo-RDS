@@ -32,7 +32,7 @@
 
               <!-- publishing Steps -->
               <p v-if="fileUploadMessages.length > 0">
-                  <v-row v-for="value in fileUploadMessages" :key="value.researchIndex">
+                  <v-row v-for="value in fileUploadMessages" :key="value.message">
                     <v-col cols="1">
                       <v-icon>{{ getIconByType(value.icon) }}</v-icon>
 
@@ -174,7 +174,7 @@ export default {
       }
     },
     fileUploadMessages() {
-      return this.getMessagesByResearchIndex(this.project.researchIndex)
+      return this.getMessagesByResearchIndex(this.project.researchIndex);
     }
   },
 };

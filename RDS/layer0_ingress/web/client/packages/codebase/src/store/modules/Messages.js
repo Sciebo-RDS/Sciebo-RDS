@@ -15,8 +15,8 @@ export default {
   state: getDefaultState(),
 
   getters: {
-    getMessagesByResearchIndex: (state) => (id) => state.messages[id] || null,
-    getIconByType: (state) => (type) => state.icons[type] || null,
+    getMessagesByResearchIndex: (state) => (id) => state.messages[id] || [],
+    getIconByType: (state) => (type) => state.icons[type] || [],
   },
   mutations: {
     addMessage: (state, payload) =>
