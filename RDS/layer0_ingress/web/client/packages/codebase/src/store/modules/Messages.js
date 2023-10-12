@@ -22,8 +22,8 @@ export default {
     addMessage: (state, payload) => {
       state.messages = {
         ...state.messages,
-        [payload[researchIndex]]: [
-          ...(state.messages[payload.researchIndex] || []),
+        [payload["researchIndex"]]: [
+          ...(state.messages[payload["researchIndex"]] || []),
           payload,
         ],
       };
