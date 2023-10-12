@@ -34,7 +34,7 @@
               <p v-if="fileUploadMessages.length > 0">
                   <v-row v-for="value in fileUploadMessages" :key="value.message">
                     <v-col cols="1">
-                      <v-icon>{{ getIconByType(value.icon) }}</v-icon>
+                      <v-icon color="value.type">{{ getIconByType(value.type) }}</v-icon>
 
                     </v-col>
                     <v-col cols="11">
@@ -85,40 +85,6 @@ export default {
     return {
       publishingSteps: []
     };
-  },
-  mounted: function () {
-    this.$socket.client.on("projectCreatedInService", (data) => {
-      if (data.researchindex == this.project.researchindex) {
-        this.publishingSteps.push({"id": 1, "icon": "checkbox-marked", "message": `Project created with ${this.displayNamePortOut}-ID ${data.projectId}...`})
-      } 
-    });
-    this.$socket.client.on("metadataSynced", (data) => {
-      if (data.researchindex == this.project.researchindex) {
-        this.publishingSteps.push({"id": 2, "icon": "checkbox-marked", "message": `Metadata added to project...`})
-      } 
-    });
-    this.$socket.client.on("fileUploadStatus", (uploadStatus) => {
-        let publishedFilesCount = uploadStatus.fileSuccess.filter(h => h[0]).length
-        if (publishedFilesCount === uploadStatus.fileSuccess.length) {
-          this.publishingSteps.push({"id": 3, "icon": "checkbox-marked", "message": `${publishedFilesCount}/${uploadStatus.fileSuccess.length} files transferred...`})
-        }
-        else {
-          this.publishingSteps.push({"id": 3, "icon": "help-circle", "message": `At least ${publishedFilesCount}/${uploadStatus.fileSuccess.length} files transferred, please check if anything is missing...`})
-        }
-      
-    });
-    this.$socket.client.on("identifierAssigned", (data) => {
-      if (data.researchindex == this.project.researchindex) {
-        this.publishingSteps.push({"id": 4, "icon": "checkbox-marked", "message": `Assigned Identifier ${data.DOI}...`})
-      } 
-    });
-  },
-  watch: {
-    project(newlyLoadedProject, oldProject){
-      if (newlyLoadedProject["researchId"] !== oldProject["researchId"]){
-        this.publishingSteps = [];
-      }
-    },
   },
   computed: {
     ...mapGetters({

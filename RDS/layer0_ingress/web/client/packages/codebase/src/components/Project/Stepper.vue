@@ -299,7 +299,7 @@ export default {
         },
         (result) => {
           let text = this.$gettext(
-            "There was an error publishing your project. Please check if you filled all fields in the metadata step."
+            "There was an error publishing your project."
           );
           if (result) {
             text = this.$gettext("Your project '" + this.project["researchname"] + "' was successfully published.");

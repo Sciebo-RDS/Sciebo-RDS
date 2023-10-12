@@ -278,9 +278,11 @@ class RDSNamespace(Namespace):
                 "start synchronization\nresearch before: {}".format(research)
             )
             projectId = self.__trigger_project_creation(research)
-            emit("projectCreatedInService", {
+            emit("fileUploadStatus", {
+                "time": time(),
                 "researchIndex": jsonData["researchIndex"],
-                "projectId": projectId
+                "type": "success" if projectId is not None else "error",
+                "message": f"Project created with ID {projectId}" if projectId is not None else "Could not create project in repository"
             })
 
             app.logger.debug("research after: {}".format(parseResearchBack(research)))
@@ -288,17 +290,27 @@ class RDSNamespace(Namespace):
             saveResearch(parseResearchBack(research))
 
             metadataSynced = self.__trigger_metadatasync(jsonData, research)
-            emit("metadataSynced", {
+            emit("fileUploadStatus", {
+                "time": time(),
                 "researchIndex": jsonData["researchIndex"],
-                "metadataSynced": metadataSynced
+                "type": "success" if metadataSynced is not False else "error",
+                "message": "Metadata submitted to repository" if metadataSynced is not False else "Could not submit metadata to repository"
             })
 
-            fileUploadStatus = self.__trigger_filesync(jsonData, research)
 
+            fileUploadStatus = self.__trigger_filesync(jsonData, research)
+            #TODO: check if upload was successful
             try:
-                fileUploadStatus = json.loads(fileUploadStatus)
-                fileUploadStatus["researchIndex"] = jsonData["researchIndex"]
-                emit("fileUploadStatus", fileUploadStatus)
+#                fileUploadStatus = json.loads(fileUploadStatus)
+#                fileUploadStatus["researchIndex"] = jsonData["researchIndex"]
+#                emit("fileUploadStatus", fileUploadStatus)
+
+                emit("fileUploadStatus", {
+                    "time": time(),
+                    "researchIndex": jsonData["researchIndex"],
+                    "type": "success" if True else "warning",
+                    "message": "Files submitted to repository" if True else "Could not submit all files to repository"
+                })
             except Exception as e:
                 app.logger.debug(f"Exception while parsing fileUploadStatus: {e}")            
 
@@ -307,10 +319,16 @@ class RDSNamespace(Namespace):
                 == ProcessStatus.FILEDATA_SYNCHRONIZED.value
             ):
                 identifier = self.__trigger_finish_sync(jsonData, research)
-                emit("identifierAssigned", {
-                "researchIndex": jsonData["researchIndex"],
-                "DOI": identifier
-            })
+#                emit("identifierAssigned", {
+#                "researchIndex": jsonData["researchIndex"],
+#                "DOI": identifier
+#            })
+                emit("fileUploadStatus", {
+                    "time": time(),
+                    "researchIndex": jsonData["researchIndex"],
+                    "type": "success" if identifier is not None else "error",
+                    "message": f"Published project with DOI {identifier}" if True else "Could not generate DOI"
+                })
                 
                 research["portOut"][0]["properties"]["customProperties"].update(                      
                     {                                                                                 
