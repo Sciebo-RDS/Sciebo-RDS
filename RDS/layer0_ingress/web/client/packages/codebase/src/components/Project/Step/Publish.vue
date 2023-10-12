@@ -114,8 +114,8 @@ export default {
     });
   },
   watch: {
-    project(newlylLoadedProject, oldProject){
-      if (newlylLoadedProject["researchId"] !== oldProject["researchId"]){
+    project(newlyLoadedProject, oldProject){
+      if (newlyLoadedProject["researchId"] !== oldProject["researchId"]){
         this.publishingSteps = [];
       }
     },
@@ -174,7 +174,7 @@ export default {
       }
     },
     fileUploadMessages() {
-      return getMessagesByResearchIndex(this.project.researchIndex)
+      return this.getMessagesByResearchIndex(this.project.researchIndex)
     }
   },
 };
