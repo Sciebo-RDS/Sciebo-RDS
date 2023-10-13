@@ -160,7 +160,7 @@
             </v-btn>
 
             <v-btn
-              :disabled="publishInProgress || published"
+            :disabled="publishInProgress || published || project.status === 4"
               color="success"
               @click="publishProject"
               class="ma-5"
@@ -299,7 +299,7 @@ export default {
         },
         (result) => {
           let text = this.$gettext(
-            "There was an error publishing your project."
+            "There was an error publishing your project. Large files are currently not supported."
           );
           if (result) {
             text = this.$gettext("Your project '" + this.project["researchname"] + "' was successfully published.");

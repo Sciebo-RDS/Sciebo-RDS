@@ -6,7 +6,7 @@
           <v-card-title v-translate class="justify-center" align="center">
             Publish your project
           </v-card-title>
-          <v-card-subtitle v-if="!published && !publishInProgress" class="mt-2">
+          <v-card-subtitle v-if="!published && !publishInProgress && fileUploadMessages.length == 0" class="mt-2">
             Make sure these settings are correct!
           </v-card-subtitle>
           <v-card-text>
@@ -16,7 +16,7 @@
               <v-row class="my-5 justify-center" style="align-items:center">
               <v-col
                   cols="3">
-                <v-img :src="iconPortIn" style="outline-offset: 5px;outline: 1px solid #000;outline-radius: 0%;" />
+                <v-img :src="iconPortIn" />
               </v-col>
               <v-col cols="2">
                 <p style="font-size: 2em; text-align: center;">
@@ -24,7 +24,7 @@
                 </p>
               </v-col>
               <v-col cols="3">
-                <v-img :src="iconPortOut" style="outline-offset: 5px;outline: 1px solid #000;outline-radius: 0%;" />
+                <v-img :src="iconPortOut" />
               </v-col>
             </v-row>
             </p>
@@ -34,7 +34,7 @@
               <p v-if="fileUploadMessages.length > 0">
                   <v-row v-for="value in fileUploadMessages" :key="value.message">
                     <v-col cols="1">
-                      <v-icon color="value.type">{{ getIconByType(value.type) }}</v-icon>
+                      <v-icon>{{ getIconByType(value.type) }}</v-icon>
 
                     </v-col>
                     <v-col cols="11">
