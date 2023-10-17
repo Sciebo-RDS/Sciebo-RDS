@@ -114,5 +114,7 @@ def put(project_id):
     if project.update():
         identifier = { "DOI": project.create_doi() }
         return jsonify(identifier), 200
+    
+    logger.debug("Could not update project in put endpoint")
 
     abort(400)
