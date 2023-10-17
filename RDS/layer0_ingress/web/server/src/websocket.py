@@ -282,8 +282,12 @@ class RDSNamespace(Namespace):
                 "time": time(),
                 "researchIndex": jsonData["researchIndex"],
                 "type": "success" if projectId is not None else "error",
-                "message": f"Project created with ID {projectId}" if projectId is not None else "Could not create project in repository"
+                "message": f"Project created with ID {projectId}" if projectId is not None else "Could not reach repository servers"
             })
+
+
+            if projectId == None and research["status"] == ProcessStatus.START.value:
+                return False
 
             app.logger.debug("research after: {}".format(parseResearchBack(research)))
 
@@ -300,19 +304,13 @@ class RDSNamespace(Namespace):
 
             fileUploadStatus = self.__trigger_filesync(jsonData, research)
             #TODO: check if upload was successful
-            try:
-#                fileUploadStatus = json.loads(fileUploadStatus)
-#                fileUploadStatus["researchIndex"] = jsonData["researchIndex"]
-#                emit("fileUploadStatus", fileUploadStatus)
 
-                emit("fileUploadStatus", {
-                    "time": time(),
-                    "researchIndex": jsonData["researchIndex"],
-                    "type": "success" if True else "warning",
-                    "message": "Files submitted to repository" if True else "Could not submit all files to repository"
-                })
-            except Exception as e:
-                app.logger.debug(f"Exception while parsing fileUploadStatus: {e}")            
+            emit("fileUploadStatus", {
+                "time": time(),
+                "researchIndex": jsonData["researchIndex"],
+                "type": "success" if True else "warning",
+                "message": "Files submitted to repository" if True else "Could not submit all files to repository"
+            })
 
             if (
                 research["synchronization_process_status"]
@@ -327,7 +325,7 @@ class RDSNamespace(Namespace):
                     "time": time(),
                     "researchIndex": jsonData["researchIndex"],
                     "type": "success" if identifier is not None else "error",
-                    "message": f"Published project with DOI {identifier}" if True else "Could not generate DOI"
+                    "message": f"Published project with DOI {identifier}" if identifier is not None else "Could not get DOI from repository"
                 })
                 
                 research["portOut"][0]["properties"]["customProperties"].update(                      
@@ -365,38 +363,34 @@ class RDSNamespace(Namespace):
         return research
 
     def __trigger_finish_sync(self, jsonData, research, index=0):
-        identifier = json.loads(
-            httpManager.makeRequest("finishResearch", data=jsonData)
-        )
-
-        app.logger.debug("got response from __trigger_finish_sync: Type: {}, payload: {}".format(type(identifier), identifier))
-
-        research["synchronization_process_status"] = ProcessStatus.FINISHED.value
-        
-
-        if "customProperties" not in research["portOut"][index]["properties"]:
-            research["portOut"][index]["properties"]["customProperties"] = {}
+        identifier = None
 
         try:
+            identifier = json.loads(
+                httpManager.makeRequest("finishResearch", data=jsonData)
+            )
+        except:
+            app.logger.debug("got response from __trigger_finish_sync: Type: {}, payload: {}".format(type(identifier), identifier))
 
-            if identifier is not None:
-                research["portOut"][index]["properties"]["customProperties"].update(
-                    identifier
-                )
+        
+        if identifier is not None:
+            research["synchronization_process_status"] = ProcessStatus.FINISHED.value
+            
+
+            if "customProperties" not in research["portOut"][index]["properties"]:
+                research["portOut"][index]["properties"]["customProperties"] = {}
+
+            research["portOut"][index]["properties"]["customProperties"].update(
+                identifier
+            )
 
             self.__update_research_process(research)
-            emit("ProjectList", httpManager.makeRequest("getAllResearch"))
 
-            return identifier["DOI"]
-        except:
-            pass
-
-        self.__update_research_process(research)
         
         # refresh projectlist for user
         emit("ProjectList", httpManager.makeRequest("getAllResearch"))
 
-        return True
+        return identifier["DOI"] if identifier is not None else None
 
     def __trigger_project_creation(self, research):
         for index, port in enumerate(research["portOut"]):
@@ -460,11 +454,13 @@ class RDSNamespace(Namespace):
             == ProcessStatus.METADATA_SYNCHRONIZED.value
         ):
             result = httpManager.makeRequest("triggerFileSynchronization", data=jsonData)
-            if result[0]:
-                research[
-                    "synchronization_process_status"
-                ] = ProcessStatus.FILEDATA_SYNCHRONIZED.value
-                self.__update_research_process(research)
+
+            #TODO: check if all files were actually uploaded
+
+            research[
+                "synchronization_process_status"
+            ] = ProcessStatus.FILEDATA_SYNCHRONIZED.value
+            self.__update_research_process(research)
             return result
         
         return False, ["Something unexpected happened"]

@@ -209,6 +209,7 @@ def patch(project_id):
 @require_api_key
 def put(project_id):
     response = g.zenodo.publish_deposition_internal(deposition_id=int(project_id), return_response=True)
+    logger.debug("finished publishing in Zenodo: {}".format(response.text()))
     if response.status_code == 202:
         identifier = { "DOI": response.json()["doi"] }
         return jsonify(identifier), 200

@@ -47,7 +47,7 @@ export default {
       projects: "getProjectlist",
     }),
     publishedProjects(){
-      return this.projects.filter((project) => project.status == 3);
+      return this.projects.filter((project) => project.status >= 3 || project.status == 1);
     },
     publishedProjectsByDate() {
       return this.publishedProjects.sort((first, second) => new Date(first.portOut[0].properties.customProperties.timePublishedS * 1000) - new Date(second.portOut[0].properties.customProperties.timePublishedS * 1000));

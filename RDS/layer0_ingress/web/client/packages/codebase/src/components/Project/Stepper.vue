@@ -160,7 +160,7 @@
             </v-btn>
 
             <v-btn
-            :disabled="publishInProgress || published || project.status === 4"
+            :disabled="publishInProgress || published || project.status >= 3 || project.status === 1"
               color="success"
               @click="publishProject"
               class="ma-5"
