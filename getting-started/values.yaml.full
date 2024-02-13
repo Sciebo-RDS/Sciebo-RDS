@@ -28,6 +28,7 @@ global:
           - layer1-port-datasafe
       SUPPORT_EMAIL: mail@side.com
       MANUAL_URL: usermanual.side.com
+      EFSS: owncloud  # alternative: nextcloud
 # Set this to DEBUG and restart your applications to get more informations in logs. Default: INFO
 loglevel: INFO
 # If you set this to "False", SSL will not be verified in all https requests. Default: "True"
