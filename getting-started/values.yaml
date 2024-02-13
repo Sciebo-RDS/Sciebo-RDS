@@ -23,6 +23,7 @@ global:
           - layer1-port-datasafe
       SUPPORT_EMAIL: mail@side.com
       MANUAL_URL: usermanual.side.com
+      EFSS: owncloud  # alternative: nextcloud
 layer0-describo:
   environment:
     ADMIN_PASSWORD: your-admin-password
