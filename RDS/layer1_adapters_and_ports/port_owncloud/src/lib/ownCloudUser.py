@@ -44,7 +44,7 @@ class OwncloudUser:
                 user, _ = user.split(":")
             username = user.split('@')[0]
 
-            webdav_hostname = "{}/remote.php/dav/{}/files".format(
+            webdav_hostname = "{}/remote.php/dav/files/{}".format(
                 owncloud_installation_url,
                 username
             )
