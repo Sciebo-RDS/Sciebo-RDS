@@ -181,6 +181,7 @@ adding an entry like this:
         OAUTH_CLIENT_SECRET: 79O...NCq
         SUPPORT_EMAIL: mail@localdomain.test
         MANUAL_URL: usermanual.localdomain.test
+        EFSS: nextcloud
 
 And update the helm release (notice: . refers to the charts git repo)
 
@@ -241,6 +242,7 @@ adding an entry like this:
         OAUTH_CLIENT_SECRET: 79Oc...NCq
         SUPPORT_EMAIL: mail@localdomain.test
         MANUAL_URL: usermanual.localdomain.test
+        EFSS: owncloud
 
 And update the helm release:
 
