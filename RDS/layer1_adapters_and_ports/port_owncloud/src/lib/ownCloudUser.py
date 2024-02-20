@@ -31,11 +31,26 @@ class OwncloudUser:
         owncloud_installation_url = os.getenv("OWNCLOUD_INTERNAL_INSTALLATION_URL",
                                               os.getenv("OWNCLOUD_INSTALLATION_URL",
                                                         "http://localhost:3000"))
+        webdav_hostname = "{}/remote.php/webdav".format(
+            owncloud_installation_url
+        )
+
+        efss = os.getenv("EFSS_SYSTEM", "owncloud")
+        if efss == "nextcloud":
+            user = userId
+            if '://' in user:
+                _, user = user.split("://")
+            if ':' in user:
+                user, _ = user.split(":")
+            username = user.split('@')[0]
+
+            webdav_hostname = "{}/remote.php/dav/files/{}".format(
+                owncloud_installation_url,
+                username
+            )
 
         options = {
-            "webdav_hostname": "{}/remote.php/webdav".format(
-                owncloud_installation_url
-            ),
+            "webdav_hostname": webdav_hostname,
             "webdav_token": self._access_token,
         }
         self.client = Client(options)

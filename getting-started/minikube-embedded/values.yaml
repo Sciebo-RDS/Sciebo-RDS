@@ -19,6 +19,7 @@ global:
       #OAUTH_CLIENT_SECRET: CnYh...qpty
       #SUPPORT_EMAIL: mail@localdomain.test
       #MANUAL_URL: usermanual.localdomain.test
+      #EFSS: nextcloud  # alternative: owncloud
     #- name: test-owncloud.localdomain.test # name needs to be exact the same as the second part after last @ in the cloudId
       # When deploying The EFSS locally in the k8s environment, we need to acces it both from within
       # the environment, from other pods, and from the outside, thus Address and INTERNAL_ADDRESS
@@ -28,6 +29,7 @@ global:
       #OAUTH_CLIENT_SECRET: 3tCh...Fu1bR
       #SUPPORT_EMAIL: mail@localdomain.test
       #MANUAL_URL: usermanual.localdomain.test
+      #EFSS: owncloud  # alternative: nextcloud
 loglevel: DEBUG
 # If you set this to "False", SSL will not be verified in all https requests. Default: "True"
 verify_ssl: False
