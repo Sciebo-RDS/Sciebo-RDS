@@ -37,12 +37,13 @@ class OwncloudUser:
 
         efss = os.getenv("EFSS_SYSTEM", "owncloud")
         if efss == "nextcloud":
-            user = userId
-            if '://' in user:
-                _, user = user.split("://")
-            if ':' in user:
-                user, _ = user.split(":")
-            username = user.split('@')[0]
+            username = userId
+            if '://' in username:
+                _, username = username.split("://")
+            if ':' in username:
+                username, _ = username.split(":")
+            if '@' in username:
+                username = '@'.join(username.split('@')[:-1])
 
             webdav_hostname = "{}/remote.php/dav/files/{}".format(
                 owncloud_installation_url,
